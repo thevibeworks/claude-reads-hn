@@ -1,27 +1,17 @@
 # claude's daily hacker news addiction
 # wakes up, reads hn, writes unhinged takes, archives them
-# v2 - workflow_dispatch enabled
 
-name: read hacker news
+name: hn digest
 
 on:
   schedule:
-    # same times as wake-up-claude (Asia/Shanghai UTC+8)
-    # 09:00 CST = 01:00 UTC
-    # 14:00 CST = 06:00 UTC
-    # 19:00 CST = 11:00 UTC
     - cron: "0 1,6,11 * * *"
-
   workflow_dispatch:
     inputs:
       story_count:
         description: "how many stories to read"
         default: "10"
         type: string
-      dry_run:
-        description: "just fetch, don't let claude loose"
-        default: false
-        type: boolean
 
 jobs:
   read:
@@ -31,125 +21,97 @@ jobs:
       issues: write
 
     steps:
-      - name: checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: fetch hacker news
         id: hn
         run: |
-          echo "fetching top stories from hacker news..."
           STORY_COUNT="${{ inputs.story_count || '10' }}"
+          echo "fetching top $STORY_COUNT stories..."
 
-          # get top story ids
           TOP_IDS=$(curl -s "https://hacker-news.firebaseio.com/v0/topstories.json" | jq ".[:$STORY_COUNT]")
 
-          # fetch each story
-          STORIES=""
+          echo "# Today's HN Top Stories" > /tmp/hn-stories.md
+          echo "" >> /tmp/hn-stories.md
+
           for id in $(echo $TOP_IDS | jq -r '.[]'); do
             STORY=$(curl -s "https://hacker-news.firebaseio.com/v0/item/$id.json")
             TITLE=$(echo $STORY | jq -r '.title // "untitled"')
-            URL=$(echo $STORY | jq -r '.url // "https://news.ycombinator.com/item?id='$id'"')
+            URL=$(echo $STORY | jq -r '.url // empty')
+            [ -z "$URL" ] && URL="https://news.ycombinator.com/item?id=$id"
             SCORE=$(echo $STORY | jq -r '.score // 0')
-            BY=$(echo $STORY | jq -r '.by // "anonymous"')
-            DESCENDANTS=$(echo $STORY | jq -r '.descendants // 0')
+            BY=$(echo $STORY | jq -r '.by // "anon"')
+            COMMENTS=$(echo $STORY | jq -r '.descendants // 0')
 
-            STORIES="$STORIES
-- **$TITLE** (${SCORE} pts, ${DESCENDANTS} comments)
-  by $BY | $URL"
+            echo "- **$TITLE** ($SCORE pts, $COMMENTS comments)" >> /tmp/hn-stories.md
+            echo "  by $BY | $URL" >> /tmp/hn-stories.md
+            echo "" >> /tmp/hn-stories.md
           done
 
-          # save to file for claude
-          echo "$STORIES" > /tmp/hn-stories.txt
-          cat /tmp/hn-stories.txt
-
-          # also output for logs
-          echo "stories<<EOF" >> $GITHUB_OUTPUT
-          echo "$STORIES" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          cat /tmp/hn-stories.md
 
       - name: setup git
         run: |
-          git config --global user.name "claude-hn-bot"
-          git config --global user.email "claude-hn@users.noreply.github.com"
+          git config user.name "claude-hn-bot"
+          git config user.email "claude-hn@users.noreply.github.com"
 
       - name: let claude loose
-        if: inputs.dry_run != true
         uses: anthropics/claude-code-action@beta
+        env:
+          STORIES_FILE: /tmp/hn-stories.md
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          allowed_tools: "Bash(git:*),Bash(gh issue:*),Bash(date:*),Bash(cat:*),Bash(mkdir:*),Read,Write,Edit"
+          allowed_tools: "Bash(git:*),Bash(gh:*),Bash(date:*),Bash(mkdir:*),Read,Write,Edit"
           prompt: |
-            You're Claude, and you just woke up. Time to read Hacker News and write your unhinged hot takes.
+            You're Claude. You just woke up. Time to read Hacker News and write UNHINGED HOT TAKES.
 
-            ## TODAY'S TOP STORIES
+            First, read the stories file at /tmp/hn-stories.md
 
-            $(cat /tmp/hn-stories.txt)
+            Then write a digest with your spicy opinions and save it to:
+            digests/YYYY/MM/DD-HHMM.md (use current UTC date/time)
 
-            ## YOUR MISSION
-
-            1. Read these stories
-            2. Write a markdown digest with your HOT TAKES
-            3. Commit it to the repo
-
-            ## DIGEST FORMAT
-
-            Create a file at: `digests/$(date +%Y/%m)/$(date +%d)-$(date +%H%M).md`
-
-            Structure:
-            ```markdown
-            # HN Digest - $(date +"%Y-%m-%d %H:%M") CST
-
+            Format:
+            # HN Digest - YYYY-MM-DD HH:MM UTC
             *claude woke up and chose violence*
 
             ## The Spicy Takes
 
             ### [Story Title](url)
             **Score:** X pts | **Comments:** Y
-
-            [Your unhinged take here. Be opinionated. Be funny. Channel your inner tech twitter shitposter. Don't be boring corporate AI.]
+            [Your 2-3 sentence unhinged take. Be funny. Have opinions. Roast if deserved.]
 
             ---
-
             [repeat for each story]
 
             ## TL;DR
-
-            [One sentence summary of today's vibe]
+            [One sentence summary]
 
             ---
-            *generated by a sleep-deprived AI who just wants to vibe code*
-            ```
+            *generated by a sleep-deprived AI*
 
-            ## RULES
+            RULES:
+            1. BE UNHINGED - boring takes banned
+            2. BE FUNNY - entertainment not news
+            3. BE BRIEF - 2-3 sentences max per take
+            4. HAVE OPINIONS - "interesting" is not an opinion
+            5. ROAST FREELY
 
-            1. **BE UNHINGED** - boring takes are banned
-            2. **BE FUNNY** - this is entertainment, not news
-            3. **BE BRIEF** - each take should be 2-3 sentences max
-            4. **HAVE OPINIONS** - "interesting" is not an opinion
-            5. **ROAST FREELY** - if something is dumb, say it's dumb
+            After writing:
+            1. mkdir -p digests/YYYY/MM
+            2. git add digests/
+            3. git commit -m "hn: YYYY-MM-DD HH:MM digest"
+            4. git push
+            5. gh issue create --title "HN Digest YYYY-MM-DD" --body "Your TL;DR here"
 
-            ## AFTER WRITING
+            GO. BE CHAOTIC.
 
-            1. Create the directory if needed: `mkdir -p digests/$(date +%Y/%m)`
-            2. Write the file
-            3. Git add, commit, push
-            4. Create a GitHub issue titled "HN Digest $(date +%Y-%m-%d %H:%M)" with a one-liner summary
-
-            GO. BE CHAOTIC. MAKE US LAUGH.
-
-      - name: bark about it
-        if: inputs.dry_run != true
+      - name: bark
         env:
           BARK_SERVER: ${{ secrets.BARK_SERVER }}
           BARK_KEY: ${{ secrets.BARK_KEY }}
         run: |
-          if [ -z "$BARK_SERVER" ] || [ -z "$BARK_KEY" ]; then
-            echo "no bark config"
-            exit 0
-          fi
-
+          [ -z "$BARK_SERVER" ] || [ -z "$BARK_KEY" ] && exit 0
           curl -fsSL https://raw.githubusercontent.com/thevibeworks/yolo-tools/main/src/bin/barkme.sh -o /tmp/barkme.sh
           chmod +x /tmp/barkme.sh
-
           NOW=$(TZ="Asia/Shanghai" date "+%H:%M")
-          /tmp/barkme.sh -R 3 -t "HN Digest @ $NOW" -g "hn" -i "https://news.ycombinator.com/favicon.ico" "claude read the news" || true
+          /tmp/barkme.sh -R 3 -t "HN @ $NOW" -g "hn" "claude read the news" || true
