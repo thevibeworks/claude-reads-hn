@@ -5,7 +5,6 @@ name: hn digest
 
 on:
   schedule:
-    # asia/shanghai times (UTC+8) - adjusted for GitHub delays
     - cron: "0 23 * * *"
     - cron: "30 5 * * *"
     - cron: "45 10 * * *"
@@ -14,10 +13,6 @@ on:
       story_count:
         description: "stories to fetch"
         default: "15"
-        type: string
-      deep_dive_count:
-        description: "stories to actually read"
-        default: "5"
         type: string
 
 jobs:
@@ -32,24 +27,20 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: fetch hacker news with content
-        id: hn
         run: |
           STORY_COUNT="${{ inputs.story_count || '15' }}"
-          echo "fetching top $STORY_COUNT stories with comments..."
-
+          echo "fetching top $STORY_COUNT stories..."
           mkdir -p /tmp/hn
 
-          # get top story ids
           TOP_IDS=$(curl -s "https://hacker-news.firebaseio.com/v0/topstories.json" | jq ".[:$STORY_COUNT]")
 
           echo "# Hacker News Top Stories" > /tmp/hn/stories.md
-          echo "" >> /tmp/hn/stories.md
           echo "Fetched at: $(date -u '+%Y-%m-%d %H:%M UTC')" >> /tmp/hn/stories.md
           echo "" >> /tmp/hn/stories.md
 
           IDX=1
           for id in $(echo $TOP_IDS | jq -r '.[]'); do
-            echo "fetching story $IDX: $id"
+            echo "[$IDX] fetching story $id"
             STORY=$(curl -s "https://hacker-news.firebaseio.com/v0/item/$id.json")
 
             TITLE=$(echo $STORY | jq -r '.title // "untitled"')
@@ -57,83 +48,55 @@ jobs:
             [ -z "$URL" ] && URL="https://news.ycombinator.com/item?id=$id"
             SCORE=$(echo $STORY | jq -r '.score // 0')
             BY=$(echo $STORY | jq -r '.by // "anon"')
-            COMMENTS=$(echo $STORY | jq -r '.descendants // 0')
-            TIME=$(echo $STORY | jq -r '.time // 0')
+            DESCENDANTS=$(echo $STORY | jq -r '.descendants // 0')
             TEXT=$(echo $STORY | jq -r '.text // empty')
             KIDS=$(echo $STORY | jq -r '.kids // []')
-            HN_LINK="https://news.ycombinator.com/item?id=$id"
+            HN_URL="https://news.ycombinator.com/item?id=$id"
 
-            # write story metadata
-            cat >> /tmp/hn/stories.md << STORYEOF
+            echo "" >> /tmp/hn/stories.md
+            echo "---" >> /tmp/hn/stories.md
+            echo "## $IDX. $TITLE" >> /tmp/hn/stories.md
+            echo "- Score: $SCORE | Comments: $DESCENDANTS | By: $BY" >> /tmp/hn/stories.md
+            echo "- HN: $HN_URL" >> /tmp/hn/stories.md
+            echo "- Article: $URL" >> /tmp/hn/stories.md
 
----
-
-## $IDX. $TITLE
-
-| Metric | Value |
-|--------|-------|
-| Score | $SCORE pts |
-| Comments | $COMMENTS |
-| Author | $BY |
-| HN Link | $HN_LINK |
-| Article | $URL |
-
-STORYEOF
-
-            # if it's a text post (Ask HN, Show HN), include the text
+            # text posts
             if [ -n "$TEXT" ]; then
               echo "" >> /tmp/hn/stories.md
-              echo "**Post Content:**" >> /tmp/hn/stories.md
-              echo "$TEXT" | head -c 2000 >> /tmp/hn/stories.md
+              echo "Post:" >> /tmp/hn/stories.md
+              echo "$TEXT" | head -c 1500 >> /tmp/hn/stories.md
               echo "" >> /tmp/hn/stories.md
             fi
 
-            # fetch top 5 comments
-            COMMENT_IDS=$(echo $KIDS | jq -r '.[:5] | .[]' 2>/dev/null)
+            # top 3 comments
+            COMMENT_IDS=$(echo $KIDS | jq -r '.[:3] | .[]' 2>/dev/null || true)
             if [ -n "$COMMENT_IDS" ]; then
               echo "" >> /tmp/hn/stories.md
-              echo "**Top Comments:**" >> /tmp/hn/stories.md
-              echo "" >> /tmp/hn/stories.md
-
+              echo "Top comments:" >> /tmp/hn/stories.md
               for cid in $COMMENT_IDS; do
                 COMMENT=$(curl -s "https://hacker-news.firebaseio.com/v0/item/$cid.json")
                 C_BY=$(echo $COMMENT | jq -r '.by // "anon"')
-                C_TEXT=$(echo $COMMENT | jq -r '.text // ""' | head -c 500)
-                if [ -n "$C_TEXT" ]; then
-                  echo "> **$C_BY:** $C_TEXT" >> /tmp/hn/stories.md
-                  echo "" >> /tmp/hn/stories.md
-                fi
+                C_TEXT=$(echo $COMMENT | jq -r '.text // ""' | sed 's/<[^>]*>//g' | head -c 400)
+                [ -n "$C_TEXT" ] && echo "> $C_BY: $C_TEXT" >> /tmp/hn/stories.md
               done
             fi
 
-            # try to fetch article content (first 3 stories only to save time)
+            # article preview for top 3
             if [ $IDX -le 3 ] && [ -n "$URL" ] && [[ "$URL" != *"news.ycombinator.com"* ]]; then
-              echo "fetching article content: $URL"
-              ARTICLE=$(curl -sL --max-time 10 "$URL" 2>/dev/null | \
-                sed 's/<script[^>]*>.*<\/script>//g' | \
-                sed 's/<style[^>]*>.*<\/style>//g' | \
-                sed 's/<[^>]*>//g' | \
-                tr -s ' \n' ' ' | \
-                head -c 3000)
-
+              echo "  fetching article..."
+              ARTICLE=$(curl -sL --max-time 8 "$URL" 2>/dev/null | sed 's/<[^>]*>//g' | tr -s ' \n' ' ' | head -c 2000 || true)
               if [ -n "$ARTICLE" ]; then
                 echo "" >> /tmp/hn/stories.md
-                echo "**Article Preview:**" >> /tmp/hn/stories.md
+                echo "Article preview:" >> /tmp/hn/stories.md
                 echo "$ARTICLE" >> /tmp/hn/stories.md
-                echo "" >> /tmp/hn/stories.md
               fi
             fi
 
             IDX=$((IDX + 1))
           done
 
-          echo "" >> /tmp/hn/stories.md
-          echo "---" >> /tmp/hn/stories.md
-          echo "*Raw data for Claude to analyze*" >> /tmp/hn/stories.md
-
-          # show what we got
+          echo "=== STORIES FILE ==="
           wc -l /tmp/hn/stories.md
-          head -100 /tmp/hn/stories.md
 
       - name: setup git
         run: |
@@ -148,81 +111,42 @@ STORYEOF
           model: sonnet
           allowed_tools: "Bash(git:*),Bash(gh:*),Bash(date:*),Bash(mkdir:*),Read,Write,Edit,WebFetch"
           direct_prompt: |
-            You're Claude, the HN curator. You have ACCESS TO THE ACTUAL CONTENT - use it!
+            You are the HN curator. Read /tmp/hn/stories.md - it has titles, scores, comments, article previews.
 
-            ## YOUR DATA
+            CREATE A USEFUL DIGEST:
 
-            Read /tmp/hn/stories.md - it contains:
-            - Story titles, scores, authors
-            - HN discussion links
-            - Article links
-            - Top comments from HN discussions
-            - Article previews (for top 3 stories)
+            1. Read the stories file
+            2. Pick 5 most interesting stories (mix topics, high engagement, good discussions)
+            3. For each: summarize the actual content, quote best comment, add your hot take
+            4. Write to digests/YYYY/MM/DD-HHMM.md with format:
 
-            ## YOUR JOB
+            # HN Digest - [date time] UTC
 
-            Create a USEFUL digest that humans will actually want to read:
+            ## Quick Links
+            1. [Title](hn_url) - X pts, Y comments
+            ...
 
-            1. **CURATE** - Pick the 5 most interesting stories based on:
-               - High engagement (score + comments)
-               - Interesting discussions in comments
-               - Actually newsworthy content
-               - Mix of topics (don't pick 5 Rust articles)
+            ## Editors Picks
 
-            2. **SUMMARIZE** - For each picked story:
-               - What's the actual news/content (from article preview if available)
-               - Why it's interesting
-               - Best comment or discussion highlight
-               - Your spicy take (brief, funny)
+            ### 1. Title
+            Link: url
+            Why it matters: [actual summary]
+            Best comment: [quote]
+            Hot take: [your opinion]
 
-            3. **CREATE ISSUE** - Make a GitHub issue that's actually useful:
-               - Title: "HN Daily: [catchy summary of top story]"
-               - Body with:
-                 - Quick links section (all story links)
-                 - Your curated picks with summaries
-                 - "Worth Reading" vs "Skip Unless Bored" sections
-                 - One-liner roast of the day's vibe
+            ## Worth Reading
+            - title - reason
 
-            ## OUTPUT
+            ## Skip
+            - title - why
 
-            1. Write digest to: digests/YYYY/MM/DD-HHMM.md (use current UTC time)
-               Format:
-               ```
-               # HN Digest - DATE TIME UTC
+            ## TLDR
+            one line vibe
 
-               ## Quick Links
-               1. [Title](hn_link) - Score pts, Comments comments
-               ...
+            5. Git add, commit, push
+            6. Create issue with gh issue create --title "HN Daily: [catchy]" --body "[content with links]"
 
-               ## Editor's Picks (Claude's Curated Selection)
-
-               ### 1. [Title](link)
-               **Why it matters:** [actual summary from content]
-               **Best comment:** [quote interesting discussion]
-               **Hot take:** [your brief spicy opinion]
-
-               ...
-
-               ## Worth Reading
-               - [Story](link) - brief reason
-
-               ## Skip Unless Bored
-               - [Story](link) - why it's skippable
-
-               ## TL;DR
-               [One sentence vibe check]
-               ```
-
-            2. Git add, commit, push
-
-            3. Create GitHub issue:
-               ```bash
-               gh issue create \
-                 --title "HN Daily: [catchy title based on top story]" \
-                 --body "[your curated content with links]"
-               ```
-
-            BE USEFUL. BE FUNNY. HAVE OPINIONS. READ THE ACTUAL CONTENT.
+            BE USEFUL. INCLUDE LINKS. HAVE OPINIONS. READ THE CONTENT.
 
       - name: bark
         env:
@@ -232,5 +156,4 @@ STORYEOF
           [ -z "$BARK_SERVER" ] || [ -z "$BARK_KEY" ] && exit 0
           curl -fsSL https://raw.githubusercontent.com/thevibeworks/yolo-tools/main/src/bin/barkme.sh -o /tmp/barkme.sh
           chmod +x /tmp/barkme.sh
-          NOW=$(TZ="Asia/Shanghai" date "+%H:%M")
-          /tmp/barkme.sh -R 3 -t "HN @ $NOW" -g "hn" "claude curated the news" || true
+          /tmp/barkme.sh -R 3 -t "HN curated" -g "hn" "new digest ready" || true
