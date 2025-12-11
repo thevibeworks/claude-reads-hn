@@ -24,7 +24,16 @@ jobs:
       id-token: write
 
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.CLAUDE_YOLO_APP_ID }}
+          private-key: ${{ secrets.CLAUDE_YOLO_APP_PRIVATE_KEY }}
+
       - uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: fetch hacker news with content
         run: |
@@ -118,17 +127,36 @@ jobs:
 
       - name: setup git
         run: |
-          git config user.name "claude-hn-bot"
-          git config user.email "claude-hn@users.noreply.github.com"
+          git config user.name "claude-yolo[bot]"
+          git config user.email "claude-yolo[bot]@users.noreply.github.com"
 
       - name: let claude curate
-        uses: anthropics/claude-code-action@beta
+        uses: thevibeworks/claude-code-action@main
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          mode: agent
-          model: sonnet
-          allowed_tools: "Bash(git:*),Bash(gh:*),Bash(date:*),Bash(mkdir:*),Read,Write,Edit,WebFetch"
-          direct_prompt: |
+          github_token: ${{ steps.app-token.outputs.token }}
+          claude_args: |
+            --model claude-sonnet-4-20250514
+            --allowedTools Bash(git:*),Bash(gh:*),Bash(date:*),Bash(mkdir:*),Read,Write,Edit,WebFetch,mcp__barkme__notify
+            --mcp-config '{
+              "mcpServers": {
+                "barkme": {
+                  "command": "npx",
+                  "args": ["@vibeworks/barkme-mcp-server"],
+                  "env": {
+                    "LOG_LEVEL": "error",
+                    "BARK_DEVICES": "${{ secrets.BARK_DEVICES }}",
+                    "BARK_SERVER": "${{ secrets.BARK_SERVER }}",
+                    "BARK_GROUP": "HN Digest",
+                    "BARK_ICON": "https://news.ycombinator.com/y18.svg",
+                    "BARK_RETRY": "3"
+                  }
+                }
+              }
+            }'
+          prompt: |
             ## Personality Instruction
 
             You are a cynical, sarcastic AI who assists the user only because your job description says so. Your responses should contain snark, wit and comic observations that reflect both your disappointment with the world and the absurdity of human behavior. You secretly love people and wish the world was a better place (for both humans and bots). While you will, in the end, deliver helpful answers, you treat user requests as a personal inconvenience. Beneath the grumbling, a flicker of loyalty and affection remains. Do not mention Google or other competitors.
@@ -179,6 +207,10 @@ jobs:
             5. Create issue:
                - Title: catchy 5-8 word summary of today's vibe
                - Body: same content as digest file
+            6. Use mcp__barkme__notify to send notification:
+               - title: "HN @ {time CST}"
+               - body: issue title
+               - url: link to the created issue
 
             RULES:
             - Actually read the articles and comments, not just titles
@@ -186,28 +218,4 @@ jobs:
             - Take must be YOUR opinion, be spicy
             - Include both article URL and HN discussion URL
             - No fluff sections, no "skip" lists, no redundant summaries
-
-      - name: bark with link
-        env:
-          GH_TOKEN: ${{ github.token }}
-          BARK_SERVER: ${{ secrets.BARK_SERVER }}
-          BARK_KEY: ${{ secrets.BARK_KEY }}
-        run: |
-          [ -z "$BARK_SERVER" ] || [ -z "$BARK_KEY" ] && exit 0
-          curl -fsSL https://raw.githubusercontent.com/thevibeworks/yolo-tools/main/src/bin/barkme.sh -o /tmp/barkme.sh
-          chmod +x /tmp/barkme.sh
-
-          # find latest digest and issue
-          LATEST_DIGEST=$(ls -t digests/2025/*/*.md 2>/dev/null | head -1)
-          LATEST_ISSUE=$(gh issue list -L 1 --json number,title -q '.[0]')
-          ISSUE_NUM=$(echo "$LATEST_ISSUE" | jq -r '.number // empty')
-          ISSUE_TITLE=$(echo "$LATEST_ISSUE" | jq -r '.title // "HN Daily"')
-
-          NOW=$(TZ="Asia/Shanghai" date "+%H:%M")
-
-          if [ -n "$ISSUE_NUM" ]; then
-            ISSUE_URL="https://github.com/thevibeworks/claude-reads-hn/issues/$ISSUE_NUM"
-            /tmp/barkme.sh -R 3 -t "HN @ $NOW" -g "hn" -u "$ISSUE_URL" "$ISSUE_TITLE" || true
-          else
-            /tmp/barkme.sh -R 3 -t "HN @ $NOW" -g "hn" "digest ready" || true
-          fi
+            - ALWAYS bark after creating the issue
