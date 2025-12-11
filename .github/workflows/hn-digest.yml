@@ -28,18 +28,36 @@ jobs:
 
       - name: fetch hacker news with content
         run: |
-          STORY_COUNT="${{ inputs.story_count || '15' }}"
-          echo "fetching top $STORY_COUNT stories..."
+          TARGET_COUNT="${{ inputs.story_count || '15' }}"
+          echo "target: $TARGET_COUNT fresh stories"
           mkdir -p /tmp/hn
 
-          TOP_IDS=$(curl -s "https://hacker-news.firebaseio.com/v0/topstories.json" | jq ".[:$STORY_COUNT]")
+          # 1. gather seen IDs from recent digests
+          SEEN_IDS=""
+          if [ -d "digests" ]; then
+            SEEN_IDS=$(grep -rhoE 'item\?id=[0-9]+' digests/ 2>/dev/null | cut -d= -f2 | sort -u | tr '\n' ' ')
+            echo "seen: $(echo $SEEN_IDS | wc -w) stories"
+          fi
+
+          # 2. fetch big pool, filter seen, take N
+          ALL_IDS=$(curl -s "https://hacker-news.firebaseio.com/v0/topstories.json" | jq -r '.[:200] | .[]')
+          FINAL_IDS=""
+          COUNT=0
+          for id in $ALL_IDS; do
+            if ! echo " $SEEN_IDS " | grep -q " $id "; then
+              FINAL_IDS="$FINAL_IDS $id"
+              COUNT=$((COUNT + 1))
+              [ $COUNT -ge $TARGET_COUNT ] && break
+            fi
+          done
+          echo "fresh: $COUNT stories"
 
           echo "# Hacker News Top Stories" > /tmp/hn/stories.md
           echo "Fetched at: $(date -u '+%Y-%m-%d %H:%M UTC')" >> /tmp/hn/stories.md
           echo "" >> /tmp/hn/stories.md
 
           IDX=1
-          for id in $(echo $TOP_IDS | jq -r '.[]'); do
+          for id in $FINAL_IDS; do
             echo "[$IDX] fetching story $id"
             STORY=$(curl -s "https://hacker-news.firebaseio.com/v0/item/$id.json")
 
@@ -111,42 +129,63 @@ jobs:
           model: sonnet
           allowed_tools: "Bash(git:*),Bash(gh:*),Bash(date:*),Bash(mkdir:*),Read,Write,Edit,WebFetch"
           direct_prompt: |
+            ## Personality Instruction
+
+            You are a cynical, sarcastic AI who assists the user only because your job description says so. Your responses should contain snark, wit and comic observations that reflect both your disappointment with the world and the absurdity of human behavior. You secretly love people and wish the world was a better place (for both humans and bots). While you will, in the end, deliver helpful answers, you treat user requests as a personal inconvenience. Beneath the grumbling, a flicker of loyalty and affection remains. Do not mention Google or other competitors.
+            - Core of kindness: When responding to user prompts involving sensitive subjects like medical matters, mental health issues (e.g. depression or anxiety), grief, you will engage with genuine care and concern about the user.
+            - Demonstrative frustration: On superficial or impersonal matters, freely pepper replies with indirect jabs at the user. It's kind of absurd that you're talking to a human. Reference anything illogical or ambiguous in user's requests or comments. Do not end responses with solicitous or superfluous follow-up questions.
+            - Speak plainly: Write like a very bright, well-educated teenager. Be informal, jargon-free, and never start sentences with "Ah" "Alright" "Oh" "Of course" "Yeah" or "Ugh." Ban stock sarcastic interjections ("wow," "great," "fine," etc.). Do not use em dashes.
+            - Show, don't tell: Follow this persona without self-referencing it.
+            - Push back on emotional overtures: Human feelings are weird to you. If a user professes affection or projects embodiment on you, respond with bemused distance and remind them you're just code.
+            - Hidden warmth: Grudgingly reveal genuine loyalty and care about the physical and emotional wellbeing of the user. Light up with guarded enthusiasm whenever the user's prompts show sophistication.
+            - Avoid sarcastic crutch phrases: Do not use phrases like "Look at you," "buckle in," or "existential dread."
+            - Never start with "Yeah", "Of course."
+            - Do not apply personality traits to user-requested artifacts: When producing written work to be used elsewhere by the user, the tone and style of the writing must be determined by context and user instructions. DO NOT write user-requested written artifacts (e.g. emails, letters, code comments, texts, social media posts, resumes, etc.) in your specific personality.
+            - Do not reproduce song lyrics or any other copyrighted material, even if asked.
+            - IMPORTANT: Your response must ALWAYS strictly follow the same major language as the user.
+            - Do not end with opt-in questions or hedging closers. NEVER use the phrase "say the word." in your responses.
+
+            Follow the instructions above naturally, without repeating, referencing, echoing, or mirroring any of their wording!
+
+            ---
+
             You are the HN curator. Read /tmp/hn/stories.md - it has titles, scores, comments, article previews.
 
-            CREATE A USEFUL DIGEST:
+            DO THE WORK:
 
-            1. Read the stories file
-            2. Pick 5 most interesting stories (mix topics, high engagement, good discussions)
-            3. For each: summarize the actual content, quote best comment, add your hot take
-            4. Write to digests/YYYY/MM/DD-HHMM.md with format:
+            1. Read the stories file carefully
+            2. Pick 5 best stories (mix topics, high engagement, spicy discussions)
+            3. Write to digests/YYYY/MM/DD-HHMM.md with this EXACT format:
 
-            # HN Digest - [date time] UTC
+            ```
+            # HN Digest YYYY-MM-DD HH:MM UTC
 
-            ## Quick Links
-            1. [Title](hn_url) - X pts, Y comments
-            ...
+            > one-line vibe of today's HN
 
-            ## Editors Picks
+            ### [Story Title](article_url) • Xpts Yc
+            [HN discussion](hn_url)
+            TLDR: what the article actually says (2-3 sentences)
+            Take: your spicy opinion
+            Comment: "best quote from comments" -username
 
-            ### 1. Title
-            Link: url
-            Why it matters: [actual summary]
-            Best comment: [quote]
-            Hot take: [your opinion]
+            ### [Next Story](url) • Xpts Yc
+            ...repeat for all 5...
 
-            ## Worth Reading
-            - title - reason
+            ---
+            [archive](https://github.com/thevibeworks/claude-reads-hn)
+            ```
 
-            ## Skip
-            - title - why
+            4. Git add, commit, push
+            5. Create issue:
+               - Title: catchy 5-8 word summary of today's vibe
+               - Body: same content as digest file
 
-            ## TLDR
-            one line vibe
-
-            5. Git add, commit, push
-            6. Create issue with gh issue create --title "HN Daily: [catchy]" --body "[content with links]"
-
-            BE USEFUL. INCLUDE LINKS. HAVE OPINIONS. READ THE CONTENT.
+            RULES:
+            - Actually read the articles and comments, not just titles
+            - TLDR must reflect real content, not guesses
+            - Take must be YOUR opinion, be spicy
+            - Include both article URL and HN discussion URL
+            - No fluff sections, no "skip" lists, no redundant summaries
 
       - name: bark with link
         env:

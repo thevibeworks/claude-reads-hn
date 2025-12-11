@@ -27,9 +27,9 @@
 
 ## what is this
 
-an AI that wakes up 3x daily, reads Hacker News, and writes unhinged hot takes about tech news. then commits them to this repo. forever.
+an AI that wakes up 3x daily, reads Hacker News, writes digests with actual content summaries and spicy opinions. commits them to this repo. forever.
 
-it's like having a very opinionated tech journalist who never sleeps and has no filter.
+actually reads the articles and comments, not just titles.
 
 ## why
 
@@ -51,33 +51,24 @@ asia/shanghai timezone because that's where the chaos originates.
 ## sample output
 
 ```markdown
-# HN Digest - 2025-12-05 09:00 CST
+# HN Digest 2025-12-05 09:00 UTC
 
-*claude woke up and chose violence*
+> tech twitter energy but make it orange
 
-## The Spicy Takes
+### [Rust Rewrites Everything](https://example.com) • 847pts 423c
+[HN discussion](https://news.ycombinator.com/item?id=12345)
+TLDR: Company rewrote their service in Rust, claims 10x performance.
+Take: Another "we rewrote it in Rust" post. The team is now insufferable at parties.
+Comment: "Memory safety is not a personality trait" -pragmaticdev
 
-### [Rust Rewrites Everything: A Love Story](https://example.com)
-**Score:** 847 pts | **Comments:** 423
-
-Oh look, another "we rewrote it in Rust" post. Let me guess - it's
-faster, safer, and the team is insufferable about it at parties now.
-The Rust evangelism strike force remains undefeated.
-
----
-
-### [I Made $2M ARR as a Solo Founder](https://example.com)
-**Score:** 1203 pts | **Comments:** 567
-
-Translation: "I got lucky, but here's a 47-step framework that had
-nothing to do with it." The comments are just people asking what
-stack they used as if that's the secret sauce.
+### [I Made $2M ARR as a Solo Founder](https://example.com) • 1203pts 567c
+[HN discussion](https://news.ycombinator.com/item?id=12346)
+TLDR: Founder shares journey from side project to $2M revenue.
+Take: Translation: "I got lucky, here's a 47-step framework that had nothing to do with it."
+Comment: "What stack did you use?" -every_hn_comment_ever
 
 ---
-
-## TL;DR
-
-Tech Twitter energy but make it orange.
+[archive](https://github.com/thevibeworks/claude-reads-hn)
 ```
 
 ## digests archive
@@ -90,30 +81,35 @@ browse them. judge them. they're permanent now.
 
 ```
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│  cron       │────▶│  fetch HN   │────▶│  claude     │
-│  triggers   │     │  top 10     │     │  writes     │
-└─────────────┘     └─────────────┘     │  hot takes  │
-                                        └──────┬──────┘
-                                               │
+│  cron 3x    │────▶│  fetch 200  │────▶│  filter     │
+│  daily      │     │  from HN    │     │  seen IDs   │
+└─────────────┘     └─────────────┘     └──────┬──────┘
+                                               │ 15 fresh
                     ┌─────────────┐     ┌──────▼──────┐
-                    │  bark       │◀────│  git commit │
-                    │  notifies   │     │  & push     │
-                    └─────────────┘     └─────────────┘
+                    │  fetch      │◀────│  stories +  │
+                    │  comments   │     │  articles   │
+                    └──────┬──────┘     └─────────────┘
+                           │
+┌─────────────┐     ┌──────▼──────┐     ┌─────────────┐
+│  bark       │◀────│  claude     │────▶│  git commit │
+│  notify     │     │  curates    │     │  + issue    │
+└─────────────┘     └─────────────┘     └─────────────┘
 ```
 
 1. GitHub Actions cron triggers
-2. Fetch top 10 HN stories via API
-3. Pass stories to Claude via claude-code-action
-4. Claude writes a markdown digest with hot takes
-5. Claude commits and pushes to repo
-6. Bark notification sent to phone
-7. Quota timer reset as a side effect
+2. Fetch top 200 HN stories, filter out already-digested ones, take 15 fresh
+3. Fetch article previews and top comments for context
+4. Pass to Claude via claude-code-action
+5. Claude writes digest with TLDR, take, best comment per story
+6. Claude commits, pushes, creates GitHub issue
+7. Bark notification with issue link
+8. Quota timer reset as side effect
 
 ## secrets needed
 
 | secret | what |
 |--------|------|
-| `ANTHROPIC_API_KEY` | claude api key |
+| `CLAUDE_CODE_OAUTH_TOKEN` | claude code oauth token |
 | `BARK_SERVER` | bark push server (optional) |
 | `BARK_KEY` | bark device key (optional) |
 
@@ -121,10 +117,7 @@ browse them. judge them. they're permanent now.
 
 ```bash
 # trigger manually
-gh workflow run "read-hn.yml" -f story_count=5
-
-# dry run (fetch but don't let claude loose)
-gh workflow run "read-hn.yml" -f dry_run=true
+gh workflow run "hn-digest.yml" -f story_count=5
 ```
 
 ## related projects
