@@ -37,29 +37,31 @@ jobs:
 
       - name: fetch hacker news with content
         run: |
-          TARGET_COUNT="${{ inputs.story_count || '15' }}"
-          echo "target: $TARGET_COUNT fresh stories"
+          TARGET_COUNT="${{ inputs.story_count || '20' }}"
+          echo "target: $TARGET_COUNT stories for Claude to evaluate"
           mkdir -p /tmp/hn
 
-          # 1. gather seen IDs from recent digests
-          SEEN_IDS=""
-          if [ -d "digests" ]; then
-            SEEN_IDS=$(grep -rhoE 'item\?id=[0-9]+' digests/ 2>/dev/null | cut -d= -f2 | sort -u | tr '\n' ' ')
-            echo "seen: $(echo $SEEN_IDS | wc -w) stories"
-          fi
+          # light dedup: only skip stories from last 24h (Claude does smart filtering)
+          RECENT_IDS=""
+          TODAY=$(date -u +%Y/%m/%d)
+          YESTERDAY=$(date -u -d "yesterday" +%Y/%m/%d 2>/dev/null || date -u -v-1d +%Y/%m/%d)
+          for f in digests/$TODAY*.md digests/$YESTERDAY*.md 2>/dev/null; do
+            [ -f "$f" ] && RECENT_IDS="$RECENT_IDS $(grep -oE 'item\?id=[0-9]+' "$f" | cut -d= -f2)"
+          done
+          echo "recent (24h): $(echo $RECENT_IDS | wc -w) stories to skip"
 
-          # 2. fetch big pool, filter seen, take N
-          ALL_IDS=$(curl -s "https://hacker-news.firebaseio.com/v0/topstories.json" | jq -r '.[:200] | .[]')
+          # fetch pool, light filter, give Claude more to work with
+          ALL_IDS=$(curl -s "https://hacker-news.firebaseio.com/v0/topstories.json" | jq -r '.[:100] | .[]')
           FINAL_IDS=""
           COUNT=0
           for id in $ALL_IDS; do
-            if ! echo " $SEEN_IDS " | grep -q " $id "; then
+            if ! echo " $RECENT_IDS " | grep -q " $id "; then
               FINAL_IDS="$FINAL_IDS $id"
               COUNT=$((COUNT + 1))
               [ $COUNT -ge $TARGET_COUNT ] && break
             fi
           done
-          echo "fresh: $COUNT stories"
+          echo "pool for Claude: $COUNT stories"
 
           echo "# Hacker News Top Stories" > /tmp/hn/stories.md
           echo "Fetched at: $(date -u '+%Y-%m-%d %H:%M UTC')" >> /tmp/hn/stories.md
@@ -182,8 +184,16 @@ jobs:
 
             DO THE WORK:
 
+            0. KNOW YOUR HISTORY (be self-aware):
+               - List recent digests: ls digests/2025/$(date -u +%m)/
+               - Read the last 2-3 digests to remember what you covered
+               - You're building context, not a database - just understand your recent work
+               - If a story looks familiar, grep for its ID to confirm
+               - FRESH = never covered OR covered but comments exploded (2x+ growth worth revisiting)
+               - Use your judgment like a human editor who remembers their past articles
+
             1. Read the stories file carefully
-            2. Pick 5 best stories (mix topics, high engagement, spicy discussions)
+            2. Pick 5 FRESH stories (mix topics, high engagement, spicy discussions)
             3. Write to digests/YYYY/MM/DD-HHMM.md with this EXACT format:
 
             ```
