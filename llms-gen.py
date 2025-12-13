@@ -5,12 +5,17 @@
 # ///
 # Version: 0.1.0
 """
-Generate llms.txt from digest files.
+Rebuild llms.txt index from all digest files so Claude knows what stories were covered.
+
+Claude reads llms.txt before each run to avoid duplicate coverage. This script scans
+digests/, extracts story IDs and topics, and regenerates the index in chronological order.
+
+Run after every digest, or manually when llms.txt gets corrupted/deleted.
 
 examples:
-  %(prog)s                              # regenerate full llms.txt
-  %(prog)s --add digests/2025/12/X.md   # add single digest entry
-  %(prog)s -n                           # dry run
+  %(prog)s                              # scan all digests, rebuild llms.txt
+  %(prog)s --add digests/2025/12/X.md   # prepend single digest to existing index
+  %(prog)s -n                           # dry run (print to stdout)
 """
 
 from __future__ import annotations
