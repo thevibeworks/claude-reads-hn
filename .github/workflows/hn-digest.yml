@@ -5,10 +5,11 @@ name: hn digest
 
 on:
   schedule:
-    # 3x daily waking hours (+8 timezone)
+    # 4x daily (+8 timezone), next day starts at 09:00
     - cron: "0 1 * * *"   # 09:00 +8
     - cron: "0 6 * * *"   # 14:00 +8
     - cron: "0 11 * * *"  # 19:00 +8
+    - cron: "0 16 * * *"  # 00:00 +8 (midnight)
   workflow_dispatch:
     inputs:
       story_count:
