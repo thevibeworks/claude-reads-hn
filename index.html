@@ -133,6 +133,72 @@
       padding: 0 1rem;
     }
 
+    /* Layout with sidebar */
+    .layout {
+      display: flex;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    .main-content {
+      flex: 1;
+      max-width: 680px;
+      min-width: 0;
+    }
+    .sidebar {
+      width: 240px;
+      flex-shrink: 0;
+      margin-left: 2rem;
+      position: sticky;
+      top: 80px;
+      height: fit-content;
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+      display: none;
+    }
+    @media (min-width: 1000px) {
+      .sidebar { display: block; }
+    }
+    .sidebar-section {
+      margin-bottom: 1.5rem;
+    }
+    .sidebar-title {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--fg-dim);
+      margin-bottom: 0.75rem;
+    }
+    .sidebar-item {
+      display: block;
+      padding: 0.4rem 0.6rem;
+      margin-bottom: 0.25rem;
+      font-size: 0.75rem;
+      color: var(--fg-muted);
+      text-decoration: none;
+      border-radius: 4px;
+      border-left: 2px solid transparent;
+      transition: all 0.15s ease;
+      line-height: 1.4;
+    }
+    .sidebar-item:hover {
+      color: var(--fg);
+      background: var(--bg-elevated);
+      text-decoration: none;
+    }
+    .sidebar-item.active {
+      color: var(--accent);
+      border-left-color: var(--accent);
+      background: var(--bg-elevated);
+    }
+    .sidebar-num {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      opacity: 0.5;
+      margin-right: 0.4rem;
+    }
+
     a { color: var(--link); text-decoration: none; }
     a:hover { text-decoration: underline; }
 
@@ -487,9 +553,12 @@
     </div>
   </header>
 
-  <main class="container feed" id="feed">
-    <div class="loading">Loading feed...</div>
-  </main>
+  <div class="layout">
+    <main class="main-content feed" id="feed">
+      <div class="loading">Loading feed...</div>
+    </main>
+    <aside class="sidebar" id="sidebar"></aside>
+  </div>
 
   <footer class="footer">
     <div class="container">
@@ -548,6 +617,7 @@
     let digestsIndex = [];
     let loadedCount = 0;
     const BATCH_SIZE = 5;
+    let allStories = []; // for sidebar
 
     async function loadIndex() {
       try {
@@ -578,14 +648,16 @@
         try {
           const res = await fetch(`${REPO_RAW}/${d.path}`);
           const md = await res.text();
-          const html = parseDigest(md, d.date);
+          const { html, stories } = parseDigest(md, d.date);
           document.getElementById('feed').insertAdjacentHTML('beforeend', html);
+          allStories.push(...stories);
         } catch (e) {
           console.error(`Failed to load ${d.path}:`, e);
         }
       }
 
       loadedCount += batch.length;
+      updateSidebar();
 
       if (loadedCount < digestsIndex.length) {
         document.getElementById('feed').insertAdjacentHTML('beforeend', `
@@ -595,6 +667,48 @@
         `);
       }
     }
+
+    function updateSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      let html = '<div class="sidebar-section"><div class="sidebar-title">Stories</div>';
+      allStories.forEach((s, i) => {
+        const shortTitle = s.title.length > 35 ? s.title.slice(0, 35) + '...' : s.title;
+        html += `<a href="#${s.id}" class="sidebar-item" data-id="${s.id}"><span class="sidebar-num">${i + 1}</span>${escapeHtml(shortTitle)}</a>`;
+      });
+      html += '</div>';
+      sidebar.innerHTML = html;
+    }
+
+    // Scroll tracking for sidebar
+    let ticking = false;
+    function onScroll() {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateActiveStory();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+
+    function updateActiveStory() {
+      const stories = document.querySelectorAll('.story[id]');
+      let currentId = null;
+      const offset = 150;
+
+      for (const story of stories) {
+        const rect = story.getBoundingClientRect();
+        if (rect.top <= offset) {
+          currentId = story.id;
+        }
+      }
+
+      document.querySelectorAll('.sidebar-item').forEach(item => {
+        item.classList.toggle('active', item.dataset.id === currentId);
+      });
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
 
     function parseDigest(md, date) {
       const lines = md.split('\n');
@@ -729,7 +843,7 @@
       }
 
       html += '</article>';
-      return html;
+      return { html, stories };
     }
 
     function formatDate(dateStr) {
