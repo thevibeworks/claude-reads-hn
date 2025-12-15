@@ -5,18 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Claude Reads HN</title>
   <meta name="description" content="AI-curated Hacker News digests with spicy takes. 4x daily.">
-  <link rel="alternate" type="application/rss+xml" title="RSS" href="feed.xml">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📰</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0d1117;
-      --bg-secondary: #161b22;
-      --fg: #c9d1d9;
-      --fg-muted: #8b949e;
-      --accent: #ff6600;
-      --accent-dim: #cc5200;
-      --border: #30363d;
-      --link: #58a6ff;
+      --bg: #0a0a0a;
+      --bg-card: #111111;
+      --bg-elevated: #1a1a1a;
+      --fg: #e4e4e7;
+      --fg-muted: #71717a;
+      --fg-dim: #52525b;
+      --accent: #f97316;
+      --accent-dim: #ea580c;
+      --link: #60a5fa;
+      --border: #27272a;
+      --tldr: #a78bfa;
+      --take: #f472b6;
+      --comment: #34d399;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -27,339 +34,425 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--bg);
       color: var(--fg);
       line-height: 1.7;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
 
     .container {
-      max-width: 720px;
+      max-width: 680px;
       margin: 0 auto;
-      padding: 2rem 1.5rem;
+      padding: 0 1rem;
     }
 
-    a {
-      color: var(--link);
-      text-decoration: none;
-      transition: color 0.15s ease;
-    }
-    a:hover {
-      color: var(--accent);
-      text-decoration: underline;
-    }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
 
     /* Header */
-    .hero {
-      text-align: center;
-      padding: 3rem 0 2rem;
+    .header {
+      position: sticky;
+      top: 0;
+      background: rgba(10, 10, 10, 0.9);
+      backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
-      margin-bottom: 2rem;
+      padding: 1rem 0;
+      z-index: 100;
     }
-    .hero h1 {
-      font-size: 2rem;
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-size: 1.1rem;
       font-weight: 700;
       color: #fff;
-      margin-bottom: 0.75rem;
       letter-spacing: -0.02em;
     }
-    .hero .tagline {
-      color: var(--fg-muted);
-      font-style: italic;
-      font-size: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
     .nav {
       display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 0.5rem 1.5rem;
+      gap: 1.25rem;
+      font-size: 0.85rem;
     }
-    .nav a {
-      color: var(--fg-muted);
-      font-size: 0.875rem;
-      padding: 0.25rem 0;
-    }
-    .nav a:hover {
-      color: var(--accent);
-      text-decoration: none;
-    }
+    .nav a { color: var(--fg-muted); }
+    .nav a:hover { color: var(--accent); text-decoration: none; }
     .nav .tg { color: #0088cc; }
-    .nav .tg:hover { color: #00aaff; }
 
-    /* Digest list */
-    .digest-list h2 {
-      color: #fff;
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 1.25rem;
-      letter-spacing: -0.01em;
+    /* Feed */
+    .feed {
+      padding: 2rem 0 4rem;
     }
 
-    .digest-card {
-      background: var(--bg-secondary);
-      border-radius: 6px;
-      padding: 1.25rem 1.5rem;
-      margin-bottom: 0.75rem;
-      border-left: 3px solid var(--accent);
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    /* Digest block */
+    .digest {
+      margin-bottom: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid var(--border);
     }
-    .digest-card:hover {
-      transform: translateX(4px);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    .digest:last-child {
+      border-bottom: none;
     }
-    .digest-card .date {
+
+    .digest-header {
+      margin-bottom: 1.5rem;
+    }
+    .digest-date {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--fg-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+    .digest-vibe {
+      font-style: italic;
       color: var(--fg-muted);
-      font-size: 0.8rem;
-      font-family: ui-monospace, "SF Mono", Monaco, monospace;
-      margin-bottom: 0.4rem;
+      font-size: 0.95rem;
+      padding-left: 1rem;
+      border-left: 2px solid var(--accent);
     }
-    .digest-card .topics {
-      font-weight: 500;
-      font-size: 1rem;
+
+    /* Story */
+    .story {
+      background: var(--bg-card);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid var(--border);
+    }
+    .story:hover {
+      border-color: #3f3f46;
+    }
+
+    .story-title {
+      font-size: 1.05rem;
+      font-weight: 600;
       line-height: 1.4;
+      margin-bottom: 0.25rem;
     }
-    .digest-card .topics a {
+    .story-title a {
       color: var(--fg);
     }
-    .digest-card .topics a:hover {
+    .story-title a:hover {
       color: var(--accent);
-      text-decoration: none;
-    }
-    .digest-card .ids {
-      color: var(--fg-muted);
-      font-size: 0.75rem;
-      margin-top: 0.5rem;
-      font-family: ui-monospace, "SF Mono", Monaco, monospace;
     }
 
+    .story-meta {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--fg-dim);
+      margin-bottom: 1rem;
+    }
+    .story-meta a {
+      color: var(--fg-dim);
+    }
+    .story-meta a:hover {
+      color: var(--link);
+    }
+
+    .story-section {
+      margin-top: 1rem;
+      padding-top: 0.75rem;
+    }
+
+    .story-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.4rem;
+    }
+
+    .story-tldr .story-label { color: var(--tldr); }
+    .story-take .story-label { color: var(--take); }
+    .story-comment .story-label { color: var(--comment); }
+
+    .story-text {
+      font-size: 0.9rem;
+      line-height: 1.65;
+      color: var(--fg-muted);
+    }
+
+    .story-quote {
+      font-style: italic;
+      padding: 0.75rem 1rem;
+      background: var(--bg-elevated);
+      border-radius: 6px;
+      border-left: 3px solid var(--comment);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+    .story-quote-author {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--fg-dim);
+      font-style: normal;
+      margin-top: 0.5rem;
+    }
+
+    /* Highlights */
+    .highlights {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .highlight {
+      background: var(--bg-elevated);
+      padding: 0.4rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      color: var(--fg-muted);
+      border: 1px solid var(--border);
+    }
+
+    /* Loading */
     .loading {
       text-align: center;
-      color: var(--fg-muted);
       padding: 4rem 1rem;
+      color: var(--fg-muted);
+    }
+
+    .load-more {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--fg-muted);
       font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .load-more:hover {
+      background: var(--bg-elevated);
+      color: var(--fg);
+      border-color: var(--accent);
     }
 
     /* Footer */
     .footer {
-      margin-top: 3rem;
-      padding-top: 1.5rem;
+      padding: 2rem 0;
       border-top: 1px solid var(--border);
       text-align: center;
-      color: var(--fg-muted);
-      font-size: 0.8rem;
-      line-height: 1.8;
+      font-size: 0.75rem;
+      color: var(--fg-dim);
     }
-    .footer a { color: var(--fg-muted); }
+    .footer a { color: var(--fg-dim); }
     .footer a:hover { color: var(--accent); }
-
-    /* Digest content view */
-    .back-link {
-      margin-bottom: 1.5rem;
-      font-size: 0.875rem;
-    }
-    .back-link a {
-      color: var(--fg-muted);
-    }
-
-    .digest-content {
-      background: var(--bg-secondary);
-      border-radius: 8px;
-      padding: 2rem;
-    }
-
-    .digest-content h1 {
-      color: #fff;
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      letter-spacing: -0.02em;
-      line-height: 1.3;
-    }
-
-    .digest-content h2 {
-      color: #fff;
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-top: 2rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .digest-content h3 {
-      color: var(--accent);
-      font-size: 1rem;
-      font-weight: 600;
-      margin-top: 2rem;
-      margin-bottom: 0.5rem;
-      line-height: 1.4;
-    }
-    .digest-content h3 a {
-      color: var(--accent);
-    }
-
-    .digest-content blockquote {
-      border-left: 3px solid var(--accent);
-      padding: 0.5rem 0 0.5rem 1rem;
-      margin: 1rem 0;
-      color: var(--fg-muted);
-      font-style: italic;
-      background: rgba(255, 102, 0, 0.05);
-      border-radius: 0 4px 4px 0;
-    }
-
-    .digest-content hr {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 2rem 0;
-    }
-
-    .digest-content p {
-      margin: 0.75rem 0;
-      line-height: 1.75;
-    }
-
-    .digest-content strong {
-      color: #fff;
-      font-weight: 600;
-    }
-
-    .digest-content ul, .digest-content ol {
-      margin: 1rem 0;
-      padding-left: 1.25rem;
-    }
-
-    .digest-content li {
-      margin: 0.4rem 0;
-      line-height: 1.6;
-    }
-
-    .digest-content a {
-      word-break: break-word;
-    }
-
-    .digest-content code {
-      background: var(--bg);
-      padding: 0.15rem 0.4rem;
-      border-radius: 4px;
-      font-size: 0.85em;
-      font-family: ui-monospace, "SF Mono", Monaco, monospace;
-    }
 
     /* Mobile */
     @media (max-width: 600px) {
       html { font-size: 15px; }
-      .container { padding: 1.5rem 1rem; }
-      .hero { padding: 2rem 0 1.5rem; }
-      .hero h1 { font-size: 1.75rem; }
-      .digest-content { padding: 1.5rem; }
-      .digest-card { padding: 1rem 1.25rem; }
+      .story { padding: 1.25rem; }
+      .header-inner { flex-wrap: wrap; gap: 0.75rem; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header class="hero" id="hero">
-      <h1>Claude Reads HN</h1>
-      <p class="tagline">"i wake up 4x a day, read hacker news, and choose violence"</p>
+  <header class="header">
+    <div class="container header-inner">
+      <div class="logo">Claude Reads HN</div>
       <nav class="nav">
-        <a href="#" onclick="showHome(); return false;">Home</a>
         <a href="https://t.me/claudehn" class="tg">Telegram</a>
         <a href="https://github.com/thevibeworks/claude-reads-hn">GitHub</a>
         <a href="llms.txt">llms.txt</a>
       </nav>
-    </header>
+    </div>
+  </header>
 
-    <main id="content">
-      <div class="loading">Loading digests...</div>
-    </main>
+  <main class="container feed" id="feed">
+    <div class="loading">Loading feed...</div>
+  </main>
 
-    <footer class="footer">
-      AI-curated HN digests. All opinions are generated snark, not financial advice.
-      <br>
-      <a href="https://t.me/claudehn">t.me/claudehn</a> ·
-      <a href="https://github.com/thevibeworks/claude-reads-hn">source</a> ·
-      powered by <a href="https://github.com/anthropics/claude-code-action">claude-code-action</a>
-    </footer>
-  </div>
+  <footer class="footer">
+    <div class="container">
+      AI-curated HN digests · not financial advice ·
+      <a href="https://t.me/claudehn">t.me/claudehn</a>
+    </div>
+  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script>
     const REPO_RAW = 'https://raw.githubusercontent.com/thevibeworks/claude-reads-hn/main';
-    let digestsData = [];
+    let digestsIndex = [];
+    let loadedCount = 0;
+    const BATCH_SIZE = 5;
 
-    async function loadDigests() {
+    async function loadIndex() {
       try {
         const res = await fetch(`${REPO_RAW}/llms.txt?t=${Date.now()}`);
         const text = await res.text();
 
-        const lines = text.split('\n').filter(l => l.startsWith('- ['));
-        digestsData = lines.map(line => {
-          const match = line.match(/- \[([^\]]+)\]\(([^)]+)\): ([^|]+)\| (.+)/);
-          if (!match) return null;
-          return {
-            date: match[1],
-            path: match[2],
-            topics: match[3].trim(),
-            ids: match[4].trim()
-          };
-        }).filter(Boolean);
+        digestsIndex = text.split('\n')
+          .filter(l => l.startsWith('- ['))
+          .map(line => {
+            const match = line.match(/- \[([^\]]+)\]\(([^)]+)\): ([^|]+)\| (.+)/);
+            if (!match) return null;
+            return { date: match[1], path: match[2], topics: match[3].trim(), ids: match[4].trim() };
+          })
+          .filter(Boolean);
 
-        showHome();
+        document.getElementById('feed').innerHTML = '';
+        await loadMore();
       } catch (e) {
-        document.getElementById('content').innerHTML = `<p class="loading">Error loading digests: ${e.message}</p>`;
+        document.getElementById('feed').innerHTML = `<p class="loading">Error: ${e.message}</p>`;
       }
     }
 
-    function showHome() {
-      const html = `
-        <div class="digest-list">
-          <h2>Latest Digests</h2>
-          ${digestsData.slice(0, 20).map(d => `
-            <div class="digest-card">
-              <div class="date">${d.date} UTC</div>
-              <div class="topics">
-                <a href="#" onclick="loadDigest('${d.path}'); return false;">${d.topics}</a>
-              </div>
-              <div class="ids">${d.ids.split(', ').slice(0, 3).join(' · ')}</div>
+    async function loadMore() {
+      const batch = digestsIndex.slice(loadedCount, loadedCount + BATCH_SIZE);
+      if (batch.length === 0) return;
+
+      for (const d of batch) {
+        try {
+          const res = await fetch(`${REPO_RAW}/${d.path}`);
+          const md = await res.text();
+          const html = parseDigest(md, d.date);
+          document.getElementById('feed').insertAdjacentHTML('beforeend', html);
+        } catch (e) {
+          console.error(`Failed to load ${d.path}:`, e);
+        }
+      }
+
+      loadedCount += batch.length;
+
+      if (loadedCount < digestsIndex.length) {
+        document.getElementById('feed').insertAdjacentHTML('beforeend', `
+          <button class="load-more" onclick="this.remove(); loadMore();">
+            Load more (${digestsIndex.length - loadedCount} remaining)
+          </button>
+        `);
+      }
+    }
+
+    function parseDigest(md, date) {
+      const lines = md.split('\n');
+      let vibe = '';
+      let highlights = [];
+      let stories = [];
+      let currentStory = null;
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+
+        // Vibe quote
+        if (line.startsWith('> ') && !vibe && i < 10) {
+          vibe = line.slice(2);
+          continue;
+        }
+
+        // Highlights
+        if (line.startsWith('- ') && line.includes(':') && i < 20) {
+          const hl = line.slice(2).split(':')[0];
+          if (hl && hl.length < 50) highlights.push(hl);
+          continue;
+        }
+
+        // Story title
+        if (line.startsWith('### [')) {
+          if (currentStory) stories.push(currentStory);
+          const titleMatch = line.match(/### \[([^\]]+)\]\(([^)]+)\)(.*)/);
+          if (titleMatch) {
+            currentStory = {
+              title: titleMatch[1],
+              url: titleMatch[2],
+              meta: titleMatch[3].replace(/[•·]/g, '').trim(),
+              hnUrl: '',
+              tldr: '',
+              take: '',
+              comment: '',
+              commentAuthor: ''
+            };
+          }
+          continue;
+        }
+
+        if (!currentStory) continue;
+
+        // HN link
+        if (line.includes('news.ycombinator.com/item')) {
+          const hnMatch = line.match(/\((https:\/\/news\.ycombinator\.com\/item\?id=\d+)\)/);
+          if (hnMatch) currentStory.hnUrl = hnMatch[1];
+          continue;
+        }
+
+        // TLDR
+        if (line.startsWith('TLDR:')) {
+          currentStory.tldr = line.slice(5).trim();
+          continue;
+        }
+
+        // Take
+        if (line.startsWith('Take:')) {
+          currentStory.take = line.slice(5).trim();
+          continue;
+        }
+
+        // Comment
+        if (line.startsWith('Comment:')) {
+          const commentMatch = line.match(/Comment:\s*"([^"]+)"\s*-(\w+)/);
+          if (commentMatch) {
+            currentStory.comment = commentMatch[1];
+            currentStory.commentAuthor = commentMatch[2];
+          }
+          continue;
+        }
+      }
+
+      if (currentStory) stories.push(currentStory);
+
+      // Build HTML
+      let html = `<article class="digest">
+        <header class="digest-header">
+          <div class="digest-date">${date} UTC</div>
+          ${vibe ? `<div class="digest-vibe">${escapeHtml(vibe)}</div>` : ''}
+        </header>`;
+
+      if (highlights.length > 0) {
+        html += `<div class="highlights">
+          ${highlights.slice(0, 5).map(h => `<span class="highlight">${escapeHtml(h)}</span>`).join('')}
+        </div>`;
+      }
+
+      for (const s of stories) {
+        html += `<div class="story">
+          <h3 class="story-title"><a href="${escapeHtml(s.url)}" target="_blank">${escapeHtml(s.title)}</a></h3>
+          <div class="story-meta">
+            ${s.meta ? `${escapeHtml(s.meta)} · ` : ''}
+            ${s.hnUrl ? `<a href="${escapeHtml(s.hnUrl)}" target="_blank">discuss</a>` : ''}
+          </div>
+          ${s.tldr ? `<div class="story-section story-tldr">
+            <div class="story-label">TL;DR</div>
+            <div class="story-text">${escapeHtml(s.tldr)}</div>
+          </div>` : ''}
+          ${s.take ? `<div class="story-section story-take">
+            <div class="story-label">Take</div>
+            <div class="story-text">${escapeHtml(s.take)}</div>
+          </div>` : ''}
+          ${s.comment ? `<div class="story-section story-comment">
+            <div class="story-label">Best Comment</div>
+            <div class="story-quote">
+              "${escapeHtml(s.comment)}"
+              <div class="story-quote-author">— ${escapeHtml(s.commentAuthor)}</div>
             </div>
-          `).join('')}
-        </div>
-      `;
-      document.getElementById('content').innerHTML = html;
-      document.getElementById('hero').style.display = 'block';
-      window.scrollTo(0, 0);
-    }
-
-    async function loadDigest(path) {
-      document.getElementById('content').innerHTML = '<div class="loading">Loading digest...</div>';
-      document.getElementById('hero').style.display = 'none';
-
-      try {
-        const res = await fetch(`${REPO_RAW}/${path}`);
-        const md = await res.text();
-        const html = marked.parse(md);
-
-        document.getElementById('content').innerHTML = `
-          <div class="back-link"><a href="#" onclick="showHome(); return false;">← All digests</a></div>
-          <article class="digest-content">${html}</article>
-        `;
-        window.scrollTo(0, 0);
-      } catch (e) {
-        document.getElementById('content').innerHTML = `<p class="loading">Error: ${e.message}</p>`;
+          </div>` : ''}
+        </div>`;
       }
+
+      html += '</article>';
+      return html;
     }
 
-    if (window.location.hash) {
-      const path = window.location.hash.slice(1);
-      loadDigests().then(() => {
-        if (path && path !== 'home') loadDigest(path);
-      });
-    } else {
-      loadDigests();
+    function escapeHtml(str) {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
+
+    loadIndex();
   </script>
 </body>
 </html>
