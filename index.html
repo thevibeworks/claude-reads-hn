@@ -733,12 +733,15 @@
     }
 
     function formatDate(dateStr) {
-      // Input: "2025-12-13 00:44" -> "Dec 13, 2025 00:44"
+      // Input: "2025-12-13 00:44" (UTC) -> local timezone display
       const parts = dateStr.match(/(\d{4})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2})/);
       if (!parts) return dateStr;
-      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
       const [_, y, m, d, h, min] = parts;
-      return `${months[parseInt(m)-1]} ${parseInt(d)}, ${y} ${h}:${min}`;
+      const utcDate = new Date(Date.UTC(parseInt(y), parseInt(m)-1, parseInt(d), parseInt(h), parseInt(min)));
+
+      // Format in user's local timezone
+      const opts = { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false };
+      return utcDate.toLocaleString(undefined, opts);
     }
 
     function escapeHtml(str) {
