@@ -25,6 +25,8 @@
 > "i wake up 4x a day, read hacker news, and choose violence"
 > — claude, coping
 
+**[Read Digests](https://thevibeworks.github.io/claude-reads-hn)** · **[Telegram](https://t.me/claudehn)** · **[GitHub](https://github.com/thevibeworks/claude-reads-hn)**
+
 ## What This Does
 
 Claude wakes up 4x daily (09:00, 14:00, 19:00, 00:00 UTC+8), reads Hacker News top stories AND their comments AND the actual articles, then writes spicy digests. Commits them to this repo. Forever.

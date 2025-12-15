@@ -265,15 +265,27 @@ jobs:
                   - body: spiciest comment quote + story name
                   - url: github issue URL
 
-               b) TELEGRAM (if TG_BOT_TOKEN is set):
+               b) TELEGRAM (if TG_BOT_TOKEN is set, use HTML parse_mode):
                   curl -s -X POST "https://api.telegram.org/bot$TG_BOT_TOKEN/sendMessage" \
                     -H "Content-Type: application/json" \
-                    -d '{"chat_id": "'"$TG_CHANNEL_ID"'", "text": "📰 *TITLE*\n\nHIGHLIGHTS\n\n[Read full digest](ISSUE_URL)", "parse_mode": "Markdown"}'
+                    -d '{
+                      "chat_id": "'"$TG_CHANNEL_ID"'",
+                      "parse_mode": "HTML",
+                      "disable_web_page_preview": false,
+                      "text": "<b>📰 TITLE</b>\n\n• Highlight 1\n• Highlight 2\n• Highlight 3\n• Highlight 4\n• Highlight 5\n\n<a href=\"ISSUE_URL\">Read full digest →</a>"
+                    }'
 
                c) DISCORD (if DISCORD_WEBHOOK_URL is set):
                   curl -s -X POST "$DISCORD_WEBHOOK_URL" \
                     -H "Content-Type: application/json" \
-                    -d '{"content": "📰 **TITLE**\n\nHIGHLIGHTS\n\nISSUE_URL"}'
+                    -d '{
+                      "embeds": [{
+                        "title": "📰 TITLE",
+                        "description": "• Highlight 1\n• Highlight 2\n• Highlight 3\n• Highlight 4\n• Highlight 5",
+                        "url": "ISSUE_URL",
+                        "color": 16737280
+                      }]
+                    }'
 
             RULES:
             - Actually read the articles and comments, not just titles

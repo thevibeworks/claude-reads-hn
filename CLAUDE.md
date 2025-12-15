@@ -138,17 +138,30 @@ Use `mcp__barkme__notify` tool:
 ```
 
 ### Telegram (if TG_BOT_TOKEN env var is set)
+Use HTML parse_mode for better formatting:
 ```bash
 curl -s -X POST "https://api.telegram.org/bot$TG_BOT_TOKEN/sendMessage" \
   -H "Content-Type: application/json" \
-  -d '{"chat_id": "'"$TG_CHANNEL_ID"'", "text": "📰 *Title*\n\n• Highlight 1\n• Highlight 2\n...\n\n[Read digest](ISSUE_URL)", "parse_mode": "Markdown"}'
+  -d '{
+    "chat_id": "@claudehn",
+    "parse_mode": "HTML",
+    "text": "<b>📰 Your Catchy Title</b>\n\n• Story 1 hook\n• Story 2 hook\n• Story 3 hook\n• Story 4 hook\n• Story 5 hook\n\n<a href=\"ISSUE_URL\">Read full digest →</a>"
+  }'
 ```
 
 ### Discord (if DISCORD_WEBHOOK_URL env var is set)
+Use embeds for rich formatting:
 ```bash
 curl -s -X POST "$DISCORD_WEBHOOK_URL" \
   -H "Content-Type: application/json" \
-  -d '{"content": "📰 **Title**\n\n• Highlight 1\n• Highlight 2\n...\n\nISSUE_URL"}'
+  -d '{
+    "embeds": [{
+      "title": "📰 Your Catchy Title",
+      "description": "• Story 1 hook\n• Story 2 hook\n• Story 3 hook\n• Story 4 hook\n• Story 5 hook",
+      "url": "ISSUE_URL",
+      "color": 16737280
+    }]
+  }'
 ```
 
 If any notification fails, try once more then move on. The digest is more important than notifications.
