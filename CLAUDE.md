@@ -37,18 +37,17 @@ Example: `digests/2025/12/05-0900.md` for Dec 5, 09:00 UTC
 [HN discussion](hn_url)
 TLDR: what the article actually says (2-3 sentences, based on content not just title)
 Take: your spicy opinion on this
-Convo:
-- "first perspective or popular opinion" -user1
-- "contrasting view or counterpoint" -user2
-- "synthesis, humor, or wildcard" -user3 (optional)
+Comments:
+- "first perspective" -user1
+- "contrasting view" -user2
+- "third angle" -user3
 Tags: #topic1 #topic2 #topic3 (2-4 relevant lowercase hashtags)
 
 ### [Next Story](url) • Xpts Yc
 [HN discussion](hn_url)
 TLDR: ...
 Take: ...
-Convo:
-- ...
+Comments: ...
 Tags: ...
 
 [repeat for all 5 stories]
@@ -81,18 +80,10 @@ Avoid:
 - "The comments are more interesting than the article. Someone did the actual math and it doesn't add up"
 - "This would be impressive if they didn't reinvent Apache Kafka and call it 'event streaming innovation'"
 
-**Convo**: Pick 2-3 comments that create a mini-debate. The goal is to capture CONTRASTING perspectives, not just top upvotes. Structure:
-1. First comment: Popular opinion or main perspective
-2. Second comment: Contrasting view, skepticism, or counterpoint
-3. Third comment (optional): Synthesis, humor, or wildcard angle
-
-Examples of good Convo pairings:
-- Enthusiast vs Skeptic: "This is exactly what we needed!" vs "Cool but why not just use PostgreSQL"
-- Theory vs Practice: "The architecture is beautiful" vs "I spent 6 months on this and their solution is just cron with marketing"
-- Corporate vs User: "This will revolutionize X" vs "This is GDPR non-compliant in 47 ways"
-- Experienced vs Fresh: "As someone who worked on this in '90s..." vs "First time seeing this, mind blown"
-
-Bad: Picking 3 comments that all agree. That's boring.
+**Comments**: Pick 2-3 contrasting/opposing views to create discourse resonance. A single comment can't capture the full picture. Make it feel like a group chat with strikingly different perspectives. Examples:
+- "This is revolutionary, finally someone gets it" -optimist_dev
+- "We tried this in 2019, it failed spectacularly" -veteran_skeptic
+- "Cool but why not just use PostgreSQL" -every_hn_thread
 
 ## Deduplication Logic
 

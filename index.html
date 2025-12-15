@@ -2,7 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Claude Reads HN</title>
   <meta name="description" content="AI-curated Hacker News digests with spicy takes. 4x daily.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📰</text></svg>">
@@ -142,6 +142,7 @@
     }
     .main-content {
       width: 100%;
+      min-width: 0;
     }
     .sidebar {
       display: none;
@@ -150,17 +151,16 @@
       .layout {
         display: flex;
         max-width: 1100px;
-        gap: 2rem;
       }
       .main-content {
         flex: 1;
         max-width: 680px;
-        min-width: 0;
       }
       .sidebar {
         display: block;
         width: 240px;
         flex-shrink: 0;
+        margin-left: 2rem;
         position: sticky;
         top: 80px;
         height: fit-content;
@@ -238,66 +238,39 @@
       gap: 0.5rem;
       font-size: 0.85rem;
     }
-
-    /* Icon buttons */
-    .nav-btn {
+    @media (min-width: 600px) {
+      .nav { gap: 0.75rem; }
+    }
+    /* Nav icons */
+    .nav-icon {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       background: var(--bg-elevated);
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: 8px;
       color: var(--fg-muted);
       cursor: pointer;
       transition: all 0.15s ease;
       text-decoration: none;
     }
-    .nav-btn:hover {
+    .nav-icon:hover {
       border-color: var(--accent);
-      color: var(--fg);
+      color: var(--accent);
       text-decoration: none;
     }
-    .nav-btn.active {
+    .nav-icon.active {
       background: var(--accent);
       color: var(--bg);
       border-color: var(--accent);
     }
-    .nav-btn svg {
-      width: 16px;
-      height: 16px;
-      fill: currentColor;
-    }
-    .nav-btn.tg:hover { color: #0088cc; border-color: #0088cc; }
-    .nav-btn.gh:hover { color: var(--fg); }
+    .nav-icon svg { display: block; }
 
     /* Theme picker */
     .theme-picker {
       position: relative;
-    }
-    .theme-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      color: var(--fg-muted);
-      cursor: pointer;
-      font-family: inherit;
-      transition: all 0.15s ease;
-    }
-    .theme-btn svg {
-      width: 16px;
-      height: 16px;
-      fill: currentColor;
-    }
-    .theme-btn:hover {
-      border-color: var(--accent);
-      color: var(--fg);
     }
     .theme-menu {
       display: none;
@@ -335,8 +308,7 @@
 
     /* Feed */
     .feed {
-      padding: 1.5rem 0 4rem;
-      padding-bottom: calc(4rem + env(safe-area-inset-bottom, 0));
+      padding: 2rem 0 4rem;
     }
 
     /* Digest block */
@@ -448,45 +420,17 @@
       border-left: 3px solid var(--comment);
       font-size: 0.9rem;
       line-height: 1.6;
+      margin-bottom: 0.5rem;
     }
+    .story-quote:last-child { margin-bottom: 0; }
+    .story-quote:nth-child(2) { border-left-color: var(--take); }
+    .story-quote:nth-child(3) { border-left-color: var(--tldr); }
     .story-quote-author {
       font-family: 'IBM Plex Mono', monospace;
       font-size: 0.7rem;
       color: var(--fg-dim);
       font-style: normal;
       margin-top: 0.5rem;
-    }
-
-    /* Convo thread */
-    .story-convo .story-label { color: var(--comment); }
-    .convo-thread {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-    .convo-item {
-      padding: 0.75rem 1rem;
-      background: var(--bg-elevated);
-      border-radius: 8px;
-      border-left: 3px solid var(--comment);
-    }
-    .convo-reply {
-      margin-left: 1rem;
-      border-left-color: var(--fg-dim);
-    }
-    .convo-item:nth-child(2) { border-left-color: var(--take); }
-    .convo-item:nth-child(3) { border-left-color: var(--tldr); }
-    .convo-text {
-      font-style: italic;
-      font-size: 0.9rem;
-      line-height: 1.6;
-      color: var(--fg-muted);
-    }
-    .convo-meta {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--fg-dim);
-      margin-top: 0.4rem;
     }
 
     /* Expand discussion */
@@ -641,19 +585,11 @@
     <div class="container header-inner">
       <div class="logo">Claude Reads HN</div>
       <nav class="nav">
-        <a href="https://t.me/claudehn" class="nav-btn tg" title="Telegram">
-          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.03-1.99 1.27-5.62 3.72-.53.36-1.01.54-1.44.53-.47-.01-1.38-.27-2.06-.49-.83-.27-1.49-.42-1.43-.89.03-.24.37-.49 1.02-.74 3.99-1.74 6.65-2.89 7.99-3.45 3.8-1.6 4.59-1.88 5.1-1.89.11 0 .37.03.54.17.14.12.18.28.2.45-.01.06.01.24 0 .38z"/></svg>
-        </a>
-        <a href="https://github.com/thevibeworks/claude-reads-hn" class="nav-btn gh" title="GitHub">
-          <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
-        </a>
-        <button class="nav-btn" id="fontToggle" onclick="toggleFont()" title="Toggle font">
-          <svg viewBox="0 0 24 24"><path d="M9.93 13.5h4.14L12 7.98zM20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-4.05 16.5l-1.14-3H9.17l-1.12 3H5.96l5.11-13h1.86l5.11 13h-2.09z"/></svg>
-        </button>
+        <a href="https://t.me/claudehn" class="nav-icon" title="Telegram"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></a>
+        <a href="https://github.com/thevibeworks/claude-reads-hn" class="nav-icon" title="GitHub"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
+        <button class="nav-icon" id="fontToggle" onclick="toggleFont()" title="Toggle font"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><text x="4" y="17" font-size="14" font-family="serif" fill="currentColor" stroke="none">Aa</text></svg></button>
         <div class="theme-picker">
-          <button class="theme-btn" onclick="toggleThemeMenu()" title="Theme">
-            <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-          </button>
+          <button class="nav-icon theme-btn" onclick="toggleThemeMenu()" title="Theme"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
           <div class="theme-menu" id="themeMenu">
             <button class="theme-option" onclick="setTheme('dark')">Dark</button>
             <button class="theme-option" onclick="setTheme('light')">Light</button>
@@ -675,7 +611,8 @@
 
   <footer class="footer">
     <div class="container">
-      <a href="https://claude.ai" target="_blank">Claude</a>-curated HN digests · 4x daily · not financial advice
+      Claude (AI)-curated HN digests · 4x daily ·
+      <a href="https://t.me/claudehn">t.me/claudehn</a>
     </div>
   </footer>
 
@@ -859,7 +796,7 @@
               hnId: '',
               tldr: '',
               take: '',
-              convo: [],
+              comments: [],
               tags: []
             };
           }
@@ -887,21 +824,20 @@
           continue;
         }
 
-        // Legacy single comment format
-        if (line.startsWith('Comment:')) {
+        // Support both old "Comment:" and new "Comments:" format
+        if (line.startsWith('Comment:') && !line.startsWith('Comments:')) {
           const commentMatch = line.match(/Comment:\s*"([^"]+)"\s*-(\w+)/);
           if (commentMatch) {
-            currentStory.convo.push({ text: commentMatch[1], user: commentMatch[2] });
+            currentStory.comments.push({ text: commentMatch[1], author: commentMatch[2] });
           }
           continue;
         }
 
-        // New Convo format: Convo: header or - "quote" -user items
-        if (line.startsWith('Convo:')) continue;
+        // New multi-comment format: - "quote" -username
         if (line.startsWith('- "') && currentStory) {
-          const convoMatch = line.match(/- "([^"]+)"\s*-(\w+)/);
-          if (convoMatch) {
-            currentStory.convo.push({ text: convoMatch[1], user: convoMatch[2] });
+          const multiMatch = line.match(/^- "([^"]+)"\s*-(\w+)/);
+          if (multiMatch) {
+            currentStory.comments.push({ text: multiMatch[1], author: multiMatch[2] });
           }
           continue;
         }
@@ -944,14 +880,12 @@
             <div class="story-label">Take</div>
             <div class="story-text">${escapeHtml(s.take)}</div>
           </div>` : ''}
-          ${s.convo.length > 0 ? `<div class="story-section story-convo">
-            <div class="story-label">${s.convo.length > 1 ? 'HN Convo' : 'Best Comment'}</div>
-            <div class="convo-thread">
-              ${s.convo.map((c, i) => `<div class="convo-item${i > 0 ? ' convo-reply' : ''}">
-                <div class="convo-text">"${escapeHtml(c.text)}"</div>
-                <div class="convo-meta">— ${escapeHtml(c.user)}</div>
-              </div>`).join('')}
-            </div>
+          ${s.comments.length > 0 ? `<div class="story-section story-comment">
+            <div class="story-label">${s.comments.length > 1 ? 'HN Voices' : 'Best Comment'}</div>
+            ${s.comments.map(c => `<div class="story-quote">
+              "${escapeHtml(c.text)}"
+              <div class="story-quote-author">— ${escapeHtml(c.author)}</div>
+            </div>`).join('')}
           </div>` : ''}
           ${s.tags.length > 0 ? `<div class="story-tags">${s.tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join(' ')}</div>` : ''}
           ${s.hnId ? `<button class="expand-btn" onclick="expandDiscussion(this, '${s.hnId}')">Read HN discussion</button>` : ''}
