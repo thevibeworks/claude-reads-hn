@@ -457,6 +457,38 @@
       margin-top: 0.5rem;
     }
 
+    /* Convo thread */
+    .story-convo .story-label { color: var(--comment); }
+    .convo-thread {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .convo-item {
+      padding: 0.75rem 1rem;
+      background: var(--bg-elevated);
+      border-radius: 8px;
+      border-left: 3px solid var(--comment);
+    }
+    .convo-reply {
+      margin-left: 1rem;
+      border-left-color: var(--fg-dim);
+    }
+    .convo-item:nth-child(2) { border-left-color: var(--take); }
+    .convo-item:nth-child(3) { border-left-color: var(--tldr); }
+    .convo-text {
+      font-style: italic;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--fg-muted);
+    }
+    .convo-meta {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--fg-dim);
+      margin-top: 0.4rem;
+    }
+
     /* Expand discussion */
     .expand-btn {
       display: inline-flex;
@@ -827,8 +859,7 @@
               hnId: '',
               tldr: '',
               take: '',
-              comment: '',
-              commentAuthor: '',
+              convo: [],
               tags: []
             };
           }
@@ -856,11 +887,21 @@
           continue;
         }
 
+        // Legacy single comment format
         if (line.startsWith('Comment:')) {
           const commentMatch = line.match(/Comment:\s*"([^"]+)"\s*-(\w+)/);
           if (commentMatch) {
-            currentStory.comment = commentMatch[1];
-            currentStory.commentAuthor = commentMatch[2];
+            currentStory.convo.push({ text: commentMatch[1], user: commentMatch[2] });
+          }
+          continue;
+        }
+
+        // New Convo format: Convo: header or - "quote" -user items
+        if (line.startsWith('Convo:')) continue;
+        if (line.startsWith('- "') && currentStory) {
+          const convoMatch = line.match(/- "([^"]+)"\s*-(\w+)/);
+          if (convoMatch) {
+            currentStory.convo.push({ text: convoMatch[1], user: convoMatch[2] });
           }
           continue;
         }
@@ -903,11 +944,13 @@
             <div class="story-label">Take</div>
             <div class="story-text">${escapeHtml(s.take)}</div>
           </div>` : ''}
-          ${s.comment ? `<div class="story-section story-comment">
-            <div class="story-label">Best Comment</div>
-            <div class="story-quote">
-              "${escapeHtml(s.comment)}"
-              <div class="story-quote-author">— ${escapeHtml(s.commentAuthor)}</div>
+          ${s.convo.length > 0 ? `<div class="story-section story-convo">
+            <div class="story-label">${s.convo.length > 1 ? 'HN Convo' : 'Best Comment'}</div>
+            <div class="convo-thread">
+              ${s.convo.map((c, i) => `<div class="convo-item${i > 0 ? ' convo-reply' : ''}">
+                <div class="convo-text">"${escapeHtml(c.text)}"</div>
+                <div class="convo-meta">— ${escapeHtml(c.user)}</div>
+              </div>`).join('')}
             </div>
           </div>` : ''}
           ${s.tags.length > 0 ? `<div class="story-tags">${s.tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join(' ')}</div>` : ''}
