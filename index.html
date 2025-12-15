@@ -10,13 +10,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    /* Font modes */
+    /* Font modes - Courier default */
     :root {
-      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+      --font-body: 'Courier New', Courier, monospace;
+      --font-mono: 'Courier New', Courier, monospace;
     }
-    [data-font="mono"] {
-      --font-body: 'JetBrains Mono', 'Courier New', monospace;
+    [data-font="sans"] {
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
     /* Theme: Dark (default) */
@@ -519,13 +519,13 @@
       });
     }
 
-    // Font toggle
+    // Font toggle (default is Courier, toggle to sans)
     function toggleFont() {
-      const isMono = document.documentElement.getAttribute('data-font') === 'mono';
-      const newFont = isMono ? 'sans' : 'mono';
+      const isSans = document.documentElement.getAttribute('data-font') === 'sans';
+      const newFont = isSans ? 'mono' : 'sans';
       document.documentElement.setAttribute('data-font', newFont);
       localStorage.setItem('font', newFont);
-      document.getElementById('fontToggle').classList.toggle('active', newFont === 'mono');
+      document.getElementById('fontToggle').classList.toggle('active', newFont === 'sans');
     }
 
     // Close menu on outside click
@@ -535,13 +535,13 @@
       }
     });
 
-    // Load saved preferences
+    // Load saved preferences (Courier is default)
     const savedTheme = localStorage.getItem('theme') || 'dark';
-    const savedFont = localStorage.getItem('font') || 'sans';
+    const savedFont = localStorage.getItem('font') || 'mono';
     document.documentElement.setAttribute('data-theme', savedTheme);
     document.documentElement.setAttribute('data-font', savedFont);
     updateThemeMenu(savedTheme);
-    if (savedFont === 'mono') document.getElementById('fontToggle').classList.add('active');
+    if (savedFont === 'sans') document.getElementById('fontToggle').classList.add('active');
 
     // Feed loading
     const REPO_RAW = 'https://raw.githubusercontent.com/thevibeworks/claude-reads-hn/main';
