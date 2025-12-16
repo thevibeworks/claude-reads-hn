@@ -313,6 +313,7 @@ $content
     // Scroll spy for sidebar
     const stories = document.querySelectorAll('.story');
     const sidebarLinks = document.querySelectorAll('.sidebar a[href^="#s"]');
+    const sidebar = document.querySelector('.sidebar');
 
     function updateActiveLink() {
       let current = '';
@@ -323,7 +324,15 @@ $content
         }
       });
       sidebarLinks.forEach(link => {
-        link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+        const isActive = link.getAttribute('href') === '#' + current;
+        link.classList.toggle('active', isActive);
+        if (isActive && sidebar) {
+          const linkRect = link.getBoundingClientRect();
+          const sidebarRect = sidebar.getBoundingClientRect();
+          if (linkRect.top < sidebarRect.top + 50 || linkRect.bottom > sidebarRect.bottom - 50) {
+            link.scrollIntoView({ block: 'center', behavior: 'smooth' });
+          }
+        }
       });
     }
 
