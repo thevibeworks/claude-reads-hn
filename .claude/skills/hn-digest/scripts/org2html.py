@@ -257,7 +257,11 @@ def main():
         if path.exists():
             content = path.read_text()
             parsed = parse_org(content)
-            digests.append(digest_to_dict(parsed))
+            d = digest_to_dict(parsed)
+            if not d.get("stories"):
+                print(f"SKIP (no stories): {path}", file=sys.stderr)
+                continue
+            digests.append(d)
 
     digests.sort(key=lambda d: d.get("date", ""), reverse=True)
 
