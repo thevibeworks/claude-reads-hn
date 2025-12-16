@@ -58,16 +58,20 @@
     .header-links { font-size: 0.8rem; }
     .header-links a { color: var(--link); margin-right: 0.75rem; text-decoration: none; }
     .header-links a:hover { text-decoration: underline; }
-    .controls { display: flex; align-items: center; gap: 0.5rem; }
-    .controls button {
+    .controls { display: flex; align-items: center; gap: 0.25rem; }
+    .icon-btn {
       background: none;
       border: 1px solid var(--border);
       color: var(--fg);
-      padding: 0.25rem 0.5rem;
+      padding: 0.4rem;
       cursor: pointer;
-      font-family: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
     }
-    .controls button:hover { background: var(--bg-card); }
+    .icon-btn:hover { background: var(--bg-card); }
+    .icon-btn svg { display: block; }
     .lang-select {
       position: relative;
       display: inline-block;
@@ -147,16 +151,24 @@
       </div>
     </div>
     <div class="controls">
-      <button onclick="toggleTheme()" title="Toggle theme">*</button>
+      <button onclick="toggleTheme()" title="Toggle theme" class="icon-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+      </button>
       <div class="lang-select">
-        <button class="lang-btn" title="Language">A</button>
+        <button class="lang-btn icon-btn" title="Language">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+        </button>
         <div class="lang-menu">
-          <button onclick="setLang('en')" data-lang="en" class="active">English</button>
-          <button onclick="setLang('zh')" data-lang="zh">中文</button>
-          <button onclick="setLang('ja')" data-lang="ja">日本語</button>
-          <button onclick="setLang('ko')" data-lang="ko">한국어</button>
-          <button onclick="setLang('es')" data-lang="es">Español</button>
-          <button onclick="setLang('de')" data-lang="de">Deutsch</button>
+          <button onclick="setLang('en')" data-lang="en" class="active">EN</button>
+          <button onclick="setLang('es')" data-lang="es">ES</button>
+          <button onclick="setLang('de')" data-lang="de">DE</button>
+          <button onclick="setLang('ko')" data-lang="ko">KO</button>
+          <button onclick="setLang('ja')" data-lang="ja">JA</button>
+          <button onclick="setLang('zh')" data-lang="zh">ZH</button>
         </div>
       </div>
     </div>
