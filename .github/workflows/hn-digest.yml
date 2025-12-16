@@ -262,8 +262,18 @@ jobs:
                     {"by": "furyg3", "text": "Are there good robo-vacuums that work offline?", "id": 46269456}
                   ],
                   "i18n": {
-                    "zh": {"tldr": "iRobot申请了第11章破产，被中国供应商接管。", "take": "Roborock抢了他们的饭碗。"},
-                    "ja": {"tldr": "iRobotがChapter 11破産を申請。", "take": "Roborockが昼飯を奪った。"}
+                    "zh": {
+                      "title": "扫地机器人Roomba制造商35年后申请破产",
+                      "tldr": "iRobot申请了第11章破产，被中国供应商接管。",
+                      "take": "Roborock抢了他们的饭碗。",
+                      "comments": ["这是自满的代价。", "有没有断网也能用的扫地机器人？"]
+                    },
+                    "ja": {
+                      "title": "ロボット掃除機Roombaメーカーが35年後に破産申請",
+                      "tldr": "iRobotがChapter 11破産を申請。",
+                      "take": "Roborockが昼飯を奪った。",
+                      "comments": ["これが自己満足の代償だ。", "オフラインで動くロボット掃除機はある？"]
+                    }
                   }
                 }
               ]
@@ -271,9 +281,10 @@ jobs:
             ```
 
             TRANSLATION RULES:
-            - i18n object per story with tldr and take translated
-            - Languages: zh (Chinese), ja (Japanese), ko (Korean), es (Spanish), de (German)
-            - Translate: tldr and take for each story
+            - i18n object per story with title, tldr, take, and comments translated
+            - Languages: es (Spanish), de (German), ko (Korean), ja (Japanese), zh (Chinese)
+            - Translate: title, tldr, take, and all comments for each story
+            - comments array must match order of original comments
             - Keep: URLs, tags, usernames unchanged
 
             5. CONVERT TO ORG: run ./.claude/skills/hn-digest/scripts/json2org.py /tmp/digest.json digests/YYYY/MM/DD-HHMM.org

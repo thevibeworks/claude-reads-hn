@@ -3,7 +3,7 @@
 # requires-python = ">=3.12"
 # dependencies = []
 # ///
-# Version: 0.2.0
+# Version: 0.3.0
 """
 Render org-mode HN digests to HTML thread page.
 
@@ -41,6 +41,7 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
       --tldr: #a78bfa;
       --take: #f472b6;
       --comment: #34d399;
+      --sidebar-bg: #18181b;
     }}
     [data-theme="light"] {{
       --bg: #ffffff;
@@ -51,16 +52,67 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
       --accent: #ea580c;
       --link: #2563eb;
       --border: #e5e7eb;
+      --sidebar-bg: #f3f4f6;
     }}
     * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+    html {{ scroll-behavior: smooth; }}
     body {{
       font-family: Courier, monospace;
       background: var(--bg);
       color: var(--fg);
       line-height: 1.7;
-      max-width: 720px;
+    }}
+    .layout {{
+      display: flex;
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 2rem 1rem;
+    }}
+    .sidebar {{
+      width: 280px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 1rem;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }}
+    .sidebar-title {{
+      font-weight: bold;
+      margin-bottom: 1rem;
+      color: var(--fg-muted);
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+    }}
+    .sidebar-section {{
+      margin-bottom: 1.5rem;
+    }}
+    .sidebar-date {{
+      color: var(--fg-dim);
+      font-size: 0.7rem;
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+    }}
+    .sidebar a {{
+      display: block;
+      color: var(--fg-muted);
+      text-decoration: none;
+      padding: 0.25rem 0;
+      border-left: 2px solid transparent;
+      padding-left: 0.5rem;
+      margin-left: -0.5rem;
+    }}
+    .sidebar a:hover {{
+      color: var(--accent);
+      border-left-color: var(--accent);
+    }}
+    .main {{
+      flex: 1;
+      min-width: 0;
+      padding: 2rem 1.5rem;
     }}
     header {{
       display: flex;
@@ -117,7 +169,7 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 4px;
-      min-width: 100px;
+      min-width: 60px;
       z-index: 100;
     }}
     .lang-select:hover .lang-menu,
@@ -129,9 +181,10 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
       background: none;
       border: none;
       color: var(--fg);
-      padding: 0.5rem 0.75rem;
+      padding: 0.4rem 0.6rem;
       cursor: pointer;
       font-family: inherit;
+      font-size: 0.85rem;
     }}
     .lang-menu button:hover {{ background: var(--border); }}
     .lang-menu button.active {{ color: var(--accent); }}
@@ -139,11 +192,13 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
     .digest-header {{ margin-bottom: 1.5rem; }}
     .digest-date {{ font-size: 0.8rem; color: var(--fg-dim); }}
     .digest-vibe {{ font-style: italic; color: var(--fg-muted); margin-top: 0.5rem; }}
-    .story {{ margin-bottom: 2rem; padding: 1rem; background: var(--bg-card); border-radius: 6px; }}
-    .story-title {{ font-size: 1rem; margin-bottom: 0.5rem; }}
+    .story {{ margin-bottom: 2rem; padding: 1rem; background: var(--bg-card); border-radius: 6px; scroll-margin-top: 1rem; }}
+    .story-title {{ font-size: 1rem; margin-bottom: 0.25rem; }}
     .story-title a {{ color: var(--fg); text-decoration: none; }}
     .story-title a:hover {{ color: var(--accent); }}
-    .story-title-i18n {{ font-size: 0.85rem; color: var(--fg-dim); margin-top: 0.25rem; }}
+    .story-anchor {{ color: var(--fg-dim); text-decoration: none; font-size: 0.8rem; margin-left: 0.5rem; opacity: 0; transition: opacity 0.2s; }}
+    .story:hover .story-anchor {{ opacity: 1; }}
+    .story-anchor:hover {{ color: var(--accent); }}
     .story-meta {{ font-size: 0.75rem; color: var(--fg-dim); margin-bottom: 1rem; }}
     .story-meta a {{ color: var(--link); }}
     .story-section {{ margin-bottom: 1rem; }}
@@ -152,53 +207,102 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
     .story-take .story-label {{ color: var(--take); }}
     .story-comments .story-label {{ color: var(--comment); }}
     .story-text {{ font-size: 0.9rem; color: var(--fg-muted); }}
-    .i18n-text {{ margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed var(--border); color: var(--fg-dim); font-size: 0.85rem; }}
-    .i18n-text::before {{ content: "-> "; opacity: 0.5; }}
+    .i18n-text {{
+      display: block;
+      margin-top: 0.4rem;
+      padding-left: 0.75rem;
+      color: var(--fg-dim);
+      font-size: 0.85rem;
+      border-left: 2px dashed var(--border);
+    }}
+    .i18n-title {{
+      font-size: 0.9rem;
+      color: var(--fg-dim);
+      margin-top: 0.25rem;
+    }}
     .comment {{ padding: 0.75rem 1rem; background: var(--bg); border-radius: 4px; margin-bottom: 0.5rem; border-left: 3px solid var(--comment); }}
     .comment:nth-child(2) {{ border-left-color: var(--take); }}
     .comment:nth-child(3) {{ border-left-color: var(--tldr); }}
+    .comment-text {{ font-size: 0.9rem; }}
     .comment-author {{ font-size: 0.7rem; color: var(--fg-dim); margin-top: 0.5rem; }}
-    .comment-i18n {{ font-size: 0.8rem; color: var(--fg-dim); margin-top: 0.25rem; font-style: italic; }}
+    .comment-i18n {{ font-size: 0.8rem; color: var(--fg-dim); margin-top: 0.4rem; padding-left: 0.75rem; border-left: 2px dashed var(--border); }}
     .tags {{ margin-top: 1rem; }}
     .tag {{ display: inline-block; background: var(--border); padding: 0.1rem 0.4rem; border-radius: 3px; font-size: 0.75rem; margin-right: 0.25rem; }}
     .hidden {{ display: none; }}
+    .back-to-top {{
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 100;
+    }}
+    .back-to-top.visible {{ opacity: 1; }}
+    .back-to-top:hover {{ background: var(--accent); color: white; }}
+    @media (max-width: 800px) {{
+      .sidebar {{ display: none; }}
+      .main {{ padding: 1rem; }}
+    }}
   </style>
 </head>
 <body>
-  <header>
-    <div class="header-left">
-      <div class="logo">Claude Reads HN</div>
-      <div class="header-links">
-        <a href="https://github.com/thevibeworks/claude-reads-hn">github</a>
-        <a href="https://t.me/claudehn">telegram</a>
-      </div>
-    </div>
-    <div class="controls">
-      <button onclick="toggleTheme()" title="Toggle theme" class="icon-btn">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-        </svg>
-      </button>
-      <div class="lang-select">
-        <button class="lang-btn icon-btn" title="Language">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-          </svg>
-        </button>
-        <div class="lang-menu">
-          <button onclick="setLang('en')" data-lang="en" class="active">EN</button>
-          <button onclick="setLang('es')" data-lang="es">ES</button>
-          <button onclick="setLang('de')" data-lang="de">DE</button>
-          <button onclick="setLang('ko')" data-lang="ko">KO</button>
-          <button onclick="setLang('ja')" data-lang="ja">JA</button>
-          <button onclick="setLang('zh')" data-lang="zh">ZH</button>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-title">Highlights</div>
+{sidebar}
+    </aside>
+    <div class="main">
+      <header>
+        <div class="header-left">
+          <div class="logo">Claude Reads HN</div>
+          <div class="header-links">
+            <a href="https://github.com/thevibeworks/claude-reads-hn">github</a>
+            <a href="https://t.me/claudehn">telegram</a>
+          </div>
         </div>
-      </div>
-    </div>
-  </header>
-  <main id="feed">
+        <div class="controls">
+          <button onclick="toggleTheme()" title="Toggle theme" class="icon-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+            </svg>
+          </button>
+          <div class="lang-select">
+            <button class="lang-btn icon-btn" title="Language">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+            </button>
+            <div class="lang-menu">
+              <button onclick="setLang('en')" data-lang="en" class="active">EN</button>
+              <button onclick="setLang('es')" data-lang="es">ES</button>
+              <button onclick="setLang('de')" data-lang="de">DE</button>
+              <button onclick="setLang('ko')" data-lang="ko">KO</button>
+              <button onclick="setLang('ja')" data-lang="ja">JA</button>
+              <button onclick="setLang('zh')" data-lang="zh">ZH</button>
+            </div>
+          </div>
+        </div>
+      </header>
+      <main id="feed">
 {content}
-  </main>
+      </main>
+    </div>
+  </div>
+  <button class="back-to-top" onclick="window.scrollTo({{top:0,behavior:'smooth'}})" title="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
   <script>
     let currentLang = 'en';
     function safeStorage(key, value) {{
@@ -220,14 +324,19 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
       document.querySelectorAll('.lang-menu button[data-lang]').forEach(b => {{
         b.classList.toggle('active', b.dataset.lang === lang);
       }});
-      document.querySelectorAll('.i18n-text').forEach(el => {{
+      document.querySelectorAll('.i18n-text, .i18n-title, .comment-i18n').forEach(el => {{
         el.classList.toggle('hidden', el.dataset.lang !== lang);
       }});
-      document.querySelectorAll('.i18n-text[data-lang="en"]').forEach(el => {{
-        el.classList.add('hidden');
+      document.querySelectorAll('[data-lang="en"]').forEach(el => {{
+        if (el.classList.contains('i18n-text') || el.classList.contains('i18n-title') || el.classList.contains('comment-i18n')) {{
+          el.classList.add('hidden');
+        }}
       }});
       safeStorage('hn-lang', lang);
     }}
+    window.addEventListener('scroll', () => {{
+      document.querySelector('.back-to-top').classList.toggle('visible', window.scrollY > 500);
+    }});
     (function init() {{
       const savedTheme = safeStorage('hn-theme');
       if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
@@ -239,7 +348,7 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
 </html>'''
 
 
-def story_to_html(story: dict, lang: str = "en") -> str:
+def story_to_html(story: dict) -> str:
     """Render a story to HTML."""
     story_id = story.get("id", "")
     title = escape(story.get("title", ""))
@@ -255,21 +364,21 @@ def story_to_html(story: dict, lang: str = "en") -> str:
 
     # Title translations
     title_i18n = ""
-    for ilang, data in i18n.items():
+    for lang, data in i18n.items():
         if data.get("title"):
-            title_i18n += f'<div class="story-title-i18n i18n-text" data-lang="{ilang}">{escape(data["title"])}</div>\n'
+            title_i18n += f'<div class="i18n-title" data-lang="{lang}">{escape(data["title"])}</div>\n'
 
     # TLDR translations
     tldr_i18n = ""
-    for ilang, data in i18n.items():
+    for lang, data in i18n.items():
         if data.get("tldr"):
-            tldr_i18n += f'<div class="i18n-text" data-lang="{ilang}">{escape(data["tldr"])}</div>\n'
+            tldr_i18n += f'<span class="i18n-text" data-lang="{lang}">{escape(data["tldr"])}</span>\n'
 
     # Take translations
     take_i18n = ""
-    for ilang, data in i18n.items():
+    for lang, data in i18n.items():
         if data.get("take"):
-            take_i18n += f'<div class="i18n-text" data-lang="{ilang}">{escape(data["take"])}</div>\n'
+            take_i18n += f'<span class="i18n-text" data-lang="{lang}">{escape(data["take"])}</span>\n'
 
     tags_html = ""
     for tag in story.get("tags", []):
@@ -282,21 +391,24 @@ def story_to_html(story: dict, lang: str = "en") -> str:
         comment_text = escape(c.get('text', ''))
         comment_author = escape(c.get('by', ''))
 
-        # Check for comment translations in i18n
+        # Comment translations
         comment_i18n = ""
-        for ilang, data in i18n.items():
+        for lang, data in i18n.items():
             comment_translations = data.get("comments", [])
             if idx < len(comment_translations) and comment_translations[idx]:
-                comment_i18n += f'<div class="comment-i18n i18n-text" data-lang="{ilang}">{escape(comment_translations[idx])}</div>\n'
+                comment_i18n += f'<div class="comment-i18n" data-lang="{lang}">{escape(comment_translations[idx])}</div>\n'
 
         comments_html += f'''<div class="comment">
-          "{comment_text}"
-          <div class="comment-author">-- {comment_author}</div>
+          <div class="comment-text">"{comment_text}"</div>
           {comment_i18n}
+          <div class="comment-author">-- {comment_author}</div>
         </div>'''
 
-    return f'''<article class="story" id="{story_id}">
-      <h3 class="story-title"><a href="{url}" target="_blank">{title}</a></h3>
+    return f'''<article class="story" id="s{story_id}">
+      <h3 class="story-title">
+        <a href="{url}" target="_blank">{title}</a>
+        <a href="#s{story_id}" class="story-anchor">#</a>
+      </h3>
       {title_i18n}
       <div class="story-meta">
         {points}pts | {comments_count}c | <a href="{hn_url}" target="_blank">HN#{story_id}</a>
@@ -335,10 +447,32 @@ def digest_to_html(digest: dict) -> str:
     </section>'''
 
 
+def generate_sidebar(digests: list) -> str:
+    """Generate sidebar with highlights grouped by date."""
+    lines = []
+    current_date = None
+
+    for digest in digests:
+        date = digest.get("date", "")[:10]  # YYYY-MM-DD
+        if date != current_date:
+            current_date = date
+            lines.append(f'      <div class="sidebar-date">{date}</div>')
+
+        for story in digest.get("stories", []):
+            story_id = story.get("id", "")
+            title = escape(story.get("title", ""))[:40]
+            if len(story.get("title", "")) > 40:
+                title += "..."
+            lines.append(f'      <a href="#s{story_id}">{title}</a>')
+
+    return "\n".join(lines)
+
+
 def render_page(digests: list) -> str:
     """Render full HTML page from list of digests."""
     content = "\n".join(digest_to_html(d) for d in digests)
-    return HTML_TEMPLATE.format(content=content)
+    sidebar = generate_sidebar(digests)
+    return HTML_TEMPLATE.format(content=content, sidebar=sidebar)
 
 
 def main():
