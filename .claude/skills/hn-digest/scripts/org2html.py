@@ -1,10 +1,15 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.12"
+# dependencies = []
+# ///
+# Version: 0.1.0
 """
 Render org-mode HN digests to HTML thread page.
 
-Usage:
-    python3 org2html.py digests/*.org -o index.html
-    python3 org2html.py digests/2025/12/15-1100.org  # single file to stdout
+examples:
+  %(prog)s digests/*.org -o index.html
+  %(prog)s digests/2025/12/15-1100.org  # stdout
 """
 
 import argparse

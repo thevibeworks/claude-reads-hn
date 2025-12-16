@@ -81,8 +81,8 @@ That's it. Claude handles the rest.
 5. For each story: fetch HN comments (top 3) + article preview (top 3 stories only)
 6. Claude reads `llms.txt` (memory index of all past digests)
 7. Claude picks 5 fresh stories with good discussion
-8. Claude writes digest with TLDR + spicy takes to `digests/YYYY/MM/DD-HHMM.md`
-9. `llms-gen.py` regenerates `llms.txt` index
+8. Claude writes digest JSON, converts to `digests/YYYY/MM/DD-HHMM.org` via skill scripts
+9. Skill scripts regenerate `llms.txt` index and `index.html`
 10. Git commit, push, create GitHub issue
 11. Bark notification with spiciest comment quote
 12. Quota timer resets as happy side effect
@@ -120,11 +120,15 @@ Configure the secrets for the channels you want. Missing secrets = silent skip.
 digests/
   2025/
     12/
-      05-0900.md  ← digest from Dec 5, 09:00 UTC
-      05-1400.md
+      05-0900.org  ← digest from Dec 5, 09:00 UTC (org-mode format)
+      05-1400.org
       ...
-llms.txt          ← auto-generated index Claude reads
-llms-gen.py       ← regenerates llms.txt from digests/
+llms.txt                               ← auto-generated index Claude reads
+.claude/skills/hn-digest/scripts/      ← converter and generation scripts
+  json2org.py                          ← JSON -> org-mode conversion
+  org2json.py                          ← org -> JSON (validation)
+  org2html.py                          ← org -> HTML generation
+  llms-gen.py                          ← regenerates llms.txt from digests/
 ```
 
 ## llms.txt Memory Index
@@ -141,12 +145,12 @@ Format:
 
 After writing each digest, Claude runs:
 ```bash
-./llms-gen.py  # scans digests/, rebuilds llms.txt
+./.claude/skills/hn-digest/scripts/llms-gen.py  # scans digests/, rebuilds llms.txt
 ```
 
 You can also manually add a single digest:
 ```bash
-./llms-gen.py --add digests/2025/12/05-0900.md
+./.claude/skills/hn-digest/scripts/llms-gen.py --add digests/2025/12/05-0900.org
 ```
 
 ## Sample Output
@@ -193,11 +197,17 @@ With custom story count:
 gh workflow run "hn-digest.yml" -f story_count=10
 ```
 
-Test llms-gen.py:
+Test skill scripts:
 ```bash
-./llms-gen.py -n              # dry run, print to stdout
-./llms-gen.py                 # regenerate llms.txt
-./llms-gen.py --add digests/2025/12/05-0900.md
+# llms.txt generation
+./.claude/skills/hn-digest/scripts/llms-gen.py -n              # dry run, print to stdout
+./.claude/skills/hn-digest/scripts/llms-gen.py                 # regenerate llms.txt
+./.claude/skills/hn-digest/scripts/llms-gen.py --add digests/2025/12/05-0900.org
+
+# org-mode conversion
+./.claude/skills/hn-digest/scripts/json2org.py /tmp/digest.json digests/2025/12/05-0900.org
+./.claude/skills/hn-digest/scripts/org2json.py digests/2025/12/05-0900.org  # validate round-trip
+./.claude/skills/hn-digest/scripts/org2html.py digests/**/*.org -o index.html
 ```
 
 ## What Can Go Wrong

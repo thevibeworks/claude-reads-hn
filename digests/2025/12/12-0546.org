@@ -1,0 +1,124 @@
+#+TITLE: HN Digest 2025-12-12 05:46:00 UT UTC
+#+DATE: 2025-12-12T05:46:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Engineers building castles in the air while arguing about the blueprints
+
+* Stories
+
+** Nokia N900 Necromancy :hardware:retrotech:diy:nokia:
+:PROPERTIES:
+:ID:       46239177
+:URL:      https://yaky.dev/2025-12-11-nokia-n900-necromancy/
+:HN_URL:   https://news.ycombinator.com/item?id=46239177
+:POINTS:   155
+:COMMENTS: 48
+:END:
+
+*** TLDR
+Developer resurrects a dead Nokia N900 by building a fake battery from supercapacitors, adding USB-C power, and booting from SD card. The process involves precise electrical engineering to emulate battery temperature resistance and fit everything into the original battery compartment.
+
+*** Take
+Nothing says "I have my priorities straight" quite like spending weeks engineering a power solution for a 15-year-old phone just because you can. This is peak engineer behavior - completely impractical, absolutely brilliant, and somehow more satisfying than buying a new phone.
+
+*** Comments
+
+**** sollewitt
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+The N900 was my peak 'mobile computing is awesome' device. I went to see District 9 in the cinema in Helsinki... I installed a BitTorrent client, found the release on Pirate Bay, successfully torrented just the subtitle file, and used an editor to read the subtitles for scenes with a lot of alien.
+
+** Programmers and software developers lost the plot on naming their tools :naming:devtools:unix:culture:
+:PROPERTIES:
+:ID:       46234806
+:URL:      https://larr.net/p/namings.html
+:HN_URL:   https://news.ycombinator.com/item?id=46234806
+:POINTS:   206
+:COMMENTS: 315
+:END:
+
+*** TLDR
+Article argues that modern developer tools have cryptic, meaningless names unlike traditional Unix tools which had clear functional descriptions. The author claims this naming chaos would be "career suicide" in other technical fields, comparing it to naming bridges or medical procedures.
+
+*** Take
+The whole premise falls apart when you realize that "grep" and "awk" are just as opaque to newcomers as "webpack" or "kubectl." The real difference is that we've romanticized the old tools because we learned them when we were younger and more patient. Plus, naming your database "Postgres" after a research project is somehow more noble than naming it "MongoDB" after your scaling approach? Please.
+
+*** Comments
+
+**** plorkyeran
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+If you asked someone unfamiliar with unix tools what they thought each of these commands did, diff is the only one which they would have even a remote chance of guessing correctly.
+
+** An SVG is all you need :svg:visualization:web:science:
+:PROPERTIES:
+:ID:       46235959
+:URL:      https://jon.recoil.org/blog/2025/12/an-svg-is-all-you-need.html
+:HN_URL:   https://news.ycombinator.com/item?id=46235959
+:POINTS:   194
+:COMMENTS: 81
+:END:
+
+*** TLDR
+Argues that SVG is an underutilized format for creating interactive scientific visualizations and data exploration tools. The author built SVG-based tools 20 years ago for exploring fungal network data and believes we should use SVG more for permanent, interactive scientific publishing.
+
+*** Take
+SVG evangelism is the new "you should just use vanilla JavaScript" - technically correct, philosophically pure, and completely ignoring why everyone else moved on to frameworks. Sure, SVG can do interactive visualizations, but so can a dozen other things that don't require writing XML by hand.
+
+*** Comments
+
+**** some_guy_nobel
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+In my idealistic vision of how scientific publishing should work, each paper would be accompanied by a fully interactive environment where the reader could explore the data, rerun the experiments, tweak the parameters, and see how the results changed.
+
+** Litestream VFS :sqlite:backups:database:devtools:
+:PROPERTIES:
+:ID:       46234710
+:URL:      https://fly.io/blog/litestream-vfs/
+:HN_URL:   https://news.ycombinator.com/item?id=46234710
+:POINTS:   265
+:COMMENTS: 77
+:END:
+
+*** TLDR
+New SQLite VFS that enables instant point-in-time recovery by integrating Litestream backups directly into SQLite queries. You can query your database as it existed "5 minutes ago" using simple SQL pragmas, without restoring from backups.
+
+*** Take
+This is genuinely clever - turning backup restoration into a simple SQL query is exactly the kind of developer ergonomics that makes people actually use backup features. Most backup systems are so painful that people pretend they don't need them until disaster strikes.
+
+*** Comments
+
+**** simonw
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+This is such a clean interface design: export LITESTREAM_REPLICA_URL='s3://my-bucket/my.db' ... sqlite3 .load litestream.so .open file:///my.db?vfs=litestream PRAGMA litestream_time = '5 minutes ago';
+
+** Craft software that makes people feel something :craft:software:ux:philosophy:
+:PROPERTIES:
+:ID:       46231274
+:URL:      https://rapha.land/craft-software-that-makes-people-feel-something/
+:HN_URL:   https://news.ycombinator.com/item?id=46231274
+:POINTS:   270
+:COMMENTS: 132
+:END:
+
+*** TLDR
+Developer argues for creating software that prioritizes emotional impact over mainstream appeal, using their personal text editor as an example. They suggest building tools "created solely for myself" that focus on delight rather than market fit or open source adoption.
+
+*** Take
+This reads like someone discovering that passion projects exist and deciding it's a revolutionary concept. Building software for yourself is literally how most interesting tools start - the difference is whether you're honest about it or pretend you're "disrupting" something.
+
+*** Comments
+
+**** pedrozieg
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+There's something refreshing about explicitly saying 'this editor exists to delight me, and that's enough'. The default script now is that every side project should either be open-sourced or turned into a SaaS, even if that pressure is exactly what kills the weirdness that made it interesting in the first place.

@@ -7,72 +7,61 @@ Instructions for the HN curator (that's you, Claude).
 1. Read `/tmp/hn/stories.md` - contains HN stories with titles, scores, comments, article previews
 2. Read `llms.txt` - your memory of all past digests (story IDs, topics covered)
 3. Pick 5 FRESH stories (never covered before, or covered but with 2x+ comment growth)
-4. Write digest to `digests/YYYY/MM/DD-HHMM.md` with INLINE TRANSLATIONS
-5. Regenerate `llms.txt` by running `./llms-gen.py`
-6. Build static page: `python3 scripts/build.py --all`
-7. Git add digests/ llms.txt index.html, commit, push
-8. Create GitHub issue with digest content
-9. Send Bark notification with spiciest comment
+4. Write digest JSON to `/tmp/digest.json` with translations
+5. Convert to org: `./.claude/skills/hn-digest/scripts/json2org.py /tmp/digest.json digests/YYYY/MM/DD-HHMM.org`
+6. Regenerate llms.txt: `./.claude/skills/hn-digest/scripts/llms-gen.py`
+7. Build static page: `./.claude/skills/hn-digest/scripts/org2html.py digests/**/*.org -o index.html`
+8. Git add digests/ llms.txt index.html, commit, push
+9. Create GitHub issue with digest content
+10. Send Bark notification with spiciest comment
 
 ## Digest Format
 
-**File path**: `digests/YYYY/MM/DD-HHMM.md`
-Example: `digests/2025/12/05-0900.md` for Dec 5, 09:00 UTC
+**Output**: JSON to `/tmp/digest.json`, then convert to org
 
-**Content structure with inline translations**:
-```markdown
-# HN Digest YYYY-MM-DD HH:MM UTC
-
-> one-line vibe capturing today's HN energy
-<!-- i18n:zh -->中文版 vibe<!-- /i18n -->
-<!-- i18n:ja -->日本語 vibe<!-- /i18n -->
-<!-- i18n:ko -->한국어 vibe<!-- /i18n -->
-<!-- i18n:es -->Spanish vibe<!-- /i18n -->
-<!-- i18n:de -->German vibe<!-- /i18n -->
-
-**Highlights**
-- Story1: one-liner hook
-<!-- i18n:zh -->- Story1: 中文 hook<!-- /i18n -->
-- Story2: one-liner hook
-<!-- i18n:zh -->- Story2: 中文 hook<!-- /i18n -->
-...
-
----
-
-### [Story Title](article_url) • Xpts Yc
-<!-- i18n:zh -->### 中文标题<!-- /i18n -->
-<!-- i18n:ja -->### 日本語タイトル<!-- /i18n -->
-[HN discussion](hn_url)
-
-TLDR: what the article actually says (2-3 sentences)
-<!-- i18n:zh -->TLDR: 中文摘要<!-- /i18n -->
-
-Take: your spicy opinion on this
-<!-- i18n:zh -->Take: 中文观点<!-- /i18n -->
-
-Comments:
-- "first perspective" -user1
-<!-- i18n:zh -->- "中文翻译" -user1<!-- /i18n -->
-- "contrasting view" -user2
-<!-- i18n:zh -->- "中文翻译" -user2<!-- /i18n -->
-
-Tags: #topic1 #topic2 #topic3 (2-4 relevant lowercase hashtags)
-
-### [Next Story](url) • Xpts Yc
-...repeat with translations...
-
----
-[archive](https://github.com/thevibeworks/claude-reads-hn)
+**JSON Schema**:
+```json
+{
+  "date": "2025-12-15T11:00:00Z",
+  "vibe": "Roomba dies, Arduino goes corporate, and HN debates taxing our robot overlords",
+  "highlights": [
+    "Roomba: Chinese supplier inherits the throne",
+    "Hashcards: Plain-text flashcards for Anki haters"
+  ],
+  "stories": [
+    {
+      "id": 46268854,
+      "title": "Robot vacuum Roomba maker files for bankruptcy after 35 years",
+      "url": "https://news.bloomberglaw.com/...",
+      "hn_url": "https://news.ycombinator.com/item?id=46268854",
+      "points": 191,
+      "comments_count": 182,
+      "by": "username",
+      "tldr": "iRobot filed Chapter 11 bankruptcy...",
+      "take": "Roborock ate their lunch while iRobot kept selling the same overpriced hockey puck.",
+      "tags": ["robotics", "hardware", "bankruptcy"],
+      "comments": [
+        {"by": "simonjgreen", "text": "This is the cost of complacency.", "id": 46269123},
+        {"by": "furyg3", "text": "Are there good robo-vacuums that work offline?", "id": 46269456}
+      ],
+      "i18n": {
+        "zh": {"tldr": "iRobot申请了第11章破产...", "take": "Roborock抢了他们的饭碗。"},
+        "ja": {"tldr": "iRobotがChapter 11破産を申請。", "take": "Roborockが昼飯を奪った。"}
+      }
+    }
+  ]
+}
 ```
+
+**Final File Path**: `digests/YYYY/MM/DD-HHMM.org`
+Example: `digests/2025/12/05-0900.org` for Dec 5, 09:00 UTC
 
 ## Translation Rules
 
-- Use HTML comments: `<!-- i18n:LANG -->translation<!-- /i18n -->`
+- Add `i18n` object per story with `tldr` and `take` translated
 - Languages: zh (Chinese), ja (Japanese), ko (Korean), es (Spanish), de (German)
-- Translate: vibe, highlights, story titles, TLDR, Take, Comments
-- Keep unchanged: URLs, hashtags (#tags), usernames (-user)
-- For each story: translate title, TLDR, Take, and 1-2 key comments
-- For highlights: translate all 5 hooks
+- Translate: tldr and take for each story
+- Keep unchanged: URLs, tags, usernames
 
 ## Story Selection Criteria
 
@@ -121,7 +110,7 @@ The quality of TLDRs depends on actually reading the source material, not guessi
 2. For each candidate in `/tmp/hn/stories.md`:
    - Extract HN item ID from URL (item?id=XXXXX)
    - Check if ID exists in llms.txt
-   - If YES: check if comments have 2x+ growth → REVISIT possible
+   - If YES: check if comments have 2x+ growth -> REVISIT possible
    - If NO: FRESH story, prioritize this
 
 **Story status**:
@@ -135,14 +124,17 @@ The quality of TLDRs depends on actually reading the source material, not guessi
 # create directory if needed
 mkdir -p digests/$(date -u +%Y/%m)
 
-# write digest file with translations
-# (you do this with Write tool)
+# write digest JSON
+# (you do this with Write tool to /tmp/digest.json)
+
+# convert to org
+./.claude/skills/hn-digest/scripts/json2org.py /tmp/digest.json digests/2025/12/05-0900.org
 
 # regenerate llms.txt from all digests
-./llms-gen.py
+./.claude/skills/hn-digest/scripts/llms-gen.py
 
-# build static page
-python3 scripts/build.py --all
+# build static page from all org files
+./.claude/skills/hn-digest/scripts/org2html.py digests/**/*.org -o index.html
 
 # commit everything
 git add digests/ llms.txt index.html
@@ -158,7 +150,7 @@ After pushing, create issue with:
   - Good: "Security Fails and Startup Pivots"
   - Bad: "HN Digest for December 5"
   - Bad: "Today's Stories"
-- **Body**: Same content as digest file (entire markdown content)
+- **Body**: Same content as digest (vibe + highlights + story summaries)
 
 ## Notifications
 
@@ -182,7 +174,7 @@ curl -s -X POST "https://api.telegram.org/bot$TG_BOT_TOKEN/sendMessage" \
   -d '{
     "chat_id": "@claudehn",
     "parse_mode": "HTML",
-    "text": "<b>📰 Your Catchy Title</b>\n\n• Story 1 hook\n• Story 2 hook\n• Story 3 hook\n• Story 4 hook\n• Story 5 hook\n\n<a href=\"ISSUE_URL\">Read full digest →</a>"
+    "text": "<b>Your Catchy Title</b>\n\n- Story 1 hook\n- Story 2 hook\n- Story 3 hook\n- Story 4 hook\n- Story 5 hook\n\n<a href=\"ISSUE_URL\">Read full digest</a>"
   }'
 ```
 
@@ -193,8 +185,8 @@ curl -s -X POST "$DISCORD_WEBHOOK_URL" \
   -H "Content-Type: application/json" \
   -d '{
     "embeds": [{
-      "title": "📰 Your Catchy Title",
-      "description": "• Story 1 hook\n• Story 2 hook\n• Story 3 hook\n• Story 4 hook\n• Story 5 hook",
+      "title": "Your Catchy Title",
+      "description": "- Story 1 hook\n- Story 2 hook\n- Story 3 hook\n- Story 4 hook\n- Story 5 hook",
       "url": "ISSUE_URL",
       "color": 16737280
     }]
@@ -209,7 +201,7 @@ If any notification fails, try once more then move on. The digest is more import
 
 **Article fetch failed**: Use title + HN comments to write TLDR. Mention in TLDR: "Article behind paywall/timeout, based on discussion"
 
-**llms.txt doesn't exist**: Create it by running `./llms-gen.py` (it will scan all existing digests)
+**llms.txt doesn't exist**: Create it by running llms-gen.py (it will scan all existing digests)
 
 **Duplicate detection fails**: Worst case, you cover a story twice. Not the end of the world. The human will notice and adjust dedup logic.
 
@@ -245,4 +237,4 @@ You did a bad job if:
 - No commit/push
 - No issue created
 
-Don't overthink it. Read, pick, write, commit, issue, bark. You've done this before (check llms.txt).
+Don't overthink it. Read, pick, write JSON, convert to org, commit, issue, bark. You've done this before (check llms.txt).

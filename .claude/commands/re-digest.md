@@ -22,7 +22,7 @@ claude /re-digest digests/2025/12/*.md
    - `Tags:` with 2-4 lowercase English hashtags
    - All URLs preserved unchanged
 
-2. **Regenerate Index**: Run `./llms-gen.py`
+2. **Regenerate Index**: Run `./.claude/skills/hn-digest/scripts/llms-gen.py`
 
 ## Execution Steps
 
@@ -41,7 +41,7 @@ Given file(s) as $ARGS:
       - Tags: #lowercase #hashtags
    c. Write corrected version back
 
-3. Run ./llms-gen.py
+3. Run ./.claude/skills/hn-digest/scripts/llms-gen.py
 
 4. Git commit with message: "re-digest: format update for {files}"
 ```

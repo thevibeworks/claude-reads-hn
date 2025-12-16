@@ -42,39 +42,62 @@ def setup_logging(quiet: bool, verbose: int) -> None:
 
 
 def parse_digest(path: Path) -> dict | None:
-    """Extract metadata from a digest file."""
+    """Extract metadata from a digest file (supports both org and md)."""
     try:
         content = path.read_text(encoding="utf-8")
     except OSError as e:
         LOGGER.warning("cannot read %s: %s", path, e)
         return None
 
-    # Extract date/time from header: # HN Digest 2025-12-12 15:54 UTC
-    header = re.search(r"# HN Digest (\d{4}-\d{2}-\d{2}) (\d{2}:\d{2})", content)
-    if not header:
-        LOGGER.warning("no header found in %s", path)
-        return None
+    is_org = path.suffix == ".org"
 
-    date, time = header.groups()
+    if is_org:
+        # Org format: #+DATE: 2025-12-15T11:00:00Z
+        date_match = re.search(r"#\+DATE:\s*(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2})", content)
+        if not date_match:
+            LOGGER.warning("no #+DATE found in %s", path)
+            return None
+        date, time = date_match.groups()
 
-    # Extract story IDs: item?id=XXXXX
-    story_ids = re.findall(r"item\?id=(\d+)", content)
+        # Story IDs from :ID: property
+        story_ids = re.findall(r":ID:\s+(\d+)", content)
 
-    # Extract topics from Highlights section or vibe line
-    topics = []
-    highlights = re.search(r"\*\*Highlights\*\*\n((?:- .+\n)+)", content)
-    if highlights:
-        for line in highlights.group(1).strip().split("\n"):
-            # "- GPT-5.2: The new hotness..." -> "GPT-5.2"
-            match = re.match(r"- ([^:]+):", line)
-            if match:
-                topics.append(match.group(1).strip())
+        # Topics from * Highlights list
+        topics = []
+        highlights = re.search(r"^\* Highlights\n((?:- .+\n)+)", content, re.MULTILINE)
+        if highlights:
+            for line in highlights.group(1).strip().split("\n"):
+                match = re.match(r"- ([^:]+):", line)
+                if match:
+                    topics.append(match.group(1).strip())
 
-    if not topics:
-        # Fallback: extract from vibe line
-        vibe = re.search(r"^> (.+)$", content, re.MULTILINE)
-        if vibe:
-            topics = [vibe.group(1)[:50]]
+        if not topics:
+            # Fallback: vibe line (content after * Vibe)
+            vibe = re.search(r"^\* Vibe\n(.+)$", content, re.MULTILINE)
+            if vibe:
+                topics = [vibe.group(1).strip()[:50]]
+    else:
+        # Markdown format: # HN Digest 2025-12-12 15:54 UTC
+        header = re.search(r"# HN Digest (\d{4}-\d{2}-\d{2}) (\d{2}:\d{2})", content)
+        if not header:
+            LOGGER.warning("no header found in %s", path)
+            return None
+
+        date, time = header.groups()
+        story_ids = re.findall(r"item\?id=(\d+)", content)
+
+        topics = []
+        highlights = re.search(r"\*\*Highlights\*\*\n((?:- .+\n)+)", content)
+        if highlights:
+            for line in highlights.group(1).strip().split("\n"):
+                match = re.match(r"- ([^:]+):", line)
+                if match:
+                    topics.append(match.group(1).strip())
+
+        if not topics:
+            vibe = re.search(r"^> (.+)$", content, re.MULTILINE)
+            if vibe:
+                topics = [vibe.group(1)[:50]]
 
     return {
         "path": path,
@@ -120,12 +143,13 @@ def generate_llms_txt(digests: list[dict]) -> str:
 
 
 def scan_digests() -> list[dict]:
-    """Scan all digest files and extract metadata."""
+    """Scan all digest files (org and md) and extract metadata."""
     digests = []
-    for md in DIGESTS_DIR.rglob("*.md"):
-        d = parse_digest(md)
-        if d:
-            digests.append(d)
+    for ext in ("*.org", "*.md"):
+        for f in DIGESTS_DIR.rglob(ext):
+            d = parse_digest(f)
+            if d:
+                digests.append(d)
     return digests
 
 

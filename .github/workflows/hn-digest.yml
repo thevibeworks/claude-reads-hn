@@ -46,7 +46,7 @@ jobs:
         id: check-digest
         run: |
           HOUR_PREFIX=$(date -u +%Y/%m/%d-%H)
-          EXISTING=$(ls digests/$HOUR_PREFIX*.md 2>/dev/null || true)
+          EXISTING=$(ls digests/$HOUR_PREFIX*.org digests/$HOUR_PREFIX*.md 2>/dev/null || true)
           if [ -n "$EXISTING" ]; then
             echo "Digest already exists for this hour: $EXISTING"
             echo "skip=true" >> $GITHUB_OUTPUT
@@ -67,8 +67,13 @@ jobs:
           TODAY=$(date -u +%Y/%m/%d)
           YESTERDAY=$(date -u -d "yesterday" +%Y/%m/%d 2>/dev/null || date -u -v-1d +%Y/%m/%d)
           shopt -s nullglob
-          for f in digests/$TODAY*.md digests/$YESTERDAY*.md; do
-            RECENT_IDS="$RECENT_IDS $(grep -oE 'item\?id=[0-9]+' "$f" 2>/dev/null | cut -d= -f2)"
+          for f in digests/$TODAY*.org digests/$TODAY*.md digests/$YESTERDAY*.org digests/$YESTERDAY*.md; do
+            # org format uses :ID: property, md uses item?id=
+            if [[ "$f" == *.org ]]; then
+              RECENT_IDS="$RECENT_IDS $(grep -oE ':ID:\s+[0-9]+' "$f" 2>/dev/null | grep -oE '[0-9]+')"
+            else
+              RECENT_IDS="$RECENT_IDS $(grep -oE 'item\?id=[0-9]+' "$f" 2>/dev/null | cut -d= -f2)"
+            fi
           done
           shopt -u nullglob
           echo "recent (24h): $(echo $RECENT_IDS | wc -w) stories to skip"
@@ -230,76 +235,60 @@ jobs:
                c) Read and understand the actual content before writing TLDR
                d) If both fail, note in TLDR: "[from title + comments, article unreachable]"
 
-            4. Write to digests/YYYY/MM/DD-HHMM.md with INLINE TRANSLATIONS:
+            4. Write digest JSON to /tmp/digest.json:
 
-            ```
-            # HN Digest YYYY-MM-DD HH:MM UTC
-
-            > one-line vibe of today's HN
-            <!-- i18n:zh -->中文版 vibe<!-- /i18n -->
-            <!-- i18n:ja -->日本語 vibe<!-- /i18n -->
-            <!-- i18n:ko -->한국어 vibe<!-- /i18n -->
-            <!-- i18n:es -->Spanish vibe<!-- /i18n -->
-            <!-- i18n:de -->German vibe<!-- /i18n -->
-
-            **Highlights**
-            - Story1: one-liner hook
-            <!-- i18n:zh -->- Story1: 中文 hook<!-- /i18n -->
-            - Story2: one-liner hook
-            <!-- i18n:zh -->- Story2: 中文 hook<!-- /i18n -->
-            ...
-
-            ---
-
-            ### [Story Title](article_url) • Xpts Yc
-            <!-- i18n:zh -->### 中文标题<!-- /i18n -->
-            <!-- i18n:ja -->### 日本語タイトル<!-- /i18n -->
-            <!-- i18n:ko -->### 한국어 제목<!-- /i18n -->
-            <!-- i18n:es -->### Título en español<!-- /i18n -->
-            <!-- i18n:de -->### Deutscher Titel<!-- /i18n -->
-            [HN discussion](hn_url)
-
-            TLDR: what the article actually says (2-3 sentences)
-            <!-- i18n:zh -->TLDR: 中文摘要<!-- /i18n -->
-            <!-- i18n:ja -->TLDR: 日本語要約<!-- /i18n -->
-
-            Take: your spicy opinion
-            <!-- i18n:zh -->Take: 中文观点<!-- /i18n -->
-
-            Comments:
-            - "first perspective quote" -user1
-            <!-- i18n:zh -->- "中文翻译" -user1<!-- /i18n -->
-            - "second quote" -user2
-            <!-- i18n:zh -->- "中文翻译" -user2<!-- /i18n -->
-
-            Tags: #rust #opensource #startup (2-4 relevant topic tags)
-
-            ### [Next Story](url) • Xpts Yc
-            ...repeat for all 5 with translations...
-
-            ---
-            [archive](https://github.com/thevibeworks/claude-reads-hn)
+            ```json
+            {
+              "date": "2025-12-15T11:00:00Z",
+              "vibe": "Roomba dies, Arduino goes corporate, and HN debates taxing our robot overlords",
+              "highlights": [
+                "Roomba: Chinese supplier inherits the throne",
+                "Hashcards: Plain-text flashcards for Anki haters"
+              ],
+              "stories": [
+                {
+                  "id": 46268854,
+                  "title": "Robot vacuum Roomba maker files for bankruptcy after 35 years",
+                  "url": "https://news.bloomberglaw.com/...",
+                  "hn_url": "https://news.ycombinator.com/item?id=46268854",
+                  "points": 191,
+                  "comments_count": 182,
+                  "by": "username",
+                  "tldr": "iRobot filed Chapter 11 bankruptcy and is being taken over by its Chinese supplier.",
+                  "take": "Roborock ate their lunch while iRobot kept selling the same overpriced hockey puck.",
+                  "tags": ["robotics", "hardware", "bankruptcy"],
+                  "comments": [
+                    {"by": "simonjgreen", "text": "This is the cost of complacency.", "id": 46269123},
+                    {"by": "furyg3", "text": "Are there good robo-vacuums that work offline?", "id": 46269456}
+                  ],
+                  "i18n": {
+                    "zh": {"tldr": "iRobot申请了第11章破产，被中国供应商接管。", "take": "Roborock抢了他们的饭碗。"},
+                    "ja": {"tldr": "iRobotがChapter 11破産を申請。", "take": "Roborockが昼飯を奪った。"}
+                  }
+                }
+              ]
+            }
             ```
 
             TRANSLATION RULES:
-            - Use HTML comments: <!-- i18n:LANG -->translation<!-- /i18n -->
+            - i18n object per story with tldr and take translated
             - Languages: zh (Chinese), ja (Japanese), ko (Korean), es (Spanish), de (German)
-            - Translate: vibe, highlights, titles, TLDR, Take, Comments
-            - Keep: URLs, hashtags, usernames unchanged
-            - For each story: translate title, TLDR, Take, and 1-2 key comments
-            - For highlights: translate all 5 hooks
+            - Translate: tldr and take for each story
+            - Keep: URLs, tags, usernames unchanged
 
-            5. UPDATE MEMORY: run ./llms-gen.py (regenerates llms.txt from all digests)
+            5. CONVERT TO ORG: run ./.claude/skills/hn-digest/scripts/json2org.py /tmp/digest.json digests/YYYY/MM/DD-HHMM.org
 
-            6. BUILD STATIC PAGE: run python3 scripts/build.py --all
+            6. UPDATE MEMORY: run ./.claude/skills/hn-digest/scripts/llms-gen.py (regenerates llms.txt from all digests)
 
-            7. Git add digests/ llms.txt index.html, commit, push
+            7. BUILD STATIC PAGE: run ./.claude/skills/hn-digest/scripts/org2html.py digests/**/*.org -o index.html
 
-            8. Create issue:
+            8. Git add digests/ llms.txt index.html, commit, push
+
+            9. Create issue:
                - Title: catchy 5-8 word summary capturing today's chaos
                - Body: same content as digest file (highlights first!)
 
-            9. NOTIFY ALL CHANNELS:
+            10. NOTIFY ALL CHANNELS:
 
                a) BARK (use mcp__barkme__notify):
                   - title: your issue title

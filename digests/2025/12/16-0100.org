@@ -1,0 +1,191 @@
+#+TITLE: HN Digest 2025-12-16 01:00:00 UT UTC
+#+DATE: 2025-12-16T01:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+security theater meets corporate theater while scientists pack their bags
+
+* Highlights
+- MAGA messaging app: "super secure" until you enumerate everyone's phone numbers in 27 hours
+- Let's Encrypt: certificates getting shorter because apparently 90 days was too easy
+- Ford: electric trucks are over, range-extender hybrids are the new hotness
+- Pepsi & Walmart: caught colluding on prices like it's a bad heist movie
+- Scientists: 25% of US-trained PhDs eventually leave, but at least we keep citing them
+
+* Stories
+
+** Super Secure Messaging App Leaks Everyone's Phone Number :security:privacy:mobileapps:fail:
+:PROPERTIES:
+:ID:       46279123
+:URL:      https://ericdaigle.ca/posts/super-secure-maga-messaging-app-leaks-everyones-phone-number/
+:HN_URL:   https://news.ycombinator.com/item?id=46279123
+:POINTS:   496
+:COMMENTS: 232
+:END:
+
+*** TLDR
+Freedom Chat, a messaging app marketing itself as ultra-secure, had two devastating flaws: every user's PIN was broadcast to all channel members, and the contact discovery API could be enumerated to leak all registered phone numbers in about 27 hours. The CEO previously ran another app called Converso that had similar issues.
+
+*** Take
+Nothing says "secure" like broadcasting your PIN to everyone in the room. The real comedy is that Freedom Chat previously mocked WhatsApp for the exact same vulnerability. This is what happens when security is a marketing checkbox rather than an engineering discipline.
+
+*** Comments
+
+**** ericmcer
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+It literally takes a line to implement rate-limiting in Nginx. How do you ship an API without this?
+
+**** josh2600
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+Signal's encrypted phone number lookup using hardware encrypted RAM is why this stuff is hard to get right
+
+**** codedokode
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+This might be opt-out serialization at fault - a programmer adds a field, forgets the annotation, voilà
+
+** Upcoming Changes to Let's Encrypt Certificates :security:tls:infrastructure:webdev:
+:PROPERTIES:
+:ID:       46279241
+:URL:      https://community.letsencrypt.org/t/upcoming-changes-to-let-s-encrypt-certificates/243873
+:HN_URL:   https://news.ycombinator.com/item?id=46279241
+:POINTS:   225
+:COMMENTS: 192
+:END:
+
+*** TLDR
+Let's Encrypt is rolling out new root/intermediate certificates, dropping TLS client authentication support in Feb 2026, and progressively shortening certificate lifetimes from 90 to 64 days (2027) then 45 days (2028). This follows a CA/Browser Forum vote mandating 47-day max certificates.
+
+*** Take
+The internet's favorite certificate authority is making certificates expire faster than my motivation on Monday mornings. Sure, shorter lifetimes improve security, but this also makes Let's Encrypt a bigger single point of failure. If their systems hiccup for two weeks, a lot of the web goes dark.
+
+*** Comments
+
+**** Animats
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+These short lifetimes make Let's Encrypt a central point of failure for much of the Internet
+
+**** btown
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+This isn't LE's decision - a 47 day max was voted on by the CA/Browser Forum
+
+**** ottah
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+I'm kind of done with unnecessary policy ratcheting. Same with rotating passwords with 2FA, no one can justify it
+
+** Ford Kills the All-Electric F-150 Lightning :ev:automotive:ford:business:
+:PROPERTIES:
+:ID:       46281182
+:URL:      https://www.wired.com/story/ford-kills-electric-f-150-lightning-for-hybrid/
+:HN_URL:   https://news.ycombinator.com/item?id=46281182
+:POINTS:   118
+:COMMENTS: 148
+:END:
+
+*** TLDR
+［from title + comments, article behind paywall］ Ford is discontinuing the pure-electric F-150 Lightning and pivoting to an extended-range electric vehicle (EREV) architecture that uses a combustion engine as a range extender. The company cites profitability concerns and customer feedback about range anxiety.
+
+*** Take
+Ford tried to out-Tesla Tesla with an electric truck, discovered that small businesses actually need trucks that can tow without halving their range, and retreated to hybrids. The Lightning was impressive tech but priced like a luxury item for working vehicles. Sometimes the market speaks louder than the mission statement.
+
+*** Comments
+
+**** exabrial
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+The price isn't right for small businesses. These trucks are expensive and designed like iPhones to be disposable
+
+**** izend
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+I see a lot of them in Metro Vancouver where electricity is cheap and gas expensive
+
+**** hnburnsy
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+Looking at Ford's press release, they're calling the next-gen an 'extended-range electric vehicle'
+
+** Secret Documents Show Pepsi and Walmart Colluded to Raise Food Prices :antitrust:retail:corporate:economics:
+:PROPERTIES:
+:ID:       46280887
+:URL:      https://www.thebignewsletter.com/p/secret-documents-show-pepsi-and-walmart
+:HN_URL:   https://news.ycombinator.com/item?id=46280887
+:POINTS:   130
+:COMMENTS: 32
+:END:
+
+*** TLDR
+An FTC complaint alleges Pepsi gave Walmart preferential pricing, promotional allowances, and store placement while maintaining higher wholesale prices for everyone else. Pepsi tracked "price gaps" between Walmart and competitors, and punished retailers like Food Lion for trying to match Walmart's prices. A Pepsi CFO bragged in 2022 they could "take whatever pricing we need."
+
+*** Take
+"Keep us the king of our domain and we'll make you the king of yours" reads like dialogue from a mob movie, except the mobsters are selling chips and soda. Price discrimination laws exist for a reason, and that reason is exactly this. The real victims are the smaller grocers who can't play ball.
+
+*** Comments
+
+**** yndoendo
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+The bigger the company, the more power to dictate prices. Same with Amazon
+
+**** GenerWork
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+Pepsi raised prices by double digits for seven quarters - and people kept buying junk food anyway
+
+**** toomuchtodo
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+Complaint link: storage.courtlistener.com/recap/gov.uscourts.nysd.63...
+
+** A Quarter of US-Trained Scientists Eventually Leave :academia:science:immigration:careers:
+:PROPERTIES:
+:ID:       46280080
+:URL:      https://arxiv.org/abs/2512.11146
+:HN_URL:   https://news.ycombinator.com/item?id=46280080
+:POINTS:   101
+:COMMENTS: 113
+:END:
+
+*** TLDR
+Research using data from 1980-2024 shows 25% of US-trained STEM PhD graduates leave within 15 years. Leave rates are higher in AI and quantum science, lower in life sciences. Even after leaving, US patent citations to their work only drop from 70% to 50% - still five times larger than the destination country's share.
+
+*** Take
+The US trains world-class scientists, then makes it hard for international students to stay and unappealing for domestic ones to remain in academia. At least we keep citing their work after they leave, which is a weird consolation prize. The real story is why: too few faculty positions for too many PhDs.
+
+*** Comments
+
+**** msteffen
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+The number of students needed for research vastly exceeds junior faculty positions available
+
+**** rolandr
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+I believe there will be a significant discontinuity in this data starting 2025
+
+**** travisgriggs
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+The most lucrative tuition source is foreign students whose parents believe in the American Dream

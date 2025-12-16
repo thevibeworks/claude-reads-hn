@@ -1,10 +1,15 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.12"
+# dependencies = []
+# ///
+# Version: 0.1.0
 """
 Convert curated HN digest JSON to org-mode format.
 
-Usage:
-    python3 json2org.py input.json output.org
-    python3 json2org.py input.json  # outputs to stdout
+examples:
+  %(prog)s input.json output.org
+  %(prog)s input.json  # stdout
 """
 
 import json

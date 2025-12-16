@@ -1,10 +1,15 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.12"
+# dependencies = []
+# ///
+# Version: 0.1.0
 """
 Parse org-mode HN digest back to JSON.
 
-Usage:
-    python3 org2json.py input.org output.json
-    python3 org2json.py input.org  # outputs to stdout
+examples:
+  %(prog)s input.org output.json
+  %(prog)s input.org  # stdout
 """
 
 import json

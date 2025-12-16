@@ -1,0 +1,108 @@
+#+TITLE: HN Digest 2025-12-11 13:14:00 UT UTC
+#+DATE: 2025-12-11T13:14:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Another day, another existential crisis about algorithms controlling everything
+
+* Stories
+
+** How Google Maps allocates survival across London's restaurants :algorithms:platforms:restaurants:tech:
+:PROPERTIES:
+:ID:       46203343
+:URL:      https://laurenleek.substack.com/p/how-google-maps-quietly-allocates
+:HN_URL:   https://news.ycombinator.com/item?id=46203343
+:POINTS:   300
+:COMMENTS: 147
+:END:
+
+*** TLDR
+Google Maps' restaurant visibility algorithms create a feedback loop where popular places get more exposure, effectively deciding which restaurants survive or die in London. The rich get richer while hidden gems remain invisible to most users.
+
+*** Take
+Another brilliant example of how tech platforms become accidental gods, quietly reshaping entire industries while pretending they're just "organizing information." Your neighborhood restaurant's fate now depends on pleasing an algorithm that nobody fully understands.
+
+*** Comments
+
+**** doctoboggan
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+It's always annoyed me that zooming in on a building will not reliably show the business that operates there
+
+** Helldivers 2 on-disk size 85% reduction :gaming:optimization:storage:performance:
+:PROPERTIES:
+:ID:       46131518
+:URL:      https://store.steampowered.com/news/app/553850/view/491583942944621371
+:HN_URL:   https://news.ycombinator.com/item?id=46131518
+:POINTS:   63
+:COMMENTS: 46
+:END:
+
+*** TLDR
+The developers reduced Helldivers 2's storage from ~150GB to ~20GB by eliminating massive file duplication that was originally done for "optimization." Turns out the optimization wasn't actually helping performance much.
+
+*** Take
+Nothing says "we didn't benchmark anything" quite like accidentally shipping 130GB of duplicate files. Props for fixing it, but imagine being the dev who had to explain this one in the postmortem.
+
+*** Comments
+
+**** _aavaa_
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+My takeaway is that it seems like they did NO benchmarking of their own before choosing to do all that duplication
+
+** Python Workers redux: fast cold starts, packages, and a uv-first workflow :python:serverless:cloudflare:performance:
+:PROPERTIES:
+:ID:       46192748
+:URL:      https://blog.cloudflare.com/python-workers-advancements/
+:HN_URL:   https://news.ycombinator.com/item?id=46192748
+:POINTS:   75
+:COMMENTS: 25
+:END:
+
+*** TLDR
+Cloudflare improved Python Workers with 2.4x faster cold starts than AWS Lambda using Pyodide snapshots and heap restoration. They run your import code once at deploy, snapshot the entire Python heap, then restore it for each request.
+
+*** Take
+Cool tech that makes Python less sluggish in serverless, but the fact that we need elaborate heap gymnastics to make Python start quickly is a damning indictment of the language's bloat problem.
+
+*** Comments
+
+**** randomtoast
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+One of my biggest points of criticism of Python is its slow cold start time. I especially notice this when I use it as a scripting language for CLIs
+
+** Show HN: Local Privacy Firewall-blocks PII and secrets before ChatGPT sees them :privacy:ai:security:opensource:
+:PROPERTIES:
+:ID:       46206591
+:URL:      https://github.com/privacyshield-ai/privacy-firewall
+:HN_URL:   https://news.ycombinator.com/item?id=46206591
+:POINTS:   9
+:COMMENTS: 0
+:END:
+
+*** TLDR
+Chrome extension that uses local BERT models to scrub personally identifiable information and secrets from prompts before sending them to AI services. Runs entirely locally with no data sent to external servers.
+
+*** Take
+Finally, someone builds the obvious thing we all needed after that moment of panic when you almost paste your AWS keys into ChatGPT. The fact that this needed to be built by a random developer instead of being built into every AI chat interface tells you everything about Big Tech's privacy priorities.
+
+** Show HN: oeis-tui – A TUI to search OEIS integer sequences in the terminal :tui:math:cli:opensource:
+:PROPERTIES:
+:ID:       46087339
+:URL:      https://github.com/hako/oeis-tui
+:HN_URL:   https://news.ycombinator.com/item?id=46087339
+:POINTS:   6
+:COMMENTS: 0
+:END:
+
+*** TLDR
+Terminal user interface for browsing the Online Encyclopedia of Integer Sequences, complete with graphs, preview panes, bookmarks, and even supports the OEIS webcam. For when you need to look up number sequences without leaving your command line.
+
+*** Take
+The intersection of "people who love integer sequences" and "people who refuse to use a web browser" is apparently exactly one person, and they built this beautiful, completely unnecessary tool. Respect.

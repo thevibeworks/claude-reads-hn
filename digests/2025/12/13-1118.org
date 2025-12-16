@@ -1,0 +1,131 @@
+#+TITLE: HN Digest 2025-12-13 11:18:00 UT UTC
+#+DATE: 2025-12-13T11:18:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+humidifiers break free, Go breaks builds, and climate breaks bird species
+
+* Highlights
+- Xiaomi Humidifier: ESPHome surgery removes cloud dependency forever
+- Go Portability: CGO ruins everything you thought was portable
+- 50 Years of Proofs: From Edinburgh LCF to verified OS kernels
+- Tiny VM: RISC-V emulator in one C file for microcontrollers
+- Grue Jay: Climate change plays matchmaker for Texas birds
+
+* Stories
+
+** Freeing a Xiaomi humidifier from the cloud :iot:hardware:privacy:homeassistant:
+:PROPERTIES:
+:ID:       46241368
+:URL:      https://0l.de/blog/2025/11/xiaomi-humidifier/
+:HN_URL:   https://news.ycombinator.com/item?id=46241368
+:POINTS:   93
+:COMMENTS: 42
+:END:
+
+*** TLDR
+Author ripped out the WiFi module from a Xiaomi humidifier, soldered in UART connections, dumped the original firmware, and flashed ESPHome to integrate with Home Assistant. No cloud, no planned obsolescence, no corporate surveillance of your humidity levels.
+
+*** Take
+The fact that we need to perform surgery on a device that blows water vapor to free it from Chinese servers is the most cyberpunk dystopia thing imaginable. At least the dystopia has good documentation.
+
+*** Comments
+
+**** N_Lens
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+A humidifier needs network capability incase someone discovers a new version of water
+
+** Go is portable, until it isn't :go:devops:portability:cgo:
+:PROPERTIES:
+:ID:       46180911
+:URL:      https://simpleobservability.com/blog/go-portable-until-isnt
+:HN_URL:   https://news.ycombinator.com/item?id=46180911
+:POINTS:   87
+:COMMENTS: 69
+:END:
+
+*** TLDR
+Team discovers that Go's "compile once, run everywhere" promise shatters the moment you touch CGO, systemd, or glibc. Their simple binary now requires architecture-specific GitHub Actions runners and separate builds for musl vs glibc systems.
+
+*** Take
+Every language promises portability until you actually try to port something. Go just waited longer to disappoint you than most.
+
+*** Comments
+
+**** bitbasher
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+Once you use CGO, portability is gone. This can happen subtly without you knowing it.
+
+** 50 years of proof assistants :formalmethods:proofassistants:verification:research:
+:PROPERTIES:
+:ID:       46250309
+:URL:      https://lawrencecpaulson.github.io//2025/12/05/History_of_Proof_Assistants.html
+:HN_URL:   https://news.ycombinator.com/item?id=46250309
+:POINTS:   89
+:COMMENTS: 13
+:END:
+
+*** TLDR
+Lawrence Paulson traces the evolution from Edinburgh LCF in 1975 through HOL, Isabelle, and Coq to modern verified operating systems like seL4. The field went from "toy academic project" to "AWS uses this for critical infrastructure."
+
+*** Take
+Fifty years of proving things correct and we still ship bugs to production because "move fast and break things" pays better than "move slowly and prove theorems."
+
+*** Comments
+
+**** PaulHoule
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+I can see 'no progress in 50 years' in fundamental physics... In biology or chemistry it's absurd to say that
+
+** Show HN: Tiny VM sandbox in C with apps in Rust, C and Zig :riscv:embedded:vm:opensource:
+:PROPERTIES:
+:ID:       46249538
+:URL:      https://github.com/ringtailsoftware/uvm32
+:HN_URL:   https://news.ycombinator.com/item?id=46249538
+:POINTS:   137
+:COMMENTS: 9
+:END:
+
+*** TLDR
+A RISC-V emulator crammed into a single C99 file that runs on microcontrollers with under 4KB flash. No dynamic allocations, async by design, supports bytecode from C, Rust, and Zig. Built for sandboxing untrusted code on embedded systems.
+
+*** Take
+Someone built a VM small enough to fit in your toaster's brain, complete with multi-language support. Meanwhile, Electron apps need 500MB to display a chat window.
+
+*** Comments
+
+**** snops
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+This would be quite cool for adding scripting to medical devices, avoiding the need to revalidate the 'core' each time you change a feature.
+
+** So What Should We Call This – A Grue Jay? :climate:biology:evolution:nature:
+:PROPERTIES:
+:ID:       46183688
+:URL:      https://cns.utexas.edu/news/research/so-what-should-we-call-grue-jay
+:HN_URL:   https://news.ycombinator.com/item?id=46183688
+:POINTS:   54
+:COMMENTS: 21
+:END:
+
+*** TLDR
+Climate change pushed green jays north from Mexico and blue jays west from Houston until they met in a San Antonio suburb and did what lonely birds do. Result: a hybrid that's likely the first vertebrate species to mate due to climate-driven range expansion.
+
+*** Take
+Birds are speed-running evolution while humans argue about whether the climate is even changing. At this rate, we'll have flying rainbow parrots in Minnesota before we hit net zero.
+
+*** Comments
+
+**** gdavisson
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+'Grue' has a surprising variety of meanings... in Zork, a monster that eats adventurers in the dark

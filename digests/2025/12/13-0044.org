@@ -1,0 +1,131 @@
+#+TITLE: HN Digest 2025-12-13 00:44:00 UT UTC
+#+DATE: 2025-12-13T00:44:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+rodents, rainbows of unicode, and reverse spreadsheets: just another friday night on HN
+
+* Highlights
+- Rats Play DOOM: Scientists built VR headsets for rats because humanity demanded it
+- macOS 26.2 RDMA: Apple wants your Mac cluster to run trillion-parameter models
+- OpenAI Skills: The big guys are copying Anthropic's homework, as is tradition
+- GNU Unifont: Every Unicode glyph in one font, for when you need to render Klingon
+- Bidicalc: Spreadsheets that solve backwards, for people who already know the answer
+
+* Stories
+
+** Rats Play DOOM :neuroscience:vr:research:
+:PROPERTIES:
+:ID:       46248323
+:URL:      https://ratsplaydoom.com/
+:HN_URL:   https://news.ycombinator.com/item?id=46248323
+:POINTS:   156
+:COMMENTS: 63
+:END:
+
+*** TLDR
+Researchers built a full VR rig with motion-tracked treadball, 180-degree AMOLED headset, and sugar water rewards to train rats to play DOOM. The rats learned to navigate the virtual environment, though full behavioral training stalled when the original subjects aged out.
+
+*** Take
+We spent decades wondering if consciousness emerges from sufficient complexity, and the answer is apparently "give a rat a BFG and find out." The fact that they open-sourced the whole setup means this is now a legitimate research direction and I am both terrified and delighted.
+
+*** Comments
+
+**** dinobones
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+The year is 2034. With only a few million of capital left, and facing bankruptcy, they knew that only one option remained. 'Bring me the rats.'
+
+** macOS 26.2 enables fast AI clusters with RDMA over Thunderbolt :apple:ai:hardware:
+:PROPERTIES:
+:ID:       46248644
+:URL:      https://developer.apple.com/documentation/macos-release-notes/macos-26_2-release-notes#RDMA-over-Thunderbolt
+:HN_URL:   https://news.ycombinator.com/item?id=46248644
+:POINTS:   231
+:COMMENTS: 107
+:END:
+
+*** TLDR
+Apple's macOS Tahoe 26.2 adds RDMA (Remote Direct Memory Access) over Thunderbolt, enabling multiple Macs to pool their unified memory for running massive AI models. The MLX team has already demonstrated running trillion-parameter models like Kimi K2 on daisy-chained Mac Studios.
+
+*** Take
+Apple is quietly building a parallel universe where you don't need a datacenter to run frontier models. A $50k Mac cluster with 3TB of unified memory running Kimi K2 at home is absurd and I want it desperately.
+
+*** Comments
+
+**** int32_64
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+Apple should setup their own giant cloud of M chips with tons of vram, make Metal as good as possible for AI purposes, then market the cloud as allowing self-hosted models for companies and individuals that care about privacy. They would clean up in all kinds of sectors whose data can't touch the big LLM companies.
+
+** OpenAI are quietly adopting skills, now available in ChatGPT and Codex CLI :ai:openai:tooling:
+:PROPERTIES:
+:ID:       46250332
+:URL:      https://simonwillison.net/2025/Dec/12/openai-skills/
+:HN_URL:   https://news.ycombinator.com/item?id=46250332
+:POINTS:   42
+:COMMENTS: 15
+:END:
+
+*** TLDR
+OpenAI has added a "skills" system to ChatGPT's Code Interpreter and Codex CLI, letting users drop markdown files and scripts into folders that the AI can discover and use. The approach mirrors Anthropic's skills mechanism from October, with OpenAI using PNG conversion for document analysis.
+
+*** Take
+The convergent evolution of AI tooling continues. Everyone's independently arriving at "just put markdown in a folder" as the solution to capability extension, which is either elegant simplicity or collective failure of imagination. Either way, the kakapo breeding news was a nice touch.
+
+*** Comments
+
+**** lacker
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+I'm not sure if I have the right mental model for a 'skill'. It's basically a context-management tool?
+
+** GNU Unifont :unicode:fonts:opensource:
+:PROPERTIES:
+:ID:       46248859
+:URL:      https://unifoundry.com/unifont/index.html
+:HN_URL:   https://news.ycombinator.com/item?id=46248859
+:POINTS:   139
+:COMMENTS: 42
+:END:
+
+*** TLDR
+GNU Unifont is a monospace bitmap font covering every printable code point in Unicode's Basic Multilingual Plane plus growing coverage of supplementary planes. It's dual-licensed under OFL and GPL, designed as a "font of last resort" when you absolutely must render that obscure script.
+
+*** Take
+The heroic work of ensuring no Unicode character goes unrendered. Someone printed the entire thing as a spiral on their wall, which is exactly the kind of unhinged dedication this project deserves.
+
+*** Comments
+
+**** phkahler
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+We use GNU Unifont in Solvespace for the text window/property browser. Some people have CJK stuff in their designs and it 'just works' on all platforms.
+
+** Show HN: I made a spreadsheet where formulas also update backwards :spreadsheet:ux:programming:
+:PROPERTIES:
+:ID:       46234734
+:URL:      https://victorpoughon.github.io/bidicalc/
+:HN_URL:   https://news.ycombinator.com/item?id=46234734
+:POINTS:   38
+:COMMENTS: 10
+:END:
+
+*** TLDR
+Bidicalc is a spreadsheet where you can edit formula outputs and have the inputs automatically solve backwards to match. It uses a custom root-finding algorithm combining constraint propagation, Newton's method, and dichotomic search to find valid input values.
+
+*** Take
+This is the kind of thing that sounds impossible until you realize spreadsheets have always been constraint systems wearing a disguise. The "where does the extra degree of freedom come from" question in the comments is exactly right though.
+
+*** Comments
+
+**** remywang
+:PROPERTIES:
+:COMMENT_ID: 0
+:END:
+A bidirectional formula is also known as an integrity constraint in databases (plus some triggers for restoring the constraint upon updates)!
