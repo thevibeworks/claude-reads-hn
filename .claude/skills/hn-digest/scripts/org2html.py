@@ -130,10 +130,19 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
   </footer>
   <script>
     let currentLang = 'en';
+    function safeStorage(key, value) {{
+      try {{
+        if (value === undefined) return localStorage.getItem(key);
+        localStorage.setItem(key, value);
+        return value;
+      }} catch (e) {{ return null; }}
+    }}
     function toggleTheme() {{
       const html = document.documentElement;
       const isDark = html.getAttribute('data-theme') === 'dark';
-      html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      const newTheme = isDark ? 'light' : 'dark';
+      html.setAttribute('data-theme', newTheme);
+      safeStorage('hn-theme', newTheme);
     }}
     function setLang(lang) {{
       currentLang = lang;
@@ -146,7 +155,14 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
       document.querySelectorAll('.i18n-text[data-lang="en"]').forEach(el => {{
         el.classList.add('hidden');
       }});
+      safeStorage('hn-lang', lang);
     }}
+    (function init() {{
+      const savedTheme = safeStorage('hn-theme');
+      if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+      const savedLang = safeStorage('hn-lang');
+      if (savedLang && savedLang !== 'en') setLang(savedLang);
+    }})();
   </script>
 </body>
 </html>'''
