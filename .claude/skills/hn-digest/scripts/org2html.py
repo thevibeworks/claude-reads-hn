@@ -3,7 +3,7 @@
 # requires-python = ">=3.12"
 # dependencies = []
 # ///
-# Version: 0.1.0
+# Version: 0.2.0
 """
 Render org-mode HN digests to HTML thread page.
 
@@ -69,8 +69,19 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
       margin-bottom: 2rem;
       padding-bottom: 1rem;
       border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }}
+    .header-left {{
+      display: flex;
+      align-items: center;
+      gap: 1rem;
     }}
     .logo {{ font-weight: bold; font-size: 1.1rem; }}
+    .header-links {{ font-size: 0.8rem; }}
+    .header-links a {{ color: var(--link); margin-right: 0.75rem; text-decoration: none; }}
+    .header-links a:hover {{ text-decoration: underline; }}
+    .controls {{ display: flex; align-items: center; gap: 0.5rem; }}
     .controls button {{
       background: none;
       border: 1px solid var(--border);
@@ -78,10 +89,48 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
       padding: 0.25rem 0.5rem;
       cursor: pointer;
       font-family: inherit;
-      margin-left: 0.5rem;
     }}
     .controls button:hover {{ background: var(--bg-card); }}
-    .controls button.active {{ background: var(--accent); color: white; border-color: var(--accent); }}
+    .lang-select {{
+      position: relative;
+      display: inline-block;
+    }}
+    .lang-btn {{
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--fg);
+      padding: 0.25rem 0.5rem;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 1rem;
+    }}
+    .lang-btn:hover {{ background: var(--bg-card); }}
+    .lang-menu {{
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      min-width: 100px;
+      z-index: 100;
+    }}
+    .lang-select:hover .lang-menu,
+    .lang-menu:hover {{ display: block; }}
+    .lang-menu button {{
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      color: var(--fg);
+      padding: 0.5rem 0.75rem;
+      cursor: pointer;
+      font-family: inherit;
+    }}
+    .lang-menu button:hover {{ background: var(--border); }}
+    .lang-menu button.active {{ color: var(--accent); }}
     .digest {{ margin-bottom: 3rem; }}
     .digest-header {{ margin-bottom: 1.5rem; }}
     .digest-date {{ font-size: 0.8rem; color: var(--fg-dim); }}
@@ -90,6 +139,7 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
     .story-title {{ font-size: 1rem; margin-bottom: 0.5rem; }}
     .story-title a {{ color: var(--fg); text-decoration: none; }}
     .story-title a:hover {{ color: var(--accent); }}
+    .story-title-i18n {{ font-size: 0.85rem; color: var(--fg-dim); margin-top: 0.25rem; }}
     .story-meta {{ font-size: 0.75rem; color: var(--fg-dim); margin-bottom: 1rem; }}
     .story-meta a {{ color: var(--link); }}
     .story-section {{ margin-bottom: 1rem; }}
@@ -99,35 +149,44 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
     .story-comments .story-label {{ color: var(--comment); }}
     .story-text {{ font-size: 0.9rem; color: var(--fg-muted); }}
     .i18n-text {{ margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed var(--border); color: var(--fg-dim); font-size: 0.85rem; }}
-    .i18n-text::before {{ content: "↳ "; opacity: 0.5; }}
+    .i18n-text::before {{ content: "-> "; opacity: 0.5; }}
     .comment {{ padding: 0.75rem 1rem; background: var(--bg); border-radius: 4px; margin-bottom: 0.5rem; border-left: 3px solid var(--comment); }}
     .comment:nth-child(2) {{ border-left-color: var(--take); }}
     .comment:nth-child(3) {{ border-left-color: var(--tldr); }}
     .comment-author {{ font-size: 0.7rem; color: var(--fg-dim); margin-top: 0.5rem; }}
+    .comment-i18n {{ font-size: 0.8rem; color: var(--fg-dim); margin-top: 0.25rem; font-style: italic; }}
     .tags {{ margin-top: 1rem; }}
     .tag {{ display: inline-block; background: var(--border); padding: 0.1rem 0.4rem; border-radius: 3px; font-size: 0.75rem; margin-right: 0.25rem; }}
-    footer {{ margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.8rem; color: var(--fg-dim); text-align: center; }}
-    footer a {{ color: var(--link); }}
     .hidden {{ display: none; }}
   </style>
 </head>
 <body>
   <header>
-    <div class="logo">Claude Reads HN</div>
+    <div class="header-left">
+      <div class="logo">Claude Reads HN</div>
+      <div class="header-links">
+        <a href="https://github.com/thevibeworks/claude-reads-hn">github</a>
+        <a href="https://t.me/claudehn">telegram</a>
+      </div>
+    </div>
     <div class="controls">
-      <button onclick="toggleTheme()">🌓</button>
-      <button onclick="setLang('en')" data-lang="en" class="active">EN</button>
-      <button onclick="setLang('zh')" data-lang="zh">ZH</button>
-      <button onclick="setLang('ja')" data-lang="ja">JA</button>
+      <button onclick="toggleTheme()" title="Toggle theme">*</button>
+      <div class="lang-select">
+        <button class="lang-btn" title="Language">A</button>
+        <div class="lang-menu">
+          <button onclick="setLang('en')" data-lang="en" class="active">English</button>
+          <button onclick="setLang('zh')" data-lang="zh">中文</button>
+          <button onclick="setLang('ja')" data-lang="ja">日本語</button>
+          <button onclick="setLang('ko')" data-lang="ko">한국어</button>
+          <button onclick="setLang('es')" data-lang="es">Español</button>
+          <button onclick="setLang('de')" data-lang="de">Deutsch</button>
+        </div>
+      </div>
     </div>
   </header>
   <main id="feed">
 {content}
   </main>
-  <footer>
-    <a href="https://github.com/thevibeworks/claude-reads-hn">archive</a> ·
-    <a href="https://t.me/claudehn">telegram</a>
-  </footer>
   <script>
     let currentLang = 'en';
     function safeStorage(key, value) {{
@@ -146,7 +205,7 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
     }}
     function setLang(lang) {{
       currentLang = lang;
-      document.querySelectorAll('.controls button[data-lang]').forEach(b => {{
+      document.querySelectorAll('.lang-menu button[data-lang]').forEach(b => {{
         b.classList.toggle('active', b.dataset.lang === lang);
       }});
       document.querySelectorAll('.i18n-text').forEach(el => {{
@@ -181,11 +240,22 @@ def story_to_html(story: dict, lang: str = "en") -> str:
     take = escape(story.get("take", ""))
 
     i18n = story.get("i18n", {})
+
+    # Title translations
+    title_i18n = ""
+    for ilang, data in i18n.items():
+        if data.get("title"):
+            title_i18n += f'<div class="story-title-i18n i18n-text" data-lang="{ilang}">{escape(data["title"])}</div>\n'
+
+    # TLDR translations
     tldr_i18n = ""
-    take_i18n = ""
     for ilang, data in i18n.items():
         if data.get("tldr"):
             tldr_i18n += f'<div class="i18n-text" data-lang="{ilang}">{escape(data["tldr"])}</div>\n'
+
+    # Take translations
+    take_i18n = ""
+    for ilang, data in i18n.items():
         if data.get("take"):
             take_i18n += f'<div class="i18n-text" data-lang="{ilang}">{escape(data["take"])}</div>\n'
 
@@ -193,17 +263,31 @@ def story_to_html(story: dict, lang: str = "en") -> str:
     for tag in story.get("tags", []):
         tags_html += f'<span class="tag">#{escape(tag)}</span>'
 
+    # Comments with translations
     comments_html = ""
-    for c in story.get("comments", []):
+    comments = story.get("comments", [])
+    for idx, c in enumerate(comments):
+        comment_text = escape(c.get('text', ''))
+        comment_author = escape(c.get('by', ''))
+
+        # Check for comment translations in i18n
+        comment_i18n = ""
+        for ilang, data in i18n.items():
+            comment_translations = data.get("comments", [])
+            if idx < len(comment_translations) and comment_translations[idx]:
+                comment_i18n += f'<div class="comment-i18n i18n-text" data-lang="{ilang}">{escape(comment_translations[idx])}</div>\n'
+
         comments_html += f'''<div class="comment">
-          "{escape(c.get('text', ''))}"
-          <div class="comment-author">— {escape(c.get('by', ''))}</div>
+          "{comment_text}"
+          <div class="comment-author">-- {comment_author}</div>
+          {comment_i18n}
         </div>'''
 
     return f'''<article class="story" id="{story_id}">
       <h3 class="story-title"><a href="{url}" target="_blank">{title}</a></h3>
+      {title_i18n}
       <div class="story-meta">
-        {points}pts · {comments_count}c · <a href="{hn_url}" target="_blank">HN#{story_id}</a>
+        {points}pts | {comments_count}c | <a href="{hn_url}" target="_blank">HN#{story_id}</a>
       </div>
       {f'''<div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>

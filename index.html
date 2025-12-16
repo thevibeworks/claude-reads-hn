@@ -46,8 +46,19 @@
       margin-bottom: 2rem;
       padding-bottom: 1rem;
       border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
     }
     .logo { font-weight: bold; font-size: 1.1rem; }
+    .header-links { font-size: 0.8rem; }
+    .header-links a { color: var(--link); margin-right: 0.75rem; text-decoration: none; }
+    .header-links a:hover { text-decoration: underline; }
+    .controls { display: flex; align-items: center; gap: 0.5rem; }
     .controls button {
       background: none;
       border: 1px solid var(--border);
@@ -55,10 +66,48 @@
       padding: 0.25rem 0.5rem;
       cursor: pointer;
       font-family: inherit;
-      margin-left: 0.5rem;
     }
     .controls button:hover { background: var(--bg-card); }
-    .controls button.active { background: var(--accent); color: white; border-color: var(--accent); }
+    .lang-select {
+      position: relative;
+      display: inline-block;
+    }
+    .lang-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--fg);
+      padding: 0.25rem 0.5rem;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+    .lang-btn:hover { background: var(--bg-card); }
+    .lang-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      min-width: 100px;
+      z-index: 100;
+    }
+    .lang-select:hover .lang-menu,
+    .lang-menu:hover { display: block; }
+    .lang-menu button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      color: var(--fg);
+      padding: 0.5rem 0.75rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .lang-menu button:hover { background: var(--border); }
+    .lang-menu button.active { color: var(--accent); }
     .digest { margin-bottom: 3rem; }
     .digest-header { margin-bottom: 1.5rem; }
     .digest-date { font-size: 0.8rem; color: var(--fg-dim); }
@@ -67,6 +116,7 @@
     .story-title { font-size: 1rem; margin-bottom: 0.5rem; }
     .story-title a { color: var(--fg); text-decoration: none; }
     .story-title a:hover { color: var(--accent); }
+    .story-title-i18n { font-size: 0.85rem; color: var(--fg-dim); margin-top: 0.25rem; }
     .story-meta { font-size: 0.75rem; color: var(--fg-dim); margin-bottom: 1rem; }
     .story-meta a { color: var(--link); }
     .story-section { margin-bottom: 1rem; }
@@ -76,26 +126,39 @@
     .story-comments .story-label { color: var(--comment); }
     .story-text { font-size: 0.9rem; color: var(--fg-muted); }
     .i18n-text { margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed var(--border); color: var(--fg-dim); font-size: 0.85rem; }
-    .i18n-text::before { content: "↳ "; opacity: 0.5; }
+    .i18n-text::before { content: "-> "; opacity: 0.5; }
     .comment { padding: 0.75rem 1rem; background: var(--bg); border-radius: 4px; margin-bottom: 0.5rem; border-left: 3px solid var(--comment); }
     .comment:nth-child(2) { border-left-color: var(--take); }
     .comment:nth-child(3) { border-left-color: var(--tldr); }
     .comment-author { font-size: 0.7rem; color: var(--fg-dim); margin-top: 0.5rem; }
+    .comment-i18n { font-size: 0.8rem; color: var(--fg-dim); margin-top: 0.25rem; font-style: italic; }
     .tags { margin-top: 1rem; }
     .tag { display: inline-block; background: var(--border); padding: 0.1rem 0.4rem; border-radius: 3px; font-size: 0.75rem; margin-right: 0.25rem; }
-    footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.8rem; color: var(--fg-dim); text-align: center; }
-    footer a { color: var(--link); }
     .hidden { display: none; }
   </style>
 </head>
 <body>
   <header>
-    <div class="logo">Claude Reads HN</div>
+    <div class="header-left">
+      <div class="logo">Claude Reads HN</div>
+      <div class="header-links">
+        <a href="https://github.com/thevibeworks/claude-reads-hn">github</a>
+        <a href="https://t.me/claudehn">telegram</a>
+      </div>
+    </div>
     <div class="controls">
-      <button onclick="toggleTheme()">🌓</button>
-      <button onclick="setLang('en')" data-lang="en" class="active">EN</button>
-      <button onclick="setLang('zh')" data-lang="zh">ZH</button>
-      <button onclick="setLang('ja')" data-lang="ja">JA</button>
+      <button onclick="toggleTheme()" title="Toggle theme">*</button>
+      <div class="lang-select">
+        <button class="lang-btn" title="Language">A</button>
+        <div class="lang-menu">
+          <button onclick="setLang('en')" data-lang="en" class="active">English</button>
+          <button onclick="setLang('zh')" data-lang="zh">中文</button>
+          <button onclick="setLang('ja')" data-lang="ja">日本語</button>
+          <button onclick="setLang('ko')" data-lang="ko">한국어</button>
+          <button onclick="setLang('es')" data-lang="es">Español</button>
+          <button onclick="setLang('de')" data-lang="de">Deutsch</button>
+        </div>
+      </div>
     </div>
   </header>
   <main id="feed">
@@ -106,8 +169,9 @@
       </div>
       <article class="story" id="46284266">
       <h3 class="story-title"><a href="https://www.koi.ai/blog/urban-vpn-browser-extension-ai-conversations-data-collection" target="_blank">8M users&#x27; AI conversations sold for profit by &quot;privacy&quot; extensions :privacy:security:ai:browser-extensions:data-brokers:</a></h3>
+      
       <div class="story-meta">
-        264pts · 82c · <a href="https://news.ycombinator.com/item?id=46284266" target="_blank">HN#46284266</a>
+        264pts | 82c | <a href="https://news.ycombinator.com/item?id=46284266" target="_blank">HN#46284266</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -133,21 +197,25 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Urban VPN is operated by Urban Cyber Security Inc., which is affiliated with BiScience (B.I Science (2009) Ltd.), a data broker company. And BiScience is an Israeli company based in Tel Aviv. Case closed."
-          <div class="comment-author">— throw310822</div>
+          <div class="comment-author">-- throw310822</div>
+          
         </div><div class="comment">
           "I stick to extensions that Mozilla has manually vetted as part of the Firefox recommended extensions program."
-          <div class="comment-author">— GeekyBear</div>
+          <div class="comment-author">-- GeekyBear</div>
+          
         </div><div class="comment">
           "The company behind this appears to be &#x27;real&#x27; and incorporated in Delaware. I found two addresses in Wilmington and NYC."
-          <div class="comment-author">— chmod775</div>
+          <div class="comment-author">-- chmod775</div>
+          
         </div>
       </div>
       
     </article>
 <article class="story" id="46284658">
       <h3 class="story-title"><a href="https://apple.github.io/ml-sharp/" target="_blank">SHARP: Rapid 3D from a Single Photo :apple:ai:machine-learning:computer-vision</a></h3>
+      
       <div class="story-meta">
-        109pts · 21c · <a href="https://news.ycombinator.com/item?id=46284658" target="_blank">HN#46284658</a>
+        109pts | 21c | <a href="https://news.ycombinator.com/item?id=46284658" target="_blank">HN#46284658</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -173,21 +241,25 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Impressive but something doesn&#x27;t feel right to me. Possibly too much sharpness, possibly a mix of cliches, all amplified at once."
-          <div class="comment-author">— tartoran</div>
+          <div class="comment-author">-- tartoran</div>
+          
         </div><div class="comment">
           "Unsplash &gt; Gen3C &gt; The fly video is nightmare fuel. View at your own risk."
-          <div class="comment-author">— superfish</div>
+          <div class="comment-author">-- superfish</div>
+          
         </div><div class="comment">
           "Photorealistic 3D representation from a single photograph in less than a second."
-          <div class="comment-author">— yodon</div>
+          <div class="comment-author">-- yodon</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#3d</span></div>
     </article>
 <article class="story" id="46283016">
       <h3 class="story-title"><a href="https://quill-os.org/" target="_blank">Quill OS: An open-source OS for Kobo&#x27;s eReaders</a></h3>
+      
       <div class="story-meta">
-        179pts · 63c · <a href="https://news.ycombinator.com/item?id=46283016" target="_blank">HN#46283016</a>
+        179pts | 63c | <a href="https://news.ycombinator.com/item?id=46283016" target="_blank">HN#46283016</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -213,21 +285,25 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "I&#x27;m desperately searching for an e-book reader I can root and run arbitrary userland code on. 7-11 inch, pen support would be nice. Does any such thing exist?"
-          <div class="comment-author">— thot_experiment</div>
+          <div class="comment-author">-- thot_experiment</div>
+          
         </div><div class="comment">
           "I see their repo mentions transitioning to the Pinenote. I&#x27;d like to run an ordinary distribution on my Pinenote."
-          <div class="comment-author">— franklyworks</div>
+          <div class="comment-author">-- franklyworks</div>
+          
         </div><div class="comment">
           "If your goal is just to sync your own ebook library, there&#x27;s a config file on stock OS you can change to point to your own Calibre Web instance."
-          <div class="comment-author">— dml2135</div>
+          <div class="comment-author">-- dml2135</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#ereader</span><span class="tag">#opensource</span><span class="tag">#linux</span><span class="tag">#hardware</span><span class="tag">#kobo</span></div>
     </article>
 <article class="story" id="46281288">
       <h3 class="story-title"><a href="https://andrewmccalip.com/space-datacenters" target="_blank">Economics of Orbital vs. Terrestrial Data Centers</a></h3>
+      
       <div class="story-meta">
-        75pts · 124c · <a href="https://news.ycombinator.com/item?id=46281288" target="_blank">HN#46281288</a>
+        75pts | 124c | <a href="https://news.ycombinator.com/item?id=46281288" target="_blank">HN#46281288</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -253,21 +329,25 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "The one glaring hole I see is the challenge of moving data to/from the datacenter while it&#x27;s on orbit. Bandwidth to/from space isn&#x27;t free. FCC/ITU licenses are required."
-          <div class="comment-author">— anonymousiam</div>
+          <div class="comment-author">-- anonymousiam</div>
+          
         </div><div class="comment">
           "What worries me is I keep hearing &#x27;cooling is cheap and easy in space!&#x27; and it couldn&#x27;t be farther from the truth. Cooling is really hard and can&#x27;t use efficient advection-based approaches."
-          <div class="comment-author">— jofer</div>
+          <div class="comment-author">-- jofer</div>
+          
         </div><div class="comment">
           "Will these run on rad-hard silicon (dog slow) or silently accept wrong results due to the harsh space environment?"
-          <div class="comment-author">— zozbot234</div>
+          <div class="comment-author">-- zozbot234</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#space</span><span class="tag">#datacenter</span><span class="tag">#economics</span><span class="tag">#infrastructure</span><span class="tag">#hardware</span></div>
     </article>
 <article class="story" id="46241500">
       <h3 class="story-title"><a href="https://blog.owenlacey.dev/posts/are-you-the-one-is-free-money/" target="_blank">&quot;Are you the one?&quot; is free money :math:probability:game-theory</a></h3>
+      
       <div class="story-meta">
-        251pts · 52c · <a href="https://news.ycombinator.com/item?id=46241500" target="_blank">HN#46241500</a>
+        251pts | 52c | <a href="https://news.ycombinator.com/item?id=46241500" target="_blank">HN#46241500</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -293,13 +373,16 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "As a math guy who loves reality tv, I wrote a blog post about how to programmatically calculate probabilities as the show progresses. You can pip install ayto to follow along."
-          <div class="comment-author">— daturkel</div>
+          <div class="comment-author">-- daturkel</div>
+          
         </div><div class="comment">
           "This was great but it skipped the most interesting bit - an actual strategy contestants could use that doesn&#x27;t require a computer."
-          <div class="comment-author">— stevage</div>
+          <div class="comment-author">-- stevage</div>
+          
         </div><div class="comment">
           "After he described the rules, my immediate reaction was &#x27;this is like mastermind&#x27;. Sure enough, further down the page he makes the same comparison."
-          <div class="comment-author">— rahimnathwani</div>
+          <div class="comment-author">-- rahimnathwani</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#entertainment</span><span class="tag">#analysis</span></div>
@@ -312,8 +395,9 @@
       </div>
       <article class="story" id="46281060">
       <h3 class="story-title"><a href="https://johnlian.net/posts/hdmi-cec/" target="_blank">Fix HDMI-CEC weirdness with a Raspberry Pi and a $7 cable</a></h3>
+      
       <div class="story-meta">
-        192pts · 100c · <a href="https://news.ycombinator.com/item?id=46281060" target="_blank">HN#46281060</a>
+        192pts | 100c | <a href="https://news.ycombinator.com/item?id=46281060" target="_blank">HN#46281060</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -329,21 +413,25 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Modern AV stuff is insane. I have no interest in taking it up as a hobby... Luckily, I have one of the last remaining TVs with a headphone jack"
-          <div class="comment-author">— recursive</div>
+          <div class="comment-author">-- recursive</div>
+          
         </div><div class="comment">
           "HDMI-CEC apparently can only support like 3 console-like devices. I have an Apple TV, Nintendo Switch 2, Sound Bar and PS5 hooked up, but only 3 can really interact"
-          <div class="comment-author">— davidczech</div>
+          <div class="comment-author">-- davidczech</div>
+          
         </div><div class="comment">
           "I used a similar setup to translate CEC user commands... the pi had a shell script that reads all the loglines coming from cec-client"
-          <div class="comment-author">— nullhole</div>
+          <div class="comment-author">-- nullhole</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#homeautomation</span><span class="tag">#raspberrypi</span><span class="tag">#hdmi</span><span class="tag">#diy</span></div>
     </article>
 <article class="story" id="46279187">
       <h3 class="story-title"><a href="https://umbrel.com" target="_blank">Umbrel – Personal Cloud</a></h3>
+      
       <div class="story-meta">
-        139pts · 83c · <a href="https://news.ycombinator.com/item?id=46279187" target="_blank">HN#46279187</a>
+        139pts | 83c | <a href="https://news.ycombinator.com/item?id=46279187" target="_blank">HN#46279187</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -359,21 +447,25 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "I am uninterested in purchasing proprietary hardware running a proprietary operating system... you can&#x27;t extend it without their proprietary app store"
-          <div class="comment-author">— bastawhiz</div>
+          <div class="comment-author">-- bastawhiz</div>
+          
         </div><div class="comment">
           "A decade of personal cloud box attempts has shown the hard part isn&#x27;t the hardware, it&#x27;s the long-term social contract... once the company pivots or dies, you&#x27;re left with a sealed brick"
-          <div class="comment-author">— pedrozieg</div>
+          <div class="comment-author">-- pedrozieg</div>
+          
         </div><div class="comment">
           "I like Umbrel&#x27;s technical approach: Its apps are just docker compose files with a little extra... I did not like the reliability around app installations"
-          <div class="comment-author">— solarkraft</div>
+          <div class="comment-author">-- solarkraft</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#selfhosting</span><span class="tag">#privacy</span><span class="tag">#homeserver</span><span class="tag">#bitcoin</span></div>
     </article>
 <article class="story" id="46281944">
       <h3 class="story-title"><a href="https://www.reuters.com/world/americas/jetblue-flight-averts-mid-air-collision-with-us-air-force-jet-2025-12-15/" target="_blank">JetBlue flight averts mid-air collision with US Air Force jet</a></h3>
+      
       <div class="story-meta">
-        135pts · 54c · <a href="https://news.ycombinator.com/item?id=46281944" target="_blank">HN#46281944</a>
+        135pts | 54c | <a href="https://news.ycombinator.com/item?id=46281944" target="_blank">HN#46281944</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -389,21 +481,25 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Why was the Air Force plane&#x27;s transponder turned off? This is negligence that almost killed a plane full of people and endangered a national security operation"
-          <div class="comment-author">— pradmatic</div>
+          <div class="comment-author">-- pradmatic</div>
+          
         </div><div class="comment">
           "The US could issue a notice of an Alert Area where military operations are in progress AND could coordinate with Dutch airspace authorities"
-          <div class="comment-author">— BXLE_1</div>
+          <div class="comment-author">-- BXLE_1</div>
+          
         </div><div class="comment">
           "After the near miss from JetBlue, there was another near miss with a business jet yesterday morning"
-          <div class="comment-author">— maxboone</div>
+          <div class="comment-author">-- maxboone</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#aviation</span><span class="tag">#safety</span><span class="tag">#military</span><span class="tag">#nearmiss</span></div>
     </article>
 <article class="story" id="46278208">
       <h3 class="story-title"><a href="https://hpjansson.org/chafa/" target="_blank">Chafa: Terminal Graphics for the 21st Century</a></h3>
+      
       <div class="story-meta">
-        110pts · 19c · <a href="https://news.ycombinator.com/item?id=46278208" target="_blank">HN#46278208</a>
+        110pts | 19c | <a href="https://news.ycombinator.com/item?id=46278208" target="_blank">HN#46278208</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -419,21 +515,25 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "I&#x27;ve been trying for like three hours to get this to show in-line images with w3m"
-          <div class="comment-author">— cherrycreek00</div>
+          <div class="comment-author">-- cherrycreek00</div>
+          
         </div><div class="comment">
           "I learned about Chafa when I found a video editor that runs in the command line with keyboard control - vic - it just lets you insert split markers"
-          <div class="comment-author">— jazzyjackson</div>
+          <div class="comment-author">-- jazzyjackson</div>
+          
         </div><div class="comment">
           "I use chafa extensively, and it really is the best tool for terminal graphics... I use it as a fallback option for terminals without proper terminal graphics support"
-          <div class="comment-author">— joouha</div>
+          <div class="comment-author">-- joouha</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#terminal</span><span class="tag">#graphics</span><span class="tag">#cli</span><span class="tag">#devtools</span></div>
     </article>
 <article class="story" id="46277090">
       <h3 class="story-title"><a href="https://www.science.org/doi/10.1126/sciadv.adx7892" target="_blank">Cosmic-ray bath in a past supernova gives birth to Earth-like planets</a></h3>
+      
       <div class="story-meta">
-        81pts · 29c · <a href="https://news.ycombinator.com/item?id=46277090" target="_blank">HN#46277090</a>
+        81pts | 29c | <a href="https://news.ycombinator.com/item?id=46277090" target="_blank">HN#46277090</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -449,10 +549,12 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Why is it said that it takes a supernova to make elements heavier than iron? You&#x27;re not going to get iron-iron fusion, but what about proton-iron fusion?"
-          <div class="comment-author">— phkahler</div>
+          <div class="comment-author">-- phkahler</div>
+          
         </div><div class="comment">
           "The Universe coalesced into hydrogen and helium from a quark-gluon plasma soon after the Big Bang. It&#x27;s kind of staggering the sequence of events that occurred afterwards to bring us here"
-          <div class="comment-author">— jmyeet</div>
+          <div class="comment-author">-- jmyeet</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#space</span><span class="tag">#physics</span><span class="tag">#astronomy</span><span class="tag">#science</span></div>
@@ -465,8 +567,9 @@
       </div>
       <article class="story" id="46279123">
       <h3 class="story-title"><a href="https://ericdaigle.ca/posts/super-secure-maga-messaging-app-leaks-everyones-phone-number/" target="_blank">Super Secure Messaging App Leaks Everyone&#x27;s Phone Number</a></h3>
+      
       <div class="story-meta">
-        496pts · 232c · <a href="https://news.ycombinator.com/item?id=46279123" target="_blank">HN#46279123</a>
+        496pts | 232c | <a href="https://news.ycombinator.com/item?id=46279123" target="_blank">HN#46279123</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -482,21 +585,25 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "It literally takes a line to implement rate-limiting in Nginx. How do you ship an API without this?"
-          <div class="comment-author">— ericmcer</div>
+          <div class="comment-author">-- ericmcer</div>
+          
         </div><div class="comment">
           "Signal&#x27;s encrypted phone number lookup using hardware encrypted RAM is why this stuff is hard to get right"
-          <div class="comment-author">— josh2600</div>
+          <div class="comment-author">-- josh2600</div>
+          
         </div><div class="comment">
           "This might be opt-out serialization at fault - a programmer adds a field, forgets the annotation, voilà"
-          <div class="comment-author">— codedokode</div>
+          <div class="comment-author">-- codedokode</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#security</span><span class="tag">#privacy</span><span class="tag">#mobileapps</span><span class="tag">#fail</span></div>
     </article>
 <article class="story" id="46279241">
       <h3 class="story-title"><a href="https://community.letsencrypt.org/t/upcoming-changes-to-let-s-encrypt-certificates/243873" target="_blank">Upcoming Changes to Let&#x27;s Encrypt Certificates</a></h3>
+      
       <div class="story-meta">
-        225pts · 192c · <a href="https://news.ycombinator.com/item?id=46279241" target="_blank">HN#46279241</a>
+        225pts | 192c | <a href="https://news.ycombinator.com/item?id=46279241" target="_blank">HN#46279241</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -512,21 +619,25 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "These short lifetimes make Let&#x27;s Encrypt a central point of failure for much of the Internet"
-          <div class="comment-author">— Animats</div>
+          <div class="comment-author">-- Animats</div>
+          
         </div><div class="comment">
           "This isn&#x27;t LE&#x27;s decision - a 47 day max was voted on by the CA/Browser Forum"
-          <div class="comment-author">— btown</div>
+          <div class="comment-author">-- btown</div>
+          
         </div><div class="comment">
           "I&#x27;m kind of done with unnecessary policy ratcheting. Same with rotating passwords with 2FA, no one can justify it"
-          <div class="comment-author">— ottah</div>
+          <div class="comment-author">-- ottah</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#security</span><span class="tag">#tls</span><span class="tag">#infrastructure</span><span class="tag">#webdev</span></div>
     </article>
 <article class="story" id="46281182">
       <h3 class="story-title"><a href="https://www.wired.com/story/ford-kills-electric-f-150-lightning-for-hybrid/" target="_blank">Ford Kills the All-Electric F-150 Lightning</a></h3>
+      
       <div class="story-meta">
-        118pts · 148c · <a href="https://news.ycombinator.com/item?id=46281182" target="_blank">HN#46281182</a>
+        118pts | 148c | <a href="https://news.ycombinator.com/item?id=46281182" target="_blank">HN#46281182</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -542,21 +653,25 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "The price isn&#x27;t right for small businesses. These trucks are expensive and designed like iPhones to be disposable"
-          <div class="comment-author">— exabrial</div>
+          <div class="comment-author">-- exabrial</div>
+          
         </div><div class="comment">
           "I see a lot of them in Metro Vancouver where electricity is cheap and gas expensive"
-          <div class="comment-author">— izend</div>
+          <div class="comment-author">-- izend</div>
+          
         </div><div class="comment">
           "Looking at Ford&#x27;s press release, they&#x27;re calling the next-gen an &#x27;extended-range electric vehicle&#x27;"
-          <div class="comment-author">— hnburnsy</div>
+          <div class="comment-author">-- hnburnsy</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#ev</span><span class="tag">#automotive</span><span class="tag">#ford</span><span class="tag">#business</span></div>
     </article>
 <article class="story" id="46280887">
       <h3 class="story-title"><a href="https://www.thebignewsletter.com/p/secret-documents-show-pepsi-and-walmart" target="_blank">Secret Documents Show Pepsi and Walmart Colluded to Raise Food Prices</a></h3>
+      
       <div class="story-meta">
-        130pts · 32c · <a href="https://news.ycombinator.com/item?id=46280887" target="_blank">HN#46280887</a>
+        130pts | 32c | <a href="https://news.ycombinator.com/item?id=46280887" target="_blank">HN#46280887</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -572,21 +687,25 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "The bigger the company, the more power to dictate prices. Same with Amazon"
-          <div class="comment-author">— yndoendo</div>
+          <div class="comment-author">-- yndoendo</div>
+          
         </div><div class="comment">
           "Pepsi raised prices by double digits for seven quarters - and people kept buying junk food anyway"
-          <div class="comment-author">— GenerWork</div>
+          <div class="comment-author">-- GenerWork</div>
+          
         </div><div class="comment">
           "Complaint link: storage.courtlistener.com/recap/gov.uscourts.nysd.63..."
-          <div class="comment-author">— toomuchtodo</div>
+          <div class="comment-author">-- toomuchtodo</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#antitrust</span><span class="tag">#retail</span><span class="tag">#corporate</span><span class="tag">#economics</span></div>
     </article>
 <article class="story" id="46280080">
       <h3 class="story-title"><a href="https://arxiv.org/abs/2512.11146" target="_blank">A Quarter of US-Trained Scientists Eventually Leave</a></h3>
+      
       <div class="story-meta">
-        101pts · 113c · <a href="https://news.ycombinator.com/item?id=46280080" target="_blank">HN#46280080</a>
+        101pts | 113c | <a href="https://news.ycombinator.com/item?id=46280080" target="_blank">HN#46280080</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -602,13 +721,16 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "The number of students needed for research vastly exceeds junior faculty positions available"
-          <div class="comment-author">— msteffen</div>
+          <div class="comment-author">-- msteffen</div>
+          
         </div><div class="comment">
           "I believe there will be a significant discontinuity in this data starting 2025"
-          <div class="comment-author">— rolandr</div>
+          <div class="comment-author">-- rolandr</div>
+          
         </div><div class="comment">
           "The most lucrative tuition source is foreign students whose parents believe in the American Dream"
-          <div class="comment-author">— travisgriggs</div>
+          <div class="comment-author">-- travisgriggs</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#academia</span><span class="tag">#science</span><span class="tag">#immigration</span><span class="tag">#careers</span></div>
@@ -621,8 +743,9 @@
       </div>
       <article class="story" id="46272487">
       <h3 class="story-title"><a href="https://andyatkinson.com/avoid-uuid-version-4-primary-keys" target="_blank">Avoid UUID Version 4 Primary Keys</a></h3>
+      
       <div class="story-meta">
-        164pts · 174c · <a href="https://news.ycombinator.com/item?id=46272487" target="_blank">HN#46272487</a>
+        164pts | 174c | <a href="https://news.ycombinator.com/item?id=46272487" target="_blank">HN#46272487</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -638,21 +761,25 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "A prime example of premature optimization. Permanent identifiers should not carry data."
-          <div class="comment-author">— vintermann</div>
+          <div class="comment-author">-- vintermann</div>
+          
         </div><div class="comment">
           "This is incredibly database-specific. In distributed databases like Cockroach and Spanner, monotonic PKs are bad."
-          <div class="comment-author">— stickfigure</div>
+          <div class="comment-author">-- stickfigure</div>
+          
         </div><div class="comment">
           "UUIDv7 still seems like a reasonable compromise for small-to-medium databases."
-          <div class="comment-author">— benterix</div>
+          <div class="comment-author">-- benterix</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#databases</span><span class="tag">#postgres</span><span class="tag">#performance</span><span class="tag">#architecture</span></div>
     </article>
 <article class="story" id="46268452">
       <h3 class="story-title"><a href="https://martinalderson.com/posts/ai-agents-are-starting-to-eat-saas/" target="_blank">AI agents are starting to eat SaaS</a></h3>
+      
       <div class="story-meta">
-        257pts · 268c · <a href="https://news.ycombinator.com/item?id=46268452" target="_blank">HN#46268452</a>
+        257pts | 268c | <a href="https://news.ycombinator.com/item?id=46268452" target="_blank">HN#46268452</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -668,21 +795,25 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "The thesis doesn&#x27;t match my experience. Our end users can&#x27;t build their own tools. Their current system is Excel."
-          <div class="comment-author">— benzible</div>
+          <div class="comment-author">-- benzible</div>
+          
         </div><div class="comment">
           "I&#x27;m seeing the opposite. AI is increasing demand for bespoke integrations that were previously too expensive."
-          <div class="comment-author">— jillesvangurp</div>
+          <div class="comment-author">-- jillesvangurp</div>
+          
         </div><div class="comment">
           "While I am somewhat worried about AI capabilities, I&#x27;m not losing too much sleep over it."
-          <div class="comment-author">— jwr</div>
+          <div class="comment-author">-- jwr</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#ai</span><span class="tag">#saas</span><span class="tag">#startups</span><span class="tag">#business</span></div>
     </article>
 <article class="story" id="46275079">
       <h3 class="story-title"><a href="https://www.mlive.com/news/2025/12/thousands-of-us-farmers-have-parkinsons-they-blame-a-deadly-pesticide.html" target="_blank">Thousands of U.S. farmers have Parkinson&#x27;s. They blame a deadly pesticide</a></h3>
+      
       <div class="story-meta">
-        112pts · 55c · <a href="https://news.ycombinator.com/item?id=46275079" target="_blank">HN#46275079</a>
+        112pts | 55c | <a href="https://news.ycombinator.com/item?id=46275079" target="_blank">HN#46275079</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -698,18 +829,21 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "The deeper I dug the more I ultimately moved toward the conclusion that indeed big corporations are the baddies."
-          <div class="comment-author">— zug_zug</div>
+          <div class="comment-author">-- zug_zug</div>
+          
         </div><div class="comment">
           "An excellent movie on basically the same topic is Michael Clayton, with George Clooney."
-          <div class="comment-author">— keiferski</div>
+          <div class="comment-author">-- keiferski</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#health</span><span class="tag">#agriculture</span><span class="tag">#policy</span><span class="tag">#regulation</span></div>
     </article>
 <article class="story" id="46270282">
       <h3 class="story-title"><a href="http://viznut.fi/unscii/" target="_blank">Unscii</a></h3>
+      
       <div class="story-meta">
-        234pts · 30c · <a href="https://news.ycombinator.com/item?id=46270282" target="_blank">HN#46270282</a>
+        234pts | 30c | <a href="https://news.ycombinator.com/item?id=46270282" target="_blank">HN#46270282</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -725,21 +859,25 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "See also: The Ultimate Oldschool PC Font Pack from VileR at int10h.org"
-          <div class="comment-author">— susam</div>
+          <div class="comment-author">-- susam</div>
+          
         </div><div class="comment">
           "The favicon is either exactly or a really close copy of The Grate Book of Moo&#x27;s logo."
-          <div class="comment-author">— hypercube33</div>
+          <div class="comment-author">-- hypercube33</div>
+          
         </div><div class="comment">
           "I have a neat side project that converts raw binary to unicode and back."
-          <div class="comment-author">— pmarreck</div>
+          <div class="comment-author">-- pmarreck</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#fonts</span><span class="tag">#retro</span><span class="tag">#terminal</span><span class="tag">#unicode</span></div>
     </article>
 <article class="story" id="46270386">
       <h3 class="story-title"><a href="https://drobinin.com/posts/the-whole-app-is-a-blob/" target="_blank">The Whole App is a Blob</a></h3>
+      
       <div class="story-meta">
-        119pts · 70c · <a href="https://news.ycombinator.com/item?id=46270386" target="_blank">HN#46270386</a>
+        119pts | 70c | <a href="https://news.ycombinator.com/item?id=46270386" target="_blank">HN#46270386</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -755,13 +893,16 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "I learned Italian the hardest way, doing grammar exercises with 200 sentences per paragraph. I abandoned flashcards on the 2nd month."
-          <div class="comment-author">— culebron21</div>
+          <div class="comment-author">-- culebron21</div>
+          
         </div><div class="comment">
           "I&#x27;m not a fan of this style. It seems like Duolingo with a different interface. I had good success with languagetransfer.org"
-          <div class="comment-author">— fainpul</div>
+          <div class="comment-author">-- fainpul</div>
+          
         </div><div class="comment">
           "The ideal language learning app should have a HUGE repository of raw materials written by native speakers."
-          <div class="comment-author">— raincole</div>
+          <div class="comment-author">-- raincole</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#apps</span><span class="tag">#languages</span><span class="tag">#design</span><span class="tag">#ios</span></div>
@@ -774,8 +915,9 @@
       </div>
       <article class="story" id="46268854">
       <h3 class="story-title"><a href="https://news.bloomberglaw.com/bankruptcy-law/robot-vacuum-roomba-maker-files-for-bankruptcy-after-35-years" target="_blank">Robot vacuum Roomba maker files for bankruptcy after 35 years</a></h3>
+      
       <div class="story-meta">
-        191pts · 182c · <a href="https://news.ycombinator.com/item?id=46268854" target="_blank">HN#46268854</a>
+        191pts | 182c | <a href="https://news.ycombinator.com/item?id=46268854" target="_blank">HN#46268854</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -801,21 +943,25 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "This is the cost of complacency. I tried Roborock and couldn&#x27;t believe how much better it was."
-          <div class="comment-author">— simonjgreen</div>
+          <div class="comment-author">-- simonjgreen</div>
+          
         </div><div class="comment">
           "Are there any good robo-vacuums that still clean your floor if the internet is down?"
-          <div class="comment-author">— furyg3</div>
+          <div class="comment-author">-- furyg3</div>
+          
         </div><div class="comment">
           "I&#x27;ve had my Miele for 15 years. I see no reason why it can&#x27;t go another 10."
-          <div class="comment-author">— furyg3</div>
+          <div class="comment-author">-- furyg3</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#robotics</span><span class="tag">#bankruptcy</span><span class="tag">#hardware</span><span class="tag">#china</span></div>
     </article>
 <article class="story" id="46264492">
       <h3 class="story-title"><a href="https://borretti.me/article/hashcards-plain-text-spaced-repetition" target="_blank">Hashcards: A plain-text spaced repetition system</a></h3>
+      
       <div class="story-meta">
-        330pts · 147c · <a href="https://news.ycombinator.com/item?id=46264492" target="_blank">HN#46264492</a>
+        330pts | 147c | <a href="https://news.ycombinator.com/item?id=46264492" target="_blank">HN#46264492</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -833,21 +979,25 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "The real power of spaced repetition is behavior modification, not flashcards."
-          <div class="comment-author">— btilly</div>
+          <div class="comment-author">-- btilly</div>
+          
         </div><div class="comment">
           "Every criticism of Anki on that list was either highly subjective, exaggerated, or outright wrong and unkind."
-          <div class="comment-author">— tpoacher</div>
+          <div class="comment-author">-- tpoacher</div>
+          
         </div><div class="comment">
           "Thank you, finally an SRS I can use for my plain text files."
-          <div class="comment-author">— rasengan0</div>
+          <div class="comment-author">-- rasengan0</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#learning</span><span class="tag">#tools</span><span class="tag">#opensource</span><span class="tag">#productivity</span></div>
     </article>
 <article class="story" id="46266102">
       <h3 class="story-title"><a href="https://culi.bearblog.dev/jsdoc-is-typescript/" target="_blank">JSDoc is TypeScript</a></h3>
+      
       <div class="story-meta">
-        173pts · 200c · <a href="https://news.ycombinator.com/item?id=46266102" target="_blank">HN#46266102</a>
+        173pts | 200c | <a href="https://news.ycombinator.com/item?id=46266102" target="_blank">HN#46266102</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -865,18 +1015,21 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "The types exist whether you write them down or not. If they&#x27;re not written down, they&#x27;re in your head. Your head is very volatile."
-          <div class="comment-author">— Waterluvian</div>
+          <div class="comment-author">-- Waterluvian</div>
+          
         </div><div class="comment">
           "I&#x27;m a fan of anything that allows me to build without a build step."
-          <div class="comment-author">— prisenco</div>
+          <div class="comment-author">-- prisenco</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#typescript</span><span class="tag">#javascript</span><span class="tag">#webdev</span><span class="tag">#devtools</span></div>
     </article>
 <article class="story" id="46265362">
       <h3 class="story-title"><a href="https://thenewstack.io/adafruit-arduinos-rules-are-incompatible-with-open-source/" target="_blank">Adafruit: Arduino&#x27;s Rules Are &#x27;Incompatible With Open Source&#x27;</a></h3>
+      
       <div class="story-meta">
-        218pts · 111c · <a href="https://news.ycombinator.com/item?id=46265362" target="_blank">HN#46265362</a>
+        218pts | 111c | <a href="https://news.ycombinator.com/item?id=46265362" target="_blank">HN#46265362</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -894,18 +1047,21 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Ever since I got ESP32 chips, I haven&#x27;t thought about Arduinos except to download the UI."
-          <div class="comment-author">— MPSimmons</div>
+          <div class="comment-author">-- MPSimmons</div>
+          
         </div><div class="comment">
           "The Raspberry Pi Pico is much nicer to work with. Getting a binary onto the board is just dragging a file."
-          <div class="comment-author">— procaryote</div>
+          <div class="comment-author">-- procaryote</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#opensource</span><span class="tag">#hardware</span><span class="tag">#arduino</span><span class="tag">#licensing</span></div>
     </article>
 <article class="story" id="46268709">
       <h3 class="story-title"><a href="https://english.elpais.com/technology/2025-11-30/if-ai-replaces-workers-should-it-also-pay-taxes.html" target="_blank">If AI replaces workers, should it also pay taxes?</a></h3>
+      
       <div class="story-meta">
-        131pts · 208c · <a href="https://news.ycombinator.com/item?id=46268709" target="_blank">HN#46268709</a>
+        131pts | 208c | <a href="https://news.ycombinator.com/item?id=46268709" target="_blank">HN#46268709</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -923,10 +1079,12 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "No, not the AI. Just the owner of means of production like AI. Capital owners successfully avoiding taxes is one of the fundamental problems of our time."
-          <div class="comment-author">— doener</div>
+          <div class="comment-author">-- doener</div>
+          
         </div><div class="comment">
           "If corporations are legal persons, when they break the law, should they go to jail?"
-          <div class="comment-author">— bloomingeek</div>
+          <div class="comment-author">-- bloomingeek</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#ai</span><span class="tag">#economics</span><span class="tag">#policy</span><span class="tag">#taxation</span></div>
@@ -939,8 +1097,9 @@
       </div>
       <article class="story" id="46265362">
       <h3 class="story-title"><a href="https://thenewstack.io/adafruit-arduinos-rules-are-incompatible-with-open-source/" target="_blank">Adafruit: Arduino&#x27;s Rules Are &#x27;Incompatible With Open Source&#x27;</a></h3>
+      
       <div class="story-meta">
-        110pts · 40c · <a href="https://news.ycombinator.com/item?id=46265362" target="_blank">HN#46265362</a>
+        110pts | 40c | <a href="https://news.ycombinator.com/item?id=46265362" target="_blank">HN#46265362</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -956,21 +1115,25 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Anything that was open, stays open. Now contemplate open Android and Google Play Services"
-          <div class="comment-author">— Animats</div>
+          <div class="comment-author">-- Animats</div>
+          
         </div><div class="comment">
           "Considering the EFF and Arduino positions in favour, I can&#x27;t be bothered that Adafruit is trying to drum up marketing content"
-          <div class="comment-author">— arjie</div>
+          <div class="comment-author">-- arjie</div>
+          
         </div><div class="comment">
           "They do not even own the CPU or bootloader. Qualcomm can&#x27;t pressure these rules to market"
-          <div class="comment-author">— Surac</div>
+          <div class="comment-author">-- Surac</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#opensource</span><span class="tag">#hardware</span><span class="tag">#arduino</span><span class="tag">#licensing</span></div>
     </article>
 <article class="story" id="46270972">
       <h3 class="story-title"><a href="https://aval.bearblog.dev/nvidiaproteins/" target="_blank">Why Proteins Fold and How GPUs Help Us Fold</a></h3>
+      
       <div class="story-meta">
-        20pts · 2c · <a href="https://news.ycombinator.com/item?id=46270972" target="_blank">HN#46270972</a>
+        20pts | 2c | <a href="https://news.ycombinator.com/item?id=46270972" target="_blank">HN#46270972</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -986,18 +1149,21 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Did AlphaFold not use TPUs?"
-          <div class="comment-author">— VirusNewbie</div>
+          <div class="comment-author">-- VirusNewbie</div>
+          
         </div><div class="comment">
           "Was this text AI-generated?"
-          <div class="comment-author">— atomlib</div>
+          <div class="comment-author">-- atomlib</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#ai</span><span class="tag">#biology</span><span class="tag">#gpu</span><span class="tag">#science</span></div>
     </article>
 <article class="story" id="46178966">
       <h3 class="story-title"><a href="https://en.jardineriaon.com/The-talipot-palm-trees-of-Rio-de-Janeiro-bloom-for-the-first-and-only-time.html" target="_blank">Rio de Janeiro&#x27;s Talipot Palm Trees Bloom for the First and Only Time</a></h3>
+      
       <div class="story-meta">
-        125pts · 32c · <a href="https://news.ycombinator.com/item?id=46178966" target="_blank">HN#46178966</a>
+        125pts | 32c | <a href="https://news.ycombinator.com/item?id=46178966" target="_blank">HN#46178966</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1013,21 +1179,25 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "I lived in Flamengo for years and passed these trees often, never knew this about them. The diversity of palms there is incredible"
-          <div class="comment-author">— iterateoften</div>
+          <div class="comment-author">-- iterateoften</div>
+          
         </div><div class="comment">
           "The matter deserving one sentence is expanded to hundreds with dozens of ads. Slop of some kind"
-          <div class="comment-author">— zkmon</div>
+          <div class="comment-author">-- zkmon</div>
+          
         </div><div class="comment">
           "Better link: AP News article"
-          <div class="comment-author">— holografix</div>
+          <div class="comment-author">-- holografix</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#nature</span><span class="tag">#brazil</span><span class="tag">#botany</span><span class="tag">#urbandesign</span></div>
     </article>
 <article class="story" id="46270298">
       <h3 class="story-title"><a href="https://arborium.bearcove.eu/" target="_blank">Arborium: Tree-sitter Code Highlighting with Native and WASM Targets</a></h3>
+      
       <div class="story-meta">
-        51pts · 10c · <a href="https://news.ycombinator.com/item?id=46270298" target="_blank">HN#46270298</a>
+        51pts | 10c | <a href="https://news.ycombinator.com/item?id=46270298" target="_blank">HN#46270298</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1043,21 +1213,25 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "I&#x27;m building an online 3D editor and the ease of highlighting static text via Arborium seems nice"
-          <div class="comment-author">— mg</div>
+          <div class="comment-author">-- mg</div>
+          
         </div><div class="comment">
           "The sponsorships achieved by the author is admirable - they really make a lot of valuable OSS"
-          <div class="comment-author">— jasonjmcghee</div>
+          <div class="comment-author">-- jasonjmcghee</div>
+          
         </div><div class="comment">
           "Better link is the author&#x27;s article about this rather than the artifact produced"
-          <div class="comment-author">— joshka</div>
+          <div class="comment-author">-- joshka</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#rust</span><span class="tag">#devtools</span><span class="tag">#opensource</span><span class="tag">#webdev</span></div>
     </article>
 <article class="story" id="46264491">
       <h3 class="story-title"><a href="https://news.ycombinator.com/item?id=46264491" target="_blank">Ask HN: What Are You Working On? (December 2025)</a></h3>
+      
       <div class="story-meta">
-        236pts · 759c · <a href="https://news.ycombinator.com/item?id=46264491" target="_blank">HN#46264491</a>
+        236pts | 759c | <a href="https://news.ycombinator.com/item?id=46264491" target="_blank">HN#46264491</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1073,13 +1247,16 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Pagecord - an independent blogging builder. Simple and makes you want to write more. Free forever or $29/yr"
-          <div class="comment-author">— lylo</div>
+          <div class="comment-author">-- lylo</div>
+          
         </div><div class="comment">
           "BobaLearn - read and generate graded Chinese stories. Why pay for books when I can make it free?"
-          <div class="comment-author">— johntiger1</div>
+          <div class="comment-author">-- johntiger1</div>
+          
         </div><div class="comment">
           "MyTinyCafe - a PWA for my wife and daughter to order coffee at home. I&#x27;m the barista"
-          <div class="comment-author">— krlx</div>
+          <div class="comment-author">-- krlx</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#projects</span><span class="tag">#startup</span><span class="tag">#community</span><span class="tag">#showhn</span></div>
@@ -1092,8 +1269,9 @@
       </div>
       <article class="story" id="46224303">
       <h3 class="story-title"><a href="https://alinpanaitiu.com/blog/developing-hardwax-oil/" target="_blank">Developing a food-safe finish for my wooden spoons</a></h3>
+      
       <div class="story-meta">
-        180pts · 107c · <a href="https://news.ycombinator.com/item?id=46224303" target="_blank">HN#46224303</a>
+        180pts | 107c | <a href="https://news.ycombinator.com/item?id=46224303" target="_blank">HN#46224303</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1110,8 +1288,9 @@
     </article>
 <article class="story" id="46189905">
       <h3 class="story-title"><a href="https://web.stanford.edu/class/cs81n/command.txt" target="_blank">In the Beginning was the Command Line (1999)</a></h3>
+      
       <div class="story-meta">
-        121pts · 57c · <a href="https://news.ycombinator.com/item?id=46189905" target="_blank">HN#46189905</a>
+        121pts | 57c | <a href="https://news.ycombinator.com/item?id=46189905" target="_blank">HN#46189905</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1128,8 +1307,9 @@
     </article>
 <article class="story" id="46269891">
       <h3 class="story-title"><a href="https://old.reddit.com/r/SoundCloudMusic/comments/1pltd19/soundcloud_just_banned_vpn_access/" target="_blank">SoundCloud just banned VPN access</a></h3>
+      
       <div class="story-meta">
-        58pts · 35c · <a href="https://news.ycombinator.com/item?id=46269891" target="_blank">HN#46269891</a>
+        58pts | 35c | <a href="https://news.ycombinator.com/item?id=46269891" target="_blank">HN#46269891</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1146,8 +1326,9 @@
     </article>
 <article class="story" id="46265015">
       <h3 class="story-title"><a href="https://www.typeframe.net/" target="_blank">The Typeframe PX-88 Portable Computing System</a></h3>
+      
       <div class="story-meta">
-        104pts · 33c · <a href="https://news.ycombinator.com/item?id=46265015" target="_blank">HN#46265015</a>
+        104pts | 33c | <a href="https://news.ycombinator.com/item?id=46265015" target="_blank">HN#46265015</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1164,8 +1345,9 @@
     </article>
 <article class="story" id="46268869">
       <h3 class="story-title"><a href="https://www.capros.org/" target="_blank">CapROS: Capability-Based Reliable Operating System</a></h3>
+      
       <div class="story-meta">
-        66pts · 25c · <a href="https://news.ycombinator.com/item?id=46268869" target="_blank">HN#46268869</a>
+        66pts | 25c | <a href="https://news.ycombinator.com/item?id=46268869" target="_blank">HN#46268869</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1188,8 +1370,9 @@
       </div>
       <article class="story" id="46264704">
       <h3 class="story-title"><a href="https://johnjames.blog/posts/graphql-the-enterprise-honeymoon-is-over" target="_blank">GraphQL: The enterprise honeymoon is over</a></h3>
+      
       <div class="story-meta">
-        188pts · 164c · <a href="https://news.ycombinator.com/item?id=46264704" target="_blank">HN#46264704</a>
+        188pts | 164c | <a href="https://news.ycombinator.com/item?id=46264704" target="_blank">HN#46264704</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1205,15 +1388,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "GraphQL is necessarily tightly coupled to your backend - you can&#x27;t design a schema that does something other than what&#x27;s actually implemented. OpenAPI, on the other hand... I&#x27;ve seen countless implementors get it wrong. Specs drift from reality, documentation lies"
-          <div class="comment-author">— jwaldrip</div>
+          <div class="comment-author">-- jwaldrip</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#graphql</span><span class="tag">#api</span><span class="tag">#rest</span><span class="tag">#enterprise</span></div>
     </article>
 <article class="story" id="46262816">
       <h3 class="story-title"><a href="https://www.ufried.com/blog/ironies_of_ai_2/" target="_blank">AI and the ironies of automation - Part 2</a></h3>
+      
       <div class="story-meta">
-        215pts · 92c · <a href="https://news.ycombinator.com/item?id=46262816" target="_blank">HN#46262816</a>
+        215pts | 92c | <a href="https://news.ycombinator.com/item?id=46262816" target="_blank">HN#46262816</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1229,15 +1414,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "We&#x27;ve all accepted calculators into our lives as being faster and correct when utilized correctly, but we emphasize the need to know how to do the math in educational settings"
-          <div class="comment-author">— z_</div>
+          <div class="comment-author">-- z_</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#ai</span><span class="tag">#automation</span><span class="tag">#future</span><span class="tag">#philosophy</span></div>
     </article>
 <article class="story" id="46266875">
       <h3 class="story-title"><a href="https://cybercultural.com/p/lastfm-audioscrobbler-2002/" target="_blank">2002: Last.fm and Audioscrobbler Herald the Social Web</a></h3>
+      
       <div class="story-meta">
-        157pts · 91c · <a href="https://news.ycombinator.com/item?id=46266875" target="_blank">HN#46266875</a>
+        157pts | 91c | <a href="https://news.ycombinator.com/item?id=46266875" target="_blank">HN#46266875</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1253,15 +1440,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "I find it funny and sad that people get so excited about those Wrapped year-end things on Spotify when these companies are basically withholding all this data all year long and then pretend like it&#x27;s a special treat when they doll out a peek at it once a year"
-          <div class="comment-author">— Triphibian</div>
+          <div class="comment-author">-- Triphibian</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#music</span><span class="tag">#history</span><span class="tag">#lastfm</span><span class="tag">#social</span></div>
     </article>
 <article class="story" id="46264492">
       <h3 class="story-title"><a href="https://borretti.me/article/hashcards-plain-text-spaced-repetition" target="_blank">Hashcards: A plain-text spaced repetition system</a></h3>
+      
       <div class="story-meta">
-        255pts · 106c · <a href="https://news.ycombinator.com/item?id=46264492" target="_blank">HN#46264492</a>
+        255pts | 106c | <a href="https://news.ycombinator.com/item?id=46264492" target="_blank">HN#46264492</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1277,15 +1466,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Wouldn&#x27;t this invalidate card&#x27;s review history if I am to fix a typo in the card&#x27;s text?"
-          <div class="comment-author">— eps</div>
+          <div class="comment-author">-- eps</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#learning</span><span class="tag">#cli</span><span class="tag">#tools</span><span class="tag">#plaintext</span></div>
     </article>
 <article class="story" id="46264068">
       <h3 class="story-title"><a href="https://www.cam.ac.uk/stories/price-bot-army-global-index" target="_blank">Price of a bot army revealed across online platforms</a></h3>
+      
       <div class="story-meta">
-        96pts · 33c · <a href="https://news.ycombinator.com/item?id=46264068" target="_blank">HN#46264068</a>
+        96pts | 33c | <a href="https://news.ycombinator.com/item?id=46264068" target="_blank">HN#46264068</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1301,7 +1492,8 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Since I do not have a smartphone or a cell carrier, I only have a voip number, which most sites think is a fake number. As a result I often have to use these shady SMS verification services to get my own personal legitimate accounts open"
-          <div class="comment-author">— lrvick</div>
+          <div class="comment-author">-- lrvick</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#bots</span><span class="tag">#security</span><span class="tag">#research</span><span class="tag">#socialmedia</span></div>
@@ -1314,8 +1506,9 @@
       </div>
       <article class="story" id="46267385">
       <h3 class="story-title"><a href="https://status.claude.com/incidents/9g6qpr72ttbr" target="_blank">Anthropic Outage for Opus 4.5 and Sonnet 4/4.5 across all services</a></h3>
+      
       <div class="story-meta">
-        234pts · 119c · <a href="https://news.ycombinator.com/item?id=46267385" target="_blank">HN#46267385</a>
+        234pts | 119c | <a href="https://news.ycombinator.com/item?id=46267385" target="_blank">HN#46267385</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1331,15 +1524,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "I&#x27;m imagining a steampunk dystopia in 50 years: &#x27;all world production stopped, LLM hosting went down. The market is in free-fall. Sam, are you there?&#x27;"
-          <div class="comment-author">— irishcoffee</div>
+          <div class="comment-author">-- irishcoffee</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#ai</span><span class="tag">#outage</span><span class="tag">#infrastructure</span><span class="tag">#anthropic</span></div>
     </article>
 <article class="story" id="46266102">
       <h3 class="story-title"><a href="https://culi.bearblog.dev/jsdoc-is-typescript/" target="_blank">JSDoc is TypeScript</a></h3>
+      
       <div class="story-meta">
-        92pts · 127c · <a href="https://news.ycombinator.com/item?id=46266102" target="_blank">HN#46266102</a>
+        92pts | 127c | <a href="https://news.ycombinator.com/item?id=46266102" target="_blank">HN#46266102</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1355,15 +1550,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "The types exist whether you write them down or not. If they&#x27;re not written down, they&#x27;re written down in your head. Your head is very volatile."
-          <div class="comment-author">— Waterluvian</div>
+          <div class="comment-author">-- Waterluvian</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#javascript</span><span class="tag">#typescript</span><span class="tag">#jsdoc</span><span class="tag">#webdev</span></div>
     </article>
 <article class="story" id="46262021">
       <h3 class="story-title"><a href="https://trigger.dev/blog/shai-hulud-postmortem" target="_blank">Shai-Hulud compromised a dev machine and raided GitHub org access: a post-mortem</a></h3>
+      
       <div class="story-meta">
-        186pts · 111c · <a href="https://news.ycombinator.com/item?id=46262021" target="_blank">HN#46262021</a>
+        186pts | 111c | <a href="https://news.ycombinator.com/item?id=46262021" target="_blank">HN#46262021</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1379,15 +1576,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "No, your security failure is that you use a package manager that allows third-parties push arbitrary code into your product with no oversight."
-          <div class="comment-author">— snickerbockers</div>
+          <div class="comment-author">-- snickerbockers</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#security</span><span class="tag">#npm</span><span class="tag">#supplychain</span><span class="tag">#javascript</span></div>
     </article>
 <article class="story" id="46264491">
       <h3 class="story-title"><a href="https://news.ycombinator.com/item?id=46264491" target="_blank">Ask HN: What Are You Working On? (December 2025)</a></h3>
+      
       <div class="story-meta">
-        136pts · 482c · <a href="https://news.ycombinator.com/item?id=46264491" target="_blank">HN#46264491</a>
+        136pts | 482c | <a href="https://news.ycombinator.com/item?id=46264491" target="_blank">HN#46264491</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1403,15 +1602,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Simplification of my digital self. Removed most of my online accounts. Removed all my VPS&#x27;s. Removed most apps from my phone except core ones."
-          <div class="comment-author">— systemtest</div>
+          <div class="comment-author">-- systemtest</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#askhn</span><span class="tag">#projects</span><span class="tag">#community</span><span class="tag">#minimalism</span></div>
     </article>
 <article class="story" id="46264492">
       <h3 class="story-title"><a href="https://borretti.me/article/hashcards-plain-text-spaced-repetition" target="_blank">Hashcards: A plain-text spaced repetition system</a></h3>
+      
       <div class="story-meta">
-        238pts · 101c · <a href="https://news.ycombinator.com/item?id=46264492" target="_blank">HN#46264492</a>
+        238pts | 101c | <a href="https://news.ycombinator.com/item?id=46264492" target="_blank">HN#46264492</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1427,7 +1628,8 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "I think that the real power of spaced repetition is not in flashcard applications like this. It is in behavior modification."
-          <div class="comment-author">— btilly</div>
+          <div class="comment-author">-- btilly</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#learning</span><span class="tag">#cli</span><span class="tag">#tools</span><span class="tag">#productivity</span></div>
@@ -1440,8 +1642,9 @@
       </div>
       <article class="story" id="46205089">
       <h3 class="story-title"><a href="https://alavi.me/blog/e-ink-tablet-as-monitor-linux/" target="_blank">Using E-Ink tablet as monitor for Linux</a></h3>
+      
       <div class="story-meta">
-        143pts · 54c · <a href="https://news.ycombinator.com/item?id=46205089" target="_blank">HN#46205089</a>
+        143pts | 54c | <a href="https://news.ycombinator.com/item?id=46205089" target="_blank">HN#46205089</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1457,15 +1660,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "I backed the Modos Paper Monitor on Crowd Supply to see how close they can come to a &#x27;monitor&#x27; experience with e-paper"
-          <div class="comment-author">— ChuckMcM</div>
+          <div class="comment-author">-- ChuckMcM</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#eink</span><span class="tag">#hardware</span><span class="tag">#linux</span><span class="tag">#productivity</span></div>
     </article>
 <article class="story" id="46213985">
       <h3 class="story-title"><a href="https://en.wikipedia.org/wiki/Cat_gap" target="_blank">Cat Gap</a></h3>
+      
       <div class="story-meta">
-        122pts · 29c · <a href="https://news.ycombinator.com/item?id=46213985" target="_blank">HN#46213985</a>
+        122pts | 29c | <a href="https://news.ycombinator.com/item?id=46213985" target="_blank">HN#46213985</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1481,15 +1686,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "I once was thinking that if intelligent machines surpassed human intelligence... what if this already happened, i.e. cats were superintelligent, invented humans to serve them and then they had no need for their own intelligence"
-          <div class="comment-author">— verbify</div>
+          <div class="comment-author">-- verbify</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#paleontology</span><span class="tag">#evolution</span><span class="tag">#nature</span><span class="tag">#science</span></div>
     </article>
 <article class="story" id="46260596">
       <h3 class="story-title"><a href="https://www.hcn.org/issues/57-11/heavy-metal-is-healing-teens-on-the-blackfeet-nation/" target="_blank">Heavy metal is healing teens on the Blackfeet Nation</a></h3>
+      
       <div class="story-meta">
-        77pts · 31c · <a href="https://news.ycombinator.com/item?id=46260596" target="_blank">HN#46260596</a>
+        77pts | 31c | <a href="https://news.ycombinator.com/item?id=46260596" target="_blank">HN#46260596</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1505,15 +1712,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Metal music offers a sort of catharsis for people that can&#x27;t scream into the void, but feel a need to. It&#x27;s not about manifesting violence, but containing it and directing it into a creative outlet"
-          <div class="comment-author">— mariusor</div>
+          <div class="comment-author">-- mariusor</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#music</span><span class="tag">#therapy</span><span class="tag">#culture</span><span class="tag">#mental</span></div>
     </article>
 <article class="story" id="46260106">
       <h3 class="story-title"><a href="https://1393.xyz/writing/if-a-meta-ai-model-can-read-a-brain-wide-signal-why-wouldnt-the-brain" target="_blank">If a Meta AI model can read a brain-wide signal, why wouldn&#x27;t the brain?</a></h3>
+      
       <div class="story-meta">
-        94pts · 53c · <a href="https://news.ycombinator.com/item?id=46260106" target="_blank">HN#46260106</a>
+        94pts | 53c | <a href="https://news.ycombinator.com/item?id=46260106" target="_blank">HN#46260106</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1529,15 +1738,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "If a camera can see your eyes, why can&#x27;t you?"
-          <div class="comment-author">— jstanley</div>
+          <div class="comment-author">-- jstanley</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#neuroscience</span><span class="tag">#ai</span><span class="tag">#consciousness</span><span class="tag">#research</span></div>
     </article>
 <article class="story" id="46257599">
       <h3 class="story-title"><a href="https://technicshistory.com/2025/12/13/the-rise-of-computer-games-part-i-adventure/" target="_blank">The Rise of Computer Games, Part I: Adventure</a></h3>
+      
       <div class="story-meta">
-        107pts · 44c · <a href="https://news.ycombinator.com/item?id=46257599" target="_blank">HN#46257599</a>
+        107pts | 44c | <a href="https://news.ycombinator.com/item?id=46257599" target="_blank">HN#46257599</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1553,7 +1764,8 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "One of my dream games is a truly open world text adventure. I got a glimpse by having ChatGPT run this game, but it started hallucinating after a few rounds"
-          <div class="comment-author">— glimshe</div>
+          <div class="comment-author">-- glimshe</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#gaming</span><span class="tag">#history</span><span class="tag">#retro</span><span class="tag">#culture</span></div>
@@ -1566,8 +1778,9 @@
       </div>
       <article class="story" id="46223882">
       <h3 class="story-title"><a href="https://simonwillison.net/2025/Dec/10/html-tools/" target="_blank">Useful patterns for building HTML tools</a></h3>
+      
       <div class="story-meta">
-        251pts · 72c · <a href="https://news.ycombinator.com/item?id=46223882" target="_blank">HN#46223882</a>
+        251pts | 72c | <a href="https://news.ycombinator.com/item?id=46223882" target="_blank">HN#46223882</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1583,15 +1796,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "I just pop the bundled HTML file on a shared drive"
-          <div class="comment-author">— tkclough</div>
+          <div class="comment-author">-- tkclough</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#web</span><span class="tag">#html</span><span class="tag">#javascript</span><span class="tag">#minimalism</span></div>
     </article>
 <article class="story" id="46210705">
       <h3 class="story-title"><a href="https://antonz.org/accepted/runtime-secret/" target="_blank">Go Proposal: Secret Mode</a></h3>
+      
       <div class="story-meta">
-        168pts · 74c · <a href="https://news.ycombinator.com/item?id=46210705" target="_blank">HN#46210705</a>
+        168pts | 74c | <a href="https://news.ycombinator.com/item?id=46210705" target="_blank">HN#46210705</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1607,15 +1822,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "How much control does a language runtime have over whether the memory controller actually zeros out physical memory? My guess is very little"
-          <div class="comment-author">— jabedude</div>
+          <div class="comment-author">-- jabedude</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#go</span><span class="tag">#security</span><span class="tag">#cryptography</span><span class="tag">#memory</span></div>
     </article>
 <article class="story" id="46258163">
       <h3 class="story-title"><a href="https://sandyuraz.com/blogs/bourdain/" target="_blank">Recovering Anthony Bourdain&#x27;s (really) lost Li.st&#x27;s</a></h3>
+      
       <div class="story-meta">
-        128pts · 41c · <a href="https://news.ycombinator.com/item?id=46258163" target="_blank">HN#46258163</a>
+        128pts | 41c | <a href="https://news.ycombinator.com/item?id=46258163" target="_blank">HN#46258163</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1631,15 +1848,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Great Dead Bars of New York: SIBERIA in any of its iterations. The one on the subway being the best."
-          <div class="comment-author">— tsujamin</div>
+          <div class="comment-author">-- tsujamin</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#archive</span><span class="tag">#culture</span><span class="tag">#data</span><span class="tag">#bourdain</span></div>
     </article>
 <article class="story" id="46259064">
       <h3 class="story-title"><a href="https://fil-c.org/seccomp" target="_blank">Linux Sandboxes and Fil-C</a></h3>
+      
       <div class="story-meta">
-        114pts · 27c · <a href="https://news.ycombinator.com/item?id=46259064" target="_blank">HN#46259064</a>
+        114pts | 27c | <a href="https://news.ycombinator.com/item?id=46259064" target="_blank">HN#46259064</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1655,15 +1874,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "I hope this project gets more traction. I would love to see a memory safe battle tested sudo or polkit in my package manager"
-          <div class="comment-author">— razighter777</div>
+          <div class="comment-author">-- razighter777</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#security</span><span class="tag">#memorysafety</span><span class="tag">#linux</span><span class="tag">#sandbox</span></div>
     </article>
 <article class="story" id="46257607">
       <h3 class="story-title"><a href="https://susam.net/fed-24-years-of-posts-to-markov-model.html" target="_blank">I fed 24 years of my blog posts to a Markov model</a></h3>
+      
       <div class="story-meta">
-        104pts · 41c · <a href="https://news.ycombinator.com/item?id=46257607" target="_blank">HN#46257607</a>
+        104pts | 41c | <a href="https://news.ycombinator.com/item?id=46257607" target="_blank">HN#46257607</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1679,7 +1900,8 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "I used it as a kind of &#x27;dream well&#x27; whenever I wanted to draw some muse from the same deep spring"
-          <div class="comment-author">— vunderba</div>
+          <div class="comment-author">-- vunderba</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#markov</span><span class="tag">#ai</span><span class="tag">#nlp</span><span class="tag">#blogging</span></div>
@@ -1692,8 +1914,9 @@
       </div>
       <article class="story" id="46257339">
       <h3 class="story-title"><a href="https://ipinfo.io/blog/vpn-location-mismatch-report" target="_blank">VPN location claims don&#x27;t match real traffic exits</a></h3>
+      
       <div class="story-meta">
-        258pts · 148c · <a href="https://news.ycombinator.com/item?id=46257339" target="_blank">HN#46257339</a>
+        258pts | 148c | <a href="https://news.ycombinator.com/item?id=46257339" target="_blank">HN#46257339</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1709,15 +1932,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "I almost flew to Peru with a rackmount server in my luggage because I couldn&#x27;t find a legit provider there"
-          <div class="comment-author">— preinheimer</div>
+          <div class="comment-author">-- preinheimer</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#vpn</span><span class="tag">#privacy</span><span class="tag">#security</span><span class="tag">#investigation</span></div>
     </article>
 <article class="story" id="46255991">
       <h3 class="story-title"><a href="https://blog.tymscar.com/posts/gleamaoc2025/" target="_blank">I tried Gleam for Advent of Code</a></h3>
+      
       <div class="story-meta">
-        241pts · 134c · <a href="https://news.ycombinator.com/item?id=46255991" target="_blank">HN#46255991</a>
+        241pts | 134c | <a href="https://news.ycombinator.com/item?id=46255991" target="_blank">HN#46255991</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1733,15 +1958,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "I fear LLMs have frozen programming language advancement and adoption for anything past 2021"
-          <div class="comment-author">— bnchrch</div>
+          <div class="comment-author">-- bnchrch</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#gleam</span><span class="tag">#programming</span><span class="tag">#functional</span><span class="tag">#erlang</span></div>
     </article>
 <article class="story" id="46255285">
       <h3 class="story-title"><a href="https://news.ycombinator.com/item?id=46255285" target="_blank">Ask HN: How can I get better at using AI for programming?</a></h3>
+      
       <div class="story-meta">
-        229pts · 267c · <a href="https://news.ycombinator.com/item?id=46255285" target="_blank">HN#46255285</a>
+        229pts | 267c | <a href="https://news.ycombinator.com/item?id=46255285" target="_blank">HN#46255285</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1757,15 +1984,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "I have never once said &#x27;Go build feature x&#x27; and let it run off. I have a very conversational style of building with these tools, and I&#x27;m very blunt with them when I think they&#x27;re wrong"
-          <div class="comment-author">— ianbutler</div>
+          <div class="comment-author">-- ianbutler</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#ai</span><span class="tag">#programming</span><span class="tag">#claude</span><span class="tag">#productivity</span></div>
     </article>
 <article class="story" id="46257714">
       <h3 class="story-title"><a href="https://www.twilio.com/en-us/blog/developers/best-practices/goodbye-microservices" target="_blank">Why Twilio Segment moved from microservices back to a monolith</a></h3>
+      
       <div class="story-meta">
-        176pts · 135c · <a href="https://news.ycombinator.com/item?id=46257714" target="_blank">HN#46257714</a>
+        176pts | 135c | <a href="https://news.ycombinator.com/item?id=46257714" target="_blank">HN#46257714</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1781,15 +2010,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "If you must deploy every service because of a library change, you don&#x27;t have microservices, you have a distributed monolith with extra steps"
-          <div class="comment-author">— mjr00</div>
+          <div class="comment-author">-- mjr00</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#microservices</span><span class="tag">#architecture</span><span class="tag">#engineering</span><span class="tag">#twilio</span></div>
     </article>
 <article class="story" id="46258163">
       <h3 class="story-title"><a href="https://sandyuraz.com/blogs/bourdain/" target="_blank">Recovering Anthony Bourdain&#x27;s (really) lost Li.st&#x27;s</a></h3>
+      
       <div class="story-meta">
-        125pts · 41c · <a href="https://news.ycombinator.com/item?id=46258163" target="_blank">HN#46258163</a>
+        125pts | 41c | <a href="https://news.ycombinator.com/item?id=46258163" target="_blank">HN#46258163</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1805,7 +2036,8 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Great Dead Bars of New York: SIBERIA in any of its iterations. The one on the subway being the best. Timely, as the latest reincarnation of SIBERIA just re-opened in 59th Street/Columbus Circle station"
-          <div class="comment-author">— tsujamin</div>
+          <div class="comment-author">-- tsujamin</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#archive</span><span class="tag">#culture</span><span class="tag">#data</span><span class="tag">#bourdain</span></div>
@@ -1818,8 +2050,9 @@
       </div>
       <article class="story" id="46252114">
       <h3 class="story-title"><a href="https://hey.paris/posts/appleid/" target="_blank">Apple has locked my Apple ID, and I have no recourse</a></h3>
+      
       <div class="story-meta">
-        1048pts · 599c · <a href="https://news.ycombinator.com/item?id=46252114" target="_blank">HN#46252114</a>
+        1048pts | 599c | <a href="https://news.ycombinator.com/item?id=46252114" target="_blank">HN#46252114</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1835,15 +2068,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "I am not a casual user. I have literally written the book on Apple development... I have effectively been an evangelist for this company&#x27;s products and services"
-          <div class="comment-author">— pavel_lishin</div>
+          <div class="comment-author">-- pavel_lishin</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#apple</span><span class="tag">#security</span><span class="tag">#customer</span><span class="tag">#corporate</span></div>
     </article>
 <article class="story" id="46177160">
       <h3 class="story-title"><a href="https://petapixel.com/2025/12/06/this-photographer-built-an-awesome-medium-format-rangefinder-and-so-can-you/" target="_blank">Photographer built a medium-format rangefinder, and so can you</a></h3>
+      
       <div class="story-meta">
-        100pts · 18c · <a href="https://news.ycombinator.com/item?id=46177160" target="_blank">HN#46177160</a>
+        100pts | 18c | <a href="https://news.ycombinator.com/item?id=46177160" target="_blank">HN#46177160</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1859,15 +2094,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "This is a viewfinder camera with scale focus. Rangefinders have a complex mechanism to measure distance which would be beyond the scope of this project"
-          <div class="comment-author">— galago</div>
+          <div class="comment-author">-- galago</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#photography</span><span class="tag">#opensource</span><span class="tag">#diy</span><span class="tag">#hardware</span></div>
     </article>
 <article class="story" id="46192181">
       <h3 class="story-title"><a href="https://quant.engineering/exchange-order-book-distributed-logs.html" target="_blank">How exchanges turn order books into distributed logs</a></h3>
+      
       <div class="story-meta">
-        71pts · 37c · <a href="https://news.ycombinator.com/item?id=46192181" target="_blank">HN#46192181</a>
+        71pts | 37c | <a href="https://news.ycombinator.com/item?id=46192181" target="_blank">HN#46192181</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1883,15 +2120,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "This is just hilarious at a meta level... no real world allocation of resources is improved by having to game transactions to this level of time granularity. This is just rent-seeking disguised as a useful service"
-          <div class="comment-author">— jshaqaw</div>
+          <div class="comment-author">-- jshaqaw</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#finance</span><span class="tag">#systems</span><span class="tag">#trading</span><span class="tag">#architecture</span></div>
     </article>
 <article class="story" id="46210044">
       <h3 class="story-title"><a href="https://eavan.blog/posts/beautiful-sandpiles.html" target="_blank">Beautiful Abelian Sandpiles</a></h3>
+      
       <div class="story-meta">
-        98pts · 17c · <a href="https://news.ycombinator.com/item?id=46210044" target="_blank">HN#46210044</a>
+        98pts | 17c | <a href="https://news.ycombinator.com/item?id=46210044" target="_blank">HN#46210044</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1907,15 +2146,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "I implemented this in Rust some years back. It is connected to some serious research mathematics"
-          <div class="comment-author">— FredrikMeyer</div>
+          <div class="comment-author">-- FredrikMeyer</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#math</span><span class="tag">#visualization</span><span class="tag">#algorithms</span><span class="tag">#fractals</span></div>
     </article>
 <article class="story" id="46252993">
       <h3 class="story-title"><a href="https://news.ycombinator.com/item?id=46252993" target="_blank">Computer Animator and Amiga fanatic Dick Van Dyke turns 100</a></h3>
+      
       <div class="story-meta">
-        149pts · 32c · <a href="https://news.ycombinator.com/item?id=46252993" target="_blank">HN#46252993</a>
+        149pts | 32c | <a href="https://news.ycombinator.com/item?id=46252993" target="_blank">HN#46252993</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1931,7 +2172,8 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "In my 30&#x27;s, I exercised to look good. In my 50&#x27;s, to stay fit. In my 70&#x27;s, to stay ambulatory. In my 80&#x27;s, to avoid assisted living. Now in my 90&#x27;s, I&#x27;m just doing it out of pure defiance"
-          <div class="comment-author">— tzs</div>
+          <div class="comment-author">-- tzs</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#culture</span><span class="tag">#retro</span><span class="tag">#amiga</span><span class="tag">#technology</span></div>
@@ -1944,8 +2186,9 @@
       </div>
       <article class="story" id="46241368">
       <h3 class="story-title"><a href="https://0l.de/blog/2025/11/xiaomi-humidifier/" target="_blank">Freeing a Xiaomi humidifier from the cloud</a></h3>
+      
       <div class="story-meta">
-        93pts · 42c · <a href="https://news.ycombinator.com/item?id=46241368" target="_blank">HN#46241368</a>
+        93pts | 42c | <a href="https://news.ycombinator.com/item?id=46241368" target="_blank">HN#46241368</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1961,15 +2204,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "A humidifier needs network capability incase someone discovers a new version of water"
-          <div class="comment-author">— N_Lens</div>
+          <div class="comment-author">-- N_Lens</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#iot</span><span class="tag">#hardware</span><span class="tag">#privacy</span><span class="tag">#homeassistant</span></div>
     </article>
 <article class="story" id="46180911">
       <h3 class="story-title"><a href="https://simpleobservability.com/blog/go-portable-until-isnt" target="_blank">Go is portable, until it isn&#x27;t</a></h3>
+      
       <div class="story-meta">
-        87pts · 69c · <a href="https://news.ycombinator.com/item?id=46180911" target="_blank">HN#46180911</a>
+        87pts | 69c | <a href="https://news.ycombinator.com/item?id=46180911" target="_blank">HN#46180911</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -1985,15 +2230,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Once you use CGO, portability is gone. This can happen subtly without you knowing it."
-          <div class="comment-author">— bitbasher</div>
+          <div class="comment-author">-- bitbasher</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#go</span><span class="tag">#devops</span><span class="tag">#portability</span><span class="tag">#cgo</span></div>
     </article>
 <article class="story" id="46250309">
       <h3 class="story-title"><a href="https://lawrencecpaulson.github.io//2025/12/05/History_of_Proof_Assistants.html" target="_blank">50 years of proof assistants</a></h3>
+      
       <div class="story-meta">
-        89pts · 13c · <a href="https://news.ycombinator.com/item?id=46250309" target="_blank">HN#46250309</a>
+        89pts | 13c | <a href="https://news.ycombinator.com/item?id=46250309" target="_blank">HN#46250309</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2009,15 +2256,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "I can see &#x27;no progress in 50 years&#x27; in fundamental physics... In biology or chemistry it&#x27;s absurd to say that"
-          <div class="comment-author">— PaulHoule</div>
+          <div class="comment-author">-- PaulHoule</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#formalmethods</span><span class="tag">#proofassistants</span><span class="tag">#verification</span><span class="tag">#research</span></div>
     </article>
 <article class="story" id="46249538">
       <h3 class="story-title"><a href="https://github.com/ringtailsoftware/uvm32" target="_blank">Show HN: Tiny VM sandbox in C with apps in Rust, C and Zig</a></h3>
+      
       <div class="story-meta">
-        137pts · 9c · <a href="https://news.ycombinator.com/item?id=46249538" target="_blank">HN#46249538</a>
+        137pts | 9c | <a href="https://news.ycombinator.com/item?id=46249538" target="_blank">HN#46249538</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2033,15 +2282,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "This would be quite cool for adding scripting to medical devices, avoiding the need to revalidate the &#x27;core&#x27; each time you change a feature."
-          <div class="comment-author">— snops</div>
+          <div class="comment-author">-- snops</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#riscv</span><span class="tag">#embedded</span><span class="tag">#vm</span><span class="tag">#opensource</span></div>
     </article>
 <article class="story" id="46183688">
       <h3 class="story-title"><a href="https://cns.utexas.edu/news/research/so-what-should-we-call-grue-jay" target="_blank">So What Should We Call This – A Grue Jay?</a></h3>
+      
       <div class="story-meta">
-        54pts · 21c · <a href="https://news.ycombinator.com/item?id=46183688" target="_blank">HN#46183688</a>
+        54pts | 21c | <a href="https://news.ycombinator.com/item?id=46183688" target="_blank">HN#46183688</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2057,7 +2308,8 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "&#x27;Grue&#x27; has a surprising variety of meanings... in Zork, a monster that eats adventurers in the dark"
-          <div class="comment-author">— gdavisson</div>
+          <div class="comment-author">-- gdavisson</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#climate</span><span class="tag">#biology</span><span class="tag">#evolution</span><span class="tag">#nature</span></div>
@@ -2070,8 +2322,9 @@
       </div>
       <article class="story" id="46247000">
       <h3 class="story-title"><a href="https://techcrunch.com/2025/12/12/home-depot-exposed-access-to-internal-systems-for-a-year-says-researcher/" target="_blank">Home Depot GitHub token exposed for a year</a></h3>
+      
       <div class="story-meta">
-        201pts · 119c · <a href="https://news.ycombinator.com/item?id=46247000" target="_blank">HN#46247000</a>
+        201pts | 119c | <a href="https://news.ycombinator.com/item?id=46247000" target="_blank">HN#46247000</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2087,15 +2340,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Last week I accidentally exposed my OpenAI, Anthropic, and Gemini keys. Within seconds I got an email from Anthropic and they have already disabled my keys. Neither OpenAI nor Google alerted me in anyway."
-          <div class="comment-author">— dnw</div>
+          <div class="comment-author">-- dnw</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#security</span><span class="tag">#breach</span><span class="tag">#github</span><span class="tag">#corporate</span></div>
     </article>
 <article class="story" id="46245622">
       <h3 class="story-title"><a href="https://www.quantamagazine.org/string-theory-inspires-a-brilliant-baffling-new-math-proof-20251212/" target="_blank">String theory inspires a brilliant, baffling new math proof</a></h3>
+      
       <div class="story-meta">
-        115pts · 108c · <a href="https://news.ycombinator.com/item?id=46245622" target="_blank">HN#46245622</a>
+        115pts | 108c | <a href="https://news.ycombinator.com/item?id=46245622" target="_blank">HN#46245622</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2111,15 +2366,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "That&#x27;s arguably what String Theory is good for, producing interesting, entertaining, and possibly even useful math."
-          <div class="comment-author">— EA</div>
+          <div class="comment-author">-- EA</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#math</span><span class="tag">#physics</span><span class="tag">#stringtheory</span><span class="tag">#research</span></div>
     </article>
 <article class="story" id="46243655">
       <h3 class="story-title"><a href="https://arstechnica.com/gadgets/2025/12/the-ars-technica-guide-to-dumb-tvs/" target="_blank">Sick of smart TVs? Here are your best options</a></h3>
+      
       <div class="story-meta">
-        118pts · 150c · <a href="https://news.ycombinator.com/item?id=46243655" target="_blank">HN#46243655</a>
+        118pts | 150c | <a href="https://news.ycombinator.com/item?id=46243655" target="_blank">HN#46243655</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2135,15 +2392,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "I have LG OLED jailbroken using rootmy.tv, it was pretty trivial. It&#x27;s basically a linux computer with a huge screen, you can customize it, SSH into it, map any commands to the remote."
-          <div class="comment-author">— taxmeifyoucan</div>
+          <div class="comment-author">-- taxmeifyoucan</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#privacy</span><span class="tag">#hardware</span><span class="tag">#tv</span><span class="tag">#consumer</span></div>
     </article>
 <article class="story" id="46239076">
       <h3 class="story-title"><a href="https://www.whitehouse.gov/presidential-actions/2025/12/eliminating-state-law-obstruction-of-national-artificial-intelligence-policy/" target="_blank">Trump signs executive order for single national AI regulation framework</a></h3>
+      
       <div class="story-meta">
-        78pts · 107c · <a href="https://news.ycombinator.com/item?id=46239076" target="_blank">HN#46239076</a>
+        78pts | 107c | <a href="https://news.ycombinator.com/item?id=46239076" target="_blank">HN#46239076</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2159,15 +2418,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Is it me or does this seem like naked corruption at its worst? These tech CEOs hang out at the White House and donate to superfluous causes and suddenly the executive is protecting their interests."
-          <div class="comment-author">— rubyfan</div>
+          <div class="comment-author">-- rubyfan</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#ai</span><span class="tag">#policy</span><span class="tag">#regulation</span><span class="tag">#politics</span></div>
     </article>
 <article class="story" id="46248470">
       <h3 class="story-title"><a href="https://invoice.secvuln.info/" target="_blank">Security issues with electronic invoices</a></h3>
+      
       <div class="story-meta">
-        75pts · 42c · <a href="https://news.ycombinator.com/item?id=46248470" target="_blank">HN#46248470</a>
+        75pts | 42c | <a href="https://news.ycombinator.com/item?id=46248470" target="_blank">HN#46248470</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2183,7 +2444,8 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "This talk seems set out to prove that &#x27;XML is Bad&#x27;. Yes XML-DSig isn&#x27;t great with XPaths, but most of these attack vectors has been known for 10 years."
-          <div class="comment-author">— tnorgaard</div>
+          <div class="comment-author">-- tnorgaard</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#security</span><span class="tag">#xml</span><span class="tag">#vulnerability</span><span class="tag">#enterprise</span></div>
@@ -2196,8 +2458,9 @@
       </div>
       <article class="story" id="46248323">
       <h3 class="story-title"><a href="https://ratsplaydoom.com/" target="_blank">Rats Play DOOM</a></h3>
+      
       <div class="story-meta">
-        156pts · 63c · <a href="https://news.ycombinator.com/item?id=46248323" target="_blank">HN#46248323</a>
+        156pts | 63c | <a href="https://news.ycombinator.com/item?id=46248323" target="_blank">HN#46248323</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2213,15 +2476,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "The year is 2034. With only a few million of capital left, and facing bankruptcy, they knew that only one option remained. &#x27;Bring me the rats.&#x27;"
-          <div class="comment-author">— dinobones</div>
+          <div class="comment-author">-- dinobones</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#neuroscience</span><span class="tag">#vr</span><span class="tag">#research</span></div>
     </article>
 <article class="story" id="46248644">
       <h3 class="story-title"><a href="https://developer.apple.com/documentation/macos-release-notes/macos-26_2-release-notes#RDMA-over-Thunderbolt" target="_blank">macOS 26.2 enables fast AI clusters with RDMA over Thunderbolt</a></h3>
+      
       <div class="story-meta">
-        231pts · 107c · <a href="https://news.ycombinator.com/item?id=46248644" target="_blank">HN#46248644</a>
+        231pts | 107c | <a href="https://news.ycombinator.com/item?id=46248644" target="_blank">HN#46248644</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2237,15 +2502,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Apple should setup their own giant cloud of M chips with tons of vram, make Metal as good as possible for AI purposes, then market the cloud as allowing self-hosted models for companies and individuals that care about privacy. They would clean up in all kinds of sectors whose data can&#x27;t touch the big LLM companies."
-          <div class="comment-author">— int32_64</div>
+          <div class="comment-author">-- int32_64</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#apple</span><span class="tag">#ai</span><span class="tag">#hardware</span></div>
     </article>
 <article class="story" id="46250332">
       <h3 class="story-title"><a href="https://simonwillison.net/2025/Dec/12/openai-skills/" target="_blank">OpenAI are quietly adopting skills, now available in ChatGPT and Codex CLI</a></h3>
+      
       <div class="story-meta">
-        42pts · 15c · <a href="https://news.ycombinator.com/item?id=46250332" target="_blank">HN#46250332</a>
+        42pts | 15c | <a href="https://news.ycombinator.com/item?id=46250332" target="_blank">HN#46250332</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2261,15 +2528,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "I&#x27;m not sure if I have the right mental model for a &#x27;skill&#x27;. It&#x27;s basically a context-management tool?"
-          <div class="comment-author">— lacker</div>
+          <div class="comment-author">-- lacker</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#ai</span><span class="tag">#openai</span><span class="tag">#tooling</span></div>
     </article>
 <article class="story" id="46248859">
       <h3 class="story-title"><a href="https://unifoundry.com/unifont/index.html" target="_blank">GNU Unifont</a></h3>
+      
       <div class="story-meta">
-        139pts · 42c · <a href="https://news.ycombinator.com/item?id=46248859" target="_blank">HN#46248859</a>
+        139pts | 42c | <a href="https://news.ycombinator.com/item?id=46248859" target="_blank">HN#46248859</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2285,15 +2554,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "We use GNU Unifont in Solvespace for the text window/property browser. Some people have CJK stuff in their designs and it &#x27;just works&#x27; on all platforms."
-          <div class="comment-author">— phkahler</div>
+          <div class="comment-author">-- phkahler</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#unicode</span><span class="tag">#fonts</span><span class="tag">#opensource</span></div>
     </article>
 <article class="story" id="46234734">
       <h3 class="story-title"><a href="https://victorpoughon.github.io/bidicalc/" target="_blank">Show HN: I made a spreadsheet where formulas also update backwards</a></h3>
+      
       <div class="story-meta">
-        38pts · 10c · <a href="https://news.ycombinator.com/item?id=46234734" target="_blank">HN#46234734</a>
+        38pts | 10c | <a href="https://news.ycombinator.com/item?id=46234734" target="_blank">HN#46234734</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2309,7 +2580,8 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "A bidirectional formula is also known as an integrity constraint in databases (plus some triggers for restoring the constraint upon updates)!"
-          <div class="comment-author">— remywang</div>
+          <div class="comment-author">-- remywang</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#spreadsheet</span><span class="tag">#ux</span><span class="tag">#programming</span></div>
@@ -2322,8 +2594,9 @@
       </div>
       <article class="story" id="46234788">
       <h3 class="story-title"><a href="https://openai.com/index/introducing-gpt-5-2/" target="_blank">GPT-5.2</a></h3>
+      
       <div class="story-meta">
-        1096pts · 963c · <a href="https://news.ycombinator.com/item?id=46234788" target="_blank">HN#46234788</a>
+        1096pts | 963c | <a href="https://news.ycombinator.com/item?id=46234788" target="_blank">HN#46234788</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2339,15 +2612,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "LLMs always hallucinate, but we sometimes get lucky when the hallucinations match up with reality"
-          <div class="comment-author">— commenter</div>
+          <div class="comment-author">-- commenter</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#ai</span><span class="tag">#openai</span><span class="tag">#llm</span></div>
     </article>
 <article class="story" id="46239177">
       <h3 class="story-title"><a href="https://yaky.dev/2025-12-11-nokia-n900-necromancy/" target="_blank">Nokia N900 Necromancy</a></h3>
+      
       <div class="story-meta">
-        395pts · 152c · <a href="https://news.ycombinator.com/item?id=46239177" target="_blank">HN#46239177</a>
+        395pts | 152c | <a href="https://news.ycombinator.com/item?id=46239177" target="_blank">HN#46239177</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2363,15 +2638,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "I installed a BitTorrent client, found the release on Pirate Bay, successfully torrented just the subtitle file, and used an editor to read the subtitles"
-          <div class="comment-author">— sollewitt</div>
+          <div class="comment-author">-- sollewitt</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#hardware</span><span class="tag">#retrotech</span><span class="tag">#diy</span></div>
     </article>
 <article class="story" id="46239629">
       <h3 class="story-title"><a href="https://www.isaaa.org/kc/cropbiotechupdate/article/default.asp?ID=21607" target="_blank">CRISPR Fungus: Protein-packed, sustainable, and tastes like meat</a></h3>
+      
       <div class="story-meta">
-        232pts · 153c · <a href="https://news.ycombinator.com/item?id=46239629" target="_blank">HN#46239629</a>
+        232pts | 153c | <a href="https://news.ycombinator.com/item?id=46239629" target="_blank">HN#46239629</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2387,15 +2664,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "The production process of gene-edited MP is more environmentally friendly than chicken meat and cell-cultured meat"
-          <div class="comment-author">— SapporoChris</div>
+          <div class="comment-author">-- SapporoChris</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#biotech</span><span class="tag">#sustainability</span><span class="tag">#food</span></div>
     </article>
 <article class="story" id="46239752">
       <h3 class="story-title"><a href="https://journal.james-zhan.com/google-de-indexed-my-entire-bear-blog-and-i-dont-know-why/" target="_blank">Google de-indexed Bear Blog and I don&#x27;t know why</a></h3>
+      
       <div class="story-meta">
-        290pts · 119c · <a href="https://news.ycombinator.com/item?id=46239752" target="_blank">HN#46239752</a>
+        290pts | 119c | <a href="https://news.ycombinator.com/item?id=46239752" target="_blank">HN#46239752</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2411,15 +2690,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Traffic to my blog plummeted this year and you can never be entirely sure how it happened"
-          <div class="comment-author">— firefoxd</div>
+          <div class="comment-author">-- firefoxd</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#google</span><span class="tag">#seo</span><span class="tag">#blogging</span></div>
     </article>
 <article class="story" id="46174114">
       <h3 class="story-title"><a href="https://andreasjhkarlsson.github.io//jekyll/update/2023/12/27/4-billion-if-statements.html" target="_blank">4 billion if statements (2023)</a></h3>
+      
       <div class="story-meta">
-        298pts · 91c · <a href="https://news.ycombinator.com/item?id=46174114" target="_blank">HN#46174114</a>
+        298pts | 91c | <a href="https://news.ycombinator.com/item?id=46174114" target="_blank">HN#46174114</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2435,7 +2716,8 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "I went from thousands of indexed pages to about 100"
-          <div class="comment-author">— donatj</div>
+          <div class="comment-author">-- donatj</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#programming</span><span class="tag">#satire</span><span class="tag">#performance</span></div>
@@ -2448,8 +2730,9 @@
       </div>
       <article class="story" id="46242795">
       <h3 class="story-title"><a href="https://arxiv.org/abs/2512.08093" target="_blank">Training LLMs for Honesty via Confessions</a></h3>
+      
       <div class="story-meta">
-        18pts · 5c · <a href="https://news.ycombinator.com/item?id=46242795" target="_blank">HN#46242795</a>
+        18pts | 5c | <a href="https://news.ycombinator.com/item?id=46242795" target="_blank">HN#46242795</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2465,15 +2748,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "dishonesty may arise due to the effects of reinforcement learning (RL), where challenges with reward shaping can result in a training process that inadvertently incentivizes the model to lie"
-          <div class="comment-author">— manarth</div>
+          <div class="comment-author">-- manarth</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#ai</span><span class="tag">#research</span><span class="tag">#ethics</span></div>
     </article>
 <article class="story" id="46229437">
       <h3 class="story-title"><a href="https://github.com/fr33-sh/Tripwire" target="_blank">Tripwire: A new anti evil maid defense</a></h3>
+      
       <div class="story-meta">
-        21pts · 14c · <a href="https://news.ycombinator.com/item?id=46229437" target="_blank">HN#46229437</a>
+        21pts | 14c | <a href="https://news.ycombinator.com/item?id=46229437" target="_blank">HN#46229437</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2489,15 +2774,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "The classic &#x27;Detecting unauthorized physical access with beans, lentils and colored rice&#x27; approach is simpler to understand and simpler to implement"
-          <div class="comment-author">— neuralkoi</div>
+          <div class="comment-author">-- neuralkoi</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#security</span><span class="tag">#hardware</span><span class="tag">#privacy</span></div>
     </article>
 <article class="story" id="46186990">
       <h3 class="story-title"><a href="https://folk.computer/guides/what-folk-can-do" target="_blank">What folk can do</a></h3>
+      
       <div class="story-meta">
-        19pts · 10c · <a href="https://news.ycombinator.com/item?id=46186990" target="_blank">HN#46186990</a>
+        19pts | 10c | <a href="https://news.ycombinator.com/item?id=46186990" target="_blank">HN#46186990</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2513,15 +2800,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "What I cannot understand is why they left Dynamicland and made it a product. (Which is against everything that Bret Victor stands for)"
-          <div class="comment-author">— pmkary</div>
+          <div class="comment-author">-- pmkary</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#programming</span><span class="tag">#ux</span><span class="tag">#research</span></div>
     </article>
 <article class="story" id="46189962">
       <h3 class="story-title"><a href="https://hypirion.com/musings/use-python-for-scripting" target="_blank">Use Python for Scripting</a></h3>
+      
       <div class="story-meta">
-        5pts · 6c · <a href="https://news.ycombinator.com/item?id=46189962" target="_blank">HN#46189962</a>
+        5pts | 6c | <a href="https://news.ycombinator.com/item?id=46189962" target="_blank">HN#46189962</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2537,15 +2826,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "How do you handle packages? I want scripts to be a single file with a shebang, not a repo with a requirements.txt"
-          <div class="comment-author">— mubou2</div>
+          <div class="comment-author">-- mubou2</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#python</span><span class="tag">#scripting</span><span class="tag">#devtools</span></div>
     </article>
 <article class="story" id="46237358">
       <h3 class="story-title"><a href="https://news.ycombinator.com/item?id=46237358" target="_blank">Show HN: Autofix Bot – Hybrid static analysis and AI code review agent</a></h3>
+      
       <div class="story-meta">
-        14pts · 1c · <a href="https://news.ycombinator.com/item?id=46237358" target="_blank">HN#46237358</a>
+        14pts | 1c | <a href="https://news.ycombinator.com/item?id=46237358" target="_blank">HN#46237358</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2561,7 +2852,8 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "&#x27;shifted bottleneck to code review&#x27;... understatement of decade."
-          <div class="comment-author">— nickphx</div>
+          <div class="comment-author">-- nickphx</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#ai</span><span class="tag">#codeanalysis</span><span class="tag">#devtools</span></div>
@@ -2574,8 +2866,9 @@
       </div>
       <article class="story" id="46242871">
       <h3 class="story-title"><a href="https://infrastruktur.oebb.at/en/projects-for-austria/railway-lines/southern-line-vienna-villach/koralm-railway" target="_blank">After 27 years within budget Austria opens 6th longest railway tunnel in the world</a></h3>
+      
       <div class="story-meta">
-        177pts · 69c · <a href="https://news.ycombinator.com/item?id=46242871" target="_blank">HN#46242871</a>
+        177pts | 69c | <a href="https://news.ycombinator.com/item?id=46242871" target="_blank">HN#46242871</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2591,15 +2884,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "This headline is a bit odd and doesn&#x27;t represent the original title nor article content. What does &#x27;within budget&#x27; mean here?"
-          <div class="comment-author">— franciscop</div>
+          <div class="comment-author">-- franciscop</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#infrastructure</span><span class="tag">#europe</span><span class="tag">#transit</span></div>
     </article>
 <article class="story" id="46243543">
       <h3 class="story-title"><a href="https://itsfoss.com/news/tor-rust-rewrite-progress/" target="_blank">The Tor Project is switching to Rust</a></h3>
+      
       <div class="story-meta">
-        91pts · 41c · <a href="https://news.ycombinator.com/item?id=46243543" target="_blank">HN#46243543</a>
+        91pts | 41c | <a href="https://news.ycombinator.com/item?id=46243543" target="_blank">HN#46243543</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2615,15 +2910,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Complete rewrites are always a bad idea ... ［mutters of agreement］ ... except in Rust! ［cheering］"
-          <div class="comment-author">— jjgreen</div>
+          <div class="comment-author">-- jjgreen</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#rust</span><span class="tag">#security</span><span class="tag">#opensource</span></div>
     </article>
 <article class="story" id="46232003">
       <h3 class="story-title"><a href="https://www.paradedb.com/blog/when-tokenization-becomes-token" target="_blank">From text to token: How tokenization pipelines work</a></h3>
+      
       <div class="story-meta">
-        23pts · 1c · <a href="https://news.ycombinator.com/item?id=46232003" target="_blank">HN#46232003</a>
+        23pts | 1c | <a href="https://news.ycombinator.com/item?id=46232003" target="_blank">HN#46232003</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2639,15 +2936,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Notably tokenization for traditional search. LLMs use very different tokenization with very different goals"
-          <div class="comment-author">— wongarsu</div>
+          <div class="comment-author">-- wongarsu</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#search</span><span class="tag">#databases</span><span class="tag">#nlp</span></div>
     </article>
 <article class="story" id="46243904">
       <h3 class="story-title"><a href="https://www.dbpro.app/blog/sqlite-json-virtual-columns-indexing" target="_blank">SQLite JSON at Full Index Speed Using Generated Columns</a></h3>
+      
       <div class="story-meta">
-        4pts · 1c · <a href="https://news.ycombinator.com/item?id=46243904" target="_blank">HN#46243904</a>
+        4pts | 1c | <a href="https://news.ycombinator.com/item?id=46243904" target="_blank">HN#46243904</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2663,15 +2962,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "I was inspired to write this blog post after reading bambax&#x27;s comment on a HN post back in 2023"
-          <div class="comment-author">— upmostly</div>
+          <div class="comment-author">-- upmostly</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#sqlite</span><span class="tag">#databases</span><span class="tag">#json</span></div>
     </article>
 <article class="story" id="46243883">
       <h3 class="story-title"><a href="https://fedorarepository.org/" target="_blank">Fedora: Open-source repository for long-term digital preservation</a></h3>
+      
       <div class="story-meta">
-        7pts · 2c · <a href="https://news.ycombinator.com/item?id=46243883" target="_blank">HN#46243883</a>
+        7pts | 2c | <a href="https://news.ycombinator.com/item?id=46243883" target="_blank">HN#46243883</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2687,7 +2988,8 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "To avoid misunderstandings, this repository is about a project at Cornell University named the Flexible Extensible Digital Object Repository Architecture (FEDORA), not a Red Hat one."
-          <div class="comment-author">— fodmap</div>
+          <div class="comment-author">-- fodmap</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#archival</span><span class="tag">#opensource</span><span class="tag">#preservation</span></div>
@@ -2700,8 +3002,9 @@
       </div>
       <article class="story" id="46241763">
       <h3 class="story-title"><a href="https://lucassifoni.info/blog/miniscope-tiny-telescope/" target="_blank">The tiniest yet real telescope I&#x27;ve built</a></h3>
+      
       <div class="story-meta">
-        107pts · 21c · <a href="https://news.ycombinator.com/item?id=46241763" target="_blank">HN#46241763</a>
+        107pts | 21c | <a href="https://news.ycombinator.com/item?id=46241763" target="_blank">HN#46241763</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2717,15 +3020,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "I almost considered reflaboring the exahenge, but of course it would be a ridiculous prospect for a project of this type. I reflabored the exahenge."
-          <div class="comment-author">— Nition</div>
+          <div class="comment-author">-- Nition</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#hardware</span><span class="tag">#3dprinting</span><span class="tag">#optics</span></div>
     </article>
 <article class="story" id="46174114">
       <h3 class="story-title"><a href="https://andreasjhkarlsson.github.io//jekyll/update/2023/12/27/4-billion-if-statements.html" target="_blank">4B If Statements</a></h3>
+      
       <div class="story-meta">
-        23pts · 5c · <a href="https://news.ycombinator.com/item?id=46174114" target="_blank">HN#46174114</a>
+        23pts | 5c | <a href="https://news.ycombinator.com/item?id=46174114" target="_blank">HN#46174114</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2741,15 +3046,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Amazing!"
-          <div class="comment-author">— SiempreViernes</div>
+          <div class="comment-author">-- SiempreViernes</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#programming</span><span class="tag">#satire</span><span class="tag">#performance</span></div>
     </article>
 <article class="story" id="46241849">
       <h3 class="story-title"><a href="https://vulpinecitrus.info/blog/guarding-git-forge-ai-scrapers/" target="_blank">Guarding My Git Forge Against AI Scrapers</a></h3>
+      
       <div class="story-meta">
-        34pts · 21c · <a href="https://news.ycombinator.com/item?id=46241849" target="_blank">HN#46241849</a>
+        34pts | 21c | <a href="https://news.ycombinator.com/item?id=46241849" target="_blank">HN#46241849</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2765,15 +3072,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Gitea has a builtin defense against this, `REQUIRE_SIGNIN_VIEW=expensive`, that completely stopped AI traffic issues for me"
-          <div class="comment-author">— mappu</div>
+          <div class="comment-author">-- mappu</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#ai</span><span class="tag">#security</span><span class="tag">#selfhosting</span></div>
     </article>
 <article class="story" id="46242513">
       <h3 class="story-title"><a href="https://www.razor.blog/2025/12/you-will-never-be-in-two-person.html" target="_blank">You are dating an ecosystem</a></h3>
+      
       <div class="story-meta">
-        7pts · 0c · <a href="https://news.ycombinator.com/item?id=46242513" target="_blank">HN#46242513</a>
+        7pts | 0c | <a href="https://news.ycombinator.com/item?id=46242513" target="_blank">HN#46242513</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2790,8 +3099,9 @@
     </article>
 <article class="story" id="46182874">
       <h3 class="story-title"><a href="https://www.washingtonpost.com/lifestyle/2025/12/05/karl-bushby-walk-around-world/" target="_blank">He set out to walk around the world. After 27 years, his quest is nearly over</a></h3>
+      
       <div class="story-meta">
-        125pts · 63c · <a href="https://news.ycombinator.com/item?id=46182874" target="_blank">HN#46182874</a>
+        125pts | 63c | <a href="https://news.ycombinator.com/item?id=46182874" target="_blank">HN#46182874</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2807,7 +3117,8 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "It was not one continuous hike. He takes frequent breaks. But travels back to where he last stopped and continues."
-          <div class="comment-author">— bolasanibk</div>
+          <div class="comment-author">-- bolasanibk</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#adventure</span><span class="tag">#endurance</span></div>
@@ -2820,8 +3131,9 @@
       </div>
       <article class="story" id="46239752">
       <h3 class="story-title"><a href="https://journal.james-zhan.com/google-de-indexed-my-entire-bear-blog-and-i-dont-know-why/" target="_blank">Google de-indexed Bear Blog and I don&#x27;t know why</a></h3>
+      
       <div class="story-meta">
-        168pts · 63c · <a href="https://news.ycombinator.com/item?id=46239752" target="_blank">HN#46239752</a>
+        168pts | 63c | <a href="https://news.ycombinator.com/item?id=46239752" target="_blank">HN#46239752</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2837,15 +3149,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Traffic to my blog plummeted this year and you can never be entirely sure how it happened"
-          <div class="comment-author">— firefoxd</div>
+          <div class="comment-author">-- firefoxd</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#google</span><span class="tag">#seo</span><span class="tag">#blogging</span><span class="tag">#platforms</span></div>
     </article>
 <article class="story" id="46231493">
       <h3 class="story-title"><a href="https://openai.com/index/disney-sora-agreement/" target="_blank">The Walt Disney Company and OpenAI Partner on Sora</a></h3>
+      
       <div class="story-meta">
-        231pts · 459c · <a href="https://news.ycombinator.com/item?id=46231493" target="_blank">HN#46231493</a>
+        231pts | 459c | <a href="https://news.ycombinator.com/item?id=46231493" target="_blank">HN#46231493</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2861,15 +3175,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Sam has mastered the art of the flywheel"
-          <div class="comment-author">— postalcoder</div>
+          <div class="comment-author">-- postalcoder</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#ai</span><span class="tag">#disney</span><span class="tag">#openai</span><span class="tag">#content</span></div>
     </article>
 <article class="story" id="46234186">
       <h3 class="story-title"><a href="https://github.com/simstudioai/sim" target="_blank">Show HN: Sim – Apache-2.0 n8n alternative</a></h3>
+      
       <div class="story-meta">
-        202pts · 46c · <a href="https://news.ycombinator.com/item?id=46234186" target="_blank">HN#46234186</a>
+        202pts | 46c | <a href="https://news.ycombinator.com/item?id=46234186" target="_blank">HN#46234186</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2885,15 +3201,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "You can run Sim locally using Docker, with no execution limits or other restrictions. This is big. Thank you."
-          <div class="comment-author">— popalchemist</div>
+          <div class="comment-author">-- popalchemist</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#opensource</span><span class="tag">#workflow</span><span class="tag">#ai</span><span class="tag">#automation</span></div>
     </article>
 <article class="story" id="46239629">
       <h3 class="story-title"><a href="https://www.isaaa.org/kc/cropbiotechupdate/article/default.asp?ID=21607" target="_blank">CRISPR fungus: Protein-packed, sustainable, and tastes like meat</a></h3>
+      
       <div class="story-meta">
-        156pts · 83c · <a href="https://news.ycombinator.com/item?id=46239629" target="_blank">HN#46239629</a>
+        156pts | 83c | <a href="https://news.ycombinator.com/item?id=46239629" target="_blank">HN#46239629</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2909,15 +3227,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "while the paper is behind a pay wall, the abstract highlights that they used knock out gene editing, meaning this is not a GMO of the old days"
-          <div class="comment-author">— anotherpaul</div>
+          <div class="comment-author">-- anotherpaul</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#biotech</span><span class="tag">#crispr</span><span class="tag">#food</span><span class="tag">#sustainability</span></div>
     </article>
 <article class="story" id="46242016">
       <h3 class="story-title"><a href="https://www.digitaldigging.org/p/they-droned-back" target="_blank">Journalism students expose Russian-linked vessels off the Dutch and German coast</a></h3>
+      
       <div class="story-meta">
-        74pts · 43c · <a href="https://news.ycombinator.com/item?id=46242016" target="_blank">HN#46242016</a>
+        74pts | 43c | <a href="https://news.ycombinator.com/item?id=46242016" target="_blank">HN#46242016</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2933,7 +3253,8 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Good job! OSINT rules"
-          <div class="comment-author">— secult</div>
+          <div class="comment-author">-- secult</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#osint</span><span class="tag">#security</span><span class="tag">#journalism</span><span class="tag">#russia</span></div>
@@ -2946,8 +3267,9 @@
       </div>
       <article class="story" id="46239177">
       <h3 class="story-title"><a href="https://yaky.dev/2025-12-11-nokia-n900-necromancy/" target="_blank">Nokia N900 Necromancy</a></h3>
+      
       <div class="story-meta">
-        155pts · 48c · <a href="https://news.ycombinator.com/item?id=46239177" target="_blank">HN#46239177</a>
+        155pts | 48c | <a href="https://news.ycombinator.com/item?id=46239177" target="_blank">HN#46239177</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2963,15 +3285,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "The N900 was my peak &#x27;mobile computing is awesome&#x27; device. I went to see District 9 in the cinema in Helsinki... I installed a BitTorrent client, found the release on Pirate Bay, successfully torrented just the subtitle file, and used an editor to read the subtitles for scenes with a lot of alien."
-          <div class="comment-author">— sollewitt</div>
+          <div class="comment-author">-- sollewitt</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#hardware</span><span class="tag">#retrotech</span><span class="tag">#diy</span><span class="tag">#nokia</span></div>
     </article>
 <article class="story" id="46234806">
       <h3 class="story-title"><a href="https://larr.net/p/namings.html" target="_blank">Programmers and software developers lost the plot on naming their tools</a></h3>
+      
       <div class="story-meta">
-        206pts · 315c · <a href="https://news.ycombinator.com/item?id=46234806" target="_blank">HN#46234806</a>
+        206pts | 315c | <a href="https://news.ycombinator.com/item?id=46234806" target="_blank">HN#46234806</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -2987,15 +3311,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "If you asked someone unfamiliar with unix tools what they thought each of these commands did, diff is the only one which they would have even a remote chance of guessing correctly."
-          <div class="comment-author">— plorkyeran</div>
+          <div class="comment-author">-- plorkyeran</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#naming</span><span class="tag">#devtools</span><span class="tag">#unix</span><span class="tag">#culture</span></div>
     </article>
 <article class="story" id="46235959">
       <h3 class="story-title"><a href="https://jon.recoil.org/blog/2025/12/an-svg-is-all-you-need.html" target="_blank">An SVG is all you need</a></h3>
+      
       <div class="story-meta">
-        194pts · 81c · <a href="https://news.ycombinator.com/item?id=46235959" target="_blank">HN#46235959</a>
+        194pts | 81c | <a href="https://news.ycombinator.com/item?id=46235959" target="_blank">HN#46235959</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -3011,15 +3337,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "In my idealistic vision of how scientific publishing should work, each paper would be accompanied by a fully interactive environment where the reader could explore the data, rerun the experiments, tweak the parameters, and see how the results changed."
-          <div class="comment-author">— some_guy_nobel</div>
+          <div class="comment-author">-- some_guy_nobel</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#svg</span><span class="tag">#visualization</span><span class="tag">#web</span><span class="tag">#science</span></div>
     </article>
 <article class="story" id="46234710">
       <h3 class="story-title"><a href="https://fly.io/blog/litestream-vfs/" target="_blank">Litestream VFS</a></h3>
+      
       <div class="story-meta">
-        265pts · 77c · <a href="https://news.ycombinator.com/item?id=46234710" target="_blank">HN#46234710</a>
+        265pts | 77c | <a href="https://news.ycombinator.com/item?id=46234710" target="_blank">HN#46234710</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -3035,15 +3363,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "This is such a clean interface design: export LITESTREAM_REPLICA_URL=&#x27;s3://my-bucket/my.db&#x27; ... sqlite3 .load litestream.so .open file:///my.db?vfs=litestream PRAGMA litestream_time = &#x27;5 minutes ago&#x27;;"
-          <div class="comment-author">— simonw</div>
+          <div class="comment-author">-- simonw</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#sqlite</span><span class="tag">#backups</span><span class="tag">#database</span><span class="tag">#devtools</span></div>
     </article>
 <article class="story" id="46231274">
       <h3 class="story-title"><a href="https://rapha.land/craft-software-that-makes-people-feel-something/" target="_blank">Craft software that makes people feel something</a></h3>
+      
       <div class="story-meta">
-        270pts · 132c · <a href="https://news.ycombinator.com/item?id=46231274" target="_blank">HN#46231274</a>
+        270pts | 132c | <a href="https://news.ycombinator.com/item?id=46231274" target="_blank">HN#46231274</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -3059,7 +3389,8 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "There&#x27;s something refreshing about explicitly saying &#x27;this editor exists to delight me, and that&#x27;s enough&#x27;. The default script now is that every side project should either be open-sourced or turned into a SaaS, even if that pressure is exactly what kills the weirdness that made it interesting in the first place."
-          <div class="comment-author">— pedrozieg</div>
+          <div class="comment-author">-- pedrozieg</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#craft</span><span class="tag">#software</span><span class="tag">#ux</span><span class="tag">#philosophy</span></div>
@@ -3072,8 +3403,9 @@
       </div>
       <article class="story" id="46234788">
       <h3 class="story-title"><a href="https://openai.com/index/introducing-gpt-5-2/" target="_blank">GPT-5.2</a></h3>
+      
       <div class="story-meta">
-        623pts · 495c · <a href="https://news.ycombinator.com/item?id=46234788" target="_blank">HN#46234788</a>
+        623pts | 495c | <a href="https://news.ycombinator.com/item?id=46234788" target="_blank">HN#46234788</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -3089,15 +3421,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Weirdly, the blog announcement completely omits the actual new context window size which is 400,000"
-          <div class="comment-author">— mmaunder</div>
+          <div class="comment-author">-- mmaunder</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#ai</span><span class="tag">#openai</span><span class="tag">#llm</span><span class="tag">#gpt</span></div>
     </article>
 <article class="story" id="46236924">
       <h3 class="story-title"><a href="https://react.dev/blog/2025/12/11/denial-of-service-and-source-code-exposure-in-react-server-components" target="_blank">Denial of service and source code exposure in React Server Components</a></h3>
+      
       <div class="story-meta">
-        133pts · 55c · <a href="https://news.ycombinator.com/item?id=46236924" target="_blank">HN#46236924</a>
+        133pts | 55c | <a href="https://news.ycombinator.com/item?id=46236924" target="_blank">HN#46236924</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -3113,15 +3447,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "React Server Components always felt uncomfortable to me because they make it hard to look at a piece of JavaScript code and derive which parts of it are going to run on the client and which parts will run on the server"
-          <div class="comment-author">— simonw</div>
+          <div class="comment-author">-- simonw</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#react</span><span class="tag">#security</span><span class="tag">#cve</span><span class="tag">#javascript</span></div>
     </article>
 <article class="story" id="46234920">
       <h3 class="story-title"><a href="https://riviantrackr.com/news/rivian-unveils-custom-silicon-r2-lidar-roadmap-universal-hands-free-and-its-next-gen-autonomy-platform/" target="_blank">Rivian Unveils Custom Silicon, R2 Lidar Roadmap, and Universal Hands Free</a></h3>
+      
       <div class="story-meta">
-        160pts · 206c · <a href="https://news.ycombinator.com/item?id=46234920" target="_blank">HN#46234920</a>
+        160pts | 206c | <a href="https://news.ycombinator.com/item?id=46234920" target="_blank">HN#46234920</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -3137,15 +3473,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Autonomy subscriptions are how things are going to go, I called this a long time ago"
-          <div class="comment-author">— TulliusCicero</div>
+          <div class="comment-author">-- TulliusCicero</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#ev</span><span class="tag">#autonomy</span><span class="tag">#hardware</span><span class="tag">#startup</span></div>
     </article>
 <article class="story" id="46197930">
       <h3 class="story-title"><a href="https://gricha.dev/blog/the-highest-quality-codebase" target="_blank">The highest quality codebase</a></h3>
+      
       <div class="story-meta">
-        373pts · 269c · <a href="https://news.ycombinator.com/item?id=46197930" target="_blank">HN#46197930</a>
+        373pts | 269c | <a href="https://news.ycombinator.com/item?id=46197930" target="_blank">HN#46197930</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -3161,15 +3499,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "LLMs have this strong bias towards generating code, because writing code is the default behavior from pre-training"
-          <div class="comment-author">— elzbardico</div>
+          <div class="comment-author">-- elzbardico</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#ai</span><span class="tag">#codegen</span><span class="tag">#llm</span><span class="tag">#quality</span></div>
     </article>
 <article class="story" id="46236738">
       <h3 class="story-title"><a href="https://alecmuffett.com/article/134925" target="_blank">UK House of Lords attempting to ban use of VPNs by anyone under 16</a></h3>
+      
       <div class="story-meta">
-        181pts · 134c · <a href="https://news.ycombinator.com/item?id=46236738" target="_blank">HN#46236738</a>
+        181pts | 134c | <a href="https://news.ycombinator.com/item?id=46236738" target="_blank">HN#46236738</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -3185,7 +3525,8 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "they built their digital ID so that third parties could verify attributes"
-          <div class="comment-author">— baazaa</div>
+          <div class="comment-author">-- baazaa</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#privacy</span><span class="tag">#vpn</span><span class="tag">#legislation</span><span class="tag">#uk</span></div>
@@ -3198,8 +3539,9 @@
       </div>
       <article class="story" id="46212438">
       <h3 class="story-title"><a href="https://www.reuters.com/world/us/rubio-stages-font-coup-times-new-roman-ousts-calibri-2025-12-09/" target="_blank">Rubio stages font coup: Times New Roman ousts Calibri</a></h3>
+      
       <div class="story-meta">
-        319pts · 530c · <a href="https://news.ycombinator.com/item?id=46212438" target="_blank">HN#46212438</a>
+        319pts | 530c | <a href="https://news.ycombinator.com/item?id=46212438" target="_blank">HN#46212438</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -3215,15 +3557,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Calibri was supposedly easier to read by people with disabilities. While this itself is debatable, that&#x27;s not the reasoning behind the font switch. The mere attempt at making life easier for disadvantaged people is labeled DEI and as such cannot be tolerated by this administration."
-          <div class="comment-author">— praptak</div>
+          <div class="comment-author">-- praptak</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#politics</span><span class="tag">#fonts</span><span class="tag">#bureaucracy</span><span class="tag">#accessibility</span></div>
     </article>
 <article class="story" id="46221925">
       <h3 class="story-title"><a href="https://github.com/malucard/sm64-psx" target="_blank">Super Mario 64 for the PS1</a></h3>
+      
       <div class="story-meta">
-        250pts · 98c · <a href="https://news.ycombinator.com/item?id=46221925" target="_blank">HN#46221925</a>
+        250pts | 98c | <a href="https://news.ycombinator.com/item?id=46221925" target="_blank">HN#46221925</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -3239,15 +3583,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "this port clearly shows how much the N64 brought that &#x27;SGI at home&#x27; feel in mid‑1996; at least until Voodoo 1 / QuakeGL"
-          <div class="comment-author">— musha68k</div>
+          <div class="comment-author">-- musha68k</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#gaming</span><span class="tag">#retrocomputing</span><span class="tag">#opensource</span><span class="tag">#porting</span></div>
     </article>
 <article class="story" id="46218101">
       <h3 class="story-title"><a href="https://github.com/fcavallarin/wirebrowser" target="_blank">Show HN: Wirebrowser – A JavaScript debugger with breakpoint-driven heap search</a></h3>
+      
       <div class="story-meta">
-        44pts · 10c · <a href="https://news.ycombinator.com/item?id=46218101" target="_blank">HN#46218101</a>
+        44pts | 10c | <a href="https://news.ycombinator.com/item?id=46218101" target="_blank">HN#46218101</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -3263,15 +3609,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Very impressive to see the primitives of CDP be used for such a different DX than what&#x27;s in existing devtools. Really well done."
-          <div class="comment-author">— paulirish</div>
+          <div class="comment-author">-- paulirish</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#javascript</span><span class="tag">#debugging</span><span class="tag">#devtools</span><span class="tag">#opensource</span></div>
     </article>
 <article class="story" id="46230576">
       <h3 class="story-title"><a href="https://worksinprogress.co/issue/two-is-already-too-many/" target="_blank">South Korea – A Cautionary Tale for the Rest of Humanity</a></h3>
+      
       <div class="story-meta">
-        7pts · 6c · <a href="https://news.ycombinator.com/item?id=46230576" target="_blank">HN#46230576</a>
+        7pts | 6c | <a href="https://news.ycombinator.com/item?id=46230576" target="_blank">HN#46230576</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -3287,15 +3635,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Growing up (born in late 70s), all I heard was &#x27;OMG OVER POPULATION&#x27; and how the planet can&#x27;t support the projected N billion people who will be living on it. Now the birth rate actually slows down to correct itself and we&#x27;re not all breeding like rabbits, that&#x27;s a bad thing?"
-          <div class="comment-author">— jasonpeacock</div>
+          <div class="comment-author">-- jasonpeacock</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#demographics</span><span class="tag">#society</span><span class="tag">#korea</span><span class="tag">#economics</span></div>
     </article>
 <article class="story" id="46168180">
       <h3 class="story-title"><a href="https://devblogs.microsoft.com/oldnewthing/20251204-00/?p=111841" target="_blank">How can I read the standard output of an already-running process?</a></h3>
+      
       <div class="story-meta">
-        6pts · 0c · <a href="https://news.ycombinator.com/item?id=46168180" target="_blank">HN#46168180</a>
+        6pts | 0c | <a href="https://news.ycombinator.com/item?id=46168180" target="_blank">HN#46168180</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -3318,8 +3668,9 @@
       </div>
       <article class="story" id="46203343">
       <h3 class="story-title"><a href="https://laurenleek.substack.com/p/how-google-maps-quietly-allocates" target="_blank">How Google Maps allocates survival across London&#x27;s restaurants</a></h3>
+      
       <div class="story-meta">
-        300pts · 147c · <a href="https://news.ycombinator.com/item?id=46203343" target="_blank">HN#46203343</a>
+        300pts | 147c | <a href="https://news.ycombinator.com/item?id=46203343" target="_blank">HN#46203343</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -3335,15 +3686,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "It&#x27;s always annoyed me that zooming in on a building will not reliably show the business that operates there"
-          <div class="comment-author">— doctoboggan</div>
+          <div class="comment-author">-- doctoboggan</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#algorithms</span><span class="tag">#platforms</span><span class="tag">#restaurants</span><span class="tag">#tech</span></div>
     </article>
 <article class="story" id="46131518">
       <h3 class="story-title"><a href="https://store.steampowered.com/news/app/553850/view/491583942944621371" target="_blank">Helldivers 2 on-disk size 85% reduction</a></h3>
+      
       <div class="story-meta">
-        63pts · 46c · <a href="https://news.ycombinator.com/item?id=46131518" target="_blank">HN#46131518</a>
+        63pts | 46c | <a href="https://news.ycombinator.com/item?id=46131518" target="_blank">HN#46131518</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -3359,15 +3712,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "My takeaway is that it seems like they did NO benchmarking of their own before choosing to do all that duplication"
-          <div class="comment-author">— _aavaa_</div>
+          <div class="comment-author">-- _aavaa_</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#gaming</span><span class="tag">#optimization</span><span class="tag">#storage</span><span class="tag">#performance</span></div>
     </article>
 <article class="story" id="46192748">
       <h3 class="story-title"><a href="https://blog.cloudflare.com/python-workers-advancements/" target="_blank">Python Workers redux: fast cold starts, packages, and a uv-first workflow</a></h3>
+      
       <div class="story-meta">
-        75pts · 25c · <a href="https://news.ycombinator.com/item?id=46192748" target="_blank">HN#46192748</a>
+        75pts | 25c | <a href="https://news.ycombinator.com/item?id=46192748" target="_blank">HN#46192748</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -3383,15 +3738,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "One of my biggest points of criticism of Python is its slow cold start time. I especially notice this when I use it as a scripting language for CLIs"
-          <div class="comment-author">— randomtoast</div>
+          <div class="comment-author">-- randomtoast</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#python</span><span class="tag">#serverless</span><span class="tag">#cloudflare</span><span class="tag">#performance</span></div>
     </article>
 <article class="story" id="46206591">
       <h3 class="story-title"><a href="https://github.com/privacyshield-ai/privacy-firewall" target="_blank">Show HN: Local Privacy Firewall-blocks PII and secrets before ChatGPT sees them</a></h3>
+      
       <div class="story-meta">
-        9pts · 0c · <a href="https://news.ycombinator.com/item?id=46206591" target="_blank">HN#46206591</a>
+        9pts | 0c | <a href="https://news.ycombinator.com/item?id=46206591" target="_blank">HN#46206591</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -3408,8 +3765,9 @@
     </article>
 <article class="story" id="46087339">
       <h3 class="story-title"><a href="https://github.com/hako/oeis-tui" target="_blank">Show HN: oeis-tui – A TUI to search OEIS integer sequences in the terminal</a></h3>
+      
       <div class="story-meta">
-        6pts · 0c · <a href="https://news.ycombinator.com/item?id=46087339" target="_blank">HN#46087339</a>
+        6pts | 0c | <a href="https://news.ycombinator.com/item?id=46087339" target="_blank">HN#46087339</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -3432,8 +3790,9 @@
       </div>
       <article class="story" id="46230072">
       <h3 class="story-title"><a href="https://www.theguardian.com/global-development/2025/dec/11/meta-shuts-down-global-accounts-linked-to-abortion-advice-and-queer-content" target="_blank">Meta shuts down global accounts linked to abortion advice and queer content</a></h3>
+      
       <div class="story-meta">
-        103pts · 37c · <a href="https://news.ycombinator.com/item?id=46230072" target="_blank">HN#46230072</a>
+        103pts | 37c | <a href="https://news.ycombinator.com/item?id=46230072" target="_blank">HN#46230072</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -3449,15 +3808,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "I always wonder, when it&#x27;s so clear some corporate decision will cause social harm, what the story the perpetrators tell themselves is to avoid feeling guilt or responsibility."
-          <div class="comment-author">— spicyusername</div>
+          <div class="comment-author">-- spicyusername</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#meta</span><span class="tag">#censorship</span><span class="tag">#socialmedia</span><span class="tag">#policy</span></div>
     </article>
 <article class="story" id="46228597">
       <h3 class="story-title"><a href="https://thephd.dev/the-cost-of-a-closure-in-c-c2y" target="_blank">The Cost of a Closure in C</a></h3>
+      
       <div class="story-meta">
-        98pts · 31c · <a href="https://news.ycombinator.com/item?id=46228597" target="_blank">HN#46228597</a>
+        98pts | 31c | <a href="https://news.ycombinator.com/item?id=46228597" target="_blank">HN#46228597</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -3473,15 +3834,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "The benchmark demonstrates that the modern C++ &#x27;Lambda&#x27; approach (creating a unique struct with fields for captured variables) is effectively a compile-time calculated static link."
-          <div class="comment-author">— Rochus</div>
+          <div class="comment-author">-- Rochus</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#c</span><span class="tag">#programming</span><span class="tag">#closures</span><span class="tag">#performance</span></div>
     </article>
 <article class="story" id="46147987">
       <h3 class="story-title"><a href="https://serversfor.dev/linux-inside-out/the-linux-kernel-is-just-a-program/" target="_blank">Booting Linux in QEMU and Writing PID 1 in Go to Illustrate Kernel as Program</a></h3>
+      
       <div class="story-meta">
-        151pts · 37c · <a href="https://news.ycombinator.com/item?id=46147987" target="_blank">HN#46147987</a>
+        151pts | 37c | <a href="https://news.ycombinator.com/item?id=46147987" target="_blank">HN#46147987</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -3497,15 +3860,17 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "Wow, what a nice and easily understandable explanation of an overcomplicated topic. This kind of teaching method is so much needed in software development."
-          <div class="comment-author">— Tigike</div>
+          <div class="comment-author">-- Tigike</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#linux</span><span class="tag">#kernel</span><span class="tag">#go</span><span class="tag">#tutorial</span></div>
     </article>
 <article class="story" id="46191597">
       <h3 class="story-title"><a href="https://www.quantamagazine.org/the-polyglot-neuroscientist-resolving-how-the-brain-parses-language-20251205/" target="_blank">How the Brain Parses Language</a></h3>
+      
       <div class="story-meta">
-        44pts · 14c · <a href="https://news.ycombinator.com/item?id=46191597" target="_blank">HN#46191597</a>
+        44pts | 14c | <a href="https://news.ycombinator.com/item?id=46191597" target="_blank">HN#46191597</a>
       </div>
       <div class="story-section story-tldr">
         <div class="story-label">TL;DR</div>
@@ -3521,17 +3886,14 @@
         <div class="story-label">HN Voices</div>
         <div class="comment">
           "But what if our neurobiological reality includes a system that behaves something like an LLM? It almost seems like we got inspiration from our brain to build neural networks!"
-          <div class="comment-author">— tcsenpai</div>
+          <div class="comment-author">-- tcsenpai</div>
+          
         </div>
       </div>
       <div class="tags"><span class="tag">#neuroscience</span><span class="tag">#language</span><span class="tag">#research</span><span class="tag">#cognition</span></div>
     </article>
     </section>
   </main>
-  <footer>
-    <a href="https://github.com/thevibeworks/claude-reads-hn">archive</a> ·
-    <a href="https://t.me/claudehn">telegram</a>
-  </footer>
   <script>
     let currentLang = 'en';
     function safeStorage(key, value) {
@@ -3550,7 +3912,7 @@
     }
     function setLang(lang) {
       currentLang = lang;
-      document.querySelectorAll('.controls button[data-lang]').forEach(b => {
+      document.querySelectorAll('.lang-menu button[data-lang]').forEach(b => {
         b.classList.toggle('active', b.dataset.lang === lang);
       });
       document.querySelectorAll('.i18n-text').forEach(el => {
