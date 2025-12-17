@@ -167,7 +167,7 @@ jobs:
 
       - name: let claude curate
         if: steps.check-digest.outputs.skip != 'true'
-        timeout-minutes: 8
+        timeout-minutes: 15
         uses: thevibeworks/claude-code-action@main
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
@@ -344,3 +344,4 @@ jobs:
             - No fluff sections, no "skip" lists, no redundant summaries
             - ALWAYS BARK after creating the issue - this wakes up the human
             - If bark fails, try once more then move on (shit happens)
+
