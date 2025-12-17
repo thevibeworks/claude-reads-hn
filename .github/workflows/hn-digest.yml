@@ -161,8 +161,13 @@ jobs:
           git config user.name "claude-yolo[bot]"
           git config user.email "claude-yolo[bot]@users.noreply.github.com"
 
+      - name: clear claude locks
+        if: steps.check-digest.outputs.skip != 'true'
+        run: rm -rf ~/.local/state/claude/locks ~/.claude/.locks
+
       - name: let claude curate
         if: steps.check-digest.outputs.skip != 'true'
+        timeout-minutes: 8
         uses: thevibeworks/claude-code-action@main
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
