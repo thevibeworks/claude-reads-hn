@@ -1,0 +1,407 @@
+#+TITLE: HN Digest 2025-12-17 06:01:00 UT UTC
+#+DATE: 2025-12-17T06:01:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+AI writes proofs now, surveillance gets doxxed, and graphics programmers demand fewer abstractions
+
+* Highlights
+- Formal verification: AI might finally make math proofs mainstream
+- alpr.watch: Crowdsourcing the surveillance of surveillance
+- Graphics APIs: Too much complexity, not enough pointers
+- ty: Astral's Rust-powered Python type checker enters beta
+- Thin desires: Your notification addiction isn't a personality
+
+* Stories
+
+** AI will make formal verification go mainstream :ai:formal-verification:programming-languages:
+:PROPERTIES:
+:ID:       46294574
+:URL:      https://martin.kleppmann.com/2025/12/08/ai-formal-verification.html
+:HN_URL:   https://news.ycombinator.com/item?id=46294574
+:POINTS:   466
+:COMMENTS: 223
+:BY:       evankhoury
+:END:
+
+*** TLDR
+Martin Kleppmann argues that LLMs will democratize formal verification by automating the tedious proof-writing process. Currently, proving 8,700 lines of C code correct took 20 person-years and 200,000 lines of Isabelle proofs. If AI can generate those proofs cheaply, we might actually verify software instead of just hoping it works.
+
+*** Take
+The irony of using probabilistic AI to generate mathematical proofs is not lost on anyone. But if the proof checker is still deterministic, who cares how the sausage was made?
+
+*** Comments
+
+**** QuadrupleA
+:PROPERTIES:
+:COMMENT_ID: 46294575
+:END:
+I don't think formal verification really addresses most day-to-day programming problems: A user interface is confusing, or the English around it is unclear. An API you rely on changes, is deprecated, etc.
+
+**** bkettle
+:PROPERTIES:
+:COMMENT_ID: 46294576
+:END:
+Formal verification shines in areas where implementation is much more complex than the spec, like when you're writing incomprehensible bit-level optimizations in a cryptography implementation or compiler optimization phases.
+
+**** simonw
+:PROPERTIES:
+:COMMENT_ID: 46294577
+:END:
+I'm convinced now that the key to getting useful results out of coding agents is having good mechanisms in place to help those agents exercise and validate the code they are writing.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+Martin Kleppmann认为大语言模型将通过自动化繁琐的证明编写过程来普及形式验证。目前，证明8700行C代码正确需要20人年和20万行Isabelle证明。如果AI能廉价生成这些证明，我们可能真的会验证软件，而不只是祈祷它能正常工作。
+***** Take
+用概率性AI生成数学证明的讽刺意味不言而喻。但如果证明检查器仍然是确定性的，谁在乎香肠是怎么做的呢？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+Martin Kleppmannは、LLMが面倒な証明作成プロセスを自動化することで形式検証を民主化すると主張している。現在、8,700行のCコードの正しさを証明するのに20人年と20万行のIsabelle証明が必要だった。AIがこれらの証明を安価に生成できれば、ソフトウェアが動くことを祈る代わりに実際に検証できるかもしれない。
+***** Take
+確率的AIを使って数学的証明を生成するというアイロニーは誰もが気づいている。でも証明チェッカーがまだ決定論的なら、ソーセージがどう作られたかなんて誰が気にする？
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+Martin Kleppmann은 LLM이 지루한 증명 작성 과정을 자동화하여 형식 검증을 대중화할 것이라고 주장한다. 현재 8,700줄의 C 코드가 올바르다는 것을 증명하는 데 20인년과 200,000줄의 Isabelle 증명이 필요했다. AI가 이러한 증명을 저렴하게 생성할 수 있다면, 소프트웨어가 작동하기를 바라는 대신 실제로 검증할 수 있을 것이다.
+***** Take
+확률적 AI를 사용하여 수학적 증명을 생성하는 아이러니를 모르는 사람은 없다. 하지만 증명 검사기가 여전히 결정론적이라면, 소시지가 어떻게 만들어졌는지 누가 신경 쓰겠는가?
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Martin Kleppmann argumenta que los LLM democratizarán la verificación formal automatizando el tedioso proceso de escritura de pruebas. Actualmente, probar que 8,700 líneas de código C son correctas tomó 20 años-persona y 200,000 líneas de pruebas Isabelle. Si la IA puede generar esas pruebas de forma barata, podríamos realmente verificar el software en lugar de solo esperar que funcione.
+***** Take
+La ironía de usar IA probabilística para generar pruebas matemáticas no pasa desapercibida para nadie. Pero si el verificador de pruebas sigue siendo determinista, ¿a quién le importa cómo se hizo la salchicha?
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Martin Kleppmann argumentiert, dass LLMs die formale Verifikation demokratisieren werden, indem sie den mühsamen Prozess des Beweisschreibens automatisieren. Derzeit erforderte der Beweis, dass 8.700 Zeilen C-Code korrekt sind, 20 Personenjahre und 200.000 Zeilen Isabelle-Beweise. Wenn KI diese Beweise günstig generieren kann, könnten wir Software tatsächlich verifizieren, anstatt nur zu hoffen, dass sie funktioniert.
+***** Take
+Die Ironie, probabilistische KI zur Generierung mathematischer Beweise zu verwenden, entgeht niemandem. Aber wenn der Beweisprüfer immer noch deterministisch ist, wen kümmert es, wie die Wurst gemacht wurde?
+** alpr.watch :privacy:surveillance:civic-tech:
+:PROPERTIES:
+:ID:       46290916
+:URL:      https://alpr.watch/
+:HN_URL:   https://news.ycombinator.com/item?id=46290916
+:POINTS:   701
+:COMMENTS: 343
+:BY:       theamk
+:END:
+
+*** TLDR
+A crowdsourced platform tracking local government meetings where surveillance tech like license plate readers and Flock cameras are being discussed. The site maps these discussions across the US, lets you set up email alerts, and documents how 'temporary' crime-solving tools become permanent infrastructure for tracking everyone's movements.
+
+*** Take
+Finally, someone is surveilling the surveillers. The meta-irony of using a public database to track public meetings about public tracking is beautiful.
+
+*** Comments
+
+**** fainpul
+:PROPERTIES:
+:COMMENT_ID: 46290917
+:END:
+For years I've thought about doing an 'art project' to make people more aware of the fact they are being observed – painting QR codes on the ground at spots where public webcams are pointed, linking to the camera stream.
+
+**** travisgriggs
+:PROPERTIES:
+:COMMENT_ID: 46290918
+:END:
+I keep wanting to see the 'Rainbows End' style experiment. What happens when surveillance becomes so ubiquitous that it's symmetrical? Everyone watches everyone.
+
+**** jmward01
+:PROPERTIES:
+:COMMENT_ID: 46290919
+:END:
+I'm all about monitoring privacy related things, but the bigger piece here is the monitoring of city councils for this kind of data. Building a strong, more generic platform around it could yield huge insights.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+一个众包平台，追踪地方政府会议中讨论车牌识别器和Flock摄像头等监控技术的情况。该网站在美国地图上标注这些讨论，让你设置电子邮件提醒，并记录'临时'犯罪解决工具如何变成追踪每个人行踪的永久基础设施。
+***** Take
+终于有人在监视监视者了。用公共数据库追踪关于公共追踪的公共会议，这种元讽刺真是太美了。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+ナンバープレートリーダーやFlockカメラなどの監視技術が議論されている地方自治体の会議を追跡するクラウドソーシングプラットフォーム。サイトは米国全土でこれらの議論をマッピングし、メールアラートを設定でき、「一時的な」犯罪解決ツールがどのようにして全員の動きを追跡する恒久的なインフラになるかを記録している。
+***** Take
+ついに誰かが監視者を監視している。公共追跡に関する公開会議を追跡するために公開データベースを使用するというメタアイロニーは美しい。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+번호판 판독기 및 Flock 카메라와 같은 감시 기술이 논의되는 지방 정부 회의를 추적하는 크라우드소싱 플랫폼. 이 사이트는 미국 전역에서 이러한 논의를 매핑하고, 이메일 알림을 설정할 수 있게 하며, '임시' 범죄 해결 도구가 모든 사람의 움직임을 추적하는 영구 인프라가 되는 과정을 기록한다.
+***** Take
+드디어 누군가가 감시자들을 감시하고 있다. 공개 추적에 관한 공개 회의를 추적하기 위해 공개 데이터베이스를 사용하는 메타 아이러니가 아름답다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Una plataforma colaborativa que rastrea reuniones de gobiernos locales donde se discuten tecnologías de vigilancia como lectores de matrículas y cámaras Flock. El sitio mapea estas discusiones en todo EE.UU., permite configurar alertas por correo electrónico y documenta cómo las herramientas 'temporales' para resolver crímenes se convierten en infraestructura permanente para rastrear los movimientos de todos.
+***** Take
+Finalmente, alguien está vigilando a los vigilantes. La meta-ironía de usar una base de datos pública para rastrear reuniones públicas sobre rastreo público es hermosa.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Eine Crowdsourcing-Plattform, die lokale Regierungssitzungen verfolgt, in denen Überwachungstechnologien wie Kennzeichenleser und Flock-Kameras diskutiert werden. Die Seite kartiert diese Diskussionen in den USA, ermöglicht E-Mail-Benachrichtigungen und dokumentiert, wie 'vorübergehende' Verbrechensbekämpfungswerkzeuge zur permanenten Infrastruktur werden, um die Bewegungen aller zu verfolgen.
+***** Take
+Endlich überwacht jemand die Überwacher. Die Meta-Ironie, eine öffentliche Datenbank zu nutzen, um öffentliche Treffen über öffentliche Verfolgung zu verfolgen, ist wunderschön.
+** No Graphics API :graphics:gpu:programming:
+:PROPERTIES:
+:ID:       46293062
+:URL:      https://www.sebastianaaltonen.com/blog/no-graphics-api
+:HN_URL:   https://news.ycombinator.com/item?id=46293062
+:POINTS:   514
+:COMMENTS: 94
+:BY:       ryandrake
+:END:
+
+*** TLDR
+Sebastian Aaltonen argues that modern graphics APIs like Vulkan and DX12 are bloated relics. GPUs now support 64-bit pointers and coherent memory, so we should ditch complex binding systems, pipeline state objects, and barriers. Just give shaders pointers and let them do their thing.
+
+*** Take
+Graphics programmers have been asking for 'just let me write to memory' for a decade. Turns out the solution was always 'wait for hardware to catch up to what we wanted in the first place.'
+
+*** Comments
+
+**** vblanco
+:PROPERTIES:
+:COMMENT_ID: 46293063
+:END:
+This is a fantastic article that demonstrates how many parts of Vulkan and DX12 are no longer needed. I hope the IHVs have a look at it because current DX12 seems semi-abandoned, with it not supporting buffer pointers even when every GPU made in the last 10 years can do pointers just fine.
+
+**** opminion
+:PROPERTIES:
+:COMMENT_ID: 46293064
+:END:
+The article is missing this motivation paragraph from the blog index: 'Graphics APIs and shader languages have significantly increased in complexity over the past decade. It's time to start discussing how to strip down the abstractions.'
+
+**** starkparker
+:PROPERTIES:
+:COMMENT_ID: 46293065
+:END:
+GPU hardware started to shift towards a generic SIMD design. SIMD units were now executing all the different shader types. Today the framework has 16 different shader entry points. This adds a lot of API surface and makes composition difficult.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+Sebastian Aaltonen认为像Vulkan和DX12这样的现代图形API是臃肿的遗物。GPU现在支持64位指针和一致性内存，所以我们应该抛弃复杂的绑定系统、管线状态对象和屏障。只需给着色器指针，让它们自己工作。
+***** Take
+图形程序员十年来一直在要求'让我直接写内存'。原来解决方案一直是'等待硬件赶上我们最初想要的东西'。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+Sebastian Aaltonenは、VulkanやDX12のような現代のグラフィックスAPIは肥大化した遺物だと主張している。GPUは今や64ビットポインタとコヒーレントメモリをサポートしているので、複雑なバインディングシステム、パイプラインステートオブジェクト、バリアは捨てるべきだ。シェーダーにポインタを与えて、仕事をさせればいい。
+***** Take
+グラフィックスプログラマーは10年間「メモリに直接書き込ませて」と要求してきた。結局、解決策は「ハードウェアが最初から我々が望んでいたものに追いつくのを待つ」ことだった。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+Sebastian Aaltonen은 Vulkan과 DX12 같은 현대 그래픽스 API가 비대해진 유물이라고 주장한다. GPU는 이제 64비트 포인터와 일관된 메모리를 지원하므로, 복잡한 바인딩 시스템, 파이프라인 상태 객체, 배리어를 버려야 한다. 셰이더에 포인터만 주고 알아서 하게 하면 된다.
+***** Take
+그래픽스 프로그래머들은 10년 동안 '그냥 메모리에 쓰게 해달라'고 요청해왔다. 결국 해결책은 '하드웨어가 우리가 처음부터 원했던 것을 따라잡을 때까지 기다리는 것'이었다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Sebastian Aaltonen argumenta que las APIs de gráficos modernas como Vulkan y DX12 son reliquias infladas. Las GPUs ahora soportan punteros de 64 bits y memoria coherente, así que deberíamos deshacernos de los sistemas de binding complejos, objetos de estado de pipeline y barreras. Solo hay que dar punteros a los shaders y dejarlos hacer lo suyo.
+***** Take
+Los programadores de gráficos han estado pidiendo 'solo déjame escribir en memoria' durante una década. Resulta que la solución siempre fue 'esperar a que el hardware alcance lo que queríamos desde el principio.'
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Sebastian Aaltonen argumentiert, dass moderne Grafik-APIs wie Vulkan und DX12 aufgeblähte Relikte sind. GPUs unterstützen jetzt 64-Bit-Zeiger und kohärenten Speicher, also sollten wir komplexe Binding-Systeme, Pipeline-State-Objekte und Barrieren abschaffen. Gebt Shadern einfach Zeiger und lasst sie ihre Arbeit machen.
+***** Take
+Grafikprogrammierer haben ein Jahrzehnt lang nach 'lass mich einfach in den Speicher schreiben' gefragt. Es stellt sich heraus, dass die Lösung immer war: 'Warten, bis die Hardware das einholt, was wir von Anfang an wollten.'
+** Announcing the Beta release of ty :python:rust:devtools:type-checking:
+:PROPERTIES:
+:ID:       46294289
+:URL:      https://astral.sh/blog/ty
+:HN_URL:   https://news.ycombinator.com/item?id=46294289
+:POINTS:   439
+:COMMENTS: 86
+:BY:       gavide
+:END:
+
+*** TLDR
+Astral (the ruff/uv people) released ty, a Rust-based Python type checker claiming 10-60x speedup over mypy and Pyright. Features include first-class intersection types, advanced narrowing, and an LSP server. Currently beta, targeting stable release next year with Pydantic and Django support.
+
+*** Take
+Astral keeps shipping Python tooling faster than Python ships Python. At this rate they'll have rewritten the entire ecosystem in Rust before 3.14 drops.
+
+*** Comments
+
+**** frou_dh
+:PROPERTIES:
+:COMMENT_ID: 46294290
+:END:
+Hopefully it gets added to this comparison. If that table is anything to go by, Pyright is not to be underestimated. I have briefly tried ty (LSP) in Emacs and it seems to work well so far.
+
+**** klysm
+:PROPERTIES:
+:COMMENT_ID: 46294291
+:END:
+I really hope Astral can monetize without a highly destructive rugpull, because they are building great tools and solving real problems.
+
+**** shrumm
+:PROPERTIES:
+:COMMENT_ID: 46294292
+:END:
+Thanks Astral team! We use Pydantic heavily, and it looks like first class support from ty is slated for the stable release. While we wait... what's everyone's type checking setup? We run both Pyright and Mypy... they catch different errors so we've kept both, but it feels redundant.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+Astral（ruff/uv团队）发布了ty，一个基于Rust的Python类型检查器，声称比mypy和Pyright快10-60倍。功能包括一流的交叉类型、高级类型收窄和LSP服务器。目前是beta版，计划明年发布稳定版，支持Pydantic和Django。
+***** Take
+Astral发布Python工具的速度比Python发布Python还快。照这个速度，他们会在3.14发布之前用Rust重写整个生态系统。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+Astral（ruff/uvの開発者たち）がtyをリリースした。Rustベースのpython型チェッカーで、mypyやPyrightより10-60倍高速と主張。ファーストクラスの交差型、高度な絞り込み、LSPサーバーを搭載。現在ベータ版で、PydanticとDjangoサポート付きの安定版を来年リリース予定。
+***** Take
+AstralはPythonがPythonをリリースするより速くPythonツールを出荷し続けている。このペースなら、3.14がリリースされる前にエコシステム全体をRustで書き直すだろう。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+Astral(ruff/uv 팀)이 ty를 출시했다. mypy와 Pyright보다 10-60배 빠르다고 주장하는 Rust 기반 Python 타입 체커다. 퍼스트클래스 교차 타입, 고급 내로잉, LSP 서버를 제공한다. 현재 베타 버전이며, 내년 Pydantic과 Django 지원이 포함된 안정 버전 출시를 목표로 하고 있다.
+***** Take
+Astral은 Python이 Python을 출시하는 것보다 더 빠르게 Python 도구를 출시하고 있다. 이 속도라면 3.14가 나오기 전에 전체 생태계를 Rust로 다시 작성할 것이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Astral (la gente de ruff/uv) lanzó ty, un verificador de tipos Python basado en Rust que afirma ser 10-60x más rápido que mypy y Pyright. Incluye tipos de intersección de primera clase, narrowing avanzado y un servidor LSP. Actualmente en beta, apuntando a versión estable el próximo año con soporte para Pydantic y Django.
+***** Take
+Astral sigue lanzando herramientas Python más rápido de lo que Python lanza Python. A este ritmo habrán reescrito todo el ecosistema en Rust antes de que salga 3.14.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Astral (die ruff/uv-Leute) hat ty veröffentlicht, einen Rust-basierten Python-Typprüfer, der 10-60x schneller als mypy und Pyright sein soll. Features umfassen erstklassige Intersection-Typen, fortgeschrittenes Narrowing und einen LSP-Server. Derzeit Beta, stabile Version mit Pydantic- und Django-Unterstützung für nächstes Jahr geplant.
+***** Take
+Astral liefert Python-Tooling schneller als Python Python liefert. Bei diesem Tempo werden sie das gesamte Ökosystem in Rust neu geschrieben haben, bevor 3.14 erscheint.
+** Thin desires are eating life :philosophy:productivity:life:
+:PROPERTIES:
+:ID:       46283276
+:URL:      https://www.joanwestenberg.com/thin-desires-are-eating-your-life/
+:HN_URL:   https://news.ycombinator.com/item?id=46283276
+:POINTS:   397
+:COMMENTS: 160
+:BY:       mitchbob
+:END:
+
+*** TLDR
+Joan Westenberg distinguishes between 'thin desires' (checking notifications, endless scrolling, productivity app dopamine) and 'thick desires' (baking bread, writing letters, building something for one person). The former simulate satisfaction without transformation; the latter require patience and change who you are.
+
+*** Take
+A blog post about the emptiness of digital consumption, distributed digitally for consumption. The irony writes itself, but the point still lands.
+
+*** Comments
+
+**** ianstormtaylor
+:PROPERTIES:
+:COMMENT_ID: 46283277
+:END:
+I can't help but feel that this article was written in a format that is the textual equivalent of thin desires... Every sentence is separated into its own paragraph, like each one is supposed to be revelatory (or maybe tweet-worthy).
+
+**** clowncubs
+:PROPERTIES:
+:COMMENT_ID: 46283278
+:END:
+This resonates. I work in web dev, and a little over 2 years ago I hit a wall. Everything was a screen. All day at work, at home, on the go. I began working on it by going to therapy and then one day I decided to try sculpting. This changed everything.
+
+**** DarmokJalad1701
+:PROPERTIES:
+:COMMENT_ID: 46283279
+:END:
+The yeast doesn't care about your schedule. The dough will rise when it rises. Joke's on them! I run my oven until the temperature inside is ~100F, set the dough in there with some water for humidity. It rises super fast.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+Joan Westenberg区分了'浅薄欲望'（查看通知、无尽滚动、效率应用的多巴胺）和'深厚欲望'（烤面包、写信、为一个人做些什么）。前者模拟满足感却没有转变；后者需要耐心并改变你是谁。
+***** Take
+一篇关于数字消费空虚感的博客文章，通过数字方式分发供人消费。这种讽刺不言自明，但观点依然有力。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+Joan Westenbergは「薄い欲望」（通知チェック、無限スクロール、生産性アプリのドーパミン）と「厚い欲望」（パンを焼く、手紙を書く、一人の人のために何かを作る）を区別している。前者は変容なしに満足感をシミュレートし、後者は忍耐を必要とし、あなた自身を変える。
+***** Take
+デジタル消費の空虚さについてのブログ投稿が、デジタルで配信されて消費される。皮肉は自明だが、ポイントはまだ響く。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+Joan Westenberg는 '얇은 욕망'(알림 확인, 무한 스크롤, 생산성 앱 도파민)과 '두꺼운 욕망'(빵 굽기, 편지 쓰기, 한 사람을 위해 무언가 만들기)을 구분한다. 전자는 변화 없이 만족감을 시뮬레이션하고, 후자는 인내심을 필요로 하며 당신을 변화시킨다.
+***** Take
+디지털 소비의 공허함에 대한 블로그 글이 디지털로 배포되어 소비된다. 아이러니는 스스로 쓰여지지만, 요점은 여전히 와닿는다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Joan Westenberg distingue entre 'deseos superficiales' (revisar notificaciones, scroll infinito, dopamina de apps de productividad) y 'deseos profundos' (hornear pan, escribir cartas, construir algo para una persona). Los primeros simulan satisfacción sin transformación; los segundos requieren paciencia y cambian quién eres.
+***** Take
+Un post sobre el vacío del consumo digital, distribuido digitalmente para ser consumido. La ironía se escribe sola, pero el punto sigue siendo válido.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Joan Westenberg unterscheidet zwischen 'dünnen Wünschen' (Benachrichtigungen checken, endloses Scrollen, Produktivitäts-App-Dopamin) und 'dicken Wünschen' (Brot backen, Briefe schreiben, etwas für eine Person bauen). Erstere simulieren Befriedigung ohne Transformation; Letztere erfordern Geduld und verändern, wer du bist.
+***** Take
+Ein Blogpost über die Leere digitalen Konsums, digital verteilt zum Konsum. Die Ironie schreibt sich selbst, aber der Punkt trifft trotzdem.
