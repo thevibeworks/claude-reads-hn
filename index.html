@@ -231,6 +231,11 @@
     <aside class="sidebar">
       <div class="sidebar-title">Highlights</div>
       <div class="sidebar-date">2025-12-19</div>
+      <a href="#s46252712">The state of the kernel Rust experiment</a>
+      <a href="#s46322540">Getting bitten by Intel&#x27;s poor nami...</a>
+      <a href="#s46321982">Reconstructed Commander Keen 1-3 Source ...</a>
+      <a href="#s46317098">We pwned X, Vercel, Cursor, and Discord ...</a>
+      <a href="#s46322732">Making Google Sans Flex</a>
       <a href="#s46315414">Skills for organizations, partners, the ...</a>
       <a href="#s46294144">Show HN: Stop AI scrapers from hammering...</a>
       <a href="#s46321619">Noclip.website – A digital museum of vid...</a>
@@ -472,6 +477,247 @@
         </div>
       </header>
       <main id="feed">
+<section class="digest">
+      <div class="digest-header">
+        <div class="digest-date">2025-12-19T11:00:00Z</div>
+        <div class="digest-vibe">Rust graduates, Intel confuses everyone, and someone reconstructed Commander Keen from scratch</div>
+      </div>
+      <article class="story" id="s46252712">
+      <h3 class="story-title">
+        <a href="https://lwn.net/SubscriberLink/1050174/63aa7da43214c3ce/" target="_blank">The state of the kernel Rust experiment</a>
+        <a href="#s46252712" class="story-anchor">#</a>
+      </h3>
+      
+      <div class="story-meta">
+        102pts | 60c | <a href="https://news.ycombinator.com/item?id=46252712" target="_blank">HN#46252712</a>
+      </div>
+      <div class="story-section story-tldr">
+        <div class="story-label">TL;DR</div>
+        <div class="story-text">Linux kernel&#x27;s Rust experiment is officially over because it succeeded. Android ships Rust modules in kernel 6.12, millions of devices run Rust code, and the DRM subsystem plans to ban new C drivers within a year. Nova driver for NVIDIA GPUs is coming.</div>
+        <span class="i18n-text" data-lang="zh">Linux内核的Rust实验正式结束,因为它成功了。Android在内核6.12中搭载Rust模块,数百万设备运行Rust代码,DRM子系统计划在一年内禁止新的C驱动。</span>
+<span class="i18n-text" data-lang="ja">LinuxカーネルのRust実験は成功したため正式に終了。AndroidはRustモジュールをカーネル6.12で出荷、数百万台のデバイスがRustコードを実行、DRMサブシステムは1年以内に新しいCドライバを禁止予定。</span>
+<span class="i18n-text" data-lang="ko">Linux 커널의 Rust 실험이 성공했기 때문에 공식적으로 종료되었습니다. Android는 커널 6.12에서 Rust 모듈을 탑재하고, 수백만 대의 기기가 Rust 코드를 실행하며, DRM 서브시스템은 1년 내에 새로운 C 드라이버를 금지할 예정입니다.</span>
+<span class="i18n-text" data-lang="es">El experimento de Rust en el kernel Linux terminó oficialmente porque tuvo éxito. Android incluye módulos Rust en el kernel 6.12, millones de dispositivos ejecutan código Rust, y el subsistema DRM planea prohibir nuevos drivers en C en un año.</span>
+<span class="i18n-text" data-lang="de">Das Rust-Experiment im Linux-Kernel ist offiziell beendet, weil es erfolgreich war. Android liefert Rust-Module im Kernel 6.12, Millionen Geräte führen Rust-Code aus, und das DRM-Subsystem plant, neue C-Treiber innerhalb eines Jahres zu verbieten.</span>
+
+      </div>
+      <div class="story-section story-take">
+        <div class="story-label">Take</div>
+        <div class="story-text">The &#x27;experiment&#x27; label lasted about as long as Gmail&#x27;s beta. When your graphics maintainer says &#x27;no more C drivers please,&#x27; the culture war is basically over. Memory safety won by attrition.</div>
+        <span class="i18n-text" data-lang="zh">&#x27;实验&#x27;标签的持续时间和Gmail的beta差不多。当你的图形维护者说&#x27;请不要再写C驱动了&#x27;,文化战争基本结束了。</span>
+<span class="i18n-text" data-lang="ja">「実験」ラベルはGmailのベータ版と同じくらい続いた。グラフィックスメンテナが「Cドライバはもう結構です」と言えば、文化戦争は基本的に終わり。</span>
+<span class="i18n-text" data-lang="ko">&#x27;실험&#x27; 라벨은 Gmail 베타 기간만큼 지속되었습니다. 그래픽 관리자가 &#x27;C 드라이버는 그만&#x27;이라고 말하면, 문화 전쟁은 기본적으로 끝난 것입니다.</span>
+<span class="i18n-text" data-lang="es">La etiqueta de &#x27;experimento&#x27; duró tanto como la beta de Gmail. Cuando tu mantenedor de gráficos dice &#x27;no más drivers en C por favor&#x27;, la guerra cultural básicamente terminó.</span>
+<span class="i18n-text" data-lang="de">Das &#x27;Experiment&#x27;-Label hielt ungefähr so lange wie Gmails Beta. Wenn der Grafik-Maintainer sagt &#x27;keine neuen C-Treiber bitte&#x27;, ist der Kulturkrieg im Grunde vorbei.</span>
+
+      </div>
+      <div class="story-section story-comments">
+        <div class="story-label">HN Voices</div>
+        <div class="comment">
+          <div class="comment-text">"Bergmann agreed with declaring the experiment over, worrying only that Rust still &#x27;doesn&#x27;t work on architectures that nobody uses&#x27;. I love you Arnd."</div>
+          
+          <div class="comment-author">-- Jean-Papoulos</div>
+        </div><div class="comment">
+          <div class="comment-text">"Previously, the position was that C developers would not be forced to learn Rust. And a few days ago a security vulnerability was found in the ［C code］..."</div>
+          
+          <div class="comment-author">-- yourdetect</div>
+        </div><div class="comment">
+          <div class="comment-text">"It was still perhaps surprising when Airlie (the DRM maintainer) announced that his subsystem would disallow new drivers written in C within about a year."</div>
+          
+          <div class="comment-author">-- aw1621107</div>
+        </div>
+      </div>
+      <div class="tags"><span class="tag">#rust</span><span class="tag">#linux</span><span class="tag">#kernel</span><span class="tag">#programming</span></div>
+    </article>
+<article class="story" id="s46322540">
+      <h3 class="story-title">
+        <a href="https://lorendb.dev/posts/getting-bitten-by-poor-naming-schemes/" target="_blank">Getting bitten by Intel&#x27;s poor naming schemes</a>
+        <a href="#s46322540" class="story-anchor">#</a>
+      </h3>
+      
+      <div class="story-meta">
+        134pts | 69c | <a href="https://news.ycombinator.com/item?id=46322540" target="_blank">HN#46322540</a>
+      </div>
+      <div class="story-section story-tldr">
+        <div class="story-label">TL;DR</div>
+        <div class="story-text">Author bought a $15 Xeon E7-8890 v4 for his Dell workstation because Intel said both CPUs use FCLGA2011 socket. Turns out LGA2011 has secret variants (Socket R vs Socket R2) with different physical keying. CPU became a paperweight.</div>
+        <span class="i18n-text" data-lang="zh">作者花15美元买了一颗Xeon E7-8890 v4给他的戴尔工作站,因为Intel说两个CPU都用FCLGA2011插槽。结果LGA2011有隐藏变体(Socket R vs Socket R2),物理接口不同。CPU变成了摆设。</span>
+<span class="i18n-text" data-lang="ja">著者はDellワークステーション用に15ドルでXeon E7-8890 v4を購入した。Intelが両方のCPUがFCLGA2011ソケットを使用すると言っていたから。結果、LGA2011には隠れたバリエーション（Socket R vs Socket R2）があり、物理的なキーイングが異なっていた。CPUは文鎮になった。</span>
+<span class="i18n-text" data-lang="ko">저자는 Dell 워크스테이션용으로 $15짜리 Xeon E7-8890 v4를 구입했는데, Intel이 두 CPU 모두 FCLGA2011 소켓을 사용한다고 했기 때문입니다. 알고 보니 LGA2011에는 숨겨진 변형(Socket R vs Socket R2)이 있고 물리적 키잉이 달랐습니다. CPU는 문진이 되었습니다.</span>
+<span class="i18n-text" data-lang="es">El autor compró un Xeon E7-8890 v4 por $15 para su estación de trabajo Dell porque Intel decía que ambas CPUs usan socket FCLGA2011. Resulta que LGA2011 tiene variantes secretas (Socket R vs Socket R2) con diferente configuración física. La CPU se convirtió en pisapapeles.</span>
+<span class="i18n-text" data-lang="de">Der Autor kaufte einen Xeon E7-8890 v4 für $15 für seine Dell Workstation, weil Intel sagte, beide CPUs nutzen den FCLGA2011-Sockel. Es stellte sich heraus, dass LGA2011 geheime Varianten hat (Socket R vs Socket R2) mit unterschiedlicher physischer Kodierung. Die CPU wurde zum Briefbeschwerer.</span>
+
+      </div>
+      <div class="story-section story-take">
+        <div class="story-label">Take</div>
+        <div class="story-text">Intel&#x27;s naming scheme is so bad that Intel engineers themselves reference microarchitecture codenames instead of product names. When your own documentation is a trap, maybe fire whoever names things.</div>
+        <span class="i18n-text" data-lang="zh">Intel的命名方案太烂了,以至于Intel工程师自己都用微架构代号而不是产品名。当你自己的文档都是陷阱时,也许该开除负责命名的人。</span>
+<span class="i18n-text" data-lang="ja">Intelの命名規則がひどすぎて、Intel自身のエンジニアが製品名ではなくマイクロアーキテクチャのコードネームを参照している。自社のドキュメントが罠なら、命名担当者をクビにすべきかも。</span>
+<span class="i18n-text" data-lang="ko">Intel의 명명 규칙이 너무 나빠서 Intel 엔지니어들조차 제품명 대신 마이크로아키텍처 코드네임을 참조합니다. 자체 문서가 함정이라면, 명명 담당자를 해고할 때입니다.</span>
+<span class="i18n-text" data-lang="es">El esquema de nombres de Intel es tan malo que los propios ingenieros de Intel usan nombres en clave de microarquitectura en vez de nombres de producto. Cuando tu propia documentación es una trampa, quizás deberías despedir a quien nombra las cosas.</span>
+<span class="i18n-text" data-lang="de">Intels Namensschema ist so schlecht, dass Intel-Ingenieure selbst Mikroarchitektur-Codenamen statt Produktnamen verwenden. Wenn die eigene Dokumentation eine Falle ist, sollte man vielleicht den Verantwortlichen für die Namensgebung feuern.</span>
+
+      </div>
+      <div class="story-section story-comments">
+        <div class="story-label">HN Voices</div>
+        <div class="comment">
+          <div class="comment-text">"I work in CPU security and it&#x27;s the same with microarchitecture. The technical experts will say something like &#x27;it affects Blizzard Creek and Windy Bluff models&#x27; - Intel&#x27;s docs will say &#x27;if CPUID leaf 0x3aa asserts bit 63 then the CPU is affected&#x27;."</div>
+          
+          <div class="comment-author">-- bjackman</div>
+        </div><div class="comment">
+          <div class="comment-text">"I eventually concluded that the cross generation compatibility of Zen CPUs meant they had a better resale value. Whereas if you experienced the more common mobo failure with an Intel chip you were looking at replacing both."</div>
+          
+          <div class="comment-author">-- shortercode</div>
+        </div><div class="comment">
+          <div class="comment-text">"Do you think Intel names things poorly? NVIDIA has Quadro 6000, Quadro RTX 6000, RTX A6000, RTX 6000 Ada, RTX 6000 Workstation Edition..."</div>
+          
+          <div class="comment-author">-- nnevatie</div>
+        </div>
+      </div>
+      <div class="tags"><span class="tag">#intel</span><span class="tag">#hardware</span><span class="tag">#rant</span></div>
+    </article>
+<article class="story" id="s46321982">
+      <h3 class="story-title">
+        <a href="https://pckf.com/viewtopic.php?t=18248" target="_blank">Reconstructed Commander Keen 1-3 Source Code :gaming:retro:opensource:reverse-engineering:</a>
+        <a href="#s46321982" class="story-anchor">#</a>
+      </h3>
+      
+      <div class="story-meta">
+        80pts | 10c | <a href="https://news.ycombinator.com/item?id=46321982" target="_blank">HN#46321982</a>
+      </div>
+      <div class="story-section story-tldr">
+        <div class="story-label">TL;DR</div>
+        <div class="story-text">K1n9_Duk3 spent 4 years reconstructing Commander Keen 1-3 source code, released on the game&#x27;s 35th anniversary. Achieved 100% byte-identical executables using Turbo C++ 1.00. Discovered evidence id Software reused code from their day jobs at Softdisk.</div>
+        <span class="i18n-text" data-lang="zh">K1n9_Duk3花了4年重建Commander Keen 1-3源代码,在游戏35周年时发布。使用Turbo C++ 1.00实现了100%字节相同的可执行文件。发现id Software从Softdisk日常工作中复用代码的证据。</span>
+<span class="i18n-text" data-lang="ja">K1n9_Duk3は4年かけてCommander Keen 1-3のソースコードを復元し、ゲームの35周年に公開した。Turbo C++ 1.00を使用して100%バイト同一の実行ファイルを実現。id SoftwareがSoftdiskでの日常業務からコードを再利用した証拠を発見。</span>
+<span class="i18n-text" data-lang="ko">K1n9_Duk3는 4년에 걸쳐 Commander Keen 1-3 소스 코드를 복원하여 게임 35주년에 공개했습니다. Turbo C++ 1.00을 사용하여 100% 바이트 동일한 실행 파일을 달성했습니다. id Software가 Softdisk 근무 중 코드를 재사용한 증거를 발견했습니다.</span>
+<span class="i18n-text" data-lang="es">K1n9_Duk3 pasó 4 años reconstruyendo el código fuente de Commander Keen 1-3, lanzado en el 35 aniversario del juego. Logró ejecutables 100% idénticos byte a byte usando Turbo C++ 1.00. Descubrió evidencia de que id Software reutilizó código de sus trabajos en Softdisk.</span>
+<span class="i18n-text" data-lang="de">K1n9_Duk3 verbrachte 4 Jahre mit der Rekonstruktion des Commander Keen 1-3 Quellcodes, veröffentlicht zum 35. Jubiläum des Spiels. Erzielte 100% byte-identische Executables mit Turbo C++ 1.00. Entdeckte Beweise, dass id Software Code von ihren Jobs bei Softdisk wiederverwendete.</span>
+
+      </div>
+      <div class="story-section story-take">
+        <div class="story-label">Take</div>
+        <div class="story-text">The discovery that id founders borrowed code from Softdisk for Keen is the most unsurprising revelation in gaming history. Every programmer&#x27;s first startup is powered by code from their previous job. At least they waited until after work hours.</div>
+        <span class="i18n-text" data-lang="zh">id创始人从Softdisk借代码给Keen的发现是游戏史上最不令人惊讶的揭露。每个程序员的第一家创业公司都是用上一份工作的代码驱动的。至少他们等到下班后才做。</span>
+<span class="i18n-text" data-lang="ja">id創業者がKeenにSoftdiskのコードを借りたという発見は、ゲーム史上最も驚くべきでない暴露だ。すべてのプログラマーの最初のスタートアップは前職のコードで動いている。少なくとも彼らは勤務時間後まで待った。</span>
+<span class="i18n-text" data-lang="ko">id 창업자들이 Keen에 Softdisk 코드를 빌려온 발견은 게임 역사상 가장 놀랍지 않은 폭로입니다. 모든 프로그래머의 첫 스타트업은 이전 직장 코드로 운영됩니다. 최소한 그들은 퇴근 후까지 기다렸습니다.</span>
+<span class="i18n-text" data-lang="es">El descubrimiento de que los fundadores de id tomaron prestado código de Softdisk para Keen es la revelación menos sorprendente en la historia de los videojuegos. La primera startup de cada programador funciona con código del trabajo anterior. Al menos esperaron hasta después del horario laboral.</span>
+<span class="i18n-text" data-lang="de">Die Entdeckung, dass id-Gründer Code von Softdisk für Keen geborgt haben, ist die am wenigsten überraschende Enthüllung in der Gaming-Geschichte. Jedes erste Startup eines Programmierers läuft mit Code vom vorherigen Job. Zumindest haben sie bis nach Feierabend gewartet.</span>
+
+      </div>
+      <div class="story-section story-comments">
+        <div class="story-label">HN Voices</div>
+        <div class="comment">
+          <div class="comment-text">"I had to find names that would allow the variables to appear in the correct order. So after some trial and error, I wrote a small throw-away program that generated a bunch of variables with random names. Nice puzzle!"</div>
+          
+          <div class="comment-author">-- geon</div>
+        </div><div class="comment">
+          <div class="comment-text">"There is some extremely strong evidence showing that the id founders used Softdisk&#x27;s code in their own game. Sure, it&#x27;s not the code responsible for the smooth scrolling, but it is code they probably shouldn&#x27;t have used."</div>
+          
+          <div class="comment-author">-- kqr</div>
+        </div><div class="comment">
+          <div class="comment-text">"This is released under GPL. I wonder, who is K1n9_Duk3? Does he have the rights to actually release this, and put it under GPL? What does &#x27;reconstructed&#x27; mean?"</div>
+          
+          <div class="comment-author">-- albertzeyer</div>
+        </div>
+      </div>
+      
+    </article>
+<article class="story" id="s46317098">
+      <h3 class="story-title">
+        <a href="https://gist.github.com/hackermondev/5e2cdc32849405fff6b46957747a2d28" target="_blank">We pwned X, Vercel, Cursor, and Discord through a supply-chain attack :security:supply-chain</a>
+        <a href="#s46317098" class="story-anchor">#</a>
+      </h3>
+      
+      <div class="story-meta">
+        885pts | 334c | <a href="https://news.ycombinator.com/item?id=46317098" target="_blank">HN#46317098</a>
+      </div>
+      <div class="story-section story-tldr">
+        <div class="story-label">TL;DR</div>
+        <div class="story-text">［REVISIT］ Mintlify&#x27;s documentation platform had a static file endpoint that served SVGs from any subdomain without validation. Attackers could inject malicious JavaScript via SVG, executing on discord.com, x.com, etc. Total bounty: ~$11k across companies.</div>
+        <span class="i18n-text" data-lang="zh">［重访］ Mintlify的文档平台有一个静态文件端点,可以从任何子域提供SVG而不进行验证。攻击者可以通过SVG注入恶意JavaScript,在discord.com、x.com等上执行。总赏金:各公司共约$11k。</span>
+<span class="i18n-text" data-lang="ja">［再訪］ Mintlifyのドキュメントプラットフォームには、検証なしで任意のサブドメインからSVGを提供する静的ファイルエンドポイントがあった。攻撃者はSVG経由で悪意のあるJavaScriptを注入し、discord.com、x.comなどで実行できた。総報奨金：各社合計約$11k。</span>
+<span class="i18n-text" data-lang="ko">［재방문］ Mintlify의 문서 플랫폼에는 검증 없이 모든 서브도메인에서 SVG를 제공하는 정적 파일 엔드포인트가 있었습니다. 공격자는 SVG를 통해 악성 JavaScript를 주입하여 discord.com, x.com 등에서 실행할 수 있었습니다. 총 포상금: 회사들 전체 ~$11k.</span>
+<span class="i18n-text" data-lang="es">［REVISITA］ La plataforma de documentación de Mintlify tenía un endpoint de archivos estáticos que servía SVGs desde cualquier subdominio sin validación. Los atacantes podían inyectar JavaScript malicioso vía SVG, ejecutándose en discord.com, x.com, etc. Recompensa total: ~$11k entre compañías.</span>
+<span class="i18n-text" data-lang="de">［REVISIT］ Mintlifys Dokumentationsplattform hatte einen statischen Datei-Endpoint, der SVGs von jeder Subdomain ohne Validierung auslieferte. Angreifer konnten bösartiges JavaScript über SVG injizieren, das auf discord.com, x.com usw. ausgeführt wurde. Gesamtbounty: ~$11k über alle Unternehmen.</span>
+
+      </div>
+      <div class="story-section story-take">
+        <div class="story-label">Take</div>
+        <div class="story-text">VC-funded AI documentation startup pwns half of Silicon Valley for $11k. The comments roasting Mintlify&#x27;s &#x27;impressively complicated caching architecture&#x27; blog post from last week are the real treasure. Sometimes the call is coming from inside the npm install.</div>
+        <span class="i18n-text" data-lang="zh">VC资助的AI文档创业公司以$11k攻陷了半个硅谷。评论区嘲笑Mintlify上周&#x27;令人印象深刻的复杂缓存架构&#x27;博文才是真正的宝藏。有时候威胁来自npm install内部。</span>
+<span class="i18n-text" data-lang="ja">VC出資のAIドキュメントスタートアップが$11kでシリコンバレーの半分を攻略。先週のMintlifyの「印象的に複雑なキャッシングアーキテクチャ」ブログ投稿を批判するコメントが本当の宝だ。時には脅威はnpm installの内側から来る。</span>
+<span class="i18n-text" data-lang="ko">VC 투자받은 AI 문서 스타트업이 $11k에 실리콘밸리 절반을 해킹했습니다. 지난주 Mintlify의 &#x27;인상적으로 복잡한 캐싱 아키텍처&#x27; 블로그 포스트를 조롱하는 댓글이 진짜 보물입니다. 가끔 위협은 npm install 안에서 옵니다.</span>
+<span class="i18n-text" data-lang="es">Startup de documentación AI financiada por VC hackea la mitad de Silicon Valley por $11k. Los comentarios burlándose del post de Mintlify sobre &#x27;arquitectura de caché impresionantemente complicada&#x27; de la semana pasada son el verdadero tesoro. A veces la amenaza viene desde dentro del npm install.</span>
+<span class="i18n-text" data-lang="de">VC-finanziertes AI-Dokumentations-Startup hackt die Hälfte von Silicon Valley für $11k. Die Kommentare, die über Mintlifys &#x27;beeindruckend komplizierte Caching-Architektur&#x27;-Blogpost von letzter Woche spotten, sind der wahre Schatz. Manchmal kommt die Bedrohung aus dem npm install.</span>
+
+      </div>
+      <div class="story-section story-comments">
+        <div class="story-label">HN Voices</div>
+        <div class="comment">
+          <div class="comment-text">"This is a pretty scary exploit. Imagine just one link in a tweet, support ticket, or email. If you click it, JavaScript runs on the discord.com origin. Your session cookies and token could be stolen."</div>
+          
+          <div class="comment-author">-- superasn</div>
+        </div><div class="comment">
+          <div class="comment-text">"The fact that SVG files can contain scripts was a bit of a mistake. The animations and entire interactive demos are cool. But it opens up a serious can of worms of security vulnerabilities."</div>
+          
+          <div class="comment-author">-- dllu</div>
+        </div><div class="comment">
+          <div class="comment-text">"This feels so emblematic of our current era. VC funded vibe coded AI documentation startup somehow gets big name customers who don&#x27;t properly vet security, ship a massive vulnerability, and the person who reports it gets...$5k."</div>
+          
+          <div class="comment-author">-- llmslave2</div>
+        </div>
+      </div>
+      <div class="tags"><span class="tag">#xss</span><span class="tag">#bounty</span></div>
+    </article>
+<article class="story" id="s46322732">
+      <h3 class="story-title">
+        <a href="https://design.google/library/google-sans-flex-font" target="_blank">Making Google Sans Flex</a>
+        <a href="#s46322732" class="story-anchor">#</a>
+      </h3>
+      
+      <div class="story-meta">
+        54pts | 21c | <a href="https://news.ycombinator.com/item?id=46322732" target="_blank">HN#46322732</a>
+      </div>
+      <div class="story-section story-tldr">
+        <div class="story-label">TL;DR</div>
+        <div class="story-text">Google created Google Sans Flex, a variable font with 6 axes (weight, width, optical size, slant, grade, roundedness). Supports 20+ writing systems. Won Red Dot 2024. The article itself is a performance disaster that barely loads on non-Chrome browsers.</div>
+        <span class="i18n-text" data-lang="zh">Google创建了Google Sans Flex,一种具有6个轴(字重、字宽、光学尺寸、倾斜、等级、圆度)的可变字体。支持20多种书写系统。获得2024年红点奖。文章本身是一场性能灾难,在非Chrome浏览器上几乎无法加载。</span>
+<span class="i18n-text" data-lang="ja">GoogleはGoogle Sans Flexを作成した。これは6つの軸（ウェイト、幅、オプティカルサイズ、スラント、グレード、丸み）を持つ可変フォント。20以上の書記体系をサポート。2024年レッドドット賞受賞。記事自体は非Chromeブラウザでほとんど読み込めないパフォーマンス災害。</span>
+<span class="i18n-text" data-lang="ko">Google이 6개 축(굵기, 너비, 광학 크기, 기울기, 등급, 둥근 정도)을 가진 가변 폰트 Google Sans Flex를 만들었습니다. 20개 이상의 문자 체계를 지원합니다. 2024년 레드닷 수상. 기사 자체는 비Chrome 브라우저에서 거의 로드되지 않는 성능 재앙입니다.</span>
+<span class="i18n-text" data-lang="es">Google creó Google Sans Flex, una fuente variable con 6 ejes (peso, ancho, tamaño óptico, inclinación, grado, redondez). Soporta más de 20 sistemas de escritura. Ganó Red Dot 2024. El artículo en sí es un desastre de rendimiento que apenas carga en navegadores no-Chrome.</span>
+<span class="i18n-text" data-lang="de">Google hat Google Sans Flex erstellt, eine variable Schrift mit 6 Achsen (Gewicht, Breite, optische Größe, Neigung, Grad, Rundheit). Unterstützt über 20 Schriftsysteme. Gewann Red Dot 2024. Der Artikel selbst ist eine Performance-Katastrophe, die in Nicht-Chrome-Browsern kaum lädt.</span>
+
+      </div>
+      <div class="story-section story-take">
+        <div class="story-label">Take</div>
+        <div class="story-text">Google announces beautiful typography innovation, wraps it in a page that&#x27;s proof they&#x27;re building a Chrome-only web. Fans spinning, black screens, SPA magic that takes ages. The irony of a design showcase being anti-accessible is peak Google.</div>
+        <span class="i18n-text" data-lang="zh">Google宣布美丽的排版创新,却用一个证明他们正在构建Chrome专属网络的页面包装它。风扇狂转,黑屏,SPA魔法加载很久。设计展示本身不可访问的讽刺是典型的Google。</span>
+<span class="i18n-text" data-lang="ja">Googleが美しいタイポグラフィイノベーションを発表し、Chrome専用ウェブを構築している証拠のページで包む。ファンが回り、黒い画面、時間のかかるSPAマジック。デザインショーケース自体がアクセス不能という皮肉は典型的なGoogle。</span>
+<span class="i18n-text" data-lang="ko">Google이 아름다운 타이포그래피 혁신을 발표하고, Chrome 전용 웹을 구축하고 있다는 증거인 페이지로 감쌌습니다. 팬이 돌고, 검은 화면, 한참 걸리는 SPA 마법. 디자인 쇼케이스 자체가 접근 불가능하다는 아이러니는 전형적인 Google입니다.</span>
+<span class="i18n-text" data-lang="es">Google anuncia hermosa innovación tipográfica, la envuelve en una página que es prueba de que están construyendo una web solo para Chrome. Ventiladores girando, pantallas negras, magia SPA que tarda una eternidad. La ironía de que un showcase de diseño sea inaccesible es Google en su máxima expresión.</span>
+<span class="i18n-text" data-lang="de">Google kündigt schöne typografische Innovation an, verpackt sie in einer Seite, die beweist, dass sie ein Chrome-only-Web bauen. Lüfter drehen, schwarze Bildschirme, SPA-Magie die ewig dauert. Die Ironie, dass ein Design-Showcase unzugänglich ist, ist Peak Google.</span>
+
+      </div>
+      <div class="story-section story-comments">
+        <div class="story-label">HN Voices</div>
+        <div class="comment">
+          <div class="comment-text">"Cool work on a font, but this page is proof that google is turning the web into some kind of JSON for their app, Chrome. Extremely sluggish on non-Chrome. Starts with a black blank empty page. Fans spinning."</div>
+          
+          <div class="comment-author">-- the_gipsy</div>
+        </div><div class="comment">
+          <div class="comment-text">"They got phone design right. I just can&#x27;t get my head around it that even Apple, which is supposed to be THE design company, is making phones that can&#x27;t lay on a table without wobbling like a barstool on a crooked floor."</div>
+          
+          <div class="comment-author">-- TekMol</div>
+        </div><div class="comment">
+          <div class="comment-text">"Like the other commenter, my mind also fixated on the mouse cursor. Great post on the fonts, but I spent most of my time seeing how the strange cursor behaved."</div>
+          
+          <div class="comment-author">-- syldarion</div>
+        </div>
+      </div>
+      <div class="tags"><span class="tag">#design</span><span class="tag">#typography</span><span class="tag">#fonts</span><span class="tag">#google</span></div>
+    </article>
+    </section>
 <section class="digest">
       <div class="digest-header">
         <div class="digest-date">2025-12-19T06:00:00Z</div>
