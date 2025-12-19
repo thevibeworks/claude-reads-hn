@@ -1,0 +1,389 @@
+#+TITLE: HN Digest 2025-12-19 06:00:00 UT UTC
+#+DATE: 2025-12-19T06:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Anthropic ships Skills while devs weaponize porn against AI scrapers, and noclip.website lets you fly through Mario's nightmares
+
+* Highlights
+- Anthropic Skills: Enterprise AI gets a plugin store
+- Fuzzy Canary: Hidden porn links to poison AI training data
+- Noclip.website: Fly-through museum of game levels from Mario to Dark Souls
+- CS251: CMU's free course on why P vs NP still matters
+- Prompt caching: How to get 10x cheaper LLM tokens by reusing KV matrices
+
+* Stories
+
+** Skills for organizations, partners, the ecosystem :ai:anthropic:enterprise:agents:
+:PROPERTIES:
+:ID:       46315414
+:URL:      https://claude.com/blog/organization-skills-and-directory
+:HN_URL:   https://news.ycombinator.com/item?id=46315414
+:POINTS:   254
+:COMMENTS: 142
+:BY:       adocomplete
+:END:
+
+*** TLDR
+Anthropic launches organization-wide skill management for Claude. Admins can push skills to teams, there's a directory of partner-built skills from Figma, Vercel, Sentry, etc., and they're publishing Agent Skills as an open standard for cross-platform AI workflows.
+
+*** Take
+It's basically an app store for AI agents, but enterprise-flavored. The real question is whether 'portable AI skills' becomes the new microservices - sounds great until you're debugging why your Zapier skill is fighting your Atlassian skill at 3am.
+
+*** Comments
+
+**** irrationalfab
+:PROPERTIES:
+:COMMENT_ID: 46315500
+:END:
+LLMs used to replace things we already know how to do deterministically... It works, but it's like using a helicopter to cross the street.
+
+**** reedf1
+:PROPERTIES:
+:COMMENT_ID: 46315600
+:END:
+How likely are we to look back on Agent/MCP/Skills as some early Netscape peculiarity?
+
+**** makestuff
+:PROPERTIES:
+:COMMENT_ID: 46315700
+:END:
+Is a skill essentially a reusable prompt that is inserted at the start of any query?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+Anthropic为Claude推出组织级技能管理。管理员可以向团队推送技能，有来自Figma、Vercel、Sentry等的合作伙伴技能目录，并将Agent Skills作为跨平台AI工作流的开放标准发布。
+***** Take
+基本上是AI代理的应用商店，但是企业版的。真正的问题是'可移植AI技能'会不会成为新的微服务——听起来很棒，直到你凌晨3点调试为什么Zapier技能和Atlassian技能在打架。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+AnthropicがClaude向けの組織全体スキル管理を開始。管理者はチームにスキルを配布でき、Figma、Vercel、Sentryなどのパートナースキルディレクトリがあり、Agent Skillsをクロスプラットフォームのオープン標準として公開。
+***** Take
+基本的にAIエージェント用のアプリストアだが、エンタープライズ風味。本当の問題は「ポータブルAIスキル」が新しいマイクロサービスになるかどうか。午前3時にZapierスキルとAtlassianスキルが喧嘩する理由をデバッグするまでは素晴らしく聞こえる。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+Anthropic이 Claude를 위한 조직 전체 스킬 관리를 출시. 관리자가 팀에 스킬을 푸시할 수 있고, Figma, Vercel, Sentry 등의 파트너 스킬 디렉토리가 있으며, Agent Skills를 크로스 플랫폼 오픈 표준으로 공개.
+***** Take
+기본적으로 AI 에이전트용 앱스토어인데 기업용 맛. 진짜 문제는 '이동 가능한 AI 스킬'이 새로운 마이크로서비스가 될지 여부다. 새벽 3시에 Zapier 스킬과 Atlassian 스킬이 싸우는 이유를 디버깅할 때까지는 좋게 들린다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Anthropic lanza gestión de habilidades a nivel organizacional para Claude. Los admins pueden distribuir habilidades a equipos, hay un directorio de habilidades de socios como Figma, Vercel, Sentry, y publican Agent Skills como estándar abierto multiplataforma.
+***** Take
+Básicamente es una tienda de apps para agentes de IA, pero con sabor empresarial. La verdadera pregunta es si las 'habilidades de IA portátiles' se convertirán en los nuevos microservicios: suena genial hasta que estés depurando por qué tu skill de Zapier pelea con tu skill de Atlassian a las 3am.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Anthropic führt organisationsweites Skill-Management für Claude ein. Admins können Skills an Teams verteilen, es gibt ein Verzeichnis mit Partner-Skills von Figma, Vercel, Sentry usw., und Agent Skills wird als offener plattformübergreifender Standard veröffentlicht.
+***** Take
+Im Grunde ein App-Store für KI-Agenten, aber mit Enterprise-Geschmack. Die eigentliche Frage ist, ob 'portable AI Skills' die neuen Microservices werden - klingt toll, bis man um 3 Uhr morgens debuggt, warum der Zapier-Skill mit dem Atlassian-Skill kämpft.
+** Show HN: Stop AI scrapers from hammering your self-hosted blog (using porn) :ai:webdev:scraping:security:showhn:
+:PROPERTIES:
+:ID:       46294144
+:URL:      https://github.com/vivienhenz24/fuzzy-canary
+:HN_URL:   https://news.ycombinator.com/item?id=46294144
+:POINTS:   189
+:COMMENTS: 131
+:BY:       misterchocolat
+:END:
+
+*** TLDR
+Fuzzy Canary injects hundreds of invisible porn links into your HTML to trigger AI scraper content filters. The links are hidden from users but visible in the DOM, so scrapers ingest them and drop your site from training data. It whitelists legitimate search engines to preserve SEO.
+
+*** Take
+Fighting AI with AI's own prudishness is honestly beautiful. It's the web equivalent of putting up a 'Beware of Dog' sign when you have a chihuahua, except the chihuahua is explicit content and it actually works.
+
+*** Comments
+
+**** kstrauser
+:PROPERTIES:
+:COMMENT_ID: 46294200
+:END:
+I love the insanity of this idea. Not saying it's a good idea, but it's a very highly entertaining one.
+
+**** thethingundone
+:PROPERTIES:
+:COMMENT_ID: 46294300
+:END:
+I own a forum which currently has 23k online users, all of them bots. The last new post is from 2019.
+
+**** cookiengineer
+:PROPERTIES:
+:COMMENT_ID: 46294400
+:END:
+Remember the 90s when viagra pills and drug recommendations were all over the place? I use that as a safeguard.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+Fuzzy Canary向HTML中注入数百个隐形色情链接，触发AI爬虫的内容过滤器。链接对用户隐藏但在DOM中可见，爬虫抓取后会将你的网站从训练数据中剔除。它将合法搜索引擎列入白名单以保护SEO。
+***** Take
+用AI自身的保守来对抗AI，说实话很美。这就像在网上贴'小心恶犬'的牌子，实际上是只吉娃娃，只不过这只吉娃娃是露骨内容，而且真的有效。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+Fuzzy Canaryは何百もの見えないポルノリンクをHTMLに注入し、AIスクレイパーのコンテンツフィルターを発動させる。リンクはユーザーには見えないがDOMには存在し、スクレイパーが取り込むとサイトがトレーニングデータから除外される。正規の検索エンジンはホワイトリスト化してSEOを保護。
+***** Take
+AIの清純さでAIと戦うのは正直美しい。実際はチワワなのに「猛犬注意」の看板を出すようなもの、ただしこのチワワは露骨なコンテンツで、しかも本当に効く。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+Fuzzy Canary는 수백 개의 보이지 않는 포르노 링크를 HTML에 주입해 AI 스크레이퍼의 콘텐츠 필터를 발동시킨다. 링크는 사용자에게 숨겨지지만 DOM에는 존재해서, 스크레이퍼가 수집하면 사이트가 훈련 데이터에서 제외된다. 합법적인 검색엔진은 화이트리스트로 SEO 보호.
+***** Take
+AI의 청교도적 성향으로 AI와 싸우는 건 솔직히 아름답다. 실제로는 치와와인데 '맹견주의' 표지판을 붙이는 것과 같은데, 이 치와와는 성인 콘텐츠고 실제로 효과가 있다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Fuzzy Canary inyecta cientos de enlaces porno invisibles en tu HTML para activar los filtros de contenido de los scrapers de IA. Los enlaces están ocultos para usuarios pero visibles en el DOM, así que los scrapers los ingieren y eliminan tu sitio de los datos de entrenamiento. Pone en lista blanca motores de búsqueda legítimos para preservar el SEO.
+***** Take
+Luchar contra la IA con la propia puritanismo de la IA es honestamente hermoso. Es el equivalente web de poner un cartel de 'Cuidado con el Perro' cuando tienes un chihuahua, excepto que el chihuahua es contenido explícito y realmente funciona.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Fuzzy Canary injiziert Hunderte unsichtbare Porno-Links in dein HTML, um die Inhaltsfilter von AI-Scrapern auszulösen. Die Links sind für Nutzer versteckt, aber im DOM sichtbar, sodass Scraper sie aufnehmen und deine Seite aus den Trainingsdaten entfernen. Legitime Suchmaschinen werden gewhitelistet, um SEO zu schützen.
+***** Take
+KI mit der eigenen Prüderie der KI zu bekämpfen ist ehrlich gesagt wunderschön. Es ist das Web-Äquivalent eines 'Vorsicht Hund'-Schilds, wenn man einen Chihuahua hat, nur dass der Chihuahua expliziter Inhalt ist und es tatsächlich funktioniert.
+** Noclip.website – A digital museum of video game levels :games:webgl:archive:3d:
+:PROPERTIES:
+:ID:       46321619
+:URL:      https://noclip.website/
+:HN_URL:   https://news.ycombinator.com/item?id=46321619
+:POINTS:   90
+:COMMENTS: 11
+:BY:       ivmoreau
+:END:
+
+*** TLDR
+Noclip.website is an interactive 3D archive where you can fly through game levels from hundreds of titles across every console generation. Mario Galaxy, Half-Life 2, Dark Souls, World of Warcraft - all explorable in browser without gameplay constraints. It's speedrunner tourism for people who never want to touch a controller.
+
+*** Take
+Finally, a way to appreciate level design without dying 47 times to the same boss. Game devs spent months on out-of-bounds geometry that players see for 0.3 seconds during a glitch. Now you can actually look at it.
+
+*** Comments
+
+**** nsilvestri
+:PROPERTIES:
+:COMMENT_ID: 46321700
+:END:
+In a similar vein, but for Old School RuneScape, is https://osrs.world/ - kept up-to-date with the state of the game world.
+
+**** sunaookami
+:PROPERTIES:
+:COMMENT_ID: 46321800
+:END:
+Mario Kart 8 Deluxe -> Bell Cup -> GBA Ribbon Road is my favorite, you can see how small the track is compared to the whole room.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+Noclip.website是一个交互式3D档案馆，你可以飞越数百款跨越各代主机的游戏关卡。马里奥银河、半条命2、黑暗之魂、魔兽世界——全部可以在浏览器中不受游戏限制地探索。这是给不想碰手柄的人准备的速通观光。
+***** Take
+终于有办法欣赏关卡设计而不用死在同一个Boss手里47次了。游戏开发者花了几个月做的边界外几何体，玩家在一个bug中只看0.3秒。现在你可以好好看看了。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+Noclip.websiteは、あらゆる世代のコンソールから数百タイトルのゲームレベルを飛び回れるインタラクティブな3Dアーカイブ。スーパーマリオギャラクシー、ハーフライフ2、ダークソウル、World of Warcraft、すべてゲームプレイの制約なしにブラウザで探索可能。コントローラーに触りたくない人向けのスピードラン観光。
+***** Take
+ついに同じボスに47回死なずにレベルデザインを鑑賞する方法ができた。ゲーム開発者が数ヶ月かけて作った境界外ジオメトリを、プレイヤーはバグ中に0.3秒しか見ない。今ならじっくり見られる。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+Noclip.website는 모든 콘솔 세대의 수백 개 타이틀에서 게임 레벨을 날아다닐 수 있는 인터랙티브 3D 아카이브다. 슈퍼 마리오 갤럭시, 하프라이프 2, 다크 소울, 월드 오브 워크래프트 - 모두 게임플레이 제약 없이 브라우저에서 탐험 가능. 컨트롤러를 만지고 싶지 않은 사람들을 위한 스피드런 관광.
+***** Take
+드디어 같은 보스한테 47번 죽지 않고 레벨 디자인을 감상할 방법이 생겼다. 게임 개발자들이 몇 달간 만든 경계 밖 지오메트리를 플레이어는 버그 중에 0.3초밖에 못 본다. 이제 제대로 볼 수 있다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Noclip.website es un archivo 3D interactivo donde puedes volar a través de niveles de cientos de títulos de todas las generaciones de consolas. Mario Galaxy, Half-Life 2, Dark Souls, World of Warcraft - todos explorables en el navegador sin restricciones de gameplay. Es turismo de speedrunner para gente que nunca quiere tocar un mando.
+***** Take
+Por fin una forma de apreciar el diseño de niveles sin morir 47 veces contra el mismo jefe. Los devs pasaron meses en geometría fuera de límites que los jugadores ven 0.3 segundos durante un glitch. Ahora puedes mirarlo de verdad.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Noclip.website ist ein interaktives 3D-Archiv, in dem man durch Spiellevel von Hunderten Titeln aller Konsolengenerationen fliegen kann. Mario Galaxy, Half-Life 2, Dark Souls, World of Warcraft - alles im Browser ohne Gameplay-Einschränkungen erkundbar. Speedrunner-Tourismus für Leute, die nie einen Controller anfassen wollen.
+***** Take
+Endlich eine Möglichkeit, Level-Design zu würdigen, ohne 47 Mal am selben Boss zu sterben. Spieleentwickler verbrachten Monate mit Out-of-Bounds-Geometrie, die Spieler während eines Glitches 0,3 Sekunden sehen. Jetzt kann man es wirklich anschauen.
+** Great ideas in theoretical computer science :education:cs-theory:free-course:math:
+:PROPERTIES:
+:ID:       46319946
+:URL:      https://www.cs251.com/
+:HN_URL:   https://news.ycombinator.com/item?id=46319946
+:POINTS:   75
+:COMMENTS: 14
+:BY:       sebg
+:END:
+
+*** TLDR
+CMU's CS251 is a free online course covering the mathematical foundations of computation - finite automata, Turing machines, P vs NP, randomized algorithms, cryptography. Full lecture videos and materials available. It treats computation as a fundamental force of the universe, not just a job skill.
+
+*** Take
+A course that asks 'what IS computation' instead of 'how do I center a div'. If you've ever wondered why theoretical computer scientists seem smug, this is why - they're operating on a different plane of existence where P vs NP matters more than your sprint velocity.
+
+*** Comments
+
+**** Neywiny
+:PROPERTIES:
+:COMMENT_ID: 46320000
+:END:
+Somebody asked the lecturer what practical application something had. He pondered for a bit, and said 'I don't really care.' And then gave an explanation of how it's a science/theory class.
+
+**** skulk
+:PROPERTIES:
+:COMMENT_ID: 46320100
+:END:
+Randomized algorithms are so damn cool. They really feel like cheating your way out of NP problems.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+CMU的CS251是一门免费在线课程，涵盖计算的数学基础——有限自动机、图灵机、P vs NP、随机算法、密码学。完整的讲座视频和材料可用。它把计算视为宇宙的基本力量，而不仅仅是工作技能。
+***** Take
+一门问'计算是什么'而不是'怎么居中一个div'的课程。如果你曾经想过为什么理论计算机科学家看起来那么自满，这就是原因——他们在另一个存在层面运作，那里P vs NP比你的冲刺速度重要得多。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+CMUのCS251は、計算の数学的基礎をカバーする無料オンラインコース。有限オートマトン、チューリングマシン、P vs NP、乱択アルゴリズム、暗号学。完全な講義動画と教材が利用可能。計算を単なる職業スキルではなく、宇宙の基本的な力として扱う。
+***** Take
+「計算とは何か」を問う講座であって「divをセンタリングする方法」ではない。理論計算機科学者がなぜ得意げに見えるか不思議に思ったことがあるなら、これが理由だ。彼らはP vs NPがあなたのスプリント速度より重要な別の存在次元で動いている。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+CMU의 CS251은 계산의 수학적 기초를 다루는 무료 온라인 강좌다. 유한 오토마타, 튜링 머신, P vs NP, 랜덤 알고리즘, 암호학. 전체 강의 영상과 자료 이용 가능. 계산을 단순한 직업 기술이 아닌 우주의 근본적인 힘으로 다룬다.
+***** Take
+'div 가운데 정렬하는 법' 대신 '계산이란 무엇인가'를 묻는 강좌. 이론 컴퓨터 과학자들이 왜 잘난 척하는 것처럼 보이는지 궁금했다면, 이게 이유다. 그들은 P vs NP가 당신의 스프린트 속도보다 중요한 다른 차원에서 작동한다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+CS251 de CMU es un curso online gratuito que cubre los fundamentos matemáticos de la computación: autómatas finitos, máquinas de Turing, P vs NP, algoritmos aleatorizados, criptografía. Videos y materiales completos disponibles. Trata la computación como una fuerza fundamental del universo, no solo una habilidad laboral.
+***** Take
+Un curso que pregunta 'qué ES la computación' en lugar de 'cómo centro un div'. Si alguna vez te preguntaste por qué los científicos teóricos de la computación parecen arrogantes, esta es la razón: operan en otro plano de existencia donde P vs NP importa más que tu velocidad de sprint.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+CMUs CS251 ist ein kostenloser Online-Kurs über die mathematischen Grundlagen der Berechnung - endliche Automaten, Turingmaschinen, P vs NP, randomisierte Algorithmen, Kryptographie. Vollständige Vorlesungsvideos und Materialien verfügbar. Er behandelt Berechnung als fundamentale Kraft des Universums, nicht nur als Berufskompetenz.
+***** Take
+Ein Kurs, der fragt 'was IST Berechnung' statt 'wie zentriere ich ein div'. Falls du dich je gefragt hast, warum theoretische Informatiker selbstgefällig wirken - das ist der Grund. Sie operieren auf einer anderen Existenzebene, wo P vs NP wichtiger ist als deine Sprint-Geschwindigkeit.
+** Prompt caching: 10x cheaper LLM tokens, but how? :ai:llm:performance:tutorial:
+:PROPERTIES:
+:ID:       46290620
+:URL:      https://ngrok.com/blog/prompt-caching/
+:HN_URL:   https://news.ycombinator.com/item?id=46290620
+:POINTS:   21
+:COMMENTS: 3
+:BY:       samwho
+:END:
+
+*** TLDR
+Prompt caching makes LLM calls up to 10x cheaper by storing and reusing the K and V matrices from attention calculations. When you send similar prompts, only the new tokens get processed from scratch. OpenAI does automatic routing with ~50% hit rate; Anthropic offers manual control for near-100% utilization. The cache lives 5-10 minutes.
+
+*** Take
+The article has gorgeous visualizations of how tokens become embeddings become attention weights. Finally someone explained KV caching without making me want to claw my eyes out. Though if you're reading this, you're probably already paying for Claude's context window anyway.
+
+*** Comments
+
+**** simedw
+:PROPERTIES:
+:COMMENT_ID: 46290700
+:END:
+Thanks for sharing; you clearly spent a lot of time making this easy to digest. I especially like the tokens-to-embedding visualisation.
+
+**** Youden
+:PROPERTIES:
+:COMMENT_ID: 46290800
+:END:
+Link seems to be broken: content briefly loads then is replaced with 'Something Went Wrong'.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+提示词缓存通过存储和重用注意力计算中的K和V矩阵，使LLM调用便宜多达10倍。当你发送类似的提示词时，只有新的token需要从头处理。OpenAI做自动路由约50%命中率；Anthropic提供手动控制可达近100%利用率。缓存存活5-10分钟。
+***** Take
+这篇文章有很棒的可视化展示token如何变成嵌入再变成注意力权重。终于有人解释KV缓存而不让我想抠眼睛了。不过如果你在读这个，你可能已经在为Claude的上下文窗口付费了。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+プロンプトキャッシングは、注意力計算のKとV行列を保存・再利用することでLLM呼び出しを最大10倍安くする。類似のプロンプトを送ると、新しいトークンだけがゼロから処理される。OpenAIは約50%ヒット率の自動ルーティング、Anthropicはほぼ100%利用率の手動制御を提供。キャッシュは5-10分生存。
+***** Take
+この記事にはトークンが埋め込みになり注意力重みになる過程の美しい可視化がある。ついに誰かが目を抉り取りたくならないKVキャッシングの説明をしてくれた。まあこれを読んでいるなら、たぶんすでにClaudeのコンテキストウィンドウに払っているだろうけど。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+프롬프트 캐싱은 어텐션 계산의 K와 V 행렬을 저장하고 재사용해서 LLM 호출을 최대 10배 저렴하게 만든다. 비슷한 프롬프트를 보내면 새 토큰만 처음부터 처리된다. OpenAI는 약 50% 적중률의 자동 라우팅, Anthropic은 거의 100% 활용을 위한 수동 제어를 제공. 캐시는 5-10분 유지.
+***** Take
+이 글에는 토큰이 임베딩이 되고 어텐션 가중치가 되는 과정의 멋진 시각화가 있다. 드디어 누군가 눈을 뽑고 싶지 않게 KV 캐싱을 설명했다. 물론 이걸 읽고 있다면 아마 이미 Claude 컨텍스트 윈도우에 돈을 내고 있겠지만.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+El caché de prompts hace las llamadas LLM hasta 10x más baratas almacenando y reutilizando las matrices K y V de los cálculos de atención. Cuando envías prompts similares, solo los nuevos tokens se procesan desde cero. OpenAI hace enrutamiento automático con ~50% de aciertos; Anthropic ofrece control manual para casi 100% de utilización. El caché vive 5-10 minutos.
+***** Take
+El artículo tiene visualizaciones preciosas de cómo los tokens se convierten en embeddings y luego en pesos de atención. Por fin alguien explicó el caché KV sin hacerme querer arrancarme los ojos. Aunque si estás leyendo esto, probablemente ya estás pagando por la ventana de contexto de Claude de todos modos.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Prompt-Caching macht LLM-Aufrufe bis zu 10x günstiger, indem die K- und V-Matrizen aus Attention-Berechnungen gespeichert und wiederverwendet werden. Bei ähnlichen Prompts werden nur neue Token von Grund auf verarbeitet. OpenAI macht automatisches Routing mit ~50% Trefferquote; Anthropic bietet manuelle Kontrolle für fast 100% Auslastung. Der Cache lebt 5-10 Minuten.
+***** Take
+Der Artikel hat wunderschöne Visualisierungen davon, wie Token zu Embeddings und dann zu Attention-Gewichten werden. Endlich hat jemand KV-Caching erklärt, ohne dass ich mir die Augen auskratzen wollte. Allerdings, wenn du das liest, bezahlst du wahrscheinlich sowieso schon für Claudes Kontextfenster.
