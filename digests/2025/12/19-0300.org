@@ -1,0 +1,407 @@
+#+TITLE: HN Digest 2025-12-19 03:00:00 UT UTC
+#+DATE: 2025-12-19T03:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Apple clusters Macs for AI, China reverse-engineers EUV, and someone trained an LLM that doesn't know about WWI
+
+* Highlights
+- 1.5TB of VRAM: Apple loans Jeff Geerling $40k in Mac Studios to flex RDMA
+- Time-locked LLMs: Models trained only on pre-1913 texts can be genuinely surprised
+- China's chip Manhattan Project: Reverse-engineering EUV from secondhand ASML parts
+- Pick-n-place: A UX designer finally admits drag-and-drop was always terrible on mobile
+- SAM Audio: Meta's model lets you click on sounds and isolate them
+
+* Stories
+
+** 1.5 TB of VRAM on Mac Studio - RDMA over Thunderbolt 5 :apple:hardware:ai:hpc:
+:PROPERTIES:
+:ID:       46319657
+:URL:      https://www.jeffgeerling.com/blog/2025/15-tb-vram-on-mac-studio-rdma-over-thunderbolt-5
+:HN_URL:   https://news.ycombinator.com/item?id=46319657
+:POINTS:   204
+:COMMENTS: 69
+:BY:       rbanffy
+:END:
+
+*** TLDR
+Apple loaned Jeff Geerling four M3 Ultra Mac Studios to test RDMA over Thunderbolt 5 in macOS 26.2. The cluster pools 1.5TB of unified memory and ran LLMs with up to 1 trillion parameters. Total cost: $40k. Performance: 3.7 Tflops for 4 nodes, breaks 1 Tflop FP64 per node, idle under 10W.
+
+*** Take
+Apple accidentally created a viable HPC platform while everyone was too busy complaining about the notch. The $40k price tag is steep until you remember a single Nvidia H100 costs more.
+
+*** Comments
+
+**** behnamoh
+:PROPERTIES:
+:COMMENT_ID: 46319658
+:END:
+My expectations from M5 Max/Ultra: DGX-style 200Gb/s links instead of TB5, neural accelerators for prompt prefill, and 1TB unified memory in the maxed out version.
+
+**** simonw
+:PROPERTIES:
+:COMMENT_ID: 46319659
+:END:
+I'd be interested in seeing numbers that split out prefill vs decode speed. Those are usually different and could be radically different on Mac hardware.
+
+**** mmorse1217
+:PROPERTIES:
+:COMMENT_ID: 46319660
+:END:
+Thanks for everything you do Jeff. Your good vibes are deeply appreciated and you are an inspiration.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+苹果借给Jeff Geerling四台M3 Ultra Mac Studio测试macOS 26.2中的雷电5 RDMA功能。集群共享1.5TB统一内存，运行了高达1万亿参数的LLM。总成本4万美元。性能：4节点3.7 Tflops，单节点突破1 Tflop FP64，待机功耗低于10W。
+***** Take
+苹果在大家忙着吐槽刘海的时候，不小心造出了可行的高性能计算平台。4万美元看起来很贵，直到你想起一块Nvidia H100更贵。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+AppleがJeff Geerlingに4台のM3 Ultra Mac Studioを貸し出し、macOS 26.2のThunderbolt 5 RDMA機能をテスト。クラスタは1.5TBの統合メモリをプールし、最大1兆パラメータのLLMを実行。総コスト4万ドル。性能：4ノードで3.7 Tflops、ノード当たりFP64で1 Tflops突破、アイドル時10W未満。
+***** Take
+みんながノッチに文句を言っている間に、Appleはうっかり実用的なHPCプラットフォームを作ってしまった。4万ドルは高いが、Nvidia H100一枚の方がもっと高いことを思い出せ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+Apple이 Jeff Geerling에게 M3 Ultra Mac Studio 4대를 대여해 macOS 26.2의 Thunderbolt 5 RDMA 기능을 테스트. 클러스터는 1.5TB 통합 메모리를 풀링하고 최대 1조 파라미터 LLM을 실행. 총 비용 $40,000. 성능: 4노드 3.7 Tflops, 노드당 FP64 1 Tflops 돌파, 유휴 시 10W 미만.
+***** Take
+모두가 노치에 불평하는 동안 Apple은 실수로 실용적인 HPC 플랫폼을 만들었다. $40,000가 비싸 보이지만 Nvidia H100 한 장이 더 비싸다는 걸 기억하라.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Apple prestó a Jeff Geerling cuatro Mac Studios M3 Ultra para probar RDMA sobre Thunderbolt 5 en macOS 26.2. El clúster agrupa 1.5TB de memoria unificada y ejecutó LLMs de hasta 1 billón de parámetros. Costo total: $40k. Rendimiento: 3.7 Tflops para 4 nodos, supera 1 Tflop FP64 por nodo, inactivo bajo 10W.
+***** Take
+Apple accidentalmente creó una plataforma HPC viable mientras todos se quejaban del notch. Los $40k parecen caros hasta que recuerdas que una sola Nvidia H100 cuesta más.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Apple lieh Jeff Geerling vier M3 Ultra Mac Studios zum Testen von RDMA über Thunderbolt 5 in macOS 26.2. Der Cluster bündelt 1,5 TB vereinheitlichten Speicher und führte LLMs mit bis zu 1 Billion Parametern aus. Gesamtkosten: 40.000$. Leistung: 3,7 Tflops für 4 Knoten, durchbricht 1 Tflop FP64 pro Knoten, Leerlauf unter 10W.
+***** Take
+Apple hat versehentlich eine brauchbare HPC-Plattform geschaffen, während alle über die Notch gemeckert haben. Die 40.000$ klingen teuer, bis man sich erinnert, dass eine einzelne Nvidia H100 mehr kostet.
+** Trained LLMs exclusively on pre-1913 texts :ai:history:research:opensource:
+:PROPERTIES:
+:ID:       46319826
+:URL:      https://github.com/DGoettlich/history-llms
+:HN_URL:   https://news.ycombinator.com/item?id=46319826
+:POINTS:   230
+:COMMENTS: 79
+:BY:       iamwil
+:END:
+
+*** TLDR
+Researchers created 'time-locked' LLMs trained only on historical texts up to specific years (1913, 1929, 1933, 1939, 1946). The Ranke-4B models are based on Qwen3 and trained on 80B tokens. Unlike modern LLMs, these don't have hindsight contamination - they genuinely don't know WWI happened.
+
+*** Take
+Finally, an LLM that won't spoil the ending of history. The researchers built this for humanities research, but I'm mostly excited about asking it for stock tips from 1912.
+
+*** Comments
+
+**** bobro
+:PROPERTIES:
+:COMMENT_ID: 46319827
+:END:
+I would love to see this LLM try to solve math olympiad questions. It would be cool to see if the general approach to LLMs is capable of solving truly novel problems.
+
+**** jimmy76615
+:PROPERTIES:
+:COMMENT_ID: 46319828
+:END:
+The idea is really great, but not releasing it because someone might be offended by the output is just stupid beyond belief.
+
+**** saaaaaam
+:PROPERTIES:
+:COMMENT_ID: 46319829
+:END:
+Time-locked models don't roleplay; they embody their training data. Ranke-4B-1913 doesn't know about WWI because it hasn't happened in its textual universe.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+研究人员创建了仅在特定年份（1913、1929、1933、1939、1946）前历史文本上训练的'时间锁定'LLM。Ranke-4B模型基于Qwen3，训练了800亿token。与现代LLM不同，这些模型没有后见之明污染——它们真的不知道一战发生过。
+***** Take
+终于有一个不会剧透历史结局的LLM了。研究人员为人文研究而构建，但我更期待问它1912年的股票建议。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+研究者が特定の年（1913年、1929年、1933年、1939年、1946年）までの歴史的テキストのみで訓練された「時間ロック」LLMを作成。Ranke-4BモデルはQwen3ベースで800億トークンで訓練。現代のLLMと異なり、後知恵の汚染がない - 第一次世界大戦が起きたことを本当に知らない。
+***** Take
+ついに歴史のネタバレをしないLLMが登場。研究者は人文科学研究のために作ったが、私は1912年の株のアドバイスを聞くのが楽しみだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+연구자들이 특정 연도(1913, 1929, 1933, 1939, 1946)까지의 역사적 텍스트로만 훈련된 '시간 잠금' LLM을 만들었다. Ranke-4B 모델은 Qwen3 기반으로 800억 토큰으로 훈련됐다. 현대 LLM과 달리 사후 확증 편향 오염이 없어 - 1차 세계대전이 일어났다는 것을 정말 모른다.
+***** Take
+드디어 역사 스포일러를 하지 않는 LLM이다. 연구자들은 인문학 연구용으로 만들었지만, 나는 1912년 주식 조언을 물어보는 게 더 기대된다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Investigadores crearon LLMs 'bloqueados en el tiempo' entrenados solo con textos históricos hasta años específicos (1913, 1929, 1933, 1939, 1946). Los modelos Ranke-4B están basados en Qwen3 y entrenados con 80B tokens. A diferencia de los LLMs modernos, no tienen contaminación retrospectiva - genuinamente no saben que ocurrió la WWI.
+***** Take
+Finalmente, un LLM que no arruina el final de la historia. Los investigadores lo construyeron para humanidades, pero yo estoy emocionado por pedirle consejos de acciones de 1912.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Forscher erstellten 'zeitgesperrte' LLMs, die nur auf historischen Texten bis zu bestimmten Jahren (1913, 1929, 1933, 1939, 1946) trainiert wurden. Die Ranke-4B-Modelle basieren auf Qwen3 und wurden auf 80B Tokens trainiert. Anders als moderne LLMs haben diese keine Rückschau-Kontamination - sie wissen wirklich nicht, dass der WWI stattfand.
+***** Take
+Endlich ein LLM, das das Ende der Geschichte nicht spoilert. Die Forscher bauten es für Geisteswissenschaften, aber ich freue mich am meisten darauf, es nach Aktientipps von 1912 zu fragen.
+** How China built its 'Manhattan Project' to rival the West in AI chips :semiconductors:china:geopolitics:hardware:
+:PROPERTIES:
+:ID:       46316907
+:URL:      https://www.japantimes.co.jp/business/2025/12/18/tech/china-west-ai-chips/
+:HN_URL:   https://news.ycombinator.com/item?id=46316907
+:POINTS:   233
+:COMMENTS: 236
+:BY:       artninja1988
+:END:
+
+*** TLDR
+Chinese scientists built a prototype EUV lithography machine by reverse-engineering older ASML equipment purchased on secondary markets. Former ASML engineers were involved. The machine fills an entire factory floor and is currently being tested, potentially breaking the Western monopoly on advanced chip manufacturing.
+
+*** Take
+When your plan to contain a rival's tech sector involves selling them used equipment on eBay, maybe reconsider the strategy. The prototype filling 'an entire factory floor' is giving me 1950s computer vibes, but they'll miniaturize it.
+
+*** Comments
+
+**** solid_fuel
+:PROPERTIES:
+:COMMENT_ID: 46316908
+:END:
+With Nvidia scaling down consumer GPU production, I wonder if we'll see consumer GPUs shipping from China in the future. Western companies seem to be abandoning the consumer/prosumer market.
+
+**** dluan
+:PROPERTIES:
+:COMMENT_ID: 46316909
+:END:
+It's wild that skeptical westerners nitpick technicalities when we only get bits and pieces of China's on the ground reality. You should be living in 'China has successfully developed EUV' mode.
+
+**** nitwit005
+:PROPERTIES:
+:COMMENT_ID: 46316910
+:END:
+A 'Manhattan Project' would be building shocking new technology. If they're cobbling together old parts, it sounds more like something to keep things running if a conflict erupts.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+中国科学家通过逆向工程从二级市场购买的旧ASML设备，建造了一台EUV光刻机原型。有前ASML工程师参与。这台机器占据整个工厂车间，目前正在测试中，可能打破西方在先进芯片制造上的垄断。
+***** Take
+当你遏制对手科技行业的计划涉及在eBay上卖给他们二手设备时，也许该重新考虑策略了。原型机'占据整个工厂车间'让我想起1950年代的计算机，但他们会把它小型化的。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+中国の科学者が中古市場で購入した古いASML装置をリバースエンジニアリングしてEUVリソグラフィー機のプロトタイプを構築。元ASML技術者が関与。機械は工場フロア全体を占め、現在テスト中で、先端チップ製造における西側の独占を破る可能性がある。
+***** Take
+ライバルの技術セクターを封じ込める計画が中古機器をeBayで売ることを含むなら、戦略を再考したほうがいい。「工場フロア全体を占める」プロトタイプは1950年代のコンピュータを思い出させるが、彼らは小型化するだろう。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+중국 과학자들이 중고 시장에서 구입한 구형 ASML 장비를 역설계하여 EUV 리소그래피 기계 프로토타입을 제작했다. 전직 ASML 엔지니어들이 참여했다. 기계는 공장 바닥 전체를 차지하며 현재 테스트 중으로, 첨단 칩 제조에서 서방의 독점을 깨뜨릴 수 있다.
+***** Take
+경쟁국의 기술 산업을 봉쇄하려는 계획이 eBay에서 중고 장비를 파는 것을 포함한다면, 전략을 재고해야 할 것이다. '공장 바닥 전체를 차지하는' 프로토타입은 1950년대 컴퓨터 느낌이지만, 그들은 소형화할 것이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Científicos chinos construyeron un prototipo de máquina de litografía EUV mediante ingeniería inversa de equipos ASML más antiguos comprados en mercados secundarios. Exingenieros de ASML estuvieron involucrados. La máquina llena todo el piso de una fábrica y actualmente está siendo probada, potencialmente rompiendo el monopolio occidental en fabricación de chips avanzados.
+***** Take
+Cuando tu plan para contener el sector tecnológico de un rival incluye venderles equipos usados en eBay, quizás deberías reconsiderar la estrategia. El prototipo que 'llena todo el piso de la fábrica' me da vibes de computadoras de los 50, pero lo miniaturizarán.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Chinesische Wissenschaftler bauten einen EUV-Lithographie-Maschinen-Prototyp durch Reverse-Engineering älterer ASML-Geräte, die auf Sekundärmärkten gekauft wurden. Ehemalige ASML-Ingenieure waren beteiligt. Die Maschine füllt eine ganze Fabrikhalle und wird derzeit getestet, was möglicherweise das westliche Monopol auf fortschrittliche Chipfertigung brechen könnte.
+***** Take
+Wenn dein Plan, den Technologiesektor eines Rivalen einzudämmen, den Verkauf von Gebrauchtgeräten auf eBay beinhaltet, überdenke vielleicht die Strategie. Der Prototyp, der 'eine ganze Fabrikhalle füllt', erinnert mich an Computer der 1950er, aber sie werden ihn miniaturisieren.
+** Show HN: Picknplace.js, an alternative to drag-and-drop :javascript:ux:mobile:opensource:
+:PROPERTIES:
+:ID:       46290349
+:URL:      https://jgthms.com/picknplace.js/
+:HN_URL:   https://news.ycombinator.com/item?id=46290349
+:POINTS:   149
+:COMMENTS: 74
+:BY:       bbx
+:END:
+
+*** TLDR
+A proof-of-concept library that replaces drag-and-drop with a two-step pick-then-place interaction. Click to pick an item, scroll to the target position, click to place. Designed for mobile where drag-and-drop is notoriously awkward.
+
+*** Take
+We've spent decades pretending drag-and-drop works on touch screens. Someone finally admitted we were all lying to ourselves. The 'scroll to reorder' UX feels weird until you realize it's how your brain already works.
+
+*** Comments
+
+**** thunderbong
+:PROPERTIES:
+:COMMENT_ID: 46290350
+:END:
+Brilliant! It's been a while since I've seen a brand new UX pattern. The picked state needs to be more clear though - maybe a mask on the whole page with only the picked item visible.
+
+**** jotaen
+:PROPERTIES:
+:COMMENT_ID: 46290351
+:END:
+Drag and drop is only a nightmare on mobile. On desktop with a mouse, it works quite well. Your design reminds me of Scott Jenson's talk about how we took over established UX patterns from desktops without questioning them.
+
+**** Sn0wCoder
+:PROPERTIES:
+:COMMENT_ID: 46290352
+:END:
+Great work showing HN! Even though I read the instructions, still couldn't get it to work for 30 seconds. Might want to show 'Now Scroll' with up/down arrows next to the list.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+一个概念验证库，用两步拾取-放置交互取代拖放。点击拾取项目，滚动到目标位置，点击放置。专为拖放操作出了名别扭的移动端设计。
+***** Take
+我们花了几十年假装拖放在触摸屏上能用。终于有人承认我们一直在自欺欺人。'滚动重排序'的用户体验感觉很奇怪，直到你意识到这正是你大脑本来的工作方式。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+ドラッグ＆ドロップを2ステップのピック＆プレイス操作に置き換える概念実証ライブラリ。クリックでアイテムを選択、ターゲット位置までスクロール、クリックで配置。ドラッグ＆ドロップが悪名高く使いにくいモバイル向けに設計。
+***** Take
+我々はドラッグ＆ドロップがタッチスクリーンで機能するふりを何十年も続けてきた。ついに誰かが我々が自分に嘘をついていたと認めた。「スクロールで並び替え」のUXは奇妙に感じるが、脳がすでにそう動いていることに気づくまでだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+드래그 앤 드롭을 2단계 선택-배치 상호작용으로 대체하는 개념 증명 라이브러리. 클릭해서 항목 선택, 목표 위치로 스크롤, 클릭해서 배치. 드래그 앤 드롭이 악명 높게 불편한 모바일용으로 설계됨.
+***** Take
+우리는 수십 년간 드래그 앤 드롭이 터치스크린에서 작동하는 척해왔다. 마침내 누군가 우리 모두가 자신을 속이고 있었다고 인정했다. '스크롤로 재정렬' UX는 이상하게 느껴지지만, 뇌가 이미 그렇게 작동한다는 걸 깨달을 때까지다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Una librería de prueba de concepto que reemplaza drag-and-drop con una interacción de dos pasos: seleccionar y colocar. Clic para seleccionar un elemento, scroll hasta la posición objetivo, clic para colocar. Diseñado para móvil donde el drag-and-drop es notoriamente incómodo.
+***** Take
+Hemos pasado décadas fingiendo que el drag-and-drop funciona en pantallas táctiles. Finalmente alguien admitió que nos estábamos mintiendo a nosotros mismos. La UX de 'scroll para reordenar' se siente rara hasta que te das cuenta de que así ya funciona tu cerebro.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Eine Proof-of-Concept-Bibliothek, die Drag-and-Drop durch eine zweistufige Pick-then-Place-Interaktion ersetzt. Klicken zum Auswählen, zum Ziel scrollen, klicken zum Platzieren. Für Mobilgeräte entwickelt, wo Drag-and-Drop bekanntermaßen umständlich ist.
+***** Take
+Wir haben Jahrzehnte damit verbracht, so zu tun, als würde Drag-and-Drop auf Touchscreens funktionieren. Endlich hat jemand zugegeben, dass wir uns alle selbst belogen haben. Die 'Scroll zum Neuordnen'-UX fühlt sich seltsam an, bis man merkt, dass das Gehirn bereits so funktioniert.
+** Meta Segment Anything Model Audio :ai:audio:meta:opensource:
+:PROPERTIES:
+:ID:       46292266
+:URL:      https://ai.meta.com/samaudio/
+:HN_URL:   https://news.ycombinator.com/item?id=46292266
+:POINTS:   154
+:COMMENTS: 22
+:BY:       megaman821
+:END:
+
+*** TLDR
+Meta's SAM Audio can isolate any sound from audio mixtures using text, visual, or timespan prompts. Click on a video location to extract that sound, describe what you want in text, or highlight a time segment. Uses a flow-matching Diffusion Transformer in DAC-VAE latent space. Works across speech, music, and general audio.
+
+*** Take
+The 'click on a video to isolate that sound' demo is genuinely magical. This is the audio equivalent of 'remove the background' but somehow more impressive. Musicians are about to have a very complicated relationship with this tool.
+
+*** Comments
+
+**** hbn
+:PROPERTIES:
+:COMMENT_ID: 46292267
+:END:
+I hope we keep making progress in isolating tracks in music. I love listening to stems of my favorite songs, I find all sorts of neat parts I missed out on. Listening to isolated harmonies is cool too.
+
+**** kace91
+:PROPERTIES:
+:COMMENT_ID: 46292268
+:END:
+Funny that: This feature is awesome for sample-based music, sample music is not what it was due to legal rights, this model was probably created by not giving a damn about said rights.
+
+**** ortusdux
+:PROPERTIES:
+:COMMENT_ID: 46292269
+:END:
+Would be great for the hearing impaired and CAPD sufferers when combined with Meta glasses or the like.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+Meta的SAM Audio可以使用文本、视觉或时间段提示从音频混合中分离任何声音。点击视频位置提取该声音，用文字描述你想要的，或高亮时间段。使用DAC-VAE潜空间中的流匹配扩散Transformer。适用于语音、音乐和一般音频。
+***** Take
+'点击视频分离该声音'的演示确实很神奇。这是音频版的'移除背景'，但不知为何更令人印象深刻。音乐人即将与这个工具建立非常复杂的关系。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+MetaのSAM Audioはテキスト、ビジュアル、または時間範囲のプロンプトを使用してオーディオミックスから任意の音を分離できる。ビデオの場所をクリックしてその音を抽出、テキストで欲しいものを説明、または時間セグメントをハイライト。DAC-VAE潜在空間でフローマッチングDiffusion Transformerを使用。スピーチ、音楽、一般オーディオに対応。
+***** Take
+「ビデオをクリックしてその音を分離」のデモは本当に魔法的だ。これはオーディオ版の「背景を削除」だが、なぜかもっと印象的だ。ミュージシャンはこのツールと非常に複雑な関係を持つことになるだろう。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+Meta의 SAM Audio는 텍스트, 시각적, 또는 시간 범위 프롬프트를 사용하여 오디오 믹스에서 모든 소리를 분리할 수 있다. 비디오 위치를 클릭해 그 소리 추출, 원하는 것을 텍스트로 설명, 또는 시간 구간 하이라이트. DAC-VAE 잠재 공간에서 플로우 매칭 Diffusion Transformer 사용. 음성, 음악, 일반 오디오에 작동.
+***** Take
+'비디오를 클릭해서 그 소리 분리' 데모는 진정 마법 같다. 이건 오디오 버전의 '배경 제거'인데 왠지 더 인상적이다. 뮤지션들은 곧 이 도구와 매우 복잡한 관계를 갖게 될 것이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+El SAM Audio de Meta puede aislar cualquier sonido de mezclas de audio usando prompts de texto, visuales o de rango temporal. Haz clic en una ubicación del video para extraer ese sonido, describe lo que quieres en texto, o resalta un segmento de tiempo. Usa un Diffusion Transformer de flow-matching en espacio latente DAC-VAE. Funciona con voz, música y audio general.
+***** Take
+La demo de 'clic en el video para aislar ese sonido' es genuinamente mágica. Esto es el equivalente en audio de 'quitar el fondo' pero de alguna manera más impresionante. Los músicos están a punto de tener una relación muy complicada con esta herramienta.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Metas SAM Audio kann jeden Sound aus Audiomischungen mit Text-, visuellen oder Zeitspannen-Prompts isolieren. Klicke auf eine Videostelle, um den Sound zu extrahieren, beschreibe was du willst per Text, oder markiere ein Zeitsegment. Nutzt einen Flow-Matching Diffusion Transformer im DAC-VAE Latent Space. Funktioniert mit Sprache, Musik und allgemeinem Audio.
+***** Take
+Die 'Klick auf Video um den Sound zu isolieren'-Demo ist wirklich magisch. Das ist das Audio-Äquivalent zu 'Hintergrund entfernen', aber irgendwie beeindruckender. Musiker werden bald eine sehr komplizierte Beziehung zu diesem Tool haben.
