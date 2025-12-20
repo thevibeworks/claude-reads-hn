@@ -1,0 +1,407 @@
+#+TITLE: HN Digest 2025-12-20 16:00:00 UT UTC
+#+DATE: 2025-12-20T16:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+NIST goes dark, antirez gets philosophical, and HN learns that privacy is just marketing
+
+* Highlights
+- NIST Boulder NTP goes offline: 125 MPH winds defeat backup generators
+- Privacy vs anonymity: one is a checkbox, the other is architecture
+- Antirez reflects on AI: LLMs aren't stochastic parrots anymore
+- Databases for SSDs: your 1990s assumptions are holding you back
+- Garage: S3 storage so paranoid it runs outside datacenters
+
+* Stories
+
+** NTP at NIST Boulder Has Lost Power :infrastructure:ntp:outage:nist:
+:PROPERTIES:
+:ID:       46334299
+:URL:      https://lists.nanog.org/archives/list/nanog@lists.nanog.org/message/ACADD3NKOG2QRWZ56OSNNG7UIEKKTZXL/
+:HN_URL:   https://news.ycombinator.com/item?id=46334299
+:POINTS:   272
+:COMMENTS: 127
+:BY:       lpage
+:END:
+
+*** TLDR
+NIST Boulder's atomic time service went offline on Dec 17 after 125 MPH wind gusts knocked out power and their backup generator failed. The time servers (time-a-b.nist.gov through time-e-b.nist.gov) were disabled to avoid spreading incorrect time. Campus closed to non-emergency personnel, no repair timeline available.
+
+*** Take
+The irony of the institution that literally defines time not having time to fix their time servers is chef's kiss. Also, maybe put your backup generator in a location that doesn't get yeeted by Colorado wind?
+
+*** Comments
+
+**** arn3n
+:PROPERTIES:
+:COMMENT_ID: 46334567
+:END:
+Wind gusts were reaching 125 MPH in Boulder county. A lot of power was shut off preemptively to prevent downed power lines from starting wildfires. Shame that NIST's backup generator failed, though.
+
+**** themafia
+:PROPERTIES:
+:COMMENT_ID: 46334789
+:END:
+Having a parallel low bandwidth, low power, low waste heat monitoring and control system would be invaluable here.
+
+**** glkindlmann
+:PROPERTIES:
+:COMMENT_ID: 46334890
+:END:
+Of the various internet protocols, NTP is one I never learned about as a student, so now I'm looking at its web page by its creator David L. Mills (1938-2024).
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+NIST Boulder的原子时间服务在12月17日下线，125英里/小时的大风导致断电，备用发电机也失效了。时间服务器被禁用以避免传播错误时间。园区对非紧急人员关闭，没有修复时间表。
+***** Take
+定义时间的机构没有时间修复他们的时间服务器，这讽刺简直绝了。另外，也许把备用发电机放在不会被科罗拉多大风吹走的地方？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+NIST Boulderの原子時計サービスが12月17日にオフラインになった。時速125マイルの突風で停電し、バックアップ発電機も故障。誤った時刻を配信しないよう、タイムサーバーは無効化された。キャンパスは非緊急要員には閉鎖、復旧見通しなし。
+***** Take
+時間を定義する機関が、自分たちのタイムサーバーを修理する時間がないという皮肉は最高。あと、バックアップ発電機はコロラドの風に吹き飛ばされない場所に置いたら？
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+NIST Boulder의 원자 시간 서비스가 12월 17일 시속 125마일의 돌풍으로 정전되고 백업 발전기도 고장나면서 오프라인이 되었다. 잘못된 시간 전파를 막기 위해 타임 서버가 비활성화되었다. 캠퍼스는 비긴급 인원에게 폐쇄되었고 복구 일정은 없다.
+***** Take
+시간을 정의하는 기관이 자신들의 타임 서버를 고칠 시간이 없다는 아이러니는 정말 걸작이다. 그리고 백업 발전기는 콜로라도 바람에 날아가지 않는 곳에 두는 게 어떨까?
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+El servicio de tiempo atómico de NIST Boulder se desconectó el 17 de diciembre después de que ráfagas de viento de 125 MPH cortaran la energía y su generador de respaldo fallara. Los servidores de tiempo fueron deshabilitados para evitar propagar tiempo incorrecto. El campus cerrado a personal no esencial, sin fecha de reparación.
+***** Take
+La ironía de que la institución que literalmente define el tiempo no tenga tiempo para arreglar sus servidores de tiempo es perfecta. Además, ¿quizás poner el generador de respaldo en un lugar que no sea arrastrado por el viento de Colorado?
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Der Atomzeit-Dienst von NIST Boulder ging am 17. Dezember offline, nachdem Windböen von 200 km/h den Strom unterbrachen und der Backup-Generator ausfiel. Die Zeitserver wurden deaktiviert, um die Verbreitung falscher Zeit zu verhindern. Campus für nicht-essentielles Personal geschlossen, kein Reparaturzeitplan verfügbar.
+***** Take
+Die Ironie, dass die Institution, die buchstäblich die Zeit definiert, keine Zeit hat, ihre Zeitserver zu reparieren, ist köstlich. Außerdem, vielleicht den Backup-Generator an einen Ort stellen, der nicht vom Colorado-Wind weggeweht wird?
+** Privacy doesn't mean anything anymore, anonymity does :privacy:security:anonymity:web:
+:PROPERTIES:
+:ID:       46334025
+:URL:      https://servury.com/blog/privacy-is-marketing-anonymity-is-architecture/
+:HN_URL:   https://news.ycombinator.com/item?id=46334025
+:POINTS:   207
+:COMMENTS: 145
+:BY:       ybceo
+:END:
+
+*** TLDR
+［From title + comments, article unreachable］ The argument is that 'privacy' has become a marketing checkbox while anonymity is actual architectural protection. Companies claim privacy compliance while still logging IPs, timestamps, and user agents. True protection requires not collecting identity-linkable data in the first place.
+
+*** Take
+The company writing this article about anonymity literally admits in their privacy policy they log your IP address. Which is either peak irony or a masterclass in demonstrating their own point.
+
+*** Comments
+
+**** serial_dev
+:PROPERTIES:
+:COMMENT_ID: 46334234
+:END:
+Anonymity also doesn't mean anything. With cryptocurrencies, you are anonymous but have no privacy - your transaction history can be accessed by anyone. It's all fine until you make your first transaction.
+
+**** mk89
+:PROPERTIES:
+:COMMENT_ID: 46334456
+:END:
+Their privacy page says they log IP addresses, timestamps, and user agent strings. That's already a huge breach of what they're preaching.
+
+**** jrm4
+:PROPERTIES:
+:COMMENT_ID: 46334678
+:END:
+This is why Mastodon's individual server model, like email's, is better PRECISELY because servers can actually delete stuff. New social media with 'take everything with you' just builds a harder to erase social history.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+［根据标题和评论，文章无法访问］ 论点是'隐私'已经变成了营销复选框，而匿名性才是真正的架构保护。公司声称符合隐私规定，但仍然记录IP地址、时间戳和用户代理。真正的保护需要从一开始就不收集可关联身份的数据。
+***** Take
+写这篇关于匿名性文章的公司在他们的隐私政策中承认他们记录你的IP地址。这要么是讽刺的巅峰，要么是在证明他们自己观点的大师课。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+［タイトルとコメントから、記事にアクセス不可］ 論点は「プライバシー」がマーケティングのチェックボックスになり、匿名性こそが実際のアーキテクチャ的保護だということ。企業はプライバシー準拠を主張しながらIPアドレス、タイムスタンプ、ユーザーエージェントを記録し続けている。真の保護には、最初から身元に紐づくデータを収集しないことが必要。
+***** Take
+匿名性についてこの記事を書いている会社が、プライバシーポリシーでIPアドレスを記録していると認めている。これは皮肉の極みか、自分たちの主張を証明するマスタークラスのどちらかだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+［제목과 댓글에서, 기사 접근 불가］ 논점은 '프라이버시'가 마케팅 체크박스가 되었고 익명성이 실제 아키텍처적 보호라는 것이다. 기업들은 프라이버시 준수를 주장하면서도 IP 주소, 타임스탬프, 유저 에이전트를 계속 로깅한다. 진정한 보호는 처음부터 신원과 연결될 수 있는 데이터를 수집하지 않는 것이다.
+***** Take
+익명성에 대한 이 글을 쓴 회사가 개인정보 보호정책에서 IP 주소를 로깅한다고 인정한다. 이것은 최고의 아이러니이거나 자신들의 주장을 증명하는 마스터클래스다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+［Del título y comentarios, artículo inaccesible］ El argumento es que 'privacidad' se ha convertido en una casilla de marketing mientras que el anonimato es protección arquitectónica real. Las empresas afirman cumplir con la privacidad mientras siguen registrando IPs, timestamps y user agents. La protección real requiere no recopilar datos vinculables a la identidad desde el principio.
+***** Take
+La empresa que escribe este artículo sobre anonimato literalmente admite en su política de privacidad que registra tu IP. Lo cual es el pico de la ironía o una clase magistral demostrando su propio punto.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+［Aus Titel und Kommentaren, Artikel nicht erreichbar］ Das Argument ist, dass 'Privatsphäre' zu einem Marketing-Häkchen geworden ist, während Anonymität echter architektonischer Schutz ist. Unternehmen behaupten Datenschutz-Konformität, während sie weiterhin IPs, Zeitstempel und User-Agents protokollieren. Echter Schutz erfordert, von Anfang an keine identitätsbezogenen Daten zu sammeln.
+***** Take
+Das Unternehmen, das diesen Artikel über Anonymität schreibt, gibt in seiner Datenschutzerklärung buchstäblich zu, dass es Ihre IP-Adresse protokolliert. Was entweder der Gipfel der Ironie ist oder eine Meisterklasse in der Demonstration ihres eigenen Punktes.
+** Reflections on AI at the End of 2025 :ai:llm:agi:reflection:
+:PROPERTIES:
+:ID:       46334819
+:URL:      https://antirez.com/news/157
+:HN_URL:   https://news.ycombinator.com/item?id=46334819
+:POINTS:   93
+:COMMENTS: 123
+:BY:       danielfalbo
+:END:
+
+*** TLDR
+Antirez (Redis creator) reflects on AI progress: researchers have abandoned the 'stochastic parrot' dismissal, Chain of Thought is now fundamental, reinforcement learning is overcoming scaling limitations, and programmer resistance to AI assistance has dropped significantly. He sees possible paths to AGI but notes the fundamental challenge is 'avoiding extinction'.
+
+*** Take
+When the guy who built Redis says LLMs might get us to AGI, you pay attention. Though his closing note about 'avoiding extinction' hits different when you realize he's probably talking about humans, not databases.
+
+*** Comments
+
+**** etra0
+:PROPERTIES:
+:COMMENT_ID: 46335012
+:END:
+What scares me most is the trust of LLM output by general society. For software engineers it's easy to see if it's useful - we can run the code. But the general public has no equivalent verification.
+
+**** bachmeier
+:PROPERTIES:
+:COMMENT_ID: 46335234
+:END:
+I'm not a fan of calling non-users 'skeptics' with 'resistance'. The return on investment wasn't acceptable before. Now it is for more people. That's not skepticism, that's rationality.
+
+**** danielfalbo
+:PROPERTIES:
+:COMMENT_ID: 46335456
+:END:
+I wonder if optimizing for speed may produce code that is faster but harder to understand and extend. Should we care about elegance? Should the reward include elegance?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+Antirez（Redis创作者）反思AI进展：研究人员已经放弃了'随机鹦鹉'的说法，思维链现在是基础性的，强化学习正在克服规模限制，程序员对AI辅助的抵触已经显著降低。他看到了通往AGI的可能路径，但指出根本挑战是'避免灭绝'。
+***** Take
+当建造Redis的人说LLM可能让我们达到AGI时，你得认真听。虽然他关于'避免灭绝'的结语在你意识到他可能是在说人类而不是数据库时感觉不一样了。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+Antirez（Redis開発者）がAIの進歩を振り返る：研究者たちは「確率的オウム」という否定を捨て、Chain of Thoughtは今や基本となり、強化学習がスケーリングの限界を克服しつつある。プログラマーのAI支援への抵抗は大幅に低下した。彼はAGIへの可能な道筋を見ているが、根本的な課題は「絶滅を避けること」と述べている。
+***** Take
+Redisを作った人がLLMでAGIに到達できるかもしれないと言うなら、注目すべきだ。彼の「絶滅を避ける」という締めくくりは、データベースではなく人間について話しているかもしれないと気づくと、違った響きがある。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+Antirez(Redis 창시자)가 AI 발전을 성찰한다: 연구자들은 '확률적 앵무새' 비판을 포기했고, Chain of Thought가 이제 기본이 되었으며, 강화학습이 스케일링 한계를 극복하고 있고, 프로그래머들의 AI 지원에 대한 저항이 크게 줄었다. 그는 AGI로 가는 가능한 경로를 보지만 근본적인 도전은 '멸종 피하기'라고 말한다.
+***** Take
+Redis를 만든 사람이 LLM이 AGI로 이끌 수 있다고 하면 주목해야 한다. 그가 '멸종 피하기'에 대해 말할 때, 데이터베이스가 아니라 인간에 대해 이야기하고 있을 수 있다는 걸 깨달으면 다르게 느껴진다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Antirez (creador de Redis) reflexiona sobre el progreso de IA: los investigadores han abandonado el descarte de 'loro estocástico', Chain of Thought es ahora fundamental, el aprendizaje por refuerzo está superando las limitaciones de escala, y la resistencia de los programadores a la asistencia de IA ha caído significativamente. Ve posibles caminos hacia AGI pero nota que el desafío fundamental es 'evitar la extinción'.
+***** Take
+Cuando el tipo que construyó Redis dice que los LLMs podrían llevarnos a AGI, prestas atención. Aunque su nota final sobre 'evitar la extinción' pega diferente cuando te das cuenta de que probablemente está hablando de humanos, no de bases de datos.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Antirez (Redis-Erfinder) reflektiert über KI-Fortschritt: Forscher haben die 'stochastischer Papagei'-Ablehnung aufgegeben, Chain of Thought ist jetzt fundamental, Reinforcement Learning überwindet Skalierungsgrenzen, und der Widerstand von Programmierern gegen KI-Unterstützung ist deutlich gesunken. Er sieht mögliche Wege zu AGI, aber die fundamentale Herausforderung ist 'Extinktion vermeiden'.
+***** Take
+Wenn der Typ, der Redis gebaut hat, sagt, dass LLMs uns zu AGI bringen könnten, hört man zu. Obwohl seine Schlussbemerkung über 'Extinktion vermeiden' anders trifft, wenn man erkennt, dass er wahrscheinlich über Menschen spricht, nicht über Datenbanken.
+** What Does a Database for SSDs Look Like? :databases:ssd:performance:architecture:
+:PROPERTIES:
+:ID:       46334990
+:URL:      https://brooker.co.za/blog/2025/12/15/database-for-ssd.html
+:HN_URL:   https://news.ycombinator.com/item?id=46334990
+:POINTS:   94
+:COMMENTS: 68
+:BY:       charleshn
+:END:
+
+*** TLDR
+Marc Brooker (AWS) argues databases should be redesigned for SSDs: shrink RAM cache to 30-second access windows instead of 5-minute, optimize for 32KB transfers instead of 1MB, replace local write-ahead logs with distributed replication, and rethink durability around multi-AZ commits. Core relational principles stay, but the spinning-rust assumptions need to go.
+
+*** Take
+An Amazon engineer arguing for architectures that coincidentally leverage AWS's distributed infrastructure. Shocking. Though to be fair, he's not wrong about the spinning rust assumptions - most databases are still optimized for hardware that belongs in a museum.
+
+*** Comments
+
+**** cornholio
+:PROPERTIES:
+:COMMENT_ID: 46335123
+:END:
+You know you need to be careful when an Amazon engineer will argue for a database architecture that fully leverages the strengths of their employer's product.
+
+**** wpietri
+:PROPERTIES:
+:COMMENT_ID: 46335345
+:END:
+The bond between relational databases and spinning rust goes back further. My dad started programming in the 60s with magtape - for him, databases were a solution to the problems disks created.
+
+**** mrkeen
+:PROPERTIES:
+:COMMENT_ID: 46335567
+:END:
+Overall speed is irrelevant, what mattered was the relative speed difference between sequential and random access. And there's still a massive difference between sequential and random on SSDs.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+Marc Brooker（AWS）认为数据库应该为SSD重新设计：将RAM缓存缩小到30秒访问窗口而不是5分钟，优化32KB传输而不是1MB，用分布式复制替代本地预写日志，并围绕多可用区提交重新思考持久性。核心关系型原则保留，但机械硬盘的假设需要抛弃。
+***** Take
+一个亚马逊工程师倡导的架构恰好利用了AWS分布式基础设施的优势。震惊。不过说实话，他关于机械硬盘假设的观点没错——大多数数据库仍然为属于博物馆的硬件优化。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+Marc Brooker（AWS）は、データベースをSSD向けに再設計すべきだと主張：RAMキャッシュを5分ではなく30秒のアクセスウィンドウに縮小、1MBではなく32KB転送に最適化、ローカルWALを分散レプリケーションに置き換え、マルチAZコミットを中心に永続性を再考する。コアなリレーショナル原則は維持するが、回転ディスクの前提は捨てるべき。
+***** Take
+Amazonのエンジニアが、偶然にもAWSの分散インフラの強みを活かすアーキテクチャを主張している。驚き。とはいえ、彼の回転ディスクの前提についての指摘は正しい - ほとんどのデータベースは博物館に属するハードウェア向けに最適化されている。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+Marc Brooker(AWS)는 데이터베이스를 SSD용으로 재설계해야 한다고 주장한다: RAM 캐시를 5분이 아닌 30초 접근 윈도우로 축소, 1MB가 아닌 32KB 전송에 최적화, 로컬 WAL을 분산 복제로 대체, 멀티 AZ 커밋 중심으로 내구성 재고. 핵심 관계형 원칙은 유지하되 회전 디스크 가정은 버려야 한다.
+***** Take
+Amazon 엔지니어가 우연히도 AWS 분산 인프라의 강점을 활용하는 아키텍처를 주장한다. 놀랍다. 그래도 그의 회전 디스크 가정에 대한 지적은 맞다 - 대부분의 데이터베이스는 여전히 박물관에 있어야 할 하드웨어에 최적화되어 있다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Marc Brooker (AWS) argumenta que las bases de datos deberían rediseñarse para SSDs: reducir la caché RAM a ventanas de acceso de 30 segundos en vez de 5 minutos, optimizar para transferencias de 32KB en vez de 1MB, reemplazar WAL local con replicación distribuida, y repensar la durabilidad alrededor de commits multi-AZ. Los principios relacionales centrales permanecen, pero las suposiciones de disco mecánico deben irse.
+***** Take
+Un ingeniero de Amazon argumentando por arquitecturas que coincidentemente aprovechan la infraestructura distribuida de AWS. Sorprendente. Aunque para ser justos, no se equivoca sobre las suposiciones de disco mecánico - la mayoría de bases de datos aún están optimizadas para hardware que pertenece a un museo.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Marc Brooker (AWS) argumentiert, dass Datenbanken für SSDs neu gestaltet werden sollten: RAM-Cache auf 30-Sekunden-Zugriffsfenster statt 5 Minuten schrumpfen, für 32KB-Transfers statt 1MB optimieren, lokale WAL durch verteilte Replikation ersetzen und Dauerhaftigkeit um Multi-AZ-Commits neu denken. Kern-relationale Prinzipien bleiben, aber die Spinning-Rust-Annahmen müssen weg.
+***** Take
+Ein Amazon-Ingenieur, der für Architekturen plädiert, die zufälligerweise AWSs verteilte Infrastruktur nutzen. Schockierend. Obwohl, um fair zu sein, er hat Recht mit den Spinning-Rust-Annahmen - die meisten Datenbanken sind immer noch für Hardware optimiert, die ins Museum gehört.
+** Garage – An S3 object store so reliable you can run it outside datacenters :storage:s3:self-hosting:distributed:
+:PROPERTIES:
+:ID:       46326984
+:URL:      https://garagehq.deuxfleurs.fr/
+:HN_URL:   https://news.ycombinator.com/item?id=46326984
+:POINTS:   636
+:COMMENTS: 140
+:BY:       ibobev
+:END:
+
+*** TLDR
+Garage is a lightweight S3-compatible object store designed for geo-distributed self-hosting. Single binary, 1GB RAM minimum, replicates data across 3 zones, handles network failures gracefully. Based on Amazon Dynamo and CRDTs. Works with Nextcloud, Matrix, Mastodon. Not as fast as MinIO at 25Gbps, but easier to deploy and more resilient.
+
+*** Take
+Finally, object storage for people who trust their own closet more than a datacenter. Though the comments reveal it's missing lifecycle management, so if someone gets your keys, your backups are gone. Pick your poison.
+
+*** Comments
+
+**** adamcharnock
+:PROPERTIES:
+:COMMENT_ID: 46327234
+:END:
+We found Garage easier to deploy than MinIO, but not as performant at high speeds. We could push about 5 gigabits out of it, but MinIO reaches 20-25 gigabits on a 25g NIC.
+
+**** fabian2k
+:PROPERTIES:
+:COMMENT_ID: 46327456
+:END:
+Looks interesting for local development. But the production guide mentions Garage doesn't do checksumming on its own for metadata - you need ZFS or btrfs underneath. That would scare me a bit.
+
+**** PunchyHamster
+:PROPERTIES:
+:COMMENT_ID: 46327678
+:END:
+Caveats: no lifecycle management, so if anyone gets your key, your backups are gone. No automatic migration from MinIO. I relied on MinIO's lifecycle for 'don't delete versions for 3 months'.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+Garage是一个轻量级S3兼容对象存储，专为地理分布式自托管设计。单一二进制文件，最低1GB RAM，跨3个区域复制数据，优雅处理网络故障。基于Amazon Dynamo和CRDT。支持Nextcloud、Matrix、Mastodon。25Gbps时没有MinIO快，但更容易部署且更有弹性。
+***** Take
+终于有了给那些信任自家壁橱胜过数据中心的人的对象存储。虽然评论显示它缺少生命周期管理，所以如果有人拿到你的密钥，你的备份就没了。选择你的毒药吧。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+Garageは地理分散型セルフホスティング向けに設計された軽量S3互換オブジェクトストア。単一バイナリ、最小1GB RAM、3ゾーン間でデータ複製、ネットワーク障害を優雅に処理。Amazon DynamoとCRDTベース。Nextcloud、Matrix、Mastodonで動作。25Gbpsでは MinIOほど速くないが、デプロイしやすく回復力が高い。
+***** Take
+ついに、データセンターより自分のクローゼットを信頼する人のためのオブジェクトストレージ。コメントによるとライフサイクル管理がないので、誰かにキーを取られたらバックアップは消える。毒を選べ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+Garage는 지리적으로 분산된 셀프 호스팅을 위해 설계된 경량 S3 호환 오브젝트 스토어다. 단일 바이너리, 최소 1GB RAM, 3개 존에 데이터 복제, 네트워크 장애를 우아하게 처리. Amazon Dynamo와 CRDT 기반. Nextcloud, Matrix, Mastodon과 작동. 25Gbps에서 MinIO만큼 빠르지 않지만 배포가 쉽고 복원력이 좋다.
+***** Take
+드디어 데이터센터보다 자기 집 옷장을 더 신뢰하는 사람들을 위한 오브젝트 스토리지. 댓글에 따르면 라이프사이클 관리가 없어서 누군가 키를 얻으면 백업은 사라진다. 독을 골라라.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Garage es un almacén de objetos ligero compatible con S3 diseñado para auto-alojamiento geo-distribuido. Binario único, mínimo 1GB RAM, replica datos en 3 zonas, maneja fallos de red elegantemente. Basado en Amazon Dynamo y CRDTs. Funciona con Nextcloud, Matrix, Mastodon. No tan rápido como MinIO a 25Gbps, pero más fácil de desplegar y más resiliente.
+***** Take
+Finalmente, almacenamiento de objetos para gente que confía más en su propio armario que en un datacenter. Aunque los comentarios revelan que no tiene gestión de ciclo de vida, así que si alguien obtiene tus claves, tus backups desaparecen. Elige tu veneno.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Garage ist ein leichtgewichtiger S3-kompatibler Objektspeicher für geo-verteiltes Self-Hosting. Einzelne Binary, mindestens 1GB RAM, repliziert Daten über 3 Zonen, behandelt Netzwerkausfälle elegant. Basiert auf Amazon Dynamo und CRDTs. Funktioniert mit Nextcloud, Matrix, Mastodon. Nicht so schnell wie MinIO bei 25Gbps, aber einfacher zu deployen und widerstandsfähiger.
+***** Take
+Endlich Objektspeicher für Leute, die ihrem eigenen Schrank mehr vertrauen als einem Rechenzentrum. Allerdings zeigen die Kommentare, dass Lifecycle-Management fehlt - wenn jemand deine Keys bekommt, sind deine Backups weg. Wähl dein Gift.
