@@ -1,0 +1,401 @@
+#+TITLE: HN Digest 2025-12-22 11:00:00 UT UTC
+#+DATE: 2025-12-22T11:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Parentheses rebel, Rust invades Android, and an exoplanet breaks all the rules
+
+* Highlights
+- Inverse parentheses: programming syntax gets chaotic
+- Rust + Iced = Android apps without Java tears
+- Cookie-based 418 trap for AI crawlers
+- Exoplanet with carbon atmosphere baffles astronomers
+- Kernighan's lever: clever code as a growth hack
+
+* Stories
+
+** Inverse Parentheses :programming:parsing:language-design:experimental:
+:PROPERTIES:
+:ID:       46352248
+:URL:      https://kellett.im/a/inverse-parentheses
+:HN_URL:   https://news.ycombinator.com/item?id=46352248
+:POINTS:   42
+:COMMENTS: 36
+:BY:       mighty-fine
+:END:
+
+*** TLDR
+A tokenizer-based experiment where parentheses weaken rather than strengthen expression binding. Instead of grouping operands tighter, inverse parentheses loosen them, inspired by how Python's tokenizer handles indentation inside parens.
+
+*** Take
+This is the kind of beautiful insanity that happens when someone asks 'but what if math worked backwards?' and then actually implements it. Pure language-nerd catnip.
+
+*** Comments
+
+**** TrianguloY
+:PROPERTIES:
+:COMMENT_ID: 46352389
+:END:
+Based on this comment, I think I understood the missing first paragraph: If you have the expression 1+2⁎3 you have three elements with two operands.
+
+**** qsort
+:PROPERTIES:
+:COMMENT_ID: 46352300
+:END:
+Am I stupid if I don't get it? What is the intended end state? What does 'ungroup operands' mean?
+
+**** bananaflag
+:PROPERTIES:
+:COMMENT_ID: 46352350
+:END:
+Since this doesn't exist in practice, shouldn't the article author first explain what they mean by that?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+一个基于分词器的实验,括号削弱而非加强表达式绑定。灵感来自Python分词器处理括号内缩进的方式。
+***** Take
+这就是当有人问'如果数学反过来运作会怎样?'然后真的去实现时发生的美丽疯狂。纯粹的语言极客狂欢。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+括弧が式のバインディングを強めるのではなく弱めるトークナイザーベースの実験。Pythonのトークナイザーが括弧内のインデントを処理する方法にインスパイアされた。
+***** Take
+これは誰かが「もし数学が逆に動いたら?」と問い、実際に実装した時に起こる美しい狂気だ。純粋な言語オタクの祭典。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+괄호가 표현식 바인딩을 강화하는 대신 약화시키는 토크나이저 기반 실험. Python 토크나이저가 괄호 안의 들여쓰기를 처리하는 방식에서 영감을 받음.
+***** Take
+누군가 '수학이 거꾸로 작동하면 어떨까?'라고 물은 뒤 실제로 구현했을 때 일어나는 아름다운 광기. 순수한 언어 덕후 축제.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Un experimento basado en tokenizador donde los paréntesis debilitan en lugar de fortalecer el enlace de expresiones. Inspirado en cómo el tokenizador de Python maneja la indentación dentro de paréntesis.
+***** Take
+Esta es la clase de locura hermosa que ocurre cuando alguien pregunta '¿y si las matemáticas funcionaran al revés?' y luego lo implementa. Puro festín para nerds de lenguajes.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Ein Tokenizer-basiertes Experiment, bei dem Klammern die Ausdrucksbindung schwächen statt stärken. Inspiriert davon, wie Pythons Tokenizer Einrückungen innerhalb von Klammern behandelt.
+***** Take
+Das ist die Art von wunderschönem Wahnsinn, der passiert wenn jemand fragt 'was wäre wenn Mathematik rückwärts funktioniert?' und es dann tatsächlich implementiert. Reines Sprachnerdfest.
+** Build Android apps using Rust and Iced :rust:android:mobile:gui:opensource:
+:PROPERTIES:
+:ID:       46350641
+:URL:      https://github.com/ibaryshnikov/android-iced-example
+:HN_URL:   https://news.ycombinator.com/item?id=46350641
+:POINTS:   92
+:COMMENTS: 23
+:BY:       rekireki
+:END:
+
+*** TLDR
+A working example of building Android apps purely in Rust using the Iced GUI framework, wgpu for graphics, and android-activity. Supports both NativeActivity and GameActivity, with text input and real device screenshots to prove it works.
+
+*** Take
+Finally, a way to write mobile apps without touching Kotlin or Swift. The 'just use Flutter' crowd is going to be so confused when Rust devs start shipping apps that compile in 45 minutes.
+
+*** Comments
+
+**** coldstartops
+:PROPERTIES:
+:COMMENT_ID: 46350700
+:END:
+Also on this topic I want to make a shout out to slint.dev! I've fiddled with it, and the syntax is extremely easy to grasp - very react-ish.
+
+**** NoboruWataya
+:PROPERTIES:
+:COMMENT_ID: 46350800
+:END:
+Is there a reason you didn't mention Dioxus? It explicitly has Android support as a goal, though like all Rust GUI crates it's a work in progress.
+
+**** zwnow
+:PROPERTIES:
+:COMMENT_ID: 46350900
+:END:
+Does this support native components like camera access? I've learned with most libs like this I never have access to the android internals.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+一个纯Rust构建Android应用的工作示例,使用Iced GUI框架、wgpu图形和android-activity。支持NativeActivity和GameActivity,有文本输入和真机截图证明可行。
+***** Take
+终于有办法不碰Kotlin或Swift就能写移动应用了。'直接用Flutter'党看到Rust开发者开始发布编译45分钟的应用时会很困惑。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+Iced GUIフレームワーク、wgpuグラフィックス、android-activityを使用して純粋なRustでAndroidアプリを構築する動作例。NativeActivityとGameActivityの両方をサポートし、テキスト入力と実機スクリーンショットで動作を証明。
+***** Take
+ついにKotlinやSwiftに触れずにモバイルアプリを書く方法ができた。Rust開発者が45分でコンパイルするアプリを出荷し始めたら「Flutter使えよ」派は困惑するだろう。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+Iced GUI 프레임워크, wgpu 그래픽, android-activity를 사용해 순수 Rust로 Android 앱을 빌드하는 작동 예제. NativeActivity와 GameActivity 모두 지원하며, 텍스트 입력과 실제 기기 스크린샷으로 작동 증명.
+***** Take
+드디어 Kotlin이나 Swift 없이 모바일 앱을 만들 수 있게 됐다. Rust 개발자들이 45분 컴파일 앱을 출시하기 시작하면 'Flutter 쓰면 되잖아' 파들이 혼란스러워할 것이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Un ejemplo funcional de construcción de apps Android puramente en Rust usando el framework GUI Iced, wgpu para gráficos y android-activity. Soporta NativeActivity y GameActivity, con entrada de texto y capturas de dispositivos reales.
+***** Take
+Por fin, una forma de escribir apps móviles sin tocar Kotlin o Swift. La gente del 'solo usa Flutter' estará muy confundida cuando los desarrolladores de Rust empiecen a publicar apps que compilan en 45 minutos.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Ein funktionierendes Beispiel für den Bau von Android-Apps rein in Rust mit dem Iced GUI-Framework, wgpu für Grafik und android-activity. Unterstützt NativeActivity und GameActivity, mit Texteingabe und echten Geräte-Screenshots als Beweis.
+***** Take
+Endlich ein Weg mobile Apps zu schreiben ohne Kotlin oder Swift anzufassen. Die 'nimm einfach Flutter'-Fraktion wird sehr verwirrt sein wenn Rust-Entwickler Apps ausliefern die 45 Minuten kompilieren.
+** How I protect my Forgejo instance from AI web crawlers :security:devops:ai:bots:nginx:
+:PROPERTIES:
+:ID:       46345205
+:URL:      https://her.esy.fun/posts/0031-how-i-protect-my-forgejo-instance-from-ai-web-crawlers/index.html
+:HN_URL:   https://news.ycombinator.com/item?id=46345205
+:POINTS:   33
+:COMMENTS: 24
+:BY:       todsacerdoti
+:END:
+
+*** TLDR
+A quick nginx hack that returns 418 (I'm a teapot) to requests without a special cookie, then sets the cookie via JavaScript and reloads. Bots can't execute JS, humans get through seamlessly. Git user agents are whitelisted so cloning still works.
+
+*** Take
+The 418 status code finally has a purpose beyond HTTP memes. This is the digital equivalent of putting up a 'humans only' sign at a nightclub, except the bouncer is a JavaScript snippet.
+
+*** Comments
+
+**** Simplita
+:PROPERTIES:
+:COMMENT_ID: 46345300
+:END:
+We ran into similar issues with aggressive crawling. What helped was rate limiting combined with making intent explicit at the entry point.
+
+**** maelito
+:PROPERTIES:
+:COMMENT_ID: 46345400
+:END:
+I'm having lots of connections every day from Singapore. It's now the main country... despite the whole website being French-only. AI crawlers, for sure.
+
+**** Roark66
+:PROPERTIES:
+:COMMENT_ID: 46345500
+:END:
+I'm glad the author clarified he wants to prevent his instance from crashing not simply 'block robots and allow humans'. We should focus on specific behavior that causes problems.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+一个快速的nginx技巧,对没有特殊cookie的请求返回418(我是茶壶),然后通过JavaScript设置cookie并重新加载。机器人无法执行JS,人类无缝通过。Git用户代理被列入白名单所以克隆仍然有效。
+***** Take
+418状态码终于有了HTTP梗之外的用途。这是夜店门口'仅限人类'标志的数字版本,只不过保安是一段JavaScript代码。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+特別なクッキーのないリクエストに418(私はティーポット)を返し、JavaScriptでクッキーをセットしてリロードする簡単なnginxハック。ボットはJSを実行できず、人間はシームレスに通過。Gitユーザーエージェントはホワイトリストでクローンは動作。
+***** Take
+418ステータスコードがついにHTTPミーム以外の目的を持った。これはナイトクラブの「人間のみ」の看板のデジタル版、ただし警備員はJavaScriptスニペット。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+특별한 쿠키 없는 요청에 418(나는 주전자)을 반환하고, JavaScript로 쿠키를 설정해 리로드하는 간단한 nginx 핵. 봇은 JS를 실행 못하고, 사람은 자연스럽게 통과. Git 유저 에이전트는 화이트리스트라 클론은 여전히 동작.
+***** Take
+418 상태 코드가 드디어 HTTP 밈 외의 목적을 갖게 됐다. 나이트클럽에 '인간만' 표지판을 붙이는 것의 디지털 버전인데, 경비원이 JavaScript 스니펫이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Un truco rápido de nginx que devuelve 418 (soy una tetera) a solicitudes sin una cookie especial, luego establece la cookie via JavaScript y recarga. Los bots no pueden ejecutar JS, los humanos pasan sin problemas. Los user agents de Git están en lista blanca.
+***** Take
+El código de estado 418 finalmente tiene un propósito más allá de los memes HTTP. Este es el equivalente digital de poner un cartel de 'solo humanos' en un club nocturno, excepto que el portero es un fragmento de JavaScript.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Ein schneller nginx-Hack der 418 (Ich bin eine Teekanne) an Anfragen ohne spezielles Cookie zurückgibt, dann das Cookie per JavaScript setzt und neu lädt. Bots können kein JS ausführen, Menschen kommen nahtlos durch. Git User Agents sind whitelisted.
+***** Take
+Der 418-Statuscode hat endlich einen Zweck jenseits von HTTP-Memes. Das ist das digitale Äquivalent eines 'Nur Menschen'-Schilds an einem Nachtclub, nur dass der Türsteher ein JavaScript-Snippet ist.
+** Webb observes exoplanet that may have an exotic helium and carbon atmosphere :space:astronomy:webb:science:exoplanet:
+:PROPERTIES:
+:ID:       46325475
+:URL:      https://science.nasa.gov/missions/webb/nasas-webb-observes-exoplanet-whose-composition-defies-explanation/
+:HN_URL:   https://news.ycombinator.com/item?id=46325475
+:POINTS:   65
+:COMMENTS: 13
+:BY:       taubek
+:END:
+
+*** TLDR
+Webb found PSR J2322-2650b, an exoplanet orbiting a pulsar with temperatures up to 3,700F, a lemon-shaped body from tidal forces, and an atmosphere dominated by molecular carbon and helium. Scientists say it rules out every known formation mechanism.
+
+*** Take
+A 7.8-hour orbit around a gamma ray-spitting pulsar while being stretched into a lemon. If this planet could talk, it would just be screaming. Meanwhile, Earth complains about climate change.
+
+*** Comments
+
+**** pfdietz
+:PROPERTIES:
+:COMMENT_ID: 46325600
+:END:
+Kyplanet had a video on this. https://www.youtube.com/watch?v=k7pu0Dhu87o
+
+**** westmeal
+:PROPERTIES:
+:COMMENT_ID: 46325700
+:END:
+Getting flung around a gamma ray emitting pulsar while baking on diamonds doesn't seem very groovy
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+韦伯发现了PSR J2322-2650b,一颗绕脉冲星运行的系外行星,温度高达3700华氏度,受潮汐力影响呈柠檬形状,大气层以分子碳和氦为主。科学家称这排除了所有已知的形成机制。
+***** Take
+绕着喷射伽马射线的脉冲星以7.8小时公转一周,同时被拉伸成柠檬形状。如果这颗行星会说话,它只会尖叫。与此同时,地球还在抱怨气候变化。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+ウェッブはパルサーを周回する系外惑星PSR J2322-2650bを発見。温度は最高3700°F、潮汐力でレモン型に変形し、分子状炭素とヘリウムが主成分の大気を持つ。科学者は既知のすべての形成メカニズムを否定すると述べた。
+***** Take
+ガンマ線を放出するパルサーの周りを7.8時間で公転しながらレモン型に引き伸ばされている。この惑星が話せたら、ただ叫んでいるだけだろう。一方、地球は気候変動について文句を言っている。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+웹이 펄서를 공전하는 외계행성 PSR J2322-2650b를 발견했다. 온도는 최대 3700°F, 조석력으로 레몬 모양이며, 분자 탄소와 헬륨이 지배하는 대기를 가졌다. 과학자들은 이것이 알려진 모든 형성 메커니즘을 배제한다고 말했다.
+***** Take
+감마선을 뿜는 펄서 주위를 7.8시간 주기로 공전하면서 레몬 모양으로 늘어나고 있다. 이 행성이 말할 수 있다면, 그냥 비명만 지르고 있을 것이다. 그동안 지구는 기후변화를 불평하고 있다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Webb encontró PSR J2322-2650b, un exoplaneta que orbita un púlsar con temperaturas de hasta 3700°F, forma de limón por fuerzas de marea, y atmósfera dominada por carbono molecular y helio. Los científicos dicen que descarta todo mecanismo de formación conocido.
+***** Take
+Una órbita de 7.8 horas alrededor de un púlsar que escupe rayos gamma mientras eres estirado hasta parecer un limón. Si este planeta pudiera hablar, solo estaría gritando. Mientras tanto, la Tierra se queja del cambio climático.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Webb fand PSR J2322-2650b, einen Exoplaneten der einen Pulsar umkreist mit Temperaturen bis 3700°F, einer zitronenförmigen Gestalt durch Gezeitenkräfte, und einer von molekularem Kohlenstoff und Helium dominierten Atmosphäre. Wissenschaftler sagen es schließt jeden bekannten Entstehungsmechanismus aus.
+***** Take
+Eine 7,8-Stunden-Umlaufbahn um einen Gammastrahlen-spuckenden Pulsar während man zu einer Zitrone gestreckt wird. Wenn dieser Planet sprechen könnte würde er nur schreien. Derweil beschwert sich die Erde über den Klimawandel.
+** Kernighan's Lever :programming:philosophy:debugging:career:
+:PROPERTIES:
+:ID:       46331292
+:URL:      https://linusakesson.net/programming/kernighans-lever/index.php
+:HN_URL:   https://news.ycombinator.com/item?id=46331292
+:POINTS:   67
+:COMMENTS: 25
+:BY:       xk3
+:END:
+
+*** TLDR
+A reframing of Kernighan's quote about debugging being twice as hard as writing code: instead of avoiding clever code, use it as a lever for growth. Struggling to debug your own clever code forces you to level up as a programmer.
+
+*** Take
+This is basically 'what doesn't kill you makes you stronger' for code. Which sounds inspirational until you're at 3am staring at a regex you wrote while caffeinated and now can't decipher.
+
+*** Comments
+
+**** misja111
+:PROPERTIES:
+:COMMENT_ID: 46331400
+:END:
+It's worse than that. It might not be you who has to debug it, but someone else. Maybe after you left the company already.
+
+**** mrob
+:PROPERTIES:
+:COMMENT_ID: 46331500
+:END:
+While I agree with improving skills, I think there's a distinction between artistic code and engineering code. Linus Akesson writes exceptionally clever code, but it's artistic code.
+
+**** chimprich
+:PROPERTIES:
+:COMMENT_ID: 46331600
+:END:
+I think a better assessment of how well you've evolved as a programmer is how simple you can make the code. It takes real intelligence and flair to simplify.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+对克尼汉关于调试比写代码难两倍这句话的重新解读:不要回避巧妙的代码,而是把它作为成长的杠杆。努力调试自己写的巧妙代码会迫使你作为程序员升级。
+***** Take
+这基本上是代码版的'杀不死你的会让你更强大'。听起来很励志,直到你凌晨3点盯着一个你在咖啡因作用下写的正则表达式,现在完全看不懂。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+デバッグはコードを書くより2倍難しいというカーニハンの言葉の再解釈:巧妙なコードを避けるのではなく、成長のテコとして使う。自分の巧妙なコードをデバッグするのに苦労することで、プログラマーとしてレベルアップを強いられる。
+***** Take
+これは基本的にコードの「殺せないものは強くする」だ。午前3時にカフェイン漬けで書いた正規表現を見つめて今は解読できない状況になるまでは感動的に聞こえる。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+디버깅이 코드 작성보다 두 배 어렵다는 커니핸의 말을 재해석: 영리한 코드를 피하는 대신 성장의 지렛대로 사용하라. 자신의 영리한 코드를 디버깅하느라 고생하면 프로그래머로서 레벨업하게 된다.
+***** Take
+이건 기본적으로 코드 버전의 '죽이지 못하는 것은 나를 강하게 만든다'다. 새벽 3시에 카페인 상태에서 쓴 정규식을 쳐다보며 이제 해독 못할 때까지는 감동적으로 들린다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Una reinterpretación de la cita de Kernighan sobre que depurar es el doble de difícil que escribir código: en lugar de evitar código ingenioso, úsalo como palanca para crecer. Luchar por depurar tu propio código ingenioso te obliga a subir de nivel.
+***** Take
+Esto es básicamente 'lo que no te mata te hace más fuerte' para código. Lo cual suena inspirador hasta que estás a las 3am mirando una regex que escribiste bajo cafeína y ahora no puedes descifrar.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Eine Neuinterpretation von Kernighans Zitat dass Debuggen doppelt so schwer ist wie Code schreiben: statt cleveren Code zu vermeiden, nutze ihn als Hebel für Wachstum. Der Kampf beim Debuggen deines eigenen cleveren Codes zwingt dich dazu als Programmierer aufzusteigen.
+***** Take
+Das ist im Grunde 'was dich nicht umbringt macht dich stärker' für Code. Was inspirierend klingt bis du um 3 Uhr morgens auf eine Regex starrst die du koffeiniert geschrieben hast und jetzt nicht entziffern kannst.
