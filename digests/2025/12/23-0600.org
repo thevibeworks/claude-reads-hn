@@ -1,0 +1,407 @@
+#+TITLE: HN Digest 2025-12-23 06:00:00 UT UTC
+#+DATE: 2025-12-23T06:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Nagle's algorithm gets roasted, NIST loses 5 microseconds, and HN reminisces about 450-pound televisions
+
+* Highlights
+- TCP_NODELAY: The 40-year-old optimization that should probably be retired
+- Ultrasound blasts tumors into slurry, immune system handles the rest
+- NIST's atomic clocks drifted 5 microseconds during power cut - chaos ensued (not really)
+- Sony's 450-pound CRT was the ultimate flex before flatscreens ruined everything
+- FPGAs desperately need their Arduino moment
+
+* Stories
+
+** It's Always TCP_NODELAY :networking:performance:distributed-systems:
+:PROPERTIES:
+:ID:       46359120
+:URL:      https://brooker.co.za/blog/2024/05/09/nagle.html
+:HN_URL:   https://news.ycombinator.com/item?id=46359120
+:POINTS:   220
+:COMMENTS: 60
+:BY:       eieio
+:END:
+
+*** TLDR
+Marc Brooker argues that Nagle's algorithm, designed in 1984 to reduce network overhead from tiny packets, is now obsolete. Modern datacenter RTTs are ~500 microseconds, applications send larger messages, and the interaction with delayed ACKs creates latency nightmares. His advice: just enable TCP_NODELAY on any latency-sensitive distributed system.
+
+*** Take
+A networking algorithm from the Reagan era causing problems in 2024? Shocking. The best part is Nagle himself admitted the combo with delayed ACKs is 'awful' - even the inventor wants his creation retired.
+
+*** Comments
+
+**** anonymousiam
+:PROPERTIES:
+:COMMENT_ID: 46359234
+:END:
+The Nagle algorithm was created back in the day of multi-point networking. Multiple hosts were all tied to the same communications channel, so they would use CSMA to avoid collisions. CSMA is no longer necessary on Ethernet today because all modern connections are point-to-point.
+
+**** eieio
+:PROPERTIES:
+:COMMENT_ID: 46359456
+:END:
+I found this article while debugging networking delays for a game I'm working on. Turns out in my case it wasn't TCP_NODELAY - Go sets it by default! But I still found Nagle's acknowledgement of the issues interesting.
+
+**** dllthomas
+:PROPERTIES:
+:COMMENT_ID: 46359678
+:END:
+Wildly, the Polish word 'nagle' (pronounced differently) means 'suddenly' or 'all at once', which is just astonishingly apropos for what I'm almost certain is pure coincidence.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+Marc Brooker认为1984年设计的Nagle算法已经过时了。现代数据中心RTT约500微秒,应用程序发送更大的消息,与延迟ACK的交互造成延迟噩梦。他的建议:在任何延迟敏感的分布式系统上直接启用TCP_NODELAY。
+***** Take
+一个里根时代的网络算法在2024年还在制造问题?太震惊了。最精彩的是Nagle本人承认与延迟ACK的组合'糟透了'——连发明者都想让自己的创造退休。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+Marc Brookerは、1984年に設計されたNagleアルゴリズムは時代遅れだと主張する。現代のデータセンターRTTは約500マイクロ秒、アプリケーションはより大きなメッセージを送信し、遅延ACKとの相互作用がレイテンシの悪夢を生む。彼のアドバイス:レイテンシに敏感な分散システムではTCP_NODELAYを有効にすべき。
+***** Take
+レーガン時代のネットワークアルゴリズムが2024年にまだ問題を起こしている?驚きだ。最高なのは、Nagle本人が遅延ACKとの組み合わせは「ひどい」と認めていること—発明者自身が引退させたがっている。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+Marc Brooker는 1984년에 설계된 Nagle 알고리즘이 이제 구식이라고 주장한다. 현대 데이터센터 RTT는 약 500마이크로초이고, 애플리케이션은 더 큰 메시지를 보내며, 지연 ACK와의 상호작용이 지연 악몽을 만든다. 그의 조언: 지연에 민감한 분산 시스템에서는 그냥 TCP_NODELAY를 활성화하라.
+***** Take
+레이건 시대의 네트워킹 알고리즘이 2024년에도 문제를 일으킨다고? 충격적이다. 가장 좋은 점은 Nagle 본인도 지연 ACK와의 조합이 '끔찍하다'고 인정했다는 것—발명자조차 자신의 창작물을 은퇴시키고 싶어한다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Marc Brooker argumenta que el algoritmo de Nagle, diseñado en 1984 para reducir la sobrecarga de red de paquetes pequeños, ahora es obsoleto. Los RTT de centros de datos modernos son ~500 microsegundos, las aplicaciones envían mensajes más grandes, y la interacción con ACKs retrasados crea pesadillas de latencia. Su consejo: simplemente habilitar TCP_NODELAY en cualquier sistema distribuido sensible a la latencia.
+***** Take
+¿Un algoritmo de red de la era Reagan causando problemas en 2024? Impactante. Lo mejor es que el propio Nagle admitió que la combinación con ACKs retrasados es 'horrible' - hasta el inventor quiere jubilar su creación.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Marc Brooker argumentiert, dass Nagles Algorithmus, der 1984 entwickelt wurde um Netzwerk-Overhead von kleinen Paketen zu reduzieren, nun veraltet ist. Moderne Rechenzentrum-RTTs liegen bei ~500 Mikrosekunden, Anwendungen senden größere Nachrichten, und die Interaktion mit verzögerten ACKs verursacht Latenz-Albträume. Sein Rat: TCP_NODELAY bei jedem latenzempfindlichen verteilten System aktivieren.
+***** Take
+Ein Netzwerk-Algorithmus aus der Reagan-Ära, der 2024 noch Probleme verursacht? Schockierend. Das Beste ist, dass Nagle selbst zugab, die Kombination mit verzögerten ACKs sei 'schrecklich' - selbst der Erfinder will seine Kreation in Rente schicken.
+** Ultrasound Cancer Treatment: Sound Waves Fight Tumors :medical:cancer:ultrasound:research:
+:PROPERTIES:
+:ID:       46357945
+:URL:      https://spectrum.ieee.org/ultrasound-cancer-treatment
+:HN_URL:   https://news.ycombinator.com/item?id=46357945
+:POINTS:   223
+:COMMENTS: 61
+:BY:       rbanffy
+:END:
+
+*** TLDR
+Histotripsy uses focused ultrasound waves to mechanically destroy tumors, turning them into liquid slurry without surgery. The destroyed tumor debris triggers an immune response, helping the body attack cancer cells that weren't directly targeted. FDA approved for liver tumors, with promising results for other soft-tissue cancers.
+
+*** Take
+Imagine explaining to your grandparents that we can now defeat cancer by yelling at it really hard with science. The immune system bonus is the real kicker - blast one tumor and your body learns to hunt the rest.
+
+*** Comments
+
+**** CGMthrowaway
+:PROPERTIES:
+:COMMENT_ID: 46358123
+:END:
+What are the chances that breaking up a tumor this way seeds cancer elsewhere in the body? A 2024 meta analysis of seeding didn't mention ultrasound, but there is a study on adverse events from this specific ultrasound type.
+
+**** chaboud
+:PROPERTIES:
+:COMMENT_ID: 46358456
+:END:
+I met with folks from Histosonics at a pancreas cancer focused group meeting. They showed promising results with liver cancer, and the applicability to any soft-tissue openly-addressable masses seemed very broad.
+
+**** YossarianFrPrez
+:PROPERTIES:
+:COMMENT_ID: 46358789
+:END:
+Per the article, this seems even better than the headline suggests: histotripsy generally stimulates an immune response, helping the body attack cancer cells that weren't targeted directly. The mechanical destruction leaves behind recognizable traces that help the immune system learn.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+组织声学消融术使用聚焦超声波机械性破坏肿瘤,将其变成液体浆而无需手术。被破坏的肿瘤碎片会触发免疫反应,帮助身体攻击未被直接针对的癌细胞。已获FDA批准用于肝肿瘤,对其他软组织癌症也有promising的结果。
+***** Take
+想象一下向你祖父母解释,我们现在可以用科学'大声呵斥'来击败癌症。免疫系统加成才是真正的杀手锏——炸掉一个肿瘤,你的身体就学会追杀其余的。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+ヒストトリプシーは集束超音波を使って腫瘍を機械的に破壊し、手術なしで液状スラリーに変える。破壊された腫瘍の残骸が免疫反応を引き起こし、直接標的にされなかったがん細胞を体が攻撃するのを助ける。肝腫瘍でFDA承認済み、他の軟部組織がんでも有望な結果。
+***** Take
+祖父母に、今では科学で本当に大声で叫ぶことでがんを倒せると説明することを想像してみて。免疫系ボーナスが本当のキラー—1つの腫瘍を爆破すれば、体が残りを狩ることを学ぶ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+히스토트립시는 집중 초음파를 사용해 종양을 기계적으로 파괴하여 수술 없이 액체 슬러리로 만든다. 파괴된 종양 잔해가 면역 반응을 유발해 직접 표적이 되지 않은 암세포를 공격하는 데 도움을 준다. 간 종양에 FDA 승인됨, 다른 연조직 암에도 유망한 결과.
+***** Take
+과학으로 정말 크게 소리쳐서 암을 이길 수 있다고 조부모님께 설명하는 것을 상상해보라. 면역 체계 보너스가 진짜 킬러다—종양 하나를 폭파하면 몸이 나머지를 사냥하는 법을 배운다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+La histotripsia usa ondas de ultrasonido enfocadas para destruir mecánicamente tumores, convirtiéndolos en lodo líquido sin cirugía. Los restos del tumor destruido provocan una respuesta inmune, ayudando al cuerpo a atacar células cancerosas que no fueron objetivo directo. Aprobado por la FDA para tumores hepáticos, con resultados prometedores para otros cánceres de tejidos blandos.
+***** Take
+Imagina explicarle a tus abuelos que ahora podemos derrotar el cáncer gritándole muy fuerte con ciencia. El bonus del sistema inmune es lo mejor - destruyes un tumor y tu cuerpo aprende a cazar el resto.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Histotripsy verwendet fokussierte Ultraschallwellen um Tumore mechanisch zu zerstören und sie ohne Operation in flüssigen Brei zu verwandeln. Die zerstörten Tumortrümmer lösen eine Immunantwort aus, die dem Körper hilft Krebszellen anzugreifen, die nicht direkt anvisiert wurden. FDA-zugelassen für Lebertumore, mit vielversprechenden Ergebnissen für andere Weichteilkrebse.
+***** Take
+Stell dir vor, du erklärst deinen Großeltern, dass wir jetzt Krebs besiegen können, indem wir ihn mit Wissenschaft wirklich laut anschreien. Der Immunsystem-Bonus ist der echte Knaller - spreng einen Tumor und dein Körper lernt den Rest zu jagen.
+** NIST was 5 microseconds off UTC after last week's power cut :infrastructure:time:nist:outage:
+:PROPERTIES:
+:ID:       46355949
+:URL:      https://www.jeffgeerling.com/blog/2025/nist-was-5-μs-utc-after-last-weeks-power-cut
+:HN_URL:   https://news.ycombinator.com/item?id=46355949
+:POINTS:   233
+:COMMENTS: 101
+:BY:       jtokoph
+:END:
+
+*** TLDR
+100+ mph wind gusts caused a power outage at NIST's Boulder campus and their backup generator failed. The main ensemble clock temporarily lost track of UTC, drifting by less than 5 microseconds. By Sunday staff had restored accuracy to a few nanoseconds. For most users relying on NTP (uncertainty ~1 millisecond), it was imperceptible.
+
+*** Take
+The keepers of time itself suffered a 5 microsecond crisis and HN commenters are acting like civilization nearly collapsed. Meanwhile, your laptop probably drifts more than that every time you close the lid.
+
+*** Comments
+
+**** semenko
+:PROPERTIES:
+:COMMENT_ID: 46356234
+:END:
+The most interesting part of the NIST outage post is NIST's special Time Over Fiber (TOF) program that provides high-precision time transfer by fiber-optic links. I've never heard of this! Very cool service, presumably for quant/HFT/finance firms.
+
+**** loph
+:PROPERTIES:
+:COMMENT_ID: 46356567
+:END:
+Only Boulder servers lost sync. To say NIST was off is clickbait hyperbole. NIST has >16 NTP servers on IPv4, of those 5 are in Boulder. Most entities should not be using these top-level servers anyway.
+
+**** ziml77
+:PROPERTIES:
+:COMMENT_ID: 46356890
+:END:
+Nitpick: UTC stands for Coordinated Universal Time. The ordering of the letters was chosen to not match the English or French names so neither language got preference.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+时速超过100英里的阵风导致NIST博尔德园区停电,备用发电机也故障了。主集合钟暂时失去UTC追踪,偏移不到5微秒。到周日,工作人员已将精度恢复到几纳秒。对于大多数依赖NTP(不确定性约1毫秒)的用户来说,这是察觉不到的。
+***** Take
+时间的守护者本身遭遇了5微秒的危机,HN评论者表现得好像文明差点崩溃一样。与此同时,你的笔记本电脑每次合上盖子漂移的可能比这还多。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+時速100マイル以上の突風がNISTボルダーキャンパスで停電を引き起こし、バックアップ発電機も故障した。メインの原子時計集合は一時的にUTCを追跡できなくなり、5マイクロ秒未満のずれが生じた。日曜日までにスタッフは精度を数ナノ秒に回復。NTPに依存するほとんどのユーザー（不確かさ約1ミリ秒）には知覚できなかった。
+***** Take
+時間の番人自身が5マイクロ秒の危機に見舞われ、HNのコメント者は文明が崩壊しかけたかのように振る舞っている。一方、あなたのノートPCは蓋を閉めるたびにもっとずれているかもしれない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+시속 100마일 이상의 돌풍이 NIST 볼더 캠퍼스에 정전을 일으켰고 백업 발전기도 고장났다. 메인 앙상블 시계가 일시적으로 UTC 추적을 잃어 5마이크로초 미만 표류했다. 일요일까지 직원들이 정확도를 수 나노초로 복구했다. NTP(불확실성 약 1밀리초)에 의존하는 대부분의 사용자에게는 감지할 수 없었다.
+***** Take
+시간의 수호자 자체가 5마이크로초 위기를 겪었고 HN 댓글러들은 문명이 거의 붕괴될 뻔한 것처럼 행동하고 있다. 한편 당신의 노트북은 아마 뚜껑을 닫을 때마다 그것보다 더 표류할 것이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Ráfagas de viento de más de 160 km/h causaron un apagón en el campus de Boulder de NIST y su generador de respaldo falló. El reloj principal del conjunto perdió temporalmente el seguimiento de UTC, desviándose menos de 5 microsegundos. Para el domingo el personal había restaurado la precisión a unos pocos nanosegundos. Para la mayoría de usuarios que dependen de NTP (incertidumbre ~1 milisegundo), fue imperceptible.
+***** Take
+Los guardianes del tiempo mismo sufrieron una crisis de 5 microsegundos y los comentaristas de HN actúan como si la civilización casi colapsa. Mientras tanto, tu portátil probablemente se desvía más que eso cada vez que cierras la tapa.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Windböen über 160 km/h verursachten einen Stromausfall auf dem NIST Boulder Campus und ihr Notstromaggregat versagte. Die Hauptuhr verlor vorübergehend die UTC-Synchronisation und wich um weniger als 5 Mikrosekunden ab. Bis Sonntag hatte das Personal die Genauigkeit auf wenige Nanosekunden wiederhergestellt. Für die meisten Nutzer, die auf NTP angewiesen sind (Unsicherheit ~1 Millisekunde), war es unmerklich.
+***** Take
+Die Hüter der Zeit selbst erlitten eine 5-Mikrosekunden-Krise und HN-Kommentatoren tun so, als wäre die Zivilisation fast zusammengebrochen. Währenddessen driftet dein Laptop wahrscheinlich jedes Mal mehr ab, wenn du den Deckel schließt.
+** The biggest CRT ever made: Sony's PVM-4300 :hardware:retro:crt:sony:
+:PROPERTIES:
+:ID:       46353777
+:URL:      https://dfarq.homeip.net/the-biggest-crt-ever-made-sonys-pvm-4300/
+:HN_URL:   https://news.ycombinator.com/item?id=46353777
+:POINTS:   242
+:COMMENTS: 149
+:BY:       giuliomagnifico
+:END:
+
+*** TLDR
+Sony's PVM-4300 was the largest conventional CRT TV ever made: a 45-inch tube (43 inches visible), weighing 450 pounds, priced at $40,000 in 1990. Sony manually built each unit and hoped to sell 80 in the US. Only 20 were imported. In 2024, YouTuber Shank Mods acquired a surviving unit from a Japanese restaurant.
+
+*** Take
+Before we all became content with our paper-thin wall TVs, some absolute madlads were spending $40k on 450-pound glass tubes. This is the kind of excessive engineering hubris I can respect.
+
+*** Comments
+
+**** jsheard
+:PROPERTIES:
+:COMMENT_ID: 46354123
+:END:
+Don't sleep on that Shank Mods video linked at the end, it's insane that he managed to pull that off. He also made a second video showing more of the actual hardware.
+
+**** bane
+:PROPERTIES:
+:COMMENT_ID: 46354456
+:END:
+In 2006 we bought a house and our realtor gave us a $2500 Best Buy gift certificate. A brand new 720p DLP projection TV was just under that. But I noticed they were clearing out floor model CRTs for $200. I grabbed a 36-inch Trinitron and still have it - works great.
+
+**** BubbleRings
+:PROPERTIES:
+:COMMENT_ID: 46354789
+:END:
+If you like playing with old hardware, be aware that old CRTs have a gotcha: they hold a charge that can shock you across the room, and they can hold that charge for weeks. Google how to discharge it before poking around inside a CRT.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+索尼PVM-4300是有史以来最大的传统CRT电视:45英寸管(43英寸可见),重450磅,1990年售价4万美元。索尼手工制造每台,希望在美国卖出80台。实际只进口了20台。2024年,YouTuber Shank Mods从一家日本餐厅收购了一台幸存的机器。
+***** Take
+在我们都满足于纸一样薄的墙上电视之前,一些绝对的疯子花4万美元买450磅的玻璃管。这是我能尊重的那种过度工程狂妄。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+ソニーのPVM-4300は史上最大の従来型CRTテレビだった:45インチ管（43インチ表示）、重量450ポンド、1990年に4万ドル。ソニーは各ユニットを手作業で製造し、米国で80台の販売を目指した。実際に輸入されたのは20台のみ。2024年、YouTuberのShank Modsが日本のレストランから生き残っていた1台を入手した。
+***** Take
+私たちが紙のように薄い壁掛けテレビに満足する前、一部の狂人は450ポンドのガラス管に4万ドルを費やしていた。これは私が尊敬できる種類の過剰なエンジニアリングの傲慢さだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+소니의 PVM-4300은 역사상 가장 큰 기존 CRT TV였다: 45인치 튜브(43인치 가시), 무게 450파운드, 1990년 가격 4만 달러. 소니는 각 유닛을 수작업으로 제작했고 미국에서 80대 판매를 목표로 했다. 실제로 20대만 수입됐다. 2024년 유튜버 Shank Mods가 일본 레스토랑에서 생존한 한 대를 입수했다.
+***** Take
+우리 모두가 종이처럼 얇은 벽걸이 TV에 만족하기 전, 어떤 미치광이들은 450파운드 유리관에 4만 달러를 쓰고 있었다. 이건 내가 존경할 수 있는 과도한 엔지니어링 오만함이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+El PVM-4300 de Sony fue el TV CRT convencional más grande jamás fabricado: tubo de 45 pulgadas (43 visibles), pesaba 450 libras, precio de $40,000 en 1990. Sony construía cada unidad manualmente y esperaba vender 80 en EE.UU. Solo se importaron 20. En 2024, el YouTuber Shank Mods adquirió una unidad superviviente de un restaurante japonés.
+***** Take
+Antes de que todos nos conformáramos con TVs delgados como papel, algunos locos absolutos gastaban $40k en tubos de vidrio de 450 libras. Este es el tipo de excesiva arrogancia ingenieril que puedo respetar.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Sonys PVM-4300 war der größte konventionelle CRT-Fernseher aller Zeiten: eine 45-Zoll-Röhre (43 Zoll sichtbar), 200 kg schwer, 1990 für $40.000 erhältlich. Sony baute jedes Gerät von Hand und hoffte, 80 Stück in den USA zu verkaufen. Nur 20 wurden importiert. 2024 erwarb YouTuber Shank Mods ein überlebendes Exemplar aus einem japanischen Restaurant.
+***** Take
+Bevor wir uns alle mit papierdünnen Wandfernsehern zufrieden gaben, gaben einige absolute Verrückte $40k für 200-Kilo-Glasröhren aus. Das ist die Art von übertriebener Ingenieurs-Hybris, die ich respektieren kann.
+** FPGAs Need a New Future :hardware:fpga:devtools:accessibility:
+:PROPERTIES:
+:ID:       46324269
+:URL:      https://www.allaboutcircuits.com/industry-articles/fpgas-need-a-new-future/
+:HN_URL:   https://news.ycombinator.com/item?id=46324269
+:POINTS:   128
+:COMMENTS: 83
+:BY:       thawawaycold
+:END:
+
+*** TLDR
+［from title + comments, article unreachable］ The piece argues FPGAs need to become more accessible. The HN discussion centers on the painful developer experience: huge toolchains, slow synthesis, IDE nightmares, and a steep learning curve that keeps FPGAs in specialist hands instead of mainstream adoption.
+
+*** Take
+FPGAs are like that friend who's theoretically great but impossible to hang out with. Everyone agrees they need their 'Arduino moment' but no one can agree on how to get there. Maybe start by not requiring a 50GB IDE download.
+
+*** Comments
+
+**** malmeloo
+:PROPERTIES:
+:COMMENT_ID: 46324567
+:END:
+One big issue with FPGAs is how annoying it is to learn how to use them. I did a course on embedded systems and nobody could truly enjoy it because we spent most of our time downloading huge toolchains, waiting for synthesis and PnR to complete and debugging weird IDE issues.
+
+**** exmadscientist
+:PROPERTIES:
+:COMMENT_ID: 46324890
+:END:
+FPGAs need their 'Arduino moment'. There have been so many projects where I've wanted just a little bit of glue logic - something easy to dash off in VHDL. But the damn things require so much support infrastructure: they're complicated to put on boards, complicated to load bitstreams, complicated to debug.
+
+**** mgilroy
+:PROPERTIES:
+:COMMENT_ID: 46325123
+:END:
+The issue with software teams using FPGAs is that software developers generally aren't good at doing things in parallel. They struggle with hardware thinking. VHDL and Verilog are used because they're excellent at describing hardware, not because they're great programming languages.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+［根据标题+评论,文章无法访问］文章认为FPGA需要变得更容易使用。HN讨论集中在痛苦的开发者体验上:巨大的工具链、缓慢的综合、IDE噩梦,以及陡峭的学习曲线,使FPGA停留在专家手中而不是主流采用。
+***** Take
+FPGA就像那种理论上很棒但不可能一起玩的朋友。每个人都同意它们需要自己的'Arduino时刻',但没人能就如何实现达成一致。也许可以从不需要下载50GB的IDE开始。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+［タイトル+コメントより、記事にアクセス不能］記事はFPGAがよりアクセスしやすくなる必要があると主張。HNの議論は苦痛な開発者体験に集中:巨大なツールチェーン、遅い合成、IDEの悪夢、そしてFPGAを専門家の手にとどめ主流採用を妨げる急な学習曲線。
+***** Take
+FPGAは理論的には素晴らしいけど一緒に遊ぶのが不可能な友達みたいだ。みんな「Arduinoモーメント」が必要だと同意しているが、そこに到達する方法については誰も合意できない。まず50GBのIDEダウンロードを不要にすることから始めては。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+［제목+댓글 기반, 기사 접근 불가］기사는 FPGA가 더 접근하기 쉬워져야 한다고 주장한다. HN 토론은 고통스러운 개발자 경험에 집중: 거대한 툴체인, 느린 합성, IDE 악몽, 그리고 FPGA를 전문가 손에만 머물게 하고 주류 채택을 막는 가파른 학습 곡선.
+***** Take
+FPGA는 이론적으로는 훌륭하지만 함께 놀기 불가능한 친구 같다. 모두 'Arduino 모먼트'가 필요하다는 데 동의하지만 거기에 도달하는 방법에 대해서는 아무도 합의하지 못한다. 50GB IDE 다운로드를 안 해도 되게 하는 것부터 시작하는 게 어떨까.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+［desde título + comentarios, artículo inaccesible］ El artículo argumenta que los FPGAs necesitan ser más accesibles. La discusión en HN se centra en la dolorosa experiencia del desarrollador: enormes toolchains, síntesis lenta, pesadillas de IDE, y una curva de aprendizaje empinada que mantiene los FPGAs en manos de especialistas en lugar de adopción mainstream.
+***** Take
+Los FPGAs son como ese amigo que teóricamente es genial pero imposible de frecuentar. Todos coinciden en que necesitan su 'momento Arduino' pero nadie puede ponerse de acuerdo en cómo llegar ahí. Quizás empezar por no requerir una descarga de IDE de 50GB.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+［aus Titel + Kommentaren, Artikel nicht erreichbar］ Der Artikel argumentiert, dass FPGAs zugänglicher werden müssen. Die HN-Diskussion konzentriert sich auf die schmerzhafte Entwicklererfahrung: riesige Toolchains, langsame Synthese, IDE-Albträume und eine steile Lernkurve, die FPGAs in Spezialistenhänden hält statt Mainstream-Adoption zu ermöglichen.
+***** Take
+FPGAs sind wie der Freund, der theoretisch toll ist, aber mit dem man unmöglich abhängen kann. Alle sind sich einig, dass sie ihren 'Arduino-Moment' brauchen, aber niemand kann sich einigen, wie man dorthin kommt. Vielleicht damit anfangen, keinen 50GB IDE-Download zu erfordern.
