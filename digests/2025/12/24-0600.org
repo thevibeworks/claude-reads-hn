@@ -1,0 +1,407 @@
+#+TITLE: HN Digest 2025-12-24 06:00:00 UT UTC
+#+DATE: 2025-12-24T06:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Bellard drops another banger, PDFs snitch on the feds, and HN debates whether JPEG is secretly the future
+
+* Highlights
+- MicroQuickJS: Fabrice Bellard makes JS run in 10KB RAM because of course he did
+- X-ray: Python library exposes bad PDF redactions just in time for Epstein files
+- Epstein docs: Copy-paste still works in 2025, lawyers still don't know
+- Texas age verification law: Judge says 'nice try' to app store ID checks
+- H.264 vs JPEG: Sometimes the dumbest solution is the smartest one
+
+* Stories
+
+** Fabrice Bellard Releases MicroQuickJS :javascript:embedded:bellard:performance:
+:PROPERTIES:
+:ID:       46367224
+:URL:      https://github.com/bellard/mquickjs/blob/main/README.md
+:HN_URL:   https://news.ycombinator.com/item?id=46367224
+:POINTS:   911
+:COMMENTS: 354
+:BY:       Aissen
+:END:
+
+*** TLDR
+Fabrice Bellard released MicroQuickJS, a JavaScript engine that runs in 10KB RAM and 100KB ROM. It uses a tracing garbage collector, stores strings in UTF-8, and supports a subset of JS close to ES5. Designed for embedded systems where every byte matters.
+
+*** Take
+The man who created QEMU, FFmpeg, and a new digit of pi for fun just casually dropped a JS engine smaller than most npm packages. Meanwhile the rest of us are still trying to figure out why node_modules needs 500MB.
+
+*** Comments
+
+**** antirez
+:PROPERTIES:
+:COMMENT_ID: 46367500
+:END:
+If this had been available in 2010, Redis scripting would have been JavaScript and not Lua. Lua was chosen based on the implementation requirements, not on the language ones.
+
+**** pizlonator
+:PROPERTIES:
+:COMMENT_ID: 46367600
+:END:
+This engine restricts JS in all of the ways I wished I could restrict the language back when I was working on JSC. You can't restrict JS that way on the web because of compatibility. But I totally buy that restricting it this way for embedded systems will result in something that sparks joy.
+
+**** simonw
+:PROPERTIES:
+:COMMENT_ID: 46367700
+:END:
+If anyone wants to try out MicroQuickJS in a browser here's a simple playground interface for executing a WebAssembly compiled version of it. The QuickJS page loads 2.28 MB. The MicroQuickJS one loads 303 KB.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+Fabrice Bellard 发布了 MicroQuickJS，一个只需 10KB RAM 和 100KB ROM 的 JavaScript 引擎。它使用追踪垃圾收集器，以 UTF-8 存储字符串，支持接近 ES5 的 JS 子集。专为嵌入式系统设计。
+***** Take
+这个创造了 QEMU、FFmpeg，还顺手算了圆周率新位数的人，又随手发布了一个比大多数 npm 包都小的 JS 引擎。而我们其他人还在想为什么 node_modules 需要 500MB。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+Fabrice Bellard が MicroQuickJS をリリース。10KB の RAM と 100KB の ROM で動作する JavaScript エンジン。トレーシング GC を使用し、文字列を UTF-8 で保存、ES5 に近い JS サブセットをサポート。組み込みシステム向け設計。
+***** Take
+QEMU、FFmpeg を作り、趣味で円周率の新しい桁を計算した男が、大半の npm パッケージより小さい JS エンジンをさらっと出した。一方、我々はまだ node_modules がなぜ 500MB 必要なのか悩んでいる。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+Fabrice Bellard가 MicroQuickJS를 출시했다. 10KB RAM과 100KB ROM으로 동작하는 JavaScript 엔진이다. 트레이싱 가비지 컬렉터를 사용하고 문자열을 UTF-8로 저장하며 ES5에 가까운 JS 서브셋을 지원한다. 임베디드 시스템용으로 설계됨.
+***** Take
+QEMU, FFmpeg를 만들고 재미로 원주율 새 자릿수를 계산한 사람이 대부분의 npm 패키지보다 작은 JS 엔진을 슬쩍 내놓았다. 한편 우리는 아직도 node_modules가 왜 500MB인지 고민 중이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Fabrice Bellard lanzó MicroQuickJS, un motor JavaScript que funciona con 10KB de RAM y 100KB de ROM. Usa un recolector de basura de rastreo, almacena strings en UTF-8 y soporta un subconjunto de JS cercano a ES5. Diseñado para sistemas embebidos.
+***** Take
+El hombre que creó QEMU, FFmpeg y calculó un nuevo dígito de pi por diversión acaba de lanzar casualmente un motor JS más pequeño que la mayoría de paquetes npm. Mientras tanto, el resto seguimos preguntándonos por qué node_modules necesita 500MB.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Fabrice Bellard hat MicroQuickJS veröffentlicht, eine JavaScript-Engine, die mit 10KB RAM und 100KB ROM läuft. Sie verwendet einen Tracing Garbage Collector, speichert Strings in UTF-8 und unterstützt eine JS-Teilmenge nahe ES5. Für eingebettete Systeme entwickelt.
+***** Take
+Der Mann, der QEMU, FFmpeg erschuf und zum Spaß eine neue Ziffer von Pi berechnete, hat nebenbei eine JS-Engine veröffentlicht, die kleiner ist als die meisten npm-Pakete. Währenddessen rätseln wir anderen noch, warum node_modules 500MB braucht.
+** X-ray: a Python library for finding bad redactions in PDF documents :python:pdf:security:legal:opensource:
+:PROPERTIES:
+:ID:       46369923
+:URL:      https://github.com/freelawproject/x-ray
+:HN_URL:   https://news.ycombinator.com/item?id=46369923
+:POINTS:   317
+:COMMENTS: 70
+:BY:       rendx
+:END:
+
+*** TLDR
+Free Law Project released X-ray, a Python library that detects failed PDF redactions by finding rectangles placed over selectable text. It checks if the rectangle is a solid color and whether text can still be extracted underneath. Works via CLI, Python module, or on URLs.
+
+*** Take
+Someone finally automated the 'select all and paste into notepad' trick that journalists have been using for years. Now we can detect bad redactions at scale, which is convenient timing given certain files just got released.
+
+*** Comments
+
+**** mlissner
+:PROPERTIES:
+:COMMENT_ID: 46370100
+:END:
+Cool to see this here. It's funny because we do so many huge, complex, multiyear projects at Free Law Project, but this is the most viral any of our work has ever gone!
+
+**** jmward01
+:PROPERTIES:
+:COMMENT_ID: 46370200
+:END:
+The more I think about this the more any font kerning is likely a major leak for redaction. Even if the boxes have randomness applied to them, the words around a blacked out area have exact positioning that constrains the text within.
+
+**** embedding-shape
+:PROPERTIES:
+:COMMENT_ID: 46370300
+:END:
+At least one Epstein PDF has a /Prev pointer, meaning the previous revision of the file is available inside of the PDF itself. If it's in one file, it could be more.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+Free Law Project 发布了 X-ray，一个 Python 库，通过查找覆盖在可选择文本上的矩形来检测失败的 PDF 涂黑。它检查矩形是否为纯色以及文本是否仍可提取。支持 CLI、Python 模块或 URL。
+***** Take
+终于有人把记者们用了多年的「全选然后粘贴到记事本」技巧自动化了。现在我们可以大规模检测失败的涂黑，考虑到某些文件刚刚发布，时机真是巧妙。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+Free Law Project が X-ray をリリース。選択可能なテキストの上に置かれた矩形を見つけることで、失敗した PDF の墨消しを検出する Python ライブラリ。矩形が単色かどうか、テキストがまだ抽出できるかをチェック。CLI、Python モジュール、URL で動作。
+***** Take
+ジャーナリストが何年も使ってきた「全選択してメモ帳に貼り付け」トリックを、ついに誰かが自動化した。これで不完全な墨消しを大規模に検出できる。特定のファイルがちょうど公開されたタイミングで便利だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+Free Law Project가 X-ray를 출시했다. 선택 가능한 텍스트 위에 놓인 사각형을 찾아 실패한 PDF 편집을 감지하는 Python 라이브러리다. 사각형이 단색인지, 텍스트가 여전히 추출 가능한지 확인한다. CLI, Python 모듈, URL로 작동.
+***** Take
+기자들이 수년간 써온 '전체 선택하고 메모장에 붙여넣기' 트릭을 드디어 누군가 자동화했다. 이제 대규모로 실패한 편집을 감지할 수 있다. 특정 파일들이 막 공개된 시점에 편리한 타이밍이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Free Law Project lanzó X-ray, una librería Python que detecta redacciones PDF fallidas encontrando rectángulos sobre texto seleccionable. Verifica si el rectángulo es de color sólido y si el texto aún puede extraerse. Funciona via CLI, módulo Python o URLs.
+***** Take
+Alguien finalmente automatizó el truco de 'seleccionar todo y pegar en bloc de notas' que los periodistas han usado por años. Ahora podemos detectar redacciones fallidas a escala, lo cual es conveniente dado que ciertos archivos acaban de ser liberados.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Free Law Project hat X-ray veröffentlicht, eine Python-Bibliothek, die fehlgeschlagene PDF-Schwärzungen erkennt, indem sie Rechtecke über auswählbarem Text findet. Sie prüft, ob das Rechteck einfarbig ist und ob Text noch extrahiert werden kann. Funktioniert via CLI, Python-Modul oder URLs.
+***** Take
+Jemand hat endlich den 'Alles auswählen und in Notepad einfügen'-Trick automatisiert, den Journalisten seit Jahren benutzen. Jetzt können wir fehlerhafte Schwärzungen im großen Stil erkennen, was zeitlich günstig ist, da bestimmte Dateien gerade veröffentlicht wurden.
+** Some Epstein file redactions are being undone with hacks :security:legal:pdf:privacy:
+:PROPERTIES:
+:ID:       46368946
+:URL:      https://www.theguardian.com/us-news/2025/dec/23/epstein-unredacted-files-social-media
+:HN_URL:   https://news.ycombinator.com/item?id=46368946
+:POINTS:   285
+:COMMENTS: 203
+:BY:       vinni2
+:END:
+
+*** TLDR
+［From title + HN comments, Guardian blocked］ Newly released Epstein court documents contain amateurish PDF redactions that can be bypassed with copy-paste or PDF analysis tools. Social media users are extracting hidden text, similar to the Manafort filing fiasco of 2019.
+
+*** Take
+It's 2025 and government lawyers still haven't learned that a black rectangle is not encryption. This is the PDF equivalent of putting a sticky note over your password.
+
+*** Comments
+
+**** cmarschner
+:PROPERTIES:
+:COMMENT_ID: 46369100
+:END:
+Befuddling that this happened again. It's not the first time - Paul Manafort court filing (2019), TSA Standard Operating Procedures manual (2009). A publicly posted document with black highlighting over live text.
+
+**** vincengomes
+:PROPERTIES:
+:COMMENT_ID: 46369200
+:END:
+Never interrupt your enemy when he is making a mistake - Napoleon Bonaparte. Let all the files get released first. Then show your hacks.
+
+**** nickpinkston
+:PROPERTIES:
+:COMMENT_ID: 46369300
+:END:
+I wonder if any of this is a conscious act of resistance vs. just incompetence. And yes, I've heard of Hanlon's Razor.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+［来自标题和 HN 评论，卫报被屏蔽］ 新发布的 Epstein 法庭文件包含业余的 PDF 涂黑，可以通过复制粘贴或 PDF 分析工具绕过。社交媒体用户正在提取隐藏文本，类似于 2019 年 Manafort 文件的惨剧。
+***** Take
+都 2025 年了，政府律师还没学会黑色矩形不是加密。这相当于 PDF 版的用便利贴盖住密码。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+［タイトルと HN コメントから、Guardian はブロック］ 新しく公開された Epstein 裁判文書には、コピペや PDF 分析ツールで回避できる素人っぽい PDF 墨消しが含まれている。SNS ユーザーが隠しテキストを抽出中。2019年の Manafort ファイル事件と同様。
+***** Take
+2025年になっても政府の弁護士は黒い四角形が暗号化ではないことを学んでいない。これはパスワードに付箋を貼る PDF 版だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+［제목과 HN 댓글에서, Guardian 차단됨］ 새로 공개된 Epstein 법원 문서에는 복사-붙여넣기나 PDF 분석 도구로 우회할 수 있는 아마추어적인 PDF 편집이 포함되어 있다. 소셜 미디어 사용자들이 숨겨진 텍스트를 추출 중. 2019년 Manafort 파일 사태와 유사.
+***** Take
+2025년인데 정부 변호사들은 아직도 검은 사각형이 암호화가 아니라는 걸 못 배웠다. 비밀번호에 포스트잇 붙이는 것의 PDF 버전이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+［Del título y comentarios HN, Guardian bloqueado］ Los documentos judiciales de Epstein recién liberados contienen redacciones PDF amateurs que pueden evitarse con copiar-pegar o herramientas de análisis PDF. Usuarios de redes sociales están extrayendo texto oculto, similar al fiasco del archivo Manafort de 2019.
+***** Take
+Estamos en 2025 y los abogados del gobierno aún no han aprendido que un rectángulo negro no es encriptación. Esto es el equivalente PDF de poner una nota adhesiva sobre tu contraseña.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+［Aus Titel und HN-Kommentaren, Guardian blockiert］ Neu veröffentlichte Epstein-Gerichtsdokumente enthalten amateurhafte PDF-Schwärzungen, die mit Copy-Paste oder PDF-Analysetools umgangen werden können. Social-Media-Nutzer extrahieren versteckten Text, ähnlich dem Manafort-Debakel von 2019.
+***** Take
+Wir haben 2025 und Regierungsanwälte haben immer noch nicht gelernt, dass ein schwarzes Rechteck keine Verschlüsselung ist. Das ist das PDF-Äquivalent dazu, einen Klebezettel über sein Passwort zu kleben.
+** Texas app store age verification law blocked by federal judge :legal:privacy:apple:regulation:
+:PROPERTIES:
+:ID:       46370012
+:URL:      https://www.macrumors.com/2025/12/23/texas-app-store-law-blocked/
+:HN_URL:   https://news.ycombinator.com/item?id=46370012
+:POINTS:   190
+:COMMENTS: 109
+:BY:       danso
+:END:
+
+*** TLDR
+A federal judge blocked Texas's App Store Accountability Act (SB2420) which would have required age verification to download any app starting January 2026. Judge Pitman ruled it 'more likely than not unconstitutional' under the First Amendment, comparing it to requiring ID at a bookstore door.
+
+*** Take
+Texas tried to require ID checks for downloading weather apps and a judge said what everyone was thinking: that's not how the First Amendment works. The bookstore analogy is chef's kiss.
+
+*** Comments
+
+**** WarOnPrivacy
+:PROPERTIES:
+:COMMENT_ID: 46370100
+:END:
+Judge Robert Pitman said it violates the First Amendment: 'The Act is akin to a law that would require every bookstore to verify the age of every customer at the door.'
+
+**** GeekyBear
+:PROPERTIES:
+:COMMENT_ID: 46370200
+:END:
+Avoiding the collection of user data in the first place (if it's possible) is exactly the correct approach to user privacy.
+
+**** ls612
+:PROPERTIES:
+:COMMENT_ID: 46370300
+:END:
+The only reason the earlier age verification laws were upheld were because they narrowly targeted porn. This is an entirely unsurprising outcome.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+联邦法官叫停了德州的应用商店问责法案（SB2420），该法案原定于 2026 年 1 月起要求下载任何应用都需进行年龄验证。Pitman 法官裁定其「极有可能违宪」，违反第一修正案，并将其比作要求书店在门口查验每位顾客的身份证。
+***** Take
+德州试图要求下载天气应用也要查身份证，法官说出了大家的心里话：第一修正案不是这么用的。书店类比真是绝了。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+連邦判事がテキサス州のアプリストア責任法（SB2420）を差し止めた。2026年1月からアプリのダウンロードに年齢確認を義務付ける予定だった。Pitman 判事は「違憲である可能性が高い」と判断し、書店の入口で全顧客の身分証明を求めるようなものだと例えた。
+***** Take
+テキサスは天気アプリのダウンロードにも身分証明を求めようとしたが、判事は皆が思っていたことを言った：修正第1条はそういう風には機能しない。書店の例えは完璧だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+연방 판사가 2026년 1월부터 앱 다운로드에 연령 인증을 요구했을 텍사스의 앱스토어 책임법(SB2420)을 차단했다. Pitman 판사는 수정헌법 1조 위반으로 '위헌일 가능성이 높다'고 판결하며, 서점 입구에서 모든 고객의 신분증을 확인하는 것과 같다고 비유했다.
+***** Take
+텍사스가 날씨 앱 다운로드에도 신분증 확인을 요구하려 했고, 판사가 모두의 생각을 말했다: 수정헌법 1조는 그렇게 작동하지 않는다. 서점 비유는 완벽하다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Un juez federal bloqueó la Ley de Responsabilidad de Tiendas de Apps de Texas (SB2420) que habría requerido verificación de edad para descargar cualquier app a partir de enero 2026. El juez Pitman dictaminó que es 'muy probablemente inconstitucional' bajo la Primera Enmienda, comparándola con requerir identificación en la puerta de una librería.
+***** Take
+Texas intentó requerir verificación de identidad para descargar apps del clima y un juez dijo lo que todos pensaban: así no funciona la Primera Enmienda. La analogía de la librería es perfecta.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Ein Bundesrichter hat das texanische App Store Accountability Act (SB2420) blockiert, das ab Januar 2026 Altersverifikation für jeden App-Download verlangt hätte. Richter Pitman urteilte, es sei 'höchstwahrscheinlich verfassungswidrig' nach dem Ersten Verfassungszusatz und verglich es damit, am Eingang einer Buchhandlung von jedem Kunden einen Ausweis zu verlangen.
+***** Take
+Texas versuchte, Ausweiskontrollen für Wetter-App-Downloads zu verlangen, und ein Richter sagte, was alle dachten: So funktioniert der Erste Verfassungszusatz nicht. Die Buchhandlungs-Analogie ist perfekt.
+** We replaced H.264 streaming with JPEG screenshots (and it worked better) :video:streaming:webdev:performance:
+:PROPERTIES:
+:ID:       46367475
+:URL:      https://blog.helix.ml/p/we-mass-deployed-15-year-old-screen
+:HN_URL:   https://news.ycombinator.com/item?id=46367475
+:POINTS:   372
+:COMMENTS: 226
+:BY:       quesobob
+:END:
+
+*** TLDR
+Helix needed users to watch AI coding agents in cloud sandboxes. Their WebSocket H.264 pipeline kept breaking on enterprise networks. Solution: HTTP polling for JPEG screenshots at 2-10 fps with adaptive quality. Simpler, more reliable, uses less bandwidth (100-150KB vs 200-500KB per frame).
+
+*** Take
+Sometimes the answer to 'why is our video streaming breaking' is 'stop video streaming.' VNC figured this out in 1998 but we needed 27 years to rediscover that HTTP works everywhere.
+
+*** Comments
+
+**** mikepavone
+:PROPERTIES:
+:COMMENT_ID: 46367800
+:END:
+This would make sense... if they were using UDP, but they are using TCP. All the JPEGs they send will get there eventually. What presumably happened here is the way they implemented their JPEG screenshots fixed their buffering and congestion control problems.
+
+**** adamjs
+:PROPERTIES:
+:COMMENT_ID: 46367900
+:END:
+They might want to check out what VNC has been doing since 1998 - keep the client-pull model, break the framebuffer up into tiles, perform a diff against last frame sent, composite the updated tiles client-side.
+
+**** qbow883
+:PROPERTIES:
+:COMMENT_ID: 46368000
+:END:
+Setting aside the formatting problems and the LLM writing style, this just seems all kinds of wrong throughout. 10Mbps should be way more than enough for a mostly static image with some scrolling text. This is very likely to be caused by bad encoder settings.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+Helix 需要让用户观看云沙盒中的 AI 编码代理。他们的 WebSocket H.264 管道在企业网络上不断崩溃。解决方案：以 2-10 fps 进行 HTTP 轮询获取 JPEG 截图，自适应质量。更简单、更可靠，带宽更低（每帧 100-150KB vs 200-500KB）。
+***** Take
+有时候「为什么我们的视频流会崩溃」的答案是「别用视频流了」。VNC 在 1998 年就想明白了，但我们用了 27 年才重新发现 HTTP 到处都能用。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+Helix はユーザーにクラウドサンドボックス内の AI コーディングエージェントを見せる必要があった。WebSocket H.264 パイプラインは企業ネットワークで壊れ続けた。解決策：2-10 fps で JPEG スクリーンショットを HTTP ポーリング、アダプティブ品質。よりシンプル、より信頼性が高く、帯域幅も少ない（フレームあたり 100-150KB vs 200-500KB）。
+***** Take
+時には「なぜビデオストリーミングが壊れるのか」の答えは「ビデオストリーミングをやめろ」だ。VNC は 1998 年にこれを理解していたが、HTTP がどこでも動くことを再発見するのに 27 年かかった。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+Helix는 사용자들이 클라우드 샌드박스에서 AI 코딩 에이전트를 볼 수 있어야 했다. WebSocket H.264 파이프라인이 기업 네트워크에서 계속 깨졌다. 해결책: 2-10 fps로 JPEG 스크린샷을 HTTP 폴링, 적응형 품질. 더 단순하고 더 신뢰성 있으며 대역폭도 적다 (프레임당 100-150KB vs 200-500KB).
+***** Take
+때때로 '왜 비디오 스트리밍이 깨지지'의 답은 '비디오 스트리밍을 멈춰라'다. VNC가 1998년에 이걸 알아냈는데 HTTP가 어디서나 작동한다는 걸 재발견하는 데 27년이 걸렸다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Helix necesitaba que los usuarios vieran agentes de codificación IA en sandboxes en la nube. Su pipeline WebSocket H.264 seguía fallando en redes empresariales. Solución: polling HTTP para capturas JPEG a 2-10 fps con calidad adaptativa. Más simple, más confiable, usa menos ancho de banda (100-150KB vs 200-500KB por frame).
+***** Take
+A veces la respuesta a '¿por qué falla nuestro streaming de video?' es 'deja de hacer streaming de video.' VNC descubrió esto en 1998 pero necesitamos 27 años para redescubrir que HTTP funciona en todas partes.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Helix brauchte Nutzer, die KI-Coding-Agenten in Cloud-Sandboxen beobachten. Ihre WebSocket H.264 Pipeline brach in Unternehmensnetzwerken ständig zusammen. Lösung: HTTP-Polling für JPEG-Screenshots bei 2-10 fps mit adaptiver Qualität. Einfacher, zuverlässiger, weniger Bandbreite (100-150KB vs 200-500KB pro Frame).
+***** Take
+Manchmal ist die Antwort auf 'warum bricht unser Video-Streaming ab' einfach 'hör auf mit Video-Streaming.' VNC hat das 1998 verstanden, aber wir brauchten 27 Jahre, um wiederzuentdecken, dass HTTP überall funktioniert.
