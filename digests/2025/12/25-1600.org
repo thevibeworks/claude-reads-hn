@@ -1,0 +1,377 @@
+#+TITLE: HN Digest 2025-12-25 16:00:00 UT UTC
+#+DATE: 2025-12-25T16:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Python gets faster, Mattermost gets greedier, and a Christmas guest stayed 45 years
+
+* Highlights
+- Python 3.15: 15% faster on Windows thanks to tail-call wizardry
+- Mattermost: Your server, your database, their 10K message limit
+- 45-Year Guest: One Christmas invite, a lifetime of family
+- Textarea.my: 111 lines of code, entire notes in the URL
+- Fabrice Bellard: The man who wrote QEMU, FFmpeg, and still gets bored
+
+* Stories
+
+** Python 3.15's interpreter for Windows x86-64 should hopefully be 15% faster :python:performance:compilers:cpython:
+:PROPERTIES:
+:ID:       46384167
+:URL:      https://fidget-spinner.github.io/posts/no-longer-sorry.html
+:HN_URL:   https://news.ycombinator.com/item?id=46384167
+:POINTS:   105
+:COMMENTS: 24
+:BY:       lumpa
+:END:
+
+*** TLDR
+Ken Jin reports that Python 3.15's tail-calling interpreter achieves 15% speedup on Windows x86-64 (MSVC) and 5% on macOS AArch64 by using musttail attributes. The key insight: tail calls reset compiler heuristics, allowing better inlining in the massive interpreter loop.
+
+*** Take
+The fact that Python's core loop wasn't already 'hyper optimized' after 30 years is simultaneously horrifying and a testament to how forgiving Moore's Law was. Someone in the comments literally asked why it isn't hand-rolled assembly yet.
+
+*** Comments
+
+**** jtrn
+:PROPERTIES:
+:COMMENT_ID: 46384200
+:END:
+Hope it's not like Python 3.14, when 9-15% gains turned out to be inflated due to an LLVM 19 bug.
+
+**** redox99
+:PROPERTIES:
+:COMMENT_ID: 46384300
+:END:
+How is the core loop not already hyper optimized? I'd have expected hand-rolled assembly. How much energy has been wasted worldwide?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+Ken Jin报告称，Python 3.15的尾调用解释器通过使用musttail属性，在Windows x86-64上实现了15%的加速，在macOS AArch64上实现了5%的加速。关键发现：尾调用重置编译器启发式规则，允许在庞大的解释器循环中进行更好的内联。
+***** Take
+Python核心循环30年都没有被超级优化这件事，既恐怖又证明了摩尔定律有多宽容。评论里有人问为什么还不是手写汇编。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+Ken Jinによると、Python 3.15のテールコールインタプリタはmusttail属性を使用し、Windows x86-64で15%、macOS AArch64で5%の高速化を達成。重要な発見：テールコールがコンパイラの推論をリセットし、巨大なインタプリタループでのインライン化を改善。
+***** Take
+Pythonのコアループが30年経ってもまだ超最適化されていなかったという事実は、恐ろしくもありムーアの法則の寛容さの証でもある。コメントで誰かが「なぜまだ手書きアセンブリじゃないの？」と聞いていた。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+Ken Jin에 따르면 Python 3.15의 테일콜 인터프리터가 musttail 속성을 사용해 Windows x86-64에서 15%, macOS AArch64에서 5% 속도 향상을 달성했다. 핵심 발견: 테일콜이 컴파일러 휴리스틱을 리셋해 거대한 인터프리터 루프에서 더 나은 인라이닝을 가능하게 한다.
+***** Take
+Python의 코어 루프가 30년이 지나도록 초최적화되지 않았다는 사실은 무섭기도 하고 무어의 법칙이 얼마나 관대했는지를 보여준다. 댓글에서 누군가가 왜 아직 수작업 어셈블리가 아니냐고 물었다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Ken Jin informa que el intérprete de llamadas de cola de Python 3.15 logra un 15% de mejora en Windows x86-64 (MSVC) y un 5% en macOS AArch64 usando atributos musttail. El hallazgo clave: las llamadas de cola resetean las heurísticas del compilador, permitiendo mejor inlining en el enorme bucle del intérprete.
+***** Take
+El hecho de que el bucle principal de Python no estuviera ya hiper-optimizado después de 30 años es simultáneamente aterrador y un testimonio de lo permisiva que fue la Ley de Moore. Alguien en los comentarios literalmente preguntó por qué no es ensamblador escrito a mano todavía.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Ken Jin berichtet, dass Pythons 3.15 Tail-Calling-Interpreter auf Windows x86-64 (MSVC) 15% und auf macOS AArch64 5% Geschwindigkeitssteigerung erreicht, indem musttail-Attribute verwendet werden. Die wichtigste Erkenntnis: Tail Calls setzen Compiler-Heuristiken zurück und ermöglichen besseres Inlining in der riesigen Interpreter-Schleife.
+***** Take
+Die Tatsache, dass Pythons Kernschleife nach 30 Jahren nicht bereits hyper-optimiert war, ist gleichzeitig erschreckend und ein Beweis dafür, wie nachsichtig das Mooresche Gesetz war. Jemand in den Kommentaren fragte buchstäblich, warum es nicht schon handgeschriebenes Assembly ist.
+** Mattermost restricted access to old messages after 10000 limit is reached :opensource:mattermost:licensing:enshittification:
+:PROPERTIES:
+:ID:       46383675
+:URL:      https://github.com/mattermost/mattermost/issues/34271
+:HN_URL:   https://news.ycombinator.com/item?id=46383675
+:POINTS:   226
+:COMMENTS: 117
+:BY:       xvilka
+:END:
+
+*** TLDR
+Mattermost silently pushed a 10,000 message limit to their 'free' self-hosted version. Users with their own servers and databases are now locked out of older messages. A school with 470,000 posts is particularly screwed. No migration path, no announcement, just vibes.
+
+*** Take
+Imagine running your own server with your own database and some company in Minnesota decides you can only read the last 10K messages. Peak open-core moment. The diff to remove the limit is already in the comments.
+
+*** Comments
+
+**** q3k
+:PROPERTIES:
+:COMMENT_ID: 46383700
+:END:
+［Posts literal diff to remove the limit from limits.go］
+
+**** Zephilinox
+:PROPERTIES:
+:COMMENT_ID: 46383800
+:END:
+They enforced it for self-hosted, did it without announcing it AND without a migration path. Still no one from that company has admitted it being a mistake.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+Mattermost悄悄地在其'免费'自托管版本中推送了10000条消息限制。拥有自己服务器和数据库的用户现在被锁定无法访问旧消息。一所有47万条帖子的学校特别惨。没有迁移路径，没有公告，只有随缘。
+***** Take
+想象一下运行自己的服务器和数据库，然后明尼苏达州的某家公司决定你只能读取最后1万条消息。开源核心的巅峰时刻。移除限制的diff已经在评论里了。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+Mattermostが「無料」のセルフホスト版に1万件のメッセージ制限をこっそり追加。自分のサーバーとデータベースを持つユーザーが古いメッセージから締め出された。47万件の投稿がある学校は特に困っている。移行パスなし、告知なし、雰囲気だけ。
+***** Take
+自分のサーバーで自分のデータベースを運用していて、ミネソタの会社が最新1万件しか読めないと決定するとか想像してみて。オープンコアの極み。制限を削除するdiffはもうコメントにある。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+Mattermost가 '무료' 자체 호스팅 버전에 몰래 10,000개 메시지 제한을 추가했다. 자체 서버와 데이터베이스를 가진 사용자들이 이제 오래된 메시지에서 잠겼다. 47만 개의 게시물이 있는 학교가 특히 피해를 봤다. 마이그레이션 경로 없음, 공지 없음, 그냥 분위기만.
+***** Take
+자신의 서버에서 자신의 데이터베이스를 운영하는데 미네소타의 어떤 회사가 최근 1만 개만 읽을 수 있다고 결정하는 걸 상상해봐. 오픈코어의 정점. 제한을 제거하는 diff는 이미 댓글에 있다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Mattermost silenciosamente añadió un límite de 10,000 mensajes a su versión 'gratuita' autoalojada. Los usuarios con sus propios servidores y bases de datos ahora no pueden acceder a mensajes antiguos. Una escuela con 470,000 publicaciones está particularmente afectada. Sin ruta de migración, sin anuncio, solo vibras.
+***** Take
+Imagina ejecutar tu propio servidor con tu propia base de datos y alguna empresa en Minnesota decide que solo puedes leer los últimos 10K mensajes. Momento cumbre del open-core. El diff para eliminar el límite ya está en los comentarios.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Mattermost hat heimlich ein 10.000-Nachrichten-Limit in ihre 'kostenlose' selbst gehostete Version eingebaut. Nutzer mit eigenen Servern und Datenbanken sind jetzt von älteren Nachrichten ausgesperrt. Eine Schule mit 470.000 Beiträgen ist besonders betroffen. Kein Migrationspfad, keine Ankündigung, nur Vibes.
+***** Take
+Stell dir vor, du betreibst deinen eigenen Server mit deiner eigenen Datenbank und irgendeine Firma in Minnesota entscheidet, dass du nur die letzten 10K Nachrichten lesen darfst. Peak Open-Core-Moment. Der Diff zum Entfernen des Limits steht schon in den Kommentaren.
+** We invited a man into our home at Christmas and he stayed with us for 45 years :heartwarming:homelessness:christmas:uk:
+:PROPERTIES:
+:ID:       46383552
+:URL:      https://www.bbc.co.uk/news/articles/cdxwllqz1l0o
+:HN_URL:   https://news.ycombinator.com/item?id=46383552
+:POINTS:   479
+:COMMENTS: 99
+:BY:       rajeshrajappan
+:END:
+
+*** TLDR
+In 1975, Rob and Dianne Parsons invited Ronnie Lockwood, a 30-year-old homeless autistic man, into their Cardiff home for Christmas. He stayed until his death in 2020 at age 75. Ronnie left his savings to charity, including exactly enough to fix the roof of a community center now named after him.
+
+*** Take
+The real Christmas miracle: a family that didn't ghost someone after the holidays. Ronnie went from homelessness to leaving behind a legacy building. Meanwhile most of us can't even commit to a gym membership.
+
+*** Comments
+
+**** cogman10
+:PROPERTIES:
+:COMMENT_ID: 46383600
+:END:
+A large percentage of the homeless have autism. If these people don't have support, their lives can turn miserable fast. It's a lot of work to care for people with autism.
+
+**** moondowner
+:PROPERTIES:
+:COMMENT_ID: 46383650
+:END:
+The homeless centre told them Ronnie needed an address to get a job, but to get an address, you need a job. That's the Catch 22 that loads of homeless people are in.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+1975年，Rob和Dianne Parsons邀请30岁的无家可归的自闭症男子Ronnie Lockwood到他们加迪夫的家过圣诞。他一直住到2020年去世，享年75岁。Ronnie把积蓄留给了慈善机构，其中刚好够修复一个以他名字命名的社区中心的屋顶。
+***** Take
+真正的圣诞奇迹：一个节后没有消失的家庭。Ronnie从无家可归到留下一座以他命名的建筑。而我们大多数人连健身房会员都坚持不了。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+1975年、Rob とDianne ParsonsはカーディフのDPmでホームレスの30歳の自閉症男性Ronnie Lockwoodをクリスマスに招待した。彼は2020年に75歳で亡くなるまで住み続けた。Ronnieは貯金を慈善団体に遺贈し、その中には彼の名前を冠したコミュニティセンターの屋根修理費用がちょうど含まれていた。
+***** Take
+本当のクリスマスの奇跡：休暇後に誰かをゴーストしなかった家族。Ronnieはホームレスから、遺産として建物を残すまでになった。一方、私たちのほとんどはジムの会員資格すら続けられない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+1975년, Rob과 Dianne Parsons는 30세의 노숙자 자폐증 남성 Ronnie Lockwood를 카디프의 집으로 크리스마스에 초대했다. 그는 2020년 75세로 사망할 때까지 머물렀다. Ronnie는 저축을 자선단체에 남겼고, 그 중에는 그의 이름을 딴 커뮤니티 센터의 지붕을 고치는 데 딱 맞는 금액도 포함되어 있었다.
+***** Take
+진짜 크리스마스 기적: 휴일이 끝나고 누군가를 버리지 않은 가족. Ronnie는 노숙에서 유산으로 건물을 남기는 데까지 이르렀다. 한편 우리 대부분은 헬스장 회원권도 유지하지 못한다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+En 1975, Rob y Dianne Parsons invitaron a Ronnie Lockwood, un hombre autista sin hogar de 30 años, a su casa en Cardiff para Navidad. Se quedó hasta su muerte en 2020 a los 75 años. Ronnie dejó sus ahorros a la caridad, incluyendo exactamente lo suficiente para arreglar el techo de un centro comunitario ahora nombrado en su honor.
+***** Take
+El verdadero milagro navideño: una familia que no desapareció a alguien después de las fiestas. Ronnie pasó de la indigencia a dejar un edificio como legado. Mientras tanto, la mayoría de nosotros no podemos ni comprometernos con una membresía de gimnasio.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+1975 luden Rob und Dianne Parsons Ronnie Lockwood, einen 30-jährigen obdachlosen autistischen Mann, zu Weihnachten in ihr Haus in Cardiff ein. Er blieb bis zu seinem Tod 2020 im Alter von 75 Jahren. Ronnie vermachte seine Ersparnisse wohltätigen Zwecken, darunter genau genug für die Reparatur des Dachs eines Gemeindezentrums, das jetzt nach ihm benannt ist.
+***** Take
+Das wahre Weihnachtswunder: Eine Familie, die jemanden nach den Feiertagen nicht geghostet hat. Ronnie ging von Obdachlosigkeit dazu über, ein Gebäude als Vermächtnis zu hinterlassen. Währenddessen können die meisten von uns sich nicht mal zu einer Fitnessstudio-Mitgliedschaft verpflichten.
+** Show HN: Minimalist editor that lives in browser, stores everything in the URL :showhn:minimalism:webdev:tools:
+:PROPERTIES:
+:ID:       46378554
+:URL:      https://github.com/antonmedv/textarea
+:HN_URL:   https://news.ycombinator.com/item?id=46378554
+:POINTS:   383
+:COMMENTS: 131
+:BY:       medv
+:END:
+
+*** TLDR
+A single-file text editor (111 lines of code) that stores your entire document compressed in the URL hash. No backend, no cookies, no tracking. Uses CompressionStream API for deflate. Share notes by sharing the URL. The entire app is viewable in page source.
+
+*** Take
+Finally, a note-taking app with a simpler stack than most startups' landing pages. URLs can hold at least 64KB in modern browsers, which is roughly the size of the Great Gatsby. Your notes are probably shorter.
+
+*** Comments
+
+**** gnyman
+:PROPERTIES:
+:COMMENT_ID: 46378600
+:END:
+I made almost exactly the same but for maps. Needed to share a map with drawings and let the receiver see their own location. Vibe engineered this in an evening.
+
+**** maxloh
+:PROPERTIES:
+:COMMENT_ID: 46378700
+:END:
+Per the spec, a URL can hold at least 8,000 characters. Mainstream browsers support at least 64,000 characters.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+一个单文件文本编辑器（111行代码），将整个文档压缩存储在URL哈希中。无后端，无cookies，无追踪。使用CompressionStream API进行deflate压缩。通过分享URL来分享笔记。整个应用程序可在页面源代码中查看。
+***** Take
+终于，一个比大多数创业公司的落地页技术栈更简单的笔记应用。现代浏览器的URL可以容纳至少64KB，大约是《了不起的盖茨比》的大小。你的笔记可能更短。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+シングルファイルのテキストエディタ（111行のコード）で、ドキュメント全体を圧縮してURLハッシュに保存する。バックエンドなし、クッキーなし、トラッキングなし。CompressionStream APIでdeflate圧縮を使用。URLを共有することでノートを共有。アプリ全体がページソースで閲覧可能。
+***** Take
+ついに、ほとんどのスタートアップのランディングページより簡単なスタックのメモアプリ。モダンブラウザのURLは少なくとも64KB保持できる。これはだいたい「グレート・ギャツビー」のサイズ。あなたのメモはおそらくもっと短い。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+문서 전체를 URL 해시에 압축하여 저장하는 단일 파일 텍스트 에디터(111줄의 코드). 백엔드 없음, 쿠키 없음, 추적 없음. CompressionStream API를 사용한 deflate 압축. URL을 공유하여 노트 공유. 전체 앱을 페이지 소스에서 볼 수 있음.
+***** Take
+드디어, 대부분의 스타트업 랜딩 페이지보다 간단한 스택의 메모 앱. 현대 브라우저의 URL은 최소 64KB를 담을 수 있는데, 이는 대략 '위대한 개츠비' 크기다. 당신의 노트는 아마 더 짧을 것이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Un editor de texto de un solo archivo (111 líneas de código) que almacena tu documento completo comprimido en el hash de la URL. Sin backend, sin cookies, sin rastreo. Usa la API CompressionStream para deflate. Comparte notas compartiendo la URL. Toda la app es visible en el código fuente de la página.
+***** Take
+Finalmente, una app de notas con un stack más simple que las páginas de inicio de la mayoría de startups. Las URLs pueden contener al menos 64KB en navegadores modernos, que es aproximadamente el tamaño de El Gran Gatsby. Tus notas probablemente son más cortas.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Ein Ein-Datei-Texteditor (111 Zeilen Code), der dein gesamtes Dokument komprimiert im URL-Hash speichert. Kein Backend, keine Cookies, kein Tracking. Verwendet die CompressionStream API für Deflate. Teile Notizen durch Teilen der URL. Die gesamte App ist im Seitenquellcode sichtbar.
+***** Take
+Endlich eine Notiz-App mit einem einfacheren Stack als die meisten Startup-Landingpages. URLs können in modernen Browsern mindestens 64KB halten, was ungefähr der Größe von Der große Gatsby entspricht. Deine Notizen sind wahrscheinlich kürzer.
+** Fabrice Bellard: Biography (2009) ［pdf］ :programming:legend:opensource:biography:
+:PROPERTIES:
+:ID:       46377862
+:URL:      https://www.ipaidia.gr/wp-content/uploads/2020/12/117-2020-fabrice-bellard.pdf
+:HN_URL:   https://news.ycombinator.com/item?id=46377862
+:POINTS:   312
+:COMMENTS: 95
+:BY:       lioeters
+:END:
+
+*** TLDR
+A 2009 biography of Fabrice Bellard, the French programmer who created QEMU, FFmpeg, TinyCC, TinyGL, and LZEXE. He developed the fastest known algorithm for computing pi's binary digits and won IOCCC twice. Releases everything as free software because he 'gets bored doing the same thing.'
+
+*** Take
+This man wrote FFmpeg and QEMU within five years while winning obfuscated C contests on the side. Most programmers can't even ship one project without seven dependencies and a Kubernetes cluster. Bellard just gets bored and accidentally revolutionizes computing.
+
+*** Comments
+
+**** poidos
+:PROPERTIES:
+:COMMENT_ID: 46377900
+:END:
+Publishing ffmpeg and QEMU in a five year span that also included winning IOCCC (twice!) is absolutely bonkers.
+
+**** justapassenger
+:PROPERTIES:
+:COMMENT_ID: 46378000
+:END:
+He's one of the GOATs, but this article is written by someone who has no idea about software engineering and full of exaggerations.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+2009年关于Fabrice Bellard的传记，这位法国程序员创建了QEMU、FFmpeg、TinyCC、TinyGL和LZEXE。他开发了计算圆周率二进制位的最快已知算法，并两次获得IOCCC奖。他将所有东西都作为自由软件发布，因为他'做同样的事情会无聊'。
+***** Take
+这个人在五年内写出了FFmpeg和QEMU，同时还顺便赢了混乱C代码竞赛。大多数程序员没有七个依赖和一个Kubernetes集群连一个项目都发不出来。Bellard只是无聊了，然后不小心革命了计算。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+QEMU、FFmpeg、TinyCC、TinyGL、LZEXEを作成したフランス人プログラマー、Fabrice Bellardの2009年の伝記。円周率の2進数桁を計算する最速のアルゴリズムを開発し、IOCCCを2回受賞。「同じことをやるのは退屈」だからすべてをフリーソフトウェアとしてリリース。
+***** Take
+この人は5年間でFFmpegとQEMUを書き、その傍らで難読化Cコンテストに優勝していた。ほとんどのプログラマーは7つの依存関係とKubernetesクラスターなしでは1つのプロジェクトも出荷できない。Bellardは退屈するだけで偶然コンピューティングに革命を起こす。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+QEMU, FFmpeg, TinyCC, TinyGL, LZEXE를 만든 프랑스 프로그래머 Fabrice Bellard의 2009년 전기. 원주율의 이진수 자릿수를 계산하는 가장 빠른 알고리즘을 개발했고 IOCCC를 두 번 수상했다. '같은 일을 하면 지루해서' 모든 것을 자유 소프트웨어로 공개한다.
+***** Take
+이 사람은 5년 안에 FFmpeg과 QEMU를 작성하면서 난독화 C 콘테스트도 부업으로 우승했다. 대부분의 프로그래머는 7개의 의존성과 Kubernetes 클러스터 없이는 프로젝트 하나도 배포하지 못한다. Bellard는 그냥 지루해지면 우연히 컴퓨팅에 혁명을 일으킨다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Una biografía de 2009 de Fabrice Bellard, el programador francés que creó QEMU, FFmpeg, TinyCC, TinyGL y LZEXE. Desarrolló el algoritmo más rápido conocido para calcular los dígitos binarios de pi y ganó IOCCC dos veces. Libera todo como software libre porque 'se aburre haciendo lo mismo.'
+***** Take
+Este hombre escribió FFmpeg y QEMU en cinco años mientras ganaba concursos de C ofuscado como hobby. La mayoría de los programadores no pueden ni enviar un proyecto sin siete dependencias y un clúster de Kubernetes. Bellard simplemente se aburre y accidentalmente revoluciona la computación.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Eine Biografie von 2009 über Fabrice Bellard, den französischen Programmierer, der QEMU, FFmpeg, TinyCC, TinyGL und LZEXE erstellt hat. Er entwickelte den schnellsten bekannten Algorithmus zur Berechnung der Binärziffern von Pi und gewann zweimal den IOCCC. Veröffentlicht alles als freie Software, weil ihm 'langweilig wird, immer das Gleiche zu machen.'
+***** Take
+Dieser Mann hat FFmpeg und QEMU innerhalb von fünf Jahren geschrieben, während er nebenbei obfuskierte C-Wettbewerbe gewann. Die meisten Programmierer können nicht mal ein Projekt ohne sieben Abhängigkeiten und einen Kubernetes-Cluster ausliefern. Bellard wird einfach gelangweilt und revolutioniert zufällig die Informatik.
