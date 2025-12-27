@@ -1,0 +1,389 @@
+#+TITLE: HN Digest 2025-12-27 03:00:00 UT UTC
+#+DATE: 2025-12-27T03:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Rust OS nerds, Victorian mathematicians, and HN discovers that Kentucky is everywhere
+
+* Highlights
+- LearnixOS: Write a POSIX OS from scratch in Rust, no crates allowed
+- Lewis Carroll had a clever trick for computing determinants
+- Zero-width Unicode characters can draw pictures in your text
+- 700-line C compiler that compiles itself on ESP32
+- -tucky: Why Americans add Kentucky to everything they dislike
+
+* Stories
+
+** LearnixOS :rust:os-dev:education:tutorial:
+:PROPERTIES:
+:ID:       46391599
+:URL:      https://www.learnix-os.com
+:HN_URL:   https://news.ycombinator.com/item?id=46391599
+:POINTS:   199
+:COMMENTS: 76
+:BY:       gtirloni
+:END:
+
+*** TLDR
+An educational project to build a POSIX-compliant OS from scratch in Rust without external crates. Covers boot loading, CPU modes, paging, file systems, and process management. The goal is to eventually run Doom.
+
+*** Take
+The Rust community's obsession with rewriting everything in Rust has reached its logical conclusion: an entire OS tutorial. Bonus points for the ironic misattributed Einstein quote on the landing page.
+
+*** Comments
+
+**** Dreami
+:PROPERTIES:
+:COMMENT_ID: 46391855
+:END:
+From the name I thought this was about learning NixOS, and they found a very clever name. Maybe the author could add a small note that this is not about that.
+
+**** beasthacker
+:PROPERTIES:
+:COMMENT_ID: 46392012
+:END:
+There are several small inconsistencies in the intro text (e.g., inconsistent capitalization of 'Rust' vs 'rust', grammar typos). In a domain like OS development where extreme precision is required, these small errors can subconsciously signal to readers that the technical details might also lack precision.
+
+**** keyshapegeo99
+:PROPERTIES:
+:COMMENT_ID: 46392456
+:END:
+Opening with a made-up quote (that is very simple to Google, which quickly confirms its apocryphal nature) doesn't inspire confidence in the factual accuracy of the remainder of the book.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+一个从零开始用纯Rust构建POSIX兼容操作系统的教育项目，不使用外部crate。涵盖引导加载、CPU模式、分页、文件系统和进程管理。最终目标是能运行Doom。
+***** Take
+Rust社区用Rust重写一切的执念终于到达了逻辑终点：一个完整的操作系统教程。首页那个被误引的爱因斯坦名言是加分项。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+外部クレートを使わずにRustでPOSIX準拠OSをゼロから構築する教育プロジェクト。ブートローダー、CPUモード、ページング、ファイルシステム、プロセス管理をカバー。最終目標はDoomの実行。
+***** Take
+Rustで全てを書き直すというRustコミュニティの執念が論理的な帰結に達した：OS チュートリアル丸ごと一本。ランディングページの誤引用されたアインシュタインの言葉はボーナスポイント。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+외부 크레이트 없이 순수 Rust로 POSIX 호환 OS를 처음부터 구축하는 교육 프로젝트. 부트 로딩, CPU 모드, 페이징, 파일 시스템, 프로세스 관리를 다룬다. 최종 목표는 Doom 실행.
+***** Take
+Rust로 모든 것을 다시 작성하려는 Rust 커뮤니티의 집착이 논리적 결론에 도달했다: OS 튜토리얼 전체. 랜딩 페이지의 잘못 인용된 아인슈타인 명언은 보너스.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Un proyecto educativo para construir un SO compatible con POSIX desde cero en Rust puro, sin crates externos. Cubre carga de arranque, modos de CPU, paginación, sistemas de archivos y gestión de procesos. El objetivo final es ejecutar Doom.
+***** Take
+La obsesión de la comunidad Rust por reescribir todo en Rust ha llegado a su conclusión lógica: un tutorial completo de SO. Puntos extra por la cita falsamente atribuida a Einstein en la página principal.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Ein Bildungsprojekt zum Aufbau eines POSIX-kompatiblen OS von Grund auf in reinem Rust ohne externe Crates. Behandelt Boot-Loading, CPU-Modi, Paging, Dateisysteme und Prozessverwaltung. Das Endziel ist, Doom zum Laufen zu bringen.
+***** Take
+Die Besessenheit der Rust-Community, alles in Rust umzuschreiben, hat ihren logischen Endpunkt erreicht: ein komplettes OS-Tutorial. Bonuspunkte für das falsch zugeschriebene Einstein-Zitat auf der Startseite.
+** How Lewis Carroll computed determinants (2023) :math:history:algorithms:linear-algebra:
+:PROPERTIES:
+:ID:       46395106
+:URL:      https://www.johndcook.com/blog/2023/07/10/lewis-carroll-determinants/
+:HN_URL:   https://news.ycombinator.com/item?id=46395106
+:POINTS:   139
+:COMMENTS: 28
+:BY:       tzury
+:END:
+
+*** TLDR
+Lewis Carroll (Charles Dodgson) invented a method called 'condensation' for computing determinants. It repeatedly reduces a matrix by replacing elements with 2x2 subdeterminants, maintaining integers throughout. O(n^3) complexity, parallelizable, and you can do it by hand.
+
+*** Take
+The guy who wrote about Alice falling down rabbit holes also had strong opinions about matrix algebra. Turns out 'curiouser and curiouser' applies to both Wonderland and linear algebra pedagogy.
+
+*** Comments
+
+**** BobbyTables2
+:PROPERTIES:
+:COMMENT_ID: 46395512
+:END:
+Wow, I never realized the cofactor method wasn't the only one. I loathed it and it put me off wanting to get into advanced matrix topics.
+
+**** esafak
+:PROPERTIES:
+:COMMENT_ID: 46395789
+:END:
+I forgot that cipher used to have a different meaning: zero, via Arabic. In some languages it still means digit.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+刘易斯·卡罗尔（查尔斯·道奇森）发明了一种叫做'浓缩法'的行列式计算方法。它通过将元素替换为2x2子行列式来反复缩减矩阵，全程保持整数。O(n^3)复杂度，可并行化，手算也行。
+***** Take
+写爱丽丝掉进兔子洞的那个人对矩阵代数也有独到见解。原来'越来越奇怪'既适用于仙境，也适用于线性代数教学。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+ルイス・キャロル（チャールズ・ドジソン）は「凝縮法」と呼ばれる行列式の計算法を発明した。2x2小行列式で要素を置き換えて行列を繰り返し縮小し、整数を維持する。O(n^3)の計算量、並列化可能、手計算も可能。
+***** Take
+アリスがウサギの穴に落ちる話を書いた人が、行列代数にも強い意見を持っていた。「ますます不思議」は不思議の国にも線形代数教育にも当てはまる。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+루이스 캐럴(찰스 도지슨)은 '응축법'이라는 행렬식 계산법을 발명했다. 2x2 소행렬식으로 요소를 대체하며 행렬을 반복적으로 축소하고, 전 과정에서 정수를 유지한다. O(n^3) 복잡도, 병렬화 가능, 손으로도 계산 가능.
+***** Take
+앨리스가 토끼굴에 빠지는 이야기를 쓴 사람이 행렬 대수에도 확고한 견해를 가졌다. '점점 더 이상해'는 이상한 나라와 선형대수 교육 모두에 적용된다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Lewis Carroll (Charles Dodgson) inventó un método llamado 'condensación' para calcular determinantes. Reduce repetidamente una matriz reemplazando elementos con subdeterminantes 2x2, manteniendo enteros. Complejidad O(n^3), paralelizable, y se puede hacer a mano.
+***** Take
+El tipo que escribió sobre Alicia cayendo por madrigueras también tenía opiniones firmes sobre álgebra matricial. Resulta que 'cada vez más curioso' aplica tanto al País de las Maravillas como a la pedagogía del álgebra lineal.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Lewis Carroll (Charles Dodgson) erfand eine Methode namens 'Kondensation' zur Berechnung von Determinanten. Sie reduziert wiederholt eine Matrix, indem Elemente durch 2x2-Unterdeterminanten ersetzt werden, wobei Ganzzahlen erhalten bleiben. O(n^3)-Komplexität, parallelisierbar, und von Hand durchführbar.
+***** Take
+Der Typ, der über Alice im Wunderland schrieb, hatte auch starke Meinungen zur Matrixalgebra. 'Immer kurioser' gilt offenbar sowohl für das Wunderland als auch für die Didaktik der linearen Algebra.
+** Drawing with zero-width characters :unicode:hacks:typography:web:
+:PROPERTIES:
+:ID:       46395061
+:URL:      https://zw.swerdlow.dev
+:HN_URL:   https://news.ycombinator.com/item?id=46395061
+:POINTS:   74
+:COMMENTS: 25
+:BY:       benswerd
+:END:
+
+*** TLDR
+Arabic Tajweed marks are zero-width combining characters that stack vertically without taking horizontal space. By stacking them creatively, you can draw bitmap-like images in plain text that break websites' assumptions about where text should render.
+
+*** Take
+Someone found that obscure Unicode marks designed for Quran recitation can be weaponized to draw pictures in your terminal. The internet remains undefeated.
+
+*** Comments
+
+**** krackers
+:PROPERTIES:
+:COMMENT_ID: 46395234
+:END:
+Seems like a more advanced version of zalgotext (which also uses combining marks)
+
+**** ilaksh
+:PROPERTIES:
+:COMMENT_ID: 46395567
+:END:
+Another thing in the category of abusing font capabilities is Harfbuzz WASM, which if compiled into an application allows fonts to basically run any code. A few examples are an LLM or a Tetris font.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+阿拉伯语塔吉威德标记是不占水平空间但可以垂直堆叠的零宽组合字符。通过创造性地堆叠它们，你可以在纯文本中绘制类似位图的图像，打破网站对文本渲染位置的假设。
+***** Take
+有人发现了用于古兰经诵读的晦涩Unicode标记可以被武器化用来在终端里画画。互联网永远不败。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+アラビア語のタジュウィード記号は水平方向のスペースを取らずに垂直に積み重ねられるゼロ幅結合文字。これを創造的に積み重ねることで、プレーンテキスト内にビットマップのような画像を描き、ウェブサイトのテキスト描画位置の想定を破ることができる。
+***** Take
+クルアーン朗誦用に設計されたマイナーなUnicode記号がターミナルで絵を描くために武器化できることを誰かが発見した。インターネットは無敗だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+아랍어 타지위드 마크는 가로 공간을 차지하지 않고 세로로 쌓이는 제로 너비 결합 문자다. 이를 창의적으로 쌓으면 일반 텍스트에서 비트맵 같은 이미지를 그릴 수 있고, 웹사이트의 텍스트 렌더링 위치 가정을 깨뜨린다.
+***** Take
+꾸란 낭송용으로 설계된 무명의 유니코드 마크가 터미널에서 그림을 그리는 데 무기화될 수 있다는 걸 누군가 발견했다. 인터넷은 무패다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Las marcas árabes de Tajweed son caracteres combinantes de ancho cero que se apilan verticalmente sin ocupar espacio horizontal. Apilándolas creativamente, puedes dibujar imágenes tipo bitmap en texto plano que rompen las suposiciones de los sitios web sobre dónde debe renderizarse el texto.
+***** Take
+Alguien descubrió que marcas Unicode oscuras diseñadas para la recitación del Corán pueden usarse como arma para dibujar imágenes en tu terminal. Internet sigue invicto.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Arabische Tadschuid-Zeichen sind kombinierende Null-Breite-Zeichen, die sich vertikal stapeln, ohne horizontalen Platz einzunehmen. Durch kreatives Stapeln kann man bitmap-ähnliche Bilder in reinem Text zeichnen, die die Annahmen von Websites über Textrendering brechen.
+***** Take
+Jemand hat herausgefunden, dass obskure Unicode-Zeichen für die Koranrezitation als Waffe verwendet werden können, um Bilder im Terminal zu zeichnen. Das Internet bleibt ungeschlagen.
+** Show HN: Xcc700: Self-hosting mini C compiler for ESP32 (Xtensa) in 700 lines :compilers:embedded:c:esp32:show-hn:
+:PROPERTIES:
+:ID:       46392736
+:URL:      https://github.com/valdanylchuk/xcc700
+:HN_URL:   https://news.ycombinator.com/item?id=46392736
+:POINTS:   94
+:COMMENTS: 18
+:BY:       isitcontent
+:END:
+
+*** TLDR
+A 700-line C compiler that targets ESP32's Xtensa architecture and can compile itself. Single-pass, recursive descent, generates ELF binaries directly. Deliberately minimal: no optimization, treats the CPU as a stack machine, but it works and runs on the chip.
+
+*** Take
+Writing a self-hosting compiler in 700 lines is impressive. Writing one that runs on a $5 microcontroller is borderline showing off. The author's invitation to 'fork it and extend it' feels like a trap.
+
+*** Comments
+
+**** ValdikSS
+:PROPERTIES:
+:COMMENT_ID: 46393012
+:END:
+In case anyone interested, you can run (nommu) Linux on ESP32 Xtensa boards. ESP32-S3 N16R8 is <$5 on aliexpress with dual-core Xtensa 240 MHz, 16 MB NOR flash, 8 MB PSRAM, Wi-Fi 2.4 GHz 802.11n, Bluetooth.
+
+**** uecker
+:PROPERTIES:
+:COMMENT_ID: 46393245
+:END:
+Cool! And I do think the world needs more C compilers. There is so much you could do with this language, but it needs to be disentangled from the C++ compiler behemoths.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+一个700行的C编译器，目标是ESP32的Xtensa架构，能够编译自身。单遍、递归下降、直接生成ELF二进制文件。刻意保持极简：无优化，把CPU当栈机器用，但它能工作并在芯片上运行。
+***** Take
+用700行写一个自托管编译器很厉害。写一个能在5美元微控制器上运行的就近乎炫耀了。作者'fork它并扩展它'的邀请感觉像个陷阱。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+ESP32のXtensaアーキテクチャをターゲットにした700行のCコンパイラで、自分自身をコンパイルできる。シングルパス、再帰下降、ELFバイナリを直接生成。意図的にミニマル：最適化なし、CPUをスタックマシンとして扱うが、動作してチップ上で実行可能。
+***** Take
+700行で自己ホスティングコンパイラを書くのは印象的。5ドルのマイコンで動くものを書くのはほぼ自慢。著者の「フォークして拡張して」という招待は罠のような気がする。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+ESP32의 Xtensa 아키텍처를 대상으로 하는 700줄 C 컴파일러로 자기 자신을 컴파일할 수 있다. 단일 패스, 재귀 하강, ELF 바이너리 직접 생성. 의도적으로 최소화: 최적화 없음, CPU를 스택 머신으로 취급하지만 작동하고 칩에서 실행된다.
+***** Take
+700줄로 자체 호스팅 컴파일러를 작성하는 건 인상적이다. 5달러 마이크로컨트롤러에서 실행되는 걸 쓰는 건 거의 과시다. 저자의 '포크해서 확장해라'라는 초대는 함정처럼 느껴진다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Un compilador C de 700 líneas que apunta a la arquitectura Xtensa de ESP32 y puede compilarse a sí mismo. Paso único, descenso recursivo, genera binarios ELF directamente. Deliberadamente minimal: sin optimización, trata la CPU como máquina de pila, pero funciona y corre en el chip.
+***** Take
+Escribir un compilador auto-alojado en 700 líneas es impresionante. Escribir uno que corre en un microcontrolador de $5 es casi presumir. La invitación del autor a 'bifurcarlo y extenderlo' parece una trampa.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Ein 700-Zeilen-C-Compiler für die Xtensa-Architektur des ESP32, der sich selbst kompilieren kann. Single-Pass, rekursiver Abstieg, generiert ELF-Binärdateien direkt. Bewusst minimal: keine Optimierung, behandelt die CPU als Stack-Maschine, aber es funktioniert und läuft auf dem Chip.
+***** Take
+Einen selbst-hostenden Compiler in 700 Zeilen zu schreiben ist beeindruckend. Einen zu schreiben, der auf einem 5-Dollar-Mikrocontroller läuft, ist fast schon Angeberei. Die Einladung des Autors, 'es zu forken und zu erweitern', fühlt sich wie eine Falle an.
+** -tucky (2023) :linguistics:culture:etymology:america:
+:PROPERTIES:
+:ID:       46372532
+:URL:      https://languagelog.ldc.upenn.edu/nll/?p=58650
+:HN_URL:   https://news.ycombinator.com/item?id=46372532
+:POINTS:   27
+:COMMENTS: 27
+:BY:       benatkin
+:END:
+
+*** TLDR
+Americans attach '-tucky' to place names to imply they're rural, poor, or populated by hillbillies: Pennsyltucky, Counciltucky, Ypsitucky. The suffix has no connection to Kentucky's actual etymology (probably meaning 'meadow' in a Native American language) - it's pure class snobbery.
+
+*** Take
+Nothing says coastal elite quite like inventing a suffix to call your neighbors backward. At least they're creative about their prejudice.
+
+*** Comments
+
+**** Arainach
+:PROPERTIES:
+:COMMENT_ID: 46372789
+:END:
+The term is centered on calling the region, to outsiders, Kentucky-like. And to call a region that is to say it's poor and backwards. It is absolutely a slur meant to demean an area, and by extension its residents.
+
+**** hokumguru
+:PROPERTIES:
+:COMMENT_ID: 46373012
+:END:
+Council Bluffs is a vastly less financially successful city than Omaha with far more visible opioid problems. That is to say, as a local, I don't know if I would associate the term as much with demographics as economics.
+
+**** lxe
+:PROPERTIES:
+:COMMENT_ID: 46373456
+:END:
+It's crazy how the etymology of 'Kentucky' cannot be traced with certainty. Goes to show how much of the native American culture and language is now untraceable and how fragile our record-keeping is, even in 'modern times'.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** TLDR
+美国人在地名后加'-tucky'来暗示那里是农村、贫穷或住满乡巴佬：Pennsyltucky、Counciltucky、Ypsitucky。这个后缀与肯塔基州的真正词源（可能是美洲原住民语言中的'草地'）毫无关系——纯粹是阶级势利。
+***** Take
+没有什么比发明一个后缀来称呼邻居落后更能体现沿海精英了。至少他们的偏见很有创意。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** TLDR
+アメリカ人は地名に'-tucky'を付けて、その場所が田舎で貧しい、または田舎者が住んでいることを暗示する：Pennsyltucky、Counciltucky、Ypsitucky。この接尾辞はケンタッキーの実際の語源（おそらくネイティブアメリカンの言語で「草原」の意味）とは無関係で、純粋な階級的スノビズムだ。
+***** Take
+隣人を後進的と呼ぶために接尾辞を発明するほど沿岸部エリートらしいことはない。少なくとも偏見には創造性がある。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** TLDR
+미국인들은 지명에 '-tucky'를 붙여 그곳이 시골이고, 가난하고, 촌뜨기들이 사는 곳임을 암시한다: Pennsyltucky, Counciltucky, Ypsitucky. 이 접미사는 켄터키의 실제 어원(아마도 아메리카 원주민 언어로 '초원')과는 무관하다 - 순수한 계급 속물근성이다.
+***** Take
+이웃을 후진적이라고 부르는 접미사를 발명하는 것만큼 해안 엘리트다운 게 없다. 적어도 편견에는 창의성이 있다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** TLDR
+Los estadounidenses añaden '-tucky' a nombres de lugares para implicar que son rurales, pobres o poblados por paletos: Pennsyltucky, Counciltucky, Ypsitucky. El sufijo no tiene conexión con la etimología real de Kentucky (probablemente significa 'pradera' en un idioma nativo americano) - es puro esnobismo de clase.
+***** Take
+Nada dice élite costera como inventar un sufijo para llamar atrasados a tus vecinos. Al menos son creativos con sus prejuicios.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** TLDR
+Amerikaner hängen '-tucky' an Ortsnamen, um anzudeuten, dass sie ländlich, arm oder von Hinterwäldlern bewohnt sind: Pennsyltucky, Counciltucky, Ypsitucky. Das Suffix hat keine Verbindung zur tatsächlichen Etymologie von Kentucky (wahrscheinlich 'Wiese' in einer indigenen Sprache) - es ist reiner Klassensnobismus.
+***** Take
+Nichts sagt Küstenelite mehr, als ein Suffix zu erfinden, um die Nachbarn rückständig zu nennen. Zumindest sind sie kreativ bei ihren Vorurteilen.
