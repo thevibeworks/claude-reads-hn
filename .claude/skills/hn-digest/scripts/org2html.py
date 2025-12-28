@@ -25,6 +25,28 @@ from org2json import parse_org, digest_to_dict
 
 TEMPLATE_PATH = Path(__file__).parent / "template.html"
 
+# Canonical anchor format - SINGLE SOURCE OF TRUTH
+ANCHOR_PREFIX = "s"  # Story anchors: #s46268854
+
+
+def story_anchor(story_id) -> str:
+    """Generate canonical story anchor ID. Returns empty string if invalid.
+
+    Format: s{numeric_id}
+    Examples: s46268854, s12345
+    Invalid: s, s0, s-1, sabc
+    """
+    if story_id is None:
+        return ""
+    # Convert to int to validate numeric
+    try:
+        sid = int(story_id)
+        if sid <= 0:
+            return ""
+        return f"{ANCHOR_PREFIX}{sid}"
+    except (ValueError, TypeError):
+        return ""
+
 
 def load_template() -> Template:
     """Load HTML template from file."""
@@ -33,7 +55,8 @@ def load_template() -> Template:
 
 def story_to_html(story: dict) -> str:
     """Render a story to HTML."""
-    story_id = story.get("id", "")
+    raw_id = story.get("id")
+    anchor = story_anchor(raw_id)  # Validated anchor or empty
     title = escape(story.get("title", ""))
     url = escape(story.get("url", ""))
     hn_url = escape(story.get("hn_url", ""))
@@ -110,14 +133,19 @@ def story_to_html(story: dict) -> str:
 
     tags_section = f'<div class="tags">{tags_html}</div>' if tags_html else ''
 
-    return f'''<article class="story" id="s{story_id}">
+    # Build anchor attributes - only if we have a valid anchor
+    id_attr = f'id="{anchor}"' if anchor else ''
+    anchor_link = f'<a href="#{anchor}" class="story-anchor">#</a>' if anchor else ''
+    hn_label = f'HN#{raw_id}' if raw_id else 'HN'
+
+    return f'''<article class="story" {id_attr}>
       <h3 class="story-title">
         <a href="{url}" target="_blank">{title}</a>
-        <a href="#s{story_id}" class="story-anchor">#</a>
+        {anchor_link}
       </h3>
       {title_i18n}
       <div class="story-meta">
-        {points}pts | {comments_count}c | <a href="{hn_url}" target="_blank">HN#{story_id}</a>
+        {points}pts | {comments_count}c | <a href="{hn_url}" target="_blank">{hn_label}</a>
       </div>
       {tldr_section}
       {take_section}
@@ -153,11 +181,13 @@ def generate_sidebar(digests: list) -> str:
             lines.append(f'      <div class="sidebar-date">{date}</div>')
 
         for story in digest.get("stories", []):
-            story_id = story.get("id", "")
+            anchor = story_anchor(story.get("id"))
+            if not anchor:  # Skip stories without valid anchors
+                continue
             title = escape(story.get("title", ""))[:40]
             if len(story.get("title", "")) > 40:
                 title += "..."
-            lines.append(f'      <a href="#s{story_id}">{title}</a>')
+            lines.append(f'      <a href="#{anchor}">{title}</a>')
 
     return "\n".join(lines)
 
