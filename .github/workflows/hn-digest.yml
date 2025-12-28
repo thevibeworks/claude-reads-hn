@@ -311,10 +311,11 @@ jobs:
                BASE_URL: https://thevibeworks.github.io/claude-reads-hn
 
                ANCHOR FORMAT (CRITICAL - must match exactly):
-               - Pattern: #s{id} where {id} is the numeric HN story ID
-               - Example: #s46268854 (for story with "id": 46268854)
-               - Full URL: https://thevibeworks.github.io/claude-reads-hn#s46268854
-               - NO spaces, NO dashes, NO "story-" prefix, just "s" + digits
+               - Pattern: #s{id}-{MMDDHH} where {id} is story ID, {MMDDHH} is digest date
+               - Example: #s46268854-122711 (story 46268854 from Dec 27 11:00 digest)
+               - Full URL: https://thevibeworks.github.io/claude-reads-hn#s46268854-122711
+               - Format breakdown: "s" + story_id + "-" + MM + DD + HH (from digest date)
+               - This ensures uniqueness when same story appears in multiple digests (REVISIT)
 
                a) BARK (use mcp__barkme__notify) - one ping to wake human:
                   - title: digest vibe (the catchy summary)
@@ -325,7 +326,8 @@ jobs:
                   For each of the 5 stories, send one message.
                   IMPORTANT: Escape HTML entities (< → &lt; > → &gt; & → &amp;)
 
-                  For a story with id=46268854, the anchor is #s46268854:
+                  Anchor = #s{story_id}-{MMDDHH} from current digest date.
+                  Example: digest date "2025-12-27T11:00:00Z", story id 46268854 → #s46268854-122711
 
                   curl -s -X POST "https://api.telegram.org/bot$TG_BOT_TOKEN/sendMessage" \
                     -H "Content-Type: application/json" \
@@ -333,27 +335,28 @@ jobs:
                       "chat_id": "'"$TG_CHANNEL_ID"'",
                       "parse_mode": "HTML",
                       "disable_web_page_preview": false,
-                      "text": "<b>TITLE</b>\n\nTLDR\n\n<i>Take: OPINION</i>\n\n<a href=\"https://thevibeworks.github.io/claude-reads-hn#s46268854\">Read →</a> | <a href=\"https://news.ycombinator.com/item?id=46268854\">HN</a>"
+                      "text": "<b>TITLE</b>\n\nTLDR\n\n<i>Take: OPINION</i>\n\n<a href=\"https://thevibeworks.github.io/claude-reads-hn#s46268854-122711\">Read →</a> | <a href=\"https://news.ycombinator.com/item?id=46268854\">HN</a>"
                     }'
 
-                  Replace 46268854 with each story's actual numeric ID. Sends 5 messages total.
+                  Build anchor from: "s" + story.id + "-" + digest.date[5:7] + digest.date[8:10] + digest.date[11:13]
+                  Sends 5 messages total, one per story.
 
                c) DISCORD (if DISCORD_WEBHOOK_URL is set) - single rich embed:
-                  Build description with all 5 stories. Use anchor format: #s{numeric_id}
+                  Build description with all 5 stories. Anchor format: #s{id}-{MMDDHH}
 
                   curl -s -X POST "$DISCORD_WEBHOOK_URL" \
                     -H "Content-Type: application/json" \
                     -d '{
                       "embeds": [{
                         "title": "📰 VIBE_SUMMARY",
-                        "description": "• [Title1](https://thevibeworks.github.io/claude-reads-hn#s46268854) - tldr1\n• [Title2](...#s46268855) - tldr2\n...",
+                        "description": "• [Title1](https://thevibeworks.github.io/claude-reads-hn#s46268854-122711) - tldr1\n• [Title2](...#s46268855-122711) - tldr2\n...",
                         "url": "https://thevibeworks.github.io/claude-reads-hn",
                         "color": 16737280,
                         "footer": {"text": "Claude Reads HN • 4x daily"}
                       }]
                     }'
 
-                  Replace 46268854, 46268855 etc with actual story IDs from the digest.
+                  All stories in same digest share the MMDDHH suffix (e.g., 122711 for Dec 27 11:00).
 
             RULES:
             - READ THE DAMN ARTICLE first via WebFetch or Jina proxy (https://r.jina.ai/{url})
@@ -368,7 +371,8 @@ jobs:
 
             LINK REFERENCE:
             - Base URL: https://thevibeworks.github.io/claude-reads-hn
-            - Anchor: #s{id} (e.g., #s46268854) - MUST be "s" + numeric ID, nothing else
-            - Full link: BASE_URL + "#s" + story.id (e.g., ...reads-hn#s46268854)
-            - Use these anchors in TG/Discord so readers jump directly to story
+            - Anchor: #s{id}-{MMDDHH} (e.g., #s46268854-122711)
+            - Build: "s" + story.id + "-" + MM + DD + HH from digest.date
+            - Example: digest "2025-12-27T11:00:00Z" + story 46268854 → #s46268854-122711
+            - Same story in different digests gets different anchors (REVISIT support)
 
