@@ -2,6 +2,7 @@ interface Env {
   GITHUB_TOKEN: string;
   GITHUB_REPO: string;
   WORKFLOW_FILE: string;
+  TRIGGER_SECRET: string;
 }
 
 async function triggerWorkflow(env: Env): Promise<void> {
@@ -41,6 +42,10 @@ export default {
     const url = new URL(request.url);
 
     if (url.pathname === "/trigger" && request.method === "POST") {
+      const secret = request.headers.get("X-Trigger-Secret");
+      if (!env.TRIGGER_SECRET || secret !== env.TRIGGER_SECRET) {
+        return new Response("Unauthorized", { status: 401 });
+      }
       try {
         await triggerWorkflow(env);
         return new Response("Workflow triggered", { status: 200 });
