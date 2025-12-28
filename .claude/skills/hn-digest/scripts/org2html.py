@@ -160,11 +160,32 @@ def generate_sidebar(digests: list) -> str:
     return "\n".join(lines)
 
 
-def render_page(digests: list) -> str:
-    """Render full HTML page from list of digests."""
+def render_page(digests: list, recent_days: int = 7) -> str:
+    """Render full HTML page from list of digests with pagination."""
+    from datetime import datetime, timedelta
+
     template = load_template()
-    content = "\n".join(digest_to_html(d) for d in digests)
-    sidebar = generate_sidebar(digests)
+
+    # Split into recent and archive
+    cutoff = (datetime.utcnow() - timedelta(days=recent_days)).strftime("%Y-%m-%d")
+    recent = [d for d in digests if d.get("date", "")[:10] >= cutoff]
+    archive = [d for d in digests if d.get("date", "")[:10] < cutoff]
+
+    # Render recent content
+    content = "\n".join(digest_to_html(d) for d in recent)
+
+    # Render archive as hidden
+    if archive:
+        archive_content = "\n".join(digest_to_html(d) for d in archive)
+        content += f'''
+    <div id="archive" class="archive hidden">
+      {archive_content}
+    </div>
+    <button id="load-more" class="load-more" onclick="loadMore()">
+      Load {len(archive)} more digests →
+    </button>'''
+
+    sidebar = generate_sidebar(recent)  # Only recent in sidebar initially
     return template.substitute(content=content, sidebar=sidebar)
 
 
@@ -172,6 +193,8 @@ def main():
     parser = argparse.ArgumentParser(description="Render org digests to HTML")
     parser.add_argument("files", nargs="+", help="Org files to render")
     parser.add_argument("-o", "--output", help="Output HTML file")
+    parser.add_argument("-d", "--days", type=int, default=7,
+                        help="Days to show initially (default: 7)")
     args = parser.parse_args()
 
     digests = []
@@ -188,7 +211,7 @@ def main():
 
     digests.sort(key=lambda d: d.get("date", ""), reverse=True)
 
-    html = render_page(digests)
+    html = render_page(digests, recent_days=args.days)
 
     if args.output:
         Path(args.output).write_text(html)
