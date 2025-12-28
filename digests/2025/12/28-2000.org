@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2025-12-28 20:00:00 UT UTC
+#+DATE: 2025-12-28T20:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Thermal throttling, pixelation fails, C10K nostalgia, fat cells fight cancer, and HN gets prime treatment
+
+* Highlights
+- MacThrottle: Finally know when your Mac is cooking itself
+- Pixelation is not redaction: dictionary attacks still work
+- C10K problem: ancient wisdom for modern servers
+- Fat cells eating cancer: CRISPR metabolic warfare
+- Prime News: HN filtered through mathematical elegance
+
+* Stories
+
+** Building a macOS app to know when my Mac is thermal throttling :macos:hardware:swift:
+:PROPERTIES:
+:ID:       46410402
+:URL:      https://stanislas.blog/2025/12/macos-thermal-throttling-app/
+:HN_URL:   https://news.ycombinator.com/item?id=46410402
+:POINTS:   141
+:COMMENTS: 66
+:BY:       angristan
+:END:
+
+*** TLDR
+Developer built MacThrottle, a menu bar app that monitors thermal state in real-time using Darwin notifications and SMC temperature reads. It shows CPU temp, fan speed graphs, and alerts when thermal pressure changes from nominal to heavy.
+
+*** Take
+Apple prioritizes whisper-quiet fans over actual performance, so now we need third-party apps to tell us our expensive laptop is silently screaming.
+
+*** Comments
+
+**** tombert
+:PROPERTIES:
+:COMMENT_ID: 46410501
+:END:
+I had the 2019 Macbook Pro i9, so I think a function to determine thermal throttling could be written very simply: function isThermalThrottling() { return true; }
+
+**** ksec
+:PROPERTIES:
+:COMMENT_ID: 46410602
+:END:
+I really wish Apple uses Vapour Chamber cooling for next MacBook Air M5. On my MacBook Pro, I have come to the conclusion that Apple priorities low noise level over heat dissipation.
+
+**** Bad_Initialism
+:PROPERTIES:
+:COMMENT_ID: 46410703
+:END:
+It won't run on a MacBook Air M1 running Sonoma. Only Tahoe. Come along with me! We'll destroy the planet so fast that we'll all be cinders before you know it.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+开发一个macOS应用来检测Mac是否在热降频
+***** TLDR
+开发者创建了MacThrottle，一个使用Darwin通知和SMC温度读取实时监控热状态的菜单栏应用。它显示CPU温度、风扇速度图表，并在热压力从正常变为严重时发出警报。
+***** Take
+苹果把安静的风扇看得比性能还重要，所以现在我们需要第三方应用来告诉我们昂贵的笔记本在默默尖叫。
+***** Comments
+- 我有2019款i9 MacBook Pro，判断是否热降频的函数可以很简单：function isThermalThrottling() { return true; }
+- 我真希望苹果在下一代MacBook Air M5上使用均热板散热。在我的MacBook Pro上，我得出结论：苹果把低噪音优先于散热。
+- 它无法在运行Sonoma的MacBook Air M1上运行。只能在Tahoe上运行。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Macがサーマルスロットリングしているか確認するmacOSアプリを作った
+***** TLDR
+開発者がMacThrottleを作成。Darwin通知とSMC温度読み取りを使用してリアルタイムで熱状態を監視するメニューバーアプリ。CPU温度、ファン速度のグラフを表示し、熱圧力が変化すると警告。
+***** Take
+Appleは静かなファンを性能より優先するので、高価なラップトップが静かに悲鳴を上げていることを知るためにサードパーティアプリが必要。
+***** Comments
+- 2019年のi9 MacBook Proを持っていたので、サーマルスロットリングを判定する関数は簡単に書ける：function isThermalThrottling() { return true; }
+- 次のMacBook Air M5にはベイパーチャンバー冷却を使ってほしい。MacBook Proでは、Appleは放熱より低騒音を優先していると結論づけた。
+- Sonoma搭載のMacBook Air M1では動かない。Tahoeのみ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Mac이 서멀 스로틀링 중인지 알려주는 macOS 앱 만들기
+***** TLDR
+개발자가 MacThrottle을 만들었다. Darwin 알림과 SMC 온도 읽기를 사용해 실시간으로 열 상태를 모니터링하는 메뉴 바 앱이다. CPU 온도, 팬 속도 그래프를 보여주고 열 압력이 변할 때 알림을 준다.
+***** Take
+애플은 실제 성능보다 조용한 팬을 우선시해서, 이제 비싼 노트북이 조용히 비명을 지르고 있다는 걸 알려면 서드파티 앱이 필요하다.
+***** Comments
+- 2019년형 i9 맥북 프로를 썼는데, 서멀 스로틀링 판단 함수는 간단히 쓸 수 있다: function isThermalThrottling() { return true; }
+- 애플이 다음 맥북 에어 M5에 베이퍼 챔버 쿨링을 썼으면 좋겠다. 내 맥북 프로에서 애플은 방열보다 저소음을 우선한다고 결론 내렸다.
+- Sonoma 탑재 맥북 에어 M1에서는 안 돌아간다. Tahoe만 가능.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Creando una app de macOS para saber cuándo mi Mac tiene throttling térmico
+***** TLDR
+Un desarrollador creó MacThrottle, una app de barra de menú que monitorea el estado térmico en tiempo real usando notificaciones Darwin y lecturas SMC. Muestra gráficos de temperatura de CPU, velocidad del ventilador y alerta cuando la presión térmica cambia.
+***** Take
+Apple prioriza ventiladores silenciosos sobre el rendimiento real, así que ahora necesitamos apps de terceros para saber que nuestra costosa laptop está gritando en silencio.
+***** Comments
+- Tenía el MacBook Pro i9 de 2019, así que la función para determinar el throttling térmico se puede escribir muy simple: function isThermalThrottling() { return true; }
+- Ojalá Apple use enfriamiento por cámara de vapor en el próximo MacBook Air M5. En mi MacBook Pro, concluí que Apple prioriza el bajo ruido sobre la disipación de calor.
+- No funciona en un MacBook Air M1 con Sonoma. Solo Tahoe.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Eine macOS-App bauen, um zu wissen, wann mein Mac thermisch drosselt
+***** TLDR
+Entwickler hat MacThrottle gebaut, eine Menüleisten-App, die den Wärmezustand in Echtzeit mit Darwin-Benachrichtigungen und SMC-Temperaturauslesungen überwacht. Sie zeigt CPU-Temperatur, Lüftergeschwindigkeits-Graphen und warnt bei Wärmedruckänderungen.
+***** Take
+Apple priorisiert flüsterleise Lüfter über tatsächliche Leistung, also brauchen wir jetzt Drittanbieter-Apps, um zu erfahren, dass unser teures Laptop still schreit.
+***** Comments
+- Ich hatte das 2019er MacBook Pro i9, also kann die Funktion zur Bestimmung von Thermal Throttling ganz einfach geschrieben werden: function isThermalThrottling() { return true; }
+- Ich wünschte, Apple würde Vapor-Chamber-Kühlung für das nächste MacBook Air M5 verwenden. Bei meinem MacBook Pro kam ich zum Schluss, dass Apple geringe Lautstärke über Wärmeableitung priorisiert.
+- Läuft nicht auf einem MacBook Air M1 mit Sonoma. Nur Tahoe.
+** Never Use Pixelation to Hide Sensitive Text (2014) :security:privacy:images:
+:PROPERTIES:
+:ID:       46345412
+:URL:      https://dheera.net/posts/20140725-why-you-should-never-use-pixelation/
+:HN_URL:   https://news.ycombinator.com/item?id=46345412
+:POINTS:   73
+:COMMENTS: 22
+:BY:       basilikum
+:END:
+
+*** TLDR
+Pixelation doesn't eliminate information, just reduces it. Attackers can run dictionary attacks by generating pixelated versions of candidate texts and comparing brightness vectors. The fix: use solid color blocks instead.
+
+*** Take
+Every corporate redaction team: 'let's blur the SSN.' Every security researcher: 'bet.'
+
+*** Comments
+
+**** petters
+:PROPERTIES:
+:COMMENT_ID: 46345501
+:END:
+Paedophile Used 'Swirl' Effect To Hide. How Interpol 'Unswirled' Him.
+
+**** KronisLV
+:PROPERTIES:
+:COMMENT_ID: 46345602
+:END:
+To make it more fun for the maths nerds and to keep them guessing, replace the underlying contents with mostly random garbage and then pixelize that.
+
+**** vunderba
+:PROPERTIES:
+:COMMENT_ID: 46345703
+:END:
+Good article - one takeaway is that any redaction process which follows a fixed algorithmic sequence is potentially vulnerable to a dictionary attack.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+永远不要用马赛克隐藏敏感文字（2014）
+***** TLDR
+马赛克不能消除信息，只是减少信息。攻击者可以通过生成候选文本的马赛克版本并比较亮度向量来进行字典攻击。解决方案：使用纯色块代替。
+***** Take
+每个企业的编辑团队：'我们把社保号码模糊一下。' 每个安全研究员：'赌你的。'
+***** Comments
+- 恋童癖者使用'漩涡'效果隐藏。国际刑警组织如何'反漩涡'他。
+- 为了让数学迷更有趣，也让他们猜测，把底层内容替换成随机垃圾然后再打马赛克。
+- 好文章 - 一个要点是任何遵循固定算法序列的编辑过程都可能受到字典攻击。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+機密テキストを隠すのにモザイクを使ってはいけない（2014）
+***** TLDR
+モザイクは情報を消さず、減らすだけ。攻撃者は候補テキストのモザイク版を生成し明るさベクトルを比較する辞書攻撃ができる。解決策：代わりに単色ブロックを使う。
+***** Take
+企業の墨消しチーム：『SSNをぼかそう』。セキュリティ研究者：『賭ける。』
+***** Comments
+- 小児性愛者が「渦巻き」効果で隠した。インターポールがどう「渦巻きを戻した」か。
+- 数学オタクをより楽しませ推測させるには、下の内容をほぼランダムなゴミに置き換えてからモザイクをかける。
+- 良い記事 - 重要な点は、固定のアルゴリズム手順に従う墨消し処理は辞書攻撃に脆弱だということ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+민감한 텍스트를 숨기는 데 픽셀화를 절대 사용하지 마라 (2014)
+***** TLDR
+픽셀화는 정보를 제거하지 않고 줄일 뿐이다. 공격자는 후보 텍스트의 픽셀화 버전을 생성하고 밝기 벡터를 비교해 사전 공격을 할 수 있다. 해결책: 단색 블록 사용.
+***** Take
+모든 기업 편집팀: '주민번호 흐리게 하자.' 모든 보안 연구원: '걸어봐.'
+***** Comments
+- 소아성애자가 '소용돌이' 효과로 숨었다. 인터폴이 어떻게 '소용돌이를 풀었는지'.
+- 수학 덕후들을 더 재미있게 하고 추측하게 하려면, 밑의 내용을 대부분 랜덤 쓰레기로 바꾸고 픽셀화하라.
+- 좋은 글 - 핵심은 고정된 알고리즘 순서를 따르는 편집 과정은 사전 공격에 취약하다는 것.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Nunca uses pixelación para ocultar texto sensible (2014)
+***** TLDR
+La pixelación no elimina información, solo la reduce. Los atacantes pueden ejecutar ataques de diccionario generando versiones pixeladas de textos candidatos y comparando vectores de brillo. La solución: usar bloques de color sólido.
+***** Take
+Cada equipo de redacción corporativa: 'vamos a difuminar el SSN.' Cada investigador de seguridad: 'apuesto.'
+***** Comments
+- Un pedófilo usó el efecto 'remolino' para esconderse. Cómo Interpol lo 'desenrolló'.
+- Para hacer más divertido para los nerds matemáticos y mantenerlos adivinando, reemplaza el contenido subyacente con basura mayormente aleatoria y luego pixeliza eso.
+- Buen artículo - una conclusión es que cualquier proceso de redacción que siga una secuencia algorítmica fija es potencialmente vulnerable a un ataque de diccionario.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Verwende niemals Pixelung, um sensiblen Text zu verbergen (2014)
+***** TLDR
+Pixelung eliminiert Informationen nicht, sie reduziert sie nur. Angreifer können Wörterbuchangriffe durchführen, indem sie pixelierte Versionen von Kandidatentexten generieren und Helligkeitsvektoren vergleichen. Die Lösung: einfarbige Blöcke verwenden.
+***** Take
+Jedes Unternehmens-Schwärzungsteam: 'Lass uns die SSN verwischen.' Jeder Sicherheitsforscher: 'Wette.'
+***** Comments
+- Pädophiler nutzte 'Wirbel'-Effekt zum Verstecken. Wie Interpol ihn 'entwirbelte'.
+- Um es für Mathe-Nerds interessanter zu machen und sie raten zu lassen, ersetze den zugrundeliegenden Inhalt mit meist zufälligem Müll und pixele dann das.
+- Guter Artikel - eine Erkenntnis ist, dass jeder Schwärzungsprozess, der einer festen algorithmischen Sequenz folgt, potenziell anfällig für Wörterbuchangriffe ist.
+** We "solved" C10K years ago yet we keep reinventing it (2003) :networking:systems:history:
+:PROPERTIES:
+:ID:       46387464
+:URL:      https://www.kegel.com/c10k.html
+:HN_URL:   https://news.ycombinator.com/item?id=46387464
+:POINTS:   69
+:COMMENTS: 36
+:BY:       birdculture
+:END:
+
+*** TLDR
+Classic 2003 document on handling 10,000 concurrent connections. Covers non-blocking I/O, event notification models (select, poll, epoll, kqueue), threading strategies, and zero-copy networking. Still relevant because developers keep forgetting this exists.
+
+*** Take
+We solved this 20 years ago, then someone said 'let's use Node.js' and here we are reinventing async I/O with extra steps.
+
+*** Comments
+
+**** hoppp
+:PROPERTIES:
+:COMMENT_ID: 46387501
+:END:
+We solved it 2 decades ago but then decided to use javascript on the server ...
+
+**** trueismywork
+:PROPERTIES:
+:COMMENT_ID: 46387602
+:END:
+With nginx and 256 core Epycs, most single servers can easily do 200k requests per sec. Very few companies have more needs
+
+**** alwa
+:PROPERTIES:
+:COMMENT_ID: 46387703
+:END:
+Apparently this refers to making a web server able to serve 10,000 clients simultaneously.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+我们多年前就"解决"了C10K问题，但我们一直在重新发明它（2003）
+***** TLDR
+2003年关于处理10,000并发连接的经典文档。涵盖非阻塞I/O、事件通知模型（select、poll、epoll、kqueue）、线程策略和零拷贝网络。仍然相关，因为开发者一直忘记这个存在。
+***** Take
+我们20年前就解决了这个问题，然后有人说'我们用Node.js吧'，于是我们又在用额外的步骤重新发明异步I/O。
+***** Comments
+- 我们20年前就解决了，但后来决定在服务器上用JavaScript...
+- 有了nginx和256核的Epyc，大多数单服务器可以轻松做到每秒20万请求。很少有公司需要更多
+- 显然这指的是让Web服务器能同时服务10,000个客户端。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+C10K問題は何年も前に"解決"したのに、私たちは再発明し続けている（2003）
+***** TLDR
+10,000同時接続処理に関する2003年の古典的文書。ノンブロッキングI/O、イベント通知モデル（select、poll、epoll、kqueue）、スレッド戦略、ゼロコピーネットワーキングをカバー。開発者がこの存在を忘れ続けるのでまだ関連性あり。
+***** Take
+20年前に解決したのに、誰かが『Node.jsを使おう』と言って、余分なステップで非同期I/Oを再発明している。
+***** Comments
+- 20年前に解決したのに、サーバーでJavaScriptを使うことにした...
+- nginxと256コアのEpycがあれば、ほとんどの単一サーバーで簡単に毎秒20万リクエストできる。それ以上必要な会社はほとんどない
+- どうやらこれはWebサーバーが同時に10,000クライアントにサービスできるようにすることを指しているらしい。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+우리는 수년 전에 C10K를 "해결"했지만 계속 재발명하고 있다 (2003)
+***** TLDR
+10,000 동시 연결 처리에 관한 2003년 고전 문서. 논블로킹 I/O, 이벤트 알림 모델(select, poll, epoll, kqueue), 스레딩 전략, 제로카피 네트워킹을 다룬다. 개발자들이 이게 있다는 걸 계속 잊어서 아직 관련성이 있다.
+***** Take
+20년 전에 해결했는데, 누군가 'Node.js 쓰자'고 해서 여기서 추가 단계로 비동기 I/O를 재발명하고 있다.
+***** Comments
+- 20년 전에 해결했는데 서버에서 자바스크립트를 쓰기로 했다...
+- nginx와 256코어 Epyc으로 대부분의 단일 서버가 초당 20만 요청을 쉽게 처리한다. 그 이상 필요한 회사는 거의 없다
+- 이건 웹 서버가 동시에 10,000 클라이언트를 서비스할 수 있게 하는 것을 가리키는 것 같다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+"Resolvimos" C10K hace años pero seguimos reinventándolo (2003)
+***** TLDR
+Documento clásico de 2003 sobre manejar 10,000 conexiones concurrentes. Cubre I/O no bloqueante, modelos de notificación de eventos (select, poll, epoll, kqueue), estrategias de threading y redes de copia cero. Sigue siendo relevante porque los desarrolladores siguen olvidando que existe.
+***** Take
+Resolvimos esto hace 20 años, luego alguien dijo 'usemos Node.js' y aquí estamos reinventando I/O asíncrono con pasos extra.
+***** Comments
+- Lo resolvimos hace 2 décadas pero luego decidimos usar javascript en el servidor...
+- Con nginx y Epycs de 256 núcleos, la mayoría de servidores individuales pueden hacer fácilmente 200k peticiones por segundo. Muy pocas empresas necesitan más
+- Aparentemente esto se refiere a hacer que un servidor web pueda servir 10,000 clientes simultáneamente.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Wir haben C10K vor Jahren "gelöst", aber wir erfinden es immer wieder neu (2003)
+***** TLDR
+Klassisches Dokument von 2003 über die Handhabung von 10.000 gleichzeitigen Verbindungen. Behandelt nicht-blockierende I/O, Event-Benachrichtigungsmodelle (select, poll, epoll, kqueue), Threading-Strategien und Zero-Copy-Netzwerke. Immer noch relevant, weil Entwickler vergessen, dass es existiert.
+***** Take
+Wir haben das vor 20 Jahren gelöst, dann sagte jemand 'lass uns Node.js benutzen' und hier sind wir und erfinden async I/O mit zusätzlichen Schritten neu.
+***** Comments
+- Wir haben es vor 2 Jahrzehnten gelöst, aber dann entschieden, JavaScript auf dem Server zu verwenden...
+- Mit nginx und 256-Kern-Epycs können die meisten einzelnen Server leicht 200k Anfragen pro Sekunde machen. Sehr wenige Unternehmen brauchen mehr
+- Offenbar bezieht sich das darauf, einen Webserver in die Lage zu versetzen, 10.000 Clients gleichzeitig zu bedienen.
+** Hungry Fat Cells Could Someday Starve Cancer :cancer:crispr:biology:
+:PROPERTIES:
+:ID:       46409928
+:URL:      https://www.ucsf.edu/news/2025/01/429411/how-hungry-fat-cells-could-someday-starve-cancer-death
+:HN_URL:   https://news.ycombinator.com/item?id=46409928
+:POINTS:   116
+:COMMENTS: 28
+:BY:       mrtnmrtn
+:END:
+
+*** TLDR
+UCSF researchers used CRISPR to transform white fat cells into calorie-hungry 'beige' fat cells that outcompete tumors for nutrients. Worked against breast, colon, pancreatic, and prostate cancers. Fat cells are easy to harvest and don't spread like cancer.
+
+*** Take
+Finally, my body fat has a job other than storing regret. The metabolic warfare approach is elegant - instead of poisoning cancer, just hire hungrier cells to eat its lunch.
+
+*** Comments
+
+**** sejje
+:PROPERTIES:
+:COMMENT_ID: 46409980
+:END:
+Nguyen moved to UT Austin to start his own lab in January 2024 but passed away suddenly in November before he could finish the final experiments. The paper, of which he is the first author, is dedicated to him.
+
+**** mettamage
+:PROPERTIES:
+:COMMENT_ID: 46410001
+:END:
+For the curious among us, here are articles related to cold exposure in mice and cancer. I briefly skimmed it but seems like a somewhat plausible idea in the realm of: if it doesn't hurt you, it can perhaps benefit you.
+
+**** edwardtay
+:PROPERTIES:
+:COMMENT_ID: 46410050
+:END:
+The metabolic competition angle is fascinating - it's elegant how this leverages the body's own resource allocation rather than trying to poison cancer cells directly.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+饥饿的脂肪细胞有朝一日可能饿死癌症
+***** TLDR
+UCSF研究人员使用CRISPR将白色脂肪细胞转化为渴望卡路里的'米色'脂肪细胞，与肿瘤竞争营养。对乳腺癌、结肠癌、胰腺癌和前列腺癌有效。脂肪细胞容易获取且不会像癌症那样扩散。
+***** Take
+终于，我的体脂除了储存遗憾之外有了工作。代谢战争的方法很优雅 - 不是毒杀癌症，而是雇佣更饥饿的细胞来抢它的午餐。
+***** Comments
+- Nguyen于2024年1月搬到德克萨斯大学奥斯汀分校开设自己的实验室，但在11月突然去世，未能完成最后的实验。他是论文的第一作者，论文献给了他。
+- 对于好奇的人，这里有关于小鼠冷暴露和癌症的相关文章。我简单浏览了一下，似乎是一个有点合理的想法：如果不伤害你，也许能让你受益。
+- 代谢竞争的角度很迷人 - 利用身体自身的资源分配而不是直接毒杀癌细胞，这种方式很优雅。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+空腹の脂肪細胞がいつか癌を餓死させるかもしれない
+***** TLDR
+UCSF研究者がCRISPRで白色脂肪細胞をカロリーに飢えた『ベージュ』脂肪細胞に変換し、腫瘍と栄養を奪い合わせた。乳がん、大腸がん、膵臓がん、前立腺がんに効果あり。脂肪細胞は採取しやすく、癌のように転移しない。
+***** Take
+やっと私の体脂肪に後悔を溜める以外の仕事ができた。代謝戦争アプローチはエレガント - 癌を毒殺する代わりに、もっと腹を空かせた細胞を雇って昼飯を奪う。
+***** Comments
+- Nguyenは2024年1月にUT Austinで自分のラボを始めたが、最終実験を終える前の11月に急逝。彼が筆頭著者の論文は彼に捧げられている。
+- 好奇心旺盛な人のために、マウスの冷暴露と癌に関連する記事がある。ざっと読んだが、害がなければ利益があるかもしれない、という範囲では妥当なアイデアに思える。
+- 代謝競争の視点は魅力的 - 癌細胞を直接毒殺しようとせず、体自身の資源配分を活用するのはエレガント。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+배고픈 지방세포가 언젠가 암을 굶겨 죽일 수 있다
+***** TLDR
+UCSF 연구자들이 CRISPR로 백색 지방세포를 칼로리에 굶주린 '베이지' 지방세포로 변환해 종양과 영양분을 놓고 경쟁시켰다. 유방암, 대장암, 췌장암, 전립선암에 효과가 있었다. 지방세포는 채취가 쉽고 암처럼 퍼지지 않는다.
+***** Take
+드디어 내 체지방이 후회 저장 외에 할 일이 생겼다. 대사 전쟁 접근법이 우아하다 - 암을 독살하는 대신 더 배고픈 세포를 고용해 점심을 빼앗는다.
+***** Comments
+- Nguyen은 2024년 1월 UT Austin에서 자신의 연구실을 시작했지만 최종 실험을 마치기 전인 11월에 갑자기 세상을 떠났다. 그가 제1저자인 논문은 그에게 헌정되었다.
+- 호기심 많은 분들을 위해, 쥐의 냉기 노출과 암 관련 기사가 있다. 대충 훑어봤는데 해가 되지 않으면 이득이 될 수도 있다는 범위에서 그럴듯한 아이디어 같다.
+- 대사 경쟁 관점이 매력적이다 - 암세포를 직접 독살하려 하지 않고 몸 자체의 자원 배분을 활용하는 것이 우아하다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Las células de grasa hambrientas podrían algún día matar de hambre al cáncer
+***** TLDR
+Investigadores de UCSF usaron CRISPR para transformar células de grasa blanca en células de grasa 'beige' hambrientas de calorías que compiten con los tumores por nutrientes. Funcionó contra cáncer de mama, colon, páncreas y próstata. Las células de grasa son fáciles de obtener y no se propagan como el cáncer.
+***** Take
+Finalmente, mi grasa corporal tiene un trabajo además de almacenar arrepentimiento. El enfoque de guerra metabólica es elegante - en lugar de envenenar el cáncer, contratas células más hambrientas para robarle el almuerzo.
+***** Comments
+- Nguyen se mudó a UT Austin para iniciar su propio laboratorio en enero de 2024 pero falleció repentinamente en noviembre antes de poder terminar los experimentos finales. El artículo, del cual es primer autor, está dedicado a él.
+- Para los curiosos, aquí hay artículos relacionados con la exposición al frío en ratones y el cáncer. Lo hojeé brevemente pero parece una idea algo plausible en el ámbito de: si no te daña, quizás puede beneficiarte.
+- El ángulo de competencia metabólica es fascinante - es elegante cómo aprovecha la asignación de recursos del propio cuerpo en lugar de intentar envenenar las células cancerosas directamente.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Hungrige Fettzellen könnten eines Tages Krebs aushungern
+***** TLDR
+UCSF-Forscher nutzten CRISPR, um weiße Fettzellen in kalorienhungrige 'beige' Fettzellen umzuwandeln, die mit Tumoren um Nährstoffe konkurrieren. Funktionierte gegen Brust-, Darm-, Bauchspeicheldrüsen- und Prostatakrebs. Fettzellen sind leicht zu gewinnen und verbreiten sich nicht wie Krebs.
+***** Take
+Endlich hat mein Körperfett einen Job außer Reue zu speichern. Der metabolische Kriegsansatz ist elegant - statt Krebs zu vergiften, stellt man hungrigere Zellen ein, die ihm das Mittagessen stehlen.
+***** Comments
+- Nguyen zog im Januar 2024 nach UT Austin, um sein eigenes Labor zu gründen, starb aber plötzlich im November, bevor er die letzten Experimente abschließen konnte. Das Paper, dessen Erstautor er ist, ist ihm gewidmet.
+- Für die Neugierigen unter uns, hier sind Artikel über Kälteexposition bei Mäusen und Krebs. Ich habe sie kurz überflogen, aber es scheint eine etwas plausible Idee zu sein im Sinne von: wenn es dir nicht schadet, kann es dir vielleicht nützen.
+- Der metabolische Wettbewerbswinkel ist faszinierend - es ist elegant, wie dies die körpereigene Ressourcenallokation nutzt, anstatt Krebszellen direkt zu vergiften.
+** A "Prime" View of HN :hn:math:webdev:
+:PROPERTIES:
+:ID:       46412549
+:URL:      https://dosaygo-studio.github.io/prime-news/index.html
+:HN_URL:   https://news.ycombinator.com/item?id=46412549
+:POINTS:   35
+:COMMENTS: 22
+:BY:       keepamovin
+:END:
+
+*** TLDR
+Web art project that filters HN through prime numbers. Shows stories with prime number IDs, supports filtering by Mersenne primes, Fermat primes, palindromic primes. Uses sqlite3.wasm client-side with 2.7M prime items packed into ~500MB sharded SQLite.
+
+*** Take
+Someone looked at HN and thought 'what if we made this more mathematically pretentious?' Only 7 Mersenne primes exist in all of HN's history. The intersection of number theory and orange websites is smaller than you'd think.
+
+*** Comments
+
+**** keepamovin
+:PROPERTIES:
+:COMMENT_ID: 46412601
+:END:
+This 'web art' project views HN through primes, not time or score. Tech: BigQuery dataset -> Node.js ETL -> 2.7M prime items packed into sharded SQLite (~500MB) -> queried client-side via sqlite3.wasm. No server.
+
+**** smlacy
+:PROPERTIES:
+:COMMENT_ID: 46412702
+:END:
+I don't get it. What am I looking at?
+
+**** thih9
+:PROPERTIES:
+:COMMENT_ID: 46412803
+:END:
+Last page with most recent content is, at the moment: https://dosaygo-studio.github.io/prime-news/index.html?p=931
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+HN的"质数"视角
+***** TLDR
+通过质数过滤HN的网页艺术项目。显示质数ID的故事，支持按梅森素数、费马素数、回文素数过滤。使用sqlite3.wasm客户端查询，270万质数项目打包成约500MB的分片SQLite。
+***** Take
+有人看着HN想'如果我们让它更有数学优越感会怎样？'整个HN历史中只存在7个梅森素数。数论和橙色网站的交集比你想象的要小。
+***** Comments
+- 这个'网页艺术'项目通过质数而非时间或分数来查看HN。技术：BigQuery数据集 -> Node.js ETL -> 270万质数项目打包成分片SQLite（约500MB）-> 通过sqlite3.wasm客户端查询。无服务器。
+- 我不明白。我在看什么？
+- 目前最新内容的最后一页是：https://dosaygo-studio.github.io/prime-news/index.html?p=931
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+HNの「素数」ビュー
+***** TLDR
+素数を通してHNをフィルタリングするウェブアートプロジェクト。素数IDのストーリーを表示し、メルセンヌ素数、フェルマー素数、回文素数でのフィルタリングをサポート。sqlite3.wasmをクライアントサイドで使用し、270万の素数アイテムを約500MBのシャードSQLiteに格納。
+***** Take
+誰かがHNを見て『もっと数学的に気取らせたらどうだろう？』と思った。HNの全歴史で存在するメルセンヌ素数はたった7つ。数論とオレンジ色のウェブサイトの交差点は思ったより小さい。
+***** Comments
+- この『ウェブアート』プロジェクトは時間やスコアではなく素数を通してHNを見る。技術：BigQueryデータセット -> Node.js ETL -> 270万素数アイテムをシャードSQLite（約500MB）にパック -> sqlite3.wasmでクライアントサイドクエリ。サーバーなし。
+- わからない。何を見ているの？
+- 現時点で最新コンテンツの最後のページ：https://dosaygo-studio.github.io/prime-news/index.html?p=931
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+HN의 "소수" 뷰
+***** TLDR
+소수를 통해 HN을 필터링하는 웹 아트 프로젝트. 소수 ID 스토리를 보여주고, 메르센 소수, 페르마 소수, 회문 소수 필터링을 지원. sqlite3.wasm을 클라이언트 사이드에서 사용하며 270만 소수 항목을 약 500MB 샤드 SQLite에 담았다.
+***** Take
+누군가 HN을 보고 '수학적으로 더 잘난 척하면 어떨까?'라고 생각했다. HN 전체 역사에서 메르센 소수는 단 7개뿐. 정수론과 주황색 웹사이트의 교집합은 생각보다 작다.
+***** Comments
+- 이 '웹 아트' 프로젝트는 시간이나 점수가 아닌 소수를 통해 HN을 본다. 기술: BigQuery 데이터셋 -> Node.js ETL -> 270만 소수 항목을 샤드 SQLite(약 500MB)에 패킹 -> sqlite3.wasm으로 클라이언트 사이드 쿼리. 서버 없음.
+- 이해가 안 된다. 뭘 보고 있는 거지?
+- 현재 최신 콘텐츠가 있는 마지막 페이지: https://dosaygo-studio.github.io/prime-news/index.html?p=931
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Una vista "Prima" de HN
+***** TLDR
+Proyecto de arte web que filtra HN a través de números primos. Muestra historias con IDs primos, soporta filtrado por primos de Mersenne, primos de Fermat, primos palindrómicos. Usa sqlite3.wasm del lado del cliente con 2.7M de elementos primos empaquetados en ~500MB de SQLite fragmentado.
+***** Take
+Alguien miró HN y pensó '¿qué tal si lo hacemos más matemáticamente pretencioso?' Solo existen 7 primos de Mersenne en toda la historia de HN. La intersección de teoría de números y sitios web naranjas es más pequeña de lo que pensarías.
+***** Comments
+- Este proyecto de 'arte web' ve HN a través de primos, no tiempo o puntuación. Tech: dataset BigQuery -> ETL Node.js -> 2.7M elementos primos empaquetados en SQLite fragmentado (~500MB) -> consultado del lado del cliente via sqlite3.wasm. Sin servidor.
+- No lo entiendo. ¿Qué estoy viendo?
+- La última página con el contenido más reciente es, por el momento: https://dosaygo-studio.github.io/prime-news/index.html?p=931
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Eine "Primzahl"-Ansicht von HN
+***** TLDR
+Webkunst-Projekt, das HN durch Primzahlen filtert. Zeigt Stories mit Primzahl-IDs, unterstützt Filterung nach Mersenne-Primzahlen, Fermat-Primzahlen, palindromischen Primzahlen. Nutzt sqlite3.wasm clientseitig mit 2,7M Primzahl-Items in ~500MB sharded SQLite gepackt.
+***** Take
+Jemand schaute sich HN an und dachte 'was wenn wir das mathematisch prätentiöser machen?' In der gesamten HN-Geschichte existieren nur 7 Mersenne-Primzahlen. Die Schnittmenge von Zahlentheorie und orangefarbenen Websites ist kleiner als man denkt.
+***** Comments
+- Dieses 'Webkunst'-Projekt betrachtet HN durch Primzahlen, nicht Zeit oder Score. Tech: BigQuery-Dataset -> Node.js ETL -> 2,7M Primzahl-Items in sharded SQLite (~500MB) gepackt -> clientseitig via sqlite3.wasm abgefragt. Kein Server.
+- Ich verstehe es nicht. Was schaue ich mir an?
+- Die letzte Seite mit dem neuesten Inhalt ist derzeit: https://dosaygo-studio.github.io/prime-news/index.html?p=931
