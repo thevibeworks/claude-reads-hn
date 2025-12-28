@@ -26,26 +26,42 @@ from org2json import parse_org, digest_to_dict
 TEMPLATE_PATH = Path(__file__).parent / "template.html"
 
 # Canonical anchor format - SINGLE SOURCE OF TRUTH
-ANCHOR_PREFIX = "s"  # Story anchors: #s46268854
+# Format: s{story_id}-{MMDDHH} e.g., s46268854-122711
+# This ensures uniqueness when same story appears in multiple digests (REVISIT)
 
 
-def story_anchor(story_id) -> str:
-    """Generate canonical story anchor ID. Returns empty string if invalid.
+def story_anchor(story_id, digest_date: str = "") -> str:
+    """Generate unique story anchor: s{id}-{MMDDHH}
 
-    Format: s{numeric_id}
-    Examples: s46268854, s12345
-    Invalid: s, s0, s-1, sabc
+    Args:
+        story_id: HN story ID (int or str)
+        digest_date: ISO date like "2025-12-27T11:00:00Z"
+
+    Returns:
+        Anchor like "s46268854-122711" or empty if invalid
     """
     if story_id is None:
         return ""
-    # Convert to int to validate numeric
     try:
         sid = int(story_id)
         if sid <= 0:
             return ""
-        return f"{ANCHOR_PREFIX}{sid}"
     except (ValueError, TypeError):
         return ""
+
+    # Extract MMDDHH from digest date
+    suffix = ""
+    if digest_date and len(digest_date) >= 13:
+        # "2025-12-27T11:00:00Z" -> "122711"
+        try:
+            month = digest_date[5:7]
+            day = digest_date[8:10]
+            hour = digest_date[11:13]
+            suffix = f"-{month}{day}{hour}"
+        except (IndexError, ValueError):
+            pass
+
+    return f"s{sid}{suffix}"
 
 
 def load_template() -> Template:
@@ -53,10 +69,10 @@ def load_template() -> Template:
     return Template(TEMPLATE_PATH.read_text(encoding="utf-8"))
 
 
-def story_to_html(story: dict) -> str:
+def story_to_html(story: dict, digest_date: str = "") -> str:
     """Render a story to HTML."""
     raw_id = story.get("id")
-    anchor = story_anchor(raw_id)  # Validated anchor or empty
+    anchor = story_anchor(raw_id, digest_date)  # Unique anchor with date suffix
     title = escape(story.get("title", ""))
     url = escape(story.get("url", ""))
     hn_url = escape(story.get("hn_url", ""))
@@ -158,7 +174,7 @@ def digest_to_html(digest: dict) -> str:
     """Render a digest to HTML."""
     date = digest.get("date", "")
     vibe = escape(digest.get("vibe", ""))
-    stories_html = "\n".join(story_to_html(s) for s in digest.get("stories", []))
+    stories_html = "\n".join(story_to_html(s, date) for s in digest.get("stories", []))
 
     return f'''<section class="digest">
       <div class="digest-header">
@@ -175,13 +191,14 @@ def generate_sidebar(digests: list) -> str:
     current_date = None
 
     for digest in digests:
-        date = digest.get("date", "")[:10]
-        if date != current_date:
-            current_date = date
-            lines.append(f'      <div class="sidebar-date">{date}</div>')
+        digest_date = digest.get("date", "")
+        date_display = digest_date[:10]
+        if date_display != current_date:
+            current_date = date_display
+            lines.append(f'      <div class="sidebar-date">{date_display}</div>')
 
         for story in digest.get("stories", []):
-            anchor = story_anchor(story.get("id"))
+            anchor = story_anchor(story.get("id"), digest_date)
             if not anchor:  # Skip stories without valid anchors
                 continue
             title = escape(story.get("title", ""))[:40]
