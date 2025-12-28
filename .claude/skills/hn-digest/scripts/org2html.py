@@ -8,9 +8,9 @@
 Render org-mode HN digests to HTML.
 
 examples:
-  %(prog)s digests/*.org -o index.html                    # all digests
-  %(prog)s digests/*.org -o index.html -d 7               # last 7 days in index
-  %(prog)s digests/*.org -o index.html -d 7 -a archive.html  # split output
+  %(prog)s digests/*.org -o index.html                       # all digests
+  %(prog)s digests/*.org -o index.html -d 7                  # last 7 days only
+  %(prog)s digests/*.org -o index.html -d 7 -a archive.html  # split: recent + archive
 """
 
 import argparse
@@ -26,19 +26,19 @@ from org2json import parse_org, digest_to_dict
 TEMPLATE_PATH = Path(__file__).parent / "template.html"
 
 # Canonical anchor format - SINGLE SOURCE OF TRUTH
-# Format: s{story_id}-{MMDDHH} e.g., s46268854-122711
-# This ensures uniqueness when same story appears in multiple digests (REVISIT)
+# Format: s{story_id}-{MMDDHHMM} e.g., s46268854-12271100
+# MMDDHHMM required because multiple digests can exist in same hour (0240, 0259)
 
 
 def story_anchor(story_id, digest_date: str = "") -> str:
-    """Generate unique story anchor: s{id}-{MMDDHH}
+    """Generate unique story anchor: s{id}-{MMDDHHMM}
 
     Args:
         story_id: HN story ID (int or str)
         digest_date: ISO date like "2025-12-27T11:00:00Z"
 
     Returns:
-        Anchor like "s46268854-122711" or empty if invalid
+        Anchor like "s46268854-12271100" or empty if invalid
     """
     if story_id is None:
         return ""
@@ -49,15 +49,16 @@ def story_anchor(story_id, digest_date: str = "") -> str:
     except (ValueError, TypeError):
         return ""
 
-    # Extract MMDDHH from digest date
+    # Extract MMDDHHMM from digest date
     suffix = ""
-    if digest_date and len(digest_date) >= 13:
-        # "2025-12-27T11:00:00Z" -> "122711"
+    if digest_date and len(digest_date) >= 16:
+        # "2025-12-27T11:00:00Z" -> "12271100"
         try:
             month = digest_date[5:7]
             day = digest_date[8:10]
             hour = digest_date[11:13]
-            suffix = f"-{month}{day}{hour}"
+            minute = digest_date[14:16]
+            suffix = f"-{month}{day}{hour}{minute}"
         except (IndexError, ValueError):
             pass
 
@@ -249,17 +250,19 @@ def main():
 
     digests.sort(key=lambda d: d.get("date", ""), reverse=True)
 
-    if args.days > 0 and args.archive:
-        # Split mode: recent in index, older in archive
+    # Filter by days if specified
+    if args.days > 0:
         cutoff = (datetime.now(timezone.utc) - timedelta(days=args.days)).strftime("%Y-%m-%d")
         recent = [d for d in digests if d.get("date", "")[:10] >= cutoff]
         archive = [d for d in digests if d.get("date", "")[:10] < cutoff]
+    else:
+        recent = digests
+        archive = []
 
-        # Generate index with link to archive
+    if args.archive and archive:
+        # Split mode: recent in index, older in archive
         archive_name = Path(args.archive).name
         index_html = render_page(recent, archive_link=archive_name)
-
-        # Generate archive (no link back, or link to index)
         archive_html = render_page(archive, archive_link="index.html")
 
         if args.output:
@@ -269,11 +272,11 @@ def main():
         Path(args.archive).write_text(archive_html)
         print(f"Wrote {args.archive} ({len(archive)} digests)", file=sys.stderr)
     else:
-        # Single file mode
-        html = render_page(digests)
+        # Single file mode (filtered if -d specified)
+        html = render_page(recent)
         if args.output:
             Path(args.output).write_text(html)
-            print(f"Wrote {args.output} ({len(digests)} digests)", file=sys.stderr)
+            print(f"Wrote {args.output} ({len(recent)} digests)", file=sys.stderr)
         else:
             print(html)
 
