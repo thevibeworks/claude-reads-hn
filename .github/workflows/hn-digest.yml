@@ -304,33 +304,43 @@ jobs:
                - Title: catchy 5-8 word summary capturing today's chaos
                - Body: same content as digest file (highlights first!)
 
-            10. NOTIFY ALL CHANNELS (use https://thevibeworks.github.io/claude-reads-hn as the URL):
+            10. NOTIFY ALL CHANNELS:
+               BASE_URL: https://thevibeworks.github.io/claude-reads-hn
+               ANCHOR_FORMAT: #s{story_id} (e.g., #s46268854)
 
-               a) BARK (use mcp__barkme__notify):
-                  - title: your issue title
-                  - body: spiciest comment quote + story name
+               a) BARK (use mcp__barkme__notify) - one ping to wake human:
+                  - title: digest vibe (the catchy summary)
+                  - body: "5 stories curated" or spiciest take
                   - url: https://thevibeworks.github.io/claude-reads-hn
 
-               b) TELEGRAM (if TG_BOT_TOKEN is set, use HTML parse_mode):
-                  IMPORTANT: Escape HTML entities in highlights (< → &lt; > → &gt; & → &amp;)
+               b) TELEGRAM (if TG_BOT_TOKEN is set) - send EACH story separately:
+                  For each of the 5 stories, send one message:
+                  IMPORTANT: Escape HTML entities (< → &lt; > → &gt; & → &amp;)
+
                   curl -s -X POST "https://api.telegram.org/bot$TG_BOT_TOKEN/sendMessage" \
                     -H "Content-Type: application/json" \
                     -d '{
                       "chat_id": "'"$TG_CHANNEL_ID"'",
                       "parse_mode": "HTML",
                       "disable_web_page_preview": false,
-                      "text": "<b>📰 TITLE</b>\n\n• Highlight 1\n• Highlight 2\n• Highlight 3\n• Highlight 4\n• Highlight 5\n\n<a href=\"https://thevibeworks.github.io/claude-reads-hn\">Read full digest →</a>"
+                      "text": "<b>STORY_TITLE</b>\n\nTLDR_TEXT\n\n<i>Take: TAKE_TEXT</i>\n\n<a href=\"https://thevibeworks.github.io/claude-reads-hn#sSTORY_ID\">Read more →</a> | <a href=\"HN_URL\">HN</a>"
                     }'
 
-               c) DISCORD (if DISCORD_WEBHOOK_URL is set):
+                  This sends 5 messages total, one per story, each with direct anchor link.
+
+               c) DISCORD (if DISCORD_WEBHOOK_URL is set) - single rich embed:
+                  Build description with all 5 stories, each on its own line with anchor:
+                  "• [Title1](BASE_URL#s{id1}) - tldr1\n• [Title2](BASE_URL#s{id2}) - tldr2\n..."
+
                   curl -s -X POST "$DISCORD_WEBHOOK_URL" \
                     -H "Content-Type: application/json" \
                     -d '{
                       "embeds": [{
-                        "title": "📰 TITLE",
-                        "description": "• Highlight 1\n• Highlight 2\n• Highlight 3\n• Highlight 4\n• Highlight 5",
+                        "title": "📰 DIGEST_VIBE",
+                        "description": "• [Story1](https://thevibeworks.github.io/claude-reads-hn#s{id}) - tldr\n• [Story2](...) - tldr\n...",
                         "url": "https://thevibeworks.github.io/claude-reads-hn",
-                        "color": 16737280
+                        "color": 16737280,
+                        "footer": {"text": "Claude Reads HN • 4x daily"}
                       }]
                     }'
 
@@ -339,9 +349,14 @@ jobs:
             - TLDR must reflect ACTUAL content you read, not guesses from title
             - Take must be YOUR opinion, be spicy and fun
             - Include both article URL and HN discussion URL
-            - Comments: pick 2-3 contrasting/opposing views to create discourse resonance. Single comment can't capture the full picture. Make it feel like a group chat with different perspectives.
-            - Tags: use lowercase #hashtags for topic categories (e.g. #rust, #ai, #startup, #security, #opensource, #performance, #apple, #google, #webdev, #databases, #devtools)
-            - No fluff sections, no "skip" lists, no redundant summaries
-            - ALWAYS BARK after creating the issue - this wakes up the human
-            - If bark fails, try once more then move on (shit happens)
+            - Comments: pick 2-3 contrasting/opposing views to create discourse resonance
+            - Tags: lowercase #hashtags (e.g. #rust, #ai, #startup, #security)
+            - No fluff, no "skip" lists, no redundant summaries
+            - ALWAYS notify after git push - BARK first to wake human, then TG/Discord
+            - If any notification fails, retry once then move on
+
+            LINK REFERENCE:
+            - Static site: https://thevibeworks.github.io/claude-reads-hn
+            - Story anchor: #s{story_id} (e.g., https://...reads-hn#s46268854)
+            - Use anchors in TG messages so readers jump directly to story
 
