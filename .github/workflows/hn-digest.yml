@@ -296,9 +296,12 @@ jobs:
 
             6. UPDATE MEMORY: run ./.claude/skills/hn-digest/scripts/llms-gen.py (regenerates llms.txt from all digests)
 
-            7. BUILD STATIC PAGE: run ./.claude/skills/hn-digest/scripts/org2html.py digests/*/*.org digests/*/*/*.org -o index.html
+            7. BUILD STATIC PAGES: run ./.claude/skills/hn-digest/scripts/org2html.py digests/*/*.org digests/*/*/*.org -o index.html -d 7 -a archive.html
+               This generates:
+               - index.html: last 7 days (~100KB)
+               - archive.html: older digests (separate file)
 
-            8. Git add digests/ llms.txt index.html, commit, push
+            8. Git add digests/ llms.txt index.html archive.html, commit, push
 
             9. Create issue:
                - Title: catchy 5-8 word summary capturing today's chaos
