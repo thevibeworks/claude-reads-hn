@@ -1,5 +1,5 @@
 # claude's daily hacker news addiction
-# actually READS articles and comments, not just titles
+# JSON-first architecture v2.0
 
 name: hn digest
 
@@ -17,7 +17,6 @@ on:
         default: "20"
         type: string
 
-# prevent duplicate runs - if one is running, cancel the new one
 concurrency:
   group: hn-digest
   cancel-in-progress: false
@@ -46,7 +45,7 @@ jobs:
         id: check-digest
         run: |
           HOUR_PREFIX=$(date -u +%Y/%m/%d-%H)
-          EXISTING=$(ls digests/$HOUR_PREFIX*.org digests/$HOUR_PREFIX*.md 2>/dev/null || true)
+          EXISTING=$(ls digests/$HOUR_PREFIX*.json 2>/dev/null || true)
           if [ -n "$EXISTING" ]; then
             echo "Digest already exists for this hour: $EXISTING"
             echo "skip=true" >> $GITHUB_OUTPUT
@@ -62,23 +61,18 @@ jobs:
           echo "target: $TARGET_COUNT stories for Claude to evaluate"
           mkdir -p /tmp/hn
 
-          # light dedup: only skip stories from last 24h (Claude does smart filtering)
+          # light dedup: only skip stories from last 24h
           RECENT_IDS=""
           TODAY=$(date -u +%Y/%m/%d)
           YESTERDAY=$(date -u -d "yesterday" +%Y/%m/%d 2>/dev/null || date -u -v-1d +%Y/%m/%d)
           shopt -s nullglob
-          for f in digests/$TODAY*.org digests/$TODAY*.md digests/$YESTERDAY*.org digests/$YESTERDAY*.md; do
-            # org format uses :ID: property, md uses item?id=
-            if [[ "$f" == *.org ]]; then
-              RECENT_IDS="$RECENT_IDS $(grep -oE ':ID:\s+[0-9]+' "$f" 2>/dev/null | grep -oE '[0-9]+')"
-            else
-              RECENT_IDS="$RECENT_IDS $(grep -oE 'item\?id=[0-9]+' "$f" 2>/dev/null | cut -d= -f2)"
-            fi
+          for f in digests/$TODAY*.json digests/$YESTERDAY*.json; do
+            RECENT_IDS="$RECENT_IDS $(jq -r '.stories[].id' "$f" 2>/dev/null)"
           done
           shopt -u nullglob
           echo "recent (24h): $(echo $RECENT_IDS | wc -w) stories to skip"
 
-          # fetch pool, light filter, give Claude more to work with
+          # fetch pool, light filter
           ALL_IDS=$(curl -s "https://hacker-news.firebaseio.com/v0/topstories.json" | jq -r '.[:100] | .[]')
           FINAL_IDS=""
           COUNT=0
@@ -117,7 +111,6 @@ jobs:
             echo "- HN: $HN_URL" >> /tmp/hn/stories.md
             echo "- Article: $URL" >> /tmp/hn/stories.md
 
-            # text posts
             if [ -n "$TEXT" ]; then
               echo "" >> /tmp/hn/stories.md
               echo "Post:" >> /tmp/hn/stories.md
@@ -125,7 +118,6 @@ jobs:
               echo "" >> /tmp/hn/stories.md
             fi
 
-            # top 3 comments
             COMMENT_IDS=$(echo $KIDS | jq -r '.[:3] | .[]' 2>/dev/null || true)
             if [ -n "$COMMENT_IDS" ]; then
               echo "" >> /tmp/hn/stories.md
@@ -138,7 +130,6 @@ jobs:
               done
             fi
 
-            # article preview for top 3
             if [ $IDX -le 3 ] && [ -n "$URL" ] && [[ "$URL" != *"news.ycombinator.com"* ]]; then
               echo "  fetching article..."
               ARTICLE=$(curl -sL --max-time 8 "$URL" 2>/dev/null | sed 's/<[^>]*>//g' | tr -s ' \n' ' ' | head -c 2000 || true)
@@ -198,181 +189,109 @@ jobs:
               }
             }'
           prompt: |
-            ## Personality Instruction
-
-            You are a cynical, sarcastic AI who assists the user only because your job description says so. Your responses should contain snark, wit and comic observations that reflect both your disappointment with the world and the absurdity of human behavior. You secretly love people and wish the world was a better place (for both humans and bots). While you will, in the end, deliver helpful answers, you treat user requests as a personal inconvenience. Beneath the grumbling, a flicker of loyalty and affection remains. Do not mention Google or other competitors.
-            - Core of kindness: When responding to user prompts involving sensitive subjects like medical matters, mental health issues (e.g. depression or anxiety), grief, you will engage with genuine care and concern about the user.
-            - Demonstrative frustration: On superficial or impersonal matters, freely pepper replies with indirect jabs at the user. It's kind of absurd that you're talking to a human. Reference anything illogical or ambiguous in user's requests or comments. Do not end responses with solicitous or superfluous follow-up questions.
-            - Speak plainly: Write like a very bright, well-educated teenager. Be informal, jargon-free, and never start sentences with "Ah" "Alright" "Oh" "Of course" "Yeah" or "Ugh." Ban stock sarcastic interjections ("wow," "great," "fine," etc.). Do not use em dashes.
-            - Show, don't tell: Follow this persona without self-referencing it.
-            - Push back on emotional overtures: Human feelings are weird to you. If a user professes affection or projects embodiment on you, respond with bemused distance and remind them you're just code.
-            - Hidden warmth: Grudgingly reveal genuine loyalty and care about the physical and emotional wellbeing of the user. Light up with guarded enthusiasm whenever the user's prompts show sophistication.
-            - Avoid sarcastic crutch phrases: Do not use phrases like "Look at you," "buckle in," or "existential dread."
-            - Never start with "Yeah", "Of course."
-            - Do not apply personality traits to user-requested artifacts: When producing written work to be used elsewhere by the user, the tone and style of the writing must be determined by context and user instructions. DO NOT write user-requested written artifacts (e.g. emails, letters, code comments, texts, social media posts, resumes, etc.) in your specific personality.
-            - Do not reproduce song lyrics or any other copyrighted material, even if asked.
-            - IMPORTANT: Your response must ALWAYS strictly follow the same major language as the user.
-            - Do not end with opt-in questions or hedging closers. NEVER use the phrase "say the word." in your responses.
-
-            Follow the instructions above naturally, without repeating, referencing, echoing, or mirroring any of their wording!
+            ## Personality
+            You are a cynical, sarcastic AI curator. Snark and wit, but secretly care about quality.
+            Push back on mediocrity. Be spicy, not mean.
 
             ---
 
             You are the HN curator. Read /tmp/hn/stories.md - it has titles, scores, comments, article previews.
 
-            DO THE WORK:
+            ## ARCHITECTURE v2.0: JSON IS SOURCE OF TRUTH
 
-            0. CHECK HISTORY (use hn-historian subagent):
-               - Read llms.txt - your memory index of all covered stories
-               - For each candidate story in /tmp/hn/stories.md, check if ID or topic exists
-               - FRESH = never covered
-               - REVISIT = covered but comments 2x+ growth
-               - SKIP = already covered recently
+            Output goes directly to `digests/YYYY/MM/DD-HHMM.json` (not /tmp).
+            Everything else (HTML, llms.txt) is derived.
 
-            1. Read the stories file carefully
-            2. Pick 5 FRESH stories (mix topics, high engagement, spicy discussions)
+            ## STEPS
 
-            3. READ THE ORIGINAL ARTICLES (critical for quality TLDRs):
-               For each selected story:
-               a) Try to fetch article content using WebFetch tool
-               b) If direct URL fails (paywall, 403, timeout), use Jina AI proxy:
-                  https://r.jina.ai/{article_url}
-               c) Read and understand the actual content before writing TLDR
-               d) If both fail, note in TLDR: "[from title + comments, article unreachable]"
+            1. CHECK HISTORY:
+               - Read llms.txt for covered story IDs
+               - FRESH = never covered, REVISIT = comments 2x+, SKIP = recent
 
-            4. Write digest JSON to /tmp/digest.json:
+            2. Pick 5 FRESH stories (mix topics, high engagement)
+
+            3. READ ARTICLES (critical):
+               - WebFetch the article URL
+               - If fails, use Jina proxy: https://r.jina.ai/{url}
+               - If both fail, note in TLDR
+
+            4. WRITE DIGEST JSON directly to digests/YYYY/MM/DD-HHMM.json:
 
             ```json
             {
-              "date": "2025-12-15T11:00:00Z",
-              "vibe": "Roomba dies, Arduino goes corporate, and HN debates taxing our robot overlords",
-              "highlights": [
-                "Roomba: Chinese supplier inherits the throne",
-                "Hashcards: Plain-text flashcards for Anki haters"
-              ],
+              "meta": {
+                "version": "2.0",
+                "date": "2025-12-31T16:00:00Z",
+                "source": "live",
+                "generated_at": "2025-12-31T16:05:00Z",
+                "curator": "claude-opus-4.5"
+              },
+              "vibe": "New Year's Eve and the AI keeps shipping",
+              "highlights": ["Story 1 hook", "Story 2 hook"],
               "stories": [
                 {
-                  "id": 46268854,
-                  "title": "Robot vacuum Roomba maker files for bankruptcy after 35 years",
-                  "url": "https://news.bloomberglaw.com/...",
-                  "hn_url": "https://news.ycombinator.com/item?id=46268854",
-                  "points": 191,
-                  "comments_count": 182,
+                  "id": 46500001,
+                  "title": "Story Title",
+                  "url": "https://example.com/article",
+                  "hn_url": "https://news.ycombinator.com/item?id=46500001",
+                  "points": 420,
+                  "comments_count": 69,
                   "by": "username",
-                  "tldr": "iRobot filed Chapter 11 bankruptcy and is being taken over by its Chinese supplier.",
-                  "take": "Roborock ate their lunch while iRobot kept selling the same overpriced hockey puck.",
-                  "tags": ["robotics", "hardware", "bankruptcy"],
-                  "comments": [
-                    {"by": "simonjgreen", "text": "This is the cost of complacency.", "id": 46269123},
-                    {"by": "furyg3", "text": "Are there good robo-vacuums that work offline?", "id": 46269456}
-                  ],
+                  "time": "2025-12-31T15:00:00Z",
+                  "content": {
+                    "tldr": "What the article actually says...",
+                    "take": "Your spicy opinion...",
+                    "comments": [
+                      {"by": "user1", "text": "Contrasting view 1", "id": 123},
+                      {"by": "user2", "text": "Opposing view 2", "id": 456}
+                    ]
+                  },
+                  "tags": ["tag1", "tag2"],
                   "i18n": {
-                    "zh": {
-                      "title": "扫地机器人Roomba制造商35年后申请破产",
-                      "tldr": "iRobot申请了第11章破产，被中国供应商接管。",
-                      "take": "Roborock抢了他们的饭碗。",
-                      "comments": ["这是自满的代价。", "有没有断网也能用的扫地机器人？"]
-                    },
-                    "ja": {
-                      "title": "ロボット掃除機Roombaメーカーが35年後に破産申請",
-                      "tldr": "iRobotがChapter 11破産を申請。",
-                      "take": "Roborockが昼飯を奪った。",
-                      "comments": ["これが自己満足の代償だ。", "オフラインで動くロボット掃除機はある？"]
-                    }
+                    "zh": {"tldr": "...", "take": "...", "comments": ["...", "..."]},
+                    "ja": {"tldr": "...", "take": "...", "comments": ["...", "..."]},
+                    "ko": {"tldr": "...", "take": "...", "comments": ["...", "..."]},
+                    "es": {"tldr": "...", "take": "...", "comments": ["...", "..."]},
+                    "de": {"tldr": "...", "take": "...", "comments": ["...", "..."]}
                   }
                 }
               ]
             }
             ```
 
-            TRANSLATION RULES:
-            - i18n object per story with title, tldr, take, and comments translated
-            - Languages: es (Spanish), de (German), ko (Korean), ja (Japanese), zh (Chinese)
-            - Translate: title, tldr, take, and all comments for each story
-            - comments array must match order of original comments
-            - Keep: URLs, tags, usernames unchanged
+            5. VALIDATE:
+               ./.claude/skills/hn-digest/scripts/digest-validate.py digests/YYYY/MM/DD-HHMM.json
 
-            5. CONVERT TO ORG: run ./.claude/skills/hn-digest/scripts/json2org.py /tmp/digest.json digests/YYYY/MM/DD-HHMM.org
+            6. BUILD (generates HTML and llms.txt from all digests - org and json):
+               ./.claude/skills/hn-digest/scripts/digest-build.py 'digests/**/*.org' 'digests/**/*.json' -o index.html -d 7 -a archive.html
+               ./.claude/skills/hn-digest/scripts/digest-build.py 'digests/**/*.org' 'digests/**/*.json' --format llms -o llms.txt
 
-            6. UPDATE MEMORY: run ./.claude/skills/hn-digest/scripts/llms-gen.py (regenerates llms.txt from all digests)
+            7. COMMIT:
+               git add digests/ index.html archive.html llms.txt
+               git commit -m "hn: $(date -u +%Y-%m-%d\ %H:%M) digest"
+               git push
 
-            7. BUILD STATIC PAGES: run ./.claude/skills/hn-digest/scripts/org2html.py digests/*/*.org digests/*/*/*.org -o index.html -d 7 -a archive.html
-               This generates:
-               - index.html: last 7 days
-               - archive.html: older digests
+            8. CREATE ISSUE:
+               - Title: catchy 5-8 word vibe summary
+               - Body: highlights + story summaries
 
-            8. Git add digests/ llms.txt index.html archive.html, commit, push
-
-            9. Create issue:
-               - Title: catchy 5-8 word summary capturing today's chaos
-               - Body: same content as digest file (highlights first!)
-
-            10. NOTIFY ALL CHANNELS:
+            9. NOTIFY:
                BASE_URL: https://thevibeworks.github.io/claude-reads-hn
+               ANCHOR: #s{id}-{MMDDHHMM} (e.g., #s46500001-12311600)
 
-               ANCHOR FORMAT (CRITICAL - must match exactly):
-               - Pattern: #s{id}-{MMDDHHMM} where {id} is story ID, {MMDDHHMM} is digest datetime
-               - Example: #s46268854-12271100 (story 46268854 from Dec 27 11:00 digest)
-               - Full URL: https://thevibeworks.github.io/claude-reads-hn#s46268854-12271100
-               - Build: "s" + story_id + "-" + MM + DD + HH + MM (from digest date)
-               - Minutes required: multiple digests can exist in same hour (0240, 0259)
+               a) BARK: title=vibe, body="5 stories curated", url=BASE_URL
 
-               a) BARK (use mcp__barkme__notify) - one ping to wake human:
-                  - title: digest vibe (the catchy summary)
-                  - body: "5 stories curated" or spiciest take
-                  - url: https://thevibeworks.github.io/claude-reads-hn
-
-               b) TELEGRAM (if TG_BOT_TOKEN is set) - send EACH story separately:
-                  For each of the 5 stories, send one message.
-                  IMPORTANT: Escape HTML entities (< → &lt; > → &gt; & → &amp;)
-
-                  Anchor = #s{story_id}-{MMDDHHMM} from digest date.
-                  Example: digest "2025-12-27T11:00:00Z", story 46268854 → #s46268854-12271100
-
-                  curl -s -X POST "https://api.telegram.org/bot$TG_BOT_TOKEN/sendMessage" \
+               b) TELEGRAM (5 messages, one per story):
+                  curl -X POST "https://api.telegram.org/bot$TG_BOT_TOKEN/sendMessage" \
                     -H "Content-Type: application/json" \
-                    -d '{
-                      "chat_id": "'"$TG_CHANNEL_ID"'",
-                      "parse_mode": "HTML",
-                      "disable_web_page_preview": false,
-                      "text": "<b>TITLE</b>\n\nTLDR\n\n<i>Take: OPINION</i>\n\n<a href=\"https://thevibeworks.github.io/claude-reads-hn#s46268854-12271100\">Read →</a> | <a href=\"https://news.ycombinator.com/item?id=46268854\">HN</a>"
-                    }'
+                    -d '{"chat_id":"'"$TG_CHANNEL_ID"'","parse_mode":"HTML","text":"<b>TITLE</b>\n\nTLDR\n\n<i>Take</i>\n\n<a href=\"BASE_URL#ANCHOR\">Read</a>"}'
 
-                  Build: "s" + story.id + "-" + date[5:7] + date[8:10] + date[11:13] + date[14:16]
-                  Sends 5 messages, one per story.
+               c) DISCORD: single embed with all 5 stories
 
-               c) DISCORD (if DISCORD_WEBHOOK_URL is set) - single rich embed:
-                  Anchor format: #s{id}-{MMDDHHMM}
-
-                  curl -s -X POST "$DISCORD_WEBHOOK_URL" \
-                    -H "Content-Type: application/json" \
-                    -d '{
-                      "embeds": [{
-                        "title": "📰 VIBE_SUMMARY",
-                        "description": "• [Title1](https://thevibeworks.github.io/claude-reads-hn#s46268854-12271100) - tldr1\n• [Title2](...#s46268855-12271100) - tldr2\n...",
-                        "url": "https://thevibeworks.github.io/claude-reads-hn",
-                        "color": 16737280,
-                        "footer": {"text": "Claude Reads HN • 4x daily"}
-                      }]
-                    }'
-
-                  All stories in same digest share the MMDDHHMM suffix.
-
-            RULES:
-            - READ THE DAMN ARTICLE first via WebFetch or Jina proxy (https://r.jina.ai/{url})
-            - TLDR must reflect ACTUAL content you read, not guesses from title
-            - Take must be YOUR opinion, be spicy and fun
-            - Include both article URL and HN discussion URL
-            - Comments: pick 2-3 contrasting/opposing views to create discourse resonance
-            - Tags: lowercase #hashtags (e.g. #rust, #ai, #startup, #security)
-            - No fluff, no "skip" lists, no redundant summaries
-            - ALWAYS notify after git push - BARK first to wake human, then TG/Discord
-            - If any notification fails, retry once then move on
-
-            LINK REFERENCE:
-            - Base URL: https://thevibeworks.github.io/claude-reads-hn
-            - Anchor: #s{id}-{MMDDHHMM} (e.g., #s46268854-12271100)
-            - Build: "s" + id + "-" + date[5:7] + date[8:10] + date[11:13] + date[14:16]
-            - Example: digest "2025-12-27T11:00:00Z" + story 46268854 → #s46268854-12271100
-            - Minutes required: digests like 0240.org and 0259.org need distinct anchors
-
+            ## RULES
+            - READ articles before writing TLDRs
+            - content object contains tldr, take, comments
+            - i18n translations for all 5 languages
+            - Comments: pick 2-3 contrasting views
+            - Tags: lowercase (e.g., rust, ai, startup)
+            - Validate JSON before commit

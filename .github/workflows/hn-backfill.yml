@@ -1,0 +1,111 @@
+name: HN Backfill
+
+on:
+  workflow_dispatch:
+    inputs:
+      start_date:
+        description: 'Start date (YYYY-MM-DD)'
+        required: true
+        type: string
+      end_date:
+        description: 'End date (YYYY-MM-DD, default: same as start)'
+        required: false
+        type: string
+      mode:
+        description: 'Mode'
+        required: true
+        type: choice
+        options:
+          - fetch-only  # Just fetch and store raw data (free)
+          - digest      # Full Claude analysis (costs money)
+        default: fetch-only
+      batch_size:
+        description: 'Days per batch (digest mode only)'
+        required: false
+        type: number
+        default: 7
+
+concurrency:
+  group: hn-backfill
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+
+      - name: Fetch historical data
+        if: inputs.mode == 'fetch-only'
+        run: |
+          mkdir -p backfill/raw
+
+          start="${{ inputs.start_date }}"
+          end="${{ inputs.end_date || inputs.start_date }}"
+
+          current="$start"
+          while [[ "$current" < "$end" ]] || [[ "$current" == "$end" ]]; do
+            echo "Fetching $current..."
+            ./.claude/skills/hn-digest/scripts/hn-fetch-day.py "$current" \
+              --json -o "backfill/raw/${current}.json"
+
+            # Next day
+            current=$(date -d "$current + 1 day" +%Y-%m-%d)
+          done
+
+          echo "Fetched $(ls backfill/raw/*.json | wc -l) days"
+
+      - name: Run Claude backfill
+        if: inputs.mode == 'digest'
+        uses: anthropics/claude-code-action@main
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          timeout_minutes: 45
+          prompt: |
+            You are running the hn-backfill agent.
+
+            Process historical HN digests for dates:
+            - Start: ${{ inputs.start_date }}
+            - End: ${{ inputs.end_date || inputs.start_date }}
+            - Batch size: ${{ inputs.batch_size }} days
+
+            For each date:
+            1. Run: ./.claude/skills/hn-digest/scripts/hn-fetch-day.py {date} -o /tmp/hn/stories.md
+            2. Read the stories and select top 5
+            3. For each story, read the article (use https://r.jina.ai/{url} if direct fails)
+            4. Write TLDR, retrospective take, translations
+            5. Save to digests/YYYY/MM/DD-1200.org
+
+            Historical takes should acknowledge retrospective context:
+            - "[Retrospective] This turned out to be the start of..."
+            - "[Looking back] We now know this prediction was..."
+
+            After processing, commit and push all new digest files.
+
+            Stop after ${{ inputs.batch_size }} days and report progress.
+
+      - name: Commit raw data
+        if: inputs.mode == 'fetch-only'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          if [[ -n $(git status --porcelain backfill/) ]]; then
+            git add backfill/
+            git commit -m "backfill: fetch ${{ inputs.start_date }} to ${{ inputs.end_date || inputs.start_date }}"
+            git push
+          else
+            echo "No new data to commit"
+          fi
