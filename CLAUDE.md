@@ -104,11 +104,11 @@ Languages: zh (Chinese), ja (Japanese), ko (Korean), es (Spanish), de (German)
 # Validate
 digest-validate.py digests/2025/12/31-1600.json
 
-# Build HTML (7 days in index, rest in archive)
-digest-build.py 'digests/**/*.json' -o index.html -d 7 -a archive.html
+# Build HTML (7 days in index, rest in archive) - includes both org and json
+digest-build.py 'digests/**/*.org' 'digests/**/*.json' -o index.html -d 7 -a archive.html
 
 # Regenerate memory index
-digest-build.py 'digests/**/*.json' --format llms -o llms.txt
+digest-build.py 'digests/**/*.org' 'digests/**/*.json' --format llms -o llms.txt
 
 # Commit
 git add digests/ index.html archive.html llms.txt

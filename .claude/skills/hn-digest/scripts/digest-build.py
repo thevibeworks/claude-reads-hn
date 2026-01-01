@@ -295,21 +295,88 @@ def digest_to_llms(digest: dict) -> str:
     return "\n".join(lines)
 
 
+def normalize_v1_to_v2(data: dict, source_path: str = "") -> dict:
+    """Convert v1 format (from org2json) to v2 format."""
+    # Already v2
+    if data.get("meta", {}).get("version") == "2.0":
+        return data
+
+    # Extract date from v1 or filename
+    date = data.get("date", "")
+    if not date and source_path:
+        # Parse from filename: digests/2025/12/27-1100.org
+        import re
+        m = re.search(r'(\d{4})/(\d{2})/(\d{2})-(\d{2})(\d{2})', source_path)
+        if m:
+            date = f"{m[1]}-{m[2]}-{m[3]}T{m[4]}:{m[5]}:00Z"
+
+    # Build v2 structure
+    v2 = {
+        "meta": {
+            "version": "2.0",
+            "date": date,
+            "source": "migrated",
+            "generated_at": date,
+        },
+        "vibe": data.get("vibe", ""),
+        "highlights": data.get("highlights", []),
+        "stories": [],
+    }
+
+    for story in data.get("stories", []):
+        v2_story = {
+            "id": story.get("id"),
+            "title": story.get("title", ""),
+            "url": story.get("url", ""),
+            "hn_url": story.get("hn_url", ""),
+            "points": story.get("points", 0),
+            "comments_count": story.get("comments_count", 0),
+            "by": story.get("by", ""),
+            "time": story.get("time", ""),
+            "content": {
+                "tldr": story.get("tldr", ""),
+                "take": story.get("take", ""),
+                "comments": story.get("comments", []),
+            },
+            "tags": story.get("tags", []),
+            "i18n": story.get("i18n", {}),
+        }
+        v2["stories"].append(v2_story)
+
+    return v2
+
+
 def load_digests(patterns: list[str]) -> list[dict]:
-    """Load all digest JSON files matching patterns."""
+    """Load digest files (JSON v2, JSON v1, or org via org2json)."""
     digests = []
+
+    # Import org2json for org file support
+    sys.path.insert(0, str(SCRIPT_DIR))
+    try:
+        from org2json import parse_org, digest_to_dict
+        org_support = True
+    except ImportError:
+        org_support = False
+        print("WARN: org2json not found, org files will be skipped", file=sys.stderr)
+
     for pattern in patterns:
         for path in sorted(Path(".").glob(pattern)):
-            if path.suffix != ".json":
-                continue
             try:
-                data = json.loads(path.read_text())
-                if data.get("meta", {}).get("version") == "2.0":
+                if path.suffix == ".json":
+                    data = json.loads(path.read_text())
+                    data = normalize_v1_to_v2(data, str(path))
                     digests.append(data)
-                else:
-                    print(f"SKIP: {path} (not schema v2.0)", file=sys.stderr)
-            except json.JSONDecodeError as e:
-                print(f"SKIP: {path} (invalid JSON: {e})", file=sys.stderr)
+
+                elif path.suffix == ".org" and org_support:
+                    content = path.read_text()
+                    parsed = parse_org(content)
+                    data = digest_to_dict(parsed)
+                    if data.get("stories"):
+                        data = normalize_v1_to_v2(data, str(path))
+                        digests.append(data)
+
+            except (json.JSONDecodeError, Exception) as e:
+                print(f"SKIP: {path} ({e})", file=sys.stderr)
 
     # Sort by date descending
     digests.sort(key=lambda d: d.get("meta", {}).get("date", ""), reverse=True)

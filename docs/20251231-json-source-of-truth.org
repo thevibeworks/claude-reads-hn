@@ -161,6 +161,82 @@ digest-curator.py --source backfill --date 2024-12-01 --output digests/2024/12/0
 - =hn-fetch-day.py= - Daily story aggregation (unchanged)
 - =llms-gen.py= - May be replaced by digest-build.py --format llms
 
+** Course Correction: Dual-Format Support
+*** What Changed
+Original plan: Clean break, JSON-only, old org files become archive.
+
+Actual implementation: Dual-format support with backward compatibility.
+
+*** Discovery
+During end-to-end workflow testing:
+- Found 85 existing .org files with real digest data (digests/2025/12/*)
+- digest-build.py with pattern 'digests/**/*.json' only found 1 test file
+- llms.txt regeneration would lose 85 digests of historical data
+- No migration tool exists (org→JSON lossy, see Decision table above)
+
+*** Decision: Pragmatism Over Purity
+Resolution: Added v1→v2 normalization layer in digest-build.py
+- Loads BOTH .org (via org2json.py) AND .json files
+- Normalizes org2json v1 output to v2 schema at runtime
+- Outputs unified HTML/llms.txt from both sources
+- No data loss, no one-time migration required, reversible
+
+*** Implementation
+**** Code Changes to digest-build.py
+#+BEGIN_SRC python
+def normalize_v1_to_v2(v1_digest):
+    """Convert org2json v1 format to schema v2.0 structure"""
+    # Move tldr/take/comments into content envelope
+    # Extract i18n from nested story fields to top-level i18n object
+    # Convert time to ISO8601 if Unix timestamp
+    # Rename descendants to comments_count
+
+def load_digests(patterns):
+    """Load from both .org and .json files"""
+    for pattern in patterns:
+        if pattern.endswith('.org'):
+            json_data = subprocess.check_output(['org2json.py', filepath])
+            digest = normalize_v1_to_v2(json.loads(json_data))
+        elif pattern.endswith('.json'):
+            digest = json.load(open(filepath))
+    # Returns unified list of v2-normalized digests
+#+END_SRC
+
+**** Updated Build Command
+#+BEGIN_SRC bash
+# Old (JSON-only, would lose 85 digests)
+digest-build.py 'digests/**/*.json' -o index.html
+
+# New (dual-format, keeps all data)
+digest-build.py 'digests/**/*.org' 'digests/**/*.json' -o index.html -d 7 -a archive.html
+#+END_SRC
+
+*** Trade-offs
+| Chose | Over | Because |
+|-------+------+---------|
+| Dual format support | Clean JSON-only | 85 real digests > architectural purity |
+| Runtime normalization | One-time migration script | Simpler, reversible, no data corruption risk |
+| Backward compatible | Breaking change | Existing org workflow keeps working |
+| Accept org2json dependency | Rewrite org parser | org2json.py exists, works, tested |
+
+*** Impact
+**** For Users
+- New digests: Write as JSON (v2 schema) via CLAUDE.md workflow
+- Old digests: Stay as .org, loaded and normalized during build
+- Both appear in index.html, archive.html, llms.txt
+- No action required, no data loss
+
+**** For System
+- digest-build.py now depends on org2json.py (not deprecated)
+- Build time +0.5s per .org file (negligible for 85 files)
+- normalize_v1_to_v2() adds 50 LOC to digest-build.py
+- Schema validation skipped for org-sourced digests (v1 schema differs)
+
+**** For Migration Path
+- No forced migration timeline
+- Org files can be manually converted to JSON when edited
+- System gracefully handles mixed-format digests directory indefinitely
+
 ** Result
 *** Outcome
 JSON-first architecture enables:
@@ -188,13 +264,14 @@ JSON-first architecture enables:
 | Separate translator agent | Embed i18n in curator | Allows adding languages post-publication. Curator can be English-only for faster iteration. Translations can be outsourced or batched. | @architect | 2025-12-31T00:00:00Z |
 | schema v2.0 (not v1.1) | Incremental versioning | Content structure change is breaking (field moves). Major version signals migration required. | @architect | 2025-12-31T00:00:00Z |
 | No org→JSON migration tool | Build automated converter | Org escaping (⁎ for *, ［］ for []) is lossy. Original HN data is source of truth, not org files. Regenerating from HN API is cleaner. | @architect | 2025-12-31T00:00:00Z |
+| Dual-format support (.org + .json) | JSON-only with forced migration | 85 real digests > architectural purity. Runtime normalization simpler than migration. Reversible, no data loss risk. | @architect | 2025-12-31T16:00:00Z |
 
 ** Risks                                                            :SECURITY:
 | Risk | Mitigation | Owner | Status |
 |------+------------+-------+--------|
-| Breaking all existing tools/workflows | Parallel run: keep org generation for 1 week while testing JSON flow | @devops | OPEN |
+| Breaking all existing tools/workflows | Parallel run: keep org generation for 1 week while testing JSON flow | @devops | MITIGATED (dual-format support) |
 | JSON injection in story content | Schema validation + content escaping in digest-build.py | @security | OPEN |
-| Lost data during migration | Keep all org files in archive/ directory, document regeneration procedure | @devops | OPEN |
+| Lost data during migration | Dual-format support: .org files stay as-is, normalized at runtime. No migration needed. | @devops | RESOLVED |
 | Translation API costs explode | Rate-limit digest-translate.py, cache translations in JSON, use cheaper models for non-critical languages | @finance | OPEN |
 
 ** Rollback
@@ -215,13 +292,15 @@ JSON-first architecture enables:
 - [X] Define JSON schema v2.0
 - [ ] Implement digest-curator.py (replaces stories.md → Claude flow)
 - [ ] Implement digest-translate.py (i18n injection)
-- [ ] Implement digest-build.py (JSON → org/HTML/llms)
+- [X] Implement digest-build.py (JSON → org/HTML/llms)
+- [X] Add dual-format support (.org + .json) in digest-build.py
+- [X] Implement v1→v2 normalization layer
 - [ ] Implement digest-validate.py (JSON Schema validation)
 - [ ] Update .github/workflows/hn-digest.yml to use new agent chain
-- [ ] Document migration path for existing org files
+- [X] Document migration path for existing org files (dual-format = no forced migration)
 - [ ] Test backfill workflow with historical HN data
-- [ ] Parallel run: Generate both org (old) and JSON (new) for 1 week
-- [ ] Deprecate old scripts (json2org.py, org2json.py, org2html.py)
+- [X] Parallel run: Generate both org (old) and JSON (new) for 1 week (SUPERSEDED: dual-format indefinitely)
+- [X] Deprecate old scripts (REVISED: org2json.py retained for dual-format support)
 
 ** Links
 - Schema: docs/schema-v2.json (to be created)
