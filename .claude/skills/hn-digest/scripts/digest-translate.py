@@ -51,8 +51,21 @@ def check_translations(digest: dict, langs: list[str]) -> dict:
         }
 
         for lang in langs:
-            if lang not in i18n or not i18n[lang].get("tldr"):
-                story_missing["missing_langs"].append(lang)
+            lang_data = i18n.get(lang, {})
+            source_comments = content.get("comments", [])
+            lang_comments = lang_data.get("comments", [])
+
+            # Check all fields: tldr, take required; comments count must match
+            missing_fields = []
+            if not lang_data.get("tldr"):
+                missing_fields.append("tldr")
+            if not lang_data.get("take"):
+                missing_fields.append("take")
+            if len(lang_comments) != len(source_comments):
+                missing_fields.append(f"comments({len(lang_comments)}/{len(source_comments)})")
+
+            if missing_fields:
+                story_missing["missing_langs"].append(f"{lang}[{','.join(missing_fields)}]")
 
         if story_missing["missing_langs"]:
             missing["translations_needed"].append(story_missing)
@@ -73,14 +86,21 @@ def apply_translations(digest: dict, translations: dict) -> dict:
         if "i18n" not in story:
             story["i18n"] = {}
 
-        for lang, content in trans.get("i18n", {}).items():
+        for lang, new_content in trans.get("i18n", {}).items():
             if lang not in story["i18n"]:
                 story["i18n"][lang] = {}
 
-            # Merge, don't overwrite existing
-            for key in ["title", "tldr", "take", "comments"]:
-                if key in content and content[key]:
-                    story["i18n"][lang][key] = content[key]
+            existing = story["i18n"][lang]
+
+            # Merge: only fill missing fields, never overwrite existing
+            for key in ["title", "tldr", "take"]:
+                if key in new_content and new_content[key] and not existing.get(key):
+                    existing[key] = new_content[key]
+
+            # Comments: only fill if empty or count mismatch
+            if "comments" in new_content and new_content["comments"]:
+                if not existing.get("comments") or len(existing["comments"]) != len(new_content["comments"]):
+                    existing["comments"] = new_content["comments"]
 
     return digest
 
