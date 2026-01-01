@@ -1,0 +1,197 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/thevibeworks/claude-reads-hn/schema-v2.json",
+  "title": "HN Digest v2.0",
+  "description": "JSON-first digest format for claude-reads-hn",
+  "type": "object",
+  "required": ["meta", "vibe", "stories"],
+  "additionalProperties": false,
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["version", "date", "source", "generated_at"],
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "type": "string",
+          "const": "2.0",
+          "description": "Schema version"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Digest datetime in ISO8601 UTC"
+        },
+        "source": {
+          "type": "string",
+          "enum": ["live", "backfill"],
+          "description": "Data source type"
+        },
+        "generated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Generation timestamp in ISO8601 UTC"
+        },
+        "curator": {
+          "type": "string",
+          "description": "Agent/model identifier"
+        }
+      }
+    },
+    "vibe": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 500,
+      "description": "Digest mood/theme summary"
+    },
+    "highlights": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 5,
+        "maxLength": 200
+      },
+      "maxItems": 10,
+      "description": "Story hooks/teasers"
+    },
+    "stories": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20,
+      "items": {
+        "$ref": "#/definitions/story"
+      }
+    }
+  },
+  "definitions": {
+    "story": {
+      "type": "object",
+      "required": ["id", "title", "url", "hn_url", "points", "comments_count", "content", "tags"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "HN item ID"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "hn_url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://news\\.ycombinator\\.com/item\\?id=\\d+$"
+        },
+        "points": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "comments_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "by": {
+          "type": "string",
+          "description": "HN username of submitter"
+        },
+        "time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Submission time in ISO8601 UTC"
+        },
+        "content": {
+          "$ref": "#/definitions/content"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$",
+            "maxLength": 30
+          },
+          "maxItems": 10
+        },
+        "i18n": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/i18n_content"
+          },
+          "description": "Language-keyed translations (zh, ja, ko, es, de)"
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "required": ["tldr", "take"],
+      "additionalProperties": false,
+      "properties": {
+        "tldr": {
+          "type": "string",
+          "minLength": 20,
+          "maxLength": 1000,
+          "description": "Article summary"
+        },
+        "take": {
+          "type": "string",
+          "minLength": 20,
+          "maxLength": 1000,
+          "description": "Spicy commentary"
+        },
+        "comments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/comment"
+          },
+          "maxItems": 5
+        }
+      }
+    },
+    "comment": {
+      "type": "object",
+      "required": ["by", "text"],
+      "additionalProperties": false,
+      "properties": {
+        "by": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "i18n_content": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "tldr": {
+          "type": "string"
+        },
+        "take": {
+          "type": "string"
+        },
+        "comments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

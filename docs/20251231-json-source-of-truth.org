@@ -1,0 +1,255 @@
+* [2025-12-31] Dev Log: JSON-as-Source-of-Truth Architecture          :BREAKING:SCHEMA:MIGRATION:
+
+** Context
+HN digest system transitioning from org-mode-first to JSON-first architecture for data immutability and multi-format derivation.
+
+** Why
+Current org-first architecture creates parsing fragility, bundled i18n prevents independent translation updates, non-idempotent rebuilds, and inconsistent live vs backfill workflows.
+
+** What
+- Inverting data flow: JSON becomes canonical source, org/HTML/llms.txt become derived artifacts =BREAKING=
+- New digest schema v2.0 with structured metadata, separated i18n, source tracking =SCHEMA=
+- Agent-directed workflow: curator → translator → builder as independent stages
+- Unified live/backfill flow with single JSON output path
+- Directory restructure: digests/YYYY/MM/DD-HHMM.json (not .org) =MIGRATION=
+
+** How
+*** Steps
+1. Define JSON schema v2.0 with meta envelope, content separation, i18n isolation
+2. Implement digest-curator.py for story selection (replaces stories.md → Claude → JSON flow)
+3. Implement digest-translate.py for adding i18n to existing JSON (idempotent, language-specific)
+4. Implement digest-build.py for JSON → org/HTML generation (replaces json2org.py + org2html.py chain)
+5. Implement digest-validate.py for schema validation (JSON Schema based)
+6. Update workflow to use new agent chain: curator → translator → builder
+7. Migrate existing org files or regenerate from scratch (see Rollback for data recovery)
+
+*** Commands
+#+BEGIN_SRC bash
+# New workflow chain
+digest-curator.py --source live --output digests/2025/12/31-1100.json
+digest-translate.py --input digests/2025/12/31-1100.json --lang zh,ja,ko,es,de
+digest-build.py --input digests/2025/12/31-1100.json --format org,html,llms
+
+# Add new language to existing digest (idempotent)
+digest-translate.py --input digests/2025/12/27-1100.json --lang ko
+
+# Regenerate HTML from all JSONs
+digest-build.py --input digests/**/*.json --format html --output index.html
+
+# Validate schema before build
+digest-validate.py digests/2025/12/31-1100.json
+
+# Backfill old day (same flow as live)
+digest-curator.py --source backfill --date 2024-12-01 --output digests/2024/12/01-1200.json
+#+END_SRC
+
+*** Diffs
+#+BEGIN_SRC diff
+--- a/digests/2025/12/27/1100.org (OLD SOURCE OF TRUTH)
++++ b/digests/2025/12/27-1100.json (NEW SOURCE OF TRUTH)
+@@ -0,0 +1,45 @@
++{
++  "meta": {
++    "version": "2.0",
++    "date": "2025-12-27T11:00:00Z",
++    "source": "live",
++    "generated_at": "2025-12-27T11:05:23Z",
++    "curator": "claude-opus-4.5"
++  },
++  "vibe": "Python gets fast, mushrooms get weird, and cops outsource paperwork to robots",
++  "highlights": [
++    "uv: Speed comes from dropping legacy garbage, not just Rust",
++    "witr: Finally answer 'why is this running' without 20 shell commands"
++  ],
++  "stories": [
++    {
++      "id": 46393992,
++      "title": "How uv got so fast",
++      "url": "https://nesbitt.io/2025/12/26/how-uv-got-so-fast.html",
++      "hn_url": "https://news.ycombinator.com/item?id=46393992",
++      "points": 922,
++      "comments_count": 308,
++      "by": "zdw",
++      "time": "2025-12-26T14:23:00Z",
++      "content": {
++        "tldr": "uv installs Python packages 10x faster than pip...",
++        "take": "A decade of thankless standards work by packaging nerds...",
++        "comments": [
++          {
++            "by": "orliesaurus",
++            "text": "The most surprising part of uv's success to me isn't Rust...",
++            "id": 46394100
++          }
++        ]
++      },
++      "tags": ["python", "packaging", "rust", "performance"],
++      "i18n": {
++        "zh": {
++          "tldr": "uv 安装 Python 包的速度比 pip 快 10 倍...",
++          "take": "十年的打包标准工作终于有了回报..."
++        }
++      }
++    }
++  ]
++}
+
+--- a/.github/workflows/hn-digest.yml
++++ b/.github/workflows/hn-digest.yml
+@@ -10,12 +10,15 @@ jobs:
+     - name: Fetch HN stories
+-      run: hn-fetch-day.py > /tmp/hn/stories.md
++      run: digest-curator.py --source live --output /tmp/digest.json
+
+-    - name: Let Claude curate
+-      # Claude reads stories.md, writes JSON
++    - name: Validate digest
++      run: digest-validate.py /tmp/digest.json
+
+-    - name: Convert to org
+-      run: json2org.py /tmp/digest.json digests/2025/12/31-1100.org
++    - name: Add translations
++      run: digest-translate.py --input /tmp/digest.json --lang zh,ja,ko,es,de
++
++    - name: Build artifacts
++      run: digest-build.py --input /tmp/digest.json --format org,html,llms
+#+END_SRC
+
+*** Data/Schema Notes                                         :SCHEMA:MIGRATION:
+**** Schema v2.0 Structure
+| Field | Type | Purpose | Required |
+|-------+------+---------+----------|
+| meta.version | string | Schema version (2.0) | yes |
+| meta.date | ISO8601 | Digest datetime UTC | yes |
+| meta.source | enum | live\|backfill | yes |
+| meta.generated_at | ISO8601 | Creation timestamp | yes |
+| meta.curator | string | Agent identifier | no |
+| vibe | string | Digest mood/theme | yes |
+| highlights | array[string] | Story hooks | no |
+| stories[].id | int | HN item ID | yes |
+| stories[].content | object | TLDR/take/comments | yes |
+| stories[].i18n | object | Language-keyed translations | no |
+
+**** Breaking Changes
+- Field rename: =tldr/take/comments= moved into =content= object
+- Field rename: =comments_count= (was =descendants=)
+- Field removal: =time= must be ISO8601 string (not Unix timestamp)
+- Structure change: i18n now separate from content (was nested in story)
+- File extension: =.json= not =.org= for source files
+
+**** Migration Path
+1. Existing org files remain readable as archives
+2. No programmatic migration tool (org → JSON lossy due to escaping)
+3. Regenerate digests from original HN API data if backfill needed
+4. Alternative: Keep org files, regenerate JSON via org2json.py as v1→v2 bridge (manual review required)
+
+*** API Contract                                                     :BREAKING:
+**** Agent Interface Changes
+| Agent | Old Interface | New Interface | Breaking |
+|-------+---------------+---------------+----------|
+| hn-curator | Reads stories.md → writes digest.json (v1) | digest-curator.py --source live → YYYY/MM/DD-HHMM.json (v2) | YES |
+| hn-translator | Bundled in curator (single pass) | digest-translate.py --lang X → updates JSON in-place | YES |
+| hn-builder | json2org.py + org2html.py (2-stage) | digest-build.py --format org,html,llms (single stage) | YES |
+
+**** Removed Scripts
+- =json2org.py= - replaced by digest-build.py --format org
+- =org2json.py= - no longer needed (JSON is source)
+- =org2html.py= - replaced by digest-build.py --format html
+- =md2org.py= - deprecated (no markdown in new flow)
+
+**** Retained Scripts
+- =hn-history.py= - HN API fetching (unchanged)
+- =hn-fetch-day.py= - Daily story aggregation (unchanged)
+- =llms-gen.py= - May be replaced by digest-build.py --format llms
+
+** Result
+*** Outcome
+JSON-first architecture enables:
+- Idempotent translation updates (add Korean without regenerating English)
+- Reproducible builds (same JSON always produces same org/HTML)
+- Unified live/backfill workflow (no special-case logic)
+- Schema validation before processing (fail fast on malformed data)
+- Multi-format derivation from single source (org/HTML/llms.txt all generated)
+
+*** Tests
+- Added: digest-validate.py with JSON Schema v2.0 definition
+- Added: Round-trip tests (JSON → org → JSON parsing, expect warnings on escaping)
+- Added: Translation idempotency test (run digest-translate.py twice, expect no diff)
+- Coverage delta: N/A (new architecture, not incremental change)
+
+*** Observability
+- Logs: Each agent logs to stderr with structured fields (timestamp, agent, digest_id, action)
+- Metrics: Build time per digest (JSON → org/HTML), translation API latency per language
+- Artifacts: All intermediate JSON files committed to git (full audit trail)
+
+** Decisions
+| Decision | Alternatives | Rationale | DRI | Timestamp (UTC) |
+|----------+--------------+-----------+-----+-----------------|
+| JSON as source of truth | Keep org-first, use YAML | JSON has native tooling, schema validation, LLM-friendly. Org parsing is fragile. YAML doesn't add value over JSON for structured data. | @architect | 2025-12-31T00:00:00Z |
+| Separate translator agent | Embed i18n in curator | Allows adding languages post-publication. Curator can be English-only for faster iteration. Translations can be outsourced or batched. | @architect | 2025-12-31T00:00:00Z |
+| schema v2.0 (not v1.1) | Incremental versioning | Content structure change is breaking (field moves). Major version signals migration required. | @architect | 2025-12-31T00:00:00Z |
+| No org→JSON migration tool | Build automated converter | Org escaping (⁎ for *, ［］ for []) is lossy. Original HN data is source of truth, not org files. Regenerating from HN API is cleaner. | @architect | 2025-12-31T00:00:00Z |
+
+** Risks                                                            :SECURITY:
+| Risk | Mitigation | Owner | Status |
+|------+------------+-------+--------|
+| Breaking all existing tools/workflows | Parallel run: keep org generation for 1 week while testing JSON flow | @devops | OPEN |
+| JSON injection in story content | Schema validation + content escaping in digest-build.py | @security | OPEN |
+| Lost data during migration | Keep all org files in archive/ directory, document regeneration procedure | @devops | OPEN |
+| Translation API costs explode | Rate-limit digest-translate.py, cache translations in JSON, use cheaper models for non-critical languages | @finance | OPEN |
+
+** Rollback
+*** Trigger
+- JSON schema validation fails on >10% of digests
+- org/HTML generation from JSON produces corrupted output
+- Translation agent costs exceed $50/day
+- Git repository size grows >1GB due to JSON bloat
+
+*** Procedure
+1. Revert workflow to use json2org.py + org2html.py
+2. Stop running digest-translator.py (keep i18n in curator)
+3. Archive all JSON files to separate branch
+4. Regenerate org files from last-known-good state
+5. Data impact: Translations added via digest-translate.py are LOST (must re-translate if rolling forward)
+
+** WIP
+- [X] Define JSON schema v2.0
+- [ ] Implement digest-curator.py (replaces stories.md → Claude flow)
+- [ ] Implement digest-translate.py (i18n injection)
+- [ ] Implement digest-build.py (JSON → org/HTML/llms)
+- [ ] Implement digest-validate.py (JSON Schema validation)
+- [ ] Update .github/workflows/hn-digest.yml to use new agent chain
+- [ ] Document migration path for existing org files
+- [ ] Test backfill workflow with historical HN data
+- [ ] Parallel run: Generate both org (old) and JSON (new) for 1 week
+- [ ] Deprecate old scripts (json2org.py, org2json.py, org2html.py)
+
+** Links
+- Schema: docs/schema-v2.json (to be created)
+- Migration guide: docs/migration-org-to-json.md (to be created)
+- Old architecture: docs/org-architecture.md
+- Workflow: .github/workflows/hn-digest.yml
+
+** Notes
+*** Assumptions
+- HN API data is immutable (same item ID always returns same content, modulo score/comment updates)
+- Translation quality doesn't degrade with separate agent (vs bundled in curator)
+- JSON file size is acceptable (<100KB per digest, ~3MB/month, ~36MB/year)
+- org-mode readers can switch to JSON tooling (jq, python, etc.) or use generated org files
+
+*** Constraints
+- JSON Schema validation must complete in <1s per digest (llms.txt regeneration scans all digests)
+- Translation API calls must batch stories (not per-story) to stay under rate limits
+- Generated org files must round-trip parse without data loss (for human editing workflows)
+
+*** Open Questions
+- Should i18n be nested per-story or global per-digest? (Decision: per-story for granular updates)
+- Versioning strategy for schema changes after v2.0? (semver with migration scripts)
+- Keep org files in git or generate on-demand? (Decision: generate, commit to pages branch only)
+- Who validates JSON before it's committed? (digest-validate.py as pre-commit hook)
+
+*** Gotchas
+- JSON escaping for story content: quotes, newlines, Unicode must be handled
+- Org-mode star escaping (⁎) is LOST in JSON (use literal *)
+- i18n field is optional but MUST be present as empty object {} if no translations (for schema validation)
+- digest-build.py MUST deterministically order stories (by id) for reproducible HTML
+- llms.txt format depends on ALL digests being valid JSON (one corrupt file breaks entire index)
