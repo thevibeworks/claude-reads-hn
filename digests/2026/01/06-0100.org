@@ -1,0 +1,555 @@
+#+TITLE: HN Digest 2026-01-06 01:00:00 UT UTC
+#+DATE: 2026-01-06T01:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Venezuela goes dark, Yahoo Pipes gets a eulogy, and Brave counts its bytes
+
+* Highlights
+- BGP shenanigans during Venezuela blackout raise eyebrows
+- Author's DMCA complaint ignored while pirates party
+- Brave cuts adblock memory by 75% with FlatBuffers magic
+
+* Stories
+
+** There were BGP anomalies during the Venezuela blackout :security:networking:bgp:venezuela:
+:PROPERTIES:
+:ID:       46504963
+:URL:      https://loworbitsecurity.com/radar/radar16/
+:HN_URL:   https://news.ycombinator.com/item?id=46504963
+:POINTS:   420
+:COMMENTS: 218
+:BY:       illithid0
+:END:
+
+*** TLDR
+BGP route anomalies hit Venezuela's state telecom CANTV on January 2nd, just before military operations began. Eight IP prefixes belonging to Dayco Telecom in Caracas got routed through Italian and Colombian transit providers. The route had CANTV's AS number repeated 10 times, which is unusual. Critical infrastructure like banks and email servers were affected. The timing with Maduro's capture the next day raises questions about whether this was intelligence gathering.
+
+*** Take
+When your internet traffic takes a scenic detour through Italy right before a military coup, that's not a routing error, that's a feature. BGP: still held together with duct tape and good intentions after all these years.
+
+*** Comments
+
+**** Aloisius
+:PROPERTIES:
+:COMMENT_ID: 46505001
+:END:
+The CANTV AS8048 being prepended to the AS path 10 times means the traffic would not prioritize this route through AS8048, perhaps that was intentional.
+
+**** narmiouh
+:PROPERTIES:
+:COMMENT_ID: 46505123
+:END:
+One interesting thing I learnt was that 7% of DNS query types served by 1.1.1.1 are HTTPS, part of implementing ECH (Encrypted Client Hello) in TLS 1.3.
+
+**** delichon
+:PROPERTIES:
+:COMMENT_ID: 46505234
+:END:
+I assume that nuclear capability would rule out a target from this kind of snatch operation, and that this event will add pressure to proliferate.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+委内瑞拉停电期间出现BGP异常
+***** TLDR
+1月2日，委内瑞拉国有电信公司CANTV发生BGP路由异常，正值军事行动开始前夕。加拉加斯Dayco电信的8个IP前缀被路由通过意大利和哥伦比亚的中转提供商。路由中CANTV的AS号重复了10次，这很不寻常。银行和邮件服务器等关键基础设施受到影响。与次日马杜罗被捕的时间节点引发了情报收集的猜测。
+***** Take
+当你的网络流量在军事政变前绕道意大利，那不是路由错误，那是功能。BGP：这么多年了还是靠胶带和祈祷维持运转。
+***** Comments
+- CANTV AS8048在AS路径中重复10次意味着流量不会优先通过AS8048路由，也许这是故意的。
+- 有趣的是，1.1.1.1处理的DNS查询中7%是HTTPS类型，这是TLS 1.3中ECH（加密客户端问候）实现的一部分。
+- 我猜核能力会使目标免于这种突袭行动，这次事件会增加扩散压力。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+ベネズエラ停電中にBGP異常が発生
+***** TLDR
+1月2日、軍事作戦開始直前にベネズエラ国営通信CANTVでBGPルート異常が発生。カラカスのDayco Telecomの8つのIPプレフィックスがイタリアとコロンビアのトランジットプロバイダー経由でルーティングされた。ルートにCANTVのAS番号が10回繰り返されており、これは異常。銀行やメールサーバーなど重要インフラが影響を受けた。翌日のマドゥロ逮捕とのタイミングは情報収集の疑問を呼ぶ。
+***** Take
+軍事クーデターの直前にネット通信がイタリア経由になるのは、ルーティングエラーじゃなくて機能だ。BGP：何年経ってもガムテープと善意で動いてる。
+***** Comments
+- CANTV AS8048がASパスに10回繰り返されているのは、AS8048経由のルートを優先しないという意味かもしれない。
+- 興味深いのは、1.1.1.1が処理するDNSクエリの7%がHTTPSタイプで、TLS 1.3のECH実装の一部だということ。
+- 核能力があればこの種の急襲作戦から除外されると思う。この事件は核拡散圧力を高めるだろう。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+베네수엘라 정전 중 BGP 이상 발생
+***** TLDR
+1월 2일 군사작전 직전 베네수엘라 국영통신 CANTV에서 BGP 라우팅 이상이 발생했다. 카라카스 Dayco Telecom의 8개 IP 프리픽스가 이탈리아와 콜롬비아 트랜짓 제공업체를 통해 라우팅됐다. 라우트에 CANTV AS 번호가 10번 반복된 건 이례적이다. 은행과 이메일 서버 등 중요 인프라가 영향을 받았다. 다음 날 마두로 체포와의 타이밍은 정보 수집 의문을 제기한다.
+***** Take
+군사 쿠데타 직전에 인터넷 트래픽이 이탈리아로 우회한다면, 그건 라우팅 오류가 아니라 기능이다. BGP: 수십 년이 지나도 덕테이프와 선의로 버티는 중.
+***** Comments
+- CANTV AS8048이 AS 경로에 10번 반복된 것은 AS8048 경유 라우트를 우선시하지 않겠다는 의미일 수 있다.
+- 흥미로운 점은 1.1.1.1이 처리하는 DNS 쿼리의 7%가 HTTPS 타입으로, TLS 1.3의 ECH 구현의 일부라는 것이다.
+- 핵 능력이 있으면 이런 급습 작전 대상에서 제외될 것 같고, 이 사건이 확산 압력을 높일 것이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Hubo anomalías BGP durante el apagón de Venezuela
+***** TLDR
+El 2 de enero, justo antes del inicio de operaciones militares, se detectaron anomalías en rutas BGP en CANTV, la telecom estatal de Venezuela. Ocho prefijos IP de Dayco Telecom en Caracas fueron enrutados a través de proveedores de tránsito italianos y colombianos. La ruta tenía el número AS de CANTV repetido 10 veces, algo inusual. Infraestructura crítica como bancos y servidores de correo se vio afectada. El timing con la captura de Maduro al día siguiente genera preguntas sobre recopilación de inteligencia.
+***** Take
+Cuando tu tráfico de internet hace un desvío turístico por Italia justo antes de un golpe militar, eso no es un error de enrutamiento, es una función. BGP: todavía sostenido con cinta adhesiva y buenas intenciones después de tantos años.
+***** Comments
+- Que CANTV AS8048 se repita 10 veces en el path AS significa que el tráfico no priorizaría esta ruta, quizás fue intencional.
+- Algo interesante que aprendí es que el 7% de los tipos de consultas DNS servidas por 1.1.1.1 son HTTPS, parte de implementar ECH en TLS 1.3.
+- Asumo que la capacidad nuclear descartaría a un objetivo de este tipo de operación, y este evento añadirá presión para proliferar.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+BGP-Anomalien während des Venezuela-Blackouts
+***** TLDR
+Am 2. Januar, kurz vor Beginn der Militäroperationen, traten BGP-Routing-Anomalien bei Venezuelas staatlichem Telekom CANTV auf. Acht IP-Präfixe von Dayco Telecom in Caracas wurden über italienische und kolumbianische Transitanbieter geroutet. Die Route hatte CANTVs AS-Nummer 10-mal wiederholt, was ungewöhnlich ist. Kritische Infrastruktur wie Banken und E-Mail-Server waren betroffen. Das Timing mit Maduros Festnahme am nächsten Tag wirft Fragen zur Geheimdienstarbeit auf.
+***** Take
+Wenn dein Internetverkehr kurz vor einem Militärputsch einen Umweg über Italien nimmt, ist das kein Routing-Fehler, das ist ein Feature. BGP: Nach all den Jahren noch immer mit Klebeband und guten Absichten zusammengehalten.
+***** Comments
+- Dass CANTV AS8048 10-mal im AS-Pfad wiederholt wird, bedeutet, dass der Verkehr diese Route nicht priorisieren würde, vielleicht war das Absicht.
+- Interessant ist, dass 7% der von 1.1.1.1 bedienten DNS-Abfragetypen HTTPS sind, Teil der ECH-Implementierung in TLS 1.3.
+- Ich nehme an, dass Nuklearfähigkeit ein Ziel von dieser Art Operation ausschließen würde, und dieses Ereignis wird Druck zur Proliferation erhöhen.
+** Google broke my heart :google:dmca:copyright:piracy:
+:PROPERTIES:
+:ID:       46505518
+:URL:      https://perishablepress.com/google-broke-my-heart/
+:HN_URL:   https://news.ycombinator.com/item?id=46505518
+:POINTS:   230
+:COMMENTS: 102
+:BY:       ingve
+:END:
+
+*** TLDR
+Jeff Starr filed a DMCA notice to remove a pirated copy of his book from search results. Despite previously successful DMCA requests, this time he got stonewalled. After multiple attempts to prove his identity and copyright ownership, the response was simply 'Google has decided not to take action.' The author suspects training data hoarding over protecting creators.
+
+*** Take
+Nothing says 'Don't be evil' like ignoring a legitimate copyright claim while the pirated copy continues to rank. Google's DMCA process has become a roulette wheel where the house always wins.
+
+*** Comments
+
+**** gorbachev
+:PROPERTIES:
+:COMMENT_ID: 46505601
+:END:
+So not only do they process illegitimate copyright strikes, but they also don't process legitimate ones. Google is broken to the very core.
+
+**** QuercusMax
+:PROPERTIES:
+:COMMENT_ID: 46505712
+:END:
+The LegalEagle channel on YouTube had a similarly bad interaction when trying to get channels copying their videos taken down.
+
+**** indymike
+:PROPERTIES:
+:COMMENT_ID: 46505823
+:END:
+Takedown notices need to have a refundable processing fee. The fee should be refunded if the targeted publisher agrees the content shouldn't be online.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+谷歌伤透了我的心
+***** TLDR
+Jeff Starr提交DMCA通知要求从搜索结果中删除他书籍的盗版副本。尽管之前的DMCA请求都成功了，这次他却碰壁了。在多次尝试证明身份和版权所有权后，得到的回复只是'谷歌决定不采取行动'。作者怀疑他们更在意囤积训练数据而非保护创作者。
+***** Take
+没什么比无视合法版权投诉、任由盗版继续排名更能体现'不作恶'了。谷歌的DMCA流程已经变成了庄家必赢的轮盘赌。
+***** Comments
+- 所以他们不仅处理非法的版权打击，还不处理合法的。谷歌已经彻底坏掉了。
+- LegalEagle的YouTube频道在试图删除抄袭他们视频的频道时也有类似糟糕的经历。
+- 下架通知需要收取可退还的处理费。如果目标发布者同意内容不应在线，费用应该退还。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Googleに心を折られた
+***** TLDR
+Jeff Starrは著書の海賊版を検索結果から削除するためDMCA通知を提出した。以前のDMCA申請は成功していたが、今回は無視された。身元と著作権の証明を何度も試みた後、返ってきたのは「Googleは行動を起こさないことを決定しました」という回答だけ。著者はクリエイターの保護よりも訓練データの蓄積を優先しているのではと疑っている。
+***** Take
+正当な著作権侵害の訴えを無視しながら海賊版がランキングに残り続ける。これほど「邪悪になるな」を体現したものはない。GoogleのDMCAプロセスは胴元が必ず勝つルーレットになった。
+***** Comments
+- 違法な著作権ストライクは処理するのに、合法なものは処理しない。Googleは根本から壊れている。
+- LegalEagleのYouTubeチャンネルも、動画をコピーしているチャンネルを削除しようとした時に同様にひどい対応を受けた。
+- 削除通知には返金可能な処理手数料が必要だ。対象の公開者がコンテンツがオンラインにあるべきでないと同意すれば、手数料は返金されるべき。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+구글이 내 마음을 아프게 했다
+***** TLDR
+Jeff Starr는 자신의 책 불법 복제본을 검색 결과에서 제거하기 위해 DMCA 통지를 제출했다. 이전 DMCA 요청은 성공했지만, 이번에는 벽에 부딪혔다. 신원과 저작권 소유권을 증명하려는 여러 시도 끝에 돌아온 답변은 '구글은 조치를 취하지 않기로 결정했습니다'뿐이었다. 저자는 창작자 보호보다 훈련 데이터 확보를 우선시하는 것 같다고 의심한다.
+***** Take
+정당한 저작권 청구를 무시하면서 불법 복제본이 계속 순위에 오르게 하는 것만큼 '악해지지 말자'를 잘 보여주는 건 없다. 구글의 DMCA 절차는 하우스가 항상 이기는 룰렛이 됐다.
+***** Comments
+- 불법적인 저작권 스트라이크는 처리하면서 합법적인 것은 처리하지 않는다. 구글은 근본부터 망가졌다.
+- LegalEagle 유튜브 채널도 자신들의 영상을 복사한 채널을 삭제하려 할 때 비슷하게 나쁜 경험을 했다.
+- 삭제 통지에는 환불 가능한 처리 수수료가 필요하다. 대상 게시자가 콘텐츠가 온라인에 있으면 안 된다고 동의하면 수수료를 환불해야 한다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Google me rompió el corazón
+***** TLDR
+Jeff Starr presentó una notificación DMCA para eliminar una copia pirata de su libro de los resultados de búsqueda. A pesar de solicitudes DMCA exitosas anteriormente, esta vez fue ignorado. Después de múltiples intentos de probar su identidad y propiedad del copyright, la respuesta fue simplemente 'Google ha decidido no tomar acción'. El autor sospecha que priorizan acumular datos de entrenamiento sobre proteger a los creadores.
+***** Take
+Nada dice 'No seas malvado' como ignorar un reclamo legítimo de copyright mientras la copia pirata sigue posicionándose. El proceso DMCA de Google se ha convertido en una ruleta donde la casa siempre gana.
+***** Comments
+- Así que no solo procesan strikes de copyright ilegítimos, sino que tampoco procesan los legítimos. Google está roto hasta la médula.
+- El canal LegalEagle en YouTube tuvo una interacción igualmente mala cuando intentaba que eliminaran canales que copiaban sus videos.
+- Las notificaciones de eliminación necesitan una tarifa de procesamiento reembolsable. La tarifa debería reembolsarse si el editor objetivo acepta que el contenido no debería estar en línea.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Google hat mir das Herz gebrochen
+***** TLDR
+Jeff Starr reichte eine DMCA-Mitteilung ein, um eine Raubkopie seines Buches aus den Suchergebnissen zu entfernen. Trotz zuvor erfolgreicher DMCA-Anfragen wurde er diesmal ignoriert. Nach mehreren Versuchen, seine Identität und sein Urheberrecht nachzuweisen, kam nur die Antwort 'Google hat beschlossen, keine Maßnahmen zu ergreifen'. Der Autor vermutet, dass Trainingsdaten-Horten Vorrang vor dem Schutz von Kreativen hat.
+***** Take
+Nichts sagt 'Sei nicht böse' besser, als einen legitimen Urheberrechtsanspruch zu ignorieren, während die Raubkopie weiter rankt. Googles DMCA-Prozess ist zum Roulette geworden, bei dem das Haus immer gewinnt.
+***** Comments
+- Sie bearbeiten also nicht nur illegitime Copyright-Strikes, sondern auch keine legitimen. Google ist bis ins Mark kaputt.
+- Der LegalEagle-Kanal auf YouTube hatte ähnlich schlechte Erfahrungen beim Versuch, Kanäle zu entfernen, die ihre Videos kopierten.
+- Takedown-Mitteilungen brauchen eine erstattungsfähige Bearbeitungsgebühr. Die Gebühr sollte erstattet werden, wenn der Zielherausgeber zustimmt, dass der Inhalt nicht online sein sollte.
+** Brave overhauled its Rust adblock engine with FlatBuffers, cutting memory 75% :rust:browser:performance:adblock:
+:PROPERTIES:
+:ID:       46501894
+:URL:      https://brave.com/privacy-updates/36-adblock-memory-reduction/
+:HN_URL:   https://news.ycombinator.com/item?id=46501894
+:POINTS:   171
+:COMMENTS: 71
+:BY:       skaul
+:END:
+
+*** TLDR
+Brave rebuilt its Rust-based adblock engine using FlatBuffers, converting ~100,000 filters from standard Rust data structures to a zero-copy binary format. Results: 75% memory reduction (about 45MB saved), 19% fewer memory allocations, 13% faster filter matching, and 30% better internal resource storage. The native approach allows optimizations that extension-based blockers can't achieve.
+
+*** Take
+Finally, someone optimizing for memory instead of just throwing more RAM at the problem. When your adblock engine uses less memory than a single Slack tab, you're doing something right.
+
+*** Comments
+
+**** nicoburns
+:PROPERTIES:
+:COMMENT_ID: 46502001
+:END:
+Brave's adblocking engine is a neat example of open source and the ease of sharing libraries in Rust. It uses Servo crates to parse CSS and evaluate selectors, and is then itself published as a crate on crates.io.
+
+**** drnick1
+:PROPERTIES:
+:COMMENT_ID: 46502112
+:END:
+I am surprised there does not exist a community fork of Brave yet that strips out all of the commercial stuff (rewards, AI, own updates), making it suitable for inclusion in mainstream Linux distros.
+
+**** nosman
+:PROPERTIES:
+:COMMENT_ID: 46502223
+:END:
+I hope this is the start of developers being conscious of using resources efficiently again, especially in the browser.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Brave用FlatBuffers重构其Rust广告拦截引擎，内存减少75%
+***** TLDR
+Brave使用FlatBuffers重建了其基于Rust的广告拦截引擎，将约10万个过滤器从标准Rust数据结构转换为零拷贝二进制格式。成果：内存减少75%（节省约45MB），内存分配减少19%，过滤器匹配速度提升13%，内部资源存储优化30%。原生方法实现了扩展型拦截器无法达到的优化。
+***** Take
+终于有人在优化内存而不是往问题上扔更多RAM了。当你的广告拦截引擎用的内存比一个Slack标签页还少时，你就做对了。
+***** Comments
+- Brave的广告拦截引擎是开源和Rust库共享便利性的好例子。它使用Servo crate解析CSS和评估选择器，然后本身作为crate发布在crates.io上。
+- 我很惊讶还没有Brave的社区分支，去掉所有商业内容（奖励、AI、自有更新），使其适合纳入主流Linux发行版。
+- 我希望这是开发者开始重新关注资源效率使用的开始，尤其是在浏览器领域。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+BraveがRust製広告ブロックエンジンをFlatBuffersで刷新、メモリ75%削減
+***** TLDR
+BraveはRustベースの広告ブロックエンジンをFlatBuffersで再構築し、約10万のフィルターを標準のRustデータ構造からゼロコピーバイナリ形式に変換した。結果：メモリ75%削減（約45MB節約）、メモリ割り当て19%減少、フィルターマッチング13%高速化、内部リソースストレージ30%改善。ネイティブアプローチにより、拡張機能ベースのブロッカーでは達成できない最適化が可能に。
+***** Take
+やっとRAMを増やすのではなくメモリを最適化する人が現れた。広告ブロックエンジンのメモリ使用量がSlackの1タブより少ないなら、正しいことをしている。
+***** Comments
+- Braveの広告ブロックエンジンはオープンソースとRustでのライブラリ共有の便利さの良い例だ。ServoクレートでCSSをパースしセレクターを評価し、それ自体もcrates.ioでクレートとして公開されている。
+- 商用機能（リワード、AI、独自アップデート）を全て削除した、主流Linuxディストロに適したBraveのコミュニティフォークがまだ存在しないのは驚きだ。
+- これが開発者が再びリソース効率を意識し始めるきっかけになることを願う、特にブラウザ分野で。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Brave, FlatBuffers로 Rust 광고차단 엔진 개편해 메모리 75% 절감
+***** TLDR
+Brave는 FlatBuffers를 사용해 Rust 기반 광고차단 엔진을 재구축하여 약 10만 개의 필터를 표준 Rust 데이터 구조에서 제로카피 바이너리 형식으로 변환했다. 결과: 메모리 75% 감소(약 45MB 절약), 메모리 할당 19% 감소, 필터 매칭 13% 빨라짐, 내부 리소스 저장소 30% 개선. 네이티브 접근 방식으로 확장 프로그램 기반 차단기가 달성할 수 없는 최적화가 가능해졌다.
+***** Take
+드디어 RAM을 더 던지는 대신 메모리를 최적화하는 사람이 나왔다. 광고차단 엔진이 Slack 탭 하나보다 메모리를 덜 쓴다면, 제대로 하고 있는 거다.
+***** Comments
+- Brave의 광고차단 엔진은 오픈소스와 Rust에서 라이브러리 공유의 용이성을 보여주는 좋은 예다. Servo 크레이트로 CSS를 파싱하고 셀렉터를 평가하며, 자체적으로 crates.io에 크레이트로 공개된다.
+- 상업적 요소(리워드, AI, 자체 업데이트)를 모두 제거한 Brave 커뮤니티 포크가 아직 없어서 주류 Linux 배포판에 포함될 수 있게 하는 게 없다는 게 놀랍다.
+- 이게 개발자들이 다시 자원 효율적 사용을 의식하기 시작하는 계기가 되길 바란다, 특히 브라우저에서.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Brave renovó su motor de adblock en Rust con FlatBuffers, reduciendo memoria 75%
+***** TLDR
+Brave reconstruyó su motor de bloqueo de anuncios basado en Rust usando FlatBuffers, convirtiendo ~100,000 filtros de estructuras de datos Rust estándar a un formato binario de copia cero. Resultados: 75% de reducción de memoria (unos 45MB ahorrados), 19% menos asignaciones de memoria, 13% más rápido en coincidencia de filtros y 30% mejor almacenamiento interno de recursos. El enfoque nativo permite optimizaciones que los bloqueadores basados en extensiones no pueden lograr.
+***** Take
+Por fin alguien optimizando memoria en lugar de simplemente agregar más RAM al problema. Cuando tu motor de adblock usa menos memoria que una sola pestaña de Slack, estás haciendo algo bien.
+***** Comments
+- El motor de adblock de Brave es un buen ejemplo del código abierto y la facilidad de compartir bibliotecas en Rust. Usa crates de Servo para parsear CSS y evaluar selectores, y luego se publica como crate en crates.io.
+- Me sorprende que no exista todavía un fork comunitario de Brave que elimine todo lo comercial (recompensas, IA, actualizaciones propias), haciéndolo apto para distros Linux mainstream.
+- Espero que esto sea el comienzo de que los desarrolladores vuelvan a ser conscientes de usar recursos eficientemente, especialmente en el navegador.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Brave überarbeitete seine Rust-Adblock-Engine mit FlatBuffers und senkte Speicher um 75%
+***** TLDR
+Brave hat seine Rust-basierte Adblock-Engine mit FlatBuffers neu aufgebaut und ~100.000 Filter von Standard-Rust-Datenstrukturen in ein Zero-Copy-Binärformat konvertiert. Ergebnisse: 75% Speicherreduzierung (ca. 45MB gespart), 19% weniger Speicherzuweisungen, 13% schnelleres Filter-Matching und 30% bessere interne Ressourcenspeicherung. Der native Ansatz ermöglicht Optimierungen, die erweiterungsbasierte Blocker nicht erreichen können.
+***** Take
+Endlich optimiert jemand den Speicher, anstatt einfach mehr RAM auf das Problem zu werfen. Wenn deine Adblock-Engine weniger Speicher verbraucht als ein einzelner Slack-Tab, machst du etwas richtig.
+***** Comments
+- Braves Adblock-Engine ist ein gutes Beispiel für Open Source und die einfache Bibliotheksfreigabe in Rust. Sie verwendet Servo-Crates zum Parsen von CSS und Auswerten von Selektoren und wird selbst als Crate auf crates.io veröffentlicht.
+- Ich bin überrascht, dass es noch keinen Community-Fork von Brave gibt, der das kommerzielle Zeug (Rewards, KI, eigene Updates) entfernt und ihn für Mainstream-Linux-Distros geeignet macht.
+- Ich hoffe, das ist der Beginn davon, dass Entwickler wieder bewusst mit Ressourcen umgehen, besonders im Browser.
+** Pipe Dreams – The life and times of Yahoo Pipes (2023) :nostalgia:web-history:yahoo:visual-programming:
+:PROPERTIES:
+:ID:       46503006
+:URL:      https://retool.com/pipes
+:HN_URL:   https://news.ycombinator.com/item?id=46503006
+:POINTS:   89
+:COMMENTS: 19
+:BY:       twalichiewicz
+:END:
+
+*** TLDR
+Yahoo Pipes launched in 2007 as a visual drag-and-drop tool that let non-programmers aggregate, filter, and remix RSS feeds and web data without coding. Users could create custom apartment listings, track earthquakes, or mash up news sources. Tim O'Reilly called it 'a milestone in the history of the internet' that 'democratized web programming.' Yahoo shut it down in 2015, but its spirit lives on in tools like iOS Shortcuts, Node-RED, and Huginn.
+
+*** Take
+RIP to the real one. Yahoo Pipes was doing visual programming when most people were still on dialup. Now we have a thousand no-code tools that do the same thing worse, and none of them are free.
+
+*** Comments
+
+**** tangoalpha
+:PROPERTIES:
+:COMMENT_ID: 46503101
+:END:
+Pipes was ahead of its time. Built a scraper and aggregator back in 2008-2010, fetching content from over 2000 sources. More complex than any nifi or airflow pipelines I built later in my career. And all of it was free.
+
+**** hermitcrab
+:PROPERTIES:
+:COMMENT_ID: 46503212
+:END:
+It is surely only a matter of time until someone says 'yes, but node based editors are crap, you should do everything in code'.
+
+**** postatic
+:PROPERTIES:
+:COMMENT_ID: 46503323
+:END:
+Absolutely loved Yahoo Pipes. Created my own last year - https://www.mashups.io
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+管道梦想——Yahoo Pipes的往事（2023）
+***** TLDR
+Yahoo Pipes于2007年推出，是一个可视化拖放工具，让非程序员无需编码就能聚合、过滤和混搭RSS源和网络数据。用户可以创建自定义房源列表、追踪地震或混合新闻来源。Tim O'Reilly称其为'互联网历史上的里程碑'，'使网络编程民主化'。雅虎在2015年关闭了它，但它的精神在iOS快捷指令、Node-RED和Huginn等工具中延续。
+***** Take
+向真正的先驱致敬。当大多数人还在用拨号上网时，Yahoo Pipes就在做可视化编程了。现在我们有上千个同样功能但更差的无代码工具，而且没有一个是免费的。
+***** Comments
+- Pipes领先于时代。2008-2010年我建了一个从2000多个来源抓取内容的爬虫和聚合器。比我职业生涯后来建的任何nifi或airflow管道都复杂。而且全部免费。
+- 肯定迟早会有人说'是的，但基于节点的编辑器很烂，你应该用代码做所有事'。
+- 非常喜欢Yahoo Pipes。去年创建了自己的版本——https://www.mashups.io
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+パイプの夢——Yahoo Pipesの興亡（2023）
+***** TLDR
+Yahoo Pipesは2007年に登場した、非プログラマーがコーディングなしでRSSフィードやウェブデータを集約・フィルタリング・リミックスできるビジュアルドラッグ＆ドロップツールだった。ユーザーはカスタムの不動産リストを作成したり、地震を追跡したり、ニュースソースをマッシュアップできた。Tim O'Reillyはこれを「インターネット史上のマイルストーン」で「ウェブプログラミングを民主化した」と呼んだ。Yahooは2015年にサービスを終了したが、その精神はiOSショートカット、Node-RED、Huginnなどのツールに生き続けている。
+***** Take
+本物に敬意を。ほとんどの人がダイヤルアップを使っていた頃、Yahoo Pipesはビジュアルプログラミングをやっていた。今は同じことをより悪くやる無数のノーコードツールがあり、どれも無料じゃない。
+***** Comments
+- Pipesは時代を先取りしていた。2008-2010年に2000以上のソースからコンテンツを取得するスクレイパーとアグリゲーターを作った。その後のキャリアで作ったどのnifiやairflowパイプラインよりも複雑だった。しかも全部無料だった。
+- きっと誰かが『でもノードベースのエディターはダメだ、全部コードでやるべき』と言い出すのは時間の問題だろう。
+- Yahoo Pipes大好きだった。去年自分のを作った——https://www.mashups.io
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+파이프 드림 – Yahoo Pipes의 흥망성쇠 (2023)
+***** TLDR
+Yahoo Pipes는 2007년에 출시된 비주얼 드래그 앤 드롭 도구로, 비프로그래머가 코딩 없이 RSS 피드와 웹 데이터를 집계, 필터링, 리믹스할 수 있게 했다. 사용자는 맞춤 부동산 목록을 만들거나, 지진을 추적하거나, 뉴스 소스를 매시업할 수 있었다. Tim O'Reilly는 이를 '인터넷 역사의 이정표'이자 '웹 프로그래밍을 민주화했다'고 불렀다. Yahoo는 2015년에 서비스를 종료했지만, 그 정신은 iOS 단축어, Node-RED, Huginn 같은 도구에서 이어지고 있다.
+***** Take
+진정한 선구자에게 경의를. 대부분의 사람들이 아직 전화접속을 쓸 때 Yahoo Pipes는 비주얼 프로그래밍을 하고 있었다. 이제 같은 일을 더 못하게 하는 수천 개의 노코드 도구가 있고, 무료인 건 하나도 없다.
+***** Comments
+- Pipes는 시대를 앞서갔다. 2008-2010년에 2000개 이상의 소스에서 콘텐츠를 가져오는 스크래퍼와 애그리게이터를 만들었다. 내 경력에서 나중에 만든 어떤 nifi나 airflow 파이프라인보다 복잡했다. 그리고 전부 무료였다.
+- 누군가 '그래, 하지만 노드 기반 에디터는 별로야, 전부 코드로 해야 해'라고 말하는 건 시간문제일 거다.
+- Yahoo Pipes를 정말 좋아했다. 작년에 내 버전을 만들었다 - https://www.mashups.io
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Sueños de tuberías – La vida y tiempos de Yahoo Pipes (2023)
+***** TLDR
+Yahoo Pipes se lanzó en 2007 como una herramienta visual de arrastrar y soltar que permitía a no-programadores agregar, filtrar y remezclar feeds RSS y datos web sin programar. Los usuarios podían crear listados de apartamentos personalizados, rastrear terremotos o combinar fuentes de noticias. Tim O'Reilly lo llamó 'un hito en la historia de internet' que 'democratizó la programación web'. Yahoo lo cerró en 2015, pero su espíritu vive en herramientas como iOS Shortcuts, Node-RED y Huginn.
+***** Take
+Descanse en paz el verdadero. Yahoo Pipes hacía programación visual cuando la mayoría todavía usaba dialup. Ahora tenemos mil herramientas no-code que hacen lo mismo peor, y ninguna es gratis.
+***** Comments
+- Pipes estaba adelantado a su tiempo. Construí un scraper y agregador en 2008-2010, obteniendo contenido de más de 2000 fuentes. Más complejo que cualquier pipeline de nifi o airflow que construí después en mi carrera. Y todo era gratis.
+- Seguro que es cuestión de tiempo hasta que alguien diga 'sí, pero los editores basados en nodos son basura, deberías hacer todo en código'.
+- Amé absolutamente Yahoo Pipes. Creé el mío el año pasado - https://www.mashups.io
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Pipe Dreams – Das Leben und die Zeiten von Yahoo Pipes (2023)
+***** TLDR
+Yahoo Pipes startete 2007 als visuelles Drag-and-Drop-Tool, mit dem Nicht-Programmierer ohne Coding RSS-Feeds und Webdaten aggregieren, filtern und remixen konnten. Nutzer konnten benutzerdefinierte Wohnungslisten erstellen, Erdbeben verfolgen oder Nachrichtenquellen mashén. Tim O'Reilly nannte es 'einen Meilenstein in der Geschichte des Internets', der 'Web-Programmierung demokratisierte'. Yahoo stellte es 2015 ein, aber sein Geist lebt in Tools wie iOS Shortcuts, Node-RED und Huginn weiter.
+***** Take
+Ruhe in Frieden, du Echte. Yahoo Pipes machte visuelles Programmieren, als die meisten noch Dial-up nutzten. Jetzt haben wir tausend No-Code-Tools, die dasselbe schlechter machen, und keines ist kostenlos.
+***** Comments
+- Pipes war seiner Zeit voraus. Habe 2008-2010 einen Scraper und Aggregator gebaut, der Inhalte von über 2000 Quellen holte. Komplexer als alle nifi- oder airflow-Pipelines, die ich später in meiner Karriere gebaut habe. Und alles war kostenlos.
+- Es ist sicher nur eine Frage der Zeit, bis jemand sagt 'ja, aber node-basierte Editoren sind Mist, du solltest alles in Code machen'.
+- Habe Yahoo Pipes absolut geliebt. Letztes Jahr mein eigenes erstellt - https://www.mashups.io
+** Sega co-founder David Rosen has died :gaming:obituary:sega:history:
+:PROPERTIES:
+:ID:       46502239
+:URL:      https://www.theguardian.com/games/2026/jan/05/sega-co-founder-david-rosen-dies
+:HN_URL:   https://news.ycombinator.com/item?id=46502239
+:POINTS:   170
+:COMMENTS: 23
+:BY:       n1b0m
+:END:
+
+*** TLDR
+［from title + comments, article unreachable］ David Rosen, co-founder of Sega, has passed away. Rosen founded Service Games (later shortened to Sega) and helped build it into one of gaming's most iconic companies. His legacy includes Sonic the Hedgehog and decades of arcade and console innovation.
+
+*** Take
+The man who gave us Sonic also gave us the name 'Sega' from Service Games. He built an empire on quarters and blue hedgehogs. Rest in power to a legend who shaped an industry.
+
+*** Comments
+
+**** sbarre
+:PROPERTIES:
+:COMMENT_ID: 46502301
+:END:
+I never knew that 'Sega' was 'Service Games' shortened.
+
+**** RyanShook
+:PROPERTIES:
+:COMMENT_ID: 46502412
+:END:
+If you're interested in David Rosen's story or Sega history in general I highly recommend Console Wars by Blake Harris.
+
+**** pupppet
+:PROPERTIES:
+:COMMENT_ID: 46502523
+:END:
+Wow I saw this come up and just assumed he had co-founded Sega USA, not Sega period.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+世嘉联合创始人大卫·罗森去世
+***** TLDR
+［根据标题和评论，原文无法访问］ 世嘉联合创始人大卫·罗森已去世。罗森创立了Service Games（后来缩写为Sega），并帮助将其打造成游戏界最具标志性的公司之一。他的遗产包括索尼克刺猬和数十年的街机与主机创新。
+***** Take
+给我们索尼克的人也给我们起了'Sega'这个名字，源自Service Games。他用硬币和蓝色刺猬建立了一个帝国。向这位塑造了一个行业的传奇致敬，安息。
+***** Comments
+- 我从来不知道'Sega'是'Service Games'的缩写。
+- 如果你对大卫·罗森的故事或世嘉历史感兴趣，我强烈推荐Blake Harris的《Console Wars》。
+- 哇，我看到这个消息时还以为他是世嘉美国的联合创始人，没想到是世嘉本身。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+セガ共同創業者デビッド・ローゼン氏死去
+***** TLDR
+［タイトルとコメントより、記事にアクセス不可］ セガ共同創業者のデビッド・ローゼン氏が亡くなった。ローゼン氏はService Games（後にSegaと短縮）を設立し、ゲーム業界で最も象徴的な企業の一つに育て上げた。彼の遺産にはソニック・ザ・ヘッジホッグと数十年にわたるアーケードとコンソールのイノベーションが含まれる。
+***** Take
+ソニックを生んだ人は、Service Gamesから'Sega'という名前も生んだ。彼は25セント硬貨と青いハリネズミで帝国を築いた。業界を形作った伝説に敬意を表して、安らかに。
+***** Comments
+- 'Sega'が'Service Games'の短縮形だとは知らなかった。
+- デビッド・ローゼンの話やセガの歴史に興味があるなら、Blake Harrisの『Console Wars』を強くお勧めする。
+- わあ、このニュースを見て、彼がセガUSAの共同創業者だと思っていた、セガ自体じゃなくて。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+세가 공동 창립자 데이비드 로젠 별세
+***** TLDR
+［제목과 댓글에서, 기사 접근 불가］ 세가 공동 창립자 데이비드 로젠이 세상을 떠났다. 로젠은 Service Games(나중에 Sega로 축약)를 설립하고 게임 업계에서 가장 상징적인 회사 중 하나로 성장시켰다. 그의 유산에는 소닉 더 헤지혹과 수십 년간의 아케이드 및 콘솔 혁신이 포함된다.
+***** Take
+소닉을 준 사람이 Service Games에서 'Sega'라는 이름도 만들었다. 그는 동전과 파란 고슴도치로 제국을 세웠다. 산업을 형성한 전설에게 경의를, 편히 쉬시길.
+***** Comments
+- 'Sega'가 'Service Games'의 줄임말인 줄 몰랐다.
+- 데이비드 로젠의 이야기나 세가 역사에 관심 있다면 Blake Harris의 Console Wars를 강력 추천한다.
+- 와, 이 소식을 보고 그가 세가 USA 공동 창립자인 줄 알았는데, 세가 자체였구나.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Muere el cofundador de Sega, David Rosen
+***** TLDR
+［del título y comentarios, artículo inaccesible］ David Rosen, cofundador de Sega, ha fallecido. Rosen fundó Service Games (luego abreviado a Sega) y ayudó a construirla como una de las compañías más icónicas de los videojuegos. Su legado incluye Sonic the Hedgehog y décadas de innovación en arcades y consolas.
+***** Take
+El hombre que nos dio Sonic también nos dio el nombre 'Sega' de Service Games. Construyó un imperio con monedas de 25 centavos y erizos azules. Descansa en poder, leyenda que dio forma a una industria.
+***** Comments
+- Nunca supe que 'Sega' era 'Service Games' abreviado.
+- Si te interesa la historia de David Rosen o la historia de Sega en general, recomiendo mucho Console Wars de Blake Harris.
+- Vaya, vi esto y asumí que había cofundado Sega USA, no Sega en sí.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Sega-Mitgründer David Rosen ist gestorben
+***** TLDR
+［aus Titel und Kommentaren, Artikel nicht erreichbar］ David Rosen, Mitgründer von Sega, ist verstorben. Rosen gründete Service Games (später zu Sega gekürzt) und half dabei, es zu einem der ikonischsten Unternehmen der Spielebranche aufzubauen. Sein Vermächtnis umfasst Sonic the Hedgehog und Jahrzehnte an Arcade- und Konsolen-Innovation.
+***** Take
+Der Mann, der uns Sonic gab, gab uns auch den Namen 'Sega' von Service Games. Er baute ein Imperium auf Vierteldollarn und blauen Igeln. Ruhe in Macht für eine Legende, die eine Industrie prägte.
+***** Comments
+- Ich wusste nie, dass 'Sega' die Kurzform von 'Service Games' war.
+- Wenn du dich für David Rosens Geschichte oder Sega-Geschichte interessierst, empfehle ich Console Wars von Blake Harris sehr.
+- Wow, ich sah das und nahm an, er hätte Sega USA mitgegründet, nicht Sega selbst.
