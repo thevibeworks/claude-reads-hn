@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-01-08 01:00:00 UT UTC
+#+DATE: 2026-01-08T01:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+TPMs break everything, RFK rewrites the food pyramid, and landlords cry foul
+
+* Highlights
+- Tailscale disables TPM encryption after support nightmare
+- US government says eat real food, HN discovers protein
+- Beautiful ship tracking viz reveals global trade arteries
+- Wall Street banned from buying single-family homes
+- LaTeX package adds coffee stains for authentic academia
+
+* Stories
+
+** Tailscale state file encryption no longer enabled by default :security:infrastructure:tailscale:
+:PROPERTIES:
+:ID:       46531925
+:URL:      https://tailscale.com/changelog
+:HN_URL:   https://news.ycombinator.com/item?id=46531925
+:POINTS:   192
+:COMMENTS: 82
+:BY:       traceroute66
+:END:
+
+*** TLDR
+Tailscale v1.92.5 disables TPM-based state file encryption by default after it caused massive support headaches. Turns out treating every TPM reset as tampering was a bit paranoid when TPMs vary wildly in quality across hardware.
+
+*** Take
+Security theater meets hardware reality. When your security feature breaks more devices than it protects, maybe it shouldn't be on by default. The engineer who made the call showed up in comments to explain, which is refreshingly honest.
+
+*** Comments
+
+**** cronos
+:PROPERTIES:
+:COMMENT_ID: 46532001
+:END:
+I'm one of the Tailscale engineers who built this. This feature is too support intensive. Our original thinking was that a TPM reset is always a sign of tampering, but reality disagreed.
+
+**** xyzzy_plugh
+:PROPERTIES:
+:COMMENT_ID: 46532100
+:END:
+This never should have been on by default. The end user needs to know they want to use the TPM. This is a huge footgun for many devices.
+
+**** rstat1
+:PROPERTIES:
+:COMMENT_ID: 46532050
+:END:
+The PR explains why - tons of problems due to the variability of TPM quality among other things.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Tailscale状态文件加密默认不再启用
+***** TLDR
+Tailscale v1.92.5默认禁用TPM加密，因为它导致大量支持问题。事实证明，将每次TPM重置都视为篡改有点偏执，因为各种硬件的TPM质量差异很大。
+***** Take
+安全剧场遇上硬件现实。当你的安全功能破坏的设备比保护的还多时，也许它不应该默认开启。做出这个决定的工程师在评论中现身解释，这是令人耳目一新的诚实。
+***** Comments
+- 我是构建这个功能的Tailscale工程师之一。这个功能支持成本太高。我们原本认为TPM重置总是篡改的迹象，但现实不同意。
+- 这本来就不应该默认开启。终端用户需要知道他们想使用TPM。这对很多设备来说是个大坑。
+- PR解释了原因——由于TPM质量差异等原因造成了大量问题。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Tailscaleの状態ファイル暗号化がデフォルトで無効に
+***** TLDR
+Tailscale v1.92.5はTPMベースの暗号化をデフォルトで無効化。大量のサポート問題を引き起こしたため。ハードウェア間でTPMの品質が大きく異なる中、すべてのTPMリセットを改ざんとみなすのは少し偏執的だった。
+***** Take
+セキュリティ劇場がハードウェアの現実に直面。セキュリティ機能が保護するより多くのデバイスを壊すなら、デフォルトで有効にすべきではない。決定を下したエンジニアがコメントで説明に現れたのは、さわやかな誠実さだ。
+***** Comments
+- これを構築したTailscaleエンジニアの一人です。この機能はサポートコストが高すぎます。TPMリセットは常に改ざんの兆候だと考えていましたが、現実は違いました。
+- これは最初からデフォルトで有効にすべきではなかった。エンドユーザーはTPMを使いたいことを知る必要がある。多くのデバイスにとって大きな落とし穴だ。
+- PRが理由を説明している—TPM品質のばらつきなど、多くの問題が発生した。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Tailscale 상태 파일 암호화가 더 이상 기본 활성화되지 않음
+***** TLDR
+Tailscale v1.92.5가 대규모 지원 문제로 인해 TPM 기반 암호화를 기본 비활성화했다. 하드웨어마다 TPM 품질이 크게 다른 상황에서 모든 TPM 리셋을 변조로 간주하는 것은 좀 편집증적이었다.
+***** Take
+보안 극장이 하드웨어 현실을 만났다. 보안 기능이 보호하는 것보다 더 많은 장치를 망가뜨린다면, 기본으로 켜져 있으면 안 된다. 결정을 내린 엔지니어가 댓글에서 설명한 것은 상쾌하게 솔직하다.
+***** Comments
+- 이것을 만든 Tailscale 엔지니어 중 한 명입니다. 이 기능은 지원 비용이 너무 높습니다. TPM 리셋이 항상 변조의 징후라고 생각했지만 현실은 달랐습니다.
+- 이것은 처음부터 기본으로 활성화되어서는 안 됐습니다. 최종 사용자가 TPM을 사용하고 싶다는 것을 알아야 합니다. 많은 장치에 큰 함정입니다.
+- PR이 이유를 설명합니다—TPM 품질의 변동성 등으로 인해 많은 문제가 발생했습니다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+El cifrado de archivos de estado de Tailscale ya no está habilitado por defecto
+***** TLDR
+Tailscale v1.92.5 desactiva el cifrado basado en TPM por defecto después de causar pesadillas de soporte masivas. Resulta que tratar cada reinicio de TPM como manipulación era un poco paranoico cuando la calidad de los TPM varía enormemente entre hardware.
+***** Take
+El teatro de seguridad se encuentra con la realidad del hardware. Cuando tu función de seguridad rompe más dispositivos de los que protege, quizás no debería estar activada por defecto. El ingeniero que tomó la decisión apareció en los comentarios para explicar, lo cual es refrescantemente honesto.
+***** Comments
+- Soy uno de los ingenieros de Tailscale que construyó esto. Esta función requiere demasiado soporte. Pensamos que un reinicio de TPM siempre es señal de manipulación, pero la realidad no estuvo de acuerdo.
+- Esto nunca debería haber estado activado por defecto. El usuario final necesita saber que quiere usar el TPM. Es una trampa enorme para muchos dispositivos.
+- El PR explica por qué: toneladas de problemas debido a la variabilidad en la calidad de TPM entre otras cosas.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Tailscale-Statusdateiverschlüsselung nicht mehr standardmäßig aktiviert
+***** TLDR
+Tailscale v1.92.5 deaktiviert TPM-basierte Verschlüsselung standardmäßig, nachdem sie massive Support-Probleme verursachte. Es stellte sich heraus, dass es etwas paranoid war, jeden TPM-Reset als Manipulation zu behandeln, wenn die TPM-Qualität je nach Hardware stark variiert.
+***** Take
+Sicherheitstheater trifft auf Hardware-Realität. Wenn deine Sicherheitsfunktion mehr Geräte kaputt macht als sie schützt, sollte sie vielleicht nicht standardmäßig aktiviert sein. Der Ingenieur, der die Entscheidung traf, erschien in den Kommentaren zur Erklärung, was erfrischend ehrlich ist.
+***** Comments
+- Ich bin einer der Tailscale-Ingenieure, die das gebaut haben. Diese Funktion verursacht zu viel Support-Aufwand. Wir dachten ursprünglich, ein TPM-Reset ist immer ein Zeichen von Manipulation, aber die Realität war anderer Meinung.
+- Das hätte nie standardmäßig aktiviert sein sollen. Der Endbenutzer muss wissen, dass er das TPM verwenden will. Das ist eine riesige Fußangel für viele Geräte.
+- Der PR erklärt warum - tonnenweise Probleme aufgrund der Variabilität der TPM-Qualität unter anderem.
+** Eat Real Food :health:government:nutrition:
+:PROPERTIES:
+:ID:       46529237
+:URL:      https://realfood.gov
+:HN_URL:   https://news.ycombinator.com/item?id=46529237
+:POINTS:   477
+:COMMENTS: 770
+:BY:       atestu
+:END:
+
+*** TLDR
+The new US dietary guidelines from HHS basically say eat whole foods, prioritize protein (0.54-0.73g per pound body weight), cut added sugars, and don't overthink it. There's a new food pyramid that emphasizes protein and healthy fats at the base.
+
+*** Take
+RFK's MAHA crowd finally got their hands on the food pyramid and somehow produced guidelines that aren't completely insane. HN is split between 'finally, common sense' and 'this is just repackaged carnivore diet propaganda.' The 770 comments suggest people have Opinions about food.
+
+*** Comments
+
+**** woodruffw
+:PROPERTIES:
+:COMMENT_ID: 46529500
+:END:
+US per capita meat consumption has increased by more than 100 pounds over the last century. A demand for Americans to eat more meat would have to explain why our already positive trend isn't enough.
+
+**** zeroonetwothree
+:PROPERTIES:
+:COMMENT_ID: 46529600
+:END:
+For all the lunacy of RFK this somehow is actually a really good set of guidelines? Certainly better than the previous version. I didn't expect that.
+
+**** raybb
+:PROPERTIES:
+:COMMENT_ID: 46529700
+:END:
+Does anyone have a recommendation for a good course to learn the basics of nutrition? Looking for something rooted in current scientific consensus.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+吃真正的食物
+***** TLDR
+美国卫生部新的膳食指南基本上说：吃完整食物，优先摄入蛋白质（每磅体重0.54-0.73克），减少添加糖，不要想太多。新的食物金字塔强调蛋白质和健康脂肪作为基础。
+***** Take
+RFK的MAHA人群终于得到了食物金字塔的控制权，不知怎的产生了不完全疯狂的指南。HN分裂为'终于有常识了'和'这只是重新包装的肉食饮食宣传'两派。770条评论表明人们对食物有很多意见。
+***** Comments
+- 美国人均肉类消费量在过去一个世纪增加了100多磅。要求美国人吃更多肉需要解释为什么我们已经上升的趋势还不够。
+- 尽管RFK很疯狂，但这套指南实际上相当不错？肯定比以前的版本好。我没想到。
+- 有人能推荐一个学习营养学基础的好课程吗？寻找基于当前科学共识的内容。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+本物の食べ物を食べよう
+***** TLDR
+HHSの新しい米国食事ガイドラインは基本的に、ホールフードを食べ、タンパク質を優先し（体重1ポンドあたり0.54-0.73g）、添加糖を減らし、考えすぎないことを推奨。新しいフードピラミッドはタンパク質と健康的な脂肪を基盤として強調。
+***** Take
+RFKのMAHA派がついにフードピラミッドを手に入れ、なぜか完全に狂っていないガイドラインを作成した。HNは「やっと常識だ」と「これは単にカーニボアダイエットのプロパガンダの焼き直し」に分かれている。770件のコメントは、人々が食べ物について意見を持っていることを示している。
+***** Comments
+- 米国の一人当たり肉消費量は過去1世紀で100ポンド以上増加した。アメリカ人にもっと肉を食べるよう求めるなら、すでに増加傾向にあるのになぜ十分でないのか説明が必要だ。
+- RFKの狂気にもかかわらず、これは実際にかなり良いガイドラインだ？確かに以前のバージョンより良い。予想外だった。
+- 栄養学の基礎を学ぶ良いコースをお勧めできる人はいますか？現在の科学的コンセンサスに基づいたものを探しています。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+진짜 음식을 먹자
+***** TLDR
+HHS의 새로운 미국 식이 지침은 기본적으로 가공되지 않은 음식을 먹고, 단백질을 우선시하고(체중 파운드당 0.54-0.73g), 첨가당을 줄이고, 너무 복잡하게 생각하지 말라고 한다. 새로운 식품 피라미드는 단백질과 건강한 지방을 기반으로 강조한다.
+***** Take
+RFK의 MAHA 그룹이 마침내 식품 피라미드를 손에 넣었고 어떻게든 완전히 미친 것은 아닌 지침을 만들어냈다. HN은 '드디어 상식이다'와 '이건 그냥 재포장된 육식 식단 선전이다'로 나뉘어 있다. 770개의 댓글은 사람들이 음식에 대해 의견이 있다는 것을 보여준다.
+***** Comments
+- 미국의 1인당 육류 소비량은 지난 세기 동안 100파운드 이상 증가했다. 미국인들에게 더 많은 고기를 먹으라고 요구하려면 이미 증가 추세인데 왜 충분하지 않은지 설명해야 한다.
+- RFK의 모든 광기에도 불구하고 이것은 실제로 꽤 좋은 지침인가? 확실히 이전 버전보다 낫다. 예상하지 못했다.
+- 영양학 기초를 배울 수 있는 좋은 과정을 추천해 줄 수 있나요? 현재 과학적 합의에 기반한 것을 찾고 있습니다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Come comida de verdad
+***** TLDR
+Las nuevas pautas dietéticas de EE.UU. del HHS básicamente dicen: come alimentos integrales, prioriza las proteínas (0.54-0.73g por libra de peso corporal), reduce los azúcares añadidos y no lo pienses demasiado. Hay una nueva pirámide alimenticia que enfatiza las proteínas y grasas saludables en la base.
+***** Take
+La multitud MAHA de RFK finalmente puso sus manos en la pirámide alimenticia y de alguna manera produjo pautas que no son completamente locas. HN está dividido entre 'por fin, sentido común' y 'esto es solo propaganda de la dieta carnívora reempaquetada.' Los 770 comentarios sugieren que la gente tiene Opiniones sobre la comida.
+***** Comments
+- El consumo de carne per cápita en EE.UU. ha aumentado más de 100 libras en el último siglo. Una demanda de que los estadounidenses coman más carne tendría que explicar por qué nuestra tendencia ya positiva no es suficiente.
+- A pesar de toda la locura de RFK, esto es en realidad un conjunto de pautas bastante bueno. Ciertamente mejor que la versión anterior. No lo esperaba.
+- ¿Alguien tiene una recomendación de un buen curso para aprender los conceptos básicos de nutrición? Buscando algo basado en el consenso científico actual.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Iss echtes Essen
+***** TLDR
+Die neuen US-Ernährungsrichtlinien des HHS sagen im Grunde: Iss Vollwertkost, priorisiere Protein (0,54-0,73g pro Pfund Körpergewicht), reduziere zugesetzten Zucker und überdenke es nicht. Es gibt eine neue Ernährungspyramide, die Protein und gesunde Fette an der Basis betont.
+***** Take
+RFKs MAHA-Crowd hat endlich die Ernährungspyramide in die Hände bekommen und irgendwie Richtlinien produziert, die nicht völlig verrückt sind. HN ist gespalten zwischen 'endlich gesunder Menschenverstand' und 'das ist nur umverpackte Fleischfresser-Diät-Propaganda.' Die 770 Kommentare deuten darauf hin, dass die Leute Meinungen über Essen haben.
+***** Comments
+- Der Pro-Kopf-Fleischkonsum in den USA ist im letzten Jahrhundert um mehr als 100 Pfund gestiegen. Eine Forderung, dass Amerikaner mehr Fleisch essen sollen, müsste erklären, warum unser bereits positiver Trend nicht ausreicht.
+- Bei all dem Wahnsinn von RFK ist das tatsächlich ein ziemlich gutes Set von Richtlinien? Sicherlich besser als die vorherige Version. Das habe ich nicht erwartet.
+- Hat jemand eine Empfehlung für einen guten Kurs, um die Grundlagen der Ernährung zu lernen? Suche nach etwas, das im aktuellen wissenschaftlichen Konsens verankert ist.
+** Shipmap.org :visualization:shipping:data:
+:PROPERTIES:
+:ID:       46527161
+:URL:      https://www.shipmap.org/
+:HN_URL:   https://news.ycombinator.com/item?id=46527161
+:POINTS:   439
+:COMMENTS: 74
+:BY:       surprisetalk
+:END:
+
+*** TLDR
+An interactive visualization tracking 20,000 commercial ships across the world's oceans using 2012 AIS data. Shows containers, dry bulk, tankers, gas bulk, and vehicles with real-time CO2 stats. Commercial ships produce more CO2 per day than entire countries like Canada or Brazil.
+
+*** Take
+This is genuinely beautiful data viz that makes you realize just how much stuff is floating around the ocean at any moment. You can literally see oil flowing from the Persian Gulf to China. The comments are unusually wholesome for HN, mostly people sharing cool things they noticed.
+
+*** Comments
+
+**** libraryofbabel
+:PROPERTIES:
+:COMMENT_ID: 46527300
+:END:
+This is weirdly beautiful, like the maps of undersea internet cables. You can clearly see oil flowing out of the Persian Gulf to China, ships waiting at Panama and Suez, and why people talk about 'shipping lanes'.
+
+**** boringg
+:PROPERTIES:
+:COMMENT_ID: 46527400
+:END:
+IMO 2020 regulation unintentionally contributed to global warming while reducing air pollution. The rule cut sulfur in ship fuel, improving health but reducing the reflective effect of atmospheric aerosols that masked some warming.
+
+**** ge96
+:PROPERTIES:
+:COMMENT_ID: 46527500
+:END:
+Side note: you can watch timelapse videos of ships crossing oceans. The night stars look great.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Shipmap.org
+***** TLDR
+一个互动可视化工具，使用2012年AIS数据追踪全球海洋上的20,000艘商船。显示集装箱船、散货船、油轮、气体运输船和车辆运输船，并提供实时二氧化碳统计。商船每天产生的二氧化碳比加拿大或巴西等整个国家还多。
+***** Take
+这是真正美丽的数据可视化，让你意识到任何时刻海洋上漂浮着多少东西。你可以真实地看到石油从波斯湾流向中国。评论对于HN来说异常友好，大多数人分享他们注意到的有趣事物。
+***** Comments
+- 这奇怪地美丽，就像海底互联网电缆地图一样。你可以清楚地看到石油从波斯湾流向中国，船只在巴拿马和苏伊士等待，以及为什么人们谈论'航运通道'。
+- IMO 2020法规在减少空气污染的同时无意中加剧了全球变暖。该规则削减了船舶燃料中的硫含量，改善了健康状况，但减少了掩盖部分变暖的大气气溶胶的反射效应。
+- 附注：你可以观看船只穿越海洋的延时视频。夜空的星星看起来很棒。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Shipmap.org
+***** TLDR
+2012年のAISデータを使用して世界の海洋を航行する20,000隻の商船を追跡するインタラクティブな可視化。コンテナ船、ばら積み船、タンカー、ガス運搬船、自動車運搬船をリアルタイムCO2統計とともに表示。商船は1日でカナダやブラジルなどの国全体よりも多くのCO2を排出。
+***** Take
+これは本当に美しいデータ可視化で、任意の瞬間にどれだけのものが海に浮かんでいるかを実感させる。ペルシャ湾から中国への石油の流れを文字通り見ることができる。コメントはHNにしては珍しく温かく、ほとんどの人が気づいた面白いことを共有している。
+***** Comments
+- これは海底インターネットケーブルの地図のように不思議と美しい。ペルシャ湾から中国への石油の流れ、パナマとスエズで待機する船、なぜ人々が「航路」について話すのかがはっきり見える。
+- IMO 2020規制は大気汚染を減らしながら意図せず地球温暖化に寄与した。この規則は船舶燃料の硫黄を削減し、健康を改善したが、温暖化を隠していた大気エアロゾルの反射効果を減少させた。
+- 余談：船が海を渡るタイムラプス動画を見ることができる。夜の星がすごく綺麗。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Shipmap.org
+***** TLDR
+2012년 AIS 데이터를 사용하여 전 세계 해양의 20,000척 상선을 추적하는 인터랙티브 시각화. 컨테이너선, 산적화물선, 유조선, 가스 운반선, 차량 운반선을 실시간 CO2 통계와 함께 표시. 상선은 하루에 캐나다나 브라질 전체 국가보다 더 많은 CO2를 배출한다.
+***** Take
+이것은 어느 순간에든 얼마나 많은 것들이 바다에 떠다니는지 깨닫게 하는 정말 아름다운 데이터 시각화다. 페르시아만에서 중국으로 흐르는 석유를 말 그대로 볼 수 있다. 댓글은 HN치고는 이례적으로 훈훈하며, 대부분 사람들이 발견한 멋진 것들을 공유하고 있다.
+***** Comments
+- 이것은 해저 인터넷 케이블 지도처럼 이상하게 아름답다. 페르시아만에서 중국으로 흐르는 석유, 파나마와 수에즈에서 기다리는 선박, 왜 사람들이 '항로'에 대해 이야기하는지 명확히 볼 수 있다.
+- IMO 2020 규정은 대기 오염을 줄이면서 의도치 않게 지구 온난화에 기여했다. 이 규칙은 선박 연료의 황을 줄여 건강을 개선했지만 일부 온난화를 가리고 있던 대기 에어로졸의 반사 효과를 감소시켰다.
+- 부연: 배가 바다를 건너는 타임랩스 영상을 볼 수 있다. 밤하늘 별이 정말 멋지다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Shipmap.org
+***** TLDR
+Una visualización interactiva que rastrea 20,000 barcos comerciales por los océanos del mundo usando datos AIS de 2012. Muestra contenedores, graneleros, petroleros, gaseros y portavehículos con estadísticas de CO2 en tiempo real. Los barcos comerciales producen más CO2 por día que países enteros como Canadá o Brasil.
+***** Take
+Esta es una visualización de datos genuinamente hermosa que te hace darte cuenta de cuántas cosas están flotando en el océano en cualquier momento. Literalmente puedes ver el petróleo fluyendo desde el Golfo Pérsico hasta China. Los comentarios son inusualmente amables para HN, mayormente personas compartiendo cosas interesantes que notaron.
+***** Comments
+- Esto es extrañamente hermoso, como los mapas de cables de internet submarinos. Puedes ver claramente el petróleo fluyendo del Golfo Pérsico a China, barcos esperando en Panamá y Suez, y por qué la gente habla de 'rutas marítimas'.
+- La regulación IMO 2020 contribuyó involuntariamente al calentamiento global mientras reducía la contaminación del aire. La regla redujo el azufre en el combustible de los barcos, mejorando la salud pero reduciendo el efecto reflectante de los aerosoles atmosféricos que enmascaraban parte del calentamiento.
+- Nota al margen: puedes ver videos timelapse de barcos cruzando océanos. Las estrellas nocturnas se ven geniales.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Shipmap.org
+***** TLDR
+Eine interaktive Visualisierung, die 20.000 Handelsschiffe über die Weltmeere verfolgt, unter Verwendung von AIS-Daten aus 2012. Zeigt Container, Massengut, Tanker, Gastanker und Fahrzeugschiffe mit Echtzeit-CO2-Statistiken. Handelsschiffe produzieren pro Tag mehr CO2 als ganze Länder wie Kanada oder Brasilien.
+***** Take
+Das ist eine wirklich schöne Datenvisualisierung, die einem bewusst macht, wie viel Zeug zu jedem Zeitpunkt auf dem Ozean schwimmt. Man kann buchstäblich sehen, wie Öl vom Persischen Golf nach China fließt. Die Kommentare sind für HN ungewöhnlich freundlich, meist teilen Leute coole Dinge, die sie bemerkt haben.
+***** Comments
+- Das ist seltsam schön, wie die Karten der Unterwasser-Internetkabel. Man kann deutlich sehen, wie Öl aus dem Persischen Golf nach China fließt, Schiffe in Panama und Suez warten und warum Leute von 'Schifffahrtswegen' sprechen.
+- Die IMO-2020-Verordnung trug unbeabsichtigt zur globalen Erwärmung bei, während sie die Luftverschmutzung reduzierte. Die Regel senkte den Schwefel im Schiffstreibstoff, verbesserte die Gesundheit, reduzierte aber den reflektierenden Effekt atmosphärischer Aerosole, die etwas Erwärmung maskierten.
+- Nebenbei: Man kann Zeitraffer-Videos von Schiffen sehen, die die Ozeane überqueren. Die Nachtsterne sehen toll aus.
+** US will ban Wall Street investors from buying single-family homes :housing:policy:investing:
+:PROPERTIES:
+:ID:       46531068
+:URL:      https://www.reuters.com/world/us/us-will-ban-large-institutional-investors-buying-single-family-homes-trump-says-2026-01-07/
+:HN_URL:   https://news.ycombinator.com/item?id=46531068
+:POINTS:   550
+:COMMENTS: 590
+:BY:       kpw94
+:END:
+
+*** TLDR
+［From title + comments, Reuters paywalled］ Trump announced a ban on large institutional investors buying single-family homes. The policy targets 'Wall Street' but HN commenters note most investor purchases are actually by individuals, not corporations like BlackRock.
+
+*** Take
+This is red meat for the 'corporations are buying all the houses' crowd, but commenters point out the inconvenient truth that most landlords are dentists and software engineers, not hedge funds. Australia banned corporate ownership and still has astronomical housing prices.
+
+*** Comments
+
+**** roadside_picnic
+:PROPERTIES:
+:COMMENT_ID: 46531200
+:END:
+The key word is 'Wall Street'. Most 'investors' buying property are individuals purchasing second homes or small rentals. This plays off a popular misconception around corporate investors.
+
+**** rgmerk
+:PROPERTIES:
+:COMMENT_ID: 46531300
+:END:
+It will make very little difference. Australia's land tax makes it effectively impossible for large corporations to own residential property, but our real estate is amongst the world's most expensive.
+
+**** abustamam
+:PROPERTIES:
+:COMMENT_ID: 46531400
+:END:
+There's a service called Arrived that lets people buy fractional shares of single-family homes. As a renter, I was drawn to this as a way to get real estate exposure.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+美国将禁止华尔街投资者购买独栋住宅
+***** TLDR
+［来自标题和评论，路透社付费墙］ 特朗普宣布禁止大型机构投资者购买独栋住宅。该政策针对'华尔街'，但HN评论者指出大多数投资者购买实际上是由个人而非贝莱德等公司进行的。
+***** Take
+这是给'公司正在购买所有房屋'人群的红肉，但评论者指出令人不便的事实：大多数房东是牙医和软件工程师，而不是对冲基金。澳大利亚禁止企业所有权，但房价仍然高得离谱。
+***** Comments
+- 关键词是'华尔街'。大多数购买房产的'投资者'是购买第二套房或小型出租房的个人。这利用了关于企业投资者的流行误解。
+- 这几乎不会产生什么影响。澳大利亚的土地税实际上使大公司不可能拥有住宅物业，但我们的房地产是世界上最贵的之一。
+- 有一项名为Arrived的服务，让人们可以购买独栋住宅的部分股份。作为租户，我被这种获得房地产敞口的方式所吸引。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+米国がウォール街投資家の一戸建て住宅購入を禁止へ
+***** TLDR
+［タイトルとコメントから、ロイターはペイウォール］ トランプ大統領が大規模機関投資家による一戸建て住宅の購入禁止を発表。政策は「ウォール街」をターゲットにしているが、HNコメンターはほとんどの投資家購入は実際にはブラックロックのような企業ではなく個人によるものだと指摘。
+***** Take
+これは「企業がすべての家を買い占めている」派への餌だが、コメンターは不都合な真実を指摘：ほとんどの大家はヘッジファンドではなく歯科医やソフトウェアエンジニアだ。オーストラリアは法人所有を禁止したが、それでも住宅価格は天文学的に高い。
+***** Comments
+- キーワードは「ウォール街」。不動産を購入する「投資家」のほとんどは、セカンドハウスや小規模賃貸物件を購入する個人だ。これは企業投資家に関する一般的な誤解を利用している。
+- ほとんど違いは出ないだろう。オーストラリアの土地税は大企業が住宅物件を所有することを事実上不可能にしているが、それでも不動産は世界で最も高価な部類に入る。
+- Arrivedというサービスがあり、一戸建て住宅の端株を購入できる。賃借人として、不動産へのエクスポージャーを得る方法としてこれに惹かれた。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+미국, 월스트리트 투자자들의 단독주택 구매 금지 예정
+***** TLDR
+［제목과 댓글에서, 로이터 유료화］ 트럼프가 대형 기관 투자자들의 단독주택 구매 금지를 발표했다. 정책은 '월스트리트'를 대상으로 하지만, HN 댓글러들은 대부분의 투자자 구매가 실제로는 블랙록 같은 기업이 아닌 개인들에 의한 것이라고 지적한다.
+***** Take
+'기업들이 모든 집을 사들이고 있다' 주장하는 사람들에게 던지는 미끼지만, 댓글러들은 불편한 진실을 지적한다: 대부분의 집주인은 헤지펀드가 아닌 치과의사와 소프트웨어 엔지니어다. 호주는 기업 소유를 금지했지만 여전히 천문학적인 주택 가격을 가지고 있다.
+***** Comments
+- 핵심 단어는 '월스트리트'다. 부동산을 구매하는 대부분의 '투자자'는 두 번째 집이나 소규모 임대 부동산을 구매하는 개인이다. 이는 기업 투자자에 대한 대중적 오해를 이용하고 있다.
+- 거의 차이가 없을 것이다. 호주의 토지세는 대기업이 주거용 부동산을 소유하는 것을 사실상 불가능하게 만들지만, 우리 부동산은 세계에서 가장 비싼 축에 속한다.
+- Arrived라는 서비스가 있어서 사람들이 단독주택의 부분 지분을 살 수 있다. 임차인으로서 부동산 노출을 얻는 방법으로 이것에 끌렸다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+EE.UU. prohibirá a inversores de Wall Street comprar viviendas unifamiliares
+***** TLDR
+［Del título y comentarios, Reuters con muro de pago］ Trump anunció la prohibición de que grandes inversores institucionales compren viviendas unifamiliares. La política apunta a 'Wall Street' pero los comentaristas de HN señalan que la mayoría de las compras de inversores son en realidad de individuos, no de corporaciones como BlackRock.
+***** Take
+Esto es carnada para la multitud de 'las corporaciones están comprando todas las casas', pero los comentaristas señalan la incómoda verdad de que la mayoría de los propietarios son dentistas e ingenieros de software, no fondos de cobertura. Australia prohibió la propiedad corporativa y aún tiene precios de vivienda astronómicos.
+***** Comments
+- La palabra clave es 'Wall Street'. La mayoría de los 'inversores' que compran propiedades son individuos comprando segundas residencias o pequeños alquileres. Esto juega con una idea errónea popular sobre inversores corporativos.
+- Hará muy poca diferencia. El impuesto sobre la tierra de Australia hace efectivamente imposible que grandes corporaciones posean propiedades residenciales, pero nuestros bienes raíces están entre los más caros del mundo.
+- Hay un servicio llamado Arrived que permite comprar acciones fraccionarias de viviendas unifamiliares. Como inquilino, me atrajo esto como una forma de obtener exposición al mercado inmobiliario.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+USA werden Wall-Street-Investoren den Kauf von Einfamilienhäusern verbieten
+***** TLDR
+［Aus Titel und Kommentaren, Reuters hinter Paywall］ Trump kündigte ein Verbot für große institutionelle Investoren beim Kauf von Einfamilienhäusern an. Die Politik zielt auf 'Wall Street' ab, aber HN-Kommentatoren weisen darauf hin, dass die meisten Investorenkäufe tatsächlich von Einzelpersonen stammen, nicht von Unternehmen wie BlackRock.
+***** Take
+Das ist rotes Fleisch für die 'Unternehmen kaufen alle Häuser'-Fraktion, aber Kommentatoren weisen auf die unbequeme Wahrheit hin, dass die meisten Vermieter Zahnärzte und Softwareingenieure sind, keine Hedgefonds. Australien verbot Unternehmenseigentum und hat trotzdem astronomische Immobilienpreise.
+***** Comments
+- Das Schlüsselwort ist 'Wall Street'. Die meisten 'Investoren', die Immobilien kaufen, sind Einzelpersonen, die Zweitwohnungen oder kleine Mietobjekte kaufen. Das spielt auf ein beliebtes Missverständnis über Unternehmensinvestoren an.
+- Es wird sehr wenig Unterschied machen. Australiens Grundsteuer macht es großen Unternehmen praktisch unmöglich, Wohnimmobilien zu besitzen, aber unsere Immobilien gehören zu den teuersten der Welt.
+- Es gibt einen Service namens Arrived, der es ermöglicht, Bruchteilsanteile an Einfamilienhäusern zu kaufen. Als Mieter hat mich das als Möglichkeit angezogen, Immobilienexposure zu bekommen.
+** LaTeX Coffee Stains (2021) :latex:academic:humor:
+:PROPERTIES:
+:ID:       46526933
+:URL:      https://ctan.math.illinois.edu/graphics/pgf/contrib/coffeestains/coffeestains-en.pdf
+:HN_URL:   https://news.ycombinator.com/item?id=46526933
+:POINTS:   275
+:COMMENTS: 64
+:BY:       zahrevsky
+:END:
+
+*** TLDR
+A LaTeX package that programmatically adds realistic coffee stains to your documents. Includes 4 stain types with customizable transparency, scale, rotation, and position. Because manually spilling coffee on your thesis is so 2019.
+
+*** Take
+Peak academia. Someone looked at their coffee-stained papers and thought 'what if I could automate this?' The comments are predictably full of Typst evangelists and a feature request for stains that align across pages. Priorities.
+
+*** Comments
+
+**** spudlyo
+:PROPERTIES:
+:COMMENT_ID: 46527000
+:END:
+I'm surprised nobody has yet mentioned how pleasant it is to create coffee stains using Typst. Of course, you can create coffee stains in HTML as well, but it's not something you can do in Markdown.
+
+**** Rygian
+:PROPERTIES:
+:COMMENT_ID: 46527100
+:END:
+Feature request: even/odd page stains that line up exactly as a single thru-stain.
+
+**** Drunk_Engineer
+:PROPERTIES:
+:COMMENT_ID: 46527200
+:END:
+Possibly related: the Brown Ring of Quality.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+LaTeX咖啡渍 (2021)
+***** TLDR
+一个可以在文档上程序化添加逼真咖啡渍的LaTeX包。包含4种污渍类型，可自定义透明度、缩放、旋转和位置。因为手动把咖啡洒在论文上太2019年了。
+***** Take
+学术界的巅峰。有人看着他们沾满咖啡渍的论文，心想'如果我能把这个自动化呢？'评论里预料之中地满是Typst布道者和一个跨页对齐污渍的功能请求。优先级。
+***** Comments
+- 我很惊讶还没有人提到用Typst创建咖啡渍是多么愉快。当然，你也可以在HTML中创建咖啡渍，但这不是你在Markdown中能做的事情。
+- 功能请求：奇偶页污渍精确对齐为单个贯穿污渍。
+- 可能相关：质量棕环。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+LaTeXコーヒー染み (2021)
+***** TLDR
+文書にリアルなコーヒー染みをプログラム的に追加するLaTeXパッケージ。4種類の染みタイプがあり、透明度、スケール、回転、位置をカスタマイズ可能。手動で論文にコーヒーをこぼすのは2019年的だから。
+***** Take
+学術界の頂点。誰かがコーヒー染みのついた論文を見て「これを自動化できたら？」と考えた。コメントは予想通りTypst信者と、ページをまたいで整列する染みの機能リクエストで溢れている。優先順位。
+***** Comments
+- Typstでコーヒー染みを作るのがどれほど快適か、まだ誰も言及していないことに驚いている。もちろん、HTMLでもコーヒー染みを作れるが、Markdownではできない。
+- 機能リクエスト：偶数/奇数ページの染みが単一の貫通染みとして正確に整列すること。
+- 関連するかも：クオリティの茶色い輪。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+LaTeX 커피 얼룩 (2021)
+***** TLDR
+문서에 프로그래밍 방식으로 사실적인 커피 얼룩을 추가하는 LaTeX 패키지. 투명도, 크기, 회전, 위치를 사용자 정의할 수 있는 4가지 얼룩 유형 포함. 논문에 직접 커피를 쏟는 건 너무 2019년이니까.
+***** Take
+학계의 정점. 누군가 커피 얼룩이 묻은 논문을 보고 '이걸 자동화할 수 있다면?'이라고 생각했다. 댓글은 예상대로 Typst 전도사들과 페이지를 가로질러 정렬되는 얼룩 기능 요청으로 가득하다. 우선순위.
+***** Comments
+- Typst로 커피 얼룩을 만드는 것이 얼마나 즐거운지 아직 아무도 언급하지 않은 게 놀랍다. 물론 HTML에서도 커피 얼룩을 만들 수 있지만, Markdown에서는 할 수 없는 일이다.
+- 기능 요청: 홀수/짝수 페이지 얼룩이 단일 관통 얼룩으로 정확히 정렬되도록.
+- 아마 관련 있을 듯: 품질의 갈색 고리.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Manchas de café en LaTeX (2021)
+***** TLDR
+Un paquete LaTeX que añade programáticamente manchas de café realistas a tus documentos. Incluye 4 tipos de manchas con transparencia, escala, rotación y posición personalizables. Porque derramar café manualmente en tu tesis es tan de 2019.
+***** Take
+El pináculo de la academia. Alguien miró sus papeles manchados de café y pensó '¿y si pudiera automatizar esto?' Los comentarios están previsiblemente llenos de evangelistas de Typst y una solicitud de función para manchas que se alineen entre páginas. Prioridades.
+***** Comments
+- Me sorprende que nadie haya mencionado todavía lo agradable que es crear manchas de café usando Typst. Por supuesto, también puedes crear manchas de café en HTML, pero no es algo que puedas hacer en Markdown.
+- Solicitud de función: manchas en páginas pares/impares que se alineen exactamente como una sola mancha atravesada.
+- Posiblemente relacionado: el Anillo Marrón de Calidad.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+LaTeX-Kaffeeflecken (2021)
+***** TLDR
+Ein LaTeX-Paket, das programmgesteuert realistische Kaffeeflecken zu Dokumenten hinzufügt. Enthält 4 Fleckentypen mit anpassbarer Transparenz, Skalierung, Rotation und Position. Weil manuelles Kaffeeverschütten auf der Thesis so 2019 ist.
+***** Take
+Der Gipfel der Akademie. Jemand schaute auf seine kaffeefleckigen Papiere und dachte 'was wenn ich das automatisieren könnte?' Die Kommentare sind vorhersehbar voll von Typst-Evangelisten und einer Feature-Anfrage für Flecken, die sich über Seiten hinweg ausrichten. Prioritäten.
+***** Comments
+- Ich bin überrascht, dass noch niemand erwähnt hat, wie angenehm es ist, Kaffeeflecken mit Typst zu erstellen. Natürlich kann man Kaffeeflecken auch in HTML erstellen, aber das ist nichts, was man in Markdown machen kann.
+- Feature-Anfrage: Gerade/ungerade Seitenflecken, die sich genau als einzelner Durchfleck ausrichten.
+- Möglicherweise verwandt: der Braune Ring der Qualität.
