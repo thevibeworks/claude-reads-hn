@@ -3,10 +3,9 @@ main = "src/index.ts"
 compatibility_date = "2024-01-01"
 
 [triggers]
-# 4x daily. Cron uses UTC.
-# Local mapping: America/Los_Angeles (PST; in PDT add +1 hour).
-# UTC: 20:00, 01:00, 06:00, 11:00
-crons = ["0 20 * * *", "0 1 * * *", "0 6 * * *", "0 11 * * *"]
+# 4x daily, UTC. Must match .github/workflows/hn-digest.yml schedule.
+# +8 timezone: 09:00, 14:00, 19:00, 00:00 (midnight)
+crons = ["0 1 * * *", "0 6 * * *", "0 11 * * *", "0 16 * * *"]
 
 [vars]
 GITHUB_REPO = "thevibeworks/claude-reads-hn"
