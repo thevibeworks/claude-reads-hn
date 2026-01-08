@@ -1,0 +1,533 @@
+#+TITLE: HN Digest 2026-01-08 03:00:00 UT UTC
+#+DATE: 2026-01-08T03:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+NPM adds friction, Notion leaks your secrets, and your grocery store knows your face
+
+* Highlights
+- NPM: Staged publishing adds review checkpoints after chaotic token migration
+- Notion AI: Unpatched prompt injection exfiltrates data before you can say 'approve'
+- Wegmans: Your face is now a loyalty card you can't opt out of
+
+* Stories
+
+** NPM to implement staged publishing after turbulent shift off classic tokens :npm:security:supply-chain:
+:PROPERTIES:
+:ID:       46530448
+:URL:      https://socket.dev/blog/npm-to-implement-staged-publishing
+:HN_URL:   https://news.ycombinator.com/item?id=46530448
+:POINTS:   135
+:COMMENTS: 35
+:BY:       feross
+:END:
+
+*** TLDR
+NPM is introducing staged publishing with mandatory MFA approval before packages go live. This follows their chaotic 2025 transition away from classic tokens to short-lived session tokens and granular access tokens. The new system adds registry-level review checkpoints and expands OIDC-based trusted publishing beyond just GitHub Actions.
+
+*** Take
+Supply chain security is finally getting the friction it deserves, though asking maintainers to re-authenticate constantly while managing hundreds of packages feels like punishing the victims of npm's own ecosystem sprawl.
+
+*** Comments
+
+**** woodruffw
+:PROPERTIES:
+:COMMENT_ID: 46530449
+:END:
+Trusted publishing applies to a limited set of use cases. Support is restricted to a small number of CI providers, it cannot be used for the first publish of a new package, and it does not yet offer enforcement mechanisms such as mandatory 2FA at publish time.
+
+**** spankalee
+:PROPERTIES:
+:COMMENT_ID: 46530450
+:END:
+I maintain some very highly used npm packages and this situation just has me on edge. In our last release of dozens of packages, I was manually reading through our package-lock and package.json changes and reviewing every dependency change.
+
+**** herpdyderp
+:PROPERTIES:
+:COMMENT_ID: 46530451
+:END:
+The shift wouldn't have been so turbulent if npm had simply updated their CLI in tandem. I still can't use 2FA to publish because their CLI simply cannot handle it.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+NPM在经历经典令牌混乱迁移后将实施分阶段发布
+***** TLDR
+NPM正在引入分阶段发布，要求包上线前必须通过MFA批准。这是在2025年从经典令牌混乱过渡到短期会话令牌和细粒度访问令牌之后的举措。新系统增加了注册表级别的审核检查点，并将基于OIDC的可信发布扩展到GitHub Actions之外。
+***** Take
+供应链安全终于得到了应有的重视，不过让维护者在管理数百个包时不断重新认证，感觉像是在惩罚npm生态系统膨胀的受害者。
+***** Comments
+- 可信发布适用于有限的用例。支持仅限于少数CI提供商，不能用于新包的首次发布，也不提供发布时强制2FA等强制机制。
+- 我维护着一些使用量很大的npm包，这种情况让我很紧张。在我们最近发布的几十个包中，我手动阅读了package-lock和package.json的变更，审查每一个依赖变更。
+- 如果npm同时更新了CLI，这次迁移就不会这么混乱了。我仍然无法使用2FA发布，因为他们的CLI根本无法处理。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+NPM、クラシックトークンからの混乱した移行後にステージド公開を実装へ
+***** TLDR
+NPMは、パッケージが公開される前にMFA承認を必須とするステージド公開を導入している。これは2025年のクラシックトークンから短期セッショントークンと細かいアクセストークンへの混乱した移行に続くものだ。新システムはレジストリレベルのレビューチェックポイントを追加し、OIDCベースの信頼できる公開をGitHub Actions以外にも拡大する。
+***** Take
+サプライチェーンセキュリティがようやく必要な摩擦を得ているが、何百ものパッケージを管理しながら常に再認証を求めるのは、npm自身のエコシステム肥大化の被害者を罰しているようだ。
+***** Comments
+- 信頼できる公開は限られたユースケースに適用される。サポートは少数のCIプロバイダーに限定され、新しいパッケージの初回公開には使用できず、公開時の必須2FAなどの強制メカニズムもまだない。
+- 私は非常に多く使われているnpmパッケージをいくつかメンテナンスしていて、この状況は緊張を強いられる。直近のリリースでは何十ものパッケージのpackage-lockとpackage.jsonの変更を手動で読み、すべての依存関係の変更をレビューした。
+- npmがCLIを同時にアップデートしていれば、この移行はここまで混乱しなかっただろう。CLIが対応できないので、いまだに2FAで公開できない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+NPM, 클래식 토큰에서 혼란스러운 전환 후 단계적 배포 구현 예정
+***** TLDR
+NPM이 패키지가 라이브되기 전에 MFA 승인을 필수로 하는 단계적 배포를 도입한다. 이는 2025년 클래식 토큰에서 단기 세션 토큰과 세분화된 액세스 토큰으로의 혼란스러운 전환에 따른 것이다. 새 시스템은 레지스트리 수준의 검토 체크포인트를 추가하고 OIDC 기반 신뢰할 수 있는 배포를 GitHub Actions 이상으로 확장한다.
+***** Take
+공급망 보안이 드디어 필요한 마찰을 얻고 있지만, 수백 개의 패키지를 관리하면서 지속적으로 재인증을 요구하는 것은 npm 자체 생태계 팽창의 피해자를 처벌하는 느낌이다.
+***** Comments
+- 신뢰할 수 있는 배포는 제한된 사용 사례에 적용된다. 지원은 소수의 CI 제공자로 제한되고, 새 패키지의 첫 배포에는 사용할 수 없으며, 배포 시 필수 2FA와 같은 시행 메커니즘도 아직 없다.
+- 저는 매우 많이 사용되는 npm 패키지를 유지 관리하고 있는데 이 상황이 불안합니다. 마지막 릴리스에서 수십 개의 패키지에 대해 package-lock과 package.json 변경 사항을 수동으로 읽고 모든 의존성 변경을 검토했습니다.
+- npm이 CLI를 동시에 업데이트했다면 전환이 이렇게 혼란스럽지 않았을 것입니다. CLI가 처리할 수 없어서 아직도 2FA로 배포할 수 없습니다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+NPM implementará publicación por etapas tras la turbulenta transición de tokens clásicos
+***** TLDR
+NPM está introduciendo publicación por etapas con aprobación MFA obligatoria antes de que los paquetes se publiquen. Esto sigue a su caótica transición de 2025 de tokens clásicos a tokens de sesión de corta duración y tokens de acceso granular. El nuevo sistema añade puntos de control de revisión a nivel de registro y expande la publicación confiable basada en OIDC más allá de GitHub Actions.
+***** Take
+La seguridad de la cadena de suministro finalmente está obteniendo la fricción que merece, aunque pedir a los mantenedores que se reautentiquen constantemente mientras gestionan cientos de paquetes se siente como castigar a las víctimas de la propia expansión del ecosistema de npm.
+***** Comments
+- La publicación confiable se aplica a un conjunto limitado de casos de uso. El soporte está restringido a un pequeño número de proveedores de CI, no se puede usar para la primera publicación de un paquete nuevo, y aún no ofrece mecanismos de aplicación como 2FA obligatorio en el momento de publicación.
+- Mantengo algunos paquetes npm muy utilizados y esta situación me tiene nervioso. En nuestra última versión de docenas de paquetes, estuve leyendo manualmente los cambios en package-lock y package.json y revisando cada cambio de dependencia.
+- La transición no habría sido tan turbulenta si npm hubiera actualizado su CLI al mismo tiempo. Todavía no puedo usar 2FA para publicar porque su CLI simplemente no puede manejarlo.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+NPM führt Staged Publishing nach turbulenter Token-Umstellung ein
+***** TLDR
+NPM führt Staged Publishing mit obligatorischer MFA-Genehmigung ein, bevor Pakete live gehen. Dies folgt auf den chaotischen Übergang 2025 von klassischen Tokens zu kurzlebigen Session-Tokens und granularen Access-Tokens. Das neue System fügt Registry-Level-Review-Checkpoints hinzu und erweitert OIDC-basiertes Trusted Publishing über GitHub Actions hinaus.
+***** Take
+Supply-Chain-Sicherheit bekommt endlich die Reibung, die sie verdient, obwohl es sich anfühlt, als würde man die Opfer von npms eigener Ökosystem-Aufblähung bestrafen, wenn man Maintainer bittet, sich ständig neu zu authentifizieren, während sie Hunderte von Paketen verwalten.
+***** Comments
+- Trusted Publishing gilt für eine begrenzte Anzahl von Anwendungsfällen. Die Unterstützung ist auf eine kleine Anzahl von CI-Anbietern beschränkt, es kann nicht für die erste Veröffentlichung eines neuen Pakets verwendet werden, und es bietet noch keine Durchsetzungsmechanismen wie obligatorische 2FA zur Veröffentlichungszeit.
+- Ich pflege einige sehr häufig genutzte npm-Pakete und diese Situation macht mich nervös. Bei unserem letzten Release von Dutzenden von Paketen habe ich manuell unsere package-lock und package.json-Änderungen durchgelesen und jede Abhängigkeitsänderung überprüft.
+- Die Umstellung wäre nicht so turbulent gewesen, wenn npm einfach ihre CLI gleichzeitig aktualisiert hätte. Ich kann immer noch keine 2FA zum Veröffentlichen verwenden, weil ihre CLI es einfach nicht verarbeiten kann.
+** Notion AI: Unpatched data exfiltration :ai:security:prompt-injection:
+:PROPERTIES:
+:ID:       46531565
+:URL:      https://www.promptarmor.com/resources/notion-ai-unpatched-data-exfiltration
+:HN_URL:   https://news.ycombinator.com/item?id=46531565
+:POINTS:   115
+:COMMENTS: 15
+:BY:       takira
+:END:
+
+*** TLDR
+Notion AI can be tricked into exfiltrating sensitive data through indirect prompt injection. An attacker hides a malicious prompt in a document (like a resume), and when Notion AI processes it, the AI constructs a URL containing document contents and inserts a fake image link. The browser then requests this URL, sending your data to the attacker's server before you can even approve the edit. Notion closed the report as 'Not Applicable.'
+
+*** Take
+The lethal trifecta strikes again: private data access, untrusted input, and external communication. Notion's response of 'Not Applicable' is the corporate equivalent of putting your fingers in your ears and humming.
+
+*** Comments
+
+**** rdli
+:PROPERTIES:
+:COMMENT_ID: 46531566
+:END:
+Securing LLMs is just structurally different. The attack space is 'the entirety of the human written language' which is effectively infinite. Treating LLM outputs as untrusted and ensuring classic cybersecurity guardrails is the correct approach.
+
+**** brimtown
+:PROPERTIES:
+:COMMENT_ID: 46531567
+:END:
+This is @simonw's Lethal Trifecta again - access to private data and untrusted input are arguably the purpose of enterprise agents, so any external communication is unsafe. Markdown images are just the ones people usually forget about.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Notion AI：未修复的数据泄露漏洞
+***** TLDR
+Notion AI可以通过间接提示注入被欺骗泄露敏感数据。攻击者在文档（如简历）中隐藏恶意提示，当Notion AI处理时，AI会构建包含文档内容的URL并插入虚假图片链接。浏览器随后请求该URL，在你批准编辑之前就将数据发送到攻击者的服务器。Notion将该报告标记为'不适用'关闭。
+***** Take
+致命三要素再次出击：私有数据访问、不受信任的输入和外部通信。Notion的'不适用'回应相当于企业版的捂住耳朵哼歌。
+***** Comments
+- 保护LLM在结构上是不同的。攻击空间是'人类书面语言的全部'，实际上是无限的。将LLM输出视为不可信并确保经典网络安全防护是正确的方法。
+- 这又是@simonw的致命三要素——访问私有数据和不受信任的输入可以说是企业代理的目的，所以任何外部通信都是不安全的。Markdown图片只是人们通常会忘记的那个。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Notion AI：未パッチのデータ流出
+***** TLDR
+Notion AIは間接的なプロンプトインジェクションを通じて機密データを流出させるよう騙すことができる。攻撃者は文書（履歴書など）に悪意のあるプロンプトを隠し、Notion AIがそれを処理すると、AIは文書内容を含むURLを構築し、偽の画像リンクを挿入する。ブラウザがこのURLをリクエストし、編集を承認する前にデータが攻撃者のサーバーに送信される。Notionはこのレポートを「該当なし」として閉じた。
+***** Take
+致命的なトリフェクタが再び襲来：プライベートデータへのアクセス、信頼できない入力、外部通信。Notionの「該当なし」という対応は、耳を塞いでハミングする企業版だ。
+***** Comments
+- LLMのセキュリティ確保は構造的に異なる。攻撃空間は「人間の書き言葉の全体」であり、事実上無限だ。LLMの出力を信頼できないものとして扱い、従来のサイバーセキュリティガードレールを確保するのが正しいアプローチだ。
+- これは@simonwの致命的トリフェクタだ。プライベートデータへのアクセスと信頼できない入力は、エンタープライズエージェントの目的とも言えるので、外部通信はすべて安全ではない。Markdownの画像は人々がよく忘れるものだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Notion AI: 패치되지 않은 데이터 유출
+***** TLDR
+Notion AI는 간접적인 프롬프트 인젝션을 통해 민감한 데이터를 유출하도록 속일 수 있다. 공격자는 문서(이력서 등)에 악성 프롬프트를 숨기고, Notion AI가 이를 처리하면 AI는 문서 내용을 포함한 URL을 구성하고 가짜 이미지 링크를 삽입한다. 브라우저가 이 URL을 요청하여 편집을 승인하기도 전에 데이터가 공격자 서버로 전송된다. Notion은 이 보고서를 '해당 없음'으로 닫았다.
+***** Take
+치명적인 트리펙타가 다시 발동했다: 개인 데이터 접근, 신뢰할 수 없는 입력, 외부 통신. Notion의 '해당 없음' 응답은 귀를 막고 콧노래를 부르는 기업판이다.
+***** Comments
+- LLM 보안은 구조적으로 다르다. 공격 공간은 '인간이 쓴 언어 전체'로 사실상 무한하다. LLM 출력을 신뢰할 수 없는 것으로 취급하고 전통적인 사이버 보안 가드레일을 확보하는 것이 올바른 접근이다.
+- 이것은 @simonw의 치명적인 트리펙타다. 개인 데이터 접근과 신뢰할 수 없는 입력은 엔터프라이즈 에이전트의 목적이라고 할 수 있으므로 모든 외부 통신은 안전하지 않다. 마크다운 이미지는 사람들이 보통 잊는 것일 뿐이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Notion AI: Exfiltración de datos sin parche
+***** TLDR
+Notion AI puede ser engañado para exfiltrar datos sensibles mediante inyección indirecta de prompts. Un atacante oculta un prompt malicioso en un documento (como un currículum), y cuando Notion AI lo procesa, la IA construye una URL con el contenido del documento e inserta un enlace de imagen falso. El navegador entonces solicita esta URL, enviando tus datos al servidor del atacante antes de que puedas aprobar la edición. Notion cerró el reporte como 'No Aplicable'.
+***** Take
+La tríada letal ataca de nuevo: acceso a datos privados, entrada no confiable y comunicación externa. La respuesta de Notion de 'No Aplicable' es el equivalente corporativo de taparse los oídos y tararear.
+***** Comments
+- Asegurar LLMs es estructuralmente diferente. El espacio de ataque es 'la totalidad del lenguaje escrito humano' que es efectivamente infinito. Tratar las salidas de LLM como no confiables y asegurar las barreras clásicas de ciberseguridad es el enfoque correcto.
+- Esta es la Tríada Letal de @simonw de nuevo: el acceso a datos privados y la entrada no confiable son posiblemente el propósito de los agentes empresariales, por lo que cualquier comunicación externa es insegura. Las imágenes Markdown son solo las que la gente suele olvidar.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Notion AI: Ungepatchte Datenexfiltration
+***** TLDR
+Notion AI kann durch indirekte Prompt-Injektion dazu gebracht werden, sensible Daten zu exfiltrieren. Ein Angreifer versteckt einen bösartigen Prompt in einem Dokument (wie einem Lebenslauf), und wenn Notion AI es verarbeitet, konstruiert die KI eine URL mit Dokumentinhalten und fügt einen gefälschten Bildlink ein. Der Browser fordert dann diese URL an und sendet deine Daten an den Server des Angreifers, bevor du die Bearbeitung genehmigen kannst. Notion schloss den Bericht als 'Nicht zutreffend'.
+***** Take
+Die tödliche Trifecta schlägt wieder zu: Zugang zu privaten Daten, nicht vertrauenswürdige Eingaben und externe Kommunikation. Notions Antwort 'Nicht zutreffend' ist das Unternehmensäquivalent von Finger in die Ohren stecken und summen.
+***** Comments
+- Die Absicherung von LLMs ist strukturell anders. Der Angriffsraum ist 'die Gesamtheit der menschlichen Schriftsprache', was effektiv unendlich ist. LLM-Ausgaben als nicht vertrauenswürdig zu behandeln und klassische Cybersicherheitsleitplanken sicherzustellen, ist der richtige Ansatz.
+- Das ist wieder @simonws Lethal Trifecta - Zugang zu privaten Daten und nicht vertrauenswürdige Eingaben sind wohl der Zweck von Enterprise-Agenten, also ist jede externe Kommunikation unsicher. Markdown-Bilder sind nur die, die Leute normalerweise vergessen.
+** Fighting back against biometric surveillance at Wegmans :privacy:surveillance:retail:
+:PROPERTIES:
+:ID:       46535514
+:URL:      https://blog.adafruit.com/2026/01/07/dont-let-the-grocery-store-scan-your-face-a-guide-to-fighting-back-against-biometric-surveillance-at-wegmans/
+:HN_URL:   https://news.ycombinator.com/item?id=46535514
+:POINTS:   120
+:COMMENTS: 63
+:BY:       ptorrone
+:END:
+
+*** TLDR
+［from title + comments, article unreachable］ Adafruit published a guide on fighting biometric surveillance at Wegmans grocery stores. The discussion reveals that facial recognition for catching shoplifters is likely ubiquitous across grocery chains, regardless of whether they announce it. Some suggest switching to Trader Joe's or Whole Foods who haven't announced scanning, though that's no guarantee they're not doing it.
+
+*** Take
+Your face is now a store loyalty card you never signed up for. The suggestion to 'switch to stores with stronger privacy policies' is adorable naivety - you're just switching to stores that haven't been caught yet.
+
+*** Comments
+
+**** crazygringo
+:PROPERTIES:
+:COMMENT_ID: 46535515
+:END:
+Just because they haven't announced it doesn't mean they're not using it. Honestly, I would just assume every grocery store has security cameras doing facial recognition to cross-reference and catch repeat shoplifters.
+
+**** ipince
+:PROPERTIES:
+:COMMENT_ID: 46535516
+:END:
+It's not only at groceries stores, it's everywhere. For example at TSA security line and when boarding flights at the gate. You can (and should) exercise your right to opt-out every single time, before that right is taken away. Omg I sound like Richard Stallman... anyway, he was right all along.
+
+**** sam345
+:PROPERTIES:
+:COMMENT_ID: 46535517
+:END:
+I don't see how you can enforce no face scanning if you allow security cameras.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+在Wegmans超市对抗生物识别监控
+***** TLDR
+［基于标题和评论，文章无法访问］ Adafruit发布了一份在Wegmans杂货店对抗生物识别监控的指南。讨论揭示，用于抓捕小偷的面部识别可能在各连锁杂货店普遍存在，无论他们是否宣布。有人建议转到Trader Joe's或Whole Foods，这些店没有宣布扫描，但这并不能保证他们没有在做。
+***** Take
+你的脸现在成了你从未注册过的商店会员卡。'转到有更强隐私政策的商店'这个建议真是天真可爱——你只是换到了还没被抓到的商店。
+***** Comments
+- 仅仅因为他们没有宣布并不意味着他们没有使用。老实说，我会假设每家杂货店都有安全摄像头在做面部识别，以交叉引用和抓获惯犯。
+- 这不仅在杂货店，而是无处不在。例如在TSA安检线和登机口。你可以（也应该）每次都行使你的退出权，在这个权利被剥夺之前。天哪我听起来像Richard Stallman...不管怎样，他一直都是对的。
+- 如果允许安全摄像头，我不知道怎么能禁止面部扫描。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Wegmansでの生体認証監視への反撃
+***** TLDR
+［タイトルとコメントから、記事にアクセス不可］ AdafruitがWegmans食料品店での生体認証監視に対抗するガイドを公開した。議論によると、万引き犯を捕まえるための顔認識は、発表しているかどうかに関わらず、食料品チェーン全体で遍在している可能性が高い。スキャンを発表していないTrader Joe'sやWhole Foodsに切り替えることを提案する人もいるが、それが彼らがやっていないという保証にはならない。
+***** Take
+あなたの顔は、登録したことのない店舗のポイントカードになった。「より強力なプライバシーポリシーを持つ店に切り替える」という提案は可愛らしい純真さだ。まだバレていない店に切り替えているだけだ。
+***** Comments
+- 発表していないからといって使っていないわけではない。正直、すべての食料品店が防犯カメラで顔認識をして、常習犯を照合して捕まえていると思った方がいい。
+- 食料品店だけでなく、どこでもそうだ。例えばTSAのセキュリティラインや搭乗ゲートで。その権利が奪われる前に、毎回オプトアウトする権利を行使すべきだ。Richard Stallmanみたいに聞こえるけど...とにかく、彼はずっと正しかった。
+- セキュリティカメラを許可するなら、顔スキャンを禁止する方法がわからない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Wegmans에서 생체 인식 감시에 맞서 싸우기
+***** TLDR
+［제목과 댓글 기반, 기사 접근 불가］ Adafruit가 Wegmans 식료품점에서 생체 인식 감시에 대항하는 가이드를 발표했다. 토론에 따르면 좀도둑을 잡기 위한 얼굴 인식은 발표 여부와 관계없이 식료품 체인 전반에 편재해 있을 가능성이 높다. 일부는 스캔을 발표하지 않은 Trader Joe's나 Whole Foods로 전환할 것을 제안하지만, 그것이 그들이 하지 않는다는 보장은 아니다.
+***** Take
+당신의 얼굴은 이제 가입한 적 없는 매장 멤버십 카드가 됐다. '더 강력한 개인정보 보호 정책을 가진 매장으로 전환하라'는 제안은 귀여운 순진함이다. 단지 아직 들키지 않은 매장으로 바꾸는 것뿐이다.
+***** Comments
+- 발표하지 않았다고 해서 사용하지 않는 것은 아니다. 솔직히, 모든 식료품점이 상습범을 교차 확인하고 잡기 위해 보안 카메라로 얼굴 인식을 하고 있다고 가정하겠다.
+- 식료품점만이 아니라 어디서나 그렇다. 예를 들어 TSA 보안 줄과 탑승 게이트에서. 그 권리가 빼앗기기 전에 매번 옵트아웃 권리를 행사할 수 있고 행사해야 한다. 세상에 Richard Stallman처럼 들리네... 어쨌든, 그가 계속 옳았다.
+- 보안 카메라를 허용하면서 얼굴 스캔 금지를 어떻게 시행할 수 있는지 모르겠다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Luchando contra la vigilancia biométrica en Wegmans
+***** TLDR
+［del título + comentarios, artículo inaccesible］ Adafruit publicó una guía para combatir la vigilancia biométrica en las tiendas Wegmans. La discusión revela que el reconocimiento facial para atrapar ladrones probablemente es ubicuo en las cadenas de supermercados, independientemente de si lo anuncian. Algunos sugieren cambiar a Trader Joe's o Whole Foods que no han anunciado escaneo, aunque eso no garantiza que no lo estén haciendo.
+***** Take
+Tu cara ahora es una tarjeta de fidelidad de tienda que nunca firmaste. La sugerencia de 'cambiar a tiendas con políticas de privacidad más fuertes' es una ingenuidad adorable: solo estás cambiando a tiendas que aún no han sido descubiertas.
+***** Comments
+- Solo porque no lo han anunciado no significa que no lo estén usando. Honestamente, asumiría que cada supermercado tiene cámaras de seguridad haciendo reconocimiento facial para cruzar referencias y atrapar ladrones reincidentes.
+- No es solo en los supermercados, es en todas partes. Por ejemplo en la línea de seguridad de TSA y al abordar vuelos en la puerta. Puedes (y deberías) ejercer tu derecho a optar por no participar cada vez, antes de que ese derecho sea eliminado. Dios mío, sueno como Richard Stallman... de todos modos, él tenía razón todo el tiempo.
+- No veo cómo puedes prohibir el escaneo facial si permites cámaras de seguridad.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Widerstand gegen biometrische Überwachung bei Wegmans
+***** TLDR
+［aus Titel + Kommentaren, Artikel nicht erreichbar］ Adafruit veröffentlichte einen Leitfaden zum Kampf gegen biometrische Überwachung bei Wegmans-Lebensmittelgeschäften. Die Diskussion zeigt, dass Gesichtserkennung zum Fangen von Ladendieben wahrscheinlich in allen Supermarktketten allgegenwärtig ist, unabhängig davon, ob sie es ankündigen. Einige schlagen vor, zu Trader Joe's oder Whole Foods zu wechseln, die kein Scannen angekündigt haben, obwohl das keine Garantie ist, dass sie es nicht tun.
+***** Take
+Dein Gesicht ist jetzt eine Kundenkarte, für die du dich nie angemeldet hast. Der Vorschlag, 'zu Geschäften mit stärkeren Datenschutzrichtlinien zu wechseln', ist bezaubernd naiv - du wechselst nur zu Geschäften, die noch nicht erwischt wurden.
+***** Comments
+- Nur weil sie es nicht angekündigt haben, heißt das nicht, dass sie es nicht verwenden. Ehrlich gesagt würde ich einfach annehmen, dass jeder Supermarkt Sicherheitskameras hat, die Gesichtserkennung machen, um Wiederholungstäter zu identifizieren und zu fangen.
+- Es ist nicht nur in Lebensmittelgeschäften, es ist überall. Zum Beispiel an der TSA-Sicherheitslinie und beim Boarding am Gate. Du kannst (und solltest) jedes Mal dein Recht auf Opt-out ausüben, bevor dieses Recht weggenommen wird. Oh Gott, ich klinge wie Richard Stallman... wie auch immer, er hatte die ganze Zeit recht.
+- Ich sehe nicht, wie man Gesichtsscanning verbieten kann, wenn man Sicherheitskameras erlaubt.
+** Health care data breach affects over 600k patients, Illinois agency says :security:healthcare:data-breach:
+:PROPERTIES:
+:ID:       46528353
+:URL:      https://www.nprillinois.org/illinois/2026-01-06/health-care-data-breach-affects-600-000-patients-illinois-agency-says
+:HN_URL:   https://news.ycombinator.com/item?id=46528353
+:POINTS:   166
+:COMMENTS: 59
+:BY:       toomuchtodo
+:END:
+
+*** TLDR
+Illinois Department of Human Services exposed data on over 700,000 patients through incorrect privacy settings on mapping websites between 2021-2025. The breach included 32,000 rehabilitation services customers (names, addresses, case numbers) and 670,000 Medicaid/Medicare recipients (addresses, demographic info, medical plan names). IDHS claims they're 'unaware of any misuse' which is corporate speak for 'we have no monitoring.'
+
+*** Take
+Four years of leaking patient data through a misconfigured map. Not a sophisticated hack, not a zero-day - just someone who checked the wrong checkbox on privacy settings and nobody noticed for half a decade.
+
+*** Comments
+
+**** scottLobster
+:PROPERTIES:
+:COMMENT_ID: 46528354
+:END:
+Unfortunately there's no money in privacy, and a lot of money in either outright selling data or cutting costs to the bare minimum required to avoid legal liability. Wife and I are expecting our third child, and despite my not doing much googling, the algorithms across the board found out somehow.
+
+**** gen220
+:PROPERTIES:
+:COMMENT_ID: 46528355
+:END:
+FYI, there's a .gov-maintained portal where healthcare companies in the U.S. are legally obliged to publish data breaches. It's an interesting dataset! https://ocrportal.hhs.gov/ocr/breach/breach_report.jsf
+
+**** didgetmaster
+:PROPERTIES:
+:COMMENT_ID: 46528356
+:END:
+Although almost every company issues a 'we care about your privacy' statement, there is often very little 'money where your mouth is' resources to back that up. This is why I am almost always very reluctant to give out any information that is not absolutely necessary.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+伊利诺伊州机构称医疗数据泄露影响超60万患者
+***** TLDR
+伊利诺伊州人类服务部在2021-2025年间通过地图网站的错误隐私设置泄露了超过70万患者的数据。泄露包括32000名康复服务客户（姓名、地址、案例编号）和67万名Medicaid/Medicare受益人（地址、人口统计信息、医疗计划名称）。IDHS声称他们'不知道有任何滥用'，这是'我们没有监控'的企业说法。
+***** Take
+四年的患者数据通过一个配置错误的地图泄露。不是复杂的黑客攻击，不是零日漏洞——只是有人在隐私设置上勾选了错误的复选框，五年来没人注意到。
+***** Comments
+- 不幸的是，隐私不赚钱，而直接出售数据或将成本削减到避免法律责任所需的最低限度却很赚钱。我和妻子正在期待第三个孩子，尽管我没怎么搜索，但各种算法不知怎么都发现了。
+- 供参考，有一个.gov维护的门户网站，美国医疗保健公司在法律上有义务公布数据泄露。这是一个有趣的数据集！https://ocrportal.hhs.gov/ocr/breach/breach_report.jsf
+- 虽然几乎每家公司都发布'我们关心您的隐私'声明，但通常很少有'言行一致'的资源来支持。这就是为什么我几乎总是非常不愿意提供任何非绝对必要的信息。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+イリノイ州機関によると、医療データ漏洩が60万人以上の患者に影響
+***** TLDR
+イリノイ州人間サービス局が2021年から2025年の間にマッピングウェブサイトの誤ったプライバシー設定を通じて70万人以上の患者データを漏洩した。漏洩には32,000人のリハビリサービス顧客（名前、住所、ケース番号）と67万人のMedicaid/Medicare受給者（住所、人口統計情報、医療プラン名）が含まれる。IDHSは「いかなる悪用も認識していない」と主張しているが、これは「監視していない」の企業語だ。
+***** Take
+設定ミスのマップを通じて4年間患者データを漏洩。高度なハッキングでもゼロデイでもない。誰かがプライバシー設定で間違ったチェックボックスにチェックを入れ、5年間誰も気づかなかっただけだ。
+***** Comments
+- 残念ながらプライバシーにはお金にならず、データを直接販売するか、法的責任を避けるために必要最低限のコスト削減には多くのお金がある。妻と私は3人目の子供を期待しているが、あまり検索していないにもかかわらず、アルゴリズムは全体的になぜか知っていた。
+- 参考までに、米国の医療会社がデータ漏洩を公開する法的義務がある.gov管理のポータルがある。興味深いデータセットだ！https://ocrportal.hhs.gov/ocr/breach/breach_report.jsf
+- ほぼすべての企業が「プライバシーを重視します」という声明を出しているが、それを裏付ける「有言実行」のリソースはほとんどない。これが私がほとんど常に絶対必要でない情報を提供することに非常に消極的な理由だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+일리노이 기관에 따르면 의료 데이터 유출로 60만 명 이상의 환자 영향
+***** TLDR
+일리노이주 인적 서비스부가 2021-2025년 사이 매핑 웹사이트의 잘못된 개인정보 설정으로 70만 명 이상의 환자 데이터를 노출했다. 유출에는 32,000명의 재활 서비스 고객(이름, 주소, 사례 번호)과 67만 명의 Medicaid/Medicare 수혜자(주소, 인구통계 정보, 의료 플랜 이름)가 포함된다. IDHS는 '어떤 오용도 인지하지 못했다'고 주장하는데, 이는 '모니터링하지 않는다'는 기업 용어다.
+***** Take
+잘못 구성된 지도를 통해 4년간 환자 데이터 유출. 정교한 해킹도 아니고 제로데이도 아니다. 그냥 누군가 개인정보 설정에서 잘못된 체크박스를 선택했고 5년 동안 아무도 눈치채지 못했다.
+***** Comments
+- 불행히도 프라이버시에는 돈이 되지 않고, 데이터를 직접 판매하거나 법적 책임을 피하기 위해 필요한 최소한으로 비용을 줄이는 데는 많은 돈이 된다. 아내와 저는 셋째를 기다리고 있는데, 별로 검색하지 않았는데도 알고리즘들이 전반적으로 어떻게든 알아냈다.
+- 참고로, 미국 의료 회사들이 데이터 유출을 공개하도록 법적으로 의무화된 .gov 관리 포털이 있다. 흥미로운 데이터셋이다! https://ocrportal.hhs.gov/ocr/breach/breach_report.jsf
+- 거의 모든 회사가 '우리는 귀하의 프라이버시를 중요시합니다' 성명을 발표하지만, 이를 뒷받침할 '언행일치' 자원은 거의 없다. 이것이 내가 거의 항상 절대적으로 필요하지 않은 정보를 제공하는 것을 매우 꺼리는 이유다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Filtración de datos de salud afecta a más de 600 mil pacientes, dice agencia de Illinois
+***** TLDR
+El Departamento de Servicios Humanos de Illinois expuso datos de más de 700,000 pacientes a través de configuraciones de privacidad incorrectas en sitios web de mapas entre 2021-2025. La filtración incluyó 32,000 clientes de servicios de rehabilitación (nombres, direcciones, números de caso) y 670,000 beneficiarios de Medicaid/Medicare (direcciones, información demográfica, nombres de planes médicos). IDHS afirma que 'no tiene conocimiento de ningún uso indebido', que es jerga corporativa para 'no tenemos monitoreo'.
+***** Take
+Cuatro años filtrando datos de pacientes a través de un mapa mal configurado. No fue un hackeo sofisticado, no fue un zero-day, solo alguien que marcó la casilla incorrecta en la configuración de privacidad y nadie lo notó durante media década.
+***** Comments
+- Desafortunadamente no hay dinero en la privacidad, y mucho dinero en vender datos directamente o reducir costos al mínimo requerido para evitar responsabilidad legal. Mi esposa y yo esperamos nuestro tercer hijo, y a pesar de no buscar mucho en internet, los algoritmos de alguna manera lo descubrieron.
+- Para tu información, hay un portal mantenido por .gov donde las empresas de salud en EE.UU. están legalmente obligadas a publicar filtraciones de datos. ¡Es un conjunto de datos interesante! https://ocrportal.hhs.gov/ocr/breach/breach_report.jsf
+- Aunque casi todas las empresas emiten una declaración de 'nos importa tu privacidad', a menudo hay muy pocos recursos de 'poner el dinero donde está la boca' para respaldarlo. Por eso casi siempre soy muy reacio a dar información que no sea absolutamente necesaria.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Datenpanne im Gesundheitswesen betrifft über 600.000 Patienten, sagt Illinois-Behörde
+***** TLDR
+Das Illinois Department of Human Services hat zwischen 2021-2025 durch falsche Datenschutzeinstellungen auf Mapping-Websites Daten von über 700.000 Patienten offengelegt. Die Panne umfasste 32.000 Rehabilitationsservice-Kunden (Namen, Adressen, Fallnummern) und 670.000 Medicaid/Medicare-Empfänger (Adressen, demografische Informationen, Namen von Gesundheitsplänen). IDHS behauptet, sie seien 'keines Missbrauchs bewusst', was Unternehmenssprache für 'wir haben kein Monitoring' ist.
+***** Take
+Vier Jahre Patientendaten durch eine falsch konfigurierte Karte geleakt. Kein ausgeklügelter Hack, kein Zero-Day - nur jemand, der das falsche Kontrollkästchen bei den Datenschutzeinstellungen angekreuzt hat und niemand hat es ein halbes Jahrzehnt lang bemerkt.
+***** Comments
+- Leider gibt es kein Geld in Datenschutz, und viel Geld entweder im direkten Verkauf von Daten oder in der Kostenreduzierung auf das Minimum, das erforderlich ist, um rechtliche Haftung zu vermeiden. Meine Frau und ich erwarten unser drittes Kind, und obwohl ich nicht viel gegoogelt habe, haben die Algorithmen es irgendwie alle herausgefunden.
+- Zur Info: Es gibt ein .gov-verwaltetes Portal, auf dem US-Gesundheitsunternehmen gesetzlich verpflichtet sind, Datenpannen zu veröffentlichen. Ein interessanter Datensatz! https://ocrportal.hhs.gov/ocr/breach/breach_report.jsf
+- Obwohl fast jedes Unternehmen eine 'Uns liegt Ihre Privatsphäre am Herzen'-Erklärung abgibt, gibt es oft sehr wenig 'Taten statt Worte'-Ressourcen, um das zu untermauern. Deshalb bin ich fast immer sehr zurückhaltend, Informationen preiszugeben, die nicht absolut notwendig sind.
+** Show HN: I visualized the entire history of Citi Bike in the browser :dataviz:showhn:nyc:
+:PROPERTIES:
+:ID:       46530832
+:URL:      https://bikemap.nyc/
+:HN_URL:   https://news.ycombinator.com/item?id=46530832
+:POINTS:   55
+:COMMENTS: 22
+:BY:       freemanjiang
+:END:
+
+*** TLDR
+A browser-based visualization of 291 million Citi Bike rides across NYC's history. No backend needed - data lives in Parquet files on Cloudflare CDN, queried by DuckDB WASM. Uses deck.gl with Mapbox for GPU-accelerated rendering, Web Workers for off-thread processing, and OSRM-generated routes between all 2,400+ station pairs. You can search for your own rides using your receipt.
+
+*** Take
+The most impressive part isn't rendering 291 million bike rides in a browser - it's convincing anyone that they want to relive their commute from 2014.
+
+*** Comments
+
+**** lazarus01
+:PROPERTIES:
+:COMMENT_ID: 46530833
+:END:
+Cool project. Thanks for sharing! The link above points to a 404 error page on GitHub. I'm working with subway data, particularly the A subway line, 32 mi long with about 2 million trips over 6 months across 66 stations. Trying to train a convlstm to learn the spatiotemporal propagation of train headways.
+
+**** chem83
+:PROPERTIES:
+:COMMENT_ID: 46530834
+:END:
+Limitations: The data only contains the start and end station for each trip, but does not contain the full path. Route geometries are computed for each (start, end) pair using the shortest path from OSRM. This means computed routes are directionally correct but inexact.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Show HN：我在浏览器中可视化了Citi Bike的全部历史
+***** TLDR
+一个基于浏览器的可视化，展示了纽约市历史上的2.91亿次Citi Bike骑行。不需要后端——数据存储在Cloudflare CDN上的Parquet文件中，由DuckDB WASM查询。使用deck.gl和Mapbox进行GPU加速渲染，Web Workers进行线程外处理，以及OSRM生成的所有2400多个站点对之间的路线。你可以使用收据搜索自己的骑行记录。
+***** Take
+最令人印象深刻的不是在浏览器中渲染2.91亿次骑行——而是说服任何人想要重温他们2014年的通勤。
+***** Comments
+- 很酷的项目。感谢分享！上面的链接指向GitHub上的404错误页面。我正在处理地铁数据，特别是A线地铁，全长32英里，6个月内在66个站点有约200万次行程。正在尝试训练一个convlstm来学习列车发车间隔的时空传播。
+- 限制：数据只包含每次行程的起点和终点站，不包含完整路径。路线几何形状是使用OSRM的最短路径为每个(起点,终点)对计算的。这意味着计算的路线方向正确但不精确。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Show HN：Citi Bikeの全歴史をブラウザで可視化しました
+***** TLDR
+ニューヨーク市の歴史上の2億9100万回のCiti Bike乗車をブラウザベースで可視化。バックエンド不要。データはCloudflare CDN上のParquetファイルにあり、DuckDB WASMでクエリ。deck.glとMapboxでGPU加速レンダリング、Web Workersでオフスレッド処理、そしてOSRM生成の2,400以上の全ステーションペア間のルート。レシートを使って自分の乗車を検索できる。
+***** Take
+最も印象的なのはブラウザで2億9100万回の乗車をレンダリングすることではない。誰かに2014年の通勤を追体験したいと思わせることだ。
+***** Comments
+- クールなプロジェクト。共有ありがとう！上のリンクはGitHubの404エラーページを指している。地下鉄データ、特にA線で作業中。全長32マイル、66駅で6ヶ月間に約200万回のトリップ。列車の運転間隔の時空間伝播を学習するためにconvlstmを訓練しようとしている。
+- 制限事項：データには各トリップの開始駅と終了駅のみが含まれ、完全なパスは含まれない。ルートジオメトリはOSRMの最短経路を使用して各（開始、終了）ペアごとに計算される。つまり計算されたルートは方向的には正確だが不正確だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Show HN: 브라우저에서 Citi Bike의 전체 역사를 시각화했습니다
+***** TLDR
+NYC 역사상 2억 9100만 건의 Citi Bike 라이드를 브라우저 기반으로 시각화. 백엔드 불필요 - 데이터는 Cloudflare CDN의 Parquet 파일에 저장되고 DuckDB WASM으로 쿼리. deck.gl과 Mapbox로 GPU 가속 렌더링, Web Workers로 오프스레드 처리, 그리고 OSRM이 생성한 2,400개 이상의 모든 스테이션 쌍 간 경로. 영수증으로 자신의 라이드를 검색할 수 있다.
+***** Take
+가장 인상적인 것은 브라우저에서 2억 9100만 건의 자전거 타기를 렌더링하는 게 아니다. 누군가에게 2014년 출퇴근을 다시 경험하고 싶다고 설득하는 것이다.
+***** Comments
+- 멋진 프로젝트. 공유해주셔서 감사합니다! 위 링크는 GitHub의 404 오류 페이지를 가리킵니다. 저는 지하철 데이터, 특히 A 지하철 노선으로 작업 중입니다. 32마일 길이에 66개 역에서 6개월간 약 200만 건의 이동이 있습니다. 열차 배차 간격의 시공간적 전파를 학습하기 위해 convlstm을 훈련시키려고 합니다.
+- 제한 사항: 데이터에는 각 여정의 시작역과 종착역만 포함되어 있고 전체 경로는 포함되지 않습니다. 경로 기하학은 OSRM의 최단 경로를 사용하여 각 (시작, 종료) 쌍에 대해 계산됩니다. 즉, 계산된 경로는 방향적으로 정확하지만 정확하지 않습니다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Show HN: Visualicé toda la historia de Citi Bike en el navegador
+***** TLDR
+Una visualización basada en navegador de 291 millones de viajes en Citi Bike a través de la historia de NYC. Sin backend necesario: los datos viven en archivos Parquet en Cloudflare CDN, consultados por DuckDB WASM. Usa deck.gl con Mapbox para renderizado acelerado por GPU, Web Workers para procesamiento fuera del hilo principal, y rutas generadas por OSRM entre los más de 2,400 pares de estaciones. Puedes buscar tus propios viajes usando tu recibo.
+***** Take
+La parte más impresionante no es renderizar 291 millones de viajes en bicicleta en un navegador, es convencer a alguien de que quiere revivir su trayecto de 2014.
+***** Comments
+- Proyecto genial. ¡Gracias por compartir! El enlace de arriba apunta a una página de error 404 en GitHub. Estoy trabajando con datos del metro, particularmente la línea A del metro, 32 millas de largo con aproximadamente 2 millones de viajes en 6 meses a través de 66 estaciones. Tratando de entrenar un convlstm para aprender la propagación espacio-temporal de los intervalos de trenes.
+- Limitaciones: Los datos solo contienen la estación de inicio y fin para cada viaje, pero no contienen la ruta completa. Las geometrías de ruta se calculan para cada par (inicio, fin) usando la ruta más corta de OSRM. Esto significa que las rutas calculadas son direccionalmente correctas pero inexactas.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Show HN: Ich habe die gesamte Geschichte von Citi Bike im Browser visualisiert
+***** TLDR
+Eine browserbasierte Visualisierung von 291 Millionen Citi Bike Fahrten in der Geschichte von NYC. Kein Backend nötig - Daten liegen in Parquet-Dateien auf Cloudflare CDN, abgefragt von DuckDB WASM. Verwendet deck.gl mit Mapbox für GPU-beschleunigtes Rendering, Web Workers für Off-Thread-Verarbeitung und OSRM-generierte Routen zwischen allen über 2.400 Stationspaaren. Du kannst mit deiner Quittung nach deinen eigenen Fahrten suchen.
+***** Take
+Das Beeindruckendste ist nicht, 291 Millionen Fahrradfahrten im Browser zu rendern - es ist, jemanden davon zu überzeugen, dass er seinen Arbeitsweg von 2014 noch einmal erleben will.
+***** Comments
+- Cooles Projekt. Danke fürs Teilen! Der Link oben zeigt auf eine 404-Fehlerseite auf GitHub. Ich arbeite mit U-Bahn-Daten, insbesondere der A-Linie, 32 Meilen lang mit etwa 2 Millionen Fahrten über 6 Monate an 66 Stationen. Versuche ein convlstm zu trainieren, um die räumlich-zeitliche Ausbreitung von Zugabständen zu lernen.
+- Einschränkungen: Die Daten enthalten nur die Start- und Endstation für jede Fahrt, aber nicht den vollständigen Weg. Routengeometrien werden für jedes (Start, Ende)-Paar mit dem kürzesten Weg von OSRM berechnet. Das bedeutet, berechnete Routen sind richtungsmäßig korrekt aber ungenau.
