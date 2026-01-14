@@ -1,0 +1,555 @@
+#+TITLE: HN Digest 2026-01-14 01:00:00 UT UTC
+#+DATE: 2026-01-14T01:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+AI scrapers ruin everything, LLM hype meets reality, and a 40-line fix beats 400x slowdown
+
+* Highlights
+- MetaBrainz: AI bots hammer servers instead of just downloading the damn dataset
+- Tulip CC: ESP32 synth that boots to Python, no distractions
+- JVM fix: Parsing /proc like it's 1999 was costing you 400x performance
+
+* Stories
+
+** We can't have nice things because of AI scrapers :ai:infrastructure:scraping:open-data:
+:PROPERTIES:
+:ID:       46608840
+:URL:      https://blog.metabrainz.org/2025/12/11/we-cant-have-nice-things-because-of-ai-scrapers/
+:HN_URL:   https://news.ycombinator.com/item?id=46608840
+:POINTS:   231
+:COMMENTS: 139
+:BY:       LorenDB
+:END:
+
+*** TLDR
+MetaBrainz is getting hammered by AI scrapers loading pages one at a time instead of downloading their freely available datasets. They've had to add auth tokens, remove API endpoints, and require logins just to keep services running.
+
+*** Take
+The irony of AI companies ignoring robots.txt while training models that will later confidently explain the importance of web standards is almost poetic.
+
+*** Comments
+
+**** dannyobrien
+:PROPERTIES:
+:COMMENT_ID: 46608841
+:END:
+Metabrainz is a great resource -- there's something important here in that a public good like Metabrainz would be fine with the AI bots picking up their content -- they're just doing it in a frustratingly inefficient way. It's a co-ordination problem.
+
+**** randyl
+:PROPERTIES:
+:COMMENT_ID: 46608842
+:END:
+The SQLite team faced a similar problem last year, and Richard Hipp made almost the same comment: 'The malefactor behind this attack could just clone the whole SQLite source repository and search all the content on his own machine, at his leisure. But no: Being evil, the culprit feels compelled to ruin it for everyone else.'
+
+**** akuyou
+:PROPERTIES:
+:COMMENT_ID: 46608843
+:END:
+My web host suspended my website account last week due to a sudden large volume of requests -- effectively punishing me for being scraped by bots. What hope does the little guy have?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+因为AI爬虫我们享受不到美好的东西
+***** TLDR
+MetaBrainz正被AI爬虫逐页加载而不是下载免费数据集所困扰。他们不得不添加认证令牌、移除API端点并要求登录才能维持服务运行。
+***** Take
+AI公司无视robots.txt同时训练模型，而这些模型将来会自信地解释网络标准的重要性，这讽刺简直是诗意的。
+***** Comments
+- Metabrainz是个很棒的资源——重要的是像Metabrainz这样的公共资源其实愿意让AI机器人获取内容——只是它们的方式效率太低令人沮丧。这是个协调问题。
+- SQLite团队去年也遇到了类似问题，Richard Hipp发表了几乎相同的评论：'这次攻击的恶意行为者完全可以克隆整个SQLite源代码仓库，在自己的机器上从容搜索所有内容。但不，作恶者偏要毁掉大家的体验。'
+- 我的网站托管商上周暂停了我的账户，因为突然有大量请求——实际上是因为被机器人爬取而惩罚我。小人物还有什么希望？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+AIスクレイパーのせいで良いものが台無しに
+***** TLDR
+MetaBrainzは無料で利用可能なデータセットをダウンロードする代わりに、ページを1つずつ読み込むAIスクレイパーに悩まされている。サービスを維持するために認証トークンの追加、APIエンドポイントの削除、ログイン必須化を余儀なくされた。
+***** Take
+robots.txtを無視するAI企業が、後でウェブ標準の重要性を自信満々に説明するモデルを訓練しているという皮肉は、ほとんど詩的だ。
+***** Comments
+- Metabrainzは素晴らしいリソースだ。重要なのは、Metabrainzのような公共財はAIボットがコンテンツを取得すること自体は問題ない。ただ、その方法が非効率で困っているだけ。これは調整の問題だ。
+- SQLiteチームも昨年同様の問題に直面し、Richard Hippはほぼ同じコメントをした：「この攻撃の犯人はSQLiteソースリポジトリ全体をクローンして、自分のマシンでゆっくり検索できるのに。でも悪者だから、他の全員の迷惑になることを強いられるんだ。」
+- 先週、突然の大量リクエストで私のウェブホストがアカウントを停止した。ボットにスクレイピングされたことで罰せられるなんて。小さな個人にはどうしようもない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+AI 스크래퍼 때문에 좋은 것을 가질 수 없다
+***** TLDR
+MetaBrainz는 무료로 제공되는 데이터셋을 다운로드하는 대신 페이지를 하나씩 로드하는 AI 스크래퍼에 시달리고 있다. 서비스 유지를 위해 인증 토큰 추가, API 엔드포인트 제거, 로그인 필수화를 해야 했다.
+***** Take
+robots.txt를 무시하면서 나중에 웹 표준의 중요성을 자신있게 설명할 모델을 훈련시키는 AI 회사들의 아이러니는 거의 시적이다.
+***** Comments
+- Metabrainz는 훌륭한 리소스다. 중요한 점은 Metabrainz 같은 공공재는 AI 봇이 콘텐츠를 가져가는 것 자체는 괜찮다는 것이다. 단지 방식이 답답할 정도로 비효율적일 뿐. 이건 조정 문제다.
+- SQLite 팀도 작년에 비슷한 문제를 겪었고, Richard Hipp은 거의 같은 말을 했다: '이 공격의 악당은 SQLite 소스 저장소 전체를 복제해서 자기 컴퓨터에서 편하게 검색할 수 있는데. 하지만 악하기 때문에 다른 모두를 망치려 한다.'
+- 지난주 갑작스러운 대량 요청으로 웹 호스트가 내 계정을 정지시켰다. 봇에 스크래핑당한 것 때문에 벌을 받다니. 작은 사람은 어떻게 해야 하나?
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+No podemos tener cosas buenas por culpa de los scrapers de IA
+***** TLDR
+MetaBrainz está siendo bombardeado por scrapers de IA que cargan páginas una por una en lugar de descargar sus conjuntos de datos gratuitos. Han tenido que agregar tokens de autenticación, eliminar endpoints de API y requerir inicio de sesión solo para mantener los servicios funcionando.
+***** Take
+La ironía de que las empresas de IA ignoren robots.txt mientras entrenan modelos que luego explicarán con confianza la importancia de los estándares web es casi poética.
+***** Comments
+- Metabrainz es un gran recurso. Lo importante es que un bien público como Metabrainz estaría bien con que los bots de IA obtengan su contenido, solo que lo hacen de manera frustrantemente ineficiente. Es un problema de coordinación.
+- El equipo de SQLite enfrentó un problema similar el año pasado, y Richard Hipp hizo casi el mismo comentario: 'El malhechor detrás de este ataque podría simplemente clonar todo el repositorio de código fuente de SQLite y buscar todo el contenido en su propia máquina. Pero no: siendo malvado, el culpable se siente obligado a arruinarlo para todos.'
+- Mi proveedor de hosting suspendió mi cuenta la semana pasada debido a un gran volumen de solicitudes, castigándome efectivamente por ser scrapeado por bots. ¿Qué esperanza tiene el pequeño?
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Wegen AI-Scrapern können wir keine schönen Dinge haben
+***** TLDR
+MetaBrainz wird von AI-Scrapern bombardiert, die Seiten einzeln laden, anstatt ihre frei verfügbaren Datensätze herunterzuladen. Sie mussten Auth-Tokens hinzufügen, API-Endpoints entfernen und Logins verlangen, nur um die Dienste am Laufen zu halten.
+***** Take
+Die Ironie, dass AI-Unternehmen robots.txt ignorieren, während sie Modelle trainieren, die später die Bedeutung von Webstandards selbstbewusst erklären werden, ist fast poetisch.
+***** Comments
+- Metabrainz ist eine großartige Ressource. Wichtig ist, dass ein öffentliches Gut wie Metabrainz damit einverstanden wäre, wenn AI-Bots ihre Inhalte abrufen – sie tun es nur auf frustrierend ineffiziente Weise. Es ist ein Koordinationsproblem.
+- Das SQLite-Team hatte letztes Jahr ein ähnliches Problem, und Richard Hipp machte fast den gleichen Kommentar: 'Der Übeltäter hinter diesem Angriff könnte einfach das gesamte SQLite-Quellcode-Repository klonen und alle Inhalte auf seinem eigenen Computer durchsuchen. Aber nein: Da er böse ist, fühlt sich der Täter gezwungen, es für alle anderen zu ruinieren.'
+- Mein Webhoster hat mein Konto letzte Woche wegen plötzlich hohem Anfragevolumen gesperrt – bestraft mich quasi dafür, von Bots gescraped zu werden. Welche Hoffnung hat der kleine Mann?
+** The insecure evangelism of LLM maximalists :ai:programming:culture:hot-take:
+:PROPERTIES:
+:ID:       46609591
+:URL:      https://lewiscampbell.tech/blog/260114.html
+:HN_URL:   https://news.ycombinator.com/item?id=46609591
+:POINTS:   148
+:COMMENTS: 146
+:BY:       todsacerdoti
+:END:
+
+*** TLDR
+Author argues that aggressive LLM evangelists who dismiss skeptics as afraid of change are projecting their own insecurities about their programming skills. They find LLMs useful for limited tasks but disappointing for actual development work.
+
+*** Take
+The 'you're just scared of being replaced' crowd might want to consider why they need AI so badly in the first place. Sometimes the cope goes both ways.
+
+*** Comments
+
+**** rudedogg
+:PROPERTIES:
+:COMMENT_ID: 46609592
+:END:
+Hearing people on tech twitter say that LLMs always produce better code than they do by hand was pretty enlightening for me. LLMs can produce better code for languages and domains I'm not proficient in, but damn it's rare I look at LLM output and don't spot something I'd do measurably better.
+
+**** jraph
+:PROPERTIES:
+:COMMENT_ID: 46609593
+:END:
+Simon Wilson (known for Django) has been doing a lot of LLM evangelism on his blog these days. Antirez (Redis) wrote a blog post recently with the same vibe. I doubt they are not good programmers.
+
+**** Terr_
+:PROPERTIES:
+:COMMENT_ID: 46609594
+:END:
+I saw a version of this yesterday where a commenter framed LLM-skepticism as a disappointing lack of 'hacker' drive and ethos. The 'hacker' is not driven just by novelty in problems to solve, but by a desire to understand.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+LLM极端主义者的不安全感式布道
+***** TLDR
+作者认为，那些把怀疑者贬为害怕变化的激进LLM布道者，实际上是在投射自己对编程技能的不安全感。他发现LLM在有限任务上有用，但在实际开发工作中令人失望。
+***** Take
+'你只是害怕被取代'这群人或许应该想想为什么他们自己那么需要AI。有时候自我安慰是双向的。
+***** Comments
+- 听到科技推特上的人说LLM写的代码总是比他们手写的好，这对我来说很有启发性。LLM确实能为我不熟练的语言和领域生成更好的代码，但我很少看到LLM的输出里没有我能明显做得更好的地方。
+- Simon Wilson（Django的创造者）最近在他的博客上做了很多LLM布道。Antirez（Redis）最近也写了一篇类似氛围的博客。我不认为他们不是好程序员。
+- 我昨天看到一个版本，评论者把LLM怀疑论框定为令人失望地缺乏'黑客'动力和精神。'黑客'不仅仅是被解决问题的新奇性驱动，还有理解事物的渴望。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+LLM最大主義者の不安定な伝道
+***** TLDR
+著者は、懐疑論者を変化を恐れていると一蹴する攻撃的なLLM伝道者たちは、自分のプログラミングスキルに対する不安を投影していると主張。LLMは限定的なタスクには役立つが、実際の開発作業には期待はずれだと感じている。
+***** Take
+「あなたは置き換えられるのが怖いだけ」という連中は、そもそもなぜAIがそんなに必要なのか考えた方がいいかもしれない。時にはコープは双方向だ。
+***** Comments
+- テックTwitterで「LLMは常に手書きよりも良いコードを生成する」と言う人がいて、とても啓発的だった。LLMは私が得意でない言語やドメインではより良いコードを生成できるが、LLMの出力を見て、自分の方が明らかに上手くできる点を見つけないことは稀だ。
+- Simon Wilson（Djangoで有名）は最近ブログでLLM伝道をたくさんしている。Antirez（Redis）も最近同じような雰囲気のブログ記事を書いた。彼らが良いプログラマーではないとは思えない。
+- 昨日、LLM懐疑論を「ハッカー」の精神や気概の残念な欠如として捉えるコメントを見た。「ハッカー」は問題解決の新しさだけでなく、理解したいという欲求に駆り立てられている。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+LLM 극대주의자들의 불안한 전도
+***** TLDR
+저자는 회의론자를 변화를 두려워한다고 무시하는 공격적인 LLM 전도자들이 실제로는 자신의 프로그래밍 실력에 대한 불안감을 투사하고 있다고 주장한다. LLM이 제한된 작업에는 유용하지만 실제 개발 작업에는 실망스럽다고 느낀다.
+***** Take
+'당신은 그저 대체되는 것이 두려운 것'이라고 말하는 사람들은 왜 자신들이 그렇게 AI가 필요한지 생각해 볼 필요가 있다. 때로는 자기 위안은 양방향이다.
+***** Comments
+- 테크 트위터에서 LLM이 항상 자기가 직접 작성한 것보다 더 나은 코드를 생성한다고 말하는 사람들을 듣고 꽤 깨달음을 얻었다. LLM은 내가 능숙하지 않은 언어와 도메인에서는 더 나은 코드를 생성할 수 있지만, LLM 출력을 보고 내가 확실히 더 잘할 수 있는 것을 발견하지 못하는 경우는 드물다.
+- Simon Wilson(Django로 유명한)은 요즘 블로그에서 LLM 전도를 많이 하고 있다. Antirez(Redis)도 최근 비슷한 분위기의 블로그 글을 썼다. 그들이 좋은 프로그래머가 아니라고는 생각하지 않는다.
+- 어제 LLM 회의론을 '해커' 정신과 기풍의 실망스러운 부족으로 프레이밍하는 댓글을 봤다. '해커'는 문제 해결의 참신함뿐만 아니라 이해하고자 하는 욕구에 의해 동기부여된다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+El evangelismo inseguro de los maximalistas de LLM
+***** TLDR
+El autor argumenta que los evangelistas agresivos de LLM que desestiman a los escépticos como temerosos del cambio están proyectando sus propias inseguridades sobre sus habilidades de programación. Encuentra los LLM útiles para tareas limitadas pero decepcionantes para el trabajo de desarrollo real.
+***** Take
+La gente del 'solo tienes miedo de ser reemplazado' quizás debería considerar por qué necesitan tanto la IA en primer lugar. A veces la negación va en ambas direcciones.
+***** Comments
+- Escuchar a gente en tech twitter decir que los LLM siempre producen mejor código que ellos a mano fue bastante revelador para mí. Los LLM pueden producir mejor código para lenguajes y dominios en los que no soy competente, pero es raro que mire la salida de un LLM y no encuentre algo que yo haría considerablemente mejor.
+- Simon Wilson (conocido por Django) ha estado haciendo mucho evangelismo de LLM en su blog últimamente. Antirez (Redis) escribió una entrada de blog recientemente con la misma vibra. Dudo que no sean buenos programadores.
+- Ayer vi una versión de esto donde un comentarista enmarcó el escepticismo hacia los LLM como una decepcionante falta de impulso y ética 'hacker'. El 'hacker' no solo está motivado por la novedad en los problemas a resolver, sino por el deseo de entender.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Die unsichere Evangelisierung der LLM-Maximalisten
+***** TLDR
+Der Autor argumentiert, dass aggressive LLM-Evangelisten, die Skeptiker als Angsthasen vor Veränderung abtun, ihre eigenen Unsicherheiten über ihre Programmierfähigkeiten projizieren. Er findet LLMs für begrenzte Aufgaben nützlich, aber für echte Entwicklungsarbeit enttäuschend.
+***** Take
+Die 'du hast nur Angst ersetzt zu werden'-Fraktion sollte vielleicht mal überlegen, warum sie selbst AI so dringend brauchen. Manchmal geht die Selbsttäuschung in beide Richtungen.
+***** Comments
+- Leute auf Tech-Twitter sagen zu hören, dass LLMs immer besseren Code produzieren als sie selbst von Hand, war ziemlich aufschlussreich für mich. LLMs können besseren Code für Sprachen und Domains produzieren, in denen ich nicht versiert bin, aber verdammt, es ist selten, dass ich LLM-Output ansehe und nicht etwas finde, das ich messbar besser machen würde.
+- Simon Wilson (bekannt für Django) macht in letzter Zeit viel LLM-Evangelismus in seinem Blog. Antirez (Redis) schrieb kürzlich einen Blogpost mit der gleichen Stimmung. Ich bezweifle, dass sie keine guten Programmierer sind.
+- Ich sah gestern eine Version davon, wo ein Kommentator LLM-Skepsis als enttäuschenden Mangel an 'Hacker'-Antrieb und Ethos darstellte. Der 'Hacker' wird nicht nur von der Neuartigkeit der zu lösenden Probleme angetrieben, sondern vom Wunsch zu verstehen.
+** The Tulip Creative Computer :hardware:music:python:maker:
+:PROPERTIES:
+:ID:       46603995
+:URL:      https://github.com/shorepine/tulipcc
+:HN_URL:   https://news.ycombinator.com/item?id=46603995
+:POINTS:   181
+:COMMENTS: 38
+:BY:       apitman
+:END:
+
+*** TLDR
+Tulip CC is an ESP32-S3 based portable computer that boots directly into a Python prompt. It has 8.5MB RAM, a touchscreen, a 120-voice synthesizer (AMY), MIDI support, and a built-in code editor. No OS, no distractions, just make stuff.
+
+*** Take
+Finally, a computer that respects the ancient covenant: turn it on, type code, hear sound. The 1980s called and they want you to stop containerizing your synthesizer.
+
+*** Comments
+
+**** arjie
+:PROPERTIES:
+:COMMENT_ID: 46603996
+:END:
+This kind of limited device is something I've been thinking about with respect to what interactions I want my children to have with computers. I remember when I was 9 years old and we got these computers at the lab and we wrote some LOGO and BASIC and it was mind-blowing. We were drawing SQUARES!
+
+**** diydsp
+:PROPERTIES:
+:COMMENT_ID: 46603997
+:END:
+I've been using it for a few months. Great project. I especially love adding i2c peripherals from M5. The gfx lets you overlap sprites, bitmap, and text mode. You can tell the designers have lots of XP on retro systems.
+
+**** apitman
+:PROPERTIES:
+:COMMENT_ID: 46603998
+:END:
+What I love about this is the reduction in complexity compared to how something like this would typically be built today. If I were to build a synth a year ago I probably would have used Rust compiled to WASM running in the browser. This thing has about -90 million lines of code compared to that approach.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Tulip创意电脑
+***** TLDR
+Tulip CC是一款基于ESP32-S3的便携式电脑，开机直接进入Python提示符。它有8.5MB内存、触摸屏、120声道合成器（AMY）、MIDI支持和内置代码编辑器。没有操作系统，没有干扰，只管创作。
+***** Take
+终于，一台尊重古老契约的电脑：开机、敲代码、听声音。80年代打来电话，让你别再把合成器容器化了。
+***** Comments
+- 这种受限设备正是我一直在考虑的，关于我希望我的孩子与电脑有什么样的互动。我记得9岁时我们在实验室拿到这些电脑，写了一些LOGO和BASIC，那真是令人惊叹。我们在画正方形！
+- 我已经用了几个月了。很棒的项目。我特别喜欢添加M5的i2c外设。图形可以让你叠加精灵图、位图和文本模式。可以看出设计者在复古系统上有很多经验。
+- 我喜欢这个的地方是与今天通常构建这类东西相比，复杂性大大降低。如果一年前让我构建一个合成器，我可能会用Rust编译成WASM在浏览器中运行。相比之下，这个东西大约少了9000万行代码。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Tulipクリエイティブコンピュータ
+***** TLDR
+Tulip CCはESP32-S3ベースのポータブルコンピュータで、起動すると直接Pythonプロンプトが表示される。8.5MB RAM、タッチスクリーン、120ボイスシンセサイザー（AMY）、MIDIサポート、内蔵コードエディタを搭載。OSなし、邪魔なし、ただ作るだけ。
+***** Take
+ついに、古代の契約を尊重するコンピュータが登場：電源を入れ、コードを打ち、音を聞く。1980年代から電話がかかってきて、シンセサイザーをコンテナ化するのをやめろと言っている。
+***** Comments
+- この種の制限されたデバイスは、子供たちにコンピュータとどのような関わりを持たせたいかという点で考えていたものだ。9歳の時、研究室でこれらのコンピュータを手に入れ、LOGOとBASICを書いた。衝撃的だった。四角形を描いていたんだ！
+- 数ヶ月使っている。素晴らしいプロジェクトだ。特にM5のi2cペリフェラルを追加するのが好きだ。グラフィックスではスプライト、ビットマップ、テキストモードを重ねることができる。設計者がレトロシステムで多くの経験を持っていることがわかる。
+- これの良いところは、今日このようなものを構築する場合と比較して複雑さが大幅に削減されていることだ。1年前にシンセを作るとしたら、おそらくRustをWASMにコンパイルしてブラウザで実行していただろう。このアプローチと比較して約-9000万行のコードだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Tulip 크리에이티브 컴퓨터
+***** TLDR
+Tulip CC는 ESP32-S3 기반 휴대용 컴퓨터로 부팅하면 바로 Python 프롬프트로 진입한다. 8.5MB RAM, 터치스크린, 120음색 신시사이저(AMY), MIDI 지원, 내장 코드 편집기가 있다. OS 없음, 방해 없음, 그냥 만들기만 하면 된다.
+***** Take
+드디어 고대의 약속을 존중하는 컴퓨터가 나왔다: 켜고, 코드 치고, 소리 듣기. 1980년대에서 전화가 왔는데, 신시사이저를 컨테이너화하지 말라고 한다.
+***** Comments
+- 이런 제한된 기기는 내 아이들이 컴퓨터와 어떤 상호작용을 하길 원하는지에 대해 생각해오던 것이다. 9살 때 실험실에서 이런 컴퓨터를 받아 LOGO와 BASIC을 썼던 게 기억난다. 정말 놀라웠다. 사각형을 그리고 있었다!
+- 몇 달째 사용 중이다. 훌륭한 프로젝트다. 특히 M5의 i2c 주변기기를 추가하는 것이 좋다. 그래픽에서 스프라이트, 비트맵, 텍스트 모드를 겹칠 수 있다. 설계자들이 레트로 시스템에서 많은 경험이 있다는 것을 알 수 있다.
+- 이것의 좋은 점은 오늘날 이런 것을 만들 때와 비교해서 복잡성이 크게 줄었다는 것이다. 1년 전에 신스를 만든다면 아마 Rust를 WASM으로 컴파일해서 브라우저에서 실행했을 것이다. 그 접근 방식에 비해 약 -9천만 줄의 코드다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+El Computador Creativo Tulip
+***** TLDR
+Tulip CC es una computadora portátil basada en ESP32-S3 que arranca directamente en un prompt de Python. Tiene 8.5MB de RAM, pantalla táctil, un sintetizador de 120 voces (AMY), soporte MIDI y un editor de código integrado. Sin SO, sin distracciones, solo crear.
+***** Take
+Por fin, una computadora que respeta el antiguo pacto: encenderla, escribir código, escuchar sonido. Los años 80 llamaron y quieren que dejes de containerizar tu sintetizador.
+***** Comments
+- Este tipo de dispositivo limitado es algo en lo que he estado pensando respecto a qué interacciones quiero que mis hijos tengan con las computadoras. Recuerdo cuando tenía 9 años y conseguimos estas computadoras en el laboratorio y escribimos algo de LOGO y BASIC y fue alucinante. ¡Estábamos dibujando CUADRADOS!
+- Lo he estado usando durante unos meses. Gran proyecto. Me encanta especialmente añadir periféricos i2c de M5. Los gráficos te permiten superponer sprites, bitmap y modo texto. Se nota que los diseñadores tienen mucha experiencia en sistemas retro.
+- Lo que me encanta de esto es la reducción de complejidad comparado con cómo algo así se construiría típicamente hoy. Si fuera a construir un sintetizador hace un año, probablemente habría usado Rust compilado a WASM corriendo en el navegador. Esta cosa tiene unos -90 millones de líneas de código comparado con ese enfoque.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Der Tulip Creative Computer
+***** TLDR
+Tulip CC ist ein tragbarer Computer auf ESP32-S3-Basis, der direkt in einen Python-Prompt bootet. Er hat 8,5MB RAM, einen Touchscreen, einen 120-Stimmen-Synthesizer (AMY), MIDI-Unterstützung und einen eingebauten Code-Editor. Kein OS, keine Ablenkungen, einfach machen.
+***** Take
+Endlich ein Computer, der den alten Bund respektiert: einschalten, Code tippen, Sound hören. Die 1980er haben angerufen und wollen, dass du aufhörst, deinen Synthesizer zu containerisieren.
+***** Comments
+- Diese Art von eingeschränktem Gerät ist etwas, worüber ich nachgedacht habe, bezüglich welche Interaktionen ich mir für meine Kinder mit Computern wünsche. Ich erinnere mich, als ich 9 war und wir diese Computer im Labor bekamen und etwas LOGO und BASIC schrieben, und es war umwerfend. Wir zeichneten QUADRATE!
+- Ich benutze es seit ein paar Monaten. Tolles Projekt. Ich liebe es besonders, i2c-Peripheriegeräte von M5 hinzuzufügen. Die Grafik lässt dich Sprites, Bitmap und Textmodus überlagern. Man merkt, dass die Designer viel Erfahrung mit Retro-Systemen haben.
+- Was ich daran liebe, ist die Reduzierung der Komplexität im Vergleich dazu, wie so etwas heute typischerweise gebaut würde. Wenn ich vor einem Jahr einen Synth gebaut hätte, hätte ich wahrscheinlich Rust zu WASM kompiliert und im Browser laufen lassen. Dieses Ding hat etwa -90 Millionen Zeilen Code im Vergleich zu diesem Ansatz.
+** How to make a damn website :web:html:tutorial:simplicity:
+:PROPERTIES:
+:ID:       46604250
+:URL:      https://lmnt.me/blog/how-to-make-a-damn-website.html
+:HN_URL:   https://news.ycombinator.com/item?id=46604250
+:POINTS:   129
+:COMMENTS: 43
+:BY:       birdculture
+:END:
+
+*** TLDR
+Start with one HTML file, write actual content, publish it. Add RSS manually. Make incremental updates. The hard part isn't the tech stack debate, it's shipping something. Stop overthinking and just put text on the internet.
+
+*** Take
+Somewhere, a developer is still researching React vs Svelte vs Astro for their personal blog that will contain exactly two posts before abandonment.
+
+*** Comments
+
+**** susam
+:PROPERTIES:
+:COMMENT_ID: 46604251
+:END:
+It is perfectly fine for a personal website to simply be a loose collection of pages arranged in an arbitrary manner. Not every personal website needs to be a blog. Very often I see aspiring website authors quickly make life complicated for themselves by deciding they need a blog.
+
+**** blakewatson
+:PROPERTIES:
+:COMMENT_ID: 46604252
+:END:
+Probably not too useful for many in this audience, but I wrote a web book for ⁎absolute beginners⁎ learning HTML. It's very much in the same spirit as the OP's post. https://htmlforpeople.com/
+
+**** jeena
+:PROPERTIES:
+:COMMENT_ID: 46604253
+:END:
+I never thought that writing HTML is the hard part. Instead where my Sister struggled was to get a domain, get a server, deal with DNS pointing to that server. That shit is also omitted on posts like that one because it's done differently for each domain registrar.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+如何做一个该死的网站
+***** TLDR
+从一个HTML文件开始，写真正的内容，发布它。手动添加RSS。做增量更新。困难的部分不是技术栈争论，而是真正发布一些东西。别想太多，把文字放到互联网上就行了。
+***** Take
+在某处，一个开发者仍在为他的个人博客研究React vs Svelte vs Astro，而这个博客在被放弃之前只会有两篇文章。
+***** Comments
+- 个人网站完全可以只是一堆任意排列的松散页面集合。不是每个个人网站都需要是博客。我经常看到有抱负的网站作者因为决定需要一个博客而让事情变得复杂。
+- 对这里的很多人可能不太有用，但我为⁎绝对初学者⁎写了一本学习HTML的网络书。和原帖的精神非常一致。https://htmlforpeople.com/
+- 我从不认为写HTML是困难的部分。我姐姐遇到困难的地方是获取域名、获取服务器、处理DNS指向那个服务器。这些东西在这类帖子中也被省略了，因为每个域名注册商的做法都不同。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+ウェブサイトの作り方
+***** TLDR
+1つのHTMLファイルから始めて、実際のコンテンツを書いて、公開する。RSSを手動で追加。増分更新を行う。難しいのは技術スタックの議論ではなく、何かを出すこと。考えすぎずに、テキストをインターネットに置くだけ。
+***** Take
+どこかで、開発者がまだ個人ブログのためにReact vs Svelte vs Astroを調査している。そのブログは放棄される前に正確に2つの投稿しか含まないだろう。
+***** Comments
+- 個人のウェブサイトは単にページの緩やかな集合を任意の方法で配置したものでも全く問題ない。すべての個人サイトがブログである必要はない。ブログが必要だと決めて自分で複雑にしてしまう意欲的なウェブサイト作者をよく見かける。
+- この聴衆の多くには役に立たないかもしれないが、HTMLを学ぶ⁎完全な初心者⁎向けのウェブブックを書いた。OPの投稿と同じ精神だ。https://htmlforpeople.com/
+- HTMLを書くことが難しい部分だとは思ったことがない。むしろ私の妹が苦労したのは、ドメインを取得し、サーバーを取得し、そのサーバーにDNSを向けることだった。そういうことはこのような投稿では省略されている。なぜなら各ドメインレジストラで異なるからだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+빌어먹을 웹사이트 만드는 방법
+***** TLDR
+HTML 파일 하나로 시작해서, 실제 콘텐츠를 쓰고, 게시한다. RSS를 수동으로 추가한다. 점진적 업데이트를 한다. 어려운 부분은 기술 스택 논쟁이 아니라 무언가를 배포하는 것이다. 너무 생각하지 말고 그냥 인터넷에 텍스트를 올려라.
+***** Take
+어딘가에서, 개발자가 아직도 자신의 개인 블로그를 위해 React vs Svelte vs Astro를 연구하고 있다. 그 블로그는 포기되기 전에 정확히 두 개의 글만 포함할 것이다.
+***** Comments
+- 개인 웹사이트는 단순히 임의의 방식으로 배열된 느슨한 페이지 모음이어도 전혀 문제없다. 모든 개인 웹사이트가 블로그일 필요는 없다. 블로그가 필요하다고 결정해서 스스로를 복잡하게 만드는 야심찬 웹사이트 저자들을 자주 본다.
+- 이 청중의 많은 분들에게는 유용하지 않을 수 있지만, HTML을 배우는 ⁎완전 초보자⁎를 위한 웹 책을 썼다. OP의 글과 매우 같은 정신이다. https://htmlforpeople.com/
+- HTML 작성이 어려운 부분이라고 생각해 본 적이 없다. 대신 내 여동생이 어려워한 것은 도메인을 얻고, 서버를 얻고, 그 서버를 가리키는 DNS를 다루는 것이었다. 그런 것들은 각 도메인 등록기관마다 다르기 때문에 이런 글에서도 생략된다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Cómo hacer un maldito sitio web
+***** TLDR
+Empieza con un archivo HTML, escribe contenido real, publícalo. Añade RSS manualmente. Haz actualizaciones incrementales. Lo difícil no es el debate del stack técnico, es publicar algo. Deja de pensarlo demasiado y simplemente pon texto en internet.
+***** Take
+En algún lugar, un desarrollador todavía está investigando React vs Svelte vs Astro para su blog personal que contendrá exactamente dos publicaciones antes de ser abandonado.
+***** Comments
+- Está perfectamente bien que un sitio web personal sea simplemente una colección suelta de páginas organizadas de manera arbitraria. No todo sitio web personal necesita ser un blog. Muy a menudo veo a aspirantes a autores de sitios web complicarse la vida rápidamente al decidir que necesitan un blog.
+- Probablemente no sea muy útil para muchos en esta audiencia, pero escribí un libro web para ⁎principiantes absolutos⁎ aprendiendo HTML. Está muy en el mismo espíritu que el post del OP. https://htmlforpeople.com/
+- Nunca pensé que escribir HTML fuera la parte difícil. Donde mi hermana tuvo problemas fue en conseguir un dominio, conseguir un servidor, lidiar con DNS apuntando a ese servidor. Esas cosas también se omiten en posts como ese porque se hace diferente para cada registrador de dominios.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Wie man eine verdammte Website macht
+***** TLDR
+Fang mit einer HTML-Datei an, schreib echten Inhalt, veröffentliche es. Füge RSS manuell hinzu. Mach inkrementelle Updates. Der schwierige Teil ist nicht die Tech-Stack-Debatte, es ist, etwas zu liefern. Hör auf zu überdenken und stell einfach Text ins Internet.
+***** Take
+Irgendwo recherchiert ein Entwickler immer noch React vs Svelte vs Astro für seinen persönlichen Blog, der genau zwei Posts enthalten wird, bevor er aufgegeben wird.
+***** Comments
+- Es ist völlig in Ordnung, wenn eine persönliche Website einfach eine lose Sammlung von Seiten ist, die beliebig angeordnet sind. Nicht jede persönliche Website muss ein Blog sein. Sehr oft sehe ich angehende Website-Autoren, die sich das Leben schnell kompliziert machen, indem sie entscheiden, dass sie einen Blog brauchen.
+- Wahrscheinlich nicht zu nützlich für viele hier, aber ich habe ein Web-Buch für ⁎absolute Anfänger⁎ geschrieben, die HTML lernen. Es ist sehr im gleichen Geist wie der Post des OP. https://htmlforpeople.com/
+- Ich dachte nie, dass HTML schreiben der schwierige Teil ist. Stattdessen hatte meine Schwester Probleme damit, eine Domain zu bekommen, einen Server zu bekommen und DNS auf diesen Server zeigen zu lassen. Das wird in solchen Posts auch weggelassen, weil es bei jedem Domain-Registrar anders gemacht wird.
+** A 40-line fix eliminated a 400x performance gap :jvm:performance:linux:optimization:
+:PROPERTIES:
+:ID:       46609630
+:URL:      https://questdb.com/blog/jvm-current-thread-user-time/
+:HN_URL:   https://news.ycombinator.com/item?id=46609630
+:POINTS:   76
+:COMMENTS: 16
+:BY:       bluestreak
+:END:
+
+*** TLDR
+JVM's ThreadMXBean.getCurrentThreadUserTime() was 400x slower than it should be because it was parsing /proc files instead of using clock_gettime(). A 40-line fix exploiting Linux clockid bit encoding dropped latency from 11 microseconds to 279 nanoseconds.
+
+*** Take
+Twenty years of parsing text files to answer 'how much CPU time did I use?' because nobody questioned whether proc filesystem was still the right answer. Sometimes the best optimizations are just asking 'why are we doing it this way?'
+
+*** Comments
+
+**** ot
+:PROPERTIES:
+:COMMENT_ID: 46609631
+:END:
+You can do even faster, about 8ns (almost an additional 10x improvement) by using software perf events: PERF_COUNT_SW_TASK_CLOCK is thread CPU time, it can be read through a shared page with no syscall.
+
+**** jerrinot
+:PROPERTIES:
+:COMMENT_ID: 46609632
+:END:
+Author here. After my last post about kernel bugs, I spent some time looking at how the JVM reports its own thread activity. It turns out that 'What is the CPU time of this thread?' is/was a much more expensive question than it should be.
+
+**** higherhalf
+:PROPERTIES:
+:COMMENT_ID: 46609633
+:END:
+clock_gettime() goes through vDSO, avoiding a context switch. It shows up on the flamegraph as well.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+40行修复消除了400倍性能差距
+***** TLDR
+JVM的ThreadMXBean.getCurrentThreadUserTime()比应有的慢400倍，因为它在解析/proc文件而不是使用clock_gettime()。一个利用Linux clockid位编码的40行修复将延迟从11微秒降到279纳秒。
+***** Take
+二十年来一直解析文本文件来回答'我用了多少CPU时间？'因为没人质疑proc文件系统是否仍然是正确答案。有时候最好的优化只是问'我们为什么这样做？'
+***** Comments
+- 你可以做得更快，大约8ns（几乎又提升10倍），通过使用软件perf事件：PERF_COUNT_SW_TASK_CLOCK是线程CPU时间，可以通过共享页面读取，无需系统调用。
+- 作者在此。在我上一篇关于内核bug的文章后，我花了一些时间研究JVM如何报告自己的线程活动。事实证明，'这个线程的CPU时间是多少？'是/曾是一个比应有的代价高得多的问题。
+- clock_gettime()通过vDSO，避免了上下文切换。它也显示在火焰图上。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+40行の修正で400倍のパフォーマンスギャップを解消
+***** TLDR
+JVMのThreadMXBean.getCurrentThreadUserTime()は、clock_gettime()を使う代わりに/procファイルを解析していたため、本来の400倍遅かった。Linux clockidビットエンコーディングを利用した40行の修正で、レイテンシが11マイクロ秒から279ナノ秒に低下した。
+***** Take
+20年間、『どれだけのCPU時間を使ったか？』という質問に答えるためにテキストファイルを解析していた。procファイルシステムがまだ正しい答えかどうか誰も疑問に思わなかったから。時に最良の最適化は『なぜこのやり方でやっているのか？』と問うことだ。
+***** Comments
+- ソフトウェアperfイベントを使うとさらに速く、約8ns（ほぼ追加で10倍の改善）にできる：PERF_COUNT_SW_TASK_CLOCKはスレッドCPU時間で、syscallなしで共有ページを通じて読める。
+- 著者です。前回のカーネルバグについての投稿後、JVMが自身のスレッドアクティビティをどのように報告するか調べていた。『このスレッドのCPU時間は？』という質問は、あるべきよりもずっとコストの高い質問だった/だと判明した。
+- clock_gettime()はvDSOを通過し、コンテキストスイッチを回避する。フレームグラフにも表示される。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+40줄 수정으로 400배 성능 격차 해소
+***** TLDR
+JVM의 ThreadMXBean.getCurrentThreadUserTime()은 clock_gettime()을 사용하는 대신 /proc 파일을 파싱했기 때문에 400배 느렸다. Linux clockid 비트 인코딩을 활용한 40줄 수정으로 지연 시간이 11 마이크로초에서 279 나노초로 감소했다.
+***** Take
+20년 동안 'CPU 시간을 얼마나 썼나?'라는 질문에 답하기 위해 텍스트 파일을 파싱해왔다. proc 파일시스템이 여전히 올바른 답인지 아무도 의문을 품지 않았기 때문이다. 때로는 최고의 최적화는 '왜 이렇게 하고 있는가?'라고 묻는 것이다.
+***** Comments
+- 소프트웨어 perf 이벤트를 사용하면 약 8ns(거의 추가로 10배 개선)로 더 빠르게 할 수 있다: PERF_COUNT_SW_TASK_CLOCK은 스레드 CPU 시간이고, syscall 없이 공유 페이지를 통해 읽을 수 있다.
+- 저자입니다. 커널 버그에 대한 마지막 글 이후, JVM이 자체 스레드 활동을 어떻게 보고하는지 살펴보는 데 시간을 보냈다. '이 스레드의 CPU 시간은?'이라는 질문은 그래야 하는 것보다 훨씬 비싼 질문이었다/이었다.
+- clock_gettime()은 vDSO를 통과하여 컨텍스트 스위치를 피한다. 플레임그래프에도 나타난다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Una corrección de 40 líneas eliminó una brecha de rendimiento de 400x
+***** TLDR
+El ThreadMXBean.getCurrentThreadUserTime() de JVM era 400 veces más lento de lo que debería porque estaba parseando archivos /proc en lugar de usar clock_gettime(). Una corrección de 40 líneas explotando la codificación de bits de clockid de Linux redujo la latencia de 11 microsegundos a 279 nanosegundos.
+***** Take
+Veinte años parseando archivos de texto para responder '¿cuánto tiempo de CPU usé?' porque nadie cuestionó si el sistema de archivos proc seguía siendo la respuesta correcta. A veces las mejores optimizaciones son simplemente preguntar '¿por qué lo hacemos así?'
+***** Comments
+- Puedes hacerlo aún más rápido, unos 8ns (casi una mejora adicional de 10x) usando eventos de software perf: PERF_COUNT_SW_TASK_CLOCK es tiempo de CPU del thread, se puede leer a través de una página compartida sin syscall.
+- Autor aquí. Después de mi último post sobre bugs del kernel, pasé tiempo viendo cómo la JVM reporta su propia actividad de threads. Resulta que '¿Cuál es el tiempo de CPU de este thread?' es/era una pregunta mucho más costosa de lo que debería ser.
+- clock_gettime() pasa por vDSO, evitando un cambio de contexto. También aparece en el flamegraph.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Eine 40-Zeilen-Korrektur beseitigte eine 400-fache Leistungslücke
+***** TLDR
+JVMs ThreadMXBean.getCurrentThreadUserTime() war 400x langsamer als nötig, weil es /proc-Dateien parste statt clock_gettime() zu verwenden. Eine 40-Zeilen-Korrektur, die Linux clockid-Bit-Encoding ausnutzt, senkte die Latenz von 11 Mikrosekunden auf 279 Nanosekunden.
+***** Take
+Zwanzig Jahre lang Textdateien parsen, um zu beantworten 'Wie viel CPU-Zeit habe ich verbraucht?' weil niemand hinterfragte, ob das proc-Dateisystem noch die richtige Antwort ist. Manchmal bestehen die besten Optimierungen einfach darin zu fragen 'Warum machen wir das so?'
+***** Comments
+- Man kann es noch schneller machen, etwa 8ns (fast eine zusätzliche 10-fache Verbesserung) durch Software-Perf-Events: PERF_COUNT_SW_TASK_CLOCK ist Thread-CPU-Zeit, kann über eine gemeinsam genutzte Seite ohne Syscall gelesen werden.
+- Autor hier. Nach meinem letzten Post über Kernel-Bugs habe ich mir angeschaut, wie die JVM ihre eigene Thread-Aktivität meldet. Es stellte sich heraus, dass 'Was ist die CPU-Zeit dieses Threads?' eine viel teurere Frage ist/war als sie sein sollte.
+- clock_gettime() geht durch vDSO und vermeidet einen Kontextwechsel. Es zeigt sich auch im Flamegraph.
