@@ -250,6 +250,11 @@
     <aside class="sidebar">
       <div class="sidebar-title">Highlights</div>
       <div class="sidebar-date">2026-01-17</div>
+      <a href="#s46657122-01171600">ASCII characters are not pixels: a deep ...</a>
+      <a href="#s46656903-01171600">US electricity demand surged in 2025 - s...</a>
+      <a href="#s46656045-01171600">The &#x27;untouchable hacker god&#x27; b...</a>
+      <a href="#s46656998-01171600">PCs refuse to shut down after Microsoft ...</a>
+      <a href="#s46646475-01171600">The Dilbert Afterlife</a>
       <a href="#s46656552-01171100">ClickHouse Acquires Langfuse</a>
       <a href="#s46654749-01171100">Drone Hacking Part 1: Dumping Firmware a...</a>
       <a href="#s46590404-01171100">Experts Warn of Growing Parrot Crisis in...</a>
@@ -506,6 +511,338 @@
         </div>
       </header>
       <main id="feed">
+<section class="digest">
+      <div class="digest-header">
+        <div class="digest-date">2026-01-17T16:00:00Z</div>
+        <div class="digest-vibe">ASCII art gets a PhD, solar eats the grid, and Windows forgets how to turn off</div>
+      </div>
+      <article class="story" id="s46657122-01171600">
+      <h3 class="story-title">
+        <a href="https://alexharri.com/blog/ascii-rendering" target="_blank">ASCII characters are not pixels: a deep dive into ASCII rendering</a>
+        <a href="#s46657122-01171600" class="story-anchor">#</a>
+      </h3>
+      <div class="i18n-title" data-lang="zh">ASCII字符不是像素：ASCII渲染深度解析</div>
+<div class="i18n-title" data-lang="ja">ASCII文字はピクセルではない：ASCIIレンダリングの深掘り</div>
+<div class="i18n-title" data-lang="ko">ASCII 문자는 픽셀이 아니다: ASCII 렌더링 심층 분석</div>
+<div class="i18n-title" data-lang="es">Los caracteres ASCII no son píxeles: una inmersión profunda en el renderizado ASCII</div>
+<div class="i18n-title" data-lang="de">ASCII-Zeichen sind keine Pixel: Ein tiefer Einblick in ASCII-Rendering</div>
+
+      <div class="story-meta">
+        334pts | 42c | <a href="https://news.ycombinator.com/item?id=46657122" target="_blank">HN#46657122</a>
+      </div>
+      <div class="story-section story-tldr">
+        <div class="story-label">TL;DR</div>
+        <div class="story-text">Most ASCII renderers treat each cell as a single brightness value, resulting in blurry output. The author proposes using 6-dimensional shape vectors that capture how characters occupy space within grid cells, then matching image regions to characters with similar shapes. The result: ASCII art that follows contours precisely instead of looking like a low-res approximation.</div>
+        <span class="i18n-text" data-lang="zh">大多数ASCII渲染器将每个单元格视为单一亮度值，导致输出模糊。作者提出使用6维形状向量来捕捉字符在网格单元中的空间占用方式，然后将图像区域与具有相似形状的字符进行匹配。结果：ASCII艺术能精确跟随轮廓，而不是看起来像低分辨率近似。</span>
+<span class="i18n-text" data-lang="ja">ほとんどのASCIIレンダラーは各セルを単一の明るさ値として扱い、ぼやけた出力になる。著者は6次元の形状ベクトルを使用して、文字がグリッドセル内でどのように空間を占めるかを捉え、類似した形状を持つ文字に画像領域をマッチングすることを提案。結果：低解像度の近似ではなく、輪郭を正確にたどるASCIIアート。</span>
+<span class="i18n-text" data-lang="ko">대부분의 ASCII 렌더러는 각 셀을 단일 밝기 값으로 처리하여 흐릿한 출력을 만든다. 저자는 문자가 그리드 셀 내에서 공간을 차지하는 방식을 캡처하는 6차원 형상 벡터를 사용한 후, 유사한 형상을 가진 문자에 이미지 영역을 매칭할 것을 제안한다. 결과: 저해상도 근사치가 아닌 윤곽을 정확히 따르는 ASCII 아트.</span>
+<span class="i18n-text" data-lang="es">La mayoría de los renderizadores ASCII tratan cada celda como un único valor de brillo, resultando en una salida borrosa. El autor propone usar vectores de forma de 6 dimensiones que capturan cómo los caracteres ocupan espacio dentro de las celdas de la cuadrícula, luego emparejar regiones de imagen con caracteres de formas similares. El resultado: arte ASCII que sigue contornos con precisión en lugar de parecer una aproximación de baja resolución.</span>
+<span class="i18n-text" data-lang="de">Die meisten ASCII-Renderer behandeln jede Zelle als einzelnen Helligkeitswert, was zu unscharfer Ausgabe führt. Der Autor schlägt 6-dimensionale Formvektoren vor, die erfassen, wie Zeichen den Raum innerhalb von Gitterzellen einnehmen, und dann Bildregionen mit Zeichen ähnlicher Formen abgleichen. Das Ergebnis: ASCII-Kunst, die Konturen präzise folgt, anstatt wie eine niedrig aufgelöste Annäherung auszusehen.</span>
+
+      </div>
+      <div class="story-section story-take">
+        <div class="story-label">Take</div>
+        <div class="story-text">Finally, someone applied actual computer science to ASCII art instead of just mapping brightness to character density. The &#x27;6-dimensional shape vector&#x27; approach is legitimately clever. This is the kind of overengineering I can respect.</div>
+        <span class="i18n-text" data-lang="zh">终于有人把真正的计算机科学应用到ASCII艺术上，而不是简单地将亮度映射到字符密度。&#x27;6维形状向量&#x27;方法确实很巧妙。这是我能欣赏的那种过度工程。</span>
+<span class="i18n-text" data-lang="ja">ついに誰かがASCIIアートに本物のコンピュータサイエンスを適用した。明るさを文字密度にマッピングするだけでなく。「6次元形状ベクトル」アプローチは本当に賢い。これは私が尊重できる種類の過剰エンジニアリングだ。</span>
+<span class="i18n-text" data-lang="ko">드디어 누군가가 밝기를 문자 밀도에 매핑하는 대신 ASCII 아트에 실제 컴퓨터 과학을 적용했다. &#x27;6차원 형상 벡터&#x27; 접근 방식은 정말 영리하다. 이것이 내가 존경할 수 있는 종류의 오버엔지니어링이다.</span>
+<span class="i18n-text" data-lang="es">Por fin alguien aplicó ciencia informática real al arte ASCII en lugar de simplemente mapear brillo a densidad de caracteres. El enfoque del &#x27;vector de forma de 6 dimensiones&#x27; es legítimamente inteligente. Este es el tipo de sobreingeniería que puedo respetar.</span>
+<span class="i18n-text" data-lang="de">Endlich hat jemand echte Informatik auf ASCII-Kunst angewandt, anstatt nur Helligkeit auf Zeichendichte abzubilden. Der &#x27;6-dimensionale Formvektor&#x27;-Ansatz ist legitimerweise clever. Das ist die Art von Überengineering, die ich respektieren kann.</span>
+
+      </div>
+      <div class="story-section story-comments">
+        <div class="story-label">HN Voices</div>
+        <div class="comment">
+          <div class="comment-text">"Every example I thought &#x27;yeah, this is cool, but I can see there&#x27;s space for improvement&#x27; - and lo! did the author satisfy my curiosity and improve his technique further. Bravo, beautiful article!"</div>
+          <div class="comment-i18n" data-lang="zh">每个例子我都想&#x27;是的，这很酷，但我能看到改进空间&#x27;——然后作者就满足了我的好奇心并进一步改进了他的技术。太棒了，美丽的文章！</div>
+<div class="comment-i18n" data-lang="ja">すべての例で「うん、これはクールだけど、改善の余地がある」と思った。そして見よ！著者は私の好奇心を満たし、さらに技術を改善した。ブラボー、美しい記事！</div>
+<div class="comment-i18n" data-lang="ko">모든 예제에서 &#x27;예, 멋지지만 개선의 여지가 보인다&#x27;고 생각했는데, 보라! 저자가 내 호기심을 충족시키고 기술을 더욱 발전시켰다. 브라보, 아름다운 글!</div>
+<div class="comment-i18n" data-lang="es">En cada ejemplo pensé &#x27;sí, esto es genial, pero veo espacio para mejorar&#x27; - ¡y he aquí que el autor satisfizo mi curiosidad y mejoró su técnica aún más! Bravo, hermoso artículo!</div>
+<div class="comment-i18n" data-lang="de">Bei jedem Beispiel dachte ich &#x27;ja, das ist cool, aber ich sehe Verbesserungspotenzial&#x27; - und siehe da, der Autor befriedigte meine Neugier und verbesserte seine Technik weiter! Bravo, wunderschöner Artikel!</div>
+
+          <div class="comment-author">-- sph</div>
+        </div><div class="comment">
+          <div class="comment-text">"I wrote an ASCII renderer using raymarching and SDFs for my Claude Wrapped. SDFs give smoother results than even supersampling, but your scene has to be represented with distance functions - this method is more generally applicable."</div>
+          <div class="comment-i18n" data-lang="zh">我用光线行进和SDF为我的Claude Wrapped写了一个ASCII渲染器。SDF比超采样更平滑，但场景必须用距离函数表示——这种方法更通用。</div>
+<div class="comment-i18n" data-lang="ja">Claude Wrapped用にレイマーチングとSDFを使ってASCIIレンダラーを書いた。SDFはスーパーサンプリングよりも滑らかだが、シーンは距離関数で表現する必要がある。この方法はより汎用的。</div>
+<div class="comment-i18n" data-lang="ko">Claude Wrapped를 위해 레이마칭과 SDF를 사용해 ASCII 렌더러를 작성했다. SDF는 슈퍼샘플링보다 더 부드러운 결과를 제공하지만 씬은 거리 함수로 표현해야 한다. 이 방법이 더 범용적이다.</div>
+<div class="comment-i18n" data-lang="es">Escribí un renderizador ASCII usando raymarching y SDFs para mi Claude Wrapped. Los SDFs dan resultados más suaves que incluso el supersampling, pero tu escena tiene que estar representada con funciones de distancia - este método es más aplicable en general.</div>
+<div class="comment-i18n" data-lang="de">Ich habe einen ASCII-Renderer mit Raymarching und SDFs für mein Claude Wrapped geschrieben. SDFs liefern glattere Ergebnisse als selbst Supersampling, aber die Szene muss mit Distanzfunktionen dargestellt werden - diese Methode ist allgemeiner anwendbar.</div>
+
+          <div class="comment-author">-- dboon</div>
+        </div>
+      </div>
+      <div class="tags"><span class="tag">#graphics</span><span class="tag">#rendering</span><span class="tag">#algorithms</span></div>
+    </article>
+<article class="story" id="s46656903-01171600">
+      <h3 class="story-title">
+        <a href="https://electrek.co/2026/01/16/us-electricity-demand-surged-in-2025-solar-handled-61-percent/" target="_blank">US electricity demand surged in 2025 - solar handled 61% of it</a>
+        <a href="#s46656903-01171600" class="story-anchor">#</a>
+      </h3>
+      <div class="i18n-title" data-lang="zh">美国2025年电力需求激增 - 太阳能承担了61%</div>
+<div class="i18n-title" data-lang="ja">2025年に米国の電力需要が急増 - 太陽光発電がその61%を担った</div>
+<div class="i18n-title" data-lang="ko">2025년 미국 전력 수요 급증 - 태양광이 61%를 처리</div>
+<div class="i18n-title" data-lang="es">La demanda de electricidad de EE.UU. se disparó en 2025 - la solar manejó el 61%</div>
+<div class="i18n-title" data-lang="de">US-Strombedarf stieg 2025 sprunghaft an - Solar übernahm 61%</div>
+
+      <div class="story-meta">
+        195pts | 154c | <a href="https://news.ycombinator.com/item?id=46656903" target="_blank">HN#46656903</a>
+      </div>
+      <div class="story-section story-tldr">
+        <div class="story-label">TL;DR</div>
+        <div class="story-text">US electricity demand jumped 135 TWh in 2025 (3.1% increase), the fourth-largest annual rise in a decade. Solar generation grew by a record 83 TWh (27% increase from 2024), covering 61% of new demand. Texas and Midwest saw solar meet 81% of their demand growth. Battery storage is making solar more flexible for evening use.</div>
+        <span class="i18n-text" data-lang="zh">美国2025年电力需求增长135太瓦时（增长3.1%），是十年来第四大年度增幅。太阳能发电量创纪录增长83太瓦时（比2024年增长27%），覆盖了61%的新增需求。德克萨斯州和中西部地区太阳能满足了81%的需求增长。电池储能使太阳能在晚间使用更加灵活。</span>
+<span class="i18n-text" data-lang="ja">米国の電力需要は2025年に135TWhジャンプ（3.1%増）し、過去10年で4番目に大きい年間増加となった。太陽光発電は記録的な83TWh成長（2024年から27%増）し、新規需要の61%をカバー。テキサス州と中西部では太陽光が需要増加の81%を満たした。蓄電池により夜間利用でも太陽光の柔軟性が向上している。</span>
+<span class="i18n-text" data-lang="ko">미국 전력 수요가 2025년 135TWh 증가(3.1% 증가)하여 10년 만에 네 번째로 큰 연간 상승을 기록했다. 태양광 발전은 기록적인 83TWh 성장(2024년 대비 27% 증가)을 보이며 신규 수요의 61%를 커버했다. 텍사스와 중서부 지역에서는 태양광이 수요 증가의 81%를 충족했다. 배터리 저장장치로 저녁 사용 시에도 태양광이 더 유연해지고 있다.</span>
+<span class="i18n-text" data-lang="es">La demanda de electricidad de EE.UU. saltó 135 TWh en 2025 (aumento del 3.1%), el cuarto mayor aumento anual en una década. La generación solar creció un récord de 83 TWh (aumento del 27% desde 2024), cubriendo el 61% de la nueva demanda. Texas y el Medio Oeste vieron la solar cubrir el 81% de su crecimiento de demanda. El almacenamiento en baterías está haciendo la solar más flexible para uso nocturno.</span>
+<span class="i18n-text" data-lang="de">Der US-Strombedarf stieg 2025 um 135 TWh (3,1% Zunahme), der viertgrößte jährliche Anstieg des Jahrzehnts. Die Solarstromerzeugung wuchs um rekordverdächtige 83 TWh (27% mehr als 2024) und deckte 61% des neuen Bedarfs. Texas und der Mittlere Westen sahen Solar 81% ihres Bedarfswachstums decken. Batteriespeicher machen Solar flexibler für die Abendnutzung.</span>
+
+      </div>
+      <div class="story-section story-take">
+        <div class="story-label">Take</div>
+        <div class="story-text">The &#x27;but what about when the sun goes down&#x27; crowd is going to need new material. Solar just quietly ate most of America&#x27;s new electricity demand while everyone was arguing about whether renewables could ever work at scale.</div>
+        <span class="i18n-text" data-lang="zh">&#x27;但太阳下山后怎么办&#x27;的人群需要新素材了。太阳能悄悄吃掉了美国大部分新增电力需求，而所有人还在争论可再生能源是否能大规模运作。</span>
+<span class="i18n-text" data-lang="ja">「でも太陽が沈んだらどうするの」派は新しいネタが必要になる。再生可能エネルギーが大規模に機能するかどうか皆が議論している間に、太陽光は静かにアメリカの新規電力需要の大部分を食べてしまった。</span>
+<span class="i18n-text" data-lang="ko">&#x27;해가 지면 어떡하냐&#x27;고 하는 사람들은 새로운 소재가 필요할 것이다. 모두가 재생에너지가 대규모로 작동할 수 있는지 논쟁하는 동안 태양광은 조용히 미국의 새로운 전력 수요 대부분을 먹어치웠다.</span>
+<span class="i18n-text" data-lang="es">La gente del &#x27;pero qué pasa cuando se pone el sol&#x27; va a necesitar material nuevo. La solar acaba de comerse silenciosamente la mayor parte de la nueva demanda de electricidad de América mientras todos discutían si las renovables podrían funcionar a escala.</span>
+<span class="i18n-text" data-lang="de">Die &#x27;aber was ist, wenn die Sonne untergeht&#x27;-Fraktion braucht neues Material. Solar hat still und leise den größten Teil von Amerikas neuem Strombedarf aufgefressen, während alle darüber stritten, ob Erneuerbare jemals im großen Maßstab funktionieren könnten.</span>
+
+      </div>
+      <div class="story-section story-comments">
+        <div class="story-label">HN Voices</div>
+        <div class="comment">
+          <div class="comment-text">"I&#x27;m concerned about increasing energy consumption, but happy that people are living in more comfortable homes, that the American industrial base is being restored, and that better services are being provided."</div>
+          <div class="comment-i18n" data-lang="zh">我担心能源消费增加，但很高兴人们住上了更舒适的房子，美国工业基础正在恢复，更好的服务正在提供。</div>
+<div class="comment-i18n" data-lang="ja">エネルギー消費の増加は心配だが、人々がより快適な家に住み、アメリカの産業基盤が回復し、より良いサービスが提供されていることは嬉しい。</div>
+<div class="comment-i18n" data-lang="ko">에너지 소비 증가가 걱정되지만, 사람들이 더 편안한 집에 살고, 미국 산업 기반이 회복되고, 더 나은 서비스가 제공되는 것은 기쁘다.</div>
+<div class="comment-i18n" data-lang="es">Me preocupa el aumento del consumo de energía, pero estoy feliz de que la gente viva en hogares más cómodos, que la base industrial americana se esté restaurando y que se estén proporcionando mejores servicios.</div>
+<div class="comment-i18n" data-lang="de">Ich mache mir Sorgen über den steigenden Energieverbrauch, aber ich freue mich, dass die Menschen in komfortableren Häusern leben, dass die amerikanische Industriebasis wiederhergestellt wird und dass bessere Dienstleistungen erbracht werden.</div>
+
+          <div class="comment-author">-- jordanb</div>
+        </div><div class="comment">
+          <div class="comment-text">"This article equates generation with demand, but solar generation during peak sunlight doesn&#x27;t align with peak demand times. The headline is misleading."</div>
+          <div class="comment-i18n" data-lang="zh">这篇文章把发电量等同于需求，但太阳能在阳光高峰期的发电与需求高峰期不一致。标题具有误导性。</div>
+<div class="comment-i18n" data-lang="ja">この記事は発電量と需要を同一視しているが、日照ピーク時の太陽光発電は需要ピーク時と一致しない。見出しは誤解を招く。</div>
+<div class="comment-i18n" data-lang="ko">이 기사는 발전량을 수요와 동일시하지만, 햇빛 피크 시간대의 태양광 발전은 피크 수요 시간과 일치하지 않는다. 헤드라인이 오해의 소지가 있다.</div>
+<div class="comment-i18n" data-lang="es">Este artículo equipara generación con demanda, pero la generación solar durante el pico de luz solar no se alinea con los tiempos de máxima demanda. El titular es engañoso.</div>
+<div class="comment-i18n" data-lang="de">Dieser Artikel setzt Erzeugung mit Nachfrage gleich, aber die Solarstromerzeugung während der Sonnenscheinspitze stimmt nicht mit den Spitzenbedarfszeiten überein. Die Überschrift ist irreführend.</div>
+
+          <div class="comment-author">-- cbmuser</div>
+        </div><div class="comment">
+          <div class="comment-text">"Here&#x27;s a good podcast about what&#x27;s happening in Australia. The difference in permitting between Australia and US is staggering."</div>
+          <div class="comment-i18n" data-lang="zh">这有一个关于澳大利亚情况的好播客。澳大利亚和美国在审批方面的差异令人震惊。</div>
+<div class="comment-i18n" data-lang="ja">オーストラリアの状況についての良いポッドキャストがある。オーストラリアと米国の許可プロセスの違いは驚くべきものだ。</div>
+<div class="comment-i18n" data-lang="ko">호주에서 무슨 일이 일어나고 있는지에 대한 좋은 팟캐스트가 있다. 호주와 미국의 허가 과정 차이는 놀랍다.</div>
+<div class="comment-i18n" data-lang="es">Aquí hay un buen podcast sobre lo que está pasando en Australia. La diferencia en los permisos entre Australia y EE.UU. es asombrosa.</div>
+<div class="comment-i18n" data-lang="de">Hier ist ein guter Podcast darüber, was in Australien passiert. Der Unterschied im Genehmigungsverfahren zwischen Australien und den USA ist verblüffend.</div>
+
+          <div class="comment-author">-- ztetranz</div>
+        </div>
+      </div>
+      <div class="tags"><span class="tag">#energy</span><span class="tag">#solar</span><span class="tag">#infrastructure</span></div>
+    </article>
+<article class="story" id="s46656045-01171600">
+      <h3 class="story-title">
+        <a href="https://www.theguardian.com/technology/2026/jan/17/vastaamo-hack-finland-therapy-notes" target="_blank">The &#x27;untouchable hacker god&#x27; behind Finland&#x27;s biggest ever crime</a>
+        <a href="#s46656045-01171600" class="story-anchor">#</a>
+      </h3>
+      <div class="i18n-title" data-lang="zh">芬兰史上最大犯罪背后的&#x27;高不可攀的黑客之神&#x27;</div>
+<div class="i18n-title" data-lang="ja">フィンランド史上最大の犯罪の背後にいる「触れられない神ハッカー」</div>
+<div class="i18n-title" data-lang="ko">핀란드 역사상 가장 큰 범죄 뒤의 &#x27;건드릴 수 없는 해커 신&#x27;</div>
+<div class="i18n-title" data-lang="es">El &#x27;dios hacker intocable&#x27; detrás del mayor crimen de la historia de Finlandia</div>
+<div class="i18n-title" data-lang="de">Der &#x27;unantastbare Hacker-Gott&#x27; hinter Finnlands größtem Verbrechen aller Zeiten</div>
+
+      <div class="story-meta">
+        84pts | 82c | <a href="https://news.ycombinator.com/item?id=46656045" target="_blank">HN#46656045</a>
+      </div>
+      <div class="story-section story-tldr">
+        <div class="story-label">TL;DR</div>
+        <div class="story-text">［From HN comments - article blocked］ A hacker breached Vastaamo, Finland&#x27;s largest private psychotherapy provider, and extorted patients directly by threatening to release their therapy notes. The database had no firewall and was secured with a blank password. The CEO and others should face accountability for this negligence alongside the hacker.</div>
+        <span class="i18n-text" data-lang="zh">［来自HN评论 - 文章被屏蔽］ 一名黑客入侵了芬兰最大的私人心理治疗机构Vastaamo，通过威胁公开患者的治疗记录直接勒索患者。数据库没有防火墙，密码为空。CEO和其他人应该与黑客一起为这种疏忽承担责任。</span>
+<span class="i18n-text" data-lang="ja">［HNコメントより - 記事ブロック］ ハッカーがフィンランド最大の民間心理療法プロバイダーVastaamoに侵入し、治療記録を公開すると脅迫して患者を直接恐喝した。データベースにはファイアウォールがなく、パスワードは空白だった。CEOなどはハッカーとともにこの怠慢の責任を問われるべきだ。</span>
+<span class="i18n-text" data-lang="ko">［HN 댓글에서 - 기사 차단됨］ 해커가 핀란드 최대 민간 심리치료 제공업체 Vastaamo를 침해하고 치료 기록을 공개하겠다고 위협하며 환자들을 직접 협박했다. 데이터베이스는 방화벽이 없었고 빈 비밀번호로 보안되어 있었다. CEO 등은 해커와 함께 이 과실에 대한 책임을 져야 한다.</span>
+<span class="i18n-text" data-lang="es">［De comentarios de HN - artículo bloqueado］ Un hacker vulneró Vastaamo, el mayor proveedor privado de psicoterapia de Finlandia, y extorsionó directamente a los pacientes amenazando con publicar sus notas de terapia. La base de datos no tenía firewall y estaba asegurada con una contraseña en blanco. El CEO y otros deberían rendir cuentas por esta negligencia junto con el hacker.</span>
+<span class="i18n-text" data-lang="de">［Aus HN-Kommentaren - Artikel blockiert］ Ein Hacker drang in Vastaamo ein, Finnlands größten privaten Psychotherapie-Anbieter, und erpresste Patienten direkt, indem er drohte, ihre Therapienotizen zu veröffentlichen. Die Datenbank hatte keine Firewall und war mit einem leeren Passwort gesichert. Der CEO und andere sollten neben dem Hacker für diese Fahrlässigkeit zur Rechenschaft gezogen werden.</span>
+
+      </div>
+      <div class="story-section story-take">
+        <div class="story-label">Take</div>
+        <div class="story-text">A therapy database with a blank password is not a security failure - it&#x27;s an invitation. The hacker is a criminal, but whoever deployed a database holding people&#x27;s deepest secrets with literally no authentication deserves their own circle of tech hell.</div>
+        <span class="i18n-text" data-lang="zh">密码为空的心理治疗数据库不是安全失败——而是一份邀请函。黑客是罪犯，但谁部署了一个存储人们最深秘密的数据库却完全没有认证，谁就应该有自己在科技地狱的专属位置。</span>
+<span class="i18n-text" data-lang="ja">空白パスワードの心理療法データベースはセキュリティの失敗ではなく、招待状だ。ハッカーは犯罪者だが、人々の最も深い秘密を保持するデータベースを文字通り認証なしでデプロイした者は、テック地獄に専用の場所を持つべきだ。</span>
+<span class="i18n-text" data-lang="ko">빈 비밀번호의 치료 데이터베이스는 보안 실패가 아니라 초대장이다. 해커는 범죄자지만, 사람들의 가장 깊은 비밀을 담고 있는 데이터베이스를 말 그대로 인증 없이 배포한 사람은 기술 지옥에서 자신만의 자리를 가질 자격이 있다.</span>
+<span class="i18n-text" data-lang="es">Una base de datos de terapia con contraseña en blanco no es un fallo de seguridad - es una invitación. El hacker es un criminal, pero quien desplegó una base de datos que contenía los secretos más profundos de las personas con literalmente ninguna autenticación merece su propio círculo del infierno tecnológico.</span>
+<span class="i18n-text" data-lang="de">Eine Therapie-Datenbank mit leerem Passwort ist kein Sicherheitsversagen - es ist eine Einladung. Der Hacker ist ein Verbrecher, aber wer eine Datenbank mit den tiefsten Geheimnissen der Menschen buchstäblich ohne Authentifizierung deployed hat, verdient seinen eigenen Kreis der Tech-Hölle.</span>
+
+      </div>
+      <div class="story-section story-comments">
+        <div class="story-label">HN Voices</div>
+        <div class="comment">
+          <div class="comment-text">"The patient records database was accessible via the internet with no firewall and a blank password. There should be a bunch of people in jail for that, including but not limited to the CEO."</div>
+          <div class="comment-i18n" data-lang="zh">患者记录数据库可以通过互联网访问，没有防火墙，密码为空。应该有一堆人因此入狱，包括但不限于CEO。</div>
+<div class="comment-i18n" data-lang="ja">患者記録データベースはインターネット経由でアクセス可能で、ファイアウォールはなく、パスワードは空白だった。CEOを含む多くの人がそのために刑務所に入るべきだ。</div>
+<div class="comment-i18n" data-lang="ko">환자 기록 데이터베이스가 방화벽 없이, 빈 비밀번호로 인터넷을 통해 접근 가능했다. CEO를 포함해 많은 사람들이 그것 때문에 감옥에 가야 한다.</div>
+<div class="comment-i18n" data-lang="es">La base de datos de registros de pacientes era accesible a través de internet sin firewall y con contraseña en blanco. Debería haber un montón de gente en la cárcel por eso, incluyendo pero no limitado al CEO.</div>
+<div class="comment-i18n" data-lang="de">Die Patientenakten-Datenbank war über das Internet ohne Firewall und mit leerem Passwort zugänglich. Es sollte ein Haufen Leute dafür im Gefängnis sein, einschließlich, aber nicht beschränkt auf den CEO.</div>
+
+          <div class="comment-author">-- bigiain</div>
+        </div><div class="comment">
+          <div class="comment-text">"I have seen therapists in the past, but never over video calls, and the notes have been kept on paper. Sometimes in person is much better. This rush to put everything online will destroy everyone&#x27;s privacy."</div>
+          <div class="comment-i18n" data-lang="zh">我以前看过心理医生，但从不通过视频通话，笔记都是纸质的。有时候面对面更好。这种把一切都放到网上的风潮会摧毁所有人的隐私。</div>
+<div class="comment-i18n" data-lang="ja">以前セラピストに会ったことがあるが、ビデオ通話ではなく、メモは紙で保管されていた。時には対面の方がずっと良い。すべてをオンラインにするこの急ぎは、みんなのプライバシーを破壊するだろう。</div>
+<div class="comment-i18n" data-lang="ko">과거에 치료사를 만난 적이 있지만, 화상 통화로는 절대 하지 않았고, 기록은 종이로 보관되었다. 때로는 대면이 훨씬 낫다. 모든 것을 온라인에 올리려는 이 서두름은 모든 사람의 프라이버시를 파괴할 것이다.</div>
+<div class="comment-i18n" data-lang="es">He visto terapeutas en el pasado, pero nunca por videollamadas, y las notas se han guardado en papel. A veces en persona es mucho mejor. Esta prisa por poner todo en línea destruirá la privacidad de todos.</div>
+<div class="comment-i18n" data-lang="de">Ich habe in der Vergangenheit Therapeuten gesehen, aber nie über Videoanrufe, und die Notizen wurden auf Papier aufbewahrt. Manchmal ist persönlich viel besser. Diese Eile, alles online zu stellen, wird die Privatsphäre aller zerstören.</div>
+
+          <div class="comment-author">-- nephihaha</div>
+        </div><div class="comment">
+          <div class="comment-text">"This is why you should not go to a therapist who uses electronic records. This will happen to you at some point."</div>
+          <div class="comment-i18n" data-lang="zh">这就是为什么你不应该去使用电子记录的心理治疗师那里。这种事迟早会发生在你身上。</div>
+<div class="comment-i18n" data-lang="ja">これが電子記録を使用するセラピストに行くべきではない理由だ。いつかあなたにも起こるだろう。</div>
+<div class="comment-i18n" data-lang="ko">이것이 전자 기록을 사용하는 치료사에게 가지 말아야 하는 이유다. 언젠가 당신에게도 일어날 것이다.</div>
+<div class="comment-i18n" data-lang="es">Por esto no deberías ir a un terapeuta que use registros electrónicos. Esto te pasará a ti en algún momento.</div>
+<div class="comment-i18n" data-lang="de">Deshalb sollte man nicht zu einem Therapeuten gehen, der elektronische Aufzeichnungen verwendet. Das wird dir irgendwann passieren.</div>
+
+          <div class="comment-author">-- 7777332215</div>
+        </div>
+      </div>
+      <div class="tags"><span class="tag">#security</span><span class="tag">#privacy</span><span class="tag">#healthcare</span></div>
+    </article>
+<article class="story" id="s46656998-01171600">
+      <h3 class="story-title">
+        <a href="https://www.theregister.com/2026/01/16/patch_tuesday_secure_launch_bug_no_shutdown/" target="_blank">PCs refuse to shut down after Microsoft patch</a>
+        <a href="#s46656998-01171600" class="story-anchor">#</a>
+      </h3>
+      <div class="i18n-title" data-lang="zh">微软补丁后电脑拒绝关机</div>
+<div class="i18n-title" data-lang="ja">Microsoftパッチ後、PCがシャットダウンを拒否</div>
+<div class="i18n-title" data-lang="ko">마이크로소프트 패치 후 PC가 종료 거부</div>
+<div class="i18n-title" data-lang="es">Los PCs se niegan a apagarse después del parche de Microsoft</div>
+<div class="i18n-title" data-lang="de">PCs verweigern nach Microsoft-Patch das Herunterfahren</div>
+
+      <div class="story-meta">
+        112pts | 128c | <a href="https://news.ycombinator.com/item?id=46656998" target="_blank">HN#46656998</a>
+      </div>
+      <div class="story-section story-tldr">
+        <div class="story-label">TL;DR</div>
+        <div class="story-text">Microsoft&#x27;s January Patch Tuesday update causes Windows 11 23H2 PCs with Secure Launch enabled to refuse shutting down or hibernating. The workaround is using &#x27;shutdown /s /t 0&#x27; from the command prompt. Microsoft acknowledged the bug and will release a fix in a future update.</div>
+        <span class="i18n-text" data-lang="zh">微软一月补丁星期二更新导致启用了安全启动的Windows 11 23H2电脑拒绝关机或休眠。解决方法是在命令提示符中使用&#x27;shutdown /s /t 0&#x27;。微软已确认该漏洞，将在未来更新中发布修复。</span>
+<span class="i18n-text" data-lang="ja">Microsoftの1月Patch Tuesdayアップデートにより、Secure Launch有効のWindows 11 23H2 PCがシャットダウンやハイバネートを拒否する。回避策はコマンドプロンプトから&#x27;shutdown /s /t 0&#x27;を使用すること。Microsoftはバグを認め、将来のアップデートで修正をリリースする予定。</span>
+<span class="i18n-text" data-lang="ko">마이크로소프트의 1월 패치 화요일 업데이트로 인해 Secure Launch가 활성화된 Windows 11 23H2 PC가 종료 또는 최대 절전 모드를 거부한다. 해결 방법은 명령 프롬프트에서 &#x27;shutdown /s /t 0&#x27;을 사용하는 것이다. 마이크로소프트는 버그를 인정했고 향후 업데이트에서 수정 사항을 릴리스할 예정이다.</span>
+<span class="i18n-text" data-lang="es">La actualización del Patch Tuesday de enero de Microsoft causa que los PCs con Windows 11 23H2 con Secure Launch habilitado se nieguen a apagarse o hibernar. La solución es usar &#x27;shutdown /s /t 0&#x27; desde el símbolo del sistema. Microsoft reconoció el bug y lanzará una corrección en una actualización futura.</span>
+<span class="i18n-text" data-lang="de">Microsofts Januar Patch Tuesday Update führt dazu, dass Windows 11 23H2 PCs mit aktiviertem Secure Launch das Herunterfahren oder Hibernieren verweigern. Die Problemumgehung ist die Verwendung von &#x27;shutdown /s /t 0&#x27; in der Eingabeaufforderung. Microsoft bestätigte den Bug und wird in einem zukünftigen Update eine Lösung veröffentlichen.</span>
+
+      </div>
+      <div class="story-section story-take">
+        <div class="story-label">Take</div>
+        <div class="story-text">The irony of Windows users being told to use the command line to shut down their computers is chef&#x27;s kiss. Twenty years of &#x27;Linux is hard because command line&#x27; propaganda and now Windows literally won&#x27;t turn off without typing arcane incantations into a terminal.</div>
+        <span class="i18n-text" data-lang="zh">Windows用户被告知要用命令行关闭电脑，这讽刺简直完美。二十年来&#x27;Linux难用因为要用命令行&#x27;的宣传，现在Windows不在终端里输入神秘咒语就真的关不掉了。</span>
+<span class="i18n-text" data-lang="ja">Windowsユーザーがコンピュータをシャットダウンするためにコマンドラインを使うよう言われているという皮肉は最高だ。20年間の「Linuxはコマンドラインがあるから難しい」というプロパガンダの末、今やWindowsはターミナルに謎の呪文を入力しないと文字通り電源が切れない。</span>
+<span class="i18n-text" data-lang="ko">Windows 사용자들이 컴퓨터를 끄기 위해 명령줄을 사용하라는 말을 듣는 아이러니는 정말 완벽하다. 20년간 &#x27;리눅스는 명령줄 때문에 어렵다&#x27;는 선전 끝에 이제 Windows는 터미널에 신비한 주문을 입력하지 않으면 말 그대로 꺼지지 않는다.</span>
+<span class="i18n-text" data-lang="es">La ironía de que a los usuarios de Windows se les diga que usen la línea de comandos para apagar sus computadoras es perfecta. Veinte años de propaganda de &#x27;Linux es difícil por la línea de comandos&#x27; y ahora Windows literalmente no se apaga sin escribir encantamientos arcanos en una terminal.</span>
+<span class="i18n-text" data-lang="de">Die Ironie, dass Windows-Benutzer aufgefordert werden, die Befehlszeile zu verwenden, um ihre Computer herunterzufahren, ist einfach perfekt. Zwanzig Jahre &#x27;Linux ist schwer wegen der Befehlszeile&#x27;-Propaganda und jetzt schaltet sich Windows buchstäblich nicht aus, ohne arkane Beschwörungen in ein Terminal zu tippen.</span>
+
+      </div>
+      <div class="story-section story-comments">
+        <div class="story-label">HN Voices</div>
+        <div class="comment">
+          <div class="comment-text">"Wow how the tables have turned. The argument used to be you used Windows instead of Linux because on Linux you might occasionally have to use the scary terminal to fix an issue."</div>
+          <div class="comment-i18n" data-lang="zh">哇，风水轮流转。以前的说法是你用Windows而不是Linux，因为在Linux上你偶尔可能需要用可怕的终端来修复问题。</div>
+<div class="comment-i18n" data-lang="ja">うわー、なんという逆転。以前の主張は、Linuxではたまにターミナルを使って問題を修正しなければならないかもしれないから、Linuxの代わりにWindowsを使うというものだった。</div>
+<div class="comment-i18n" data-lang="ko">와, 상황이 완전히 뒤바뀌었네. 예전에는 Linux에서는 가끔 무서운 터미널을 사용해서 문제를 해결해야 할 수도 있기 때문에 Linux 대신 Windows를 사용한다는 주장이었다.</div>
+<div class="comment-i18n" data-lang="es">Vaya cómo han cambiado las tornas. El argumento solía ser que usabas Windows en lugar de Linux porque en Linux ocasionalmente podrías tener que usar la temible terminal para arreglar un problema.</div>
+<div class="comment-i18n" data-lang="de">Wow, wie sich die Zeiten ändern. Das Argument war früher, dass man Windows statt Linux benutzt, weil man unter Linux gelegentlich das beängstigende Terminal verwenden muss, um ein Problem zu beheben.</div>
+
+          <div class="comment-author">-- einsteinx2</div>
+        </div><div class="comment">
+          <div class="comment-text">"Windows isn&#x27;t the cash cow it used to be for Microsoft. Windows makes up less than 10% of Microsoft&#x27;s revenue now. As time goes on Windows is going to be a smaller piece of this pie."</div>
+          <div class="comment-i18n" data-lang="zh">Windows不再是微软的摇钱树了。Windows现在只占微软收入的不到10%。随着时间推移，Windows在蛋糕中的份额会越来越小。</div>
+<div class="comment-i18n" data-lang="ja">WindowsはもはやMicrosoftのドル箱ではない。Windowsは今やMicrosoftの収益の10%未満だ。時間が経つにつれ、Windowsはこのパイのより小さな部分になるだろう。</div>
+<div class="comment-i18n" data-lang="ko">Windows는 더 이상 마이크로소프트의 효자 상품이 아니다. Windows는 이제 마이크로소프트 수익의 10% 미만이다. 시간이 지나면서 Windows는 이 파이에서 더 작은 조각이 될 것이다.</div>
+<div class="comment-i18n" data-lang="es">Windows ya no es la gallina de los huevos de oro que solía ser para Microsoft. Windows ahora representa menos del 10% de los ingresos de Microsoft. Con el tiempo, Windows será una porción más pequeña de este pastel.</div>
+<div class="comment-i18n" data-lang="de">Windows ist nicht mehr die Geldkuh, die es für Microsoft früher war. Windows macht jetzt weniger als 10% von Microsofts Umsatz aus. Mit der Zeit wird Windows ein kleineres Stück dieses Kuchens sein.</div>
+
+          <div class="comment-author">-- 9JollyOtter</div>
+        </div><div class="comment">
+          <div class="comment-text">"Instead of putting Copilot everywhere, Microsoft could hire some proper devs and QA to avoid such problems. But no, MS employs vibe-coders only and fired the entire QA team."</div>
+          <div class="comment-i18n" data-lang="zh">与其到处放Copilot，微软不如雇一些合格的开发人员和QA来避免这些问题。但不，微软只雇佣氛围程序员，还解雇了整个QA团队。</div>
+<div class="comment-i18n" data-lang="ja">どこにでもCopilotを入れる代わりに、Microsoftはこのような問題を避けるために適切な開発者とQAを雇えばいいのに。でもいいえ、MSはバイブコーダーだけを雇い、QAチーム全体を解雇した。</div>
+<div class="comment-i18n" data-lang="ko">어디에나 Copilot을 넣는 대신, 마이크로소프트는 이런 문제를 피하기 위해 제대로 된 개발자와 QA를 고용할 수 있다. 하지만 아니, MS는 바이브 코더만 고용하고 전체 QA 팀을 해고했다.</div>
+<div class="comment-i18n" data-lang="es">En lugar de poner Copilot en todas partes, Microsoft podría contratar algunos desarrolladores y QA adecuados para evitar tales problemas. Pero no, MS solo emplea vibe-coders y despidió a todo el equipo de QA.</div>
+<div class="comment-i18n" data-lang="de">Anstatt Copilot überall einzubauen, könnte Microsoft ein paar ordentliche Entwickler und QA einstellen, um solche Probleme zu vermeiden. Aber nein, MS beschäftigt nur Vibe-Coder und hat das gesamte QA-Team gefeuert.</div>
+
+          <div class="comment-author">-- mdavid626</div>
+        </div>
+      </div>
+      <div class="tags"><span class="tag">#windows</span><span class="tag">#microsoft</span><span class="tag">#bugs</span></div>
+    </article>
+<article class="story" id="s46646475-01171600">
+      <h3 class="story-title">
+        <a href="https://www.astralcodexten.com/p/the-dilbert-afterlife" target="_blank">The Dilbert Afterlife</a>
+        <a href="#s46646475-01171600" class="story-anchor">#</a>
+      </h3>
+      <div class="i18n-title" data-lang="zh">呆伯特的来世</div>
+<div class="i18n-title" data-lang="ja">ディルバートの死後世界</div>
+<div class="i18n-title" data-lang="ko">딜버트의 사후 세계</div>
+<div class="i18n-title" data-lang="es">El más allá de Dilbert</div>
+<div class="i18n-title" data-lang="de">Das Dilbert-Jenseits</div>
+
+      <div class="story-meta">
+        204pts | 124c | <a href="https://news.ycombinator.com/item?id=46646475" target="_blank">HN#46646475</a>
+      </div>
+      <div class="story-section story-tldr">
+        <div class="story-label">TL;DR</div>
+        <div class="story-text">Scott Alexander&#x27;s psychological profile of Scott Adams argues he embodied the &#x27;nerd experience&#x27; of believing himself smarter than everyone but failing to leverage it. Adams channeled frustrations into Dilbert, capturing &#x27;the repressed object at the bottom of the nerd subconscious: you&#x27;re smarter than everyone else, but for some reason it isn&#x27;t working.&#x27; His post-Dilbert career was a series of attempts to prove intellectual superiority that ultimately led him down controversial paths.</div>
+        <span class="i18n-text" data-lang="zh">斯科特·亚历山大对斯科特·亚当斯的心理分析认为，他体现了&#x27;书呆子经历&#x27;——相信自己比所有人聪明却无法利用这一点。亚当斯将挫折转化为呆伯特，捕捉到&#x27;书呆子潜意识底部的压抑对象：你比其他人都聪明，但不知何故就是行不通。&#x27;他后呆伯特时代的职业生涯是一系列试图证明智力优越性的尝试，最终将他引向了争议之路。</span>
+<span class="i18n-text" data-lang="ja">スコット・アレクサンダーによるスコット・アダムスの心理分析は、彼が「自分は皆より賢いが、それを活かせなかった」という「ナード体験」を体現していたと主張する。アダムスは不満をディルバートに注ぎ込み、「ナードの潜在意識の底にある抑圧された対象：あなたは他の誰よりも賢いが、なぜかうまくいかない」を捉えた。ディルバート後のキャリアは知的優越性を証明しようとする一連の試みで、最終的に物議を醸す道へと導いた。</span>
+<span class="i18n-text" data-lang="ko">스콧 알렉산더의 스콧 애덤스 심리 분석은 그가 &#x27;모든 사람보다 똑똑하다고 믿지만 그것을 활용하지 못하는&#x27; &#x27;너드 경험&#x27;을 구현했다고 주장한다. 애덤스는 좌절감을 딜버트에 쏟아부었고, &#x27;너드 잠재의식 바닥에 있는 억압된 대상: 당신은 다른 모든 사람보다 똑똑하지만, 어떤 이유에서인지 작동하지 않는다&#x27;를 포착했다. 딜버트 이후의 경력은 지적 우월성을 증명하려는 일련의 시도였고, 결국 논란의 길로 이끌었다.</span>
+<span class="i18n-text" data-lang="es">El perfil psicológico de Scott Alexander sobre Scott Adams argumenta que encarnaba la &#x27;experiencia nerd&#x27; de creerse más inteligente que todos pero sin poder aprovecharlo. Adams canalizó sus frustraciones en Dilbert, capturando &#x27;el objeto reprimido en el fondo del subconsciente nerd: eres más inteligente que todos los demás, pero por alguna razón no está funcionando.&#x27; Su carrera post-Dilbert fue una serie de intentos de demostrar superioridad intelectual que finalmente lo llevaron por caminos controvertidos.</span>
+<span class="i18n-text" data-lang="de">Scott Alexanders psychologisches Profil von Scott Adams argumentiert, dass er die &#x27;Nerd-Erfahrung&#x27; verkörperte, sich für klüger als alle anderen zu halten, es aber nicht nutzen zu können. Adams kanalisierte seine Frustrationen in Dilbert und fing &#x27;das verdrängte Objekt am Boden des Nerd-Unterbewusstseins ein: Du bist klüger als alle anderen, aber aus irgendeinem Grund funktioniert es nicht.&#x27; Seine Post-Dilbert-Karriere war eine Reihe von Versuchen, intellektuelle Überlegenheit zu beweisen, die ihn letztendlich auf kontroverse Wege führten.</span>
+
+      </div>
+      <div class="story-section story-take">
+        <div class="story-label">Take</div>
+        <div class="story-text">A eulogy that&#x27;s simultaneously generous and devastating. Adams had Mozart-tier talent at exactly one thing - making cubicle workers feel seen - and spent the rest of his life angry that the universe didn&#x27;t reward him for everything else too.</div>
+        <span class="i18n-text" data-lang="zh">一篇既慷慨又毁灭性的悼词。亚当斯在恰好一件事上有莫扎特级别的天赋——让格子间工人感到被理解——然后用余生愤怒于宇宙没有因为其他一切而奖励他。</span>
+<span class="i18n-text" data-lang="ja">寛大であると同時に壊滅的な追悼文。アダムスはちょうど一つのことにモーツァルト級の才能があった - キュービクルワーカーに理解されていると感じさせること - そして残りの人生を、宇宙が他のすべてのことで彼に報いなかったことへの怒りに費やした。</span>
+<span class="i18n-text" data-lang="ko">관대하면서도 파괴적인 추도사. 애덤스는 정확히 한 가지에서 모차르트급 재능이 있었다 - 칸막이 근로자들이 이해받는다고 느끼게 하는 것 - 그리고 나머지 인생을 우주가 다른 모든 것에 대해 보상해주지 않는 것에 화내며 보냈다.</span>
+<span class="i18n-text" data-lang="es">Un elogio que es simultáneamente generoso y devastador. Adams tenía talento nivel Mozart en exactamente una cosa - hacer que los trabajadores de cubículo se sintieran vistos - y pasó el resto de su vida enojado porque el universo no lo recompensó por todo lo demás también.</span>
+<span class="i18n-text" data-lang="de">Ein Nachruf, der gleichzeitig großzügig und verheerend ist. Adams hatte Mozart-Talent in genau einer Sache - Büroarbeiter sich verstanden fühlen zu lassen - und verbrachte den Rest seines Lebens damit, wütend zu sein, dass das Universum ihn nicht auch für alles andere belohnte.</span>
+
+      </div>
+      <div class="story-section story-comments">
+        <div class="story-label">HN Voices</div>
+        <div class="comment">
+          <div class="comment-text">"My former manager used to have Dilbert comic strips on his wall. It always puzzled me - was it self deprecating humor? At a certain point it became clear that in his mind the PHB was one layer ABOVE him in the management chain."</div>
+          <div class="comment-i18n" data-lang="zh">我以前的经理墙上挂着呆伯特漫画。这总让我困惑——是自嘲幽默吗？到了某个时候很明显，在他心里PHB是比他高一级的管理层。</div>
+<div class="comment-i18n" data-lang="ja">私の元上司はディルバートの漫画を壁に貼っていた。いつも不思議だった - 自虐的なユーモアなのか？ある時点で、彼の心の中ではPHBは彼より一つ上の管理階層にいることが明らかになった。</div>
+<div class="comment-i18n" data-lang="ko">전 매니저가 벽에 딜버트 만화를 붙여 놓곤 했다. 항상 의아했다 - 자기 비하 유머인가? 어느 시점에서 그의 마음속에서 PHB는 자신보다 한 단계 위의 관리 체계에 있다는 것이 분명해졌다.</div>
+<div class="comment-i18n" data-lang="es">Mi antiguo jefe solía tener tiras cómicas de Dilbert en su pared. Siempre me desconcertó - ¿era humor autodespreciativo? En cierto punto quedó claro que en su mente el PHB estaba un nivel POR ENCIMA de él en la cadena de gestión.</div>
+<div class="comment-i18n" data-lang="de">Mein früherer Manager hatte Dilbert-Comics an seiner Wand hängen. Es hat mich immer verwirrt - war das selbstironischer Humor? Irgendwann wurde klar, dass in seinem Kopf der PHB eine Ebene ÜBER ihm in der Managementkette war.</div>
+
+          <div class="comment-author">-- martinpw</div>
+        </div><div class="comment">
+          <div class="comment-text">"For a &#x27;successor theory&#x27; to the Dilbert Principle, I highly suggest Venkatesh Rao&#x27;s Gervais Principle. Adams would say PHB is dumb and promoted where he can do the least damage. Rao would say PHB is actually put there by upper management to be a combination of fall guy and lightning rod."</div>
+          <div class="comment-i18n" data-lang="zh">对于呆伯特原理的&#x27;后继理论&#x27;，我强烈推荐文卡特什·拉奥的格维斯原理。亚当斯会说PHB很蠢，被提升到他能造成最小伤害的地方。拉奥会说PHB实际上是被高层管理放在那里充当替罪羊和避雷针的组合。</div>
+<div class="comment-i18n" data-lang="ja">ディルバート原理の「後継理論」として、ヴェンカテシュ・ラオのガーヴェイス原理を強くお勧めする。アダムスはPHBは愚かで、最も害を及ぼさない場所に昇進したと言うだろう。ラオはPHBは実際には上層部によってスケープゴートと避雷針の組み合わせとして配置されたと言うだろう。</div>
+<div class="comment-i18n" data-lang="ko">딜버트 원칙의 &#x27;후속 이론&#x27;으로 벤카테시 라오의 거비스 원칙을 강력히 추천한다. 애덤스는 PHB가 멍청하고 가장 피해를 덜 줄 수 있는 곳으로 승진했다고 말할 것이다. 라오는 PHB가 실제로 상위 경영진에 의해 희생양과 피뢰침의 조합으로 배치되었다고 말할 것이다.</div>
+<div class="comment-i18n" data-lang="es">Para una &#x27;teoría sucesora&#x27; del Principio de Dilbert, recomiendo encarecidamente el Principio de Gervais de Venkatesh Rao. Adams diría que PHB es tonto y promovido donde puede hacer el menor daño. Rao diría que PHB en realidad es puesto ahí por la alta dirección para ser una combinación de chivo expiatorio y pararrayos.</div>
+<div class="comment-i18n" data-lang="de">Für eine &#x27;Nachfolgetheorie&#x27; zum Dilbert-Prinzip empfehle ich dringend Venkatesh Raos Gervais-Prinzip. Adams würde sagen, PHB ist dumm und wird dorthin befördert, wo er am wenigsten Schaden anrichten kann. Rao würde sagen, PHB wird tatsächlich vom oberen Management dort platziert, um eine Kombination aus Sündenbock und Blitzableiter zu sein.</div>
+
+          <div class="comment-author">-- alexpotato</div>
+        </div><div class="comment">
+          <div class="comment-text">"I disliked Adams, but this is a good eulogy. &#x27;God created him only-slightly-above-average at everything except for a world-historical, Mozart-tier, absolutely Leonardo-level skill at making silly comics about hating work.&#x27; A+, no notes."</div>
+          <div class="comment-i18n" data-lang="zh">我不喜欢亚当斯，但这是一篇好悼词。&#x27;上帝创造他在所有事情上都只是略高于平均水平，除了一项世界历史级的、莫扎特级的、绝对达芬奇级的才能——制作关于讨厌工作的傻漫画。&#x27;A+，无可挑剔。</div>
+<div class="comment-i18n" data-lang="ja">私はアダムスが嫌いだったが、これは良い追悼文だ。「神は彼をすべてのことでほんの少しだけ平均以上に創造したが、仕事を嫌うことについての馬鹿げた漫画を作るという世界史的、モーツァルト級、まさにレオナルド級のスキルだけは例外だった」A+、何も言うことなし。</div>
+<div class="comment-i18n" data-lang="ko">나는 애덤스를 싫어했지만, 이것은 좋은 추도사다. &#x27;신은 그를 일을 싫어하는 것에 대한 바보 같은 만화를 만드는 세계 역사적, 모차르트급, 절대적으로 레오나르도급 기술을 제외하고는 모든 것에서 평균보다 약간 위로만 창조했다&#x27; A+, 할 말 없음.</div>
+<div class="comment-i18n" data-lang="es">Me caía mal Adams, pero este es un buen elogio. &#x27;Dios lo creó solo ligeramente por encima del promedio en todo excepto por una habilidad de nivel mundial, nivel Mozart, absolutamente nivel Leonardo para hacer cómics tontos sobre odiar el trabajo.&#x27; A+, sin notas.</div>
+<div class="comment-i18n" data-lang="de">Ich mochte Adams nicht, aber das ist ein guter Nachruf. &#x27;Gott schuf ihn nur knapp überdurchschnittlich in allem, außer einer welthistorischen, Mozart-artigen, absolut Leonardo-haften Fähigkeit, alberne Comics über das Hassen von Arbeit zu machen.&#x27; A+, keine Anmerkungen.</div>
+
+          <div class="comment-author">-- MPSimmons</div>
+        </div>
+      </div>
+      <div class="tags"><span class="tag">#culture</span><span class="tag">#obituary</span><span class="tag">#tech</span></div>
+    </article>
+    </section>
 <section class="digest">
       <div class="digest-header">
         <div class="digest-date">2026-01-17T11:00:00Z</div>
