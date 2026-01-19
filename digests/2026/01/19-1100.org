@@ -1,0 +1,544 @@
+#+TITLE: HN Digest 2026-01-19 11:00:00 UT UTC
+#+DATE: 2026-01-19T11:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Bluetooth rebels, memory safety nerds, and a university that actually cares about e-waste
+
+* Highlights
+- BitChat: Mesh messaging for when the internet goes dark
+- Fil-Qt: Making C++ memory-safe without rewriting in Rust
+- Fairphone: A university bets on modular phones
+
+* Stories
+
+** BitChat: A decentralized peer-to-peer messaging app over Bluetooth mesh :privacy:security:mesh-networking:mobile:
+:PROPERTIES:
+:ID:       46675853
+:URL:      https://bitchat.free/
+:HN_URL:   https://news.ycombinator.com/item?id=46675853
+:POINTS:   194
+:COMMENTS: 111
+:BY:       no_creativity_
+:END:
+
+*** TLDR
+BitChat is an open-source, decentralized messaging app that works entirely over Bluetooth mesh networks. No internet, no servers, no phone numbers. Devices discover peers automatically and relay messages across multiple hops. Built for protests, disasters, and places where infrastructure is a liability.
+
+*** Take
+Finally, a chat app that treats 'the cloud' as the threat vector it is. The 400-meter Bluetooth range limitation is both its biggest weakness and strongest feature - you literally have to be there to participate. Good luck, surveillance state.
+
+*** Comments
+
+**** nicois
+:PROPERTIES:
+:COMMENT_ID: 46675900
+:END:
+One missing feature: deferred message propagation. While messages will be rebroadcast until a TTL is exhausted, there is no mechanism to retain in-transit messages and retransmit them to future peers.
+
+**** simonmales
+:PROPERTIES:
+:COMMENT_ID: 46675920
+:END:
+It's getting movement in tough political environments like Uganda and natural disasters like in Jamaica.
+
+**** maqp
+:PROPERTIES:
+:COMMENT_ID: 46675940
+:END:
+Could someone please explain in what situation do you use a Bluetooth messaging app? Even BT5 range won't exceed 400 meters. What good is this?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+BitChat：基于蓝牙网状网络的去中心化点对点通讯应用
+***** TLDR
+BitChat是一款开源的去中心化通讯应用，完全通过蓝牙网状网络运行。无需互联网、服务器或电话号码。设备自动发现对等节点并通过多跳转发消息。专为抗议活动、灾难场景和基础设施不可靠的地区设计。
+***** Take
+终于有一款把'云'当作威胁向量的聊天应用了。400米的蓝牙范围限制既是最大的弱点也是最强的特性——你必须亲身在场才能参与。祝监控国家好运。
+***** Comments
+- 缺少一个功能：延迟消息传播。虽然消息会在TTL耗尽前重新广播，但没有机制保留传输中的消息并转发给未来的对等节点。
+- 在乌干达等政治环境艰难的地方和牙买加等自然灾害地区获得了发展。
+- 有人能解释一下蓝牙通讯应用的使用场景吗？即使BT5的范围也不超过400米，有什么用？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+BitChat：Bluetoothメッシュで動作する分散型P2Pメッセージングアプリ
+***** TLDR
+BitChatはBluetoothメッシュネットワークで完全に動作するオープンソースの分散型メッセージングアプリ。インターネット、サーバー、電話番号は不要。デバイスは自動的にピアを発見し、複数ホップでメッセージを中継。抗議活動、災害、インフラが危険な場所向けに構築。
+***** Take
+ついに「クラウド」を脅威ベクトルとして扱うチャットアプリが登場。400mのBluetooth範囲制限は最大の弱点であり最強の特徴でもある。参加するには物理的にそこにいなければならない。監視国家、頑張れ。
+***** Comments
+- 不足している機能：遅延メッセージ伝播。メッセージはTTLが切れるまで再ブロードキャストされるが、転送中のメッセージを保持して将来のピアに再送信するメカニズムがない。
+- ウガンダのような厳しい政治環境やジャマイカのような自然災害で普及している。
+- Bluetoothメッセージングアプリをどんな状況で使うのか誰か説明してくれ？BT5でも400mを超えない。何の役に立つ？
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+BitChat: 블루투스 메시 네트워크 기반 탈중앙화 P2P 메시징 앱
+***** TLDR
+BitChat은 블루투스 메시 네트워크로 완전히 작동하는 오픈소스 탈중앙화 메시징 앱이다. 인터넷, 서버, 전화번호가 필요 없다. 기기가 자동으로 피어를 발견하고 여러 홉을 통해 메시지를 중계한다. 시위, 재난, 인프라가 위험한 지역을 위해 제작되었다.
+***** Take
+드디어 '클라우드'를 위협 벡터로 취급하는 채팅 앱이 나왔다. 400미터 블루투스 범위 제한은 가장 큰 약점이자 가장 강력한 특징이다. 참여하려면 물리적으로 그 자리에 있어야 한다. 감시 국가여, 행운을 빈다.
+***** Comments
+- 누락된 기능: 지연 메시지 전파. 메시지는 TTL이 소진될 때까지 재전송되지만, 전송 중인 메시지를 보관하고 미래 피어에게 재전송하는 메커니즘이 없다.
+- 우간다 같은 어려운 정치 환경과 자메이카 같은 자연재해 지역에서 확산되고 있다.
+- 블루투스 메시징 앱을 어떤 상황에서 사용하는지 누가 설명해줄 수 있나? BT5도 400미터를 넘지 못한다. 무슨 소용이야?
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+BitChat: App de mensajería P2P descentralizada sobre malla Bluetooth
+***** TLDR
+BitChat es una app de mensajería descentralizada de código abierto que funciona completamente sobre redes Bluetooth en malla. Sin internet, sin servidores, sin números de teléfono. Los dispositivos descubren pares automáticamente y retransmiten mensajes a través de múltiples saltos. Construida para protestas, desastres y lugares donde la infraestructura es un riesgo.
+***** Take
+Por fin una app de chat que trata 'la nube' como el vector de amenaza que es. La limitación de 400 metros de Bluetooth es tanto su mayor debilidad como su característica más fuerte: tienes que estar físicamente presente para participar. Buena suerte, estado de vigilancia.
+***** Comments
+- Una función que falta: propagación diferida de mensajes. Aunque los mensajes se retransmiten hasta que se agota el TTL, no hay mecanismo para retener mensajes en tránsito y retransmitirlos a futuros pares.
+- Está ganando tracción en entornos políticos difíciles como Uganda y desastres naturales como en Jamaica.
+- ¿Alguien puede explicar en qué situación usas una app de mensajería Bluetooth? Incluso el rango de BT5 no supera los 400 metros. ¿Para qué sirve?
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+BitChat: Dezentrale Peer-to-Peer-Messaging-App über Bluetooth-Mesh
+***** TLDR
+BitChat ist eine quelloffene, dezentrale Messaging-App, die vollständig über Bluetooth-Mesh-Netzwerke funktioniert. Kein Internet, keine Server, keine Telefonnummern. Geräte entdecken Peers automatisch und leiten Nachrichten über mehrere Hops weiter. Entwickelt für Proteste, Katastrophen und Orte, wo Infrastruktur ein Risiko ist.
+***** Take
+Endlich eine Chat-App, die 'die Cloud' als den Bedrohungsvektor behandelt, der sie ist. Die 400-Meter-Bluetooth-Reichweite ist sowohl ihre größte Schwäche als auch ihr stärkstes Merkmal – man muss physisch anwesend sein, um teilzunehmen. Viel Glück, Überwachungsstaat.
+***** Comments
+- Eine fehlende Funktion: verzögerte Nachrichtenweiterleitung. Obwohl Nachrichten bis zum Ablauf der TTL erneut gesendet werden, gibt es keinen Mechanismus, um Nachrichten unterwegs zu speichern und an zukünftige Peers weiterzuleiten.
+- Es gewinnt an Bedeutung in schwierigen politischen Umgebungen wie Uganda und bei Naturkatastrophen wie in Jamaika.
+- Kann jemand erklären, in welcher Situation man eine Bluetooth-Messaging-App verwendet? Selbst BT5-Reichweite überschreitet keine 400 Meter. Was bringt das?
+** Gas Town Decoded :ai:agents:productivity:tools:
+:PROPERTIES:
+:ID:       46624883
+:URL:      https://www.alilleybrinker.com/mini/gas-town-decoded/
+:HN_URL:   https://news.ycombinator.com/item?id=46624883
+:POINTS:   143
+:COMMENTS: 121
+:BY:       alilleybrinker
+:END:
+
+*** TLDR
+An analysis of Steve Yegge's 'Gas Town' AI agent orchestration system. The tool uses a hierarchy of specialized agents: Mayor manages projects, Polecat does the work, Refinery handles merges, Witness fixes stuck workers. The author provides a decoder ring for the metaphor-heavy terminology while questioning whether all this complexity is necessary.
+
+*** Take
+When your AI productivity tool needs a glossary, a decoder ring, and third-party blog posts just to understand what the buttons do, maybe the gas has gone to someone's head. Though credit where due: agent orchestration IS important, even if the Mad Max cosplay wasn't strictly necessary.
+
+*** Comments
+
+**** dchuk
+:PROPERTIES:
+:COMMENT_ID: 46625100
+:END:
+I'm very bought in to the idea that raw coding is now a solved problem with the current models. That being said, we're in a weird phase where people's mental health issues are appearing as 'hyper productivity' due to the use of these tools.
+
+**** bastawhiz
+:PROPERTIES:
+:COMMENT_ID: 46625200
+:END:
+The idea of gas town is simultaneously appealing and appalling. The waste and lack of control is wild, but there's at least a nugget of fascinating, useful work in there.
+
+**** keyle
+:PROPERTIES:
+:COMMENT_ID: 46625300
+:END:
+I'd help build Gas City and Gas State if that would mean we actually solve the things AI promised. The problem is we're just fidgeting yolo-fizzbuzz ad nauseam.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Gas Town 解码
+***** TLDR
+对Steve Yegge的'Gas Town' AI代理编排系统的分析。该工具使用专门代理的层级结构：Mayor管理项目，Polecat执行工作，Refinery处理合并，Witness修复卡住的工作者。作者为这些隐喻术语提供了解码指南，同时质疑是否真的需要这么复杂。
+***** Take
+当你的AI生产力工具需要词汇表、解码器和第三方博客文章才能理解按钮的功能时，也许是汽油上头了。不过功劳还是要给的：代理编排确实很重要，即使疯狂麦克斯的角色扮演并非必需。
+***** Comments
+- 我非常认同原始编码现在已经被当前模型解决的观点。话虽如此，我们正处于一个奇怪的阶段，人们的心理健康问题正以'超高生产力'的形式出现。
+- Gas Town的想法既吸引人又令人震惊。浪费和缺乏控制是疯狂的，但里面至少有一些有趣有用的工作。
+- 如果能真正解决AI承诺要解决的问题，我愿意帮助建设Gas City和Gas State。问题是我们只是在无休止地玩yolo-fizzbuzz。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Gas Town 解読
+***** TLDR
+Steve Yeggeの「Gas Town」AIエージェントオーケストレーションシステムの分析。このツールは専門エージェントの階層を使用：Mayorがプロジェクトを管理、Polecatが作業を実行、Refineryがマージを処理、Witnessがスタックしたワーカーを修復。著者はメタファー満載の用語のデコーダーを提供しながら、この複雑さが本当に必要かを疑問視している。
+***** Take
+AIプロダクティビティツールを理解するのに用語集、デコーダー、サードパーティのブログ記事が必要なら、誰かがガスで酔っているのかもしれない。とはいえ功績は認めるべき：エージェントオーケストレーションは重要だ、マッドマックスのコスプレが必須でなくても。
+***** Comments
+- 生のコーディングは現在のモデルで解決済みの問題だという考えに強く賛同している。とはいえ、これらのツールの使用により、人々のメンタルヘルスの問題が「超生産性」として現れる奇妙な段階にいる。
+- Gas Townのアイデアは魅力的であると同時に恐ろしい。無駄とコントロールの欠如は異常だが、少なくとも魅力的で有用な仕事の核がある。
+- AIが約束したことを実際に解決できるなら、Gas CityやGas Stateの構築を手伝う。問題は、yolo-fizzbuzzを延々と弄っているだけということだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Gas Town 해독
+***** TLDR
+Steve Yegge의 'Gas Town' AI 에이전트 오케스트레이션 시스템 분석. 이 도구는 전문 에이전트 계층을 사용한다: Mayor는 프로젝트를 관리하고, Polecat은 작업을 수행하고, Refinery는 병합을 처리하고, Witness는 막힌 워커를 수정한다. 저자는 은유가 가득한 용어의 해독 가이드를 제공하면서 이 모든 복잡성이 필요한지 의문을 제기한다.
+***** Take
+AI 생산성 도구를 이해하는 데 용어집, 디코더, 서드파티 블로그 게시물이 필요하다면, 아마 누군가 가스에 취한 것 같다. 그래도 공은 인정해야 한다: 에이전트 오케스트레이션은 중요하다, 매드맥스 코스프레가 필수는 아니더라도.
+***** Comments
+- 원시 코딩이 현재 모델로 해결된 문제라는 생각에 매우 동의한다. 그렇지만 우리는 이 도구들의 사용으로 인해 사람들의 정신건강 문제가 '초생산성'으로 나타나는 이상한 단계에 있다.
+- Gas Town의 아이디어는 매력적이면서 동시에 끔찍하다. 낭비와 통제 부재는 미친 짓이지만, 적어도 흥미롭고 유용한 작업의 핵심이 있다.
+- AI가 약속한 것들을 실제로 해결할 수 있다면 Gas City와 Gas State를 만드는 것을 돕겠다. 문제는 우리가 yolo-fizzbuzz만 끊임없이 만지작거리고 있다는 것이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Gas Town Decodificado
+***** TLDR
+Un análisis del sistema de orquestación de agentes IA 'Gas Town' de Steve Yegge. La herramienta usa una jerarquía de agentes especializados: Mayor gestiona proyectos, Polecat hace el trabajo, Refinery maneja los merges, Witness arregla workers atascados. El autor proporciona un decodificador para la terminología cargada de metáforas mientras cuestiona si toda esta complejidad es necesaria.
+***** Take
+Cuando tu herramienta de productividad IA necesita un glosario, un anillo decodificador y posts de terceros solo para entender qué hacen los botones, quizás el gas se le subió a alguien a la cabeza. Aunque hay que dar crédito: la orquestación de agentes ES importante, aunque el cosplay de Mad Max no era estrictamente necesario.
+***** Comments
+- Estoy muy convencido de que la programación pura ahora es un problema resuelto con los modelos actuales. Dicho esto, estamos en una fase rara donde los problemas de salud mental aparecen como 'hiperproductividad' por el uso de estas herramientas.
+- La idea de Gas Town es simultáneamente atractiva y horrible. El desperdicio y la falta de control es salvaje, pero al menos hay un núcleo de trabajo fascinante y útil.
+- Ayudaría a construir Gas City y Gas State si eso significara resolver lo que la IA prometió. El problema es que solo estamos haciendo yolo-fizzbuzz hasta el infinito.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Gas Town Entschlüsselt
+***** TLDR
+Eine Analyse von Steve Yegges 'Gas Town' AI-Agenten-Orchestrierungssystem. Das Tool verwendet eine Hierarchie spezialisierter Agenten: Mayor verwaltet Projekte, Polecat erledigt die Arbeit, Refinery handhabt Merges, Witness repariert festgefahrene Worker. Der Autor liefert einen Decoder für die metaphernreiche Terminologie und hinterfragt, ob diese Komplexität wirklich nötig ist.
+***** Take
+Wenn dein KI-Produktivitätstool ein Glossar, einen Decoderring und Blog-Posts von Dritten braucht, nur um zu verstehen, was die Knöpfe tun, ist vielleicht jemandem das Gas zu Kopf gestiegen. Aber Anerkennung wo sie hingehört: Agenten-Orchestrierung IST wichtig, auch wenn das Mad-Max-Cosplay nicht unbedingt nötig war.
+***** Comments
+- Ich bin sehr überzeugt, dass rohes Programmieren mit den aktuellen Modellen ein gelöstes Problem ist. Das gesagt, sind wir in einer seltsamen Phase, wo psychische Probleme als 'Hyperproduktivität' durch diese Tools erscheinen.
+- Die Idee von Gas Town ist gleichzeitig ansprechend und abstoßend. Die Verschwendung und mangelnde Kontrolle ist wild, aber es steckt zumindest ein faszinierender, nützlicher Kern darin.
+- Ich würde helfen, Gas City und Gas State zu bauen, wenn das bedeuten würde, dass wir tatsächlich lösen, was KI versprochen hat. Das Problem ist, wir fummeln nur endlos an yolo-fizzbuzz.
+** Fil-Qt: A Qt Base build with Fil-C memory safety :cpp:memory-safety:qt:compilers:
+:PROPERTIES:
+:ID:       46646080
+:URL:      https://git.qt.io/cradam/fil-qt
+:HN_URL:   https://news.ycombinator.com/item?id=46646080
+:POINTS:   108
+:COMMENTS: 58
+:BY:       pjmlp
+:END:
+
+*** TLDR
+Fil-C is a memory-safe C/C++ implementation that uses concurrent garbage collection and 'InvisiCaps' to catch memory safety errors at runtime. This project successfully compiles Qt Base with Fil-C, demonstrating that you can add memory safety to existing C++ codebases without rewriting everything in Rust. A proof-of-concept caught a use-after-free in a QVector example.
+
+*** Take
+The Rust evangelists will hate this: what if we could just... make C++ not explode? Fil-C proves the concept works on a codebase as gnarly as Qt, which is either incredibly promising or proof that anything can be duct-taped into submission given enough determination.
+
+*** Comments
+
+**** dayli
+:PROPERTIES:
+:COMMENT_ID: 46646200
+:END:
+Interesting to see Fil-C used with a large framework like Qt. The fact that it compiles with minimal changes says a lot about the compatibility layer and the InvisiCaps approach.
+
+**** rubymamis
+:PROPERTIES:
+:COMMENT_ID: 46646300
+:END:
+This is awesome. Would love to see if it catches some of the Qt bugs I found but haven't been resolved yet.
+
+**** wewewedxfgdf
+:PROPERTIES:
+:COMMENT_ID: 46646400
+:END:
+I believe much more in making C/C++ safer than using something as complex as Rust. SafER is better than deeply complex and unable to be understood except by Rust experts.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Fil-Qt：使用Fil-C内存安全构建的Qt Base
+***** TLDR
+Fil-C是一个内存安全的C/C++实现，使用并发垃圾回收和'InvisiCaps'在运行时捕获内存安全错误。这个项目成功地用Fil-C编译了Qt Base，证明你可以为现有的C++代码库添加内存安全性，而无需用Rust重写一切。概念验证在QVector示例中捕获了一个use-after-free错误。
+***** Take
+Rust传教士会恨死这个：如果我们可以直接让C++不爆炸呢？Fil-C在Qt这样复杂的代码库上证明了这个概念可行，这要么极其有前途，要么证明只要有足够的决心，任何东西都可以用胶带固定。
+***** Comments
+- 有趣的是看到Fil-C与Qt这样的大型框架一起使用。它只需最小改动就能编译，这充分说明了兼容层和InvisiCaps方法的有效性。
+- 太棒了。很想看看它能否捕获我发现但尚未解决的一些Qt bug。
+- 我更相信让C/C++更安全，而不是使用像Rust这样复杂的东西。更安全比只有Rust专家才能理解的深度复杂要好。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Fil-Qt：Fil-Cメモリ安全性を備えたQt Baseビルド
+***** TLDR
+Fil-CはメモリセーフなC/C++実装で、並行ガベージコレクションと「InvisiCaps」を使用してメモリ安全エラーをランタイムで検出する。このプロジェクトはFil-CでQt Baseのコンパイルに成功し、Rustで全てを書き直すことなく既存のC++コードベースにメモリ安全性を追加できることを実証した。概念実証ではQVectorの例でuse-after-freeを検出した。
+***** Take
+Rust伝道師はこれを嫌うだろう：もしC++を爆発させないようにできたら？Fil-CはQtのような複雑なコードベースでコンセプトが機能することを証明した。これは非常に有望か、十分な決意があれば何でもダクトテープで固定できる証拠のどちらかだ。
+***** Comments
+- Qtのような大規模フレームワークでFil-Cが使われるのは興味深い。最小限の変更でコンパイルできるという事実は、互換性レイヤーとInvisiCapsアプローチについて多くを物語っている。
+- 素晴らしい。私が見つけたがまだ解決されていないQtのバグをキャッチできるか見てみたい。
+- Rustのように複雑なものを使うよりも、C/C++をより安全にすることを信じている。より安全は、Rust専門家にしか理解できない深い複雑さよりも良い。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Fil-Qt: Fil-C 메모리 안전성을 갖춘 Qt Base 빌드
+***** TLDR
+Fil-C는 동시성 가비지 컬렉션과 'InvisiCaps'를 사용하여 런타임에 메모리 안전 오류를 잡아내는 메모리 안전 C/C++ 구현이다. 이 프로젝트는 Fil-C로 Qt Base를 성공적으로 컴파일하여, Rust로 모든 것을 다시 작성하지 않고도 기존 C++ 코드베이스에 메모리 안전성을 추가할 수 있음을 보여준다. 개념 증명에서 QVector 예제의 use-after-free를 잡아냈다.
+***** Take
+Rust 전도사들이 이걸 싫어할 것이다: 그냥 C++가 폭발하지 않게 만들면 어떨까? Fil-C는 Qt처럼 복잡한 코드베이스에서 개념이 작동함을 증명했는데, 이는 매우 유망하거나 충분한 결심만 있으면 뭐든 테이프로 붙일 수 있다는 증거다.
+***** Comments
+- Qt 같은 대형 프레임워크에서 Fil-C가 사용되는 것이 흥미롭다. 최소한의 변경으로 컴파일된다는 사실은 호환성 레이어와 InvisiCaps 접근 방식에 대해 많은 것을 말해준다.
+- 훌륭하다. 내가 발견했지만 아직 해결되지 않은 Qt 버그들을 잡아낼 수 있는지 보고 싶다.
+- Rust처럼 복잡한 것을 사용하는 것보다 C/C++를 더 안전하게 만드는 것을 더 믿는다. 더 안전함이 Rust 전문가만 이해할 수 있는 깊은 복잡성보다 낫다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Fil-Qt: Compilación de Qt Base con seguridad de memoria Fil-C
+***** TLDR
+Fil-C es una implementación de C/C++ con seguridad de memoria que usa recolección de basura concurrente e 'InvisiCaps' para detectar errores de seguridad de memoria en tiempo de ejecución. Este proyecto compila exitosamente Qt Base con Fil-C, demostrando que puedes añadir seguridad de memoria a bases de código C++ existentes sin reescribir todo en Rust. Una prueba de concepto detectó un use-after-free en un ejemplo de QVector.
+***** Take
+Los evangelistas de Rust odiarán esto: ¿y si simplemente... hacemos que C++ no explote? Fil-C prueba que el concepto funciona en un código tan enrevesado como Qt, lo cual es increíblemente prometedor o prueba de que cualquier cosa puede ser arreglada con cinta adhesiva con suficiente determinación.
+***** Comments
+- Interesante ver Fil-C usado con un framework grande como Qt. El hecho de que compile con cambios mínimos dice mucho sobre la capa de compatibilidad y el enfoque InvisiCaps.
+- Genial. Me encantaría ver si detecta algunos de los bugs de Qt que encontré pero no se han resuelto aún.
+- Creo mucho más en hacer C/C++ más seguro que usar algo tan complejo como Rust. Más seguro es mejor que profundamente complejo y solo entendible por expertos en Rust.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Fil-Qt: Qt Base Build mit Fil-C Speichersicherheit
+***** TLDR
+Fil-C ist eine speichersichere C/C++-Implementierung, die konkurrente Garbage Collection und 'InvisiCaps' verwendet, um Speichersicherheitsfehler zur Laufzeit zu erkennen. Dieses Projekt kompiliert Qt Base erfolgreich mit Fil-C und zeigt, dass man bestehenden C++-Codebasen Speichersicherheit hinzufügen kann, ohne alles in Rust neu zu schreiben. Ein Proof-of-Concept erkannte ein Use-after-free in einem QVector-Beispiel.
+***** Take
+Die Rust-Evangelisten werden das hassen: Was, wenn wir C++ einfach... nicht explodieren lassen könnten? Fil-C beweist, dass das Konzept bei einer so komplexen Codebasis wie Qt funktioniert, was entweder unglaublich vielversprechend ist oder beweist, dass mit genug Entschlossenheit alles mit Klebeband fixiert werden kann.
+***** Comments
+- Interessant, Fil-C mit einem großen Framework wie Qt verwendet zu sehen. Die Tatsache, dass es mit minimalen Änderungen kompiliert, sagt viel über die Kompatibilitätsschicht und den InvisiCaps-Ansatz aus.
+- Das ist großartig. Würde gerne sehen, ob es einige der Qt-Bugs findet, die ich gefunden habe, aber noch nicht behoben wurden.
+- Ich glaube viel mehr daran, C/C++ sicherer zu machen als etwas so Komplexes wie Rust zu verwenden. Sicherer ist besser als tief komplex und nur von Rust-Experten verstehbar.
+** Radboud University selects Fairphone as standard smartphone for employees :sustainability:hardware:enterprise:mobile:
+:PROPERTIES:
+:ID:       46676276
+:URL:      https://www.ru.nl/en/staff/news/radboud-university-selects-fairphone-as-standard-smartphone-for-employees
+:HN_URL:   https://news.ycombinator.com/item?id=46676276
+:POINTS:   75
+:COMMENTS: 32
+:BY:       ardentsword
+:END:
+
+*** TLDR
+Dutch university Radboud is making Fairphone its standard corporate phone starting February 2026. The decision is based on sustainability (replaceable parts, recycled materials), cost efficiency (one model to support), and Fairphone's 5-year warranty with 8 years of software updates. Employees with iPhones can keep them; personal device users can request an RU SIM card.
+
+*** Take
+An institution actually putting its money where its sustainability mouth is. The 'easily replaceable parts for the service desk to fix on-site' angle is genuinely clever. Though HN's immediate reaction of 'but Fairphone discontinued my model after 4 years' suggests the circular economy still has some circles to close.
+
+*** Comments
+
+**** lwhi
+:PROPERTIES:
+:COMMENT_ID: 46676300
+:END:
+I have a friend who bought a Fairphone with a view to being able to replace its modular parts. Four years later and the model had been discontinued, so he had to buy a new Fairphone. Would it be more economical and sustainable to buy a second hand/reconditioned feature phone from Samsung?
+
+**** jtvjan
+:PROPERTIES:
+:COMMENT_ID: 46676400
+:END:
+The easily replaceable parts feature sounds like it'd work great in a university context. The uni's service desk could stock up on replacement parts and fix the phones right there instead of having to send it in for repairs.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+拉德堡大学选择Fairphone作为员工标准智能手机
+***** TLDR
+荷兰拉德堡大学从2026年2月起将Fairphone作为标准企业手机。这一决定基于可持续性（可更换零件、回收材料）、成本效率（只需支持一种型号）以及Fairphone的5年保修和8年软件更新。使用iPhone的员工可以继续使用；使用个人设备的用户可以申请RU SIM卡。
+***** Take
+一个真正把钱花在可持续发展承诺上的机构。'服务台可以现场更换易于更换的零件'这个角度确实很聪明。虽然HN的即时反应是'但Fairphone在4年后停产了我的型号'，这表明循环经济仍有一些循环需要闭合。
+***** Comments
+- 我有个朋友买了Fairphone，想着可以更换模块化零件。四年后型号停产了，他不得不买新的Fairphone。买二手/翻新的三星功能机是否更经济环保？
+- 易于更换零件的功能在大学环境中听起来很棒。大学服务台可以储备更换零件，直接现场修理手机，而不必送修。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+ラドバウド大学がFairphoneを従業員の標準スマートフォンに選定
+***** TLDR
+オランダのラドバウド大学が2026年2月からFairphoneを標準企業電話として採用する。この決定は持続可能性（交換可能な部品、リサイクル材料）、コスト効率（サポートするモデルが1つ）、Fairphoneの5年保証と8年間のソフトウェアアップデートに基づいている。iPhoneを持つ従業員はそのまま使用可能。個人デバイスユーザーはRU SIMカードを申請できる。
+***** Take
+サステナビリティを口だけでなく実践する機関。「サービスデスクがその場で修理できる交換可能な部品」という視点は本当に賢い。ただし「でもFairphoneは4年後に私のモデルを廃止した」というHNの即座の反応は、循環経済にはまだ閉じるべき循環があることを示唆している。
+***** Comments
+- モジュラー部品を交換できると思ってFairphoneを買った友人がいる。4年後にそのモデルは廃止され、新しいFairphoneを買わなければならなかった。中古/整備済みのSamsungのフィーチャーフォンを買う方が経済的で持続可能なのでは？
+- 交換しやすい部品の機能は大学の環境で非常にうまく機能しそう。大学のサービスデスクが交換部品を在庫し、修理に出す代わりにその場で電話を修理できる。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+라드바우드 대학교, Fairphone을 직원용 표준 스마트폰으로 선정
+***** TLDR
+네덜란드 라드바우드 대학교가 2026년 2월부터 Fairphone을 표준 기업 전화로 채택한다. 이 결정은 지속가능성(교체 가능한 부품, 재활용 재료), 비용 효율성(지원할 모델이 하나), Fairphone의 5년 보증과 8년 소프트웨어 업데이트에 기반한다. iPhone을 가진 직원은 계속 사용 가능하고, 개인 기기 사용자는 RU SIM 카드를 신청할 수 있다.
+***** Take
+지속가능성에 대한 말만이 아니라 실제로 돈을 투자하는 기관이다. '서비스 데스크가 현장에서 수리할 수 있는 쉽게 교체 가능한 부품'이라는 각도는 정말 영리하다. HN의 즉각적인 반응인 '하지만 Fairphone은 4년 후에 내 모델을 단종시켰다'는 순환 경제가 아직 닫아야 할 순환이 있음을 시사한다.
+***** Comments
+- 모듈식 부품을 교체할 수 있다고 생각하고 Fairphone을 산 친구가 있다. 4년 후 그 모델이 단종되어 새 Fairphone을 사야 했다. 중고/리퍼비시 삼성 피처폰을 사는 것이 더 경제적이고 지속가능하지 않을까?
+- 쉽게 교체 가능한 부품 기능은 대학 환경에서 잘 작동할 것 같다. 대학 서비스 데스크가 교체 부품을 비축하고 수리를 보내는 대신 바로 그 자리에서 전화를 고칠 수 있다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+La Universidad de Radboud selecciona Fairphone como smartphone estándar para empleados
+***** TLDR
+La universidad holandesa Radboud adoptará Fairphone como teléfono corporativo estándar desde febrero de 2026. La decisión se basa en sostenibilidad (piezas reemplazables, materiales reciclados), eficiencia de costes (un solo modelo que soportar) y la garantía de 5 años de Fairphone con 8 años de actualizaciones de software. Los empleados con iPhone pueden conservarlos; los usuarios de dispositivos personales pueden solicitar una tarjeta SIM RU.
+***** Take
+Una institución que realmente pone su dinero donde está su discurso de sostenibilidad. El ángulo de 'piezas fácilmente reemplazables para que el servicio técnico las arregle in situ' es genuinamente inteligente. Aunque la reacción inmediata de HN de 'pero Fairphone descontinuó mi modelo después de 4 años' sugiere que la economía circular aún tiene algunos círculos que cerrar.
+***** Comments
+- Tengo un amigo que compró un Fairphone pensando en poder reemplazar sus partes modulares. Cuatro años después el modelo fue descontinuado, así que tuvo que comprar un nuevo Fairphone. ¿Sería más económico y sostenible comprar un teléfono Samsung de segunda mano/reacondicionado?
+- La característica de piezas fácilmente reemplazables suena genial en un contexto universitario. El servicio técnico de la uni podría tener piezas de repuesto y arreglar los teléfonos ahí mismo en lugar de tener que enviarlos a reparar.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Radboud-Universität wählt Fairphone als Standard-Smartphone für Mitarbeiter
+***** TLDR
+Die niederländische Radboud-Universität macht Fairphone ab Februar 2026 zum Standard-Firmenhandy. Die Entscheidung basiert auf Nachhaltigkeit (austauschbare Teile, recycelte Materialien), Kosteneffizienz (nur ein Modell zu unterstützen) und Fairphones 5-Jahres-Garantie mit 8 Jahren Software-Updates. Mitarbeiter mit iPhones können diese behalten; Nutzer persönlicher Geräte können eine RU-SIM-Karte beantragen.
+***** Take
+Eine Institution, die tatsächlich ihr Geld dort einsetzt, wo ihr Nachhaltigkeitsmund ist. Der Aspekt 'leicht austauschbare Teile, die der Service-Desk vor Ort reparieren kann' ist wirklich clever. Obwohl HNs sofortige Reaktion 'aber Fairphone hat mein Modell nach 4 Jahren eingestellt' darauf hindeutet, dass die Kreislaufwirtschaft noch einige Kreise zu schließen hat.
+***** Comments
+- Ich habe einen Freund, der ein Fairphone kaufte, um die modularen Teile austauschen zu können. Vier Jahre später wurde das Modell eingestellt, also musste er ein neues Fairphone kaufen. Wäre es wirtschaftlicher und nachhaltiger, ein gebrauchtes/aufgearbeitetes Samsung-Feature-Phone zu kaufen?
+- Die leicht austauschbaren Teile klingen so, als würden sie in einem Universitätskontext großartig funktionieren. Der Service-Desk der Uni könnte Ersatzteile lagern und die Telefone direkt vor Ort reparieren, anstatt sie einschicken zu müssen.
+** AVX-512: First Impressions on Performance and Programmability :performance:simd:cpu:optimization:
+:PROPERTIES:
+:ID:       46610800
+:URL:      https://shihab-shahriar.github.io//blog/2026/AVX-512-First-Impressions-on-Performance-and-Programmability/
+:HN_URL:   https://news.ycombinator.com/item?id=46610800
+:POINTS:   70
+:COMMENTS: 26
+:BY:       shihab
+:END:
+
+*** TLDR
+A developer's hands-on exploration of AVX-512 using K-Means clustering. Auto-vectorization got ~4x speedup, but explicit intrinsics reached 7-8.5x, close to theoretical max. The author found AVX-512 more approachable than expected, especially compared to CUDA's documentation-heavy approach. Bonus: LLMs helped port scalar code to AVX-512 intrinsics with minimal manual work.
+
+*** Take
+The rare technical blog post that actually benchmarks something instead of just having opinions about it. The 'I used Claude to write my SIMD intrinsics' admission is both refreshing and mildly terrifying. We've reached the point where AI can optimize at the register level while humans debate tabs vs spaces.
+
+*** Comments
+
+**** physicsguy
+:PROPERTIES:
+:COMMENT_ID: 46610900
+:END:
+My argument would be that SIMD is exactly the same as CUDA - something really perfect if you're writing a BLAS implementation but too low level for most developers thinking about a problem to make use of.
+
+**** nnevatie
+:PROPERTIES:
+:COMMENT_ID: 46611000
+:END:
+If you wish to see some speedups using AVX512, without limiting yourself to C or C++, you might want to try ISPC. You'll get sane aliasing rules and multi-target binaries with dynamic dispatching.
+
+**** camel-cdr
+:PROPERTIES:
+:COMMENT_ID: 46611100
+:END:
+Not if the data is small and in cache. The performant route with AVX-512 would probably include the instruction vpconflictd, but I couldn't really find any elegant way to use it.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+AVX-512：性能和可编程性的初步印象
+***** TLDR
+开发者使用K-Means聚类对AVX-512的实践探索。自动向量化获得约4倍加速，但显式内联函数达到7-8.5倍，接近理论最大值。作者发现AVX-512比预期更容易上手，特别是与CUDA文档繁重的方法相比。额外收获：LLM帮助将标量代码移植到AVX-512内联函数，几乎不需要手动工作。
+***** Take
+罕见的技术博客文章，实际进行基准测试而不是只发表意见。'我用Claude写SIMD内联函数'的坦白既令人耳目一新又略显可怕。我们已经到了AI可以在寄存器级别优化而人类还在争论tab还是空格的地步。
+***** Comments
+- 我的观点是SIMD和CUDA完全一样——如果你在写BLAS实现那就完美，但对于大多数考虑问题的开发者来说太底层了。
+- 如果你想在不限于C或C++的情况下看到AVX512的加速，你可能想试试ISPC。你会得到合理的别名规则和带动态调度的多目标二进制文件。
+- 如果数据小且在缓存中就不是这样。AVX-512的高性能路径可能包括vpconflictd指令，但我找不到优雅的使用方式。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+AVX-512：パフォーマンスとプログラマビリティの第一印象
+***** TLDR
+K-Meansクラスタリングを使用したAVX-512の開発者による実践的探求。自動ベクトル化で約4倍の高速化を達成したが、明示的なイントリンシクスは7-8.5倍に達し、理論上の最大値に近づいた。著者はAVX-512が予想より取り組みやすいと感じた、特にCUDAのドキュメント重視のアプローチと比較して。ボーナス：LLMが最小限の手作業でスカラーコードをAVX-512イントリンシクスに移植するのを助けた。
+***** Take
+意見を述べるだけでなく実際にベンチマークを行う珍しい技術ブログ投稿。「ClaudeにSIMDイントリンシクスを書かせた」という告白は新鮮であり、少し恐ろしくもある。AIがレジスタレベルで最適化できる一方、人間がタブ対スペースを議論している段階に達した。
+***** Comments
+- 私の主張は、SIMDはCUDAとまったく同じだということ。BLAS実装を書くなら完璧だが、問題を考えるほとんどの開発者には低レベルすぎる。
+- CやC++に限定せずにAVX512でスピードアップを見たいなら、ISPCを試してみるといい。まともなエイリアシングルールと動的ディスパッチ付きのマルチターゲットバイナリが得られる。
+- データが小さくキャッシュにある場合はそうではない。AVX-512でのパフォーマンスルートはおそらくvpconflictd命令を含むだろうが、エレガントな使い方は見つけられなかった。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+AVX-512: 성능과 프로그래밍 용이성에 대한 첫인상
+***** TLDR
+K-Means 클러스터링을 사용한 개발자의 AVX-512 실습 탐구. 자동 벡터화는 약 4배 속도 향상을 얻었지만, 명시적 인트린식은 이론적 최대치에 가까운 7-8.5배에 도달했다. 저자는 AVX-512가 예상보다 접근하기 쉽다고 느꼈는데, 특히 CUDA의 문서 중심 접근 방식과 비교할 때 그렇다. 보너스: LLM이 최소한의 수작업으로 스칼라 코드를 AVX-512 인트린식으로 포팅하는 것을 도왔다.
+***** Take
+의견만 말하는 대신 실제로 벤치마크를 수행하는 드문 기술 블로그 게시물. 'Claude를 사용해 SIMD 인트린식을 작성했다'는 고백은 신선하면서도 약간 무섭다. AI가 레지스터 수준에서 최적화할 수 있는 반면 인간은 탭 대 스페이스를 논쟁하는 지점에 도달했다.
+***** Comments
+- 내 주장은 SIMD가 CUDA와 정확히 같다는 것이다. BLAS 구현을 작성한다면 완벽하지만, 문제를 생각하는 대부분의 개발자에게는 너무 저수준이다.
+- C나 C++에 국한하지 않고 AVX512로 속도 향상을 보고 싶다면 ISPC를 시도해 볼 수 있다. 합리적인 앨리어싱 규칙과 동적 디스패칭이 있는 멀티 타겟 바이너리를 얻을 수 있다.
+- 데이터가 작고 캐시에 있으면 그렇지 않다. AVX-512의 성능 경로는 아마 vpconflictd 명령을 포함할 것이지만, 우아하게 사용하는 방법을 찾지 못했다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+AVX-512: Primeras impresiones sobre rendimiento y programabilidad
+***** TLDR
+Exploración práctica de AVX-512 por un desarrollador usando clustering K-Means. La auto-vectorización logró ~4x de aceleración, pero los intrínsecos explícitos alcanzaron 7-8.5x, cerca del máximo teórico. El autor encontró AVX-512 más accesible de lo esperado, especialmente comparado con el enfoque de CUDA centrado en documentación. Bonus: LLMs ayudaron a portar código escalar a intrínsecos AVX-512 con mínimo trabajo manual.
+***** Take
+El raro post técnico que realmente hace benchmarks en lugar de solo dar opiniones. La admisión de 'usé Claude para escribir mis intrínsecos SIMD' es refrescante y ligeramente aterrador. Hemos llegado al punto donde la IA puede optimizar a nivel de registro mientras los humanos debaten tabs vs espacios.
+***** Comments
+- Mi argumento sería que SIMD es exactamente lo mismo que CUDA - algo perfecto si estás escribiendo una implementación BLAS pero demasiado bajo nivel para la mayoría de desarrolladores pensando en un problema.
+- Si quieres ver algunas aceleraciones usando AVX512 sin limitarte a C o C++, podrías probar ISPC. Obtendrás reglas de aliasing sensatas y binarios multi-objetivo con dispatching dinámico.
+- No si los datos son pequeños y están en caché. La ruta performante con AVX-512 probablemente incluiría la instrucción vpconflictd, pero no pude encontrar ninguna forma elegante de usarla.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+AVX-512: Erste Eindrücke zu Leistung und Programmierbarkeit
+***** TLDR
+Praktische Erkundung von AVX-512 durch einen Entwickler mit K-Means-Clustering. Auto-Vektorisierung erreichte ~4x Beschleunigung, aber explizite Intrinsics erreichten 7-8.5x, nahe am theoretischen Maximum. Der Autor fand AVX-512 zugänglicher als erwartet, besonders im Vergleich zu CUDAs dokumentationslastigem Ansatz. Bonus: LLMs halfen beim Portieren von Skalarcode zu AVX-512-Intrinsics mit minimaler manueller Arbeit.
+***** Take
+Der seltene technische Blogpost, der tatsächlich Benchmarks macht, anstatt nur Meinungen zu haben. Das Eingeständnis 'Ich habe Claude benutzt, um meine SIMD-Intrinsics zu schreiben' ist erfrischend und leicht beängstigend. Wir haben den Punkt erreicht, an dem KI auf Registerebene optimieren kann, während Menschen über Tabs vs. Leerzeichen debattieren.
+***** Comments
+- Mein Argument wäre, dass SIMD genau das Gleiche wie CUDA ist - etwas wirklich Perfektes, wenn man eine BLAS-Implementierung schreibt, aber zu niedrig-level für die meisten Entwickler, die über ein Problem nachdenken.
+- Wenn du einige Beschleunigungen mit AVX512 sehen möchtest, ohne dich auf C oder C++ zu beschränken, könntest du ISPC ausprobieren. Du bekommst vernünftige Aliasing-Regeln und Multi-Target-Binärdateien mit dynamischem Dispatching.
+- Nicht wenn die Daten klein und im Cache sind. Der performante Weg mit AVX-512 würde wahrscheinlich die Anweisung vpconflictd beinhalten, aber ich konnte keine elegante Möglichkeit finden, sie zu verwenden.
