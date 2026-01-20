@@ -1,0 +1,555 @@
+#+TITLE: HN Digest 2026-01-20 11:00:00 UT UTC
+#+DATE: 2026-01-20T11:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Radio buttons need 45 lines now, DNS order matters, and students refuse AI help on exams
+
+* Highlights
+- Shadcn: 45 lines to render what HTML does in one
+- Cloudflare: CNAME before A, apparently forever
+- University exams: Students actively avoid chatbots
+
+* Stories
+
+** The Overcomplexity of the Shadcn Radio Button :frontend:webdev:react:
+:PROPERTIES:
+:ID:       46688971
+:URL:      https://paulmakeswebsites.com/writing/shadcn-radio-button/
+:HN_URL:   https://news.ycombinator.com/item?id=46688971
+:POINTS:   271
+:COMMENTS: 125
+:BY:       dbushell
+:END:
+
+*** TLDR
+Author dissects how a simple HTML radio button becomes 45 lines of code through Shadcn wrapping Radix wrapping HTML, requiring multiple dependencies and kilobytes of JavaScript to render what browsers do natively in one element.
+
+*** Take
+We've reached peak abstraction when importing a third-party icon library to draw a circle inside a radio button is considered normal engineering practice.
+
+*** Comments
+
+**** ehnto
+:PROPERTIES:
+:COMMENT_ID: 46689001
+:END:
+You could see the writing on the wall for complexity when React took over. Unlike other abstractions where things get tidied up and more simple, React is much more complex than the technology it's building on.
+
+**** cadamsdotcom
+:PROPERTIES:
+:COMMENT_ID: 46689045
+:END:
+A html forms based radio button is worse than a complex but standard shadcn radio button in many ways that matter in the real world. There's no extra value to departing from just using the same component library everywhere.
+
+**** benrutter
+:PROPERTIES:
+:COMMENT_ID: 46689102
+:END:
+This radio selection is brilliantly silly. For some reason people keep going back to complex UI frameworks though - does anyone have a good example of a large website built without all this bloat?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Shadcn单选按钮的过度复杂性
+***** TLDR
+作者分析了一个简单的HTML单选按钮如何通过Shadcn包装Radix再包装HTML变成45行代码，需要多个依赖项和数KB的JavaScript来渲染浏览器原生一个元素就能完成的功能。
+***** Take
+当导入第三方图标库来在单选按钮内画一个圆圈被认为是正常的工程实践时，我们已经达到了抽象的顶峰。
+***** Comments
+- 当React接管时，复杂性的迹象已经显现。与其他抽象不同，React比它所构建的技术复杂得多。
+- 基于HTML表单的单选按钮在很多实际场景中不如复杂但标准的shadcn单选按钮。统一使用同一组件库没有额外价值。
+- 这个单选按钮选择太荒谬了。但人们还是不断回到复杂的UI框架——有没有不用这些臃肿框架构建的大型网站的好例子？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Shadcnラジオボタンの過度な複雑さ
+***** TLDR
+著者は、シンプルなHTMLラジオボタンがShadcnでRadixをラップし、さらにHTMLをラップすることで45行のコードになり、ブラウザがネイティブで1要素で実現することに複数の依存関係と数KBのJavaScriptが必要になる過程を分析しています。
+***** Take
+ラジオボタンの中に円を描くためにサードパーティのアイコンライブラリをインポートすることが普通のエンジニアリング手法と見なされるとき、私たちは抽象化の頂点に達しました。
+***** Comments
+- Reactが普及したとき、複雑化の兆候は見えていました。他の抽象化とは異なり、Reactは構築対象の技術よりもはるかに複雑です。
+- HTMLフォームベースのラジオボタンは、実際の世界で重要な多くの点で複雑だが標準的なshadcnラジオボタンより劣ります。同じコンポーネントライブラリを使い続けることに追加の価値はありません。
+- このラジオボタンの選択は見事にばかげています。それでも人々は複雑なUIフレームワークに戻り続けます。こういった肥大化なしに構築された大規模サイトの良い例はありますか？
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Shadcn 라디오 버튼의 과도한 복잡성
+***** TLDR
+저자는 간단한 HTML 라디오 버튼이 Shadcn이 Radix를 감싸고 Radix가 HTML을 감싸면서 45줄의 코드가 되고, 브라우저가 기본적으로 하나의 요소로 렌더링하는 것에 여러 의존성과 수 KB의 JavaScript가 필요하게 되는 과정을 분석합니다.
+***** Take
+라디오 버튼 안에 원을 그리기 위해 타사 아이콘 라이브러리를 가져오는 것이 정상적인 엔지니어링 관행으로 여겨질 때, 우리는 추상화의 정점에 도달한 것입니다.
+***** Comments
+- React가 장악했을 때 복잡성의 조짐이 보였습니다. 다른 추상화와 달리 React는 기반 기술보다 훨씬 복잡합니다.
+- HTML 폼 기반 라디오 버튼은 실제 세계에서 중요한 많은 면에서 복잡하지만 표준적인 shadcn 라디오 버튼보다 못합니다. 같은 컴포넌트 라이브러리를 계속 사용하는 것에 추가 가치는 없습니다.
+- 이 라디오 버튼 선택은 정말 어이없습니다. 그래도 사람들은 복잡한 UI 프레임워크로 계속 돌아갑니다. 이런 비대함 없이 구축된 대규모 웹사이트의 좋은 예가 있나요?
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+La excesiva complejidad del botón de radio de Shadcn
+***** TLDR
+El autor analiza cómo un simple botón de radio HTML se convierte en 45 líneas de código a través de Shadcn envolviendo Radix envolviendo HTML, requiriendo múltiples dependencias y kilobytes de JavaScript para renderizar lo que los navegadores hacen nativamente en un elemento.
+***** Take
+Hemos alcanzado el pico de la abstracción cuando importar una biblioteca de iconos de terceros para dibujar un círculo dentro de un botón de radio se considera práctica de ingeniería normal.
+***** Comments
+- Se veía venir la complejidad cuando React tomó el control. A diferencia de otras abstracciones donde las cosas se simplifican, React es mucho más complejo que la tecnología sobre la que se construye.
+- Un botón de radio basado en formularios HTML es peor que un botón de radio shadcn complejo pero estándar en muchos aspectos que importan en el mundo real. No hay valor extra en apartarse de usar la misma biblioteca de componentes en todas partes.
+- Esta selección de botón de radio es brillantemente tonta. Por alguna razón la gente sigue volviendo a frameworks UI complejos. ¿Alguien tiene un buen ejemplo de un sitio grande construido sin toda esta hinchazón?
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Die übermäßige Komplexität des Shadcn Radio-Buttons
+***** TLDR
+Der Autor analysiert, wie ein einfacher HTML-Radio-Button durch Shadcn, das Radix umschließt, das HTML umschließt, zu 45 Zeilen Code wird und mehrere Abhängigkeiten sowie Kilobytes an JavaScript benötigt, um das zu rendern, was Browser nativ in einem Element tun.
+***** Take
+Wir haben den Gipfel der Abstraktion erreicht, wenn das Importieren einer Drittanbieter-Icon-Bibliothek zum Zeichnen eines Kreises in einem Radio-Button als normale Engineering-Praxis gilt.
+***** Comments
+- Die Zeichen für Komplexität waren absehbar, als React übernahm. Anders als bei anderen Abstraktionen, wo Dinge aufgeräumt und einfacher werden, ist React viel komplexer als die Technologie, auf der es aufbaut.
+- Ein HTML-Formular-basierter Radio-Button ist in vielen Aspekten, die in der realen Welt wichtig sind, schlechter als ein komplexer aber standardmäßiger shadcn Radio-Button. Es gibt keinen zusätzlichen Wert darin, von der gleichen Komponentenbibliothek abzuweichen.
+- Diese Radio-Button-Auswahl ist brillant albern. Aus irgendeinem Grund kommen Leute immer wieder zu komplexen UI-Frameworks zurück. Hat jemand ein gutes Beispiel für eine große Website, die ohne all diesen Bloat gebaut wurde?
+** What came first: the CNAME or the A record? :dns:infrastructure:cloudflare:
+:PROPERTIES:
+:ID:       46681611
+:URL:      https://blog.cloudflare.com/cname-a-record-order-dns-standards/
+:HN_URL:   https://news.ycombinator.com/item?id=46681611
+:POINTS:   373
+:COMMENTS: 131
+:BY:       linolevan
+:END:
+
+*** TLDR
+Cloudflare's 1.1.1.1 resolver broke DNS for some clients by putting A records before CNAMEs in responses. Turns out glibc expects CNAMEs first, the RFC is ambiguous, and now they've proposed an Internet Draft to clarify that yes, CNAME goes first.
+
+*** Take
+Forty years of DNS and we're still figuring out which record comes first. The real miracle is that the internet works at all.
+
+*** Comments
+
+**** steve1977
+:PROPERTIES:
+:COMMENT_ID: 46681701
+:END:
+I don't find the wording in the RFC to be that ambiguous. 'Possibly preface' obviously means if there are any CNAME RRs, the answer is to be prefaced by those CNAME RRs.
+
+**** patrickmay
+:PROPERTIES:
+:COMMENT_ID: 46681756
+:END:
+A great example of Hyrum's Law combined with failure to follow Postel's Law. All observable behaviors of your system will be depended on by somebody.
+
+**** colmmacc
+:PROPERTIES:
+:COMMENT_ID: 46681812
+:END:
+I am very petty about this bug. Way back in 2011 CloudFlare launched an incredibly poorly researched feature to return CNAME records at a domain apex. RFCs be damned.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+先有CNAME还是先有A记录？
+***** TLDR
+Cloudflare的1.1.1.1解析器通过在响应中将A记录放在CNAME之前，导致某些客户端的DNS解析失败。原来glibc期望CNAME在前，RFC表述模糊，现在他们提出了一份互联网草案来澄清：是的，CNAME要在前面。
+***** Take
+DNS已经四十年了，我们还在搞清楚哪个记录应该排在前面。真正的奇迹是互联网居然还能正常工作。
+***** Comments
+- 我不觉得RFC的措辞那么模糊。'可能作为前缀'显然意味着如果有任何CNAME RR，答案应该以这些CNAME RR作为前缀。
+- 这是Hyrum定律结合未能遵循Postel定律的典型例子。你系统的所有可观察行为都会被某人依赖。
+- 我对这个bug非常较真。早在2011年，CloudFlare就推出了一个研究极其不充分的功能，在域名顶点返回CNAME记录。管他RFC怎么说。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+CNAMEが先か、Aレコードが先か？
+***** TLDR
+CloudflareのDNSリゾルバ1.1.1.1がレスポンスでAレコードをCNAMEより先に配置したことで、一部のクライアントのDNS解決が壊れました。glibcはCNAMEが先であることを期待し、RFCは曖昧で、現在彼らはCNAMEが先であることを明確にするインターネットドラフトを提案しています。
+***** Take
+DNSが40年経っても、どのレコードが先に来るかまだ解明中。本当の奇跡はインターネットがそもそも動いていること。
+***** Comments
+- RFCの文言がそれほど曖昧だとは思いません。「おそらく前置き」は明らかに、CNAME RRがあれば回答はそれらのCNAME RRを前置きすべきという意味です。
+- Hyrumの法則とPostelの法則に従わなかった場合の素晴らしい例です。システムのすべての観察可能な動作は誰かに依存されます。
+- 私はこのバグについて非常にこだわりがあります。2011年にCloudFlareはドメインアペックスでCNAMEレコードを返す非常に調査不足な機能をリリースしました。RFCなど知ったことかと。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+CNAME이 먼저인가, A 레코드가 먼저인가?
+***** TLDR
+Cloudflare의 1.1.1.1 리졸버가 응답에서 A 레코드를 CNAME보다 앞에 배치하여 일부 클라이언트의 DNS 해석을 망가뜨렸습니다. glibc는 CNAME이 먼저 오길 기대하고, RFC는 모호하며, 이제 그들은 CNAME이 먼저 온다는 것을 명확히 하는 인터넷 초안을 제안했습니다.
+***** Take
+DNS가 40년이 됐는데 아직도 어떤 레코드가 먼저인지 파악 중입니다. 진짜 기적은 인터넷이 전혀 작동한다는 것입니다.
+***** Comments
+- RFC의 문구가 그렇게 모호하다고 생각하지 않습니다. '아마도 앞에 붙임'은 분명히 CNAME RR이 있으면 답변 앞에 그 CNAME RR을 붙여야 한다는 의미입니다.
+- Hyrum의 법칙과 Postel의 법칙을 따르지 않은 것의 훌륭한 예입니다. 시스템의 모든 관찰 가능한 동작은 누군가에게 의존됩니다.
+- 저는 이 버그에 대해 매우 집요합니다. 2011년에 CloudFlare는 도메인 정점에서 CNAME 레코드를 반환하는 매우 조사가 부족한 기능을 출시했습니다. RFC는 신경 쓰지 않고요.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+¿Qué vino primero: el CNAME o el registro A?
+***** TLDR
+El resolver 1.1.1.1 de Cloudflare rompió el DNS para algunos clientes al poner registros A antes de CNAMEs en las respuestas. Resulta que glibc espera CNAMEs primero, el RFC es ambiguo, y ahora han propuesto un Internet Draft para aclarar que sí, CNAME va primero.
+***** Take
+Cuarenta años de DNS y todavía estamos averiguando qué registro va primero. El verdadero milagro es que internet funcione en absoluto.
+***** Comments
+- No encuentro que la redacción del RFC sea tan ambigua. 'Posiblemente prefacio' obviamente significa que si hay registros CNAME RR, la respuesta debe ser prefaciada por esos CNAME RRs.
+- Un gran ejemplo de la Ley de Hyrum combinada con el incumplimiento de la Ley de Postel. Todos los comportamientos observables de tu sistema serán dependidos por alguien.
+- Soy muy quisquilloso con este bug. En 2011 CloudFlare lanzó una característica increíblemente mal investigada para devolver registros CNAME en un apex de dominio. Al diablo con los RFCs.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Was kam zuerst: der CNAME oder der A-Record?
+***** TLDR
+Cloudflares 1.1.1.1 Resolver brach DNS für einige Clients, indem A-Records vor CNAMEs in Antworten platziert wurden. Es stellte sich heraus, dass glibc CNAMEs zuerst erwartet, der RFC mehrdeutig ist, und jetzt haben sie einen Internet Draft vorgeschlagen, um zu klären, dass ja, CNAME zuerst kommt.
+***** Take
+Vierzig Jahre DNS und wir finden immer noch heraus, welcher Record zuerst kommt. Das wahre Wunder ist, dass das Internet überhaupt funktioniert.
+***** Comments
+- Ich finde die Formulierung im RFC nicht so mehrdeutig. 'Möglicherweise vorangestellt' bedeutet offensichtlich, wenn es CNAME RRs gibt, soll die Antwort mit diesen CNAME RRs vorangestellt werden.
+- Ein großartiges Beispiel für Hyrums Gesetz kombiniert mit dem Versäumnis, Postels Gesetz zu befolgen. Alle beobachtbaren Verhaltensweisen Ihres Systems werden von jemandem abhängig sein.
+- Ich bin sehr kleinlich bei diesem Bug. Schon 2011 startete CloudFlare ein unglaublich schlecht recherchiertes Feature, um CNAME-Records an einem Domain-Apex zurückzugeben. RFCs seien verdammt.
+** Reticulum, a secure and anonymous mesh networking stack :networking:mesh:security:python:
+:PROPERTIES:
+:ID:       46686273
+:URL:      https://github.com/markqvist/Reticulum
+:HN_URL:   https://news.ycombinator.com/item?id=46686273
+:POINTS:   218
+:COMMENTS: 45
+:BY:       brogu
+:END:
+
+*** TLDR
+Reticulum is a Python-based cryptographic networking stack for building decentralized mesh networks over any transport medium. Features coordination-less addressing, end-to-end encryption with X25519, and works over LoRa, packet radio, WiFi - basically anything.
+
+*** Take
+Finally, a mesh network project that treats 'real-time' as the illusion it is when your packets are bouncing off ham radios and LoRa modules. Store-and-forward as a first-class citizen, not a fallback.
+
+*** Comments
+
+**** mcny
+:PROPERTIES:
+:COMMENT_ID: 46686301
+:END:
+My biggest concern is deliverability. When links are intermittent and latency is measured in minutes or hours, 'real-time' is an illusion. Reticulum doesn't treat Store and Forward as a fallback, but as a primary mode of existence.
+
+**** SuperMouse
+:PROPERTIES:
+:COMMENT_ID: 46686345
+:END:
+I've never seen a bigger network with Reticulum in the wild. One of the main reasons communities haven't jumped on is that it's mostly a one-man-project and most Git changes are 'Update' 'Better Version' which makes it impossible to follow.
+
+**** snickerer
+:PROPERTIES:
+:COMMENT_ID: 46686389
+:END:
+Reticulum is production-ready but I see two main problems: the library is written in Python, and if you want phone apps, Linux daemons in C, or embedded software, you need a C implementation which is still in early development.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Reticulum：一个安全匿名的网状网络协议栈
+***** TLDR
+Reticulum是一个基于Python的加密网络协议栈，用于在任何传输介质上构建去中心化网状网络。特点包括无需协调的全球唯一寻址、X25519端到端加密，支持LoRa、业余无线电、WiFi等各种载体。
+***** Take
+终于有一个网状网络项目承认当你的数据包在业余无线电和LoRa模块之间弹跳时，'实时'就是个幻觉。存储转发是一等公民，不是备用方案。
+***** Comments
+- 我最大的担忧是可达性。当链路不稳定且延迟以分钟或小时计算时，'实时'是一种幻觉。Reticulum不把存储转发当作后备方案，而是作为主要存在模式。
+- 我从未在实际中见过更大规模的Reticulum网络。社区没有跟进的主要原因之一是这基本上是个单人项目，大多数Git更改都是'更新''更好版本'，无法追踪。
+- Reticulum已经可以投入生产，但我看到两个主要问题：库是用Python写的，如果你想要手机应用、Linux的C守护进程或嵌入式软件，你需要仍在早期开发中的C实现。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Reticulum：安全で匿名なメッシュネットワーキングスタック
+***** TLDR
+Reticulumは、あらゆる伝送媒体上で分散型メッシュネットワークを構築するためのPythonベースの暗号化ネットワーキングスタックです。調整不要のグローバルユニークアドレッシング、X25519によるエンドツーエンド暗号化を特徴とし、LoRa、パケット無線、WiFiなど基本的に何でも動作します。
+***** Take
+ついに、パケットがアマチュア無線やLoRaモジュールを跳ね回るとき「リアルタイム」が幻想であることを認めるメッシュネットワークプロジェクトが登場。ストア・アンド・フォワードがフォールバックではなく、第一級市民として扱われる。
+***** Comments
+- 私の最大の懸念は到達性です。リンクが断続的で遅延が分や時間単位で測定される場合、「リアルタイム」は幻想です。Reticulumはストア・アンド・フォワードをフォールバックとしてではなく、主要な存在モードとして扱います。
+- 実際に大規模なReticulumネットワークを見たことがありません。コミュニティが参加しない主な理由の一つは、これがほぼ一人プロジェクトで、ほとんどのGit変更が「更新」「より良いバージョン」で追跡不可能だからです。
+- Reticulumは本番環境で使えますが、2つの主な問題があります：ライブラリがPythonで書かれており、電話アプリ、LinuxのCデーモン、組み込みソフトウェアが必要な場合、まだ初期開発段階のC実装が必要です。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Reticulum: 안전하고 익명의 메시 네트워킹 스택
+***** TLDR
+Reticulum은 모든 전송 매체에서 분산형 메시 네트워크를 구축하기 위한 Python 기반 암호화 네트워킹 스택입니다. 조정 없는 전역 고유 주소 지정, X25519 종단간 암호화를 특징으로 하며 LoRa, 패킷 라디오, WiFi 등 기본적으로 무엇이든 작동합니다.
+***** Take
+드디어 패킷이 아마추어 라디오와 LoRa 모듈 사이를 튕겨 다닐 때 '실시간'이 환상이라는 것을 인정하는 메시 네트워크 프로젝트가 나왔습니다. 저장 후 전달이 대안이 아닌 일급 시민으로 취급됩니다.
+***** Comments
+- 제 가장 큰 우려는 전달 가능성입니다. 링크가 간헐적이고 지연 시간이 분이나 시간 단위로 측정될 때, '실시간'은 환상입니다. Reticulum은 저장 후 전달을 대안이 아닌 주요 존재 모드로 취급합니다.
+- 실제로 더 큰 규모의 Reticulum 네트워크를 본 적이 없습니다. 커뮤니티가 참여하지 않는 주요 이유 중 하나는 대부분 1인 프로젝트이고 대부분의 Git 변경이 '업데이트' '더 나은 버전'이라 추적이 불가능하기 때문입니다.
+- Reticulum은 프로덕션 준비가 되었지만 두 가지 주요 문제가 있습니다: 라이브러리가 Python으로 작성되어 있고, 폰 앱, Linux C 데몬, 임베디드 소프트웨어가 필요하면 아직 초기 개발 중인 C 구현이 필요합니다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Reticulum: una pila de red mesh segura y anónima
+***** TLDR
+Reticulum es una pila de red criptográfica basada en Python para construir redes mesh descentralizadas sobre cualquier medio de transporte. Presenta direccionamiento globalmente único sin coordinación, cifrado de extremo a extremo con X25519, y funciona sobre LoRa, radio por paquetes, WiFi - básicamente cualquier cosa.
+***** Take
+Finalmente, un proyecto de red mesh que trata el 'tiempo real' como la ilusión que es cuando tus paquetes rebotan en radios de aficionados y módulos LoRa. Almacenar y reenviar como ciudadano de primera clase, no como respaldo.
+***** Comments
+- Mi mayor preocupación es la entregabilidad. Cuando los enlaces son intermitentes y la latencia se mide en minutos u horas, el 'tiempo real' es una ilusión. Reticulum no trata Store and Forward como un respaldo, sino como un modo primario de existencia.
+- Nunca he visto una red más grande con Reticulum en la práctica. Una de las principales razones por las que las comunidades no se han sumado es que es mayormente un proyecto de una sola persona y la mayoría de los cambios en Git son 'Update' 'Better Version' lo que hace imposible seguirlo.
+- Reticulum está listo para producción pero veo dos problemas principales: la biblioteca está escrita en Python, y si quieres aplicaciones de teléfono, demonios Linux en C, o software embebido, necesitas una implementación en C que aún está en desarrollo temprano.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Reticulum: ein sicherer und anonymer Mesh-Netzwerk-Stack
+***** TLDR
+Reticulum ist ein Python-basierter kryptographischer Netzwerk-Stack zum Aufbau dezentraler Mesh-Netzwerke über jedes Transportmedium. Bietet koordinationslose global einzigartige Adressierung, Ende-zu-Ende-Verschlüsselung mit X25519 und funktioniert über LoRa, Packet Radio, WiFi - im Grunde alles.
+***** Take
+Endlich ein Mesh-Netzwerk-Projekt, das 'Echtzeit' als die Illusion behandelt, die es ist, wenn Pakete zwischen Amateurfunk und LoRa-Modulen herumspringen. Store-and-Forward als erstklassiger Bürger, nicht als Fallback.
+***** Comments
+- Meine größte Sorge ist die Zustellbarkeit. Wenn Verbindungen intermittierend sind und Latenz in Minuten oder Stunden gemessen wird, ist 'Echtzeit' eine Illusion. Reticulum behandelt Store and Forward nicht als Fallback, sondern als primären Existenzmodus.
+- Ich habe nie ein größeres Netzwerk mit Reticulum in freier Wildbahn gesehen. Einer der Hauptgründe, warum Communities nicht eingestiegen sind, ist, dass es hauptsächlich ein Ein-Mann-Projekt ist und die meisten Git-Änderungen 'Update' 'Better Version' sind, was es unmöglich macht zu folgen.
+- Reticulum ist produktionsbereit, aber ich sehe zwei Hauptprobleme: Die Bibliothek ist in Python geschrieben, und wenn Sie Telefon-Apps, Linux-Dämonen in C oder eingebettete Software wollen, brauchen Sie eine C-Implementierung, die noch in früher Entwicklung ist.
+** Giving university exams in the age of chatbots :education:ai:university:
+:PROPERTIES:
+:ID:       46688954
+:URL:      https://ploum.net/2026-01-19-exam-with-chatbots.html
+:HN_URL:   https://news.ycombinator.com/item?id=46688954
+:POINTS:   100
+:COMMENTS: 67
+:BY:       ploum
+:END:
+
+*** TLDR
+Professor gives open-resource exam where students can optionally use chatbots with strict accountability rules. Of 60 students, 57 chose not to use AI. The chatbot users performed worst. Students fear being perceived as cheaters more than they want AI assistance.
+
+*** Take
+The most revealing experiment in education this year: give students permission to use AI and watch them run the other way. Turns out 'fear of looking like a cheater' beats 'desire for easy answers' every time.
+
+*** Comments
+
+**** knallfrosch
+:PROPERTIES:
+:COMMENT_ID: 46689001
+:END:
+I don't understand. 10 years ago, we wrote exams by hand with whatever we understood in our heads. No colleagues, no laptops, no internet, no LLMs. This approach still works, why do something else?
+
+**** quacked
+:PROPERTIES:
+:COMMENT_ID: 46689056
+:END:
+Something many people struggle with is the question 'why should I know anything?' For most of us, once you graduate, the answer is 'enough to not get fired'. This is far less than most curriculums ask you to know.
+
+**** emil-lp
+:PROPERTIES:
+:COMMENT_ID: 46689112
+:END:
+Most students don't want to use chatbots - I think this is changing rapidly. I'm a university professor and the amount of students who seem to need LLM as a crutch is growing exponentially.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+在聊天机器人时代进行大学考试
+***** TLDR
+教授举行开放资源考试，学生可以选择使用聊天机器人但需遵守严格的责任规则。60名学生中，57人选择不使用AI。使用聊天机器人的学生表现最差。学生害怕被视为作弊者的程度超过了他们对AI帮助的渴望。
+***** Take
+今年教育领域最有启发性的实验：给学生使用AI的许可，然后看着他们朝相反方向跑。事实证明，'害怕被视为作弊者'每次都击败'渴望简单答案'。
+***** Comments
+- 我不明白。10年前，我们用脑子里理解的东西手写考试。没有同学帮忙，没有笔记本电脑，没有互联网，没有大语言模型。这种方法仍然有效，为什么要换？
+- 很多人纠结的问题是'我为什么要知道任何东西？'对我们大多数人来说，毕业后答案是'够不被解雇就行'。这比大多数课程要求你知道的少得多。
+- 大多数学生不想使用聊天机器人——我认为这正在快速改变。我是大学教授，似乎需要把大语言模型当拐杖的学生数量正在指数级增长。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+チャットボット時代の大学試験
+***** TLDR
+教授がオープンリソース試験を実施し、学生は厳格な説明責任ルールの下でオプションでチャットボットを使用できます。60人の学生のうち57人がAIを使用しないことを選択。チャットボット使用者の成績が最も悪かった。学生はAI支援を望むよりも、チーターと思われることを恐れています。
+***** Take
+今年の教育で最も明らかになった実験：学生にAI使用の許可を与え、彼らが逆方向に走るのを見る。「チーターに見えることへの恐れ」が「簡単な答えへの欲求」に毎回勝つことが判明。
+***** Comments
+- 理解できません。10年前、私たちは頭で理解したことを手書きで試験を書きました。同僚なし、ノートパソコンなし、インターネットなし、LLMなし。このアプローチはまだ機能します、なぜ他のことをするのですか？
+- 多くの人が苦労している質問は「なぜ何かを知る必要があるのか」です。私たちのほとんどにとって、卒業したら答えは「クビにならない程度」です。これはほとんどのカリキュラムが要求するよりはるかに少ないです。
+- ほとんどの学生はチャットボットを使いたがらない - これは急速に変化していると思います。私は大学教授ですが、LLMを杖として必要とする学生の数が指数関数的に増えています。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+챗봇 시대의 대학 시험
+***** TLDR
+교수가 학생들이 엄격한 책임 규칙 하에 챗봇을 선택적으로 사용할 수 있는 오픈 리소스 시험을 실시했습니다. 60명의 학생 중 57명이 AI를 사용하지 않기로 선택했습니다. 챗봇 사용자가 가장 낮은 점수를 받았습니다. 학생들은 AI 도움을 원하는 것보다 부정행위자로 인식되는 것을 더 두려워합니다.
+***** Take
+올해 교육에서 가장 시사하는 바가 큰 실험: 학생들에게 AI 사용 허가를 주고 반대 방향으로 도망가는 것을 지켜보세요. '부정행위자로 보이는 것에 대한 두려움'이 '쉬운 답에 대한 욕구'를 매번 이긴다는 것이 밝혀졌습니다.
+***** Comments
+- 이해가 안 됩니다. 10년 전, 우리는 머릿속에 이해한 것으로 손으로 시험을 썼습니다. 동료 없이, 노트북 없이, 인터넷 없이, LLM 없이. 이 접근법은 여전히 작동하는데, 왜 다른 것을 하나요?
+- 많은 사람들이 고민하는 질문은 '왜 무언가를 알아야 하나?'입니다. 우리 대부분에게 졸업 후 답은 '해고당하지 않을 정도'입니다. 이것은 대부분의 커리큘럼이 요구하는 것보다 훨씬 적습니다.
+- 대부분의 학생들은 챗봇을 사용하고 싶어하지 않습니다 - 이것이 빠르게 변하고 있다고 생각합니다. 저는 대학 교수인데, LLM을 목발로 필요로 하는 학생 수가 기하급수적으로 증가하고 있습니다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Dando exámenes universitarios en la era de los chatbots
+***** TLDR
+Un profesor da un examen de recursos abiertos donde los estudiantes pueden usar opcionalmente chatbots con reglas estrictas de responsabilidad. De 60 estudiantes, 57 eligieron no usar IA. Los usuarios de chatbot tuvieron el peor desempeño. Los estudiantes temen ser percibidos como tramposos más de lo que desean asistencia de IA.
+***** Take
+El experimento más revelador en educación este año: dar a los estudiantes permiso para usar IA y verlos correr en dirección opuesta. Resulta que el 'miedo a parecer tramposo' vence al 'deseo de respuestas fáciles' siempre.
+***** Comments
+- No entiendo. Hace 10 años, escribíamos exámenes a mano con lo que entendíamos en nuestras cabezas. Sin colegas, sin laptops, sin internet, sin LLMs. Este enfoque aún funciona, ¿por qué hacer algo diferente?
+- Algo con lo que muchas personas luchan es la pregunta '¿por qué debería saber algo?' Para la mayoría de nosotros, una vez que te gradúas, la respuesta es 'lo suficiente para no ser despedido'. Esto es mucho menos de lo que la mayoría de los currículos te piden saber.
+- La mayoría de los estudiantes no quieren usar chatbots - creo que esto está cambiando rápidamente. Soy profesor universitario y la cantidad de estudiantes que parecen necesitar LLM como muleta está creciendo exponencialmente.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Universitätsprüfungen im Zeitalter der Chatbots
+***** TLDR
+Professor gibt eine Open-Resource-Prüfung, bei der Studenten optional Chatbots mit strengen Verantwortlichkeitsregeln nutzen können. Von 60 Studenten entschieden sich 57, keine KI zu verwenden. Die Chatbot-Nutzer schnitten am schlechtesten ab. Studenten fürchten, als Betrüger wahrgenommen zu werden, mehr als sie KI-Unterstützung wollen.
+***** Take
+Das aufschlussreichste Experiment in der Bildung dieses Jahr: Gib Studenten die Erlaubnis, KI zu nutzen, und sieh zu, wie sie in die andere Richtung rennen. Es stellt sich heraus, dass 'Angst, wie ein Betrüger auszusehen' jedes Mal gegen 'Wunsch nach einfachen Antworten' gewinnt.
+***** Comments
+- Ich verstehe nicht. Vor 10 Jahren haben wir Prüfungen von Hand geschrieben mit dem, was wir in unseren Köpfen verstanden hatten. Keine Kollegen, keine Laptops, kein Internet, keine LLMs. Dieser Ansatz funktioniert immer noch, warum etwas anderes tun?
+- Etwas, womit viele Menschen kämpfen, ist die Frage 'warum sollte ich irgendetwas wissen?' Für die meisten von uns lautet die Antwort nach dem Abschluss 'genug, um nicht gefeuert zu werden'. Das ist viel weniger als die meisten Lehrpläne von dir verlangen.
+- Die meisten Studenten wollen keine Chatbots benutzen - ich denke, das ändert sich schnell. Ich bin Universitätsprofessor und die Anzahl der Studenten, die LLM als Krücke zu brauchen scheinen, wächst exponentiell.
+** Show HN: Artificial Ivy in the Browser :showhn:generative:javascript:
+:PROPERTIES:
+:ID:       46687504
+:URL:      https://da.nmcardle.com/grow
+:HN_URL:   https://news.ycombinator.com/item?id=46687504
+:POINTS:   73
+:COMMENTS: 12
+:BY:       dnmc
+:END:
+
+*** TLDR
+A weekend project that simulates organic plant growth in the browser. Cells grow, split, and branch with configurable parameters for age, angle, and signal decay. Like a screensaver, but with sliders and reading.
+
+*** Take
+Someone made a plant growth simulator as a side project and HN immediately asked for a flamethrower option. Never change, internet.
+
+*** Comments
+
+**** bartvk
+:PROPERTIES:
+:COMMENT_ID: 46687534
+:END:
+I appreciate that it's beautiful and awesome, but when the complete screen was filled, I wanted a flamethrower option.
+
+**** seszett
+:PROPERTIES:
+:COMMENT_ID: 46687589
+:END:
+Very nice, I could suggest two more factors influencing growth: geotropism and phototropism. Geotropism makes plants grow away from gravity, phototropism makes them grow towards light.
+
+**** Nevermark
+:PROPERTIES:
+:COMMENT_ID: 46687623
+:END:
+It's beautiful. Both the general texture created and the wave effects. I would love to be able to control speed. As a wallpaper, a slow speed would be great.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Show HN: 浏览器中的人工常春藤
+***** TLDR
+一个周末项目，在浏览器中模拟有机植物生长。细胞生长、分裂、分支，可配置年龄、角度和信号衰减参数。就像屏保，但有滑块和阅读内容。
+***** Take
+有人做了个植物生长模拟器作为副业项目，HN立刻问有没有火焰喷射器选项。互联网永远不变。
+***** Comments
+- 我欣赏它的美丽和精彩，但当整个屏幕都被填满时，我想要一个火焰喷射器选项。
+- 非常棒，我可以建议两个影响生长的因素：向地性和向光性。向地性使植物背离重力生长，向光性使它们向光生长。
+- 很漂亮。无论是整体纹理还是波浪效果。我希望能控制速度。作为壁纸，慢速会很棒。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Show HN: ブラウザで人工アイビー
+***** TLDR
+ブラウザで有機的な植物の成長をシミュレートする週末プロジェクト。細胞が成長、分裂、分岐し、年齢、角度、信号減衰のパラメータを設定できます。スクリーンセーバーのようですが、スライダーと読み物付き。
+***** Take
+誰かがサイドプロジェクトとして植物成長シミュレーターを作ったら、HNはすぐに火炎放射器オプションを求めました。インターネットは変わらない。
+***** Comments
+- 美しくて素晴らしいと思いますが、画面全体が埋まったとき、火炎放射器オプションが欲しくなりました。
+- とても良いです。成長に影響する2つの要因を提案できます：向地性と向光性。向地性は植物を重力から離れる方向に成長させ、向光性は光に向かって成長させます。
+- 美しいです。全体的なテクスチャと波のエフェクトの両方が。速度を制御できるといいですね。壁紙として、遅い速度が素晴らしいでしょう。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Show HN: 브라우저에서 인공 담쟁이
+***** TLDR
+브라우저에서 유기적인 식물 성장을 시뮬레이션하는 주말 프로젝트입니다. 세포가 성장하고, 분열하고, 분기하며 나이, 각도, 신호 감쇠에 대한 매개변수를 구성할 수 있습니다. 화면 보호기 같지만 슬라이더와 읽을거리가 있습니다.
+***** Take
+누군가 사이드 프로젝트로 식물 성장 시뮬레이터를 만들었더니 HN이 즉시 화염방사기 옵션을 요청했습니다. 인터넷은 절대 안 변해.
+***** Comments
+- 아름답고 멋지다고 생각하지만, 화면 전체가 채워졌을 때 화염방사기 옵션이 필요했습니다.
+- 아주 좋습니다. 성장에 영향을 미치는 두 가지 요소를 제안할 수 있습니다: 굴지성과 굴광성. 굴지성은 식물이 중력에서 멀어지게 자라게 하고, 굴광성은 빛을 향해 자라게 합니다.
+- 아름답습니다. 전반적인 텍스처와 파도 효과 모두요. 속도를 제어할 수 있으면 좋겠습니다. 배경화면으로 느린 속도가 좋을 것 같습니다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Show HN: Hiedra artificial en el navegador
+***** TLDR
+Un proyecto de fin de semana que simula el crecimiento orgánico de plantas en el navegador. Las células crecen, se dividen y ramifican con parámetros configurables para edad, ángulo y decaimiento de señal. Como un salvapantallas, pero con controles deslizantes y lectura.
+***** Take
+Alguien hizo un simulador de crecimiento de plantas como proyecto secundario y HN inmediatamente pidió una opción de lanzallamas. Nunca cambies, internet.
+***** Comments
+- Aprecio que sea hermoso e impresionante, pero cuando la pantalla completa se llenó, quería una opción de lanzallamas.
+- Muy bonito, podría sugerir dos factores más que influyen en el crecimiento: geotropismo y fototropismo. El geotropismo hace que las plantas crezcan alejándose de la gravedad, el fototropismo las hace crecer hacia la luz.
+- Es hermoso. Tanto la textura general creada como los efectos de onda. Me encantaría poder controlar la velocidad. Como fondo de pantalla, una velocidad lenta sería genial.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Show HN: Künstlicher Efeu im Browser
+***** TLDR
+Ein Wochenendprojekt, das organisches Pflanzenwachstum im Browser simuliert. Zellen wachsen, teilen sich und verzweigen sich mit konfigurierbaren Parametern für Alter, Winkel und Signalabfall. Wie ein Bildschirmschoner, aber mit Schiebereglern und Lesestoff.
+***** Take
+Jemand hat einen Pflanzenwachstumssimulator als Nebenprojekt gemacht und HN hat sofort nach einer Flammenwerfer-Option gefragt. Bleib so, Internet.
+***** Comments
+- Ich schätze, dass es schön und großartig ist, aber als der komplette Bildschirm gefüllt war, wollte ich eine Flammenwerfer-Option.
+- Sehr schön, ich könnte zwei weitere Faktoren vorschlagen, die das Wachstum beeinflussen: Geotropismus und Phototropismus. Geotropismus lässt Pflanzen weg von der Schwerkraft wachsen, Phototropismus lässt sie zum Licht wachsen.
+- Es ist wunderschön. Sowohl die allgemeine Textur als auch die Welleneffekte. Ich würde gerne die Geschwindigkeit steuern können. Als Hintergrundbild wäre eine langsame Geschwindigkeit toll.
