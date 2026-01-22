@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-01-22 06:00:00 UT UTC
+#+DATE: 2026-01-22T06:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+North Korean hackers weaponize VS Code, scholars rewrite Beowulf, and devs keep reinventing wheels in fewer lines
+
+* Highlights
+- VS Code: DPRK hackers turn your IDE into a backdoor
+- Beowulf scholars: 200 years of 'Listen!' was wrong
+- RatatuiRuby: Rust performance meets Ruby joy for TUIs
+- APL in 90 lines: because why use 1000 when 10 will do
+- Sweep: 1.5B model predicts your next edit before you do
+
+* Stories
+
+** Threat actors expand abuse of Microsoft Visual Studio Code :security:vscode:malware:dprk:
+:PROPERTIES:
+:ID:       46713526
+:URL:      https://www.jamf.com/blog/threat-actors-expand-abuse-of-visual-studio-code/
+:HN_URL:   https://news.ycombinator.com/item?id=46713526
+:POINTS:   108
+:COMMENTS: 58
+:BY:       vinnyglennon
+:END:
+
+*** TLDR
+North Korean threat actors are distributing malicious repositories with poisoned .vscode/tasks.json files. When you clone and trust the repo, it downloads a JavaScript backdoor that beacons to a C2 server every 5 seconds, collecting system info and awaiting further instructions. Part of the 'Contagious Interview' campaign targeting developers.
+
+*** Take
+Your IDE is now an attack surface. The absolute state of modern development: we trust random repos so completely that nation-state hackers just put their malware in the config file and wait.
+
+*** Comments
+
+**** fizlebit
+:PROPERTIES:
+:COMMENT_ID: 46713527
+:END:
+I do feel like better application sandboxing is needed but so much open source software is built on the Unix abstraction meaning you have to run in a container.
+
+**** TheAdamist
+:PROPERTIES:
+:COMMENT_ID: 46713528
+:END:
+Coming from the perspective of an eclipse fan, why is VS code the defacto answer nowadays? Everything seems worse than eclipse, plus these repeated security issues.
+
+**** sciencejerk
+:PROPERTIES:
+:COMMENT_ID: 46713529
+:END:
+Is tasks.json automatically run? I thought additional user interaction was required?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+威胁行为者扩大对微软VS Code的滥用
+***** TLDR
+朝鲜威胁行为者正在分发带有恶意.vscode/tasks.json文件的仓库。当你克隆并信任该仓库时，它会下载一个JavaScript后门，每5秒向C2服务器发送信号，收集系统信息并等待进一步指令。这是针对开发者的'传染性面试'攻击活动的一部分。
+***** Take
+你的IDE现在是攻击面。现代开发的现状：我们对随机仓库如此信任，以至于国家级黑客只需把恶意软件放在配置文件里等着。
+***** Comments
+- 我确实觉得需要更好的应用沙箱，但很多开源软件都建立在Unix抽象之上，意味着你必须在容器中运行。
+- 作为Eclipse粉丝，为什么VS Code现在成了默认选择？一切都比Eclipse差，还有这些反复出现的安全问题。
+- tasks.json会自动运行吗？我以为需要额外的用户交互？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+脅威アクターがVisual Studio Codeの悪用を拡大
+***** TLDR
+北朝鮮の脅威アクターが悪意のある.vscode/tasks.jsonファイルを含むリポジトリを配布している。リポジトリをクローンして信頼すると、5秒ごとにC2サーバーにビーコンを送るJavaScriptバックドアがダウンロードされ、システム情報を収集して次の指示を待つ。開発者を標的にした「Contagious Interview」キャンペーンの一部。
+***** Take
+あなたのIDEは今や攻撃対象だ。現代開発の現状：国家レベルのハッカーが設定ファイルにマルウェアを置いて待つだけで済むほど、私たちはランダムなリポジトリを完全に信頼している。
+***** Comments
+- より良いアプリケーションサンドボックスが必要だと思うが、多くのオープンソースソフトウェアはUnix抽象化の上に構築されており、コンテナ内で実行する必要がある。
+- Eclipseファンの視点から、なぜVS Codeが今やデファクトスタンダードなのか？Eclipseより全てが劣っているし、セキュリティ問題も繰り返し発生している。
+- tasks.jsonは自動的に実行されるのか？追加のユーザー操作が必要だと思っていた。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+위협 행위자들이 VS Code 악용을 확대
+***** TLDR
+북한 위협 행위자들이 악성 .vscode/tasks.json 파일이 포함된 저장소를 배포하고 있다. 저장소를 클론하고 신뢰하면 5초마다 C2 서버에 비콘을 보내는 JavaScript 백도어가 다운로드되어 시스템 정보를 수집하고 추가 지시를 기다린다. 개발자를 대상으로 한 'Contagious Interview' 캠페인의 일부.
+***** Take
+당신의 IDE가 이제 공격 표면이다. 현대 개발의 현실: 국가 수준의 해커들이 설정 파일에 악성코드를 넣고 기다리기만 하면 될 정도로 우리는 무작위 저장소를 완전히 신뢰한다.
+***** Comments
+- 더 나은 애플리케이션 샌드박싱이 필요하다고 느끼지만 많은 오픈소스 소프트웨어가 Unix 추상화 위에 구축되어 있어 컨테이너에서 실행해야 한다.
+- Eclipse 팬 입장에서, 왜 VS Code가 요즘 기본 선택이 되었나? Eclipse보다 모든 게 나쁘고, 보안 문제도 반복된다.
+- tasks.json이 자동으로 실행되나요? 추가 사용자 상호작용이 필요하다고 생각했는데.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Los actores de amenazas amplían el abuso de Visual Studio Code
+***** TLDR
+Actores de amenazas norcoreanos distribuyen repositorios con archivos .vscode/tasks.json maliciosos. Al clonar y confiar en el repo, se descarga un backdoor JavaScript que envía señales a un servidor C2 cada 5 segundos, recopilando información del sistema y esperando instrucciones. Parte de la campaña 'Contagious Interview' dirigida a desarrolladores.
+***** Take
+Tu IDE ahora es una superficie de ataque. El estado del desarrollo moderno: confiamos tanto en repos aleatorios que los hackers de estado-nación solo ponen su malware en el archivo de configuración y esperan.
+***** Comments
+- Creo que se necesita mejor sandboxing de aplicaciones, pero mucho software de código abierto está construido sobre la abstracción Unix, lo que significa que tienes que ejecutar en un contenedor.
+- Desde la perspectiva de un fan de Eclipse, ¿por qué VS Code es la respuesta por defecto hoy en día? Todo parece peor que Eclipse, además de estos problemas de seguridad repetidos.
+- ¿Se ejecuta tasks.json automáticamente? Pensé que se requería interacción adicional del usuario.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Bedrohungsakteure weiten Missbrauch von Visual Studio Code aus
+***** TLDR
+Nordkoreanische Bedrohungsakteure verteilen Repositories mit bösartigen .vscode/tasks.json-Dateien. Beim Klonen und Vertrauen des Repos wird eine JavaScript-Backdoor heruntergeladen, die alle 5 Sekunden an einen C2-Server sendet, Systeminformationen sammelt und auf weitere Anweisungen wartet. Teil der 'Contagious Interview'-Kampagne gegen Entwickler.
+***** Take
+Deine IDE ist jetzt eine Angriffsfläche. Der Zustand moderner Entwicklung: Wir vertrauen zufälligen Repos so sehr, dass Staatshacker ihre Malware einfach in die Konfigurationsdatei legen und warten.
+***** Comments
+- Ich denke, besseres Application-Sandboxing wird benötigt, aber viel Open-Source-Software baut auf der Unix-Abstraktion auf, was bedeutet, dass man in einem Container laufen muss.
+- Aus der Perspektive eines Eclipse-Fans, warum ist VS Code heutzutage die Standardantwort? Alles scheint schlechter als Eclipse, plus diese wiederholten Sicherheitsprobleme.
+- Wird tasks.json automatisch ausgeführt? Ich dachte, zusätzliche Benutzerinteraktion wäre erforderlich.
+** Beowulf's opening 'What' is no interjection (2013) :linguistics:literature:academia:beowulf:
+:PROPERTIES:
+:ID:       46675583
+:URL:      https://www.poetryfoundation.org/poetry-news/69208/new-research-opening-line-of-beowulf-is-not-what-weve-eternally-thunk
+:HN_URL:   https://news.ycombinator.com/item?id=46675583
+:POINTS:   68
+:COMMENTS: 50
+:BY:       gsf_emergency_6
+:END:
+
+*** TLDR
+Dr. George Walkden argues that 200 years of translating Beowulf's opening 'Hwæt' as an attention-grabbing 'Listen!' or 'Lo!' was wrong. After analyzing 141 clauses, he proposes it's actually part of an exclamatory statement: 'How we have heard of the might of the kings.' The misunderstanding traces back to Jakob Grimm in 1837.
+
+*** Take
+Turns out generations of Old English scholars were just vibing with 'Yo, check this out!' when the Anglo-Saxons meant something more like 'Can you believe what we've heard?' Academic humility is watching 200 years of consensus evaporate.
+
+*** Comments
+
+**** tracerbulletx
+:PROPERTIES:
+:COMMENT_ID: 46675584
+:END:
+Beowulf translation is a whole academic field, the translation has been debated ad nauseum for 100s of years, Tolkien had his own translation and opinion. One additional scholar adding his own interpretation doesn't necessarily overturn anything.
+
+**** WWWWH
+:PROPERTIES:
+:COMMENT_ID: 46675585
+:END:
+I used to use this as a technique when starting undergraduate lectures. ⁎SO⁎ let me tell you further fun facts about carbonyl chemistry... Works. Those Anglo-Saxons knew what they were about.
+
+**** IanCal
+:PROPERTIES:
+:COMMENT_ID: 46675586
+:END:
+I'll share another great version of Beowulf - Bea Wolf. Based on kids, with fantastic artwork. My kids absolutely love me reading this.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+《贝奥武夫》开头的'Hwæt'不是感叹词（2013）
+***** TLDR
+乔治·沃克登博士认为，200年来将《贝奥武夫》开头的'Hwæt'翻译成引人注意的'听着！'或'看哪！'是错误的。在分析了141个从句后，他提出它实际上是感叹句的一部分：'我们听说了多少关于国王们的伟力啊！'这个误解可追溯到1837年的雅各布·格林。
+***** Take
+原来几代古英语学者一直在用'嘿，看这个！'的感觉，而盎格鲁-撒克逊人的意思更像是'你能相信我们听到的吗？'学术谦逊就是看着200年的共识化为乌有。
+***** Comments
+- 《贝奥武夫》翻译是一整个学术领域，翻译问题已经争论了几百年，托尔金有自己的翻译和观点。一个学者增加自己的解释并不一定能推翻什么。
+- 我以前在本科讲座开始时用这个技巧。'所以'让我告诉你更多关于羰基化学的有趣事实...有效。那些盎格鲁-撒克逊人知道他们在做什么。
+- 我来分享另一个很棒的《贝奥武夫》版本——《蜜蜂狼》。以孩子为基础，有精彩的插图。我的孩子们非常喜欢我读这本书。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+ベオウルフの冒頭の'Hwæt'は間投詞ではない（2013）
+***** TLDR
+ジョージ・ウォークデン博士は、ベオウルフの冒頭'Hwæt'を注意を引く'聞け！'や'見よ！'と訳してきた200年間が間違いだったと主張。141の節を分析した結果、実際には感嘆文の一部で「我々が王たちの力についていかに聞いてきたことか！」という意味だと提案。この誤解は1837年のヤーコプ・グリムに遡る。
+***** Take
+何世代もの古英語学者が「よう、これ見てくれ！」のノリでやってきたが、アングロサクソン人の意味は「俺たちが聞いたこと信じられるか？」に近かったとは。学術的謙虚さとは200年の合意が蒸発するのを見ることだ。
+***** Comments
+- ベオウルフ翻訳は一つの学術分野であり、翻訳は何百年も議論されてきた。トールキンも独自の翻訳と意見を持っていた。一人の学者が解釈を加えても必ずしも何かが覆るわけではない。
+- 私は学部の講義を始める時にこのテクニックを使っていた。「さて」カルボニル化学についてさらに面白い事実を...効く。アングロサクソン人は分かっていた。
+- もう一つ素晴らしいベオウルフのバージョンを紹介する - ビーウルフ。子供向けで、素晴らしいアートワーク。子供たちは私がこれを読むのが大好き。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+베오울프의 첫 단어 'Hwæt'은 감탄사가 아니다 (2013)
+***** TLDR
+조지 워크든 박사는 베오울프의 첫 단어 'Hwæt'을 주의를 끄는 '들어라!' 또는 '보라!'로 번역한 200년이 잘못되었다고 주장한다. 141개 절을 분석한 후, 그것이 실제로 감탄문의 일부라고 제안한다: '우리가 왕들의 힘에 대해 얼마나 들었는가!' 이 오해는 1837년 야콥 그림으로 거슬러 올라간다.
+***** Take
+수 세대의 고대 영어 학자들이 '야, 이거 봐!'라는 느낌으로 해왔는데, 앵글로색슨인들의 의미는 '우리가 들은 거 믿을 수 있어?'에 더 가까웠다니. 학문적 겸손이란 200년의 합의가 증발하는 것을 지켜보는 것이다.
+***** Comments
+- 베오울프 번역은 하나의 학문 분야이며, 번역은 수백 년 동안 논쟁되어 왔다. 톨킨도 자신만의 번역과 의견이 있었다. 한 학자가 자신의 해석을 추가한다고 해서 반드시 무언가가 뒤집히는 것은 아니다.
+- 나는 학부 강의를 시작할 때 이 기법을 사용했다. '자' 카르보닐 화학에 대한 더 재미있는 사실을 알려드리죠... 효과가 있다. 그 앵글로색슨인들은 무엇을 하는지 알고 있었다.
+- 또 다른 훌륭한 베오울프 버전을 공유하겠다 - 비 울프. 아이들을 기반으로 하며, 환상적인 아트워크가 있다. 내 아이들은 내가 이것을 읽어주는 것을 정말 좋아한다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+El 'Hwæt' inicial de Beowulf no es una interjección (2013)
+***** TLDR
+El Dr. George Walkden argumenta que 200 años traduciendo el 'Hwæt' inicial de Beowulf como un '¡Escuchad!' o '¡He aquí!' para llamar la atención fue incorrecto. Tras analizar 141 cláusulas, propone que es parte de una exclamación: '¡Cuánto hemos oído del poder de los reyes!' El malentendido se remonta a Jakob Grimm en 1837.
+***** Take
+Resulta que generaciones de estudiosos del inglés antiguo estaban en plan '¡Eh, mira esto!' cuando los anglosajones querían decir algo más como '¿Puedes creer lo que hemos oído?' La humildad académica es ver evaporarse 200 años de consenso.
+***** Comments
+- La traducción de Beowulf es todo un campo académico, la traducción se ha debatido hasta la saciedad durante cientos de años, Tolkien tenía su propia traducción y opinión. Un académico más añadiendo su interpretación no necesariamente revierte nada.
+- Solía usar esto como técnica al comenzar clases universitarias. ⁎ENTONCES⁎ déjame contarte más datos divertidos sobre química de carbonilos... Funciona. Esos anglosajones sabían lo que hacían.
+- Compartiré otra gran versión de Beowulf - Bea Wolf. Basada en niños, con arte fantástico. A mis hijos les encanta que les lea esto.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Beowulfs einleitendes 'Hwæt' ist keine Interjektion (2013)
+***** TLDR
+Dr. George Walkden argumentiert, dass 200 Jahre Übersetzung von Beowulfs einleitendem 'Hwæt' als aufmerksamkeitsheischendes 'Hört!' oder 'Seht!' falsch waren. Nach Analyse von 141 Sätzen schlägt er vor, dass es Teil eines Ausrufs ist: 'Wie wir von der Macht der Könige gehört haben!' Das Missverständnis geht auf Jakob Grimm 1837 zurück.
+***** Take
+Es stellt sich heraus, dass Generationen von Altanglistik-Gelehrten auf 'Hey, schau mal!' gemacht haben, während die Angelsachsen eher 'Kannst du glauben, was wir gehört haben?' meinten. Akademische Demut ist, wenn man 200 Jahre Konsens verdampfen sieht.
+***** Comments
+- Beowulf-Übersetzung ist ein ganzes akademisches Feld, die Übersetzung wird seit Hunderten von Jahren diskutiert, Tolkien hatte seine eigene Übersetzung und Meinung. Ein weiterer Gelehrter mit seiner eigenen Interpretation stürzt nicht unbedingt etwas um.
+- Ich habe das früher als Technik beim Start von Vorlesungen verwendet. ⁎ALSO⁎ lass mich dir weitere lustige Fakten über Carbonylchemie erzählen... Funktioniert. Diese Angelsachsen wussten, was sie taten.
+- Ich teile eine weitere großartige Version von Beowulf - Bea Wolf. Basiert auf Kindern, mit fantastischen Illustrationen. Meine Kinder lieben es, wenn ich das vorlese.
+** Show HN: RatatuiRuby wraps Rust Ratatui as a RubyGem - TUIs with the joy of Ruby :ruby:rust:tui:cli:
+:PROPERTIES:
+:ID:       46658133
+:URL:      https://www.ratatui-ruby.dev/
+:HN_URL:   https://news.ycombinator.com/item?id=46658133
+:POINTS:   105
+:COMMENTS: 15
+:BY:       Kerrick
+:END:
+
+*** TLDR
+RatatuiRuby wraps the Rust Ratatui TUI library as a RubyGem, giving you native Rust rendering performance with Ruby's expressive syntax. Supports line charts, bar charts, tables, lists, and more. Includes test helpers for headless terminal testing and event injection. Currently in beta.
+
+*** Take
+Finally, someone put Rust where it belongs (low-level rendering) and Ruby where it belongs (expressing what you actually want). The 'right tool for the job' philosophy applied correctly for once.
+
+*** Comments
+
+**** pythonaut_16
+:PROPERTIES:
+:COMMENT_ID: 46658134
+:END:
+Does it have proper support for opening an external editor via $EDITOR like nano, vim, etc? I ran into issues with that in Ink and had to switch to Bubbletea.
+
+**** cswilliams
+:PROPERTIES:
+:COMMENT_ID: 46658135
+:END:
+Excited to try it out. I often need to build simple CLI based apps in ruby so would reach for TTY Toolkit, but it's in maintenance mode now.
+
+**** iddan
+:PROPERTIES:
+:COMMENT_ID: 46658136
+:END:
+Landing page is great: informative, visual example, clear code example. Love it
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Show HN: RatatuiRuby将Rust Ratatui封装为RubyGem - 用Ruby的乐趣构建TUI
+***** TLDR
+RatatuiRuby将Rust的Ratatui TUI库封装为RubyGem，让你获得原生Rust渲染性能和Ruby的表达式语法。支持折线图、柱状图、表格、列表等。包含用于无头终端测试和事件注入的测试助手。目前处于测试阶段。
+***** Take
+终于有人把Rust放在它该在的地方（底层渲染），把Ruby放在它该在的地方（表达你真正想要的）。'正确的工具做正确的事'哲学第一次被正确应用。
+***** Comments
+- 它是否支持通过$EDITOR打开外部编辑器如nano、vim等？我在Ink中遇到了这个问题，不得不切换到Bubbletea。
+- 很期待试用。我经常需要用ruby构建简单的CLI应用，所以会用TTY Toolkit，但它现在处于维护模式了。
+- 落地页很棒：信息丰富，有视觉示例，代码示例清晰。喜欢。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Show HN: RatatuiRubyはRust RatatuiをRubyGemでラップ - Rubyの喜びでTUI
+***** TLDR
+RatatuiRubyはRustのRatatui TUIライブラリをRubyGemとしてラップし、ネイティブなRustレンダリング性能とRubyの表現力豊かな構文を提供する。折れ線グラフ、棒グラフ、テーブル、リストなどをサポート。ヘッドレスターミナルテストとイベント注入用のテストヘルパーを含む。現在ベータ版。
+***** Take
+ようやく誰かがRustを本来の場所（低レベルレンダリング）に、Rubyを本来の場所（実際に望むことを表現）に置いた。「適材適所」の哲学が初めて正しく適用された。
+***** Comments
+- nano、vimなどの外部エディタを$EDITORで開く適切なサポートはありますか？Inkでその問題に遭遇し、Bubbletéaに切り替える必要がありました。
+- 試すのが楽しみ。rubyで簡単なCLIベースのアプリを構築することが多いのでTTY Toolkitを使っていたが、今はメンテナンスモードだ。
+- ランディングページが素晴らしい：情報量が多く、ビジュアル例があり、コード例が明確。気に入った。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Show HN: RatatuiRuby는 Rust Ratatui를 RubyGem으로 래핑 - Ruby의 즐거움으로 TUI
+***** TLDR
+RatatuiRuby는 Rust의 Ratatui TUI 라이브러리를 RubyGem으로 래핑하여 네이티브 Rust 렌더링 성능과 Ruby의 표현력 있는 문법을 제공한다. 라인 차트, 바 차트, 테이블, 리스트 등을 지원한다. 헤드리스 터미널 테스트와 이벤트 주입을 위한 테스트 헬퍼를 포함한다. 현재 베타 버전.
+***** Take
+드디어 누군가가 Rust를 제자리에(저수준 렌더링), Ruby를 제자리에(실제로 원하는 것을 표현) 놓았다. '적재적소' 철학이 처음으로 제대로 적용되었다.
+***** Comments
+- nano, vim 등의 외부 편집기를 $EDITOR로 열 수 있는 적절한 지원이 있나요? Ink에서 그 문제를 겪어서 Bubbletea로 전환해야 했습니다.
+- 써보고 싶다. ruby로 간단한 CLI 기반 앱을 자주 만들어야 해서 TTY Toolkit을 썼는데, 이제 유지보수 모드다.
+- 랜딩 페이지가 훌륭하다: 정보가 풍부하고, 시각적 예시가 있고, 코드 예시가 명확하다. 좋아요.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Show HN: RatatuiRuby envuelve Rust Ratatui como RubyGem - TUIs con la alegría de Ruby
+***** TLDR
+RatatuiRuby envuelve la biblioteca TUI Ratatui de Rust como RubyGem, dándote rendimiento de renderizado nativo de Rust con la sintaxis expresiva de Ruby. Soporta gráficos de líneas, barras, tablas, listas y más. Incluye helpers de prueba para testing de terminal headless e inyección de eventos. Actualmente en beta.
+***** Take
+Finalmente, alguien puso Rust donde pertenece (renderizado de bajo nivel) y Ruby donde pertenece (expresar lo que realmente quieres). La filosofía de 'la herramienta correcta para el trabajo' aplicada correctamente por una vez.
+***** Comments
+- ¿Tiene soporte adecuado para abrir un editor externo vía $EDITOR como nano, vim, etc? Tuve problemas con eso en Ink y tuve que cambiar a Bubbletea.
+- Emocionado por probarlo. A menudo necesito construir apps CLI simples en ruby así que usaría TTY Toolkit, pero está en modo mantenimiento ahora.
+- La página de inicio es genial: informativa, ejemplo visual, ejemplo de código claro. Me encanta.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Show HN: RatatuiRuby wrapped Rust Ratatui als RubyGem - TUIs mit der Freude von Ruby
+***** TLDR
+RatatuiRuby wrapped die Rust Ratatui TUI-Bibliothek als RubyGem und bietet native Rust-Rendering-Performance mit Rubys ausdrucksstarker Syntax. Unterstützt Liniendiagramme, Balkendiagramme, Tabellen, Listen und mehr. Enthält Test-Helper für Headless-Terminal-Tests und Event-Injection. Derzeit in Beta.
+***** Take
+Endlich hat jemand Rust dorthin gesetzt, wo es hingehört (Low-Level-Rendering) und Ruby dorthin, wo es hingehört (ausdrücken, was man wirklich will). Die 'richtiges Werkzeug für den Job'-Philosophie einmal richtig angewandt.
+***** Comments
+- Hat es ordentliche Unterstützung für das Öffnen eines externen Editors via $EDITOR wie nano, vim, etc? Ich hatte damit Probleme in Ink und musste zu Bubbletea wechseln.
+- Freue mich, es auszuprobieren. Ich muss oft einfache CLI-basierte Apps in Ruby bauen und würde zum TTY Toolkit greifen, aber das ist jetzt im Wartungsmodus.
+- Landing Page ist toll: informativ, visuelles Beispiel, klares Code-Beispiel. Gefällt mir.
+** Golfing APL/K in 90 Lines of Python :programming-languages:python:apl:code-golf:
+:PROPERTIES:
+:ID:       46651027
+:URL:      https://aljamal.substack.com/p/golfing-aplk-in-90-lines-of-python
+:HN_URL:   https://news.ycombinator.com/item?id=46651027
+:POINTS:   63
+:COMMENTS: 13
+:BY:       aburjg
+:END:
+
+*** TLDR
+The author implements a K-like array programming language in 90 lines of Python using two key techniques: 'monad' and 'dyad' higher-order functions that lift any Python function to work recursively on nested lists with automatic scalar extension. Captures K's philosophy of merging Lisp semantics with APL syntax.
+
+*** Take
+90 lines to implement an array language that takes most people 9000 lines. The absolute state of 'less is more' actually working. Now watch someone rewrite it in 9 lines of APL.
+
+*** Comments
+
+**** richard_todd
+:PROPERTIES:
+:COMMENT_ID: 46651028
+:END:
+It's a fun article but `5{|+\x}\1,2` does not give the typical fibonacci sequence. Either `5{|+\x}\1,1` or `5{|+\x}\2,1` do.
+
+**** bbminner
+:PROPERTIES:
+:COMMENT_ID: 46651029
+:END:
+I still consider jax.vmap to be a little miracle: fn2 = vmap(fn, (1,2)) traverses the computation graph and correctly broadcasts all operations.
+
+**** Tiberium
+:PROPERTIES:
+:COMMENT_ID: 46651030
+:END:
+I find such 'X in Y lines of code' challenges not very interesting because they usually just pack multiple lines into one instead of using clever tricks.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+用90行Python实现APL/K代码高尔夫
+***** TLDR
+作者用90行Python实现了一个类似K的数组编程语言，使用两个关键技术：'monad'和'dyad'高阶函数，可以将任何Python函数提升为递归处理嵌套列表并自动进行标量扩展。捕获了K将Lisp语义与APL语法融合的哲学。
+***** Take
+90行实现一个数组语言，而大多数人需要9000行。'少即是多'真正奏效的绝对状态。现在看着有人用9行APL重写它吧。
+***** Comments
+- 这是一篇有趣的文章，但`5{|+\x}\1,2`并不能给出典型的斐波那契数列。`5{|+\x}\1,1`或`5{|+\x}\2,1`可以。
+- 我仍然认为jax.vmap是一个小奇迹：fn2 = vmap(fn, (1,2))遍历计算图并正确广播所有操作。
+- 我觉得这种'用Y行代码实现X'的挑战不是很有趣，因为它们通常只是把多行打包成一行，而不是使用巧妙的技巧。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+90行のPythonでAPL/Kをゴルフする
+***** TLDR
+著者は90行のPythonでK風の配列プログラミング言語を実装。2つの重要なテクニックを使用：'monad'と'dyad'高階関数で、任意のPython関数をネストされたリストに対して再帰的に動作し、自動スカラー拡張を行うように持ち上げる。LispセマンティクスとAPL構文を融合するKの哲学を捉えている。
+***** Take
+90行で配列言語を実装。ほとんどの人は9000行かかる。「少ないことは豊かなこと」が実際に機能している絶対的な状態。さあ、誰かが9行のAPLで書き直すのを見よう。
+***** Comments
+- 面白い記事だが`5{|+\x}\1,2`は典型的なフィボナッチ数列を与えない。`5{|+\x}\1,1`か`5{|+\x}\2,1`ならできる。
+- 私はまだjax.vmapを小さな奇跡だと思っている：fn2 = vmap(fn, (1,2))は計算グラフをトラバースし、すべての操作を正しくブロードキャストする。
+- このような「Y行のコードでX」というチャレンジはあまり面白くない。なぜなら通常は巧妙なトリックを使う代わりに複数行を1行に詰め込むだけだから。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+90줄의 Python으로 APL/K 골프하기
+***** TLDR
+저자는 90줄의 Python으로 K 스타일 배열 프로그래밍 언어를 구현한다. 두 가지 핵심 기술을 사용: 'monad'와 'dyad' 고차 함수로 모든 Python 함수를 중첩 리스트에 대해 재귀적으로 작동하고 자동 스칼라 확장을 수행하도록 승격시킨다. Lisp 의미론과 APL 구문을 융합하는 K의 철학을 포착한다.
+***** Take
+90줄로 배열 언어를 구현. 대부분의 사람들은 9000줄이 걸린다. '적은 것이 더 많은 것'이 실제로 작동하는 절대적인 상태. 이제 누군가 9줄의 APL로 다시 쓰는 것을 지켜보자.
+***** Comments
+- 재미있는 기사지만 `5{|+\x}\1,2`는 전형적인 피보나치 수열을 주지 않는다. `5{|+\x}\1,1`이나 `5{|+\x}\2,1`은 된다.
+- 나는 여전히 jax.vmap을 작은 기적이라고 생각한다: fn2 = vmap(fn, (1,2))는 계산 그래프를 순회하고 모든 연산을 올바르게 브로드캐스트한다.
+- 이런 'Y줄의 코드로 X 구현하기' 챌린지는 별로 흥미롭지 않다. 보통 영리한 트릭을 쓰는 대신 여러 줄을 한 줄로 압축할 뿐이기 때문이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Golf de APL/K en 90 líneas de Python
+***** TLDR
+El autor implementa un lenguaje de programación de arrays estilo K en 90 líneas de Python usando dos técnicas clave: funciones de orden superior 'monad' y 'dyad' que elevan cualquier función Python para trabajar recursivamente en listas anidadas con extensión escalar automática. Captura la filosofía de K de fusionar semántica Lisp con sintaxis APL.
+***** Take
+90 líneas para implementar un lenguaje de arrays que a la mayoría le toma 9000 líneas. El estado absoluto de 'menos es más' funcionando de verdad. Ahora mira a alguien reescribirlo en 9 líneas de APL.
+***** Comments
+- Es un artículo divertido pero `5{|+\x}\1,2` no da la secuencia típica de Fibonacci. `5{|+\x}\1,1` o `5{|+\x}\2,1` sí.
+- Todavía considero jax.vmap un pequeño milagro: fn2 = vmap(fn, (1,2)) recorre el grafo de computación y transmite correctamente todas las operaciones.
+- Encuentro estos desafíos de 'X en Y líneas de código' no muy interesantes porque usualmente solo empaquetan múltiples líneas en una en lugar de usar trucos ingeniosos.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+APL/K-Golf in 90 Zeilen Python
+***** TLDR
+Der Autor implementiert eine K-ähnliche Array-Programmiersprache in 90 Zeilen Python mit zwei Schlüsseltechniken: 'monad' und 'dyad' Funktionen höherer Ordnung, die jede Python-Funktion anheben, um rekursiv auf verschachtelten Listen mit automatischer Skalarer-Erweiterung zu arbeiten. Erfasst Ks Philosophie der Verschmelzung von Lisp-Semantik mit APL-Syntax.
+***** Take
+90 Zeilen für eine Array-Sprache, die die meisten 9000 Zeilen kostet. Der absolute Zustand von 'weniger ist mehr', das tatsächlich funktioniert. Jetzt schau zu, wie jemand es in 9 Zeilen APL umschreibt.
+***** Comments
+- Es ist ein lustiger Artikel, aber `5{|+\x}\1,2` gibt nicht die typische Fibonacci-Folge. Entweder `5{|+\x}\1,1` oder `5{|+\x}\2,1` tun das.
+- Ich betrachte jax.vmap immer noch als kleines Wunder: fn2 = vmap(fn, (1,2)) durchläuft den Berechnungsgraphen und broadcastet alle Operationen korrekt.
+- Ich finde solche 'X in Y Zeilen Code'-Challenges nicht sehr interessant, weil sie normalerweise nur mehrere Zeilen in eine packen statt clevere Tricks zu verwenden.
+** Show HN: Sweep, Open-weights 1.5B model for next-edit autocomplete :ai:coding:open-source:llm:
+:PROPERTIES:
+:ID:       46713106
+:URL:      https://huggingface.co/sweepai/sweep-next-edit-1.5B
+:HN_URL:   https://news.ycombinator.com/item?id=46713106
+:POINTS:   95
+:COMMENTS: 17
+:BY:       williamzeng0
+:END:
+
+*** TLDR
+Sweep releases an open-weights 1.5B parameter model that predicts your next code edit, not just the next token. Uses file history and recent diffs as context, runs locally in under 500ms, and outperforms models 4x its size on next-edit benchmarks. Trained with SFT on ~100k examples then RL. Based on Qwen2.5-Coder.
+
+*** Take
+A 1.5B model beating 6B models at predicting edits by actually understanding what editing means. The 'simple original/updated blocks beat unified diffs' finding is chef's kiss - sometimes being verbose is easier for everyone, including AI.
+
+*** Comments
+
+**** plutodev
+:PROPERTIES:
+:COMMENT_ID: 46713107
+:END:
+Nice work the next-edit framing matches how real refactors happen much better than token-level autocomplete. The diff-format insight is especially interesting.
+
+**** martianlantern
+:PROPERTIES:
+:COMMENT_ID: 46713108
+:END:
+This is cool! I am more interested in how you guys generated next edit training data from repos, seems like there are lots of caveats here.
+
+**** kamranjon
+:PROPERTIES:
+:COMMENT_ID: 46713109
+:END:
+I read the release but didn't quite understand the difference between a next-edit model and a FIM model - does anyone have a clear explanation?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Show HN: Sweep，用于下一编辑自动补全的开放权重1.5B模型
+***** TLDR
+Sweep发布了一个开放权重的15亿参数模型，可以预测你的下一次代码编辑，而不仅仅是下一个token。使用文件历史和最近的diff作为上下文，本地运行不到500毫秒，在下一编辑基准测试中超越了4倍大小的模型。先用SFT在约10万个样本上训练，然后用RL。基于Qwen2.5-Coder。
+***** Take
+一个1.5B模型通过真正理解编辑的含义，在预测编辑方面击败6B模型。'简单的原始/更新块优于统一diff'的发现太妙了——有时候详细一点对每个人都更容易，包括AI。
+***** Comments
+- 做得好，下一编辑框架比token级自动补全更符合真实重构的方式。diff格式的洞察特别有趣。
+- 这很酷！我更感兴趣的是你们如何从仓库生成下一编辑训练数据，这里似乎有很多注意事项。
+- 我读了发布说明，但没太理解下一编辑模型和FIM模型的区别——有人能清楚解释一下吗？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Show HN: Sweep、次編集オートコンプリート用のオープンウェイト1.5Bモデル
+***** TLDR
+Sweepは次のトークンだけでなく、次のコード編集を予測するオープンウェイト15億パラメータモデルをリリース。ファイル履歴と最近のdiffをコンテキストとして使用し、ローカルで500ms未満で実行、次編集ベンチマークで4倍のサイズのモデルを上回る。約10万例でSFT訓練後、RLを実施。Qwen2.5-Coderベース。
+***** Take
+1.5Bモデルが編集の意味を本当に理解することで、編集予測において6Bモデルを打ち負かす。「シンプルなoriginal/updatedブロックがunified diffに勝つ」という発見は最高——時に冗長であることはAIを含む全員にとって簡単なのだ。
+***** Comments
+- 素晴らしい仕事、次編集フレーミングはトークンレベルのオートコンプリートよりも実際のリファクタリングの方法によく合っている。diffフォーマットの洞察は特に興味深い。
+- これはクール！リポジトリから次編集訓練データをどう生成したかにより興味がある。多くの注意点がありそうだ。
+- リリースを読んだが、次編集モデルとFIMモデルの違いがよく分からなかった——誰か明確な説明ができる？
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Show HN: Sweep, 다음 편집 자동완성을 위한 오픈 웨이트 1.5B 모델
+***** TLDR
+Sweep이 다음 토큰이 아닌 다음 코드 편집을 예측하는 오픈 웨이트 15억 파라미터 모델을 출시했다. 파일 히스토리와 최근 diff를 컨텍스트로 사용하고, 로컬에서 500ms 미만으로 실행되며, 다음 편집 벤치마크에서 4배 큰 모델을 능가한다. 약 10만 예제로 SFT 훈련 후 RL 수행. Qwen2.5-Coder 기반.
+***** Take
+1.5B 모델이 편집의 의미를 진정으로 이해함으로써 편집 예측에서 6B 모델을 이긴다. '단순한 original/updated 블록이 unified diff를 이긴다'는 발견은 최고다——때로는 장황한 것이 AI를 포함한 모든 사람에게 더 쉽다.
+***** Comments
+- 훌륭한 작업, 다음 편집 프레이밍은 토큰 수준 자동완성보다 실제 리팩터링 방식에 훨씬 더 잘 맞는다. diff 포맷 인사이트가 특히 흥미롭다.
+- 멋지다! 저장소에서 다음 편집 훈련 데이터를 어떻게 생성했는지가 더 궁금하다. 주의할 점이 많을 것 같다.
+- 릴리스를 읽었지만 다음 편집 모델과 FIM 모델의 차이를 잘 이해하지 못했다——누가 명확하게 설명해줄 수 있나?
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Show HN: Sweep, modelo de 1.5B con pesos abiertos para autocompletado de siguiente edición
+***** TLDR
+Sweep lanza un modelo de 1.5 mil millones de parámetros con pesos abiertos que predice tu siguiente edición de código, no solo el siguiente token. Usa historial de archivos y diffs recientes como contexto, corre localmente en menos de 500ms, y supera modelos 4 veces más grandes en benchmarks de siguiente edición. Entrenado con SFT en ~100k ejemplos y luego RL. Basado en Qwen2.5-Coder.
+***** Take
+Un modelo de 1.5B venciendo modelos de 6B en predicción de ediciones al entender realmente qué significa editar. El hallazgo de 'bloques simples original/updated superan a diffs unificados' es genial——a veces ser verboso es más fácil para todos, incluyendo la IA.
+***** Comments
+- Buen trabajo, el enfoque de siguiente edición coincide mucho mejor con cómo ocurren los refactors reales que el autocompletado a nivel de token. La perspectiva del formato diff es especialmente interesante.
+- ¡Esto es genial! Me interesa más cómo generaron datos de entrenamiento de siguiente edición de repos, parece que hay muchas advertencias aquí.
+- Leí el lanzamiento pero no entendí bien la diferencia entre un modelo de siguiente edición y un modelo FIM - ¿alguien tiene una explicación clara?
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Show HN: Sweep, Open-Weights 1.5B Modell für Next-Edit-Autocomplete
+***** TLDR
+Sweep veröffentlicht ein Open-Weights 1,5-Milliarden-Parameter-Modell, das deine nächste Code-Bearbeitung vorhersagt, nicht nur das nächste Token. Verwendet Dateihistorie und aktuelle Diffs als Kontext, läuft lokal in unter 500ms und übertrifft 4x größere Modelle bei Next-Edit-Benchmarks. Mit SFT auf ~100k Beispielen trainiert, dann RL. Basiert auf Qwen2.5-Coder.
+***** Take
+Ein 1.5B Modell schlägt 6B Modelle bei der Vorhersage von Bearbeitungen, indem es wirklich versteht, was Bearbeitung bedeutet. Die Erkenntnis 'einfache original/updated Blöcke schlagen unified diffs' ist köstlich——manchmal ist ausführlich sein für alle einfacher, einschließlich KI.
+***** Comments
+- Gute Arbeit, der Next-Edit-Rahmen passt viel besser dazu, wie echte Refactors ablaufen, als Token-Level-Autocomplete. Die Diff-Format-Erkenntnis ist besonders interessant.
+- Das ist cool! Mich interessiert mehr, wie ihr Next-Edit-Trainingsdaten aus Repos generiert habt, scheint viele Vorbehalte zu geben.
+- Ich habe das Release gelesen, aber den Unterschied zwischen einem Next-Edit-Modell und einem FIM-Modell nicht ganz verstanden - hat jemand eine klare Erklärung?
