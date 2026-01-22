@@ -1,0 +1,556 @@
+#+TITLE: HN Digest 2026-01-22 20:00:00 UT UTC
+#+DATE: 2026-01-22T20:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Claude bans users, AI clones voices, and HN debates whether design thinking is just consulting theater
+
+* Highlights
+- Claude ban speedrun: scaffold a CLAUDE.md, get yeeted
+- Qwen3-TTS: 3-second voice cloning now open source
+- Tree-sitter vs LSP: the syntax highlighting holy war
+- Design Thinking books: HN discovers most are consulting fluff
+
+* Stories
+
+** I was banned from Claude for scaffolding a CLAUDE.md file :anthropic:ai:moderation:meta:
+:PROPERTIES:
+:ID:       46723384
+:URL:      https://hugodaniel.com/posts/claude-code-banned-me/
+:HN_URL:   https://news.ycombinator.com/item?id=46723384
+:POINTS:   123
+:COMMENTS: 89
+:BY:       hugodan
+:END:
+
+*** TLDR
+Developer got his Anthropic account nuked while building a JS framework scaffolder that had one Claude instance giving instructions to another. The meta-instructional prompts apparently triggered prompt injection heuristics. His only communication from Anthropic was a refund for his €220 subscription.
+
+*** Take
+Nothing says 'we trust our safety systems' like banning paying customers without explanation. The irony of getting banned for making a CLAUDE.md file while using Claude Code, which itself uses CLAUDE.md files, is peak AI company moment.
+
+*** Comments
+
+**** areoform
+:PROPERTIES:
+:COMMENT_ID: 46723385
+:END:
+Out of all tech orgs, frontier labs are the one you'd expect to try cutting edge support. Routine customer support should be lowest hanging fruit for AI.
+
+**** landryraccoon
+:PROPERTIES:
+:COMMENT_ID: 46723386
+:END:
+This blog post feels fishy. Light on specifics. Should've shown the prompts to prove innocence. For all we know, author was doing sketchy stuff.
+
+**** cortesoft
+:PROPERTIES:
+:COMMENT_ID: 46723387
+:END:
+I'm really confused what happened here. The use of 'disabled organization' made it extra confusing.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+我因为构建CLAUDE.md文件被Claude封号了
+***** TLDR
+开发者在构建一个JS框架脚手架工具时账号被封禁，该工具让一个Claude实例给另一个Claude实例下指令。这种元指令式的提示词显然触发了提示词注入检测。他收到的唯一回复是220欧元订阅费的退款。
+***** Take
+没有什么比不加解释地封禁付费用户更能说明'我们信任我们的安全系统'了。因为制作CLAUDE.md文件而被封号的讽刺性在于，Claude Code本身就使用CLAUDE.md文件，这真是AI公司的巅峰时刻。
+***** Comments
+- 在所有科技公司中，前沿AI实验室本应该尝试最前沿的客服支持。常规客服应该是AI最容易实现的功能。
+- 这篇博文感觉很可疑。细节太少。应该展示提示词来证明清白。据我们所知，作者可能在做可疑的事情。
+- 我真的很困惑发生了什么。'禁用组织'的用法让我更困惑了。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+CLAUDE.mdファイルを作成しただけでClaudeからBANされた
+***** TLDR
+開発者がJSフレームワークのスキャフォールディングツールを作成中にアカウントが停止された。そのツールは一つのClaudeインスタンスが別のClaudeに指示を出すもので、このメタ指示的なプロンプトがプロンプトインジェクション検出を誘発したようだ。Anthropicからの唯一の連絡は220ユーロの返金だった。
+***** Take
+説明なしに有料ユーザーをBANすることほど「安全システムを信頼している」と言えるものはない。CLAUDE.mdファイルを作ったことでBANされる皮肉は、Claude Code自体がCLAUDE.mdファイルを使用しているという点で、まさにAI企業の真骨頂だ。
+***** Comments
+- 全てのテック企業の中で、フロンティアAI研究所こそ最先端のサポートを試すべきだ。ルーチン的なカスタマーサポートはAIにとって最も簡単なはずだ。
+- このブログ投稿は怪しい。詳細が少なすぎる。無実を証明するためにプロンプトを見せるべきだった。著者が怪しいことをしていた可能性もある。
+- 何が起きたのか本当に困惑している。「無効化された組織」という表現がさらに混乱を招いた。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+CLAUDE.md 파일을 만들었다가 Claude에서 밴 당했습니다
+***** TLDR
+개발자가 JS 프레임워크 스캐폴딩 도구를 만들다가 계정이 정지됐다. 이 도구는 한 Claude 인스턴스가 다른 Claude에게 지시를 내리는 방식이었고, 이런 메타 지시적 프롬프트가 프롬프트 인젝션 감지를 유발한 것으로 보인다. Anthropic에서 받은 유일한 연락은 220유로 환불이었다.
+***** Take
+설명 없이 유료 사용자를 밴하는 것만큼 '우리 안전 시스템을 신뢰한다'고 말하는 것은 없다. CLAUDE.md 파일을 만들어서 밴 당하는 아이러니는 Claude Code 자체가 CLAUDE.md 파일을 사용한다는 점에서 AI 회사의 정점이다.
+***** Comments
+- 모든 테크 기업 중에서 프론티어 AI 연구소야말로 최첨단 지원을 시도해야 한다. 일상적인 고객 지원은 AI가 가장 쉽게 할 수 있는 일이어야 한다.
+- 이 블로그 포스트는 수상하다. 구체적인 내용이 부족하다. 결백을 증명하려면 프롬프트를 보여줬어야 한다. 저자가 의심스러운 일을 했을 수도 있다.
+- 무슨 일이 일어났는지 정말 혼란스럽다. '비활성화된 조직'이라는 표현이 더 혼란스럽게 만들었다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Me banearon de Claude por crear un archivo CLAUDE.md
+***** TLDR
+Un desarrollador fue baneado mientras construía una herramienta de scaffolding para un framework JS que hacía que una instancia de Claude diera instrucciones a otra. Los prompts meta-instruccionales aparentemente activaron la detección de inyección de prompts. Su única comunicación de Anthropic fue un reembolso de €220.
+***** Take
+Nada dice 'confiamos en nuestros sistemas de seguridad' como banear clientes de pago sin explicación. La ironía de ser baneado por hacer un archivo CLAUDE.md mientras se usa Claude Code, que usa archivos CLAUDE.md, es el momento pico de una empresa de IA.
+***** Comments
+- De todas las empresas tech, los laboratorios de IA frontera deberían probar soporte de vanguardia. El soporte rutinario debería ser lo más fácil para la IA.
+- Este post parece sospechoso. Pocos detalles. Debería mostrar los prompts para probar su inocencia. Por lo que sabemos, el autor podría estar haciendo cosas dudosas.
+- Estoy muy confundido sobre qué pasó. El uso de 'organización deshabilitada' lo hizo más confuso.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Ich wurde von Claude gebannt, weil ich eine CLAUDE.md-Datei erstellt habe
+***** TLDR
+Ein Entwickler wurde gesperrt, während er ein JS-Framework-Scaffolding-Tool baute, bei dem eine Claude-Instanz einer anderen Anweisungen gab. Die Meta-Instruktions-Prompts lösten offenbar Prompt-Injection-Heuristiken aus. Seine einzige Kommunikation von Anthropic war eine Rückerstattung von €220.
+***** Take
+Nichts sagt 'wir vertrauen unseren Sicherheitssystemen' wie das Sperren zahlender Kunden ohne Erklärung. Die Ironie, für das Erstellen einer CLAUDE.md-Datei gesperrt zu werden, während Claude Code selbst CLAUDE.md-Dateien verwendet, ist der Höhepunkt eines KI-Unternehmens.
+***** Comments
+- Von allen Tech-Unternehmen sollten Frontier-KI-Labs modernsten Support ausprobieren. Routine-Kundensupport sollte für KI am einfachsten sein.
+- Dieser Blogpost wirkt verdächtig. Wenig Details. Er hätte die Prompts zeigen sollen, um seine Unschuld zu beweisen. Soweit wir wissen, könnte der Autor dubiose Dinge getan haben.
+- Ich bin wirklich verwirrt, was passiert ist. Die Verwendung von 'deaktivierte Organisation' machte es noch verwirrender.
+** Show HN: isometric.nyc – giant isometric pixel art map of NYC :ai:generative-art:show-hn:maps:
+:PROPERTIES:
+:ID:       46721802
+:URL:      https://cannoneyed.com/isometric-nyc/
+:HN_URL:   https://news.ycombinator.com/item?id=46721802
+:POINTS:   238
+:COMMENTS: 74
+:BY:       cannoneyed
+:END:
+
+*** TLDR
+A massive isometric pixel art map of New York City built with AI coding agents over a few weeks. The creator wrote zero lines of code manually, using nano banana and AI agents for the entire workflow. However, it still required significant manual labor for quality control and tile consistency.
+
+*** Take
+The 'I didn't write a single line of code' flex followed immediately by 'this took way more manual labor than I expected' is the most honest AI project description I've seen. Welcome to the future: you don't write code, you just babysit the thing that writes bad code.
+
+*** Comments
+
+**** cannoneyed
+:PROPERTIES:
+:COMMENT_ID: 46721803
+:END:
+I didn't write a single line of code. But no-code doesn't mean no-engineering. This took way more manual labor than I'd hoped!
+
+**** dormento
+:PROPERTIES:
+:COMMENT_ID: 46721804
+:END:
+Not working here, CORS issue. The cloudflare worker is being rate limited.
+
+**** ProjectBarks
+:PROPERTIES:
+:COMMENT_ID: 46721805
+:END:
+Was excited until I looked closer and saw how AI these look. Images lack continuity. Still cool usage of AI blending art with tech.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Show HN: isometric.nyc - 纽约市巨型等距像素艺术地图
+***** TLDR
+一个用AI编程代理在几周内构建的纽约市大型等距像素艺术地图。创作者没有手动编写任何代码，整个工作流程使用nano banana和AI代理。但质量控制和瓦片一致性仍需要大量手动工作。
+***** Take
+'我没有写一行代码'的炫耀后面紧接着'这比我预期的需要更多手动工作'是我见过的最诚实的AI项目描述。欢迎来到未来：你不写代码，你只是照看那个写烂代码的东西。
+***** Comments
+- 我没有写一行代码。但无代码不意味着不需要工程。这比我希望的需要更多手动劳动！
+- 这里不能用，CORS问题。Cloudflare worker被限流了。
+- 看到更仔细后失望了，看起来很AI。图像缺乏连续性。但还是很酷的AI艺术与技术结合。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Show HN: isometric.nyc - NYCの巨大アイソメトリックピクセルアートマップ
+***** TLDR
+AIコーディングエージェントを使って数週間で作られたニューヨーク市の大規模アイソメトリックピクセルアートマップ。作者はコードを一行も手書きせず、nano bananaとAIエージェントでワークフロー全体を構築。ただし品質管理とタイルの一貫性には多くの手作業が必要だった。
+***** Take
+「コードを一行も書いていない」という自慢の直後に「予想以上に手作業が必要だった」と続くのは、最も正直なAIプロジェクトの説明だ。未来へようこそ：コードを書かないが、悪いコードを書くものの世話をするだけだ。
+***** Comments
+- コードを一行も書いていない。でもノーコードはノーエンジニアリングではない。予想以上に手作業が必要だった！
+- ここでは動かない、CORSの問題。Cloudflareワーカーがレート制限されている。
+- よく見たら期待外れだった、AIっぽく見える。画像に連続性がない。それでもAIとアートと技術の融合としてはクール。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Show HN: isometric.nyc - 뉴욕시 거대 아이소메트릭 픽셀 아트 지도
+***** TLDR
+AI 코딩 에이전트를 사용해 몇 주 만에 만든 뉴욕시의 대규모 아이소메트릭 픽셀 아트 지도. 제작자는 코드를 한 줄도 직접 작성하지 않고 nano banana와 AI 에이전트로 전체 워크플로우를 구축했다. 하지만 품질 관리와 타일 일관성을 위해 여전히 상당한 수작업이 필요했다.
+***** Take
+'코드를 한 줄도 안 썼다'는 자랑 바로 뒤에 '예상보다 훨씬 많은 수작업이 필요했다'가 따라오는 것은 내가 본 가장 정직한 AI 프로젝트 설명이다. 미래에 온 것을 환영한다: 코드를 쓰지 않고, 나쁜 코드를 쓰는 것을 돌보기만 한다.
+***** Comments
+- 코드를 한 줄도 안 썼다. 하지만 노코드가 노엔지니어링을 의미하지 않는다. 예상보다 훨씬 많은 수작업이 필요했다!
+- 여기서 작동 안 함, CORS 문제. Cloudflare 워커가 속도 제한됨.
+- 자세히 보니 실망했다, AI처럼 보인다. 이미지에 연속성이 없다. 그래도 AI와 아트와 기술의 융합으로는 쿨하다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Show HN: isometric.nyc - mapa gigante de pixel art isométrico de NYC
+***** TLDR
+Un mapa masivo de pixel art isométrico de Nueva York construido con agentes de IA en pocas semanas. El creador no escribió ni una línea de código manualmente, usando nano banana y agentes de IA. Sin embargo, aún requirió trabajo manual significativo para control de calidad y consistencia de tiles.
+***** Take
+El alarde de 'no escribí ni una línea de código' seguido inmediatamente por 'esto tomó mucho más trabajo manual del esperado' es la descripción más honesta de un proyecto de IA que he visto. Bienvenido al futuro: no escribes código, solo cuidas lo que escribe código malo.
+***** Comments
+- No escribí ni una línea de código. Pero no-código no significa no-ingeniería. ¡Esto tomó mucho más trabajo manual del que esperaba!
+- No funciona aquí, problema de CORS. El worker de Cloudflare está limitado.
+- Estaba emocionado hasta que miré más de cerca y vi lo AI que se ven. Las imágenes carecen de continuidad. Aún así, uso cool de IA mezclando arte con tecnología.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Show HN: isometric.nyc - riesige isometrische Pixelkunst-Karte von NYC
+***** TLDR
+Eine massive isometrische Pixelkunst-Karte von New York City, die mit KI-Coding-Agenten in wenigen Wochen erstellt wurde. Der Ersteller hat keine einzige Zeile Code manuell geschrieben und nutzte nano banana und KI-Agenten. Es erforderte jedoch noch erhebliche manuelle Arbeit für Qualitätskontrolle und Tile-Konsistenz.
+***** Take
+Das 'Ich habe keine einzige Zeile Code geschrieben'-Angeben, gefolgt von 'das hat viel mehr manuelle Arbeit gekostet als erwartet', ist die ehrlichste KI-Projektbeschreibung, die ich je gesehen habe. Willkommen in der Zukunft: Du schreibst keinen Code, du passt nur auf das Ding auf, das schlechten Code schreibt.
+***** Comments
+- Ich habe keine einzige Zeile Code geschrieben. Aber No-Code bedeutet nicht No-Engineering. Das hat viel mehr manuelle Arbeit gekostet als erhofft!
+- Funktioniert hier nicht, CORS-Problem. Der Cloudflare-Worker wird rate-limitiert.
+- War begeistert, bis ich genauer hinschaute und sah, wie KI-mäßig das aussieht. Bildern fehlt Kontinuität. Trotzdem coole Nutzung von KI, die Kunst mit Technik verbindet.
+** Qwen3-TTS Family Is Now Open Sourced: Voice Design, Clone, and Generation :ai:tts:open-source:alibaba:
+:PROPERTIES:
+:ID:       46719229
+:URL:      https://qwen.ai/blog?id=qwen3tts-0115
+:HN_URL:   https://news.ycombinator.com/item?id=46719229
+:POINTS:   291
+:COMMENTS: 86
+:BY:       Palmik
+:END:
+
+*** TLDR
+Alibaba's Qwen team open-sourced their TTS family with 1.7B and 0.6B models supporting 10 languages. The headline feature is 3-second voice cloning across multiple languages, plus voice design via natural language descriptions. Streaming generation hits 97ms latency.
+
+*** Take
+Three seconds of your voice and a Chinese open-source model can now be you in ten languages. The comments are already asking for an iOS app to test this, which is either exciting or terrifying depending on how recently you've received a scam call from 'yourself'.
+
+*** Comments
+
+**** simonw
+:PROPERTIES:
+:COMMENT_ID: 46719230
+:END:
+You can try the voice cloning on Hugging Face demo - switch to Voice Clone tab, record yourself reading text, then have it generate using your voice.
+
+**** sails
+:PROPERTIES:
+:COMMENT_ID: 46719231
+:END:
+Any recommendations for an iOS app to test models like this? Good ones for text gen, great way to try models.
+
+**** throwaw12
+:PROPERTIES:
+:COMMENT_ID: 46719232
+:END:
+Qwen team please release something to outperform Opus 4.5 coding abilities. I like the model but don't like how close and divisive the company leadership is politically.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Qwen3-TTS系列现已开源：语音设计、克隆和生成
+***** TLDR
+阿里巴巴Qwen团队开源了他们的TTS系列，包含1.7B和0.6B模型，支持10种语言。主打功能是3秒跨语言语音克隆，以及通过自然语言描述进行语音设计。流式生成延迟达97毫秒。
+***** Take
+三秒钟的语音加上一个中国开源模型，现在可以用十种语言成为你。评论区已经在问有没有iOS应用可以测试，这要么令人兴奋，要么令人恐惧，取决于你最近有没有接到过'自己'打来的诈骗电话。
+***** Comments
+- 你可以在Hugging Face演示上试用语音克隆 - 切换到语音克隆标签，录制自己朗读文本，然后让它用你的声音生成。
+- 有没有推荐的iOS应用来测试这类模型？文本生成有好用的，是试用模型的好方法。
+- Qwen团队请发布能超越Opus 4.5编程能力的东西。我喜欢这个模型但不喜欢公司领导层在政治上的封闭和分裂。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Qwen3-TTSファミリーがオープンソース化：音声デザイン、クローン、生成
+***** TLDR
+アリババのQwenチームが1.7Bと0.6Bモデルを含むTTSファミリーをオープンソース化、10言語をサポート。目玉機能は3秒の多言語音声クローニングと自然言語による音声デザイン。ストリーミング生成は97msの遅延を達成。
+***** Take
+3秒の声と中国のオープンソースモデルで、10言語であなたになれる。コメント欄ではすでにiOSアプリを求めている。これは最近「自分」からの詐欺電話を受けたかどうかで、ワクワクか恐怖かが分かれる。
+***** Comments
+- Hugging Faceデモで音声クローニングを試せる - 音声クローンタブに切り替え、テキストを読み上げて録音し、あなたの声で生成させる。
+- こういうモデルをテストするiOSアプリのおすすめは？テキスト生成には良いものがあり、モデルを試すのに最適。
+- Qwenチーム、Opus 4.5のコーディング能力を超えるものをリリースしてほしい。モデルは好きだけど、会社の幹部が政治的にどれだけ閉鎖的で分裂的かは好きじゃない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Qwen3-TTS 패밀리 오픈소스 공개: 음성 디자인, 클론, 생성
+***** TLDR
+알리바바 Qwen 팀이 10개 언어를 지원하는 1.7B 및 0.6B 모델이 포함된 TTS 패밀리를 오픈소스로 공개했다. 주요 기능은 3초 다국어 음성 복제와 자연어 설명을 통한 음성 디자인이다. 스트리밍 생성은 97ms 지연을 달성한다.
+***** Take
+3초의 목소리와 중국 오픈소스 모델로 10개 언어로 당신이 될 수 있다. 댓글에서는 이미 테스트용 iOS 앱을 묻고 있는데, 최근 '자신'으로부터 사기 전화를 받았는지에 따라 흥분되거나 무서울 것이다.
+***** Comments
+- Hugging Face 데모에서 음성 복제를 시도할 수 있다 - 음성 복제 탭으로 전환하고 텍스트를 읽어 녹음한 다음 당신의 목소리로 생성하게 한다.
+- 이런 모델을 테스트할 iOS 앱 추천 있나요? 텍스트 생성용으로 좋은 것들이 있고, 모델을 시험하기 좋은 방법이다.
+- Qwen 팀 제발 Opus 4.5 코딩 능력을 능가하는 것을 출시해달라. 모델은 좋지만 회사 경영진이 정치적으로 얼마나 폐쇄적이고 분열적인지는 싫다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+La familia Qwen3-TTS ya es código abierto: diseño, clonación y generación de voz
+***** TLDR
+El equipo Qwen de Alibaba liberó su familia TTS con modelos de 1.7B y 0.6B que soportan 10 idiomas. La función estrella es la clonación de voz en 3 segundos entre idiomas, más diseño de voz mediante descripciones en lenguaje natural. La generación streaming alcanza 97ms de latencia.
+***** Take
+Tres segundos de tu voz y un modelo chino de código abierto pueden ser tú en diez idiomas. Los comentarios ya preguntan por una app iOS para probar esto, lo cual es emocionante o aterrador dependiendo de si recientemente recibiste una llamada de estafa de 'ti mismo'.
+***** Comments
+- Puedes probar la clonación de voz en la demo de Hugging Face - cambia a la pestaña Voice Clone, grábate leyendo texto, y haz que genere usando tu voz.
+- ¿Recomendaciones de app iOS para probar modelos así? Hay buenas para gen de texto, gran manera de probar modelos.
+- Equipo Qwen, por favor lancen algo que supere las habilidades de código de Opus 4.5. Me gusta el modelo pero no me gusta lo cerrado y divisivo que es el liderazgo políticamente.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Qwen3-TTS-Familie jetzt Open Source: Sprachdesign, Klonen und Generierung
+***** TLDR
+Alibabas Qwen-Team hat ihre TTS-Familie mit 1.7B und 0.6B Modellen für 10 Sprachen als Open Source veröffentlicht. Das Highlight ist 3-Sekunden-Sprachklonen über Sprachen hinweg, plus Sprachdesign via natürlicher Sprache. Streaming-Generierung erreicht 97ms Latenz.
+***** Take
+Drei Sekunden deiner Stimme und ein chinesisches Open-Source-Modell können jetzt du in zehn Sprachen sein. Die Kommentare fragen bereits nach einer iOS-App zum Testen, was entweder aufregend oder beängstigend ist, je nachdem ob du kürzlich einen Betrügeranruf von 'dir selbst' erhalten hast.
+***** Comments
+- Du kannst das Sprachklonen auf der Hugging Face Demo ausprobieren - wechsle zum Voice Clone Tab, nimm dich beim Vorlesen auf, und lass es mit deiner Stimme generieren.
+- Empfehlungen für eine iOS-App um solche Modelle zu testen? Es gibt gute für Textgenerierung, tolle Möglichkeit Modelle auszuprobieren.
+- Qwen-Team, bitte veröffentlicht etwas, das die Coding-Fähigkeiten von Opus 4.5 übertrifft. Ich mag das Modell, aber nicht wie verschlossen und spalterisch die Firmenführung politisch ist.
+** Tree-sitter vs. Language Servers :programming:editors:tooling:parsing:
+:PROPERTIES:
+:ID:       46719899
+:URL:      https://lambdaland.org/posts/2026-01-21_tree-sitter_vs_lsp/
+:HN_URL:   https://news.ycombinator.com/item?id=46719899
+:POINTS:   161
+:COMMENTS: 43
+:BY:       ashton314
+:END:
+
+*** TLDR
+A comparison of tree-sitter (fast, error-tolerant parser for syntax highlighting) versus language servers (semantic code analysis via LSP). Tree-sitter wins on speed and handles broken code gracefully, while LSPs provide deeper understanding like knowing if a variable reference is mutable.
+
+*** Take
+The eternal editor infrastructure debate continues. Tree-sitter: fast and dumb. LSP: slow and smart. The real answer is 'both', but that won't stop people from arguing about it for another decade.
+
+*** Comments
+
+**** thramp
+:PROPERTIES:
+:COMMENT_ID: 46719900
+:END:
+Hi, I'm on the rust-analyzer team. Language servers are powerful because they hook into the runtime and compiler to get semantically correct answers. They can tell you if pop() came from a stack or heap library.
+
+**** KlayLay
+:PROPERTIES:
+:COMMENT_ID: 46719901
+:END:
+Thanks for the note about not using AI to write articles. I'm tired of finding articles online and not being sure about the author's integrity.
+
+**** Fiveplus
+:PROPERTIES:
+:COMMENT_ID: 46719902
+:END:
+Strong reason for tree-sitter: latency and layout stability. Tree-sitter parses on the main thread in sub-ms, ensuring syntax coloring is synchronous with keystrokes.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Tree-sitter vs. 语言服务器
+***** TLDR
+tree-sitter（用于语法高亮的快速、容错解析器）与语言服务器（通过LSP进行语义代码分析）的比较。Tree-sitter在速度上胜出并能优雅处理损坏的代码，而LSP提供更深层的理解，比如知道变量引用是否可变。
+***** Take
+永恒的编辑器基础设施辩论继续。Tree-sitter：快且笨。LSP：慢且聪明。真正的答案是'两者都要'，但这不会阻止人们再争论十年。
+***** Comments
+- 嗨，我是rust-analyzer团队的。语言服务器很强大因为它们接入运行时和编译器获取语义正确的答案。它们能告诉你pop()是来自栈库还是堆库。
+- 感谢说明没有用AI写文章。我厌倦了在网上找文章却不确定作者是否诚实。
+- tree-sitter的强力理由：延迟和布局稳定性。Tree-sitter在主线程上亚毫秒级解析，确保语法着色与按键同步。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Tree-sitter vs. 言語サーバー
+***** TLDR
+tree-sitter（シンタックスハイライト用の高速でエラー耐性のあるパーサー）と言語サーバー（LSPを介したセマンティックコード分析）の比較。Tree-sitterは速度で勝り、壊れたコードも優雅に処理する。一方LSPは変数参照がミュータブルかどうかなど、より深い理解を提供する。
+***** Take
+永遠のエディタインフラ論争が続く。Tree-sitter：速くて単純。LSP：遅くて賢い。本当の答えは「両方」だが、それでも人々はあと10年は議論し続けるだろう。
+***** Comments
+- こんにちは、rust-analyzerチームです。言語サーバーはランタイムとコンパイラに接続してセマンティックに正しい答えを得るので強力です。pop()がスタックライブラリからかヒープライブラリからか教えてくれます。
+- AIを使って記事を書いていないという注記をありがとう。オンラインで記事を見つけても著者の誠実さが確かでないのにうんざりしている。
+- tree-sitterの強い理由：レイテンシとレイアウトの安定性。Tree-sitterはメインスレッドでサブミリ秒でパースし、シンタックスカラーリングがキーストロークと同期することを保証する。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Tree-sitter vs. 언어 서버
+***** TLDR
+tree-sitter(구문 강조를 위한 빠르고 오류 허용 파서)와 언어 서버(LSP를 통한 의미론적 코드 분석)의 비교. Tree-sitter는 속도에서 이기고 깨진 코드를 우아하게 처리하며, LSP는 변수 참조가 변경 가능한지 등 더 깊은 이해를 제공한다.
+***** Take
+영원한 에디터 인프라 논쟁이 계속된다. Tree-sitter: 빠르고 단순하다. LSP: 느리고 똑똑하다. 진짜 답은 '둘 다'지만, 그래도 사람들은 앞으로 10년 더 논쟁할 것이다.
+***** Comments
+- 안녕하세요, rust-analyzer 팀입니다. 언어 서버는 런타임과 컴파일러에 연결해 의미론적으로 정확한 답을 얻기 때문에 강력합니다. pop()이 스택 라이브러리에서 왔는지 힙 라이브러리에서 왔는지 알려줄 수 있습니다.
+- AI를 사용해 글을 쓰지 않았다는 메모 감사합니다. 온라인에서 글을 찾으면서 저자의 진실성을 확신할 수 없는 것에 지쳤습니다.
+- tree-sitter의 강력한 이유: 지연 시간과 레이아웃 안정성. Tree-sitter는 메인 스레드에서 밀리초 미만으로 파싱해 구문 색상이 키 입력과 동기화되도록 합니다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Tree-sitter vs. Servidores de Lenguaje
+***** TLDR
+Una comparación de tree-sitter (parser rápido y tolerante a errores para resaltado de sintaxis) versus servidores de lenguaje (análisis semántico de código vía LSP). Tree-sitter gana en velocidad y maneja código roto elegantemente, mientras LSP proporciona comprensión más profunda como saber si una referencia de variable es mutable.
+***** Take
+El eterno debate de infraestructura de editores continúa. Tree-sitter: rápido y simple. LSP: lento e inteligente. La respuesta real es 'ambos', pero eso no evitará que la gente discuta por otra década.
+***** Comments
+- Hola, estoy en el equipo de rust-analyzer. Los servidores de lenguaje son poderosos porque se conectan al runtime y compilador para obtener respuestas semánticamente correctas. Pueden decirte si pop() vino de una librería de stack o heap.
+- Gracias por la nota sobre no usar IA para escribir artículos. Estoy cansado de encontrar artículos online y no estar seguro de la integridad del autor.
+- Fuerte razón para tree-sitter: latencia y estabilidad de layout. Tree-sitter parsea en el hilo principal en sub-ms, asegurando que el coloreado de sintaxis esté sincronizado con las pulsaciones.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Tree-sitter vs. Sprachserver
+***** TLDR
+Ein Vergleich von tree-sitter (schneller, fehlertoleranter Parser für Syntax-Highlighting) versus Sprachserver (semantische Codeanalyse via LSP). Tree-sitter gewinnt bei Geschwindigkeit und handhabt kaputten Code elegant, während LSPs tieferes Verständnis bieten, etwa ob eine Variablenreferenz veränderbar ist.
+***** Take
+Die ewige Editor-Infrastruktur-Debatte geht weiter. Tree-sitter: schnell und dumm. LSP: langsam und schlau. Die echte Antwort ist 'beides', aber das wird die Leute nicht davon abhalten, noch ein Jahrzehnt darüber zu streiten.
+***** Comments
+- Hi, ich bin im rust-analyzer Team. Sprachserver sind mächtig, weil sie sich in Runtime und Compiler einklinken um semantisch korrekte Antworten zu bekommen. Sie können dir sagen, ob pop() von einer Stack- oder Heap-Bibliothek kam.
+- Danke für die Anmerkung, dass keine KI zum Schreiben verwendet wurde. Ich bin es leid, Artikel online zu finden und nicht sicher über die Integrität des Autors zu sein.
+- Starkes Argument für tree-sitter: Latenz und Layout-Stabilität. Tree-sitter parst im Hauptthread in Sub-ms und stellt sicher, dass Syntax-Coloring synchron mit Tastatureingaben ist.
+** Design Thinking Books You Must Read :design:books:ux:methodology:
+:PROPERTIES:
+:ID:       46718061
+:URL:      https://www.designorate.com/design-thinking-books/
+:HN_URL:   https://news.ycombinator.com/item?id=46718061
+:POINTS:   240
+:COMMENTS: 110
+:BY:       rrm1977
+:END:
+
+*** TLDR
+A curated list of design thinking books including classics like 'The Design of Everyday Things' by Don Norman and 'Change by Design' by Tim Brown. The article argues understanding core design principles matters more than following design thinking methodologies.
+
+*** Take
+HN commenters spent 110 comments essentially agreeing that design thinking is the data science of UX: an attempt to gain influence in fields you don't have expertise in. The book list is fine; the methodology is consulting theater.
+
+*** Comments
+
+**** bsoles
+:PROPERTIES:
+:COMMENT_ID: 46718062
+:END:
+Design Thinking is the Data Science of UX: an attempt to gain influence in fields you don't have expertise in. Works for selling consulting services though.
+
+**** yakkomajuri
+:PROPERTIES:
+:COMMENT_ID: 46718063
+:END:
+I'm a dev and picked up 'The Design of Everyday Things' as the bible of design. 80 pages in and it's extremely academic and not very practical.
+
+**** lefstathiou
+:PROPERTIES:
+:COMMENT_ID: 46718064
+:END:
+As a 20 year PM with 10+ enterprise apps: 'Don't Make Me Think' is the seminal work. Haven't found a book with as much relevance even though it was written for the dot com era.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+你必须阅读的设计思维书籍
+***** TLDR
+一份精选的设计思维书单，包括Don Norman的《设计心理学》和Tim Brown的《设计改变一切》等经典著作。文章认为理解核心设计原则比遵循设计思维方法论更重要。
+***** Take
+HN评论者用110条评论基本达成共识：设计思维是UX界的数据科学——在你没有专业知识的领域试图获得影响力的尝试。书单还行；方法论就是咨询表演。
+***** Comments
+- 设计思维是UX界的数据科学：在你没有专业知识的领域试图获得影响力的尝试。不过用来卖咨询服务还是有用的。
+- 我是开发者，买了《设计心理学》当作设计圣经。读了80页，发现它极其学术化，不太实用。
+- 作为一个有20年经验、做过10+企业应用的产品经理：《Don't Make Me Think》是开创性著作。即使是为互联网泡沫时代写的，我还没找到同样有价值的书。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+読むべきデザイン思考の本
+***** TLDR
+Don Normanの『誰のためのデザイン？』やTim Brownの『デザイン思考が世界を変える』などの古典を含むデザイン思考の本のキュレーションリスト。記事はデザイン思考の方法論に従うより、コアなデザイン原則を理解することが重要だと主張。
+***** Take
+HNのコメンターは110コメントで基本的に同意した：デザイン思考はUXのデータサイエンス——専門知識のない分野で影響力を得ようとする試み。本のリストはまあまあ；方法論はコンサルティングシアターだ。
+***** Comments
+- デザイン思考はUXのデータサイエンス：専門知識のない分野で影響力を得ようとする試み。コンサルサービスを売るには使えるけど。
+- 開発者で『誰のためのデザイン？』をデザインのバイブルとして買った。80ページ読んで、非常にアカデミックで実践的ではない。
+- 20年のPMとして10以上のエンタープライズアプリを担当：『Don't Make Me Think』が画期的な作品。ドットコム時代に書かれたのに、同じくらい関連性のある本を見つけていない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+꼭 읽어야 할 디자인 씽킹 책들
+***** TLDR
+Don Norman의 '디자인과 인간심리'와 Tim Brown의 '디자인에 집중하라' 같은 클래식을 포함한 디자인 씽킹 책 큐레이션 리스트. 기사는 디자인 씽킹 방법론을 따르는 것보다 핵심 디자인 원칙을 이해하는 것이 더 중요하다고 주장한다.
+***** Take
+HN 댓글러들은 110개 댓글로 기본적으로 동의했다: 디자인 씽킹은 UX의 데이터 사이언스다 - 전문 지식이 없는 분야에서 영향력을 얻으려는 시도. 책 리스트는 괜찮다; 방법론은 컨설팅 연극이다.
+***** Comments
+- 디자인 씽킹은 UX의 데이터 사이언스: 전문 지식이 없는 분야에서 영향력을 얻으려는 시도. 컨설팅 서비스 파는 데는 효과적이지만.
+- 개발자인데 '디자인과 인간심리'를 디자인의 바이블로 샀다. 80페이지 읽었는데 매우 학술적이고 실용적이지 않다.
+- 20년차 PM으로 10개 이상 엔터프라이즈 앱 경험: 'Don't Make Me Think'가 기념비적 작품이다. 닷컴 시대에 쓰였지만 그만큼 관련성 있는 책을 못 찾았다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Libros de Design Thinking que debes leer
+***** TLDR
+Una lista curada de libros de design thinking incluyendo clásicos como 'El Diseño de las Cosas Cotidianas' de Don Norman y 'Diseñar el Cambio' de Tim Brown. El artículo argumenta que entender principios de diseño importa más que seguir metodologías de design thinking.
+***** Take
+Los comentaristas de HN usaron 110 comentarios para básicamente acordar que design thinking es el data science del UX: un intento de ganar influencia en campos donde no tienes experiencia. La lista de libros está bien; la metodología es teatro de consultoría.
+***** Comments
+- Design Thinking es el Data Science del UX: un intento de ganar influencia en campos donde no tienes experiencia. Aunque funciona para vender servicios de consultoría.
+- Soy dev y compré 'El Diseño de las Cosas Cotidianas' como la biblia del diseño. 80 páginas después, es extremadamente académico y poco práctico.
+- Como PM de 20 años con 10+ apps empresariales: 'Don't Make Me Think' es la obra seminal. No he encontrado un libro con tanta relevancia aunque fue escrito para la era dot com.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Design Thinking Bücher, die du lesen musst
+***** TLDR
+Eine kuratierte Liste von Design-Thinking-Büchern einschließlich Klassikern wie 'The Design of Everyday Things' von Don Norman und 'Change by Design' von Tim Brown. Der Artikel argumentiert, dass das Verständnis von Kern-Designprinzipien wichtiger ist als Design-Thinking-Methodologien zu befolgen.
+***** Take
+HN-Kommentatoren einigten sich in 110 Kommentaren im Wesentlichen darauf, dass Design Thinking das Data Science von UX ist: ein Versuch, in Feldern Einfluss zu gewinnen, in denen man keine Expertise hat. Die Bücherliste ist okay; die Methodologie ist Beratungstheater.
+***** Comments
+- Design Thinking ist das Data Science von UX: ein Versuch, in Feldern Einfluss zu gewinnen, wo man keine Expertise hat. Funktioniert aber um Beratungsservices zu verkaufen.
+- Bin Dev und habe 'The Design of Everyday Things' als die Bibel des Designs gekauft. 80 Seiten rein und es ist extrem akademisch und nicht sehr praktisch.
+- Als 20-Jahre-PM mit 10+ Enterprise-Apps: 'Don't Make Me Think' ist das bahnbrechende Werk. Habe kein Buch mit so viel Relevanz gefunden, obwohl es für die Dotcom-Ära geschrieben wurde.
