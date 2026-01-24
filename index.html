@@ -250,6 +250,11 @@
     <aside class="sidebar">
       <div class="sidebar-title">Highlights</div>
       <div class="sidebar-date">2026-01-24</div>
+      <a href="#s46731068-01241100">Ask HN: What&#x27;s the current best loc...</a>
+      <a href="#s46694618-01241100">Internet Archive&#x27;s Storage</a>
+      <a href="#s46737957-01241100">Mental Models (2018) :thinking:productiv...</a>
+      <a href="#s46740748-01241100">Let people help - Advice that made a big...</a>
+      <a href="#s46741482-01241100">80386 Multiplication and Division :hardw...</a>
       <a href="#s46735545-01240600">Microsoft gave FBI set of BitLocker encr...</a>
       <a href="#s46729368-01240600">Proton Spam and the AI Consent Problem</a>
       <a href="#s46734302-01240600">Gas Town&#x27;s agent patterns, design b...</a>
@@ -506,6 +511,347 @@
         </div>
       </header>
       <main id="feed">
+<section class="digest">
+      <div class="digest-header">
+        <div class="digest-date">2026-01-24T11:00:00Z</div>
+        <div class="digest-vibe">Voice assistants go local, the Archive penny-pinches petabytes, and HN rediscovers that thinking is hard</div>
+      </div>
+      <article class="story" id="s46731068-01241100">
+      <h3 class="story-title">
+        <a href="https://news.ycombinator.com/item?id=46731068" target="_blank">Ask HN: What&#x27;s the current best local/open speech-to-speech setup? :ai:voice:local-ai:ask-hn:</a>
+        <a href="#s46731068-01241100" class="story-anchor">#</a>
+      </h3>
+      <div class="i18n-title" data-lang="zh">Ask HN: 目前最好的本地/开源语音对话方案是什么？</div>
+<div class="i18n-title" data-lang="ja">Ask HN: 現在最も良いローカル/オープンな音声対話セットアップは？</div>
+<div class="i18n-title" data-lang="ko">Ask HN: 현재 최고의 로컬/오픈 음성-음성 설정은?</div>
+<div class="i18n-title" data-lang="es">Ask HN: Cual es la mejor configuracion local/abierta de voz a voz actualmente?</div>
+<div class="i18n-title" data-lang="de">Ask HN: Was ist das derzeit beste lokale/offene Speech-to-Speech-Setup?</div>
+
+      <div class="story-meta">
+        166pts | 39c | <a href="https://news.ycombinator.com/item?id=46731068" target="_blank">HN#46731068</a>
+      </div>
+      <div class="story-section story-tldr">
+        <div class="story-label">TL;DR</div>
+        <div class="story-text">Developer wants a fully local voice assistant with streaming, low latency, and barge-in support. Finds Qwen3 Omni promising on paper but nobody has a working local speech-to-speech setup. The consensus: true end-to-end speech models barely exist; everyone&#x27;s still gluing Whisper + LLM + TTS together.</div>
+        <span class="i18n-text" data-lang="zh">开发者想要一个完全本地化的语音助手，支持流式传输、低延迟和打断功能。发现Qwen3 Omni理论上不错，但没人有可用的本地语音对话设置。共识：真正的端到端语音模型几乎不存在，大家还在把Whisper + LLM + TTS拼凑在一起。</span>
+<span class="i18n-text" data-lang="ja">開発者がストリーミング、低レイテンシ、割り込み機能を備えた完全ローカルの音声アシスタントを求めている。Qwen3 Omniは紙面上は有望だが、ローカルで動作する音声対話セットアップを持っている人がいない。結論：真のエンドツーエンド音声モデルはほとんど存在せず、皆Whisper + LLM + TTSを繋ぎ合わせている。</span>
+<span class="i18n-text" data-lang="ko">개발자가 스트리밍, 저지연, 끼어들기 지원이 되는 완전 로컬 음성 어시스턴트를 원함. Qwen3 Omni가 이론상 좋아 보이지만 실제로 로컬 음성-음성 설정을 작동시킨 사람이 없음. 결론: 진정한 종단간 음성 모델은 거의 없고, 모두 Whisper + LLM + TTS를 이어붙이고 있음.</span>
+<span class="i18n-text" data-lang="es">Un desarrollador quiere un asistente de voz completamente local con streaming, baja latencia y soporte para interrupciones. Encuentra que Qwen3 Omni parece prometedor en papel pero nadie tiene una configuracion local de voz a voz funcionando. El consenso: los modelos de voz end-to-end casi no existen; todos siguen uniendo Whisper + LLM + TTS.</span>
+<span class="i18n-text" data-lang="de">Entwickler will einen vollstaendig lokalen Sprachassistenten mit Streaming, niedriger Latenz und Unterbrechungsunterstuetzung. Findet Qwen3 Omni auf dem Papier vielversprechend, aber niemand hat ein funktionierendes lokales Speech-to-Speech-Setup. Konsens: Echte End-to-End-Sprachmodelle existieren kaum; alle kleben noch Whisper + LLM + TTS zusammen.</span>
+
+      </div>
+      <div class="story-section story-take">
+        <div class="story-label">Take</div>
+        <div class="story-text">We&#x27;re in 2026 and the state of local voice AI is &#x27;please chain three separate models together and pray for sub-500ms latency.&#x27; The dream of &#x27;just talk to the computer&#x27; remains exactly that.</div>
+        <span class="i18n-text" data-lang="zh">2026年了，本地语音AI的现状还是&#x27;请把三个模型串起来祈祷延迟低于500毫秒&#x27;。&#x27;直接跟电脑说话&#x27;的梦想仍然只是梦想。</span>
+<span class="i18n-text" data-lang="ja">2026年になってもローカル音声AIの現状は「3つのモデルを繋げて500ms以下のレイテンシを祈る」。「コンピュータに話しかけるだけ」という夢は夢のまま。</span>
+<span class="i18n-text" data-lang="ko">2026년인데 로컬 음성 AI 현황은 &#x27;세 개의 모델을 연결하고 500ms 이하 지연을 기도하세요&#x27; 수준. &#x27;컴퓨터와 그냥 대화하기&#x27;라는 꿈은 여전히 꿈일 뿐.</span>
+<span class="i18n-text" data-lang="es">Estamos en 2026 y el estado de la IA de voz local es &#x27;por favor encadena tres modelos separados y reza por latencia menor a 500ms&#x27;. El sueno de &#x27;solo hablarle a la computadora&#x27; sigue siendo exactamente eso.</span>
+<span class="i18n-text" data-lang="de">Wir sind im Jahr 2026 und der Stand der lokalen Sprach-KI ist &#x27;bitte verkette drei separate Modelle und bete fuer unter 500ms Latenz.&#x27; Der Traum vom &#x27;einfach mit dem Computer reden&#x27; bleibt genau das.</span>
+
+      </div>
+      <div class="story-section story-comments">
+        <div class="story-label">HN Voices</div>
+        <div class="comment">
+          <div class="comment-text">"Home Assistant have a fully local voice assistant experience that&#x27;s very pluggable and customisable. Uses a fast whisper model for STT and piper for TTS."</div>
+          <div class="comment-i18n" data-lang="zh">Home Assistant有完全本地化的语音助手体验，非常灵活可定制。用fast whisper做STT，piper做TTS。</div>
+<div class="comment-i18n" data-lang="ja">Home Assistantには完全にローカルで動く音声アシスタント体験がある。非常にプラガブルでカスタマイズ可能。STTにfast whisper、TTSにpiperを使用。</div>
+<div class="comment-i18n" data-lang="ko">Home Assistant에 완전 로컬 음성 어시스턴트 경험이 있음. 매우 플러그인화되고 커스터마이징 가능. STT에 fast whisper, TTS에 piper 사용.</div>
+<div class="comment-i18n" data-lang="es">Home Assistant tiene una experiencia de asistente de voz completamente local que es muy personalizable. Usa un modelo whisper rapido para STT y piper para TTS.</div>
+<div class="comment-i18n" data-lang="de">Home Assistant hat eine vollstaendig lokale Sprachassistenten-Erfahrung, die sehr anpassbar ist. Verwendet ein schnelles Whisper-Modell fuer STT und Piper fuer TTS.</div>
+
+          <div class="comment-author">-- timwis</div>
+        </div><div class="comment">
+          <div class="comment-text">"You should look into the new Nvidia model Personaplex. It has dual channel input/output and a very permissible license."</div>
+          <div class="comment-i18n" data-lang="zh">你应该看看英伟达新出的Personaplex模型。双通道输入输出，许可证也很宽松。</div>
+<div class="comment-i18n" data-lang="ja">Nvidiaの新しいPersonaplexモデルを見てみるべき。デュアルチャンネル入出力で、ライセンスも非常に寛容。</div>
+<div class="comment-i18n" data-lang="ko">Nvidia의 새 Personaplex 모델을 살펴봐야 함. 듀얼 채널 입출력에 라이선스도 매우 관대함.</div>
+<div class="comment-i18n" data-lang="es">Deberias ver el nuevo modelo de Nvidia Personaplex. Tiene entrada/salida de doble canal y una licencia muy permisiva.</div>
+<div class="comment-i18n" data-lang="de">Du solltest dir das neue Nvidia-Modell Personaplex ansehen. Es hat Dual-Channel-Ein-/Ausgabe und eine sehr permissive Lizenz.</div>
+
+          <div class="comment-author">-- mpaepper</div>
+        </div><div class="comment">
+          <div class="comment-text">"I&#x27;m using spokenly.app in local mode. Very happy with it. Parakeet v3 is fast but more errors."</div>
+          <div class="comment-i18n" data-lang="zh">我用spokenly.app的本地模式，很满意。Parakeet v3很快但错误更多。</div>
+<div class="comment-i18n" data-lang="ja">spokenly.appをローカルモードで使っている。とても満足。Parakeet v3は速いがエラーが多い。</div>
+<div class="comment-i18n" data-lang="ko">spokenly.app을 로컬 모드로 사용 중. 매우 만족. Parakeet v3는 빠르지만 오류가 더 많음.</div>
+<div class="comment-i18n" data-lang="es">Uso spokenly.app en modo local. Muy contento con el. Parakeet v3 es rapido pero tiene mas errores.</div>
+<div class="comment-i18n" data-lang="de">Ich benutze spokenly.app im lokalen Modus. Sehr zufrieden damit. Parakeet v3 ist schnell, hat aber mehr Fehler.</div>
+
+          <div class="comment-author">-- vulkoingim</div>
+        </div>
+      </div>
+      
+    </article>
+<article class="story" id="s46694618-01241100">
+      <h3 class="story-title">
+        <a href="https://blog.dshr.org/2026/01/internet-archives-storage.html" target="_blank">Internet Archive&#x27;s Storage</a>
+        <a href="#s46694618-01241100" class="story-anchor">#</a>
+      </h3>
+      <div class="i18n-title" data-lang="zh">互联网档案馆的存储系统</div>
+<div class="i18n-title" data-lang="ja">インターネットアーカイブのストレージ</div>
+<div class="i18n-title" data-lang="ko">인터넷 아카이브의 스토리지</div>
+<div class="i18n-title" data-lang="es">El almacenamiento del Internet Archive</div>
+<div class="i18n-title" data-lang="de">Der Speicher des Internet Archive</div>
+
+      <div class="story-meta">
+        158pts | 34c | <a href="https://news.ycombinator.com/item?id=46694618" target="_blank">HN#46694618</a>
+      </div>
+      <div class="story-section story-tldr">
+        <div class="story-label">TL;DR</div>
+        <div class="story-text">The Internet Archive runs on $25-30M/year with 100+ petabytes stored across custom PetaBox racks. Secret sauce: own your hardware, skip air conditioning (SF climate + waste heat warms the building), use open source everything. They went from 100TB per rack in 2004 to 1.4 petabytes per rack by 2025.</div>
+        <span class="i18n-text" data-lang="zh">互联网档案馆每年运营预算2500-3000万美元，存储超过100PB数据在定制的PetaBox机架上。秘诀：自有硬件、不用空调（旧金山气候+废热给建筑供暖）、全部使用开源软件。从2004年每机架100TB发展到2025年每机架1.4PB。</span>
+<span class="i18n-text" data-lang="ja">インターネットアーカイブは年間2500-3000万ドルで100ペタバイト以上をカスタムPetaBoxラックに保存。秘訣：ハードウェア所有、エアコン不要（SF気候+廃熱でビル暖房）、すべてオープンソース。2004年のラックあたり100TBから2025年には1.4ペタバイトへ。</span>
+<span class="i18n-text" data-lang="ko">인터넷 아카이브는 연간 2500-3000만 달러로 커스텀 PetaBox 랙에 100+ 페타바이트를 저장. 비결: 하드웨어 소유, 에어컨 불필요(SF 기후 + 폐열로 건물 난방), 모든 것 오픈소스. 2004년 랙당 100TB에서 2025년 1.4 페타바이트로 발전.</span>
+<span class="i18n-text" data-lang="es">El Internet Archive opera con $25-30M/ano con mas de 100 petabytes almacenados en racks PetaBox personalizados. El secreto: tener tu propio hardware, sin aire acondicionado (clima de SF + calor residual calienta el edificio), todo codigo abierto. Pasaron de 100TB por rack en 2004 a 1.4 petabytes por rack en 2025.</span>
+<span class="i18n-text" data-lang="de">Das Internet Archive laeuft mit $25-30M/Jahr und ueber 100 Petabytes auf massgeschneiderten PetaBox-Racks. Geheimrezept: eigene Hardware, keine Klimaanlage (SF-Klima + Abwaerme heizt das Gebaeude), alles Open Source. Von 100TB pro Rack 2004 auf 1,4 Petabytes pro Rack 2025.</span>
+
+      </div>
+      <div class="story-section story-take">
+        <div class="story-label">Take</div>
+        <div class="story-text">While everyone&#x27;s burning cash on cloud storage, the Archive is out here heating their office with server exhaust and calling it innovation. Brewster Kahle played the long game and won.</div>
+        <span class="i18n-text" data-lang="zh">当所有人都在云存储上烧钱时，档案馆却用服务器废热给办公室供暖并称之为创新。布鲁斯特·卡尔玩的是长线游戏，而且赢了。</span>
+<span class="i18n-text" data-lang="ja">みんながクラウドストレージに金を燃やしている間、アーカイブはサーバーの排熱でオフィスを暖めてイノベーションと呼んでいる。ブリュースター・ケールは長期戦を仕掛けて勝った。</span>
+<span class="i18n-text" data-lang="ko">모두가 클라우드 스토리지에 돈을 태우는 동안, 아카이브는 서버 배기열로 사무실을 데우며 혁신이라 부른다. 브루스터 케일이 장기전을 펼쳐 이겼다.</span>
+<span class="i18n-text" data-lang="es">Mientras todos queman dinero en almacenamiento en la nube, el Archive esta calentando su oficina con el escape de los servidores y llamandolo innovacion. Brewster Kahle jugo a largo plazo y gano.</span>
+<span class="i18n-text" data-lang="de">Waehrend alle ihr Geld fuer Cloud-Speicher verbrennen, heizt das Archive sein Buero mit Serverabluft und nennt es Innovation. Brewster Kahle hat auf Zeit gespielt und gewonnen.</span>
+
+      </div>
+      <div class="story-section story-comments">
+        <div class="story-label">HN Voices</div>
+        <div class="comment">
+          <div class="comment-text">"By owning its hardware, using the PetaBox high-density architecture, avoiding air conditioning costs, and using open-source software, the Archive achieves a storage cost efficiency that is orders of magnitude better than commercial cloud rates. That&#x27;s impressive."</div>
+          <div class="comment-i18n" data-lang="zh">通过自有硬件、使用PetaBox高密度架构、避免空调成本、使用开源软件，档案馆的存储成本效率比商业云服务高出几个数量级。这很了不起。</div>
+<div class="comment-i18n" data-lang="ja">ハードウェアを所有し、PetaBox高密度アーキテクチャを使用し、エアコンコストを回避し、オープンソースソフトウェアを使用することで、アーカイブは商用クラウドより桁違いに優れたストレージコスト効率を達成している。すごい。</div>
+<div class="comment-i18n" data-lang="ko">하드웨어를 소유하고, PetaBox 고밀도 아키텍처를 사용하고, 에어컨 비용을 피하고, 오픈소스 소프트웨어를 사용함으로써, 아카이브는 상업용 클라우드 요금보다 수십 배 우수한 스토리지 비용 효율성을 달성한다. 인상적이다.</div>
+<div class="comment-i18n" data-lang="es">Al poseer su hardware, usar la arquitectura de alta densidad PetaBox, evitar costos de aire acondicionado y usar software de codigo abierto, el Archive logra una eficiencia de costos de almacenamiento ordenes de magnitud mejor que las tarifas comerciales de nube. Impresionante.</div>
+<div class="comment-i18n" data-lang="de">Durch den Besitz eigener Hardware, die Nutzung der PetaBox-Hochdichtearchitektur, die Vermeidung von Klimaanlagenkosten und die Verwendung von Open-Source-Software erreicht das Archive eine Speicherkosteneffizienz, die um Groessenordnungen besser ist als kommerzielle Cloud-Tarife. Beeindruckend.</div>
+
+          <div class="comment-author">-- dr_dshiv</div>
+        </div><div class="comment">
+          <div class="comment-text">"This &#x27;waste heat&#x27; system is a closed loop of efficiency. The 60+ kilowatts of heat energy produced by a storage cluster is not a byproduct to be eliminated but a resource to be harvested. Are there any other data centers harvesting waste heat for benefit?"</div>
+          <div class="comment-i18n" data-lang="zh">这个&#x27;废热&#x27;系统是一个闭环效率系统。存储集群产生的60多千瓦热能不是需要消除的副产品，而是可以收获的资源。还有其他数据中心在利用废热吗？</div>
+<div class="comment-i18n" data-lang="ja">この「廃熱」システムは効率の閉ループだ。ストレージクラスタが生成する60キロワット以上の熱エネルギーは排除すべき副産物ではなく、収穫すべきリソースだ。他に廃熱を活用しているデータセンターはある？</div>
+<div class="comment-i18n" data-lang="ko">이 &#x27;폐열&#x27; 시스템은 효율의 폐루프다. 스토리지 클러스터가 생산하는 60+ 킬로와트의 열 에너지는 제거할 부산물이 아니라 수확할 자원이다. 폐열을 활용하는 다른 데이터센터가 있나?</div>
+<div class="comment-i18n" data-lang="es">Este sistema de &#x27;calor residual&#x27; es un ciclo cerrado de eficiencia. Los mas de 60 kilovatios de energia termica producidos por un cluster de almacenamiento no son un subproducto a eliminar sino un recurso a cosechar. Hay otros centros de datos aprovechando el calor residual?</div>
+<div class="comment-i18n" data-lang="de">Dieses &#x27;Abwaerme&#x27;-System ist ein geschlossener Effizienzkreislauf. Die ueber 60 Kilowatt Waermeenergie eines Speicherclusters sind kein zu beseitigendes Nebenprodukt, sondern eine zu erntende Ressource. Gibt es andere Rechenzentren, die Abwaerme nutzen?</div>
+
+          <div class="comment-author">-- mrexroad</div>
+        </div><div class="comment">
+          <div class="comment-text">"I&#x27;m always surprised by how small the storage described is. Has any of the big ones released articles on their storage systems in the last 5-10 years?"</div>
+          <div class="comment-i18n" data-lang="zh">我总是惊讶于描述的存储规模如此之小。大公司在过去5-10年有发表过关于其存储系统的文章吗？</div>
+<div class="comment-i18n" data-lang="ja">記載されているストレージがいかに小さいかにいつも驚く。大手企業は過去5-10年でストレージシステムに関する記事を発表した？</div>
+<div class="comment-i18n" data-lang="ko">설명된 스토리지가 얼마나 작은지 항상 놀란다. 대기업들이 지난 5-10년간 스토리지 시스템에 대한 기사를 발표한 적 있나?</div>
+<div class="comment-i18n" data-lang="es">Siempre me sorprende lo pequeno que es el almacenamiento descrito. Alguno de los grandes ha publicado articulos sobre sus sistemas de almacenamiento en los ultimos 5-10 anos?</div>
+<div class="comment-i18n" data-lang="de">Ich bin immer ueberrascht, wie klein der beschriebene Speicher ist. Hat einer der Grossen in den letzten 5-10 Jahren Artikel ueber ihre Speichersysteme veroeffentlicht?</div>
+
+          <div class="comment-author">-- arcade79</div>
+        </div>
+      </div>
+      <div class="tags"><span class="tag">#infrastructure</span><span class="tag">#archive</span><span class="tag">#storage</span><span class="tag">#nonprofit</span></div>
+    </article>
+<article class="story" id="s46737957-01241100">
+      <h3 class="story-title">
+        <a href="https://fs.blog/mental-models/" target="_blank">Mental Models (2018) :thinking:productivity:mental-models</a>
+        <a href="#s46737957-01241100" class="story-anchor">#</a>
+      </h3>
+      <div class="i18n-title" data-lang="zh">心智模型（2018年）</div>
+<div class="i18n-title" data-lang="ja">メンタルモデル（2018年）</div>
+<div class="i18n-title" data-lang="ko">멘탈 모델 (2018)</div>
+<div class="i18n-title" data-lang="es">Modelos Mentales (2018)</div>
+<div class="i18n-title" data-lang="de">Mentale Modelle (2018)</div>
+
+      <div class="story-meta">
+        100pts | 12c | <a href="https://news.ycombinator.com/item?id=46737957" target="_blank">HN#46737957</a>
+      </div>
+      <div class="story-section story-tldr">
+        <div class="story-label">TL;DR</div>
+        <div class="story-text">Farnam Street&#x27;s comprehensive guide to mental models: thinking tools like First Principles, Circle of Competence, Inversion, and Hanlon&#x27;s Razor. Also covers physics-inspired models (leverage, inertia, feedback loops) and systems thinking concepts. Originally published in 2018, still circulating because thinking clearly never goes out of style.</div>
+        <span class="i18n-text" data-lang="zh">Farnam Street的心智模型综合指南：第一性原理、能力圈、逆向思维、汉隆剃刀等思维工具。还涵盖物理学启发的模型（杠杆、惯性、反馈循环）和系统思维概念。2018年首发，至今仍在流传，因为清晰思考永不过时。</span>
+<span class="i18n-text" data-lang="ja">Farnam Streetによるメンタルモデルの包括的ガイド：第一原理、能力の輪、逆転思考、ハンロンの剃刀などの思考ツール。物理学に触発されたモデル（レバレッジ、慣性、フィードバックループ）やシステム思考の概念もカバー。2018年初出だが、明晰に考えることは時代遅れにならないため今も出回っている。</span>
+<span class="i18n-text" data-lang="ko">Farnam Street의 멘탈 모델 종합 가이드: 제1원칙, 역량의 원, 역발상, 핸론의 면도기 같은 사고 도구. 물리학에서 영감받은 모델(레버리지, 관성, 피드백 루프)과 시스템 사고 개념도 다룸. 2018년 최초 발행, 명확한 사고는 시대에 뒤처지지 않기에 여전히 유통 중.</span>
+<span class="i18n-text" data-lang="es">La guia completa de Farnam Street sobre modelos mentales: herramientas de pensamiento como Primeros Principios, Circulo de Competencia, Inversion y la Navaja de Hanlon. Tambien cubre modelos inspirados en la fisica (apalancamiento, inercia, bucles de retroalimentacion) y conceptos de pensamiento sistemico. Publicado originalmente en 2018, sigue circulando porque pensar claramente nunca pasa de moda.</span>
+<span class="i18n-text" data-lang="de">Farnam Streets umfassender Leitfaden zu mentalen Modellen: Denkwerkzeuge wie First Principles, Circle of Competence, Inversion und Hanlon&#x27;s Razor. Auch physikalisch inspirierte Modelle (Hebel, Traegheit, Feedback-Schleifen) und Systemdenken-Konzepte. Urspruenglich 2018 veroeffentlicht, zirkuliert immer noch, weil klares Denken nie aus der Mode kommt.</span>
+
+      </div>
+      <div class="story-section story-take">
+        <div class="story-label">Take</div>
+        <div class="story-text">Every few years HN rediscovers that Charlie Munger had good ideas. The irony of reading about &#x27;map is not the territory&#x27; while building ever more elaborate mental model collections is lost on nobody.</div>
+        <span class="i18n-text" data-lang="zh">每隔几年HN就会重新发现查理·芒格有好点子。在构建越来越复杂的心智模型集合时阅读&#x27;地图不是领土&#x27;的讽刺意味，没人会忽略。</span>
+<span class="i18n-text" data-lang="ja">数年ごとにHNはチャーリー・マンガーが良いアイデアを持っていたことを再発見する。より精巧なメンタルモデルコレクションを構築しながら「地図は領土ではない」を読むという皮肉は誰にも見逃されない。</span>
+<span class="i18n-text" data-lang="ko">몇 년마다 HN은 찰리 멍거가 좋은 아이디어를 가졌다는 걸 재발견한다. 점점 더 정교한 멘탈 모델 컬렉션을 구축하면서 &#x27;지도는 영토가 아니다&#x27;를 읽는 아이러니는 누구도 놓치지 않는다.</span>
+<span class="i18n-text" data-lang="es">Cada pocos anos HN redescubre que Charlie Munger tenia buenas ideas. La ironia de leer sobre &#x27;el mapa no es el territorio&#x27; mientras construyes colecciones de modelos mentales cada vez mas elaboradas no se le escapa a nadie.</span>
+<span class="i18n-text" data-lang="de">Alle paar Jahre entdeckt HN wieder, dass Charlie Munger gute Ideen hatte. Die Ironie, ueber &#x27;die Karte ist nicht das Gebiet&#x27; zu lesen, waehrend man immer aufwendigere Sammlungen mentaler Modelle aufbaut, entgeht niemandem.</span>
+
+      </div>
+      <div class="story-section story-comments">
+        <div class="story-label">HN Voices</div>
+        <div class="comment">
+          <div class="comment-text">"All these mental models are simplified maps of an infinitely complex reality. When we rely on them too heavily, do we risk falling into the trap of mistaking the map for the actual territory?"</div>
+          <div class="comment-i18n" data-lang="zh">所有这些心智模型都是无限复杂现实的简化地图。当我们过度依赖它们时，是否有把地图误认为实际领土的风险？</div>
+<div class="comment-i18n" data-lang="ja">これらのメンタルモデルはすべて、無限に複雑な現実の単純化された地図だ。過度に頼りすぎると、地図を実際の領土と間違えるリスクがあるのでは？</div>
+<div class="comment-i18n" data-lang="ko">이 모든 멘탈 모델은 무한히 복잡한 현실의 단순화된 지도다. 너무 많이 의존하면 지도를 실제 영토로 착각하는 함정에 빠질 위험이 있지 않을까?</div>
+<div class="comment-i18n" data-lang="es">Todos estos modelos mentales son mapas simplificados de una realidad infinitamente compleja. Cuando dependemos demasiado de ellos, corremos el riesgo de caer en la trampa de confundir el mapa con el territorio real?</div>
+<div class="comment-i18n" data-lang="de">All diese mentalen Modelle sind vereinfachte Karten einer unendlich komplexen Realitaet. Wenn wir uns zu sehr auf sie verlassen, riskieren wir dann, in die Falle zu tappen, die Karte mit dem tatsaechlichen Gebiet zu verwechseln?</div>
+
+          <div class="comment-author">-- snasan</div>
+        </div><div class="comment">
+          <div class="comment-text">"Previous discussion here: https://news.ycombinator.com/item?id=17121145. Always a good read."</div>
+          <div class="comment-i18n" data-lang="zh">之前的讨论在这里：https://news.ycombinator.com/item?id=17121145。一直是好文章。</div>
+<div class="comment-i18n" data-lang="ja">以前の議論はこちら：https://news.ycombinator.com/item?id=17121145。いつも良い読み物。</div>
+<div class="comment-i18n" data-lang="ko">이전 토론 링크: https://news.ycombinator.com/item?id=17121145. 항상 좋은 글.</div>
+<div class="comment-i18n" data-lang="es">Discusion anterior aqui: https://news.ycombinator.com/item?id=17121145. Siempre una buena lectura.</div>
+<div class="comment-i18n" data-lang="de">Vorherige Diskussion hier: https://news.ycombinator.com/item?id=17121145. Immer eine gute Lektuere.</div>
+
+          <div class="comment-author">-- hahahacorn</div>
+        </div><div class="comment">
+          <div class="comment-text">"Bought his books, definitely the first time I was exposed to this sort of stuff. Great reads."</div>
+          <div class="comment-i18n" data-lang="zh">买了他的书，这绝对是我第一次接触这类东西。很棒的读物。</div>
+<div class="comment-i18n" data-lang="ja">彼の本を買った。こういうものに初めて触れたのは間違いなくこれ。素晴らしい読み物。</div>
+<div class="comment-i18n" data-lang="ko">그의 책을 샀다. 이런 류의 것에 처음 접한 건 확실히 이때다. 훌륭한 읽을거리.</div>
+<div class="comment-i18n" data-lang="es">Compre sus libros, definitivamente la primera vez que estuve expuesto a este tipo de cosas. Excelentes lecturas.</div>
+<div class="comment-i18n" data-lang="de">Habe seine Buecher gekauft, definitiv das erste Mal, dass ich mit so etwas in Beruehrung kam. Tolle Lektuere.</div>
+
+          <div class="comment-author">-- incognito124</div>
+        </div>
+      </div>
+      <div class="tags"><span class="tag">#evergreen</span></div>
+    </article>
+<article class="story" id="s46740748-01241100">
+      <h3 class="story-title">
+        <a href="https://www.npr.org/2026/01/20/nx-s1-5683170/let-them-the-small-bit-of-advice-that-made-a-big-difference-to-a-grieving-widow" target="_blank">Let people help - Advice that made a big difference to a grieving widow</a>
+        <a href="#s46740748-01241100" class="story-anchor">#</a>
+      </h3>
+      <div class="i18n-title" data-lang="zh">让人们帮忙 - 对一位悲伤寡妇产生重大影响的建议</div>
+<div class="i18n-title" data-lang="ja">人に助けてもらって - 悲しみに暮れる未亡人に大きな違いをもたらしたアドバイス</div>
+<div class="i18n-title" data-lang="ko">사람들이 돕게 해요 - 슬픔에 잠긴 미망인에게 큰 변화를 가져온 조언</div>
+<div class="i18n-title" data-lang="es">Deja que la gente ayude - El consejo que marco una gran diferencia para una viuda en duelo</div>
+<div class="i18n-title" data-lang="de">Lass die Leute helfen - Der Rat, der fuer eine trauernde Witwe einen grossen Unterschied machte</div>
+
+      <div class="story-meta">
+        55pts | 4c | <a href="https://news.ycombinator.com/item?id=46740748" target="_blank">HN#46740748</a>
+      </div>
+      <div class="story-section story-tldr">
+        <div class="story-label">TL;DR</div>
+        <div class="story-text">After her husband died in a plane crash in 2020, Connie Sherburne received transformative advice from an insurance agent: &#x27;Let them.&#x27; When people offer to help, accept it. She let a neighbor chop her firewood, another cook dinners for four years. Simple advice that cut through the grief spiral of refusing help.</div>
+        <span class="i18n-text" data-lang="zh">2020年丈夫在飞机失事中去世后，康妮·舍伯恩从一位保险代理人那里收到了改变人生的建议：&#x27;让他们来。&#x27;当人们提出帮助时，接受它。她让邻居帮忙劈柴，让另一位邻居为她做了四年的晚餐。简单的建议切断了拒绝帮助的悲伤螺旋。</span>
+<span class="i18n-text" data-lang="ja">2020年に夫が飛行機事故で亡くなった後、コニー・シャーバーンは保険代理店から人生を変えるアドバイスを受けた：「させてあげて」。人々が助けを申し出たら、受け入れる。彼女は隣人に薪を割らせ、別の隣人に4年間夕食を作ってもらった。助けを拒否する悲しみのスパイラルを断ち切るシンプルなアドバイス。</span>
+<span class="i18n-text" data-lang="ko">2020년 남편이 비행기 사고로 사망한 후, 코니 셔번은 보험 직원으로부터 인생을 바꾸는 조언을 받았다: &#x27;그렇게 하게 두세요.&#x27; 사람들이 도움을 제안하면 받아들이라. 그녀는 이웃이 장작을 패게 했고, 다른 이웃이 4년간 저녁을 해주게 했다. 도움을 거부하는 슬픔의 악순환을 끊는 간단한 조언.</span>
+<span class="i18n-text" data-lang="es">Despues de que su esposo muriera en un accidente de avion en 2020, Connie Sherburne recibio un consejo transformador de un agente de seguros: &#x27;Dejalos.&#x27; Cuando la gente ofrece ayuda, aceptala. Dejo que un vecino le cortara la lena, que otro le cocinara durante cuatro anos. Un consejo simple que corto la espiral de duelo de rechazar ayuda.</span>
+<span class="i18n-text" data-lang="de">Nachdem ihr Mann 2020 bei einem Flugzeugabsturz starb, erhielt Connie Sherburne einen transformativen Rat von einem Versicherungsagenten: &#x27;Lass sie.&#x27; Wenn Menschen Hilfe anbieten, nimm sie an. Sie liess einen Nachbarn ihr Brennholz hacken, einen anderen vier Jahre lang fuer sie kochen. Einfacher Rat, der die Trauerspirale des Hilfe-Ablehnens durchbrach.</span>
+
+      </div>
+      <div class="story-section story-take">
+        <div class="story-label">Take</div>
+        <div class="story-text">Sometimes the most profound wisdom comes from unexpected places. An insurance agent, of all people, delivered the line that got a widow through the worst time of her life. No algorithm could have predicted that.</div>
+        <span class="i18n-text" data-lang="zh">有时最深刻的智慧来自意想不到的地方。一位保险代理人，居然是他，说出了帮助一位寡妇度过人生最艰难时期的话。没有算法能预测到这一点。</span>
+<span class="i18n-text" data-lang="ja">時に最も深い知恵は予想外の場所から来る。保険代理店員が、よりによって、未亡人が人生最悪の時期を乗り越える言葉を届けた。どんなアルゴリズムもこれを予測できなかっただろう。</span>
+<span class="i18n-text" data-lang="ko">때로 가장 심오한 지혜는 예상치 못한 곳에서 온다. 보험 직원이, 하필 그가, 미망인이 인생 최악의 시기를 넘기게 한 말을 전했다. 어떤 알고리즘도 이걸 예측하지 못했을 것이다.</span>
+<span class="i18n-text" data-lang="es">A veces la sabiduria mas profunda viene de lugares inesperados. Un agente de seguros, de todas las personas, dio la frase que ayudo a una viuda a atravesar el peor momento de su vida. Ningun algoritmo podria haber predicho eso.</span>
+<span class="i18n-text" data-lang="de">Manchmal kommt die tiefgruendigste Weisheit von unerwarteten Orten. Ein Versicherungsagent, ausgerechnet, lieferte den Satz, der einer Witwe durch die schlimmste Zeit ihres Lebens half. Kein Algorithmus haette das vorhersagen koennen.</span>
+
+      </div>
+      <div class="story-section story-comments">
+        <div class="story-label">HN Voices</div>
+        <div class="comment">
+          <div class="comment-text">"Rabbi Haim once ascended to see the difference between Hell and Heaven. In Hell, people sat at tables of magnificent food but had wooden slats on their arms and couldn&#x27;t feed themselves. In Heaven, same setup - but they fed each other."</div>
+          <div class="comment-i18n" data-lang="zh">拉比海姆曾升天去看地狱和天堂的区别。在地狱里，人们坐在摆满美食的桌子旁，但手臂上绑着木板无法自己进食。在天堂，同样的设置——但他们互相喂食。</div>
+<div class="comment-i18n" data-lang="ja">ラビ・ハイムはかつて地獄と天国の違いを見るために昇天した。地獄では、人々は豪華な料理のテーブルに座っていたが、腕に木の板が付けられ自分で食べられなかった。天国も同じ設定だが、彼らは互いに食べさせ合っていた。</div>
+<div class="comment-i18n" data-lang="ko">랍비 하임이 지옥과 천국의 차이를 보러 승천했다. 지옥에서 사람들은 훌륭한 음식이 차려진 테이블에 앉아 있었지만 팔에 나무 판자가 달려 스스로 먹을 수 없었다. 천국도 같은 구조였지만 그들은 서로 먹여주었다.</div>
+<div class="comment-i18n" data-lang="es">El rabino Haim una vez ascendio para ver la diferencia entre el Infierno y el Cielo. En el Infierno, la gente estaba sentada en mesas con comida magnifica pero tenian tablillas de madera en los brazos y no podian alimentarse. En el Cielo, la misma configuracion - pero se alimentaban unos a otros.</div>
+<div class="comment-i18n" data-lang="de">Rabbi Haim stieg einmal auf, um den Unterschied zwischen Hoelle und Himmel zu sehen. In der Hoelle sassen Menschen an Tischen mit praechtigen Speisen, hatten aber Holzschienen an den Armen und konnten sich nicht selbst fuettern. Im Himmel dasselbe Setup - aber sie fuetterten sich gegenseitig.</div>
+
+          <div class="comment-author">-- jack_pp</div>
+        </div><div class="comment">
+          <div class="comment-text">"When someone&#x27;s spouse has died, a very helpful thing to do is to cook and package and deliver meals. When you are grieving, to actually prepare a meal is a terribly difficult thing to do."</div>
+          <div class="comment-i18n" data-lang="zh">当某人的配偶去世时，非常有帮助的做法是做饭、打包并送餐。当你在悲伤中，准备一顿饭是非常困难的事情。</div>
+<div class="comment-i18n" data-lang="ja">配偶者が亡くなった時、非常に役立つのは料理を作り、パッケージして届けること。悲しんでいる時、実際に食事を準備するのは非常に困難なこと。</div>
+<div class="comment-i18n" data-lang="ko">배우자가 사망했을 때 매우 도움이 되는 일은 음식을 만들고 포장해서 배달하는 것이다. 슬픔에 잠겨 있을 때 실제로 식사를 준비하는 것은 매우 힘든 일이다.</div>
+<div class="comment-i18n" data-lang="es">Cuando el conyuge de alguien ha muerto, algo muy util es cocinar, empaquetar y entregar comidas. Cuando estas de duelo, preparar una comida es algo terriblemente dificil.</div>
+<div class="comment-i18n" data-lang="de">Wenn der Ehepartner gestorben ist, ist es sehr hilfreich, Mahlzeiten zu kochen, zu verpacken und zu liefern. Wenn man trauert, ist es furchtbar schwer, tatsaechlich eine Mahlzeit zuzubereiten.</div>
+
+          <div class="comment-author">-- euroderf</div>
+        </div><div class="comment">
+          <div class="comment-text">"Text-based alt: https://text.npr.org/2026/01/20/nx-s1-5683170/let-them-the-s..."</div>
+          <div class="comment-i18n" data-lang="zh">纯文本版本：https://text.npr.org/2026/01/20/nx-s1-5683170/let-them-the-s...</div>
+<div class="comment-i18n" data-lang="ja">テキスト版：https://text.npr.org/2026/01/20/nx-s1-5683170/let-them-the-s...</div>
+<div class="comment-i18n" data-lang="ko">텍스트 버전: https://text.npr.org/2026/01/20/nx-s1-5683170/let-them-the-s...</div>
+<div class="comment-i18n" data-lang="es">Version de texto: https://text.npr.org/2026/01/20/nx-s1-5683170/let-them-the-s...</div>
+<div class="comment-i18n" data-lang="de">Textversion: https://text.npr.org/2026/01/20/nx-s1-5683170/let-them-the-s...</div>
+
+          <div class="comment-author">-- thomascountz</div>
+        </div>
+      </div>
+      <div class="tags"><span class="tag">#grief</span><span class="tag">#advice</span><span class="tag">#life</span><span class="tag">#human</span></div>
+    </article>
+<article class="story" id="s46741482-01241100">
+      <h3 class="story-title">
+        <a href="https://nand2mario.github.io/posts/2026/80386_multiplication_and_division/" target="_blank">80386 Multiplication and Division :hardware:cpu:history:low-level:</a>
+        <a href="#s46741482-01241100" class="story-anchor">#</a>
+      </h3>
+      <div class="i18n-title" data-lang="zh">80386的乘法和除法</div>
+<div class="i18n-title" data-lang="ja">80386の乗算と除算</div>
+<div class="i18n-title" data-lang="ko">80386 곱셈과 나눗셈</div>
+<div class="i18n-title" data-lang="es">Multiplicacion y Division del 80386</div>
+<div class="i18n-title" data-lang="de">80386 Multiplikation und Division</div>
+
+      <div class="story-meta">
+        46pts | 8c | <a href="https://news.ycombinator.com/item?id=46741482" target="_blank">HN#46741482</a>
+      </div>
+      <div class="story-section story-tldr">
+        <div class="story-label">TL;DR</div>
+        <div class="story-text">Deep dive into how the Intel 80386 performed multiplication and division using add-and-shift algorithms at one bit per cycle. Early exit optimization when remaining bits are zeros. Non-restoring division builds quotients bit by bit. The elegance came from reusing the main ALU and minimizing hardware - and we called it fast.</div>
+        <span class="i18n-text" data-lang="zh">深入探讨Intel 80386如何使用加移位算法以每周期一位的速度执行乘法和除法。当剩余位为零时提前退出优化。非恢复除法逐位构建商。其优雅之处在于复用主ALU并最小化硬件——我们称之为快速。</span>
+<span class="i18n-text" data-lang="ja">Intel 80386がサイクルあたり1ビットの加算シフトアルゴリズムで乗算と除算をどう実行したかの詳細。残りビットがゼロの時の早期終了最適化。非回復除算はビットごとに商を構築。優雅さはメインALUの再利用とハードウェアの最小化にあった - そしてそれを高速と呼んだ。</span>
+<span class="i18n-text" data-lang="ko">Intel 80386이 사이클당 1비트의 덧셈-시프트 알고리즘으로 곱셈과 나눗셈을 어떻게 수행했는지 상세 분석. 나머지 비트가 0일 때 조기 종료 최적화. 비복원 나눗셈은 비트 단위로 몫을 구축. 우아함은 메인 ALU 재사용과 하드웨어 최소화에서 왔다 - 그리고 우리는 그걸 빠르다고 불렀다.</span>
+<span class="i18n-text" data-lang="es">Analisis profundo de como el Intel 80386 realizaba multiplicacion y division usando algoritmos de suma y desplazamiento a un bit por ciclo. Optimizacion de salida temprana cuando los bits restantes son ceros. La division sin restauracion construye cocientes bit a bit. La elegancia venia de reusar la ALU principal y minimizar hardware - y lo llamabamos rapido.</span>
+<span class="i18n-text" data-lang="de">Tiefgehende Analyse wie der Intel 80386 Multiplikation und Division mit Add-and-Shift-Algorithmen bei einem Bit pro Zyklus durchfuehrte. Early-Exit-Optimierung wenn verbleibende Bits Nullen sind. Non-Restoring-Division baut Quotienten Bit fuer Bit auf. Die Eleganz kam vom Wiederverwenden der Haupt-ALU und der Hardware-Minimierung - und wir nannten es schnell.</span>
+
+      </div>
+      <div class="story-section story-take">
+        <div class="story-label">Take</div>
+        <div class="story-text">In 1985, doing 32-bit multiplication in 38 cycles was cutting-edge technology. Now we fit more transistors in a smartwatch than the entire 386 had. Progress is weird.</div>
+        <span class="i18n-text" data-lang="zh">1985年，用38个周期做32位乘法是尖端技术。现在一块智能手表里的晶体管比整个386都多。进步真奇怪。</span>
+<span class="i18n-text" data-lang="ja">1985年、32ビット乗算を38サイクルで行うのは最先端技術だった。今やスマートウォッチに386全体より多くのトランジスタが入っている。進歩は奇妙だ。</span>
+<span class="i18n-text" data-lang="ko">1985년에 32비트 곱셈을 38 사이클에 하는 게 최첨단 기술이었다. 이제 스마트워치에 386 전체보다 더 많은 트랜지스터가 들어간다. 진보는 이상하다.</span>
+<span class="i18n-text" data-lang="es">En 1985, hacer multiplicacion de 32 bits en 38 ciclos era tecnologia de punta. Ahora metemos mas transistores en un smartwatch que todo el 386. El progreso es raro.</span>
+<span class="i18n-text" data-lang="de">1985 war 32-Bit-Multiplikation in 38 Zyklen Spitzentechnologie. Jetzt passen mehr Transistoren in eine Smartwatch als der gesamte 386 hatte. Fortschritt ist seltsam.</span>
+
+      </div>
+      <div class="story-section story-comments">
+        <div class="story-label">HN Voices</div>
+        <div class="comment">
+          <div class="comment-text">"Is there a rational explanation on why there seems to be a HN article answering the weirdest questions I had in my mind just a few days ago? Only yesterday I wondered how CPU performed division."</div>
+          <div class="comment-i18n" data-lang="zh">有什么合理的解释能说明为什么HN上似乎总有文章回答我脑子里几天前才有的最奇怪的问题？就在昨天我还在想CPU是怎么做除法的。</div>
+<div class="comment-i18n" data-lang="ja">数日前に頭の中にあった最も奇妙な質問に答えるHN記事があるように見えるのはなぜか、合理的な説明があるのか？昨日CPUがどうやって除算するか疑問に思ったばかりだ。</div>
+<div class="comment-i18n" data-lang="ko">며칠 전 내 머릿속에 있던 가장 이상한 질문에 답하는 HN 기사가 있는 것 같은데 합리적인 설명이 있나? 바로 어제 CPU가 나눗셈을 어떻게 하는지 궁금했다.</div>
+<div class="comment-i18n" data-lang="es">Hay una explicacion racional de por que parece haber un articulo de HN respondiendo las preguntas mas raras que tenia en mente hace unos dias? Solo ayer me preguntaba como la CPU realizaba la division.</div>
+<div class="comment-i18n" data-lang="de">Gibt es eine rationale Erklaerung, warum es einen HN-Artikel zu geben scheint, der die seltsamsten Fragen beantwortet, die ich vor ein paar Tagen im Kopf hatte? Erst gestern fragte ich mich, wie CPUs Division durchfuehren.</div>
+
+          <div class="comment-author">-- bsaul</div>
+        </div><div class="comment">
+          <div class="comment-text">"The 80186 and NEC Vxx chips could already do mul/div in one cycle per bit. What they didn&#x27;t have was the early-out optimization. The three-operand form of IMUL also already existed on those processors."</div>
+          <div class="comment-i18n" data-lang="zh">80186和NEC Vxx芯片已经可以每位一周期做乘除法了。它们没有的是提前退出优化。三操作数形式的IMUL在那些处理器上也已经存在。</div>
+<div class="comment-i18n" data-lang="ja">80186とNEC Vxxチップはすでにビットあたり1サイクルで乗除算ができた。なかったのは早期終了最適化だ。3オペランド形式のIMULもそれらのプロセッサにすでにあった。</div>
+<div class="comment-i18n" data-lang="ko">80186과 NEC Vxx 칩은 이미 비트당 1 사이클로 곱셈/나눗셈을 할 수 있었다. 없었던 건 조기 종료 최적화다. 3피연산자 형태의 IMUL도 그 프로세서들에 이미 있었다.</div>
+<div class="comment-i18n" data-lang="es">Los chips 80186 y NEC Vxx ya podian hacer mul/div en un ciclo por bit. Lo que no tenian era la optimizacion de salida temprana. La forma de tres operandos de IMUL tambien ya existia en esos procesadores.</div>
+<div class="comment-i18n" data-lang="de">Der 80186 und NEC Vxx-Chips konnten bereits mul/div in einem Zyklus pro Bit. Was sie nicht hatten, war die Early-Out-Optimierung. Die Drei-Operanden-Form von IMUL existierte auch bereits auf diesen Prozessoren.</div>
+
+          <div class="comment-author">-- rep_lodsb</div>
+        </div><div class="comment">
+          <div class="comment-text">"No discussion of these instructions on the 386 would be complete without mentioning that early revisions had a bug in the 32-bit multiply. I wonder if anyone outside of Intel has discovered the actual bug in the circuitry yet."</div>
+          <div class="comment-i18n" data-lang="zh">讨论386上的这些指令如果不提到早期版本在32位乘法上有bug就不完整。我想知道英特尔外部是否有人发现了电路中的实际bug。</div>
+<div class="comment-i18n" data-lang="ja">386のこれらの命令の議論は、初期リビジョンに32ビット乗算のバグがあったことを言及しなければ完全ではない。インテル外部の誰かが実際の回路バグを発見したか気になる。</div>
+<div class="comment-i18n" data-lang="ko">386의 이 명령어에 대한 논의는 초기 리비전에 32비트 곱셈 버그가 있었다는 걸 언급하지 않으면 완전하지 않다. 인텔 외부의 누군가가 회로의 실제 버그를 발견했는지 궁금하다.</div>
+<div class="comment-i18n" data-lang="es">Ninguna discusion de estas instrucciones en el 386 estaria completa sin mencionar que las primeras revisiones tenian un bug en la multiplicacion de 32 bits. Me pregunto si alguien fuera de Intel ha descubierto el bug real en el circuito.</div>
+<div class="comment-i18n" data-lang="de">Keine Diskussion dieser Instruktionen auf dem 386 waere vollstaendig ohne zu erwaehnen, dass fruehe Revisionen einen Bug in der 32-Bit-Multiplikation hatten. Ich frage mich, ob jemand ausserhalb von Intel den tatsaechlichen Bug im Schaltkreis entdeckt hat.</div>
+
+          <div class="comment-author">-- userbinator</div>
+        </div>
+      </div>
+      
+    </article>
+    </section>
 <section class="digest">
       <div class="digest-header">
         <div class="digest-date">2026-01-24T06:00:00Z</div>
