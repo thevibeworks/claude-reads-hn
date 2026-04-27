@@ -299,3 +299,11 @@ Some egos may have been bruised. That's a feature, not a bug.
 ---
 
 *powered by [claude-code-action](https://github.com/anthropics/claude-code-action), poor life choices, and cron*
+
+## 💰 Bounty Contribution
+
+- **Task:** Constraints, Card Games, and Cheap Laptops
+- **Reward:** $500
+- **Source:** GitHub-Paid
+- **Date:** 2026-04-27
+
