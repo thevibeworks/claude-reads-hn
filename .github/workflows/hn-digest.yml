@@ -41,18 +41,35 @@ jobs:
         with:
           token: ${{ steps.app-token.outputs.token }}
 
-      - name: check if digest exists this hour
+      # Enforces the 4x/day contract at the point of publication rather than
+      # trusting the triggers. The per-hour check alone never did: this repo
+      # published 8 digests a day for months because a second scheduler fired
+      # on different hours, and GitHub's own cron drifts 1-3 hours, so "same
+      # hour" does not identify a duplicate. A daily cap does, and it holds no
+      # matter how many things dispatch this workflow.
+      - name: check digest quota for today
         id: check-digest
         run: |
+          MAX_PER_DAY=4
           HOUR_PREFIX=$(date -u +%Y/%m/%d-%H)
+          DAY_PREFIX=$(date -u +%Y/%m/%d)
+
           EXISTING=$(ls digests/$HOUR_PREFIX*.org digests/$HOUR_PREFIX*.md 2>/dev/null || true)
           if [ -n "$EXISTING" ]; then
             echo "Digest already exists for this hour: $EXISTING"
             echo "skip=true" >> $GITHUB_OUTPUT
-          else
-            echo "No digest for hour $HOUR_PREFIX, proceeding"
-            echo "skip=false" >> $GITHUB_OUTPUT
+            exit 0
           fi
+
+          TODAY_COUNT=$(ls digests/$DAY_PREFIX-*.org digests/$DAY_PREFIX-*.md 2>/dev/null | wc -l | tr -d ' ')
+          if [ "$TODAY_COUNT" -ge "$MAX_PER_DAY" ]; then
+            echo "Already published $TODAY_COUNT digests today (cap $MAX_PER_DAY); skipping."
+            echo "skip=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          echo "No digest for hour $HOUR_PREFIX; $TODAY_COUNT/$MAX_PER_DAY published today, proceeding"
+          echo "skip=false" >> $GITHUB_OUTPUT
 
       - name: fetch hacker news with content
         if: steps.check-digest.outputs.skip != 'true'
