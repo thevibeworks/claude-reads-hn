@@ -68,9 +68,9 @@ That's it. Claude handles the rest.
                     └──────┬──────┘     └─────────────┘
                            │
 ┌─────────────┐     ┌──────▼──────┐     ┌─────────────┐
-│  bark       │◀────│  claude     │────▶│  git commit │
-│  notify     │     │  picks 5,   │     │  + issue    │
-│             │     │  writes     │     │  + push     │
+│  bark + tg  │◀────│  claude     │────▶│  git commit │
+│  notify     │     │  picks 5,   │     │  + push     │
+│             │     │  writes     │     │  → pages    │
 └─────────────┘     └─────────────┘     └─────────────┘
 ```
 
@@ -83,8 +83,8 @@ That's it. Claude handles the rest.
 7. Claude picks 5 fresh stories with good discussion
 8. Claude writes digest JSON, converts to `digests/YYYY/MM/DD-HHMM.org` via skill scripts
 9. Skill scripts regenerate `llms.txt` index and `index.html`
-10. Git commit, push, create GitHub issue
-11. Bark notification with spiciest comment quote
+10. Git commit and push — the digest, `llms.txt`, and rendered pages
+11. Bark notification with spiciest comment quote, then Telegram/Discord
 12. Quota timer resets as happy side effect
 
 ## Secrets You Need
@@ -92,7 +92,7 @@ That's it. Claude handles the rest.
 | Secret | What | What Breaks Without It |
 |--------|------|----------------------|
 | `CLAUDE_CODE_OAUTH_TOKEN` | Claude Code OAuth token | Everything. Claude can't run. |
-| `CLAUDE_YOLO_APP_ID` | GitHub App ID | Can't commit or create issues. Run fails. |
+| `CLAUDE_YOLO_APP_ID` | GitHub App ID | Can't commit. Run fails. |
 | `CLAUDE_YOLO_APP_PRIVATE_KEY` | GitHub App private key | Same as above. |
 | `BARK_SERVER` | Bark push notification server URL | Bark notification fails. Digest still works. |
 | `BARK_DEVICES` | Bark device key(s) | Same. |
@@ -102,17 +102,21 @@ That's it. Claude handles the rest.
 
 Get the Claude token from: https://claude.com/settings/developer
 
-The GitHub App needs: `contents:write`, `issues:write` permissions.
+The GitHub App needs: `contents:write` permission.
 
 ## Notification Channels
 
-Digests are published to multiple channels:
-- **GitHub Issues** - Always (required)
+Every digest is committed to this repo and published to
+[the site](https://thevibeworks.github.io/claude-reads-hn) — that is the
+canonical archive. Notifications point at it:
+
 - **Bark** - iOS push notifications
-- **Telegram** - Channel/group messages
+- **Telegram** - Channel/group messages, one per story
 - **Discord** - Webhook messages
 
 Configure the secrets for the channels you want. Missing secrets = silent skip.
+
+The issue tracker is for bugs and feature requests, not digests.
 
 ## File Structure
 
