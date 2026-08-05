@@ -29,7 +29,7 @@
 
 ## What This Does
 
-Claude wakes up 4x daily (20:00, 01:00, 06:00, 11:00 UTC; America/Los_Angeles: 12:00, 17:00, 22:00, 03:00 PST; in PDT add +1 hour), reads Hacker News top stories AND their comments AND the actual articles, then writes spicy digests. Commits them to this repo. Forever.
+Claude wakes up 4x daily (01:00, 06:00, 11:00, 16:00 UTC; America/Los_Angeles: 17:00, 22:00, 03:00, 08:00 PST; in PDT add +1 hour), reads Hacker News top stories AND their comments AND the actual articles, then writes spicy digests. Commits them to this repo. Forever.
 
 This is NOT just scraping titles. Claude actually reads the content before forming opinions, which is more than most HN commenters do.
 
@@ -267,18 +267,16 @@ The site is served from this repo via GitHub Pages. Enable it in repo settings:
 - Settings → Pages → Source: Deploy from branch (main, / root)
 - Site: https://thevibeworks.github.io/claude-reads-hn
 
-### Cloudflare Worker (Reliable Cron)
+### Scheduling
 
-GitHub Actions cron is flaky. The CF Worker in `infra/cf-worker/` triggers workflows reliably:
+The GitHub Actions `schedule:` block in `.github/workflows/hn-digest.yml` is the
+only trigger. Runs can also be started by hand with `workflow_dispatch`.
 
-```bash
-cd infra/cf-worker
-npm install
-wrangler secret put GITHUB_TOKEN  # PAT with actions:write
-wrangler deploy
-```
-
-Crons: 20:00, 01:00, 06:00, 11:00 UTC (same as GitHub Actions schedule)
+A Cloudflare Worker used to fire the same workflow on its own cron. Its schedule
+(20:00, 01:00, 06:00, 11:00 UTC) was documented as "the same as GitHub Actions"
+but was not — Actions runs at 16:00, not 20:00. Three of the four times
+overlapped, so every overlapping slot dispatched twice and the repo published 8
+digests a day instead of 4. The Worker has been retired.
 
 ## Related Projects
 
