@@ -294,6 +294,8 @@ def shell(title: str, body: str, rel: str, root: bool = False, description: str 
 <link rel="stylesheet" href="{rel}assets/fonts/barlow.css">
 <link rel="stylesheet" href="{rel}assets/fonts/jetbrains-mono.css">
 <link rel="stylesheet" href="{rel}assets/fonts/noto-sans-sc.css">
+<link rel="stylesheet" href="{rel}assets/fonts/noto-sans-jp.css">
+<link rel="stylesheet" href="{rel}assets/fonts/noto-sans-kr.css">
 <link rel="stylesheet" href="{rel}assets/tokens.css">
 <link rel="stylesheet" href="{rel}assets/base.css">
 <link rel="stylesheet" href="{rel}assets/site.css">

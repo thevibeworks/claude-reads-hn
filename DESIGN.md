@@ -61,7 +61,7 @@ uses tokens only.
 
 | Dimension | Value | Law |
 |---|---|---|
-| Faces | display Barlow Condensed 700 / body Barlow 400-600 / mono JetBrains Mono 400 / CJK Noto Sans SC 400 (all self-hosted as slices under `assets/fonts/`, 2.8 MB on disk, a page loads what it uses) | one family across widths; CJK face first when a CJK language is selected |
+| Faces | display Barlow Condensed 700 / body Barlow 400-600 / mono JetBrains Mono 400 / CJK Noto Sans SC, JP, KR 400 (all self-hosted as slices under `assets/fonts/`, ~8 MB on disk, a page loads only the slices its selected language touches) | one family across widths; CJK face first when a CJK language is selected |
 | Scale | ratio 1.333, base 1rem, body prose 1.0625rem, leading 1.55 (CJK 1.75) | five levels used: xs sm base 2xl 4xl |
 | Measure | 64ch Latin / the floor's 38em CJK | |
 | Radius | `--radius: 0` | printed matter has no corners |
@@ -71,7 +71,7 @@ uses tokens only.
 | Living element | none | |
 | Icons | none; the pilcrow is the permalink | |
 | Imagery | none (icon.png is the favicon only) | |
-| zh mode | per-element `lang` on translated spans; CJK-Latin spacing written at render time (`pangu()` in the generator); zh/ja/ko leading 1.75 | ja/ko fall to system faces (Hiragino / Apple SD Gothic / Yu / Malgun); Noto JP/KR slices not bundled |
+| zh mode | per-element `lang` on translated spans; CJK-Latin spacing written at render time (`pangu()` in the generator); zh/ja/ko leading 1.75 | each CJK language gets its own face via `:lang()` |
 
 ## Signature moves and device ration
 
