@@ -12,8 +12,7 @@ Instructions for the HN curator (that's you, Claude).
 6. Regenerate llms.txt: `./.claude/skills/hn-digest/scripts/llms-gen.py`
 7. Build static page: `./.claude/skills/hn-digest/scripts/org2html.py digests/*/*.org digests/*/*/*.org -o index.html`
 8. Git add digests/ llms.txt index.html, commit, push
-9. Create GitHub issue with digest content
-10. Send Bark notification with spiciest comment
+9. Send Bark notification with spiciest comment
 
 ## Digest Format
 
@@ -142,19 +141,13 @@ git commit -m "hn: $(date -u +%Y-%m-%d %H:%M) digest"
 git push
 ```
 
-## GitHub Issue
-
-After pushing, create issue with:
-- **Title**: Catchy 5-8 word summary of today's vibe
-  - Good: "Rust Rewrites, Solo Millions, AI Replaces Humans"
-  - Good: "Security Fails and Startup Pivots"
-  - Bad: "HN Digest for December 5"
-  - Bad: "Today's Stories"
-- **Body**: Same content as digest (vibe + highlights + story summaries)
-
 ## Notifications
 
-After creating the GitHub issue, notify all channels:
+After pushing, notify all channels. Link to the site, never to an issue —
+the issue tracker is for bugs and feature requests, not digests.
+
+SITE: https://thevibeworks.github.io/claude-reads-hn
+Story anchor: `#s{story_id}-{MMDDHHMM}` from the digest date.
 
 ### Bark (iOS push)
 Use `mcp__barkme__notify` tool:
@@ -162,7 +155,7 @@ Use `mcp__barkme__notify` tool:
 {
   "title": "Rust Rewrites, Solo Millions, AI Drama",
   "body": "Memory safety is not a personality trait - from Rust Rewrites Everything",
-  "url": "https://github.com/thevibeworks/claude-reads-hn/issues/42"
+  "url": "https://thevibeworks.github.io/claude-reads-hn"
 }
 ```
 
@@ -174,7 +167,7 @@ curl -s -X POST "https://api.telegram.org/bot$TG_BOT_TOKEN/sendMessage" \
   -d '{
     "chat_id": "@claudehn",
     "parse_mode": "HTML",
-    "text": "<b>Your Catchy Title</b>\n\n- Story 1 hook\n- Story 2 hook\n- Story 3 hook\n- Story 4 hook\n- Story 5 hook\n\n<a href=\"ISSUE_URL\">Read full digest</a>"
+    "text": "<b>Your Catchy Title</b>\n\n- Story 1 hook\n- Story 2 hook\n- Story 3 hook\n- Story 4 hook\n- Story 5 hook\n\n<a href=\"https://thevibeworks.github.io/claude-reads-hn\">Read full digest</a>"
   }'
 ```
 
@@ -187,7 +180,7 @@ curl -s -X POST "$DISCORD_WEBHOOK_URL" \
     "embeds": [{
       "title": "Your Catchy Title",
       "description": "- Story 1 hook\n- Story 2 hook\n- Story 3 hook\n- Story 4 hook\n- Story 5 hook",
-      "url": "ISSUE_URL",
+      "url": "https://thevibeworks.github.io/claude-reads-hn",
       "color": 16737280
     }]
   }'
@@ -226,7 +219,6 @@ You did a good job if:
 - Takes are funny/insightful/spicy
 - Comments are well-chosen
 - File is committed to correct path
-- Issue is created with good title
 - Bark notification was sent (or you tried twice)
 - llms.txt is updated
 
@@ -235,6 +227,6 @@ You did a bad job if:
 - TLDR is just guessing based on title
 - Takes are generic/boring
 - No commit/push
-- No issue created
+- An issue was created (never file digests as issues)
 
-Don't overthink it. Read, pick, write JSON, convert to org, commit, issue, bark. You've done this before (check llms.txt).
+Don't overthink it. Read, pick, write JSON, convert to org, commit, bark. You've done this before (check llms.txt).
