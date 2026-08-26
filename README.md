@@ -82,7 +82,7 @@ That's it. Claude handles the rest.
 6. Claude reads `llms.txt` (memory index of all past digests)
 7. Claude picks 5 fresh stories with good discussion
 8. Claude writes digest JSON, converts to `digests/YYYY/MM/DD-HHMM.org` via skill scripts
-9. Skill scripts regenerate `llms.txt` index and `index.html`
+9. Skill scripts regenerate `llms.txt` and the site (one page per edition under `e/`, the front page, the archive ledger)
 10. Git commit and push — the digest, `llms.txt`, and rendered pages
 11. Bark notification with spiciest comment quote, then Telegram/Discord
 12. Quota timer resets as happy side effect
@@ -128,10 +128,16 @@ digests/
       05-1400.org
       ...
 llms.txt                               ← auto-generated index Claude reads
+index.html                             ← the site: latest edition + last 7 days
+archive.html                           ← every edition, one line each
+e/YYYY/MM/DD-HHMM.html                 ← one page per edition
+editions.json                          ← edition index (number, date, path, story ids)
+assets/                                ← tokens.css, base.css, site.css, site.js, self-hosted fonts
+DESIGN.md, TASTE.md                    ← the site's material and prior design rulings
 .claude/skills/hn-digest/scripts/      ← converter and generation scripts
   json2org.py                          ← JSON -> org-mode conversion
   org2json.py                          ← org -> JSON (validation)
-  org2html.py                          ← org -> HTML generation
+  org2html.py                          ← org -> the static site
   llms-gen.py                          ← regenerates llms.txt from digests/
 ```
 
@@ -211,7 +217,7 @@ Test skill scripts:
 # org-mode conversion
 ./.claude/skills/hn-digest/scripts/json2org.py /tmp/digest.json digests/2025/12/05-0900.org
 ./.claude/skills/hn-digest/scripts/org2json.py digests/2025/12/05-0900.org  # validate round-trip
-./.claude/skills/hn-digest/scripts/org2html.py digests/**/*.org -o index.html
+./.claude/skills/hn-digest/scripts/org2html.py digests/*/*/*.org          # builds the whole site, writes only what changed
 ```
 
 ## What Can Go Wrong

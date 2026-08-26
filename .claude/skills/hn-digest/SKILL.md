@@ -24,8 +24,8 @@ HN API (JSON) → Claude (curate) → .org file → HTML thread
 # 3. Convert to org
 python3 scripts/json2org.py /tmp/digest.json digests/2025/12/15-1100.org
 
-# 4. Build HTML
-python3 scripts/org2html.py digests/2025/12/15-1100.org index.html
+# 4. Build the site (all editions; only changed files are written)
+python3 scripts/org2html.py digests/*/*/*.org
 ```
 
 ### Validate round-trip
@@ -76,7 +76,7 @@ iRobot申请了第11章破产...
 |--------|---------|
 | `json2org.py` | Convert curated JSON → org file |
 | `org2json.py` | Parse org → JSON (validation) |
-| `org2html.py` | Render org → HTML thread |
+| `org2html.py` | Render all org files → the static site (index, archive, e/, editions.json) |
 | `llms-gen.py` | Generate llms.txt index |
 
 ## Properties Reference

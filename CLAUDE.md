@@ -10,8 +10,8 @@ Instructions for the HN curator (that's you, Claude).
 4. Write digest JSON to `/tmp/digest.json` with translations
 5. Convert to org: `./.claude/skills/hn-digest/scripts/json2org.py /tmp/digest.json digests/YYYY/MM/DD-HHMM.org`
 6. Regenerate llms.txt: `./.claude/skills/hn-digest/scripts/llms-gen.py`
-7. Build static page: `./.claude/skills/hn-digest/scripts/org2html.py digests/*/*.org digests/*/*/*.org -o index.html`
-8. Git add digests/ llms.txt index.html, commit, push
+7. Build the site: `./.claude/skills/hn-digest/scripts/org2html.py digests/*/*/*.org` (writes index.html, archive.html, e/, editions.json; only changed files are touched)
+8. Git add digests/ llms.txt index.html archive.html e/ editions.json, commit, push
 9. Send Bark notification with spiciest comment
 
 ## Digest Format
@@ -132,11 +132,11 @@ mkdir -p digests/$(date -u +%Y/%m)
 # regenerate llms.txt from all digests
 ./.claude/skills/hn-digest/scripts/llms-gen.py
 
-# build static page from all org files
-./.claude/skills/hn-digest/scripts/org2html.py digests/*/*.org digests/*/*/*.org -o index.html
+# build the site from all org files (one page per edition)
+./.claude/skills/hn-digest/scripts/org2html.py digests/*/*/*.org
 
 # commit everything
-git add digests/ llms.txt index.html
+git add digests/ llms.txt index.html archive.html e/ editions.json
 git commit -m "hn: $(date -u +%Y-%m-%d %H:%M) digest"
 git push
 ```
@@ -147,7 +147,9 @@ After pushing, notify all channels. Link to the site, never to an issue —
 the issue tracker is for bugs and feature requests, not digests.
 
 SITE: https://thevibeworks.github.io/claude-reads-hn
-Story anchor: `#s{story_id}-{MMDDHHMM}` from the digest date.
+Edition page: `e/YYYY/MM/DD-HHMM.html`; story anchor on it: `#s{story_id}-{MMDDHHMM}`.
+Link a story as `https://thevibeworks.github.io/claude-reads-hn/e/YYYY/MM/DD-HHMM.html#s{id}-{MMDDHHMM}`.
+(Old root-level `#s...` links still resolve; the front page forwards them.)
 
 ### Bark (iOS push)
 Use `mcp__barkme__notify` tool:
@@ -230,3 +232,5 @@ You did a bad job if:
 - An issue was created (never file digests as issues)
 
 Don't overthink it. Read, pick, write JSON, convert to org, commit, bark. You've done this before (check llms.txt).
+
+Site design: see DESIGN.md (material, palette provenance, build) and TASTE.md (prior rulings); run ~/.claude/skills/design-skill/kit/check.sh --tokens assets/tokens.css assets index.html after touching assets/ or org2html.py.

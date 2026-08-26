@@ -1,0 +1,127 @@
+/* assets/tokens.css -- the material for claude-reads-hn.
+ *
+ * The only file that may hold a raw color. Re-inked from two observed
+ * specimens in the design kit, not from a seed hue:
+ *
+ *   day    timetable-paper  offset stock of a 1980s railway timetable
+ *                           booklet: warm paper (88), carbon ink (255),
+ *                           graphite pencil rules (60), one cinnabar stamp (32).
+ *   night  split-flap       a Solari departure board: black-painted steel
+ *                           (60), cream silkscreened letters (85), one
+ *                           amber flap (80). Nothing glows.
+ *
+ * The sports section by day; the stadium scoreboard by night. The
+ * relationships are the point: paper and ink are different hues, the
+ * rule is a third material, the accent is a physical part.
+ */
+
+:root {
+  /* ---- day: timetable paper ---- */
+  --bg:          oklch(0.960 0.010 88);
+  --surface:     oklch(0.935 0.011 88);
+  --surface-2:   oklch(0.900 0.012 85);
+  --overlay:     oklch(0.970 0.009 88);
+  --fg:          oklch(0.210 0.010 255);
+  --fg-2:        oklch(0.450 0.008 250);
+  --fg-3:        oklch(0.550 0.006 240);
+  --line:        oklch(0.800 0.006 60);
+  --line-strong: oklch(0.620 0.008 60);
+  --accent:       oklch(0.550 0.190 32);
+  --accent-hover: oklch(0.500 0.195 30);
+  --accent-fg:    oklch(0.960 0.010 88);
+  --accent-soft:  oklch(0.930 0.035 35);
+  --ok:          oklch(0.520 0.090 165);  --ok-soft:     oklch(0.930 0.030 165);
+  --warn:        oklch(0.700 0.140 85);   --warn-soft:   oklch(0.950 0.045 88);
+  --danger:      oklch(0.470 0.200 25);   --danger-soft: oklch(0.940 0.035 28);
+  --info:        oklch(0.480 0.090 250);  --info-soft:   oklch(0.935 0.025 250);
+  --focus:       oklch(0.550 0.140 250);
+
+  /* ---- faces: one family across widths (Barlow / Barlow Condensed), a code mono, a Hei partner ---- */
+  --font-body:    "Barlow", "Barlow Fallback", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Barlow Condensed", "Barlow Condensed Fallback", "Arial Narrow", system-ui, sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-cjk:         "Noto Sans SC", "PingFang SC", "HarmonyOS Sans SC", "MiSans", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-cjk-serif:   "Noto Serif SC", "Songti SC", "SimSun", serif;
+  --font-cjk-display: var(--font-cjk);
+  --font-cjk-mono:    "Sarasa Mono SC", "Maple Mono", var(--font-mono);
+
+  /* ---- type scale: ratio 1.333 (content), base 1rem; the display face compresses 2:1 phone to desk ---- */
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-lg:   1.333rem;
+  --text-xl:   1.777rem;
+  --text-2xl:  2.369rem;
+  --text-3xl:  clamp(2.4rem, 1.6rem + 2.6vw, 3.157rem);
+  --text-4xl:  clamp(3rem, 1.8rem + 4.2vw, 4.209rem);
+
+  --leading-body:     1.55;
+  --leading-tight:    1.05;
+  --tracking-display: 0;
+  --measure:          64ch;
+
+  /* ---- space: 4px scale, density 0.95 -- a newspaper page, not a lounge ---- */
+  --density:  0.95;
+  --space-1:  calc(0.25rem * var(--density));
+  --space-2:  calc(0.5rem  * var(--density));
+  --space-3:  calc(0.75rem * var(--density));
+  --space-4:  calc(1rem    * var(--density));
+  --space-5:  calc(1.5rem  * var(--density));
+  --space-6:  calc(2rem    * var(--density));
+  --space-7:  calc(3rem    * var(--density));
+  --space-8:  calc(4rem    * var(--density));
+  --space-9:  calc(6rem    * var(--density));
+  --space-10: calc(8rem    * var(--density));
+  --space-11: calc(12rem   * var(--density));
+  --space-12: calc(16rem   * var(--density));
+
+  /* ---- shape: printed matter has no corners ---- */
+  --radius:    0;
+  --radius-sm: 0;
+  --radius-lg: 0;
+  --line-w:    1px;
+  --rule-w:    3px;   /* the sports-page column rule */
+
+  /* ---- elevation: overlays only, tinted to the ink ---- */
+  --shadow-1: 0 1px 2px oklch(0.210 0.010 255 / 0.06), 0 2px 8px oklch(0.210 0.010 255 / 0.05);
+  --shadow-2: 0 4px 12px oklch(0.210 0.010 255 / 0.08), 0 16px 40px oklch(0.210 0.010 255 / 0.10);
+
+  /* ---- motion: a page turns; nothing else moves ---- */
+  --motion-personality: still;
+  --dur-micro:   100ms;
+  --dur-base:    160ms;
+  --dur-enter:   200ms;
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-subtle: cubic-bezier(0.25, 0.1, 0.25, 1);
+
+  /* ---- layout ---- */
+  --container:      46rem;
+  --container-wide: 64rem;
+
+  color-scheme: light dark;
+}
+
+[data-theme="dark"] {
+  /* ---- night: the split-flap board ---- */
+  --bg:          oklch(0.180 0.006 60);
+  --surface:     oklch(0.230 0.006 60);
+  --surface-2:   oklch(0.270 0.007 60);
+  --overlay:     oklch(0.210 0.006 60);
+  --fg:          oklch(0.900 0.030 85);
+  --fg-2:        oklch(0.700 0.025 85);
+  --fg-3:        oklch(0.600 0.020 85);
+  --line:        oklch(0.120 0.006 60);
+  --line-strong: oklch(0.340 0.008 60);
+  --accent:       oklch(0.820 0.150 80);
+  --accent-hover: oklch(0.870 0.150 82);
+  --accent-fg:    oklch(0.180 0.006 60);
+  --accent-soft:  oklch(0.300 0.050 80);
+  --ok:          oklch(0.720 0.110 150);  --ok-soft:     oklch(0.240 0.030 150);
+  --warn:        oklch(0.820 0.150 80);   --warn-soft:   oklch(0.300 0.050 80);
+  --danger:      oklch(0.700 0.160 25);   --danger-soft: oklch(0.260 0.040 25);
+  --info:        oklch(0.720 0.080 250);  --info-soft:   oklch(0.240 0.030 250);
+  --focus:       oklch(0.740 0.120 250);
+  --shadow-1: 0 1px 2px oklch(0.120 0.006 60 / 0.40), 0 2px 8px oklch(0.120 0.006 60 / 0.30);
+  --shadow-2: 0 4px 12px oklch(0.120 0.006 60 / 0.45), 0 16px 40px oklch(0.120 0.006 60 / 0.50);
+}

@@ -70,8 +70,8 @@ Render org digests to HTML thread page.
 
 ### Usage
 ```bash
-python3 org2html.py digests/*.org -o index.html
-python3 org2html.py single.org  # stdout
+python3 org2html.py digests/*/*/*.org                 # build into the repo root
+python3 org2html.py digests/*/*/*.org --site-dir /tmp/site
 ```
 
 ### Features
@@ -143,5 +143,5 @@ digests/2025/12/15-1100.org   ← archived source of truth
    │
    ├──▶ org2json.py → validate round-trip
    │
-   └──▶ org2html.py → index.html (static page)
+   └──▶ org2html.py → index.html, archive.html, e/*.html, editions.json
 ```

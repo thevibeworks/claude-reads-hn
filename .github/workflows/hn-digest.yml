@@ -312,21 +312,22 @@ jobs:
 
             6. UPDATE MEMORY: run ./.claude/skills/hn-digest/scripts/llms-gen.py (regenerates llms.txt from all digests)
 
-            7. BUILD STATIC PAGES: run ./.claude/skills/hn-digest/scripts/org2html.py digests/*/*.org digests/*/*/*.org -o index.html -d 7 -a archive.html
-               This generates:
-               - index.html: last 7 days
-               - archive.html: older digests
+            7. BUILD THE SITE: run ./.claude/skills/hn-digest/scripts/org2html.py digests/*/*/*.org
+               This writes (only files whose content changed):
+               - index.html: the latest edition + last 7 days
+               - e/YYYY/MM/DD-HHMM.html: one page per edition
+               - archive.html, editions.json: the ledger and its index
 
-            8. Git add digests/ llms.txt index.html archive.html, commit, push
+            8. Git add digests/ llms.txt index.html archive.html e/ editions.json, commit, push
 
             9. NOTIFY ALL CHANNELS:
                BASE_URL: https://thevibeworks.github.io/claude-reads-hn
 
-               ANCHOR FORMAT (CRITICAL - must match exactly):
-               - Pattern: #s{id}-{MMDDHHMM} where {id} is story ID, {MMDDHHMM} is digest datetime
-               - Example: #s46268854-12271100 (story 46268854 from Dec 27 11:00 digest)
-               - Full URL: https://thevibeworks.github.io/claude-reads-hn#s46268854-12271100
-               - Build: "s" + story_id + "-" + MM + DD + HH + MM (from digest date)
+               STORY LINK FORMAT (CRITICAL - must match exactly):
+               - Edition page: e/YYYY/MM/DD-HHMM.html (from the digest date)
+               - Anchor on it: #s{id}-{MMDDHHMM} where {id} is story ID, {MMDDHHMM} is digest datetime
+               - Example: story 46268854 from the 2025-12-27 11:00 digest ->
+                 https://thevibeworks.github.io/claude-reads-hn/e/2025/12/27-1100.html#s46268854-12271100
                - Minutes required: multiple digests can exist in same hour (0240, 0259)
 
                a) BARK (use mcp__barkme__notify) - one ping to wake human:
@@ -347,7 +348,7 @@ jobs:
                       "chat_id": "'"$TG_CHANNEL_ID"'",
                       "parse_mode": "HTML",
                       "disable_web_page_preview": false,
-                      "text": "<b>TITLE</b>\n\nTLDR\n\n<i>Take: OPINION</i>\n\n<a href=\"https://thevibeworks.github.io/claude-reads-hn#s46268854-12271100\">Read →</a> | <a href=\"https://news.ycombinator.com/item?id=46268854\">HN</a>"
+                      "text": "<b>TITLE</b>\n\nTLDR\n\n<i>Take: OPINION</i>\n\n<a href=\"https://thevibeworks.github.io/claude-reads-hn/e/2025/12/27-1100.html#s46268854-12271100\">Read →</a> | <a href=\"https://news.ycombinator.com/item?id=46268854\">HN</a>"
                     }'
 
                   Build: "s" + story.id + "-" + date[5:7] + date[8:10] + date[11:13] + date[14:16]
@@ -361,7 +362,7 @@ jobs:
                     -d '{
                       "embeds": [{
                         "title": "📰 VIBE_SUMMARY",
-                        "description": "• [Title1](https://thevibeworks.github.io/claude-reads-hn#s46268854-12271100) - tldr1\n• [Title2](...#s46268855-12271100) - tldr2\n...",
+                        "description": "• [Title1](https://thevibeworks.github.io/claude-reads-hn/e/2025/12/27-1100.html#s46268854-12271100) - tldr1\n• [Title2](.../e/2025/12/27-1100.html#s46268855-12271100) - tldr2\n...",
                         "url": "https://thevibeworks.github.io/claude-reads-hn",
                         "color": 16737280,
                         "footer": {"text": "Claude Reads HN • 4x daily"}
@@ -383,8 +384,10 @@ jobs:
 
             LINK REFERENCE:
             - Base URL: https://thevibeworks.github.io/claude-reads-hn
+            - Edition page: e/YYYY/MM/DD-HHMM.html from the digest date
             - Anchor: #s{id}-{MMDDHHMM} (e.g., #s46268854-12271100)
             - Build: "s" + id + "-" + date[5:7] + date[8:10] + date[11:13] + date[14:16]
-            - Example: digest "2025-12-27T11:00:00Z" + story 46268854 → #s46268854-12271100
+            - Example: digest "2025-12-27T11:00:00Z" + story 46268854 →
+              https://thevibeworks.github.io/claude-reads-hn/e/2025/12/27-1100.html#s46268854-12271100
             - Minutes required: digests like 0240.org and 0259.org need distinct anchors
 

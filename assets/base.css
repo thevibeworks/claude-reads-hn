@@ -1,0 +1,103 @@
+/* kit/floor/base.css -- the rules the tokens imply, and the parts you did
+ * not draw: browser surfaces, focus, reduced motion, print, and the zh
+ * mode. Load after tokens.css. Keep it; the house kit adds to it.
+ */
+
+/* ---- document ---- */
+html { color-scheme: light dark; -webkit-text-size-adjust: 100%; }
+body {
+  min-height: 100dvh;
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body), var(--font-cjk);
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+  font-kerning: normal;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+h1, h2, h3, h4 {
+  font-family: var(--font-display), var(--font-cjk-display);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-display);
+  text-wrap: balance;
+  margin: 0;
+}
+p { margin: 0; max-width: var(--measure); text-wrap: pretty; }
+p + p { margin-top: var(--space-4); }
+img, video, canvas, svg { max-width: 100%; height: auto; display: block; }
+button, input, select, textarea { font: inherit; color: inherit; }
+a { color: var(--accent); text-decoration: underline; text-underline-offset: 0.15em; text-decoration-thickness: 1px; }
+a:hover { color: var(--accent-hover); }
+hr { border: 0; border-top: var(--line-w) solid var(--line); margin: var(--space-6) 0; }
+
+/* ---- numbers and code: tabular everywhere a number can sit in a column ---- */
+code, kbd, samp, pre, [data-mono] { font-family: var(--font-mono), var(--font-cjk-mono); font-variant-numeric: tabular-nums slashed-zero; font-size: 0.9em; }
+pre { overflow-x: auto; max-width: none; }
+table, time, [data-num], input[type="number"], input[inputmode="numeric"], input[inputmode="decimal"] { font-variant-numeric: tabular-nums; }
+th { text-align: start; font-weight: 600; }
+td, th { padding: var(--space-2) var(--space-3); border-bottom: var(--line-w) solid var(--line); vertical-align: top; }
+td[data-num], th[data-num] { text-align: end; }
+
+/* ---- browser surfaces: the cheapest signal a page was built, not assembled ---- */
+::selection { background: var(--accent-soft); color: var(--fg); }
+::marker { color: var(--fg-3); }
+html { caret-color: var(--accent); accent-color: var(--accent); scrollbar-color: var(--line-strong) var(--surface); }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: var(--radius-sm); }
+:focus:not(:focus-visible) { outline: none; }
+::placeholder { color: var(--fg-3); opacity: 1; }
+[data-theme="dark"] img, [data-theme="dark"] video { filter: brightness(0.9); }
+
+/* ---- zh mode: one attribute flips faces, rhythm, measure, punctuation ----
+ * <html lang="zh-Hans"> (or zh-Hant, ja, ko) is the switch. Everything a
+ * CJK page needs and a Latin page must not have lives here, so the flag
+ * cannot be half-applied. references/cjk.md explains each line.
+ */
+:lang(zh), :lang(ja), :lang(ko) {
+  --leading-body:     1.75;   /* 1.7-1.8: square glyphs need air between lines */
+  --leading-tight:    1.35;   /* headings; 1.0-1.15 is a Latin number */
+  --tracking-display: 0;      /* never tighten CJK; negative tracking collides strokes */
+  --measure:          38em;   /* 30-40 characters; 68ch of Chinese is a wall */
+  font-family: var(--font-body), var(--font-cjk);   /* Latin face first for its glyphs only */
+  line-break: strict;         /* kinsoku / 避头尾: no line starts with 。，、 */
+  word-break: normal;
+  overflow-wrap: anywhere;
+  text-spacing-trim: space-first;     /* full-width punctuation trimmed at line starts (Chromium 123+) */
+  hanging-punctuation: allow-end;     /* WebKit */
+  text-autospace: normal;             /* CJK <-> Latin/digit spacing where supported; else write the space */
+}
+:lang(zh) h1, :lang(zh) h2, :lang(zh) h3, :lang(ja) h1, :lang(ja) h2, :lang(ja) h3 {
+  font-family: var(--font-display), var(--font-cjk-display);
+  font-weight: 600;           /* CJK reads lighter than Latin at equal weight */
+}
+:lang(zh) em, :lang(ja) em { font-style: normal; text-emphasis: filled dot; text-emphasis-position: under right; }  /* 着重号, never fake italic */
+:lang(zh) cite, :lang(zh) i { font-style: normal; }
+:lang(zh) p { text-align: start; }           /* justify only with a wide measure and real hyphenation-free breaking */
+:lang(zh) [data-serif], :lang(zh).serif, :lang(zh) .serif { font-family: var(--font-body), var(--font-cjk-serif); }
+:lang(zh-Hant) { --font-cjk: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif; }
+:lang(ja)      { --font-cjk: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif; }
+:lang(ko)      { --font-cjk: "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; }
+
+/* ---- light on dark: compensate weight, tracking, leading together ---- */
+[data-theme="dark"] body { letter-spacing: 0.01em; line-height: calc(var(--leading-body) + 0.05); }
+[data-theme="dark"]:lang(zh) body { letter-spacing: 0; }
+
+/* ---- motion floor ---- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---- print ---- */
+@media print {
+  body { background: none; color: #000; }   /* print is the one place pure black is right */
+  a { color: inherit; text-decoration: none; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; }
+  nav, [data-print="hide"] { display: none; }
+  h1, h2, h3, figure, table, pre { break-inside: avoid; }
+}
