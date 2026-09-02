@@ -28,6 +28,7 @@ jobs:
     permissions:
       contents: write
       id-token: write
+      issues: write          # ci-alert.sh tracking issue (one, auto-closed)
 
     steps:
       - name: Generate GitHub App token
@@ -88,6 +89,7 @@ jobs:
           echo "digest_path=digests/$(date -u -d @$NOW +%Y/%m/%d-%H%M).org" >> $GITHUB_OUTPUT
           echo "anchor=$(date -u -d @$NOW +%m%d%H%M)" >> $GITHUB_OUTPUT
           echo "display=$(date -u -d @$NOW '+%Y-%m-%d %H:%M')" >> $GITHUB_OUTPUT
+          echo "page_path=e/$(date -u -d @$NOW +%Y/%m/%d-%H%M).html" >> $GITHUB_OUTPUT
           echo "edition slot: $(date -u -d @$NOW +%Y-%m-%dT%H:%M:00Z)"
 
       - name: fetch hacker news with content
@@ -422,3 +424,33 @@ jobs:
               https://thevibeworks.github.io/claude-reads-hn/e/2025/12/27-1100.html#s46268854-12271100
             - Minutes required: digests like 0240.org and 0259.org need distinct anchors
 
+      # A green run must mean an edition on main. The curate step exits 0
+      # whenever Claude finishes, whether or not it wrote, built, or pushed
+      # anything, so until now "success" and "did nothing" were the same
+      # colour. Assert the artifact, not the exit code.
+      - name: verify the edition landed
+        if: steps.check-digest.outputs.skip != 'true'
+        run: |
+          git fetch -q origin main
+          missing=0
+          for f in "${{ steps.slot.outputs.digest_path }}" "${{ steps.slot.outputs.page_path }}"; do
+            if git cat-file -e "origin/main:$f" 2>/dev/null; then
+              echo "landed: $f"
+            else
+              echo "::error::$f is not on origin/main after the curate step"
+              missing=1
+            fi
+          done
+          exit $missing
+
+      - name: alert on failure
+        if: failure() && steps.check-digest.outputs.skip != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: .github/scripts/ci-alert.sh open "${{ github.run_id }}"
+
+      - name: clear alert on success
+        if: success() && steps.check-digest.outputs.skip != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: .github/scripts/ci-alert.sh close
