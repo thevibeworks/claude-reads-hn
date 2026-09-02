@@ -204,6 +204,7 @@ jobs:
         run: rm -rf ~/.local/state/claude/locks ~/.claude/.locks
 
       - name: let claude curate
+        id: curate
         if: steps.check-digest.outputs.skip != 'true'
         timeout-minutes: 15
         uses: thevibeworks/claude-code-action@main
@@ -443,11 +444,46 @@ jobs:
           done
           exit $missing
 
+      # A red run is not always a broken run. Every digest failure since the
+      # tripwire went in has been the shared Claude OAuth token hitting its
+      # cap -- 2026-09-02 05:32 "Spending cap reached resets 6am", 10:55
+      # "...resets 11am" -- which no change in this repo can fix. Filed under
+      # the same title as a real defect, those turn the one channel that is
+      # supposed to mean "something broke" into a quota log, and the first
+      # genuine bug arrives looking like the twentieth false alarm. Capacity
+      # and defect are different problems with different owners, so they get
+      # different issues. The quota issue is not noise to be silenced: it
+      # counts occurrences, because "how often are the bots starving" is the
+      # number that decides whether this account needs its own seat.
+      - name: classify the failure
+        id: why
+        if: failure() && steps.check-digest.outputs.skip != 'true'
+        run: |
+          f="${{ steps.curate.outputs.execution_file }}"
+          reason=defect
+          if [ -n "$f" ] && [ -f "$f" ]; then
+            # Match the final result object only, never the whole file: the
+            # execution file carries the entire transcript, and this curator
+            # reads Hacker News, so a front-page story about API spending caps
+            # would otherwise file a genuine defect under "quota".
+            last_result=$(grep -Eo '"result": *"[^"]{0,300}' "$f" | tail -1 || true)
+            api_status=$(grep -Eo '"api_error_status": *[0-9]+' "$f" | tail -1 || true)
+            echo "final result: ${last_result:-<none>}"
+            if echo "$last_result" | grep -Eqi '(spending cap|session limit|usage limit|rate limit)' \
+               || echo "$api_status" | grep -Eq '429'; then
+              reason=quota
+            fi
+          fi
+          if [ "$reason" = quota ]; then
+            echo "::warning::out of Claude quota -- capacity, not a defect"
+          fi
+          echo "reason=$reason" >> $GITHUB_OUTPUT
+
       - name: alert on failure
         if: failure() && steps.check-digest.outputs.skip != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: .github/scripts/ci-alert.sh open "${{ github.run_id }}"
+        run: .github/scripts/ci-alert.sh open "${{ github.run_id }}" "${{ steps.why.outputs.reason }}"
 
       - name: clear alert on success
         if: success() && steps.check-digest.outputs.skip != 'true'
