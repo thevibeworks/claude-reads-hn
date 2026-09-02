@@ -14,12 +14,13 @@
 #
 # Dedup never uses the search API: its index lags writes by minutes, which is
 # how a sibling repo once filed byte-identical duplicates 13 seconds apart.
-# The REST list lags too, by one to two seconds after a write (measured
-# 2026-09-02: a second `open` fired one second after the first created a
-# duplicate, with or without the label filter). So: match on title OR label
-# over the plain open-issues list, and before creating, look once more
-# after a short pause. Runs are hours apart, so the pause costs nothing
-# and the window is closed.
+# The REST list lags a write too, by a few seconds and unevenly (measured
+# 2026-09-02: a second `open` one second after the first made a duplicate
+# with or without the label filter, and once even after a 3 s recheck; a
+# third `open` seconds later deduplicated fine). So: match on title OR
+# label over the plain open-issues list, and before creating, poll for up
+# to 15 s. Runs are hours apart, so the wait costs nothing on the path
+# that matters and the window is closed on the path that does not.
 #
 # Same script as claude-code-envs and claude-code-http-spec; only the words
 # differ. Uses the built-in GITHUB_TOKEN via GH_TOKEN.
@@ -41,10 +42,11 @@ case "$action" in
     run_id="${2:?usage: $0 open <run-id>}"
     run_url="https://github.com/$REPO/actions/runs/$run_id"
     num="$(existing)"
-    if [[ -z "$num" ]]; then
+    for _ in 1 2 3 4 5; do
+      [[ -n "$num" ]] && break
       sleep 3
       num="$(existing)"
-    fi
+    done
     if [[ -n "$num" ]]; then
       gh api "repos/$REPO/issues/$num/comments" -f body="Still failing: $run_url" >/dev/null
       echo "ci-alert: commented on existing #$num" >&2
