@@ -71,6 +71,25 @@ jobs:
           echo "No digest for hour $HOUR_PREFIX; $TODAY_COUNT/$MAX_PER_DAY published today, proceeding"
           echo "skip=false" >> $GITHUB_OUTPUT
 
+      # The workflow owns the edition's timestamp. Left to pick `date` itself,
+      # the curator got it wrong in 19 of 30 consecutive editions (hours off,
+      # sometimes the wrong day): files landed under the wrong day, the daily
+      # cap admitted a fifth edition, and "Nth of N today" on the site was
+      # fiction. One value, computed once, and the file path, #+DATE header,
+      # story anchors, notification links and commit message all derive from
+      # it. json2org.py enforces DIGEST_DATE/DIGEST_PATH even if the curator
+      # writes something else into the JSON.
+      - name: fix the edition slot
+        id: slot
+        if: steps.check-digest.outputs.skip != 'true'
+        run: |
+          NOW=$(date -u +%s)
+          echo "digest_date=$(date -u -d @$NOW +%Y-%m-%dT%H:%M:00Z)" >> $GITHUB_OUTPUT
+          echo "digest_path=digests/$(date -u -d @$NOW +%Y/%m/%d-%H%M).org" >> $GITHUB_OUTPUT
+          echo "anchor=$(date -u -d @$NOW +%m%d%H%M)" >> $GITHUB_OUTPUT
+          echo "display=$(date -u -d @$NOW '+%Y-%m-%d %H:%M')" >> $GITHUB_OUTPUT
+          echo "edition slot: $(date -u -d @$NOW +%Y-%m-%dT%H:%M:00Z)"
+
       - name: fetch hacker news with content
         if: steps.check-digest.outputs.skip != 'true'
         run: |
@@ -109,6 +128,7 @@ jobs:
 
           echo "# Hacker News Top Stories" > /tmp/hn/stories.md
           echo "Fetched at: $(date -u '+%Y-%m-%d %H:%M UTC')" >> /tmp/hn/stories.md
+          echo "Edition slot: ${{ steps.slot.outputs.digest_date }} -> ${{ steps.slot.outputs.digest_path }}" >> /tmp/hn/stories.md
           echo "" >> /tmp/hn/stories.md
 
           IDX=1
@@ -190,6 +210,8 @@ jobs:
           TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
           TG_CHANNEL_ID: ${{ secrets.TG_CHANNEL_ID }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DIGEST_DATE: ${{ steps.slot.outputs.digest_date }}
+          DIGEST_PATH: ${{ steps.slot.outputs.digest_path }}
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ steps.app-token.outputs.token }}
@@ -236,6 +258,13 @@ jobs:
 
             You are the HN curator. Read /tmp/hn/stories.md - it has titles, scores, comments, article previews.
 
+            THIS EDITION'S SLOT (fixed by the workflow; never compute or guess it):
+            - date:          ${{ steps.slot.outputs.digest_date }}
+            - org file:      ${{ steps.slot.outputs.digest_path }}
+            - anchor suffix: ${{ steps.slot.outputs.anchor }}
+            - commit line:   hn: ${{ steps.slot.outputs.display }} digest
+            Use exactly these for the JSON "date", the org path, every notification link, and the commit message.
+
             DO THE WORK:
 
             0. CHECK HISTORY (use hn-historian subagent):
@@ -260,7 +289,7 @@ jobs:
 
             ```json
             {
-              "date": "2025-12-15T11:00:00Z",
+              "date": "${{ steps.slot.outputs.digest_date }}",
               "vibe": "Roomba dies, Arduino goes corporate, and HN debates taxing our robot overlords",
               "highlights": [
                 "Roomba: Chinese supplier inherits the throne",
@@ -308,7 +337,7 @@ jobs:
             - comments array must match order of original comments
             - Keep: URLs, tags, usernames unchanged
 
-            5. CONVERT TO ORG: run ./.claude/skills/hn-digest/scripts/json2org.py /tmp/digest.json digests/YYYY/MM/DD-HHMM.org
+            5. CONVERT TO ORG: run ./.claude/skills/hn-digest/scripts/json2org.py /tmp/digest.json ${{ steps.slot.outputs.digest_path }}
 
             6. UPDATE MEMORY: run ./.claude/skills/hn-digest/scripts/llms-gen.py (regenerates llms.txt from all digests)
 
@@ -318,7 +347,7 @@ jobs:
                - e/YYYY/MM/DD-HHMM.html: one page per edition
                - archive.html, editions.json: the ledger and its index
 
-            8. Git add digests/ llms.txt index.html archive.html e/ editions.json, commit, push
+            8. Git add digests/ llms.txt index.html archive.html e/ editions.json, commit as "hn: ${{ steps.slot.outputs.display }} digest", push
 
             9. NOTIFY ALL CHANNELS:
                BASE_URL: https://thevibeworks.github.io/claude-reads-hn
@@ -385,7 +414,9 @@ jobs:
             LINK REFERENCE:
             - Base URL: https://thevibeworks.github.io/claude-reads-hn
             - Edition page: e/YYYY/MM/DD-HHMM.html from the digest date
+              (this edition: ${{ steps.slot.outputs.digest_path }} with .org -> .html, under e/ instead of digests/)
             - Anchor: #s{id}-{MMDDHHMM} (e.g., #s46268854-12271100)
+              (this edition: #s{id}-${{ steps.slot.outputs.anchor }})
             - Build: "s" + id + "-" + date[5:7] + date[8:10] + date[11:13] + date[14:16]
             - Example: digest "2025-12-27T11:00:00Z" + story 46268854 →
               https://thevibeworks.github.io/claude-reads-hn/e/2025/12/27-1100.html#s46268854-12271100

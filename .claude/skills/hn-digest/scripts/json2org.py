@@ -14,6 +14,7 @@ examples:
 
 import json
 import sys
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -156,12 +157,21 @@ def story_to_org(story: dict, level: int = 2) -> str:
 
 def digest_to_org(digest: dict) -> str:
     """Convert full digest JSON to org format."""
-    date = digest.get("date", datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"))
-
-    if "T" in date:
-        date_display = date.replace("T", " ").replace("Z", " UTC")[:22] + " UTC"
+    # The workflow fixes the edition's timestamp in DIGEST_DATE and it wins
+    # over whatever the curator wrote: a guessed date in the JSON must not
+    # reach the #+DATE header, the story anchors, or the file name.
+    json_date = digest.get("date")
+    env_date = os.environ.get("DIGEST_DATE")
+    if env_date:
+        if json_date and json_date != env_date:
+            print(f"json2org: JSON date {json_date} overridden by DIGEST_DATE {env_date}", file=sys.stderr)
+        date = env_date
     else:
-        date_display = date + " UTC"
+        date = json_date or datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    # "2026-09-02T11:00:00Z" -> "2026-09-02 11:00 UTC". The old slice
+    # produced "11:00:00 UT UTC" in every edition since the seconds arrived.
+    date_display = (date[:16].replace("T", " ") if "T" in date else date) + " UTC"
 
     org = f"""#+TITLE: HN Digest {date_display}
 #+DATE: {date}
@@ -195,6 +205,14 @@ def main():
 
     input_path = Path(sys.argv[1])
     output_path = Path(sys.argv[2]) if len(sys.argv) > 2 else None
+
+    # Same rule for the file name: DIGEST_PATH, when set, is where the
+    # edition lands, whatever path was passed on the command line.
+    env_path = os.environ.get("DIGEST_PATH")
+    if env_path:
+        if output_path and str(output_path) != env_path:
+            print(f"json2org: output {output_path} overridden by DIGEST_PATH {env_path}", file=sys.stderr)
+        output_path = Path(env_path)
 
     with open(input_path) as f:
         data = json.load(f)

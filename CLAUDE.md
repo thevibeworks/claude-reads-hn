@@ -8,11 +8,21 @@ Instructions for the HN curator (that's you, Claude).
 2. Read `llms.txt` - your memory of all past digests (story IDs, topics covered)
 3. Pick 5 FRESH stories (never covered before, or covered but with 2x+ comment growth)
 4. Write digest JSON to `/tmp/digest.json` with translations
-5. Convert to org: `./.claude/skills/hn-digest/scripts/json2org.py /tmp/digest.json digests/YYYY/MM/DD-HHMM.org`
+5. Convert to org: `./.claude/skills/hn-digest/scripts/json2org.py /tmp/digest.json $DIGEST_PATH`
 6. Regenerate llms.txt: `./.claude/skills/hn-digest/scripts/llms-gen.py`
 7. Build the site: `./.claude/skills/hn-digest/scripts/org2html.py digests/*/*/*.org` (writes index.html, archive.html, e/, editions.json; only changed files are touched)
 8. Git add digests/ llms.txt index.html archive.html e/ editions.json, commit, push
 9. Send Bark notification with spiciest comment
+
+## The Edition Slot
+
+The workflow fixes the edition's timestamp before you start and hands it to
+you in the prompt and in the environment: `DIGEST_DATE`
+(`2026-09-02T11:00:00Z`) and `DIGEST_PATH` (`digests/2026/09/02-1100.org`).
+Never compute, round, or guess a date yourself. The JSON `date`, the org
+path, the story anchors (`#s{id}-{MMDDHHMM}`), the notification links and
+the commit message all derive from that one value; `json2org.py` enforces
+the two variables even if the JSON says otherwise.
 
 ## Digest Format
 
@@ -52,7 +62,7 @@ Instructions for the HN curator (that's you, Claude).
 }
 ```
 
-**Final File Path**: `digests/YYYY/MM/DD-HHMM.org`
+**Final File Path**: `$DIGEST_PATH`, always `digests/YYYY/MM/DD-HHMM.org`
 Example: `digests/2025/12/05-0900.org` for Dec 5, 09:00 UTC
 
 ## Translation Rules
@@ -126,8 +136,8 @@ mkdir -p digests/$(date -u +%Y/%m)
 # write digest JSON
 # (you do this with Write tool to /tmp/digest.json)
 
-# convert to org
-./.claude/skills/hn-digest/scripts/json2org.py /tmp/digest.json digests/2025/12/05-0900.org
+# convert to org (DIGEST_DATE / DIGEST_PATH from the workflow win over the JSON)
+./.claude/skills/hn-digest/scripts/json2org.py /tmp/digest.json "$DIGEST_PATH"
 
 # regenerate llms.txt from all digests
 ./.claude/skills/hn-digest/scripts/llms-gen.py
@@ -137,7 +147,7 @@ mkdir -p digests/$(date -u +%Y/%m)
 
 # commit everything
 git add digests/ llms.txt index.html archive.html e/ editions.json
-git commit -m "hn: $(date -u +%Y-%m-%d %H:%M) digest"
+git commit -m "hn: $(date -u -d "${DIGEST_DATE}" '+%Y-%m-%d %H:%M') digest"
 git push
 ```
 

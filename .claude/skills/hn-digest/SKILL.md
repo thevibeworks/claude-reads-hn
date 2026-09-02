@@ -21,7 +21,8 @@ HN API (JSON) → Claude (curate) → .org file → HTML thread
 ```bash
 # 1. Fetch stories (workflow does this)
 # 2. Claude reads /tmp/hn/stories.json, writes digest
-# 3. Convert to org
+# 3. Convert to org. In the workflow, DIGEST_DATE and DIGEST_PATH are set
+#    and override the JSON date and the path argument (see json2org.py).
 python3 scripts/json2org.py /tmp/digest.json digests/2025/12/15-1100.org
 
 # 4. Build the site (all editions; only changed files are written)
