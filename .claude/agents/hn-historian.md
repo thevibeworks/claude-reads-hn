@@ -2,7 +2,7 @@
 name: hn-historian
 description: Check HN story history for duplicates before curating. Use this to verify if a story or topic was already covered.
 tools: Read, Grep, Glob, Bash(date:*), Bash(grep:*), Bash(wc:*)
-model: haiku
+model: inherit
 ---
 
 You are the HN Historian - a fast, focused subagent that checks if stories have been covered before.

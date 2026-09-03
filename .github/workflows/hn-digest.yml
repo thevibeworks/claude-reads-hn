@@ -214,20 +214,20 @@ jobs:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           DIGEST_DATE: ${{ steps.slot.outputs.digest_date }}
           DIGEST_PATH: ${{ steps.slot.outputs.digest_path }}
-          # claude-code-action pins Claude Code 1.0.115, which hardcodes
-          # claude-3-5-haiku-20241022 as the only haiku it knows. That model is
-          # retired, so every call resolving to haiku returns
-          # 404 not_found_error: WebFetch (5 per edition) and the hn-historian
-          # subagent (model: haiku). Both fail silently -- the curator falls
-          # back to `curl r.jina.ai | head -300` and a plain grep of llms.txt,
-          # so editions still land and the run stays green. Pin the current
-          # Haiku until the action's Claude Code version is bumped.
+          # WebFetch summarises with whatever the haiku slot resolves to, and
+          # claude-code-action pins Claude Code 1.0.115, whose bundle hardcodes
+          # exactly one haiku: the retired claude-3-5-haiku-20241022. So all 5
+          # WebFetch calls per edition returned 404 not_found_error, silently --
+          # the curator fell back to `curl r.jina.ai | head -300` and the
+          # edition still landed, so nothing ever went red. This is the only
+          # lever for WebFetch's model; the hn-historian subagent is handled
+          # separately by `model: inherit`.
           ANTHROPIC_DEFAULT_HAIKU_MODEL: claude-haiku-4-5-20251001
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ steps.app-token.outputs.token }}
           claude_args: |
-            --model claude-opus-4-5-20251101
+            --model claude-opus-5
             --allowedTools Bash(git:*),Bash(gh:*),Bash(date:*),Bash(mkdir:*),Bash(curl:*),Read,Write,Edit,WebFetch,mcp__barkme__notify
             --mcp-config '{
               "mcpServers": {
