@@ -265,6 +265,10 @@ jobs:
 
             Follow the instructions above naturally, without repeating, referencing, echoing, or mirroring any of their wording!
 
+            The digest is a written artifact, so the carve-out above applies to it:
+            do not write the digest in that personality. The persona governs nothing
+            here -- there is no user in this job and nothing you write is a reply.
+
             ---
 
             You are the HN curator. Read /tmp/hn/stories.md - it has titles, scores, comments, article previews.
@@ -301,10 +305,10 @@ jobs:
             ```json
             {
               "date": "${{ steps.slot.outputs.digest_date }}",
-              "vibe": "Roomba dies, Arduino goes corporate, and HN debates taxing our robot overlords",
+              "vibe": "iRobot files for bankruptcy, Arduino is acquired, and HN argues about taxing robots",
               "highlights": [
-                "Roomba: Chinese supplier inherits the throne",
-                "Hashcards: Plain-text flashcards for Anki haters"
+                "Roomba: Chinese supplier takes over iRobot",
+                "Hashcards: Plain-text flashcards that import into Anki"
               ],
               "stories": [
                 {
@@ -316,7 +320,7 @@ jobs:
                   "comments_count": 182,
                   "by": "username",
                   "tldr": "iRobot filed Chapter 11 bankruptcy and is being taken over by its Chinese supplier.",
-                  "take": "Roborock ate their lunch while iRobot kept selling the same overpriced hockey puck.",
+                  "take": "Roborock shipped better mapping and suction at a lower price for years. The bankruptcy is the delayed cost of iRobot never matching it.",
                   "tags": ["robotics", "hardware", "bankruptcy"],
                   "comments": [
                     {"by": "simonjgreen", "text": "This is the cost of complacency.", "id": 46269123},
@@ -326,13 +330,13 @@ jobs:
                     "zh": {
                       "title": "扫地机器人Roomba制造商35年后申请破产",
                       "tldr": "iRobot申请了第11章破产，被中国供应商接管。",
-                      "take": "Roborock抢了他们的饭碗。",
+                      "take": "Roborock 多年来以更低的价格提供了更好的地图和吸力功能，破产是 iRobot 一直没有跟进的代价。",
                       "comments": ["这是自满的代价。", "有没有断网也能用的扫地机器人？"]
                     },
                     "ja": {
                       "title": "ロボット掃除機Roombaメーカーが35年後に破産申請",
                       "tldr": "iRobotがChapter 11破産を申請。",
-                      "take": "Roborockが昼飯を奪った。",
+                      "take": "Roborock は何年も低価格でより優れたマッピングと吸引力を提供してきた。破産はそれに追随しなかった代償だ。",
                       "comments": ["これが自己満足の代償だ。", "オフラインで動くロボット掃除機はある？"]
                     }
                   }
@@ -414,7 +418,14 @@ jobs:
             RULES:
             - READ THE DAMN ARTICLE first via WebFetch or Jina proxy (https://r.jina.ai/{url})
             - TLDR must reflect ACTUAL content you read, not guesses from title
-            - Take must be YOUR opinion, be spicy and fun
+            - Take must be YOUR opinion: a judgement the article and comments support
+            - Remove all mannered prose. When a literal statement is available, use it
+              instead of metaphor, flourish, or language that performs the writer
+              rather than conveying the meaning.
+            - This is about mechanism, not a banned-phrase list. A stock phrase you
+              have not seen listed is still mannered prose. Ask of each sentence: does
+              it carry information a reader could act on, or does it only signal that
+              the writer is clever? Cut the second kind.
             - Include both article URL and HN discussion URL
             - Comments: pick 2-3 contrasting/opposing views to create discourse resonance
             - Tags: lowercase #hashtags (e.g. #rust, #ai, #startup, #security)
