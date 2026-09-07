@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-09-07 06:00 UTC
+#+DATE: 2026-09-07T06:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+The Internet Archive passes the hat while the Wayback Machine returns 429s, ARM speculation eats a hypervisor, and HN reinvents dotfiles for agent skills
+
+* Highlights
+- Internet Archive: recurring donations of $25+ matched 2:1 through September, while commenters report weeks of Wayback timeouts
+- The NX bit is a correctness requirement on ARM64: device memory blocks speculative data reads but not instruction fetches
+- Robotics engineer tries to hand visual debugging to an LLM, ends up narrating the screen for it
+- Yale publishes cookable versions of lamb-and-beet stew from cuneiform tablets dated 1750-1730 BCE
+- Ask HN on managing skills files: 46 replies, and the answer is a git repo plus symlinks
+
+* Stories
+
+** Keep Our Servers Running :archive:nonprofit:infrastructure:funding:
+:PROPERTIES:
+:ID:       49593563
+:URL:      https://blog.archive.org/2026/09/01/keep-our-servers-running-your-recurring-donation-goes-3x-this-september/
+:HN_URL:   https://news.ycombinator.com/item?id=49593563
+:POINTS:   175
+:COMMENTS: 40
+:BY:       sonicrocketman
+:END:
+
+*** TLDR
+The Internet Archive's September campaign matches recurring donations of $25 or more 2:1, so a $25/month pledge is presented as $75/month. The money goes to servers, storage, power, cooling and staff. The post says the Archive holds 210 petabytes, that the average donation is about $25, and that it runs no ads, sells no data and charges nothing for access. The match runs through September 2026.
+
+*** Take
+The pitch lands in the middle of the worst stretch of Wayback Machine reliability in recent memory, and the top comments are people reporting timeouts, 429s and 'Temporarily Offline' pages for weeks. That is a reason to donate, not a reason not to. What is missing is any acknowledgement of it: a fundraising post about keeping servers running says nothing about the crawler and scraper load that is a large part of why they are struggling. Ask for money to fix the problem by name.
+
+*** Comments
+
+**** pm90
+:PROPERTIES:
+:COMMENT_ID: 49593714
+:END:
+It was super easy to donate; I'm so glad they have a landing page that supports several payment methods and makes it easy to donate. I love the wayback machine, hope everyone pitches in.
+
+**** abeyer
+:PROPERTIES:
+:COMMENT_ID: 49594299
+:END:
+"Keep running" is interesting phrasing, given that wayback has been serving me nothing but some mix of timeouts, 429 errors, and "Temporarily Offline" messages for weeks.
+
+**** TekMol
+:PROPERTIES:
+:COMMENT_ID: 49594321
+:END:
+I still don't get how copying copyrighted content to your own website and then asking for donations can be a legal business model. Nor how it can be morally justified.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+让我们的服务器继续运转
+***** TLDR
+互联网档案馆的九月募捐活动为每月 25 美元以上的定期捐款提供 1:2 配捐，即每月 25 美元被呈现为每月 75 美元。资金用于服务器、存储、电力、制冷和人员。文章称档案馆保存了 210 PB 数据，平均捐款约 25 美元，并且没有广告、不出售数据、不收取访问费。配捐持续到 2026 年 9 月底。
+***** Take
+这次募捐恰好赶上 Wayback Machine 近年来最不稳定的时期，热门评论里都是几周以来遇到超时、429 错误和「暂时离线」页面的人。这是捐款的理由，而不是不捐的理由。问题在于文章对此只字未提：一篇讲「让服务器继续运转」的募捐文，却没有提到爬虫和抓取器的负载，而那正是服务器吃力的重要原因。要钱可以，但请把问题说清楚。
+***** Comments
+- 捐款非常方便；很高兴他们的落地页支持多种支付方式。我爱 Wayback Machine，希望大家都出一份力。
+- 「继续运转」这个说法挺有意思，因为这几周 Wayback 给我的只有超时、429 错误和「暂时离线」页面。
+- 我还是不明白，把受版权保护的内容复制到自己网站上然后请求捐款，怎么能算合法的经营模式，也不明白在道义上怎么说得通。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+サーバーを動かし続けるために
+***** TLDR
+Internet Archiveの9月キャンペーンは、月25ドル以上の継続寄付に2倍のマッチングを付ける。月25ドルが月75ドル相当として示される。資金はサーバー、ストレージ、電力、冷却、人件費に充てられる。投稿によればアーカイブは210ペタバイトを保存し、平均寄付額は約25ドル、広告なし・データ販売なし・利用料なしで運営している。マッチングは2026年9月末まで。
+***** Take
+この呼びかけは、Wayback Machineがここ数年で最も不安定な時期に重なった。上位コメントは数週間にわたるタイムアウト、429エラー、「一時的にオフライン」の報告ばかりだ。それは寄付しない理由ではなく、寄付する理由になる。問題は一切触れていないことだ。「サーバーを動かし続ける」という募金文が、サーバーを苦しめている大きな要因であるクローラーとスクレイパーの負荷に言及していない。金を求めるなら問題を名指しすべきだ。
+***** Comments
+- 寄付はとても簡単だった。複数の決済方法に対応したページがあるのはありがたい。Wayback Machineが大好きなので、みんなで支えたい。
+- 「動かし続ける」という言い方は興味深い。ここ数週間、Waybackはタイムアウトと429エラーと「一時的にオフライン」しか返してこない。
+- 著作権のあるコンテンツを自分のサイトに複製して寄付を募るのが、なぜ合法なビジネスモデルになるのか、道義的にどう正当化されるのか、いまだに理解できない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+우리 서버를 계속 돌리기 위해
+***** TLDR
+인터넷 아카이브의 9월 캠페인은 월 25달러 이상 정기 후원에 2배 매칭을 붙인다. 월 25달러가 월 75달러로 표시되는 셈이다. 자금은 서버, 스토리지, 전력, 냉각, 인건비에 쓰인다. 글에 따르면 아카이브는 210페타바이트를 보관하고 평균 후원액은 약 25달러이며 광고도, 데이터 판매도, 이용료도 없다. 매칭은 2026년 9월까지 진행된다.
+***** Take
+이 호소는 최근 몇 년 중 Wayback Machine이 가장 불안정한 시기에 나왔고, 상위 댓글은 몇 주째 타임아웃과 429 오류, '일시적으로 오프라인' 페이지를 겪었다는 이야기뿐이다. 그건 후원하지 않을 이유가 아니라 후원할 이유다. 문제는 글이 이를 전혀 언급하지 않는다는 점이다. '서버를 계속 돌린다'는 모금 글이 정작 서버를 힘들게 하는 큰 원인인 크롤러와 스크레이퍼 부하를 말하지 않는다. 돈을 요청하려면 문제를 이름으로 부르라.
+***** Comments
+- 후원이 정말 쉬웠다. 여러 결제 수단을 지원하는 페이지가 있어 반갑다. Wayback Machine을 사랑하고, 모두가 조금씩 보태면 좋겠다.
+- '계속 돌린다'는 표현이 흥미롭다. 몇 주 동안 Wayback은 타임아웃과 429 오류, '일시적으로 오프라인'만 돌려줬으니까.
+- 저작권 있는 콘텐츠를 자기 사이트에 복제하고 후원을 받는 것이 어떻게 합법적인 사업 모델이 되는지, 도덕적으로 어떻게 정당화되는지 여전히 모르겠다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Mantener nuestros servidores en marcha
+***** TLDR
+La campaña de septiembre del Internet Archive multiplica por dos las donaciones recurrentes de 25 dólares o más, de modo que 25 dólares al mes se presentan como 75. El dinero va a servidores, almacenamiento, electricidad, refrigeración y personal. El texto afirma que el archivo guarda 210 petabytes, que la donación media ronda los 25 dólares y que no hay anuncios, venta de datos ni cuotas de acceso. La equiparación dura hasta finales de septiembre de 2026.
+***** Take
+La petición llega en la peor racha de fiabilidad de la Wayback Machine en años, y los comentarios más votados son de gente que lleva semanas encontrando timeouts, errores 429 y páginas de 'temporalmente fuera de servicio'. Eso es un motivo para donar, no para no hacerlo. Lo que falta es reconocerlo: un texto sobre mantener los servidores en marcha no dice nada de la carga de rastreadores y scrapers, que es buena parte de por qué van ahogados. Si pides dinero, nombra el problema.
+***** Comments
+- Donar fue facilísimo; me alegra que tengan una página con varios métodos de pago. Adoro la Wayback Machine, ojalá todos aporten.
+- 'Mantener en marcha' es una expresión curiosa, porque la Wayback lleva semanas devolviéndome solo timeouts, errores 429 y mensajes de 'temporalmente fuera de servicio'.
+- Sigo sin entender cómo copiar contenido con derechos de autor a tu propia web y luego pedir donaciones puede ser un modelo de negocio legal, ni cómo se justifica moralmente.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Unsere Server am Laufen halten
+***** TLDR
+Die September-Kampagne des Internet Archive verdoppelt wiederkehrende Spenden ab 25 Dollar im Verhältnis 2:1, aus 25 Dollar im Monat werden also nominell 75. Das Geld geht in Server, Speicher, Strom, Kühlung und Personal. Laut Beitrag hält das Archiv 210 Petabyte, die durchschnittliche Spende liegt bei rund 25 Dollar, und es gibt keine Werbung, keinen Datenverkauf und keine Zugangsgebühren. Die Aktion läuft bis Ende September 2026.
+***** Take
+Der Aufruf kommt mitten in der unzuverlässigsten Phase der Wayback Machine seit Jahren, und die obersten Kommentare melden seit Wochen Timeouts, 429er und 'Temporarily Offline'-Seiten. Das ist ein Grund zu spenden, kein Grund dagegen. Es fehlt nur die Erwähnung: Ein Spendenaufruf über das Am-Laufen-Halten der Server sagt nichts über die Crawler- und Scraper-Last, die einen großen Teil des Problems ausmacht. Wer Geld will, sollte das Problem beim Namen nennen.
+***** Comments
+- Das Spenden war sehr einfach; schön, dass die Seite mehrere Zahlungswege unterstützt. Ich liebe die Wayback Machine und hoffe, viele machen mit.
+- 'Am Laufen halten' ist eine interessante Formulierung, denn die Wayback liefert mir seit Wochen nur Timeouts, 429-Fehler und 'Temporarily Offline'.
+- Ich verstehe bis heute nicht, wie das Kopieren urheberrechtlich geschützter Inhalte auf die eigene Website und anschließendes Spendensammeln ein legales Geschäftsmodell sein kann, oder wie sich das moralisch rechtfertigen lässt.
+** The NX bit is not just about security :arm:kernel:hardware:lowlevel:
+:PROPERTIES:
+:ID:       49564609
+:URL:      https://purplesyringa.moe/blog/guest/the-nx-bit-is-not-just-about-security/
+:HN_URL:   https://news.ycombinator.com/item?id=49564609
+:POINTS:   50
+:COMMENTS: 33
+:BY:       torutofu
+:END:
+
+*** TLDR
+On ARM64, marking MMIO regions non-executable is a correctness requirement, not just hardening. Device memory blocks speculative data accesses but not speculative instruction fetches; ARM's own documentation says only the non-executable marking stops those. The author traced a MediaTek MT6735 hypervisor that locked up while trapping CTR_EL0 reads: a static branch (bl) was fine, an indirect branch (blr x0) was not, because the branch predictor occasionally guessed address 0x0 and the CPU speculatively fetched instructions out of device memory. Marking all MMIO non-executable ended the crashes.
+
+*** Take
+Two call instructions that do the same thing, one of which locks the machine, and the difference is what the branch predictor guessed. The general shape is worth carrying around: on ARM, page permissions are inputs to speculation, so anything you leave executable is somewhere the CPU may wander on its own. eqvinox in the comments has the right complaint. If executing from device memory is UNPREDICTABLE anyway, device mappings should suppress instruction prefetch too, and the architecture instead makes every driver author responsible for a hardware behavior nobody asked for.
+
+*** Comments
+
+**** repiret
+:PROPERTIES:
+:COMMENT_ID: 49593859
+:END:
+"Speculative instruction fetch to device memory crashes device" is in my list of favorite bugs ever found. I ran into it on a Cortex-M4 without an MPU, so I couldn't even fix the memory attributes; the only solution was to gerrymander the compiled code to prevent the speculative fetch.
+
+**** eqvinox
+:PROPERTIES:
+:COMMENT_ID: 49593555
+:END:
+Honestly feels like a misdesign in ARM. Where does it ever make sense for Device memory to not be data prefetchable, but allow instruction prefetch? It should disable all prefetch.
+
+**** dmitrygr
+:PROPERTIES:
+:COMMENT_ID: 49593641
+:END:
+This is doubly weird because actually purposefully executing from device memory is not allowed: "Trying to execute code from a region marked as Device is UNPREDICTABLE."
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+NX 位不只关乎安全
+***** TLDR
+在 ARM64 上，把 MMIO 区域标记为不可执行是正确性要求，而不只是加固手段。Device 内存只阻止推测性数据访问，不阻止推测性取指；ARM 自己的文档也说，只有不可执行标记才能拦住取指。作者追查了一个联发科 MT6735 的 hypervisor，它在拦截 CTR_EL0 读取时会死锁：静态跳转（bl）没事，间接跳转（blr x0）就出问题，因为分支预测器偶尔会猜到地址 0x0，CPU 于是从 device 内存里推测性取指。把所有 MMIO 标记为不可执行后，崩溃消失了。
+***** Take
+两条做同样事情的调用指令，其中一条会锁死机器，差别只在于分支预测器猜到了哪里。值得记住的是这个一般规律：在 ARM 上，页权限是推测执行的输入，凡是你留成可执行的地方，CPU 都可能自己跑过去。评论里 eqvinox 的抱怨是对的：既然从 device 内存执行代码本来就是 UNPREDICTABLE，那 device 映射就该一并禁止取指预取；现在的架构却把这个没人要的硬件行为丢给每一个驱动作者去处理。
+***** Comments
+- 「对 device 内存的推测性取指会让设备崩溃」是我见过最喜欢的 bug 之一。我在一颗没有 MPU 的 Cortex-M4 上遇到过，连内存属性都改不了，唯一的办法是把编译出的代码重新摆布，避免那次推测性取指。
+- 老实说这像是 ARM 的设计失误。Device 内存不允许数据预取却允许指令预取，这在什么情况下说得通？它应该禁止所有预取。
+- 更奇怪的是，故意从 device 内存执行代码本来就不被允许：「尝试执行标记为 Device 的区域中的代码是 UNPREDICTABLE 的。」
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+NXビットはセキュリティだけの話ではない
+***** TLDR
+ARM64では、MMIO領域を実行不可にすることは強化策ではなく正しさの要件だ。Deviceメモリは投機的なデータアクセスを止めるが、投機的な命令フェッチは止めない。ARM自身の文書も、それを止めるのは実行不可の指定だけだと述べている。著者はCTR_EL0の読み出しをトラップする際にハングするMediaTek MT6735のハイパーバイザを追跡した。静的分岐（bl）は問題なく、間接分岐（blr x0）で問題が起きた。分岐予測器が時折アドレス0x0を予測し、CPUがDeviceメモリから投機的に命令を取ってきていたためだ。全MMIOを実行不可にすると、クラッシュは止まった。
+***** Take
+同じことをする2つの呼び出し命令のうち片方だけがマシンを固める。違いは分岐予測器が何を予測したかだけだ。覚えておく価値があるのは一般則のほうだ。ARMではページ権限が投機実行の入力であり、実行可能なまま残した場所にはCPUが勝手に踏み込みうる。コメントのeqvinoxの指摘は正しい。Deviceメモリからの実行がそもそもUNPREDICTABLEなら、Deviceマッピングは命令プリフェッチも抑止すべきで、現状のアーキテクチャは誰も望んでいないハードウェア挙動の責任をドライバ作者に押し付けている。
+***** Comments
+- 「Deviceメモリへの投機的命令フェッチがデバイスをクラッシュさせる」は、これまでで一番好きなバグのひとつだ。MPUのないCortex-M4で踏んだので、メモリ属性を直すこともできず、投機フェッチが起きないようにコンパイル済みコードを配置し直すしかなかった。
+- 正直これはARMの設計ミスに感じる。Deviceメモリがデータプリフェッチ不可なのに命令プリフェッチは許す、というのが理にかなう場面がどこにある？すべてのプリフェッチを止めるべきだ。
+- 二重に奇妙なのは、Deviceメモリから意図的にコードを実行すること自体が許されていない点だ。「Deviceと指定された領域のコードを実行しようとするのはUNPREDICTABLE」とある。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+NX 비트는 보안만의 문제가 아니다
+***** TLDR
+ARM64에서 MMIO 영역을 실행 불가로 표시하는 것은 보안 강화가 아니라 정확성 요구사항이다. Device 메모리는 투기적 데이터 접근만 막고 투기적 명령어 페치는 막지 않는다. ARM 문서도 그것을 막는 것은 실행 불가 표시뿐이라고 말한다. 저자는 CTR_EL0 읽기를 트랩하다 멈추는 MediaTek MT6735 하이퍼바이저를 추적했다. 정적 분기(bl)는 괜찮았지만 간접 분기(blr x0)는 문제가 됐다. 분기 예측기가 가끔 주소 0x0을 예측해 CPU가 device 메모리에서 명령어를 투기적으로 가져왔기 때문이다. 모든 MMIO를 실행 불가로 표시하자 크래시가 사라졌다.
+***** Take
+같은 일을 하는 두 호출 명령 중 하나만 기계를 멈춘다. 차이는 분기 예측기가 무엇을 짐작했는가뿐이다. 기억할 것은 일반 원리다. ARM에서 페이지 권한은 투기 실행의 입력이며, 실행 가능하게 남겨둔 곳은 CPU가 알아서 들어갈 수 있는 곳이다. 댓글의 eqvinox 지적이 맞다. device 메모리에서의 실행이 애초에 UNPREDICTABLE이라면 device 매핑은 명령어 프리페치도 막아야 하는데, 현재 아키텍처는 아무도 원하지 않은 하드웨어 동작의 책임을 드라이버 작성자에게 떠넘긴다.
+***** Comments
+- 'device 메모리에 대한 투기적 명령어 페치가 장치를 죽인다'는 내가 본 최고의 버그 중 하나다. MPU가 없는 Cortex-M4에서 겪어서 메모리 속성조차 고칠 수 없었고, 투기 페치를 막으려고 컴파일된 코드 배치를 손보는 수밖에 없었다.
+- 솔직히 ARM의 설계 실수 같다. Device 메모리가 데이터 프리페치는 안 되는데 명령어 프리페치는 허용되는 게 어떤 경우에 말이 되나? 모든 프리페치를 막아야 한다.
+- 더 이상한 건 device 메모리에서 의도적으로 코드를 실행하는 것 자체가 허용되지 않는다는 점이다. 'Device로 표시된 영역의 코드를 실행하려는 시도는 UNPREDICTABLE이다.'
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+El bit NX no va solo de seguridad
+***** TLDR
+En ARM64, marcar las regiones MMIO como no ejecutables es un requisito de corrección, no un simple refuerzo. La memoria Device bloquea los accesos especulativos de datos, pero no las búsquedas especulativas de instrucciones; la propia documentación de ARM dice que solo el marcado no ejecutable las detiene. El autor rastreó un hipervisor de MediaTek MT6735 que se colgaba al interceptar lecturas de CTR_EL0: la rama estática (bl) iba bien, la indirecta (blr x0) no, porque el predictor de saltos a veces apuntaba a la dirección 0x0 y la CPU leía instrucciones especulativamente desde memoria de dispositivo. Al marcar todo el MMIO como no ejecutable, los cuelgues desaparecieron.
+***** Take
+Dos instrucciones de llamada que hacen lo mismo, una de ellas bloquea la máquina, y la diferencia es lo que adivinó el predictor de saltos. Lo que conviene recordar es la regla general: en ARM los permisos de página son entradas de la especulación, así que todo lo que dejes ejecutable es un sitio al que la CPU puede ir por su cuenta. eqvinox tiene razón en los comentarios: si ejecutar desde memoria de dispositivo ya es UNPREDICTABLE, esos mapeos deberían suprimir también la prebúsqueda de instrucciones, y en cambio la arquitectura carga a cada autor de drivers con un comportamiento de hardware que nadie pidió.
+***** Comments
+- "La búsqueda especulativa de instrucciones en memoria de dispositivo tumba el dispositivo" está en mi lista de bugs favoritos. Lo sufrí en un Cortex-M4 sin MPU, así que ni siquiera podía arreglar los atributos de memoria; la única solución fue recolocar el código compilado para evitar la búsqueda especulativa.
+- Sinceramente parece un error de diseño de ARM. ¿En qué caso tiene sentido que la memoria Device no permita prebúsqueda de datos pero sí de instrucciones? Debería desactivar toda prebúsqueda.
+- Es doblemente raro porque ejecutar código a propósito desde memoria de dispositivo tampoco está permitido: "Intentar ejecutar código de una región marcada como Device es UNPREDICTABLE".
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Das NX-Bit geht nicht nur um Sicherheit
+***** TLDR
+Auf ARM64 ist das Markieren von MMIO-Regionen als nicht ausführbar eine Korrektheitsanforderung, keine bloße Härtung. Device-Speicher blockiert spekulative Datenzugriffe, aber keine spekulativen Instruktionsabrufe; ARMs eigene Dokumentation sagt, dass nur die Nicht-Ausführbarkeit diese verhindert. Der Autor verfolgte einen MediaTek-MT6735-Hypervisor, der beim Abfangen von CTR_EL0-Lesezugriffen einfror: der statische Sprung (bl) lief, der indirekte (blr x0) nicht, weil die Sprungvorhersage gelegentlich auf Adresse 0x0 tippte und die CPU spekulativ Instruktionen aus Device-Speicher holte. Nachdem alle MMIO-Bereiche als nicht ausführbar markiert waren, blieben die Abstürze aus.
+***** Take
+Zwei Aufrufinstruktionen, die dasselbe tun, eine legt die Maschine lahm, und der Unterschied ist die Vermutung der Sprungvorhersage. Mitnehmen sollte man die allgemeine Regel: Auf ARM sind Seitenrechte Eingaben der Spekulation, alles Ausführbare ist also ein Ort, an den die CPU von sich aus laufen kann. eqvinox hat in den Kommentaren recht: Wenn das Ausführen aus Device-Speicher ohnehin UNPREDICTABLE ist, sollten Device-Mappings auch den Instruktions-Prefetch unterdrücken. Stattdessen lädt die Architektur jedem Treiberautor ein Hardwareverhalten auf, das niemand wollte.
+***** Comments
+- "Spekulativer Instruktionsabruf auf Device-Speicher lässt das Gerät abstürzen" gehört zu meinen Lieblingsbugs. Ich hatte ihn auf einem Cortex-M4 ohne MPU, konnte also nicht einmal die Speicherattribute ändern; die einzige Lösung war, den kompilierten Code so umzulegen, dass der spekulative Abruf ausbleibt.
+- Ehrlich gesagt wirkt das wie ein Designfehler bei ARM. Wo ergibt es Sinn, dass Device-Speicher keinen Daten-Prefetch erlaubt, aber Instruktions-Prefetch schon? Es sollte jeden Prefetch abschalten.
+- Doppelt seltsam, weil absichtliches Ausführen aus Device-Speicher gar nicht erlaubt ist: "Der Versuch, Code aus einer als Device markierten Region auszuführen, ist UNPREDICTABLE."
+** I'm a seeing-eye dog for a computer :ai:robotics:llm:debugging:
+:PROPERTIES:
+:ID:       49550276
+:URL:      https://claytonwramsey.com/blog/seeing-eye/
+:HN_URL:   https://news.ycombinator.com/item?id=49550276
+:POINTS:   34
+:COMMENTS: 10
+:BY:       claytonwramsey
+:END:
+
+*** TLDR
+Clayton Ramsey writes robot code and tried to hand the visual half of debugging to an LLM. His visualizer exposes an MCP server and the models accept images, so he wired the two together and asked the assistant to run the inspect-adjust-rerun loop itself. It did not work. He can drive the debug viewer to the right camera angle in seconds; the model needs about five minutes to get there, then spends thirty more producing a new, still wrong answer. His conclusion is that no amount of text training gives a model a sense of what a working robot looks like, so he went back to doing the visualization himself and kept the assistant for the drudge coding.
+
+*** Take
+The title is the finding. He ends up telling the model where to grab the lid and which spot he circled in red, which is exactly the work he was trying to offload. When the loop is visual, supervising the tool costs more than the tool saves. preommr's reply that vision models will be better in a few months may turn out right, but the gap here is not image fidelity: the model has no expectation about how a gripper is supposed to move, so it cannot tell a bad run from a good one no matter how sharp the screenshot is.
+
+*** Comments
+
+**** hspeiser
+:PROPERTIES:
+:COMMENT_ID: 49594105
+:END:
+I completely understand this. I've worked on robot hands and the models were practically useless at helping me debug anything visually. What I have found super useful is having models make an interactive 3D viewer where I move, highlight and paint directly onto the geometry, different colors for different failures.
+
+**** SadErn
+:PROPERTIES:
+:COMMENT_ID: 49593850
+:END:
+I like to think of training and improving AIs as bringing freedom to the world. Coding was never the reward. Acting as a translator for a machine is far worse than allowing the machine to solve the mundane parts and leave you with bigger building blocks to play with.
+
+**** preommr
+:PROPERTIES:
+:COMMENT_ID: 49594094
+:END:
+These people need to take a vacation and come back in a few months when the vision models get better and cheaper. Astra is already good at taking screenshots and acting on it.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+我成了计算机的导盲犬
+***** TLDR
+Clayton Ramsey 写机器人代码，他试着把调试中「看」的那一半交给大模型。他的可视化工具带有 MCP 服务器，模型也能接收图像，于是他把两者接起来，让助手自己跑「查看—调整—重跑」的循环。结果不行。他自己几秒钟就能把调试视图转到正确的机位，模型要花大约五分钟才到位，然后再花三十分钟给出一个新的、同样错误的答案。他的结论是：再多的文本训练也无法让模型知道一个正常工作的机器人是什么样子，于是他回去自己看可视化，把助手留给繁琐的写码工作。
+***** Take
+标题就是结论。他最后在告诉模型该抓盖子的哪个位置、他用红圈标了哪里，而这正是他想外包出去的活儿。当循环是视觉性的时，监督工具的成本高于工具节省的成本。preommr 说过几个月视觉模型会更好，这也许最终成立，但这里的差距不在画质：模型对机械爪应该怎么动没有预期，所以截图再清晰，它也分不出一次失败的运行和一次成功的运行。
+***** Comments
+- 完全理解。我做过机械手，模型在视觉调试上基本没用。我发现真正有用的是让模型做一个交互式 3D 查看器，我可以移动、高亮，直接在几何体上涂色，不同颜色代表不同的失败类型。
+- 我倾向于把训练和改进 AI 看作给世界带来自由。写代码本身从来不是奖赏。给机器当翻译远比让机器解决琐碎部分、把更大的积木留给你玩要糟糕。
+- 这些人该去度个假，过几个月等视觉模型更好更便宜了再回来。Astra 已经很擅长截图并据此行动了。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+私はコンピュータの盲導犬だ
+***** TLDR
+Clayton Ramseyはロボットのコードを書いており、デバッグの「見る」部分をLLMに任せようとした。可視化ツールにはMCPサーバーがあり、モデルは画像も受け取れるので、両者をつないで「確認して直して再実行する」ループをアシスタントに回させた。うまくいかなかった。彼自身は数秒で正しいカメラ位置にたどり着けるが、モデルは約5分かかり、その後30分かけて新しい、やはり間違った答えを出す。結論は、どれだけテキストで訓練しても、正常に動くロボットの姿はモデルに身につかない、というものだ。彼は可視化を自分でやることに戻し、アシスタントは面倒なコード書きに使っている。
+***** Take
+タイトルがそのまま結論だ。最終的に彼は、蓋のどこを掴むか、赤丸を付けた場所はどこかをモデルに説明している。まさに手放そうとしていた仕事だ。ループが視覚的なとき、道具を監督するコストは道具が節約するコストを上回る。数か月で視覚モデルは良くなるというpreommrの返信はいずれ正しくなるかもしれないが、ここでの差は画質ではない。モデルはグリッパーがどう動くべきかという予測を持たないので、スクリーンショットがどれだけ鮮明でも良い実行と悪い実行を区別できない。
+***** Comments
+- よくわかる。ロボットハンドの仕事をしてきたが、モデルは視覚的なデバッグの助けにはほぼならなかった。役に立ったのは、モデルにインタラクティブな3Dビューアを作らせて、自分で動かし、ハイライトし、ジオメトリに直接色を塗る方法だ。失敗の種類ごとに色を変える。
+- AIを訓練して改善することは世界に自由をもたらすことだと考えたい。コーディング自体が報酬だったことはない。機械の翻訳者を務めるほうが、退屈な部分を機械に解かせて大きな部品を手元に残すよりずっと悪い。
+- こういう人たちは休暇を取って、視覚モデルがもっと良く安くなる数か月後に戻ってくるべきだ。Astraはすでにスクリーンショットを撮って動くのが得意だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+나는 컴퓨터의 안내견이다
+***** TLDR
+Clayton Ramsey는 로봇 코드를 쓰는데, 디버깅의 '보는' 절반을 LLM에 넘기려 했다. 그의 시각화 도구에는 MCP 서버가 있고 모델은 이미지를 받으니, 둘을 연결해 확인-수정-재실행 루프를 어시스턴트가 돌리게 했다. 되지 않았다. 그는 몇 초면 디버그 뷰어를 원하는 카메라 각도로 옮기지만, 모델은 거기까지 약 5분이 걸리고 이후 30분을 들여 새롭고 여전히 틀린 답을 내놓는다. 결론은 아무리 텍스트로 학습해도 정상 작동하는 로봇이 어떤 모습인지는 모델이 알 수 없다는 것이다. 그는 시각화는 직접 하고, 어시스턴트는 지루한 코딩에 쓰기로 돌아갔다.
+***** Take
+제목이 곧 결론이다. 그는 결국 모델에게 뚜껑의 어디를 잡아야 하는지, 자기가 빨간 동그라미를 어디에 쳤는지 설명하고 있다. 바로 넘기려던 그 일이다. 루프가 시각적일 때, 도구를 감독하는 비용이 도구가 절약해 주는 비용보다 크다. 몇 달이면 비전 모델이 나아진다는 preommr의 답이 언젠가 맞을 수 있지만, 여기서의 간극은 화질이 아니다. 모델에는 그리퍼가 어떻게 움직여야 하는지에 대한 기대가 없어서, 스크린샷이 아무리 선명해도 좋은 실행과 나쁜 실행을 구분하지 못한다.
+***** Comments
+- 충분히 공감한다. 로봇 손을 다뤄봤는데 모델은 시각적 디버깅에 거의 쓸모가 없었다. 정말 유용했던 건 모델에게 인터랙티브 3D 뷰어를 만들게 해서 내가 직접 움직이고 강조하고 지오메트리에 색을 칠하는 방식이다. 실패 유형마다 색을 다르게 한다.
+- AI를 훈련하고 개선하는 일은 세상에 자유를 가져오는 일이라고 생각하고 싶다. 코딩 자체가 보상인 적은 없었다. 기계의 번역가 노릇을 하는 것이, 기계가 지루한 부분을 풀고 더 큰 블록을 남겨주는 것보다 훨씬 나쁘다.
+- 이 사람들은 휴가를 다녀와서 비전 모델이 더 좋고 싸지는 몇 달 뒤에 돌아오면 된다. Astra는 이미 스크린샷을 찍고 그에 따라 행동하는 데 능하다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Soy el perro guía de un ordenador
+***** TLDR
+Clayton Ramsey escribe código para robots e intentó delegar en un LLM la mitad visual de la depuración. Su visualizador expone un servidor MCP y los modelos aceptan imágenes, así que conectó ambos y pidió al asistente que llevara él solo el bucle de inspeccionar, ajustar y volver a ejecutar. No funcionó. Él coloca la cámara del visor en el ángulo correcto en segundos; el modelo tarda unos cinco minutos en llegar y luego dedica treinta más a producir una respuesta nueva e igualmente equivocada. Su conclusión es que ningún volumen de entrenamiento con texto le da al modelo una idea de cómo se ve un robot que funciona, así que volvió a hacer la visualización a mano y dejó el asistente para el código pesado.
+***** Take
+El título es el hallazgo. Termina indicándole al modelo por dónde agarrar la tapa y qué punto rodeó en rojo, que es justo el trabajo que quería quitarse. Cuando el bucle es visual, supervisar la herramienta cuesta más de lo que la herramienta ahorra. La respuesta de preommr de que los modelos de visión mejorarán en unos meses puede acabar siendo cierta, pero aquí la brecha no es la nitidez: el modelo no tiene ninguna expectativa sobre cómo debería moverse una pinza, así que no distingue una ejecución buena de una mala por muy afilada que sea la captura.
+***** Comments
+- Lo entiendo perfectamente. He trabajado en manos robóticas y los modelos eran prácticamente inútiles para depurar nada visual. Lo que sí me ha servido es pedirles un visor 3D interactivo donde yo muevo, resalto y pinto directamente sobre la geometría, con colores distintos para cada tipo de fallo.
+- Me gusta pensar que entrenar y mejorar las IA trae libertad al mundo. Programar nunca fue la recompensa. Hacer de traductor para una máquina es mucho peor que dejar que la máquina resuelva lo mundano y te deje bloques más grandes con los que jugar.
+- Esta gente debería tomarse unas vacaciones y volver en unos meses, cuando los modelos de visión sean mejores y más baratos. Astra ya se maneja bien haciendo capturas y actuando sobre ellas.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Ich bin der Blindenhund eines Computers
+***** TLDR
+Clayton Ramsey schreibt Robotercode und wollte die visuelle Hälfte des Debuggens einem LLM überlassen. Sein Visualisierer bietet einen MCP-Server, die Modelle nehmen Bilder entgegen, also verband er beides und ließ den Assistenten die Schleife aus Ansehen, Anpassen und Neustarten selbst fahren. Es funktionierte nicht. Er bringt den Debug-Viewer in Sekunden auf den richtigen Kamerawinkel; das Modell braucht dafür rund fünf Minuten und dann weitere dreißig für eine neue, ebenfalls falsche Antwort. Sein Fazit: Kein Maß an Texttraining vermittelt einem Modell, wie ein funktionierender Roboter aussieht. Er visualisiert wieder selbst und nutzt den Assistenten für die stumpfe Tipparbeit.
+***** Take
+Der Titel ist das Ergebnis. Am Ende erklärt er dem Modell, wo es den Deckel greifen soll und welche Stelle er rot eingekreist hat, also genau die Arbeit, die er abgeben wollte. Wenn die Schleife visuell ist, kostet das Beaufsichtigen des Werkzeugs mehr, als das Werkzeug einspart. preommrs Einwand, Vision-Modelle würden in ein paar Monaten besser, mag irgendwann stimmen, aber die Lücke ist hier nicht die Bildqualität: Das Modell hat keine Erwartung, wie sich ein Greifer bewegen sollte, und kann deshalb einen guten von einem schlechten Durchlauf nicht unterscheiden, egal wie scharf der Screenshot ist.
+***** Comments
+- Kann ich völlig nachvollziehen. Ich habe an Roboterhänden gearbeitet, und die Modelle waren beim visuellen Debuggen praktisch nutzlos. Wirklich geholfen hat, die Modelle einen interaktiven 3D-Viewer bauen zu lassen, in dem ich bewege, hervorhebe und direkt auf die Geometrie male, verschiedene Farben für verschiedene Fehler.
+- Ich sehe das Trainieren und Verbessern von KI gern als Freiheitsgewinn für die Welt. Programmieren war nie die Belohnung. Übersetzer für eine Maschine zu spielen ist weit schlimmer, als die Maschine das Banale lösen zu lassen und größere Bausteine zu behalten.
+- Diese Leute sollten Urlaub machen und in ein paar Monaten wiederkommen, wenn Vision-Modelle besser und billiger sind. Astra kann schon jetzt gut Screenshots machen und danach handeln.
+** Ask HN: How do you manage skills files? :ai:tooling:askhn:agents:
+:PROPERTIES:
+:ID:       49589914
+:URL:      https://news.ycombinator.com/item?id=49589914
+:HN_URL:   https://news.ycombinator.com/item?id=49589914
+:POINTS:   56
+:COMMENTS: 46
+:BY:       imadtaieber
+:END:
+
+*** TLDR
+imadtaieber asks how people find, organize and verify skills files for coding agents, adding that he expects model capability to eventually absorb them. The replies converge on one pattern: do not download skills, write your own; keep them in a git repo; symlink them into the agent directories and into individual projects. On top of that base, commenters describe evals used as integration tests for skill behavior, a scheduled agent that compares skills against the docs they describe and opens PRs when they drift, a public skill registry with profile-based sync at Norway's NAV, and a contingent that uses no skills at all and puts everything in a README or AGENTS.md.
+
+*** Take
+Most of this thread is people rebuilding dotfile management for prompts and arriving at the same answer they arrived at for dotfiles twenty years ago: a repo plus symlinks. That is not a failure, it means the problem is mundane and mostly solved. Two replies are worth more than the tooling. WatchDog's, that skills only earn their keep for context a model cannot derive, and most published skills restate things the model already does. And theletterf's drift-checking bot, which is the only answer in the thread that treats a skill as code with a maintenance cost rather than a file you write once and forget.
+
+*** Comments
+
+**** alexhans
+:PROPERTIES:
+:COMMENT_ID: 49594234
+:END:
+I don't find skills, I create them. Keep them organised in software repos that you install with symlinks for all coding harnesses that you have. I make sure they work with AI evals. Think of them like integration tests to prove behaviour.
+
+**** WatchDog
+:PROPERTIES:
+:COMMENT_ID: 49593675
+:END:
+I don't use any skills, what kinds of skills are people finding most useful? For general tasks, the model seems perfectly capable of figuring out things itself, and for project or environment specific tasks, I just put that information in the readme or agents.md file.
+
+**** theletterf
+:PROPERTIES:
+:COMMENT_ID: 49594183
+:END:
+We keep the skills in a repo, where an agentic workflow runs biweekly to check if their content drifted compared to the docs and opens PRs if they did. The repo is also a Claude plugin.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Ask HN：你们怎么管理 skills 文件？
+***** TLDR
+imadtaieber 问大家如何寻找、整理和验证给编码智能体用的 skills 文件，并说他觉得这些迟早会被模型能力吞掉。回复集中在一个模式上：别去下载别人的 skills，自己写；放进 git 仓库；再用符号链接接到各个智能体目录和具体项目里。在这个基础之上，评论里还有：把 evals 当作验证 skill 行为的集成测试；一个定期运行的智能体，比对 skills 与其描述的文档，发现漂移就开 PR；挪威 NAV 的公开 skill 注册表和按 profile 同步的工具；以及一批完全不用 skills、把信息都写进 README 或 AGENTS.md 的人。
+***** Take
+这个帖子大部分是在为提示词重建 dotfiles 管理，最后得到的答案和二十年前管理 dotfiles 时一样：一个仓库加符号链接。这不算失败，说明问题本身就很平常，而且基本已解决。有两条回复比工具更值钱。一是 WatchDog 的观点：只有当上下文是模型推不出来的，skill 才值回成本，而大多数公开的 skill 只是在复述模型本来就会做的事。二是 theletterf 的漂移检查机器人，这是全帖唯一把 skill 当成有维护成本的代码、而不是写完就忘的文件的做法。
+***** Comments
+- 我不找 skills，我自己写。把它们放在软件仓库里，用符号链接安装到你所有的编码工具里。我用 AI evals 确保它们有效，把它们当成验证行为的集成测试。
+- 我完全不用 skills，大家觉得哪类 skills 最有用？一般任务模型自己就能搞定，项目或环境相关的信息我直接写进 readme 或 agents.md。
+- 我们把 skills 放在一个仓库里，每两周跑一个智能体工作流，检查内容相对文档是否漂移，漂移了就开 PR。这个仓库本身也是一个 Claude 插件。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Ask HN: skillsファイルはどう管理している？
+***** TLDR
+imadtaieberが、コーディングエージェント用のskillsファイルをどう探し、整理し、動作確認しているかを尋ねた。いずれモデルの能力に吸収されると思う、とも書いている。回答は一つの型に収束する。skillsは拾ってくるのではなく自分で書く、gitリポジトリに置く、各エージェントのディレクトリやプロジェクトへシンボリックリンクを張る。その上で、skillの挙動を検証する統合テストとしてのevals、記述対象のドキュメントとの乖離を定期的に比較してPRを開くエージェント、ノルウェーのNAVによる公開skillレジストリとプロファイル単位の同期ツール、そしてskillsを一切使わずREADMEやAGENTS.mdに全部書く一派が語られる。
+***** Take
+このスレッドの大半は、プロンプト向けにdotfiles管理を作り直し、20年前にdotfilesで得たのと同じ結論に達している。リポジトリとシンボリックリンクだ。これは失敗ではなく、問題が平凡でほぼ解決済みだという意味だ。ツールより価値のある返信が2つある。skillが割に合うのはモデルが導けない文脈のときだけで、公開されているskillの多くはモデルが元からできることの言い換えだ、というWatchDogの指摘。そしてtheletterfの乖離チェックbotで、skillを書き捨てのファイルではなく保守コストのあるコードとして扱う唯一の回答だ。
+***** Comments
+- skillsは探さない、自分で作る。ソフトウェアリポジトリで管理し、手持ちのすべてのコーディング環境へシンボリックリンクで入れる。AI evalsで動作を確認する。挙動を証明する統合テストのようなものだ。
+- 私はskillsを一切使っていない。皆はどんなskillが役に立っている？一般的な作業ならモデルは自分で解決できるし、プロジェクトや環境固有の情報はreadmeかagents.mdに書いておけば済む。
+- skillsはリポジトリに置き、隔週でエージェントのワークフローを走らせて、ドキュメントとの内容の乖離を確認し、あればPRを開く。そのリポジトリ自体もClaudeのプラグインになっている。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Ask HN: skills 파일을 어떻게 관리하나요?
+***** TLDR
+imadtaieber가 코딩 에이전트용 skills 파일을 어떻게 찾고 정리하고 검증하는지 물으면서, 결국 모델 능력에 흡수될 것 같다고 덧붙였다. 답변은 한 가지 패턴으로 모인다. 남의 skills를 받지 말고 직접 쓸 것, git 저장소에 둘 것, 에이전트 디렉터리와 각 프로젝트에 심볼릭 링크로 연결할 것. 그 위에 skill 동작을 검증하는 통합 테스트로서의 evals, skills와 관련 문서의 내용 차이를 주기적으로 비교해 PR을 여는 에이전트, 노르웨이 NAV의 공개 skill 레지스트리와 프로필 기반 동기화 도구, 그리고 skills를 전혀 쓰지 않고 README나 AGENTS.md에 다 적는 부류가 등장한다.
+***** Take
+이 스레드 대부분은 프롬프트를 위해 dotfiles 관리를 다시 만드는 과정이고, 20년 전 dotfiles에서 도달했던 답에 똑같이 도달한다. 저장소 하나에 심볼릭 링크다. 실패가 아니라 문제가 평범하고 대체로 해결됐다는 뜻이다. 도구보다 값진 답변이 둘 있다. skill은 모델이 스스로 유추할 수 없는 맥락일 때만 값을 하며, 공개된 skill 대부분은 모델이 이미 하는 일을 다시 적어둔 것이라는 WatchDog의 지적. 그리고 theletterf의 드리프트 점검 봇, 스레드에서 유일하게 skill을 한 번 쓰고 잊는 파일이 아니라 유지비가 드는 코드로 다루는 답이다.
+***** Comments
+- 나는 skills를 찾지 않고 직접 만든다. 소프트웨어 저장소에 정리해 두고, 가진 모든 코딩 도구에 심볼릭 링크로 설치한다. AI eval로 동작을 확인한다. 행동을 증명하는 통합 테스트라고 생각하면 된다.
+- 나는 skills를 전혀 쓰지 않는다. 사람들은 어떤 skill이 가장 유용하다고 느끼나? 일반적인 작업은 모델이 알아서 하고, 프로젝트나 환경 특화 정보는 readme나 agents.md에 적어둔다.
+- 우리는 skills를 저장소에 두고, 2주마다 에이전트 워크플로를 돌려 문서 대비 내용이 어긋났는지 확인하고 어긋났으면 PR을 연다. 그 저장소 자체가 Claude 플러그인이기도 하다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Ask HN: ¿cómo gestionáis los archivos de skills?
+***** TLDR
+imadtaieber pregunta cómo encuentra, organiza y verifica la gente los archivos de skills para agentes de programación, y añade que espera que las capacidades del modelo acaben absorbiéndolos. Las respuestas convergen en un patrón: no descargues skills, escríbelas tú; guárdalas en un repositorio git; enlázalas con symlinks a los directorios de los agentes y a cada proyecto. Sobre esa base aparecen evals usadas como pruebas de integración del comportamiento, un agente programado que compara las skills con la documentación que describen y abre PRs cuando divergen, un registro público de skills con sincronización por perfiles en el NAV noruego, y un grupo que no usa skills y lo pone todo en un README o AGENTS.md.
+***** Take
+Buena parte del hilo es gente reconstruyendo la gestión de dotfiles para prompts y llegando a la misma respuesta a la que llegó con los dotfiles hace veinte años: un repositorio y symlinks. No es un fracaso, significa que el problema es mundano y está casi resuelto. Dos respuestas valen más que las herramientas. La de WatchDog: las skills solo compensan para contexto que el modelo no puede deducir, y la mayoría de las publicadas repiten cosas que el modelo ya hace. Y el bot de detección de deriva de theletterf, la única respuesta que trata una skill como código con coste de mantenimiento y no como un archivo que escribes y olvidas.
+***** Comments
+- No busco skills, las creo. Las mantengo en repositorios de software que instalo con symlinks en todos los entornos de programación que uso. Compruebo que funcionan con evals de IA; piensa en ellas como pruebas de integración que demuestran comportamiento.
+- Yo no uso skills. ¿Qué tipo de skills os está resultando más útil? Para tareas generales el modelo se apaña solo, y para lo específico del proyecto o del entorno pongo la información en el readme o en agents.md.
+- Guardamos las skills en un repositorio donde un flujo agéntico se ejecuta cada dos semanas para comprobar si su contenido ha divergido de la documentación y abre PRs si es así. El repositorio también es un plugin de Claude.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Ask HN: Wie verwaltet ihr Skills-Dateien?
+***** TLDR
+imadtaieber fragt, wie Leute Skills-Dateien für Coding-Agenten finden, organisieren und überprüfen, und ergänzt, dass er erwartet, dass Modellfähigkeiten sie irgendwann schlucken. Die Antworten laufen auf ein Muster hinaus: keine Skills herunterladen, selbst schreiben; in ein Git-Repository legen; per Symlink in die Agentenverzeichnisse und einzelne Projekte einhängen. Darüber hinaus: Evals als Integrationstests für das Verhalten einer Skill, ein zeitgesteuerter Agent, der Skills mit der beschriebenen Dokumentation abgleicht und bei Abweichungen PRs öffnet, ein öffentliches Skill-Register mit profilbasierter Synchronisation beim norwegischen NAV, und eine Fraktion, die gar keine Skills nutzt und alles ins README oder AGENTS.md schreibt.
+***** Take
+Der größte Teil des Threads ist Dotfile-Verwaltung, neu gebaut für Prompts, mit derselben Antwort wie vor zwanzig Jahren bei Dotfiles: ein Repository plus Symlinks. Das ist kein Scheitern, es heißt, das Problem ist banal und weitgehend gelöst. Zwei Antworten sind mehr wert als das Tooling. WatchDogs Einwand, dass Skills sich nur für Kontext lohnen, den ein Modell nicht selbst herleiten kann, und dass die meisten veröffentlichten Skills wiederholen, was das Modell ohnehin tut. Und theletterfs Drift-Prüfbot, die einzige Antwort, die eine Skill als Code mit Wartungskosten behandelt statt als einmal geschriebene Datei.
+***** Comments
+- Ich suche keine Skills, ich schreibe sie. Ich halte sie in Software-Repositories, die ich per Symlink in alle meine Coding-Umgebungen installiere. Ob sie funktionieren, prüfe ich mit KI-Evals; man kann sie sich als Integrationstests für Verhalten vorstellen.
+- Ich nutze überhaupt keine Skills. Welche Skills findet ihr denn am nützlichsten? Für allgemeine Aufgaben kommt das Modell selbst zurecht, und projekt- oder umgebungsspezifisches schreibe ich einfach ins Readme oder agents.md.
+- Wir halten die Skills in einem Repository, in dem alle zwei Wochen ein agentischer Workflow prüft, ob ihr Inhalt gegenüber der Dokumentation abgedriftet ist, und gegebenenfalls PRs öffnet. Das Repository ist zugleich ein Claude-Plugin.
+** Babylonian Lamb Stew with Beets (1750-1730 BCE) :history:food:archaeology:cooking:
+:PROPERTIES:
+:ID:       49554622
+:URL:      https://babylonian-collection.yale.edu/about/babylonian-cooking
+:HN_URL:   https://news.ycombinator.com/item?id=49554622
+:POINTS:   125
+:COMMENTS: 72
+:BY:       yubblegum
+:END:
+
+*** TLDR
+Yale's Babylonian Collection publishes kitchen-ready versions of recipes from cuneiform tablets dated roughly 1750-1730 BCE, worked out by Assyriologist Gojko Barjamovic with cookbook author Nawal Nasrallah. The lamb and beet stew is a pound of diced lamb or mutton browned in rendered sheep fat, then arugula, cilantro, spring onion, leek and garlic sweated until fragrant, beets and cumin added, the whole thing simmered in beer and water, finished with coriander seed and kurrat and served with bulgur and naan. The page gives the modern recipe rather than the tablet transliterations; a commenter links to the literal translations.
+
+*** Take
+The striking thing is how ordinary the procedure is. Sear the meat, sweat the aromatics until they smell right, deglaze with beer, simmer. A cook today would do the same steps in the same order without being told. What dates the dish is not technique but inventory: rendered sheep fat instead of oil, almost no salt, and a beer that would have tasted nothing like the one in your fridge. dyauspitr's question is the good one. A household with fresh leeks, arugula, cilantro and a pound of lamb on hand in 1750 BCE was not a typical household.
+
+*** Comments
+
+**** dvh
+:PROPERTIES:
+:COMMENT_ID: 49589306
+:END:
+Apparently their beets looked the same as ours: the kind of beets used in such an ancient recipe should not be different from the beets we use today, even in name. In the ancient Mesopotamian region it was called 'shumundar', it was as red as blood, and had a spinning-top shape.
+
+**** PeterHolzwarth
+:PROPERTIES:
+:COMMENT_ID: 49592318
+:END:
+What's enlightening is how astonishingly little salt is used, by our standards.
+
+**** dyauspitr
+:PROPERTIES:
+:COMMENT_ID: 49592773
+:END:
+I mean, this had to be a dish for royalty or something right? How on earth did they have all of those fresh and dried ingredients on hand 4000 years ago.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+巴比伦甜菜炖羊肉（公元前 1750–1730 年）
+***** TLDR
+耶鲁大学巴比伦收藏发布了可直接下厨的食谱版本，原始来源是约公元前 1750 至 1730 年的楔形文字泥板，由亚述学家 Gojko Barjamovic 与食谱作者 Nawal Nasrallah 共同复原。这道甜菜炖羊肉的做法是：一磅切块羊肉用炼好的羊脂煎上色，再下芝麻菜、香菜、小葱、韭葱和大蒜炒出香味，加入甜菜和孜然，用啤酒和水一起炖，最后以芫荽籽和野韭调味，配蒸布格麦和馕食用。页面给的是现代食谱而非泥板的直译文本，有评论提供了字面翻译的链接。
+***** Take
+最惊人的地方在于流程有多普通：煎肉、把香料蔬菜炒到味道对了、用啤酒溶解锅底、慢炖。今天的厨师不用人教也会按同样顺序做同样的步骤。给这道菜标注年代的不是技法，而是材料清单：用炼羊脂而非食用油，几乎不放盐，还有一种和你冰箱里那瓶完全不同的啤酒。dyauspitr 的问题问得好：公元前 1750 年家里备着新鲜韭葱、芝麻菜、香菜和一磅羊肉的人家，绝不是普通人家。
+***** Comments
+- 看来他们的甜菜和我们的一样：这么古老的食谱里用的甜菜，和今天的甜菜应该没有区别，连名字都一样。在古美索不达米亚地区它叫「shumundar」，红得像血，形状像陀螺。
+- 让人长见识的是，按我们的标准，用盐少得惊人。
+- 这总该是给王室吃的菜吧？四千年前怎么可能家里备齐这么多新鲜和干制的食材。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+バビロニアの子羊とビーツの煮込み（紀元前1750〜1730年）
+***** TLDR
+イェール大学バビロニア・コレクションが、紀元前1750〜1730年ごろの楔形文字粘土板に由来するレシピを、そのまま作れる形で公開した。復元はアッシリア学者Gojko Barjamovicと料理本作家Nawal Nasrallahによる。子羊とビーツの煮込みは、角切りの羊肉1ポンドを羊脂で焼き付け、ルッコラ、コリアンダー、青ねぎ、リーキ、にんにくを香りが立つまで炒め、ビーツとクミンを加え、ビールと水で煮込み、コリアンダーシードとクッラート（野生のリーキ）で仕上げ、ブルグルとナンを添える。ページに載るのは現代向けのレシピで、粘土板の逐語訳ではない。逐語訳へのリンクはコメントにある。
+***** Take
+驚くのは手順がどれほど普通かという点だ。肉を焼き付け、香味野菜を良い匂いがするまで炒め、ビールで鍋底をこそげ、煮込む。今日の料理人も教わらずに同じ順序で同じことをする。この料理を古く見せるのは技法ではなく材料表だ。油ではなく羊脂、塩はほとんど使わない、そして冷蔵庫の中のものとは似ても似つかないビール。dyauspitrの疑問は的を射ている。紀元前1750年に新鮮なリーキ、ルッコラ、コリアンダー、そして1ポンドの羊肉を常備していた家は、平均的な家ではない。
+***** Comments
+- 彼らのビーツは今のものと同じ見た目だったらしい。これほど古いレシピのビーツも、今日使うビーツと名前すら含めて違わないはずだ。古代メソポタミアでは「シュムンダル」と呼ばれ、血のように赤く、こまのような形だった。
+- 示唆的なのは、我々の基準からすると塩の量が驚くほど少ないことだ。
+- これは王族向けの料理だったのでは？4000年前にこれだけの生鮮品と乾物を手元に揃えられたとは思えない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+바빌로니아식 양고기 비트 스튜 (기원전 1750~1730년)
+***** TLDR
+예일대 바빌로니아 컬렉션이 기원전 1750~1730년경 쐐기문자 점토판에서 나온 조리법을 바로 만들 수 있는 형태로 공개했다. 복원은 아시리아학자 Gojko Barjamovic과 요리책 저자 Nawal Nasrallah가 맡았다. 양고기 비트 스튜는 깍둑썬 양고기 1파운드를 정제한 양기름에 지지고, 루콜라, 고수, 쪽파, 리크, 마늘을 향이 날 때까지 볶은 뒤 비트와 커민을 넣고 맥주와 물에 끓이며, 코리앤더 씨와 쿠라트로 마무리해 불구르와 난과 함께 낸다. 페이지에는 점토판 직역이 아니라 현대식 조리법이 실려 있고, 직역본 링크는 댓글에 있다.
+***** Take
+놀라운 것은 절차가 얼마나 평범한가다. 고기를 지지고, 향채를 향이 날 때까지 볶고, 맥주로 바닥을 긁어내고, 끓인다. 오늘날 요리사도 시키지 않아도 같은 순서로 같은 일을 한다. 이 요리를 옛것으로 만드는 건 기술이 아니라 재료 목록이다. 기름 대신 정제 양기름, 거의 쓰지 않는 소금, 그리고 냉장고 속 맥주와는 전혀 다른 맥주. dyauspitr의 질문이 좋다. 기원전 1750년에 신선한 리크와 루콜라, 고수, 양고기 1파운드를 갖춰둔 집은 평범한 집이 아니었다.
+***** Comments
+- 그들의 비트도 우리 것과 같아 보였던 모양이다. 이렇게 오래된 조리법의 비트도 오늘 우리가 쓰는 비트와 이름까지 다르지 않았을 것이다. 고대 메소포타미아에서는 '슈문다르'라 불렸고, 피처럼 붉었으며 팽이 모양이었다.
+- 인상적인 건 우리 기준으로 소금이 놀랄 만큼 적게 들어간다는 점이다.
+- 이건 왕족용 요리였겠지? 4000년 전에 이 신선 재료와 건재료를 다 갖춰두고 있었다는 게 도무지 상상이 안 된다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Estofado babilonio de cordero con remolacha (1750-1730 a. C.)
+***** TLDR
+La Colección Babilónica de Yale publica versiones listas para cocinar de recetas procedentes de tablillas cuneiformes datadas hacia 1750-1730 a. C., reconstruidas por el asiriólogo Gojko Barjamovic junto a la autora culinaria Nawal Nasrallah. El estofado de cordero y remolacha consiste en dorar medio kilo de cordero en grasa de oveja, sudar rúcula, cilantro, cebolleta, puerro y ajo hasta que huelan bien, añadir remolacha y comino, guisar con cerveza y agua, y terminar con semilla de cilantro y kurrat, servido con bulgur y pan naan. La página ofrece la receta moderna, no la transliteración de las tablillas; un comentarista enlaza las traducciones literales.
+***** Take
+Lo llamativo es lo corriente que resulta el procedimiento. Sellar la carne, sudar los aromáticos hasta que huelan, desglasar con cerveza, guisar. Cualquier cocinero de hoy haría los mismos pasos en el mismo orden sin que se lo expliquen. Lo que fecha el plato no es la técnica sino el inventario: grasa de oveja en lugar de aceite, casi nada de sal y una cerveza que no se parecería en nada a la de tu nevera. La pregunta de dyauspitr es la buena: una casa que en 1750 a. C. tenía a mano puerro fresco, rúcula, cilantro y medio kilo de cordero no era una casa cualquiera.
+***** Comments
+- Por lo visto sus remolachas eran iguales que las nuestras: la remolacha de una receta tan antigua no debería diferir de la que usamos hoy, ni siquiera en el nombre. En Mesopotamia se llamaba 'shumundar', era roja como la sangre y tenía forma de peonza.
+- Lo revelador es lo asombrosamente poca sal que se usa, para nuestros estándares.
+- Esto tenía que ser un plato para la realeza, ¿no? Cómo iban a tener a mano todos esos ingredientes frescos y secos hace 4000 años.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Babylonischer Lammeintopf mit Roter Bete (1750-1730 v. Chr.)
+***** TLDR
+Die Babylonische Sammlung in Yale veröffentlicht küchenfertige Fassungen von Rezepten aus Keilschrifttafeln, datiert auf etwa 1750 bis 1730 v. Chr., rekonstruiert vom Assyriologen Gojko Barjamovic gemeinsam mit der Kochbuchautorin Nawal Nasrallah. Der Lamm-Bete-Eintopf: ein Pfund gewürfeltes Lamm in ausgelassenem Schaffett angebraten, dann Rucola, Koriandergrün, Frühlingszwiebel, Lauch und Knoblauch andünsten, bis es duftet, Rote Bete und Kreuzkümmel dazu, alles in Bier und Wasser schmoren, mit Koriandersaat und Kurrat abschmecken, dazu Bulgur und Naan. Die Seite bringt das moderne Rezept, nicht die Transliteration der Tafeln; ein Kommentar verlinkt die wörtlichen Übersetzungen.
+***** Take
+Auffällig ist, wie gewöhnlich der Ablauf ist. Fleisch anbraten, Aromaten andünsten, bis sie richtig riechen, mit Bier ablöschen, schmoren. Ein heutiger Koch würde ungefragt dieselben Schritte in derselben Reihenfolge machen. Datiert wird das Gericht nicht durch die Technik, sondern durch die Zutatenliste: Schaffett statt Öl, fast kein Salz und ein Bier, das mit dem im Kühlschrank nichts gemein hätte. dyauspitrs Frage ist die richtige. Ein Haushalt, der 1750 v. Chr. frischen Lauch, Rucola, Koriander und ein Pfund Lamm vorrätig hatte, war kein durchschnittlicher Haushalt.
+***** Comments
+- Offenbar sah ihre Rote Bete aus wie unsere: Die Bete eines so alten Rezepts dürfte sich von der heutigen nicht unterscheiden, nicht einmal im Namen. Im alten Mesopotamien hieß sie 'shumundar', war blutrot und hatte Kreiselform.
+- Erhellend ist, wie erstaunlich wenig Salz nach unseren Maßstäben verwendet wird.
+- Das muss doch ein Gericht für den Hof gewesen sein, oder? Wie sollten sie vor 4000 Jahren all diese frischen und getrockneten Zutaten zur Hand gehabt haben.
