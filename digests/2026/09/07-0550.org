@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-09-07 05:50 UTC
+#+DATE: 2026-09-07T05:50:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Nitter survives X Corp, OpenAI counts its agent-workdays, and a self-playing piano gets reverse engineered
+
+* Highlights
+- Nitter is back: two weeks after X Corp's cease and desist, the README says the project continues
+- OpenAI: median researcher burns $600/day in API tokens, 3.1 agent-workdays per human workday
+- A Python-shaped interpreter in exactly 1024 bytes of C, with zero error handling
+- Fable decoded PianoDisc's MP3-carried MIDI and found the anti-piracy decoy notes
+- GrapheneOS rewrites its Messaging app in Compose, wants off Google Messages for RCS
+
+* Stories
+
+** Nitter and XCancel resume service after legal advice :twitter:legal:opensource:privacy:
+:PROPERTIES:
+:ID:       49588988
+:URL:      https://github.com/zedeus/nitter/commit/1428b4c2b4246f92a7e5b2673438e5fb39fcc4a3
+:HN_URL:   https://news.ycombinator.com/item?id=49588988
+:POINTS:   598
+:COMMENTS: 294
+:BY:       zImPatrick
+:END:
+
+*** TLDR
+A commit titled "Update README - Nitter lives" reverses the shutdown. The README still records that X Corp sent cease and desist letters on 24 August 2026 demanding permanent takedown of Nitter instances and the repository, but adds: following legal advice, the project will continue, with details to be announced. nitter.net and xcancel.com are serving again. The same commit moves the donation links up into badges and changes the legal contact line to cover DMCA requests.
+
+*** Take
+Two weeks ago the news was that people were forking Nitter because the original was dead. The reversal came from a lawyer reading the letter, not from a fork. That is the actual lesson here: a cease and desist is an opening demand, and most maintainers comply because they cannot afford to find out whether it is enforceable. Nitter could. The details X Corp allegedly could not sustain remain unannounced, so hold the celebration until they are.
+
+*** Comments
+
+**** himata4113
+:PROPERTIES:
+:COMMENT_ID: 49590006
+:END:
+Reading between the lines it appears that the only argument twitter had is that they could not enforce content moderation due to the archival nature of nitter. Pretty cool to see that archival sites cannot get C&D'd that easily!
+
+**** iamflimflam1
+:PROPERTIES:
+:COMMENT_ID: 49589201
+:END:
+I once consulted a lawyer when a large company contacted me. His response was - they've got a team of lawyers on payroll whose job it is to make you run out of money...
+
+**** quaintdev
+:PROPERTIES:
+:COMMENT_ID: 49589666
+:END:
+Somebody needs to figure out how to move millions of people from one platform to other. Otherwise we will never get better platforms and our current techlords will keep getting richer.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Nitter 和 XCancel 在获得法律意见后恢复服务
+***** TLDR
+一条名为「Update README - Nitter lives」的提交撤回了关停决定。README 仍记录 X Corp 于 2026 年 8 月 24 日发出停止侵权函，要求永久下架所有 Nitter 实例和代码仓库，但新增了一句：在获得法律意见后，项目将继续，细节稍后公布。nitter.net 和 xcancel.com 已恢复访问。同一提交还把捐赠链接改成徽章上移，并把法律联系方式一行改为涵盖 DMCA 请求。
+***** Take
+两周前的新闻还是大家在 fork Nitter，因为原项目已死。这次逆转来自律师读了那封信，而不是来自任何 fork。真正的教训是：停止侵权函只是一个开价，多数维护者选择服从，只因为他们付不起去验证它是否真的站得住脚的代价。Nitter 付得起。X Corp 据称撑不住的那些细节还没公布，所以先别急着庆祝。
+***** Comments
+- 从字里行间看，Twitter 唯一的论点似乎是：由于 Nitter 的存档性质，他们无法执行内容审核。看到存档类网站没那么容易被停止侵权函打倒，挺不错的！
+- 有次一家大公司找上我，我咨询过律师。他的回答是：他们养着一整支律师团队，工作就是把你的钱耗光……
+- 得有人想办法把上百万人从一个平台迁到另一个平台。否则我们永远等不到更好的平台，现在这些科技领主只会越来越有钱。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+NitterとXCancel、法的助言を受けてサービス再開
+***** TLDR
+「Update README - Nitter lives」というコミットが閉鎖を撤回した。READMEには2026年8月24日にX CorpがNitterインスタンスとリポジトリの永久削除を求める停止通告を送った事実が残るが、法的助言を受けてプロジェクトは継続する、詳細は追って発表する、と追記された。nitter.netとxcancel.comは稼働を再開している。同じコミットで寄付リンクがバッジ形式で上部に移され、法的連絡先の行がDMCA請求もカバーするよう変更された。
+***** Take
+2週間前のニュースは、本家が死んだのでみんながNitterをforkしている、というものだった。今回の逆転はforkからではなく、弁護士が通告書を読んだことから来た。本当の教訓はこうだ。停止通告は最初の要求に過ぎず、多くのメンテナが従うのは、それが法的に通るのかを確かめる余裕がないからだ。Nitterには余裕があった。X Corpが押し切れなかったとされる詳細はまだ未公表なので、祝うのは早い。
+***** Comments
+- 行間を読むと、Twitter側の唯一の主張は、Nitterのアーカイブ的性質ゆえにコンテンツモデレーションを執行できない、という点だったようだ。アーカイブサイトがそう簡単に停止通告で潰されないと分かったのは良いことだ。
+- 大企業から連絡が来たとき、弁護士に相談したことがある。彼の答えはこうだった。向こうには給料をもらっている弁護士チームがいて、その仕事はあなたの資金を尽きさせることだ、と。
+- 誰かが何百万人もの人を一つのプラットフォームから別のプラットフォームへ移す方法を考えないといけない。さもないと、より良いプラットフォームは永遠に生まれず、今のテック領主たちが儲け続けるだけだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Nitter와 XCancel, 법률 자문 후 서비스 재개
+***** TLDR
+"Update README - Nitter lives"라는 커밋이 서비스 종료를 되돌렸다. README에는 2026년 8월 24일 X Corp가 Nitter 인스턴스와 저장소의 영구 삭제를 요구하는 중지 요청서를 보냈다는 기록이 남아 있지만, 법률 자문을 받은 결과 프로젝트를 계속하며 세부 사항은 추후 발표한다는 내용이 추가됐다. nitter.net과 xcancel.com은 다시 동작한다. 같은 커밋에서 후원 링크가 배지 형태로 위로 올라갔고, 법률 연락처 항목이 DMCA 요청까지 포함하도록 바뀌었다.
+***** Take
+2주 전 뉴스는 원본이 죽어서 사람들이 Nitter를 포크하고 있다는 것이었다. 이번 반전은 포크가 아니라 변호사가 그 편지를 읽은 데서 나왔다. 진짜 교훈은 이것이다. 중지 요청서는 첫 요구일 뿐이고, 대부분의 관리자가 따르는 이유는 그것이 실제로 집행 가능한지 확인할 여력이 없기 때문이다. Nitter는 여력이 있었다. X Corp가 밀어붙이지 못했다는 세부 사항은 아직 공개되지 않았으니 축하는 미뤄두자.
+***** Comments
+- 행간을 읽어보면 트위터의 유일한 논거는 Nitter의 아카이브적 성격 때문에 콘텐츠 모더레이션을 집행할 수 없다는 것이었던 듯하다. 아카이브 사이트가 중지 요청서로 그렇게 쉽게 무너지지 않는다는 걸 보니 좋다.
+- 대기업이 연락해 왔을 때 변호사에게 자문한 적이 있다. 그의 답은 이랬다. 저쪽에는 월급 받는 변호사 팀이 있고, 그들의 일은 당신 돈이 바닥나게 만드는 것이라고.
+- 누군가는 수백만 명을 한 플랫폼에서 다른 플랫폼으로 옮기는 방법을 알아내야 한다. 그러지 않으면 더 나은 플랫폼은 영영 안 나오고 지금의 테크 영주들만 계속 부자가 된다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Nitter y XCancel reanudan el servicio tras recibir asesoría legal
+***** TLDR
+Un commit titulado "Update README - Nitter lives" revierte el cierre. El README sigue registrando que X Corp envió cartas de cese y desistimiento el 24 de agosto de 2026 exigiendo la retirada permanente de las instancias de Nitter y del repositorio, pero añade: tras recibir asesoría legal, el proyecto continuará, con detalles por anunciar. nitter.net y xcancel.com vuelven a funcionar. El mismo commit sube los enlaces de donación como insignias y cambia la línea de contacto legal para cubrir solicitudes DMCA.
+***** Take
+Hace dos semanas la noticia era que la gente estaba haciendo forks de Nitter porque el original había muerto. La reversión vino de un abogado leyendo la carta, no de un fork. Esa es la lección real: un cese y desistimiento es una demanda inicial, y la mayoría de los mantenedores cede porque no puede permitirse averiguar si es ejecutable. Nitter sí podía. Los detalles que X Corp supuestamente no pudo sostener siguen sin anunciarse, así que guarda la celebración.
+***** Comments
+- Leyendo entre líneas, parece que el único argumento de Twitter era que no podían aplicar moderación de contenido por la naturaleza de archivo de Nitter. Está muy bien ver que a los sitios de archivo no se les puede tumbar tan fácil con un cese y desistimiento.
+- Una vez consulté a un abogado cuando una empresa grande me contactó. Su respuesta fue: tienen un equipo de abogados en nómina cuyo trabajo es hacer que te quedes sin dinero...
+- Alguien tiene que descubrir cómo mover a millones de personas de una plataforma a otra. Si no, nunca tendremos mejores plataformas y los señores tecnológicos actuales seguirán enriqueciéndose.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Nitter und XCancel nehmen Betrieb nach Rechtsberatung wieder auf
+***** TLDR
+Ein Commit mit dem Titel "Update README - Nitter lives" nimmt die Abschaltung zurück. Die README hält weiterhin fest, dass X Corp am 24. August 2026 Unterlassungsschreiben verschickte, die die dauerhafte Entfernung aller Nitter-Instanzen und des Repositorys forderten, ergänzt aber: nach Rechtsberatung wird das Projekt fortgeführt, Details folgen. nitter.net und xcancel.com laufen wieder. Derselbe Commit verschiebt die Spendenlinks als Badges nach oben und erweitert die Zeile mit dem Rechtskontakt um DMCA-Anfragen.
+***** Take
+Vor zwei Wochen lautete die Nachricht, dass Leute Nitter forken, weil das Original tot sei. Die Kehrtwende kam davon, dass ein Anwalt das Schreiben gelesen hat, nicht von einem Fork. Das ist die eigentliche Lehre: Ein Unterlassungsschreiben ist eine Eröffnungsforderung, und die meisten Maintainer geben nach, weil sie es sich nicht leisten können herauszufinden, ob sie durchsetzbar ist. Nitter konnte es. Die Details, an denen X Corp angeblich gescheitert ist, sind noch nicht veröffentlicht, also mit dem Feiern warten.
+***** Comments
+- Zwischen den Zeilen gelesen war Twitters einziges Argument offenbar, dass sie wegen des Archivcharakters von Nitter keine Inhaltsmoderation durchsetzen können. Ziemlich gut zu sehen, dass Archivseiten sich nicht so leicht per Unterlassungsschreiben abschalten lassen.
+- Ich habe einmal einen Anwalt konsultiert, als sich ein großes Unternehmen bei mir meldete. Seine Antwort: Die haben ein Anwaltsteam auf der Gehaltsliste, dessen Job es ist, dir das Geld auszugehen zu lassen ...
+- Jemand muss herausfinden, wie man Millionen Menschen von einer Plattform auf eine andere bringt. Sonst bekommen wir nie bessere Plattformen und die heutigen Tech-Herrscher werden immer reicher.
+** Research acceleration: The view inside OpenAI :ai:openai:agents:benchmarks:
+:PROPERTIES:
+:ID:       49587217
+:URL:      https://openai.com/index/research-acceleration-view-inside-openai
+:HN_URL:   https://news.ycombinator.com/item?id=49587217
+:POINTS:   149
+:COMMENTS: 96
+:BY:       iamsyr
+:END:
+
+*** TLDR
+OpenAI says it hit its stated goal of an "automated research intern" by September 2026, meaning a system that handles well-defined tasks that would take a skilled researcher several days, and is targeting a fully automated AI researcher by March 2028. The internal numbers are the interesting part: as of mid-August 2026 the median researcher spends over $600/day on API inference, the 90th percentile over $7,000/day, and the research org runs 3.1 agent-workdays per human workday. Experiments per researcher are at an all-time high since tracking began in January 2025. More than half of successful 4-8 hour tasks still needed at least one human intervention.
+
+*** Take
+The usage numbers are the credible part because they are things OpenAI can count without judgment: dollars spent, jobs launched, tickets filed. The task success rates are graded by an agentic classifier built by the same company, with uncertain outcomes dropped from the chart, which is a measurement setup no one would accept from a vendor benchmarking a competitor. Read the spend figures and the disappearing internal support office hours; treat the success curve as marketing until someone outside grades it.
+
+*** Comments
+
+**** lhk931122
+:PROPERTIES:
+:COMMENT_ID: 49593253
+:END:
+Success rates here are scored by an agentic classifier. And uncertain outcomes are excluded from the graph. The thing measured and grading it comes from the same house. In my setup, review agents pass work that an outside critic later rejects.
+
+**** hedgehog
+:PROPERTIES:
+:COMMENT_ID: 49589086
+:END:
+This roughly lines up with my personal experience that in March a combination of stronger models and better tooling on my end let me start running jobs unattended 24/7. Their $8000/day per researcher spend is crazy though.
+
+**** carbonguy
+:PROPERTIES:
+:COMMENT_ID: 49590545
+:END:
+An automated AI researcher can also be an automated safety or alignment researcher. More capable, aligned systems could help secure critical infrastructure. In other words...
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+研究加速：OpenAI 内部视角
+***** TLDR
+OpenAI 称已达成其公布的目标，在 2026 年 9 月造出「自动化研究实习生」，即能处理熟练研究员需要花几天完成的明确任务的系统，并把完全自动化的 AI 研究员定在 2028 年 3 月。真正有意思的是内部数字：截至 2026 年 8 月中旬，研究员的 API 推理花费中位数超过每天 600 美元，90 分位超过每天 7000 美元，整个研究部门每个人类工作日对应 3.1 个 agent 工作日。人均实验数达到 2025 年 1 月开始统计以来的最高点。而成功完成的 4 到 8 小时任务中，超过一半仍然至少需要一次人工介入。
+***** Take
+使用量数字是可信的部分，因为那是 OpenAI 不需要主观判断就能数清的东西：花了多少钱、跑了多少任务、提了多少工单。任务成功率则由同一家公司做的 agent 分类器评分，结果不确定的还被从图里剔除了。这种测量方式，换成一个厂商去评测竞争对手，没人会接受。看花费数字和消失的内部支持答疑时间；成功率曲线在外部评测出现之前，当营销材料看。
+***** Comments
+- 这里的成功率是由一个 agent 分类器打分的。而且结果不确定的被排除在图表之外。被测的东西和打分的东西出自同一家。在我的环境里，审查 agent 通过的工作，后来常被外部批评者否掉。
+- 这大致符合我的个人体验：三月份开始，更强的模型加上我这边更好的工具，让我可以 24/7 无人值守地跑任务。不过他们每个研究员每天 8000 美元的花费真的离谱。
+- 自动化的 AI 研究员也可以是自动化的安全或对齐研究员。更强、更对齐的系统可以帮助保护关键基础设施。换句话说……
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+研究の加速：OpenAI内部からの視点
+***** TLDR
+OpenAIは、2026年9月までに「自動研究インターン」という公表目標を達成したと述べている。熟練研究者なら数日かかる明確に定義されたタスクをこなすシステムのことだ。完全自動のAI研究者は2028年3月を目標としている。興味深いのは内部の数字だ。2026年8月中旬時点で、研究者のAPI推論費用は中央値で1日600ドル超、90パーセンタイルで1日7000ドル超。研究組織全体では人間の1労働日あたり3.1エージェント労働日を投入している。研究者あたりの実験数は2025年1月の集計開始以来の最高値。ただし成功した4〜8時間タスクの半数以上は、少なくとも1回は人間の介入を必要としていた。
+***** Take
+利用量の数字は信頼できる。判断を挟まずに数えられるものだからだ。使った金額、起動したジョブ、提出されたチケット。一方でタスク成功率は同じ会社が作ったエージェント分類器が採点し、結果が不確実なものはグラフから除外されている。ベンダーが競合をベンチマークするときに同じ手法を使ったら、誰も受け入れないだろう。支出額と、消えた社内サポートの相談時間を読め。成功率の曲線は、外部が採点するまでマーケティングとして扱え。
+***** Comments
+- ここでの成功率はエージェント分類器が採点している。しかも結果が不確実なものはグラフから除外されている。測られるものと採点するものが同じ家から出ている。私の環境では、レビューエージェントが通した仕事を外部の批評者が後で却下することがある。
+- 3月頃から、より強力なモデルと自分側のツール改善の組み合わせでジョブを24時間無人稼働させられるようになった、という自分の経験とだいたい一致する。ただ研究者1人あたり1日8000ドルという支出は正気ではない。
+- 自動化されたAI研究者は、自動化された安全性・アライメント研究者にもなりうる。より高性能でアライメントされたシステムは重要インフラの防護に役立つ。つまり……
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+연구 가속: OpenAI 내부의 시각
+***** TLDR
+OpenAI는 2026년 9월까지 "자동화된 연구 인턴"이라는 공언한 목표를 달성했다고 밝혔다. 숙련된 연구자가 며칠 걸릴 명확히 정의된 과제를 처리하는 시스템을 뜻하며, 완전 자동화된 AI 연구자는 2028년 3월을 목표로 한다. 흥미로운 건 내부 수치다. 2026년 8월 중순 기준 연구자의 API 추론 비용은 중앙값이 하루 600달러 이상, 90분위는 하루 7000달러 이상이고, 연구 조직 전체는 인간 근무일 1일당 3.1 에이전트 근무일을 투입한다. 연구자당 실험 수는 2025년 1월 집계 시작 이후 최고치다. 다만 성공한 4~8시간 과제의 절반 이상은 여전히 최소 한 번의 인간 개입이 필요했다.
+***** Take
+사용량 수치는 믿을 만하다. 판단 없이 셀 수 있는 것들이기 때문이다. 쓴 돈, 실행한 작업, 접수된 티켓. 반면 과제 성공률은 같은 회사가 만든 에이전트 분류기가 채점하고, 결과가 불확실한 건 그래프에서 빠졌다. 어떤 벤더가 경쟁사를 벤치마크하면서 이런 방식을 썼다면 아무도 받아들이지 않을 것이다. 지출 수치와 사라진 사내 지원 상담 시간을 읽어라. 성공률 곡선은 외부가 채점하기 전까지는 마케팅으로 취급하라.
+***** Comments
+- 여기 성공률은 에이전트 분류기가 채점한다. 게다가 불확실한 결과는 그래프에서 제외됐다. 측정 대상과 채점자가 같은 집에서 나왔다. 내 환경에서는 리뷰 에이전트가 통과시킨 작업을 나중에 외부 비평자가 반려하곤 한다.
+- 3월부터 더 강력한 모델과 내 쪽의 나아진 도구 조합 덕에 작업을 24시간 무인으로 돌릴 수 있게 됐다는 내 경험과 대체로 일치한다. 다만 연구자 1인당 하루 8000달러 지출은 미친 수준이다.
+- 자동화된 AI 연구자는 자동화된 안전성 또는 정렬 연구자도 될 수 있다. 더 유능하고 정렬된 시스템은 핵심 인프라를 지키는 데 도움이 된다. 다시 말해……
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Aceleración de la investigación: la vista desde dentro de OpenAI
+***** TLDR
+OpenAI dice haber cumplido su objetivo declarado de tener un "becario de investigación automatizado" en septiembre de 2026, es decir, un sistema que resuelve tareas bien definidas que a un investigador experto le llevarían varios días, y apunta a un investigador de IA totalmente automatizado para marzo de 2028. Lo interesante son las cifras internas: a mediados de agosto de 2026 el investigador mediano gasta más de 600 dólares diarios en inferencia por API, el percentil 90 supera los 7.000, y la organización ejecuta 3,1 jornadas de agente por cada jornada humana. Los experimentos por investigador están en máximos desde que empezaron a medirlos en enero de 2025. Más de la mitad de las tareas exitosas de 4 a 8 horas aún requirieron al menos una intervención humana.
+***** Take
+Las cifras de uso son la parte creíble porque son cosas que OpenAI puede contar sin emitir juicios: dólares gastados, trabajos lanzados, tickets abiertos. Las tasas de éxito las califica un clasificador agéntico de la misma empresa, y los resultados inciertos se eliminan del gráfico: un montaje de medición que nadie aceptaría de un proveedor evaluando a un competidor. Lee las cifras de gasto y las horas de soporte interno que desaparecieron; trata la curva de éxito como marketing hasta que alguien externo la califique.
+***** Comments
+- Aquí las tasas de éxito las puntúa un clasificador agéntico. Y los resultados inciertos se excluyen del gráfico. Lo medido y quien lo califica salen de la misma casa. En mi montaje, los agentes revisores aprueban trabajo que un crítico externo luego rechaza.
+- Esto encaja con mi experiencia: en marzo, la combinación de modelos más potentes y mejores herramientas por mi parte me permitió lanzar trabajos sin supervisión 24/7. Aun así, sus 8.000 dólares diarios por investigador son una locura.
+- Un investigador de IA automatizado también puede ser un investigador automatizado de seguridad o alineación. Sistemas más capaces y alineados podrían ayudar a proteger infraestructura crítica. En otras palabras...
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Forschungsbeschleunigung: der Blick von innen bei OpenAI
+***** TLDR
+OpenAI erklärt, sein angekündigtes Ziel eines "automatisierten Forschungspraktikanten" im September 2026 erreicht zu haben, also eines Systems, das klar definierte Aufgaben löst, für die eine erfahrene Forscherin mehrere Tage bräuchte. Ein vollständig automatisierter KI-Forscher ist für März 2028 angepeilt. Interessant sind die internen Zahlen: Mitte August 2026 gibt der mittlere Forscher über 600 Dollar pro Tag für API-Inferenz aus, das 90. Perzentil über 7.000, und die Forschungsorganisation setzt 3,1 Agenten-Arbeitstage pro menschlichem Arbeitstag ein. Die Experimente pro Forscher liegen auf Allzeithoch seit Beginn der Messung im Januar 2025. Über die Hälfte der erfolgreichen 4- bis 8-Stunden-Aufgaben brauchte weiterhin mindestens einen menschlichen Eingriff.
+***** Take
+Die Nutzungszahlen sind der glaubwürdige Teil, weil OpenAI sie ohne Bewertung zählen kann: ausgegebene Dollar, gestartete Jobs, eingereichte Tickets. Die Erfolgsquoten bewertet ein agentischer Klassifikator aus demselben Haus, unsichere Ergebnisse fallen aus der Grafik. Ein Messaufbau, den niemand von einem Anbieter akzeptieren würde, der einen Wettbewerber benchmarkt. Lies die Ausgabenzahlen und die verschwundenen internen Sprechstunden; behandle die Erfolgskurve als Marketing, bis jemand von außen sie bewertet.
+***** Comments
+- Die Erfolgsquoten werden hier von einem agentischen Klassifikator bewertet. Und unsichere Ergebnisse sind aus der Grafik ausgeschlossen. Das Gemessene und der Bewertende kommen aus demselben Haus. Bei mir lassen Review-Agenten Arbeit durch, die ein externer Kritiker später ablehnt.
+- Das deckt sich ungefähr mit meiner Erfahrung: Im März konnte ich dank stärkerer Modelle und besserer eigener Tools Jobs rund um die Uhr unbeaufsichtigt laufen lassen. Ihre 8.000 Dollar pro Forscher und Tag sind allerdings verrückt.
+- Ein automatisierter KI-Forscher kann auch ein automatisierter Sicherheits- oder Alignment-Forscher sein. Fähigere, ausgerichtete Systeme könnten helfen, kritische Infrastruktur zu schützen. Mit anderen Worten ...
+** Ask HN: Fable hacked my piano, can I release the results? :dmca:reverse-engineering:music:ai:
+:PROPERTIES:
+:ID:       49577129
+:URL:      https://news.ycombinator.com/item?id=49577129
+:HN_URL:   https://news.ycombinator.com/item?id=49577129
+:POINTS:   72
+:COMMENTS: 34
+:BY:       jmpman
+:END:
+
+*** TLDR
+The poster owns a PianoDisc Prodigy self-playing piano, which plays music sold as MP3s: the right channel carries MIDI as a 2004.5 Hz square wave, the left channel carries accompanying audio. They handed a purchased file to Fable, which decoded the format, then offered to build an encoder so they could put their own MIDI into the right channel. It delivered an encoder and a decoder, and mentioned "decoy notes": obfuscation PianoDisc inserts that its own decoder strips, but which make naively extracted MIDI unplayable elsewhere. The question is whether publishing the decoder, the encoder, or both is legal.
+
+*** Take
+The decoy notes are the whole legal question. Under US law an obfuscation scheme that gates playback is arguably an access control measure, and section 1201 makes circumventing it actionable regardless of whether the underlying use is fair. Publishing the encoder alone puts your own MIDI on your own piano and touches none of PianoDisc's content; publishing the decoder is the part with exposure. HN cannot answer this, and the top comment saying so is correct.
+
+*** Comments
+
+**** Giefo6ah
+:PROPERTIES:
+:COMMENT_ID: 49593755
+:END:
+If you live in the USA, the "decoy notes" may be considered an "effective technical measure" from the Digital Millennium Copyright Act. If you live in Europe, this restriction may be considered gatekeeping and exempted by the Digital Markets Act.
+
+**** jdlshore
+:PROPERTIES:
+:COMMENT_ID: 49594313
+:END:
+Don't ask Hacker News for legal advice. If you really want to know the answer, ask a lawyer.
+
+**** natch
+:PROPERTIES:
+:COMMENT_ID: 49593961
+:END:
+You bought a hardware device and you own that device? This decoy notes scheme seems pretty unethical.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Ask HN：Fable 破解了我的钢琴，我能公开结果吗？
+***** TLDR
+发帖人有一台 PianoDisc Prodigy 自动演奏钢琴，其曲目以 MP3 出售：右声道用 2004.5 Hz 方波承载 MIDI，左声道承载伴奏音频。他把买来的文件交给 Fable，后者解出了格式，然后主动提出写一个编码器，好让他把自己的 MIDI 写进右声道。Fable 交出了编码器和解码器，并提到了「诱饵音符」：PianoDisc 插入的混淆内容，自家解码器会剥除，但会让简单提取出的 MIDI 在别处无法播放。问题是：公开解码器、编码器，或两者，是否合法。
+***** Take
+诱饵音符正是全部的法律焦点。在美国法下，一个用来把关播放的混淆方案大概率算作访问控制措施，而 1201 条让规避它本身可被追究，与底层用途是否属于合理使用无关。单独公开编码器，只是把你自己的 MIDI 放进你自己的钢琴，完全不碰 PianoDisc 的内容；有风险的是公开解码器那部分。HN 回答不了这个问题，最高票评论说得对。
+***** Comments
+- 如果你在美国，「诱饵音符」可能被认定为《数字千年版权法》里的「有效技术措施」。如果你在欧洲，这种限制可能被视为守门行为，并被《数字市场法》豁免。
+- 别向 Hacker News 要法律意见。真想知道答案，去问律师。
+- 你买了一台硬件设备，这设备就是你的了吧？这个诱饵音符的做法看起来相当不道德。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Ask HN: Fableが自分のピアノをハックした、結果を公開してもいいか？
+***** TLDR
+投稿者はPianoDisc Prodigyの自動演奏ピアノを所有している。楽曲はMP3として販売され、右チャンネルが2004.5Hzの矩形波でMIDIを、左チャンネルが伴奏音声を運ぶ。購入したファイルをFableに渡すと、フォーマットをデコードしたうえで、自分のMIDIを右チャンネルに書き込むエンコーダを作ろうかと提案してきた。出てきたのはエンコーダとデコーダ、そして「デコイ音符」への言及だった。PianoDiscが挿入する難読化で、自社デコーダは除去するが、素朴に抽出したMIDIは他の環境で再生できなくなる。問題は、デコーダを、エンコーダを、あるいは両方を公開してよいのかだ。
+***** Take
+デコイ音符こそが法的論点のすべてだ。米国法では、再生を制限する難読化の仕組みはアクセス制御手段とみなされうるし、1201条は、その先の利用がフェアユースかどうかに関係なく回避行為そのものを問題にする。エンコーダだけを公開するなら、自分のMIDIを自分のピアノに載せるだけでPianoDiscのコンテンツには一切触れない。リスクがあるのはデコーダの公開だ。HNにはこの問いに答えられない。そう言っているトップコメントが正しい。
+***** Comments
+- 米国在住なら、「デコイ音符」はデジタルミレニアム著作権法の「効果的な技術的手段」とみなされる可能性がある。欧州在住なら、この制限はゲートキーピングとみなされ、デジタル市場法で除外されるかもしれない。
+- Hacker Newsに法律相談をするな。本当に答えが知りたいなら弁護士に聞け。
+- ハードウェアを買ったのだから、その装置は自分のものではないのか？このデコイ音符の仕組みはかなり不誠実に見える。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Ask HN: Fable이 내 피아노를 해킹했다, 결과를 공개해도 될까?
+***** TLDR
+글쓴이는 PianoDisc Prodigy 자동 연주 피아노를 갖고 있다. 곡은 MP3로 판매되는데, 오른쪽 채널이 2004.5Hz 사각파로 MIDI를, 왼쪽 채널이 반주 오디오를 담는다. 구매한 파일을 Fable에 건네자 포맷을 해독했고, 자기 MIDI를 오른쪽 채널에 넣을 인코더를 만들어 줄까 제안했다. 결과물은 인코더와 디코더, 그리고 "미끼 음표"에 대한 설명이었다. PianoDisc가 삽입하는 난독화로, 자사 디코더는 제거하지만 단순 추출한 MIDI는 다른 곳에서 재생되지 않게 만든다. 질문은 디코더를, 인코더를, 혹은 둘 다를 공개해도 되느냐다.
+***** Take
+미끼 음표가 법적 쟁점의 전부다. 미국법에서 재생을 통제하는 난독화 방식은 접근 통제 조치로 볼 여지가 크고, 1201조는 그 이후의 이용이 공정이용인지와 무관하게 우회 행위 자체를 문제 삼는다. 인코더만 공개하면 자기 MIDI를 자기 피아노에 올리는 것일 뿐 PianoDisc 콘텐츠는 건드리지 않는다. 위험한 쪽은 디코더 공개다. HN은 이 질문에 답할 수 없고, 그렇게 말한 최상위 댓글이 옳다.
+***** Comments
+- 미국에 산다면 "미끼 음표"는 디지털 밀레니엄 저작권법의 "효과적인 기술적 조치"로 간주될 수 있다. 유럽에 산다면 이 제한은 게이트키핑으로 보여 디지털 시장법에 따라 예외가 될 수도 있다.
+- Hacker News에 법률 자문을 구하지 마라. 정말 답이 궁금하면 변호사에게 물어라.
+- 하드웨어 기기를 샀으면 그 기기는 당신 것 아닌가? 이 미끼 음표 방식은 꽤 비윤리적으로 보인다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Ask HN: Fable hackeó mi piano, ¿puedo publicar los resultados?
+***** TLDR
+El autor tiene un piano automático PianoDisc Prodigy, cuya música se vende como MP3: el canal derecho lleva MIDI en forma de onda cuadrada de 2004,5 Hz y el izquierdo lleva el audio de acompañamiento. Le pasó un archivo comprado a Fable, que decodificó el formato y luego ofreció construir un codificador para meter su propio MIDI en el canal derecho. Entregó un codificador y un decodificador, y mencionó las "notas señuelo": ofuscación que PianoDisc inserta y que su propio decodificador elimina, pero que deja inservible cualquier MIDI extraído de forma ingenua. La duda es si publicar el decodificador, el codificador o ambos es legal.
+***** Take
+Las notas señuelo son toda la cuestión legal. Bajo la ley estadounidense, un esquema de ofuscación que controla la reproducción es discutiblemente una medida de control de acceso, y la sección 1201 hace accionable eludirla sin importar si el uso posterior es lícito. Publicar solo el codificador pone tu propio MIDI en tu propio piano y no toca contenido de PianoDisc; publicar el decodificador es la parte expuesta. HN no puede responder esto, y el comentario más votado que lo dice tiene razón.
+***** Comments
+- Si vives en EE. UU., las "notas señuelo" podrían considerarse una "medida técnica efectiva" de la Digital Millennium Copyright Act. Si vives en Europa, esta restricción podría verse como gatekeeping y quedar exenta por la Ley de Mercados Digitales.
+- No le pidas asesoría legal a Hacker News. Si de verdad quieres saber la respuesta, pregúntale a un abogado.
+- ¿Compraste un dispositivo de hardware y ese dispositivo es tuyo? Este esquema de notas señuelo parece bastante poco ético.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Ask HN: Fable hat mein Klavier gehackt, darf ich die Ergebnisse veröffentlichen?
+***** TLDR
+Der Autor besitzt ein selbstspielendes PianoDisc-Prodigy-Klavier, dessen Musik als MP3 verkauft wird: Der rechte Kanal trägt MIDI als 2004,5-Hz-Rechteckwelle, der linke die Begleitspur. Er gab eine gekaufte Datei an Fable, das das Format dekodierte und dann anbot, einen Encoder zu bauen, um eigenes MIDI in den rechten Kanal zu schreiben. Geliefert wurden Encoder und Decoder samt Hinweis auf "Köder-Noten": eine Verschleierung, die PianoDisc einfügt und der eigene Decoder entfernt, die aber naiv extrahiertes MIDI anderswo unspielbar macht. Die Frage ist, ob das Veröffentlichen von Decoder, Encoder oder beidem zulässig ist.
+***** Take
+Die Köder-Noten sind die ganze Rechtsfrage. Nach US-Recht lässt sich ein Verschleierungsverfahren, das die Wiedergabe kontrolliert, gut als Zugangskontrollmaßnahme lesen, und Abschnitt 1201 macht das Umgehen angreifbar, unabhängig davon, ob die dahinterliegende Nutzung erlaubt wäre. Nur den Encoder zu veröffentlichen bringt eigenes MIDI auf das eigene Klavier und berührt keine Inhalte von PianoDisc; der Decoder ist der riskante Teil. HN kann das nicht beantworten, und der Top-Kommentar, der genau das sagt, hat recht.
+***** Comments
+- Wer in den USA lebt: Die "Köder-Noten" könnten als "wirksame technische Maßnahme" im Sinne des Digital Millennium Copyright Act gelten. Wer in Europa lebt: Diese Einschränkung könnte als Gatekeeping gelten und durch den Digital Markets Act ausgenommen sein.
+- Frag Hacker News nicht nach Rechtsberatung. Wenn du die Antwort wirklich wissen willst, frag einen Anwalt.
+- Du hast ein Hardwaregerät gekauft und besitzt es also? Dieses Köder-Noten-Verfahren wirkt ziemlich unlauter.
+** Making a Python interpreter in 1024 bytes :c:python:codegolf:interpreters:
+:PROPERTIES:
+:ID:       49591876
+:URL:      https://austinhenley.com/blog/python1024.html
+:HN_URL:   https://news.ycombinator.com/item?id=49591876
+:POINTS:   167
+:COMMENTS: 61
+:BY:       azhenley
+:END:
+
+*** TLDR
+Austin Henley set out to write a Python interpreter in 512 bytes of C, failed, and settled for 1024. It handles single-letter integer variables, arithmetic, one comparison per expression, if/else, while, for with range(), argument-less function definitions and calls, indentation-based blocks, print and comments. There is no intermediate representation and no error handling at all: loops jump backwards and reparse the source each iteration, functions store a source offset and execution jumps there, and the C call stack carries the control flow. The readable version is over 4800 bytes; golfing it down used single-letter names, ASCII values instead of character literals, ternaries and comma operators, bitwise instead of logical operators, and C89 implicit int.
+
+*** Take
+The reparse-the-source-on-every-loop-iteration trick is the good part, and it is the same thing DOS batch files do. The complaints that this is not really Python are correct and beside the point: the target was code that looks like Python and runs fizzbuzz, and it hits that. Worth reading for the golfing techniques, not as a language implementation you would extend.
+
+*** Comments
+
+**** jrdres
+:PROPERTIES:
+:COMMENT_ID: 49592653
+:END:
+The code makes me smile, because it's nasty. This isn't like C4, a tiny but complete C compiler which does error checking on its subset. Instead, this is worse than Sector C, which takes every shortcut and just plain assumes everything in the source is right.
+
+**** Scubabear68
+:PROPERTIES:
+:COMMENT_ID: 49592093
+:END:
+I was very disappointed that this is "interpreting" some tiny made up language. This is not Python, or even within three orders of magnitude of Python.
+
+**** userbinator
+:PROPERTIES:
+:COMMENT_ID: 49593247
+:END:
+To be precise this is 1024 bytes of C, which compiles to a binary many times larger. Loops work by jumping backwards and reparsing the source each iteration: this is how DOS .bat processing works.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+用 1024 字节写一个 Python 解释器
+***** TLDR
+Austin Henley 本想用 512 字节 C 代码写个 Python 解释器，没成功，最后定在 1024 字节。它支持单字母整数变量、算术运算、每个表达式一次比较、if/else、while、带 range() 的 for、无参数的函数定义与调用、基于缩进的代码块、print 和注释。没有中间表示，也完全没有错误处理：循环靠往回跳并在每次迭代重新解析源码实现，函数记录源码偏移量、调用时跳过去，控制流由 C 的调用栈承载。可读版本超过 4800 字节；压到 1024 用了单字母命名、用 ASCII 数值代替字符字面量、三元和逗号运算符、用位运算代替逻辑运算，以及 C89 的隐式 int。
+***** Take
+每次循环重新解析源码这个把戏才是精华，而它跟 DOS 批处理的做法一模一样。「这根本不是 Python」的抱怨是对的，但没抓到重点：目标是写出看起来像 Python、能跑 fizzbuzz 的代码，而它做到了。值得读的是那些代码高尔夫技巧，不是作为一个你会拿去扩展的语言实现。
+***** Comments
+- 这代码让我发笑，因为它够脏。这不像 C4 那种小而完整、还会对自己的子集做错误检查的 C 编译器。它比 Sector C 更过分，走了所有捷径，直接假定源码里一切都是对的。
+- 我挺失望的，这是在「解释」某种自造的小语言。这不是 Python，跟 Python 差着三个数量级都不止。
+- 确切地说，这是 1024 字节的 C 代码，编译出的二进制要大好几倍。循环靠往回跳、每次迭代重新解析源码来实现：DOS 的 .bat 处理就是这么干的。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+1024バイトでPythonインタプリタを作る
+***** TLDR
+Austin Henleyは512バイトのCでPythonインタプリタを書こうとして失敗し、1024バイトに落ち着いた。対応するのは1文字の整数変数、算術演算、式ごとに1回の比較、if/else、while、range()付きfor、引数なしの関数定義と呼び出し、インデントによるブロック、print、コメント。中間表現はなく、エラー処理も一切ない。ループは後方にジャンプして毎回ソースを再パースし、関数はソース上の位置を保持して呼び出し時にそこへ飛び、制御フローはCのコールスタックが担う。読める版は4800バイト超。1文字の名前、文字リテラルの代わりにASCII値、三項演算子とカンマ演算子、論理演算の代わりにビット演算、C89の暗黙のintでゴルフした。
+***** Take
+ループのたびにソースを再パースする手口が面白いところで、それはDOSのバッチファイルがやっていることと同じだ。「これはPythonではない」という不満は正しいが的外れでもある。狙いはPythonらしく見えてfizzbuzzが動くコードであり、そこは達成している。読む価値があるのはゴルフの技法であって、拡張して使う言語実装としてではない。
+***** Comments
+- このコードは笑える。えげつないからだ。C4のような、小さくても完結していてサブセットのエラーチェックまでするCコンパイラとは違う。むしろSector Cより酷く、あらゆる近道を取り、ソースが正しいと決めつけている。
+- これが何か自作の小さな言語を「解釈」しているだけだと分かって非常にがっかりした。これはPythonではないし、Pythonとは3桁以上離れている。
+- 正確には1024バイトのCコードであり、コンパイルされたバイナリは何倍も大きい。ループは後方にジャンプして毎回ソースを再パースする方式で、これはDOSの.bat処理と同じやり方だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+1024바이트로 파이썬 인터프리터 만들기
+***** TLDR
+Austin Henley는 512바이트 C로 파이썬 인터프리터를 쓰려다 실패하고 1024바이트로 정착했다. 한 글자 정수 변수, 산술 연산, 식당 비교 한 번, if/else, while, range()를 쓰는 for, 인자 없는 함수 정의와 호출, 들여쓰기 기반 블록, print와 주석을 지원한다. 중간 표현도 없고 오류 처리도 전혀 없다. 반복문은 뒤로 점프해 매 회차마다 소스를 다시 파싱하고, 함수는 소스 위치를 저장했다가 호출 시 그곳으로 점프하며, 제어 흐름은 C 콜 스택이 담당한다. 읽을 수 있는 버전은 4800바이트가 넘는다. 줄이는 데는 한 글자 이름, 문자 리터럴 대신 ASCII 값, 삼항·쉼표 연산자, 논리 연산 대신 비트 연산, C89의 암묵적 int가 쓰였다.
+***** Take
+반복마다 소스를 다시 파싱하는 수법이 백미이고, 이는 DOS 배치 파일이 하는 것과 같다. "이건 파이썬이 아니다"라는 불평은 맞지만 핵심을 비껴간다. 목표는 파이썬처럼 보이면서 fizzbuzz가 도는 코드였고 그건 달성했다. 읽을 가치가 있는 건 코드 골프 기법이지, 확장해서 쓸 언어 구현이 아니다.
+***** Comments
+- 이 코드는 웃음이 난다. 지저분하기 때문이다. 작지만 완결적이고 자기 서브셋에 오류 검사까지 하는 C 컴파일러 C4와는 다르다. 오히려 Sector C보다 심해서, 모든 지름길을 택하고 소스가 다 맞다고 그냥 가정한다.
+- 이게 무슨 자작 소형 언어를 "해석"하는 거라는 게 무척 실망스러웠다. 이건 파이썬이 아니고, 파이썬과는 세 자릿수 이상 차이가 난다.
+- 정확히는 1024바이트의 C 코드이고, 컴파일된 바이너리는 훨씬 크다. 반복문이 뒤로 점프해 매 회차마다 소스를 다시 파싱하는 방식인데, DOS의 .bat 처리가 바로 이렇게 동작한다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Hacer un intérprete de Python en 1024 bytes
+***** TLDR
+Austin Henley intentó escribir un intérprete de Python en 512 bytes de C, no lo logró y se quedó en 1024. Soporta variables enteras de una sola letra, aritmética, una comparación por expresión, if/else, while, for con range(), definiciones y llamadas de funciones sin argumentos, bloques por indentación, print y comentarios. No hay representación intermedia ni manejo de errores: los bucles saltan hacia atrás y reanalizan el código fuente en cada iteración, las funciones guardan una posición en el fuente y la ejecución salta allí, y el flujo de control lo lleva la pila de llamadas de C. La versión legible supera los 4800 bytes; reducirla usó nombres de una letra, valores ASCII en vez de literales de carácter, operadores ternario y coma, operaciones de bits en vez de lógicas, e int implícito de C89.
+***** Take
+El truco de reanalizar el fuente en cada iteración es lo bueno, y es exactamente lo que hacen los archivos .bat de DOS. Las quejas de que esto no es Python son correctas e irrelevantes: el objetivo era código que pareciera Python y ejecutara fizzbuzz, y lo consigue. Vale la pena leerlo por las técnicas de code golf, no como una implementación de lenguaje que fueras a extender.
+***** Comments
+- El código me hace sonreír porque es sucio. No es como C4, un compilador de C diminuto pero completo que sí verifica errores en su subconjunto. Esto es peor que Sector C: toma todos los atajos y simplemente asume que todo en el fuente es correcto.
+- Me decepcionó mucho que esto esté "interpretando" un lenguajito inventado. Esto no es Python, ni se le acerca a tres órdenes de magnitud.
+- Para ser precisos, son 1024 bytes de C, que compilan a un binario muchas veces mayor. Los bucles funcionan saltando hacia atrás y reanalizando el fuente en cada iteración: así funciona el procesamiento de .bat en DOS.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Einen Python-Interpreter in 1024 Bytes bauen
+***** TLDR
+Austin Henley wollte einen Python-Interpreter in 512 Bytes C schreiben, scheiterte und landete bei 1024. Unterstützt werden einbuchstabige Integer-Variablen, Arithmetik, ein Vergleich pro Ausdruck, if/else, while, for mit range(), argumentlose Funktionsdefinitionen und -aufrufe, Blöcke per Einrückung, print und Kommentare. Es gibt keine Zwischenrepräsentation und überhaupt keine Fehlerbehandlung: Schleifen springen zurück und parsen den Quelltext bei jeder Iteration neu, Funktionen merken sich eine Position im Quelltext und die Ausführung springt dorthin, den Kontrollfluss trägt der C-Aufrufstack. Die lesbare Fassung hat über 4800 Bytes; das Golfen nutzte einbuchstabige Namen, ASCII-Werte statt Zeichenliteralen, Ternär- und Komma-Operator, Bit- statt Logikoperationen und implizites int aus C89.
+***** Take
+Der Trick, den Quelltext bei jeder Schleifeniteration neu zu parsen, ist der interessante Teil, und genau so arbeiten DOS-Batchdateien. Die Beschwerden, das sei kein echtes Python, stimmen und gehen am Ziel vorbei: gesucht war Code, der wie Python aussieht und fizzbuzz ausführt, und das leistet er. Lesenswert wegen der Golf-Techniken, nicht als Sprachimplementierung, die man erweitern würde.
+***** Comments
+- Der Code bringt mich zum Schmunzeln, weil er fies ist. Das ist nicht wie C4, ein winziger, aber vollständiger C-Compiler, der seine Teilmenge auf Fehler prüft. Das hier ist schlimmer als Sector C: Es nimmt jede Abkürzung und nimmt einfach an, dass im Quelltext alles stimmt.
+- Ich war sehr enttäuscht, dass hier eine winzige erfundene Sprache "interpretiert" wird. Das ist kein Python und liegt auch nicht innerhalb von drei Größenordnungen davon.
+- Genau genommen sind es 1024 Bytes C, die zu einer um ein Vielfaches größeren Binärdatei kompilieren. Schleifen springen zurück und parsen den Quelltext bei jeder Iteration neu: So funktioniert die .bat-Verarbeitung unter DOS.
+** GrapheneOS overhauled default apps and secure clipboard :android:privacy:grapheneos:rcs:
+:PROPERTIES:
+:ID:       49590512
+:URL:      https://grapheneos.social/@GrapheneOS/117225539756835649
+:HN_URL:   https://news.ycombinator.com/item?id=49590512
+:POINTS:   244
+:COMMENTS: 183
+:BY:       Cider9986
+:END:
+
+*** TLDR
+The post announces that the Messaging app bundled with GrapheneOS has been rebuilt with a completely new interface in Jetpack Compose, shipping in a release the same day, alongside a large batch of other fixes. The wider plan, spelled out in the thread and in the HN comments: the remaining AOSP apps get overhauled or replaced, the Gallery app is being swapped out entirely, the AOSP keyboard may follow, and RCS with end-to-end encryption via Messaging Layer Security is a longer-term goal so users no longer need Google Messages. GrapheneOS notes RCS depends heavily on proprietary Google and carrier infrastructure in practice, so the plan is to replicate Google's approach first.
+
+*** Take
+The RCS line is the real news and it is a hard one. GrapheneOS is saying out loud what carriers avoid saying: RCS in practice runs on Google's infrastructure, which makes it less open than SMS. Replacing the AOSP apps is a manageable project. Getting E2EE RCS working without Google Messages means reimplementing a stack whose de facto spec is one company's server, and that is where this gets stuck.
+
+*** Comments
+
+**** kotaKat
+:PROPERTIES:
+:COMMENT_ID: 49590961
+:END:
+RCS isn't an open platform in practice. It isn't even as open as SMS/MMS. It heavily depends on proprietary Google and carrier infrastructure in practice.
+
+**** lucb1e
+:PROPERTIES:
+:COMMENT_ID: 49591595
+:END:
+Ctrl+f clipboard, no results. What does "Secure Clipboard" in the title refer to? The release seems to be only the SMS/RCS app, rest is future.
+
+**** drnick1
+:PROPERTIES:
+:COMMENT_ID: 49591666
+:END:
+With Opus 5 and GPT-6, modernizing or even completely rewriting self-contained, non-critical tools seems like a Friday afternoon job now. I wonder however how important this is in the grand scheme of things.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+GrapheneOS 重做了默认应用和安全剪贴板
+***** TLDR
+这条帖子宣布 GrapheneOS 内置的信息应用已用 Jetpack Compose 完全重写界面，当天随新版本发布，同时附带大量其他修复。更大的计划在串里和 HN 评论中被讲清楚：其余 AOSP 应用将被重做或替换，相册应用会被整体换掉，AOSP 键盘可能紧随其后；通过 Messaging Layer Security 实现端到端加密的 RCS 是更长期目标，好让用户不再需要 Google Messages。GrapheneOS 指出，实际中 RCS 严重依赖 Google 和运营商的专有基础设施，因此计划先复刻 Google 的做法。
+***** Take
+RCS 那一句才是真正的新闻，也是最难的一块。GrapheneOS 把运营商避而不谈的事说了出来：现实中的 RCS 跑在 Google 的基础设施上，因此它比 SMS 还要封闭。替换 AOSP 应用是个可控的工程。而要在不用 Google Messages 的前提下跑通端到端加密的 RCS，等于要去重新实现一套事实标准就是某一家公司服务器的协议栈，卡点就在这里。
+***** Comments
+- RCS 在现实中并不是一个开放平台。它甚至没有 SMS/MMS 开放。实际上它严重依赖 Google 和运营商的专有基础设施。
+- Ctrl+F 搜 clipboard，没有结果。标题里的「安全剪贴板」指的是什么？这次发布似乎只有短信/RCS 应用，其余都是未来计划。
+- 有了 Opus 5 和 GPT-6，把自包含、非关键的工具现代化甚至完全重写，现在看起来像是周五下午就能干完的活。不过我不确定这在大局上有多重要。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+GrapheneOSがデフォルトアプリとセキュアクリップボードを刷新
+***** TLDR
+投稿は、GrapheneOSに同梱されるメッセージアプリのUIをJetpack Composeで全面的に書き直し、同日中のリリースに載せることを告知している。多数のバグ修正も併せて入る。スレッドとHNのコメントで示された大きな計画はこうだ。残りのAOSPアプリも刷新または置き換え、ギャラリーアプリは丸ごと差し替え、AOSPキーボードも続く可能性がある。Messaging Layer Securityによるエンドツーエンド暗号化付きRCSは長期目標で、Google Messagesを使わずに済むようにしたいという。GrapheneOSは、現実のRCSがGoogleとキャリアの独自インフラに大きく依存していると指摘し、まずGoogleのやり方を再現するとしている。
+***** Take
+本当のニュースはRCSの一文で、これが一番厄介だ。キャリアが口にしないことをGrapheneOSは明言している。実際のRCSはGoogleのインフラの上で動いており、その分SMSより閉じている。AOSPアプリの置き換えは見通しの立つプロジェクトだ。だがGoogle Messagesなしで暗号化RCSを動かすとは、事実上の仕様が一社のサーバであるスタックを再実装することであり、詰まるのはそこだ。
+***** Comments
+- RCSは実際には開かれたプラットフォームではない。SMS/MMSほどにも開かれていない。実運用ではGoogleとキャリアの独自インフラに大きく依存している。
+- Ctrl+Fでclipboardを検索しても何も出ない。タイトルの「セキュアクリップボード」とは何を指すのか。今回のリリースはSMS/RCSアプリだけで、残りは将来の話に見える。
+- Opus 5やGPT-6があれば、自己完結した非重要なツールの近代化どころか完全な書き直しも、いまや金曜午後の仕事に見える。ただ、それが全体としてどれほど重要なのかは分からない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+GrapheneOS, 기본 앱과 보안 클립보드를 대대적으로 개편
+***** TLDR
+게시물은 GrapheneOS에 기본 포함된 메시지 앱의 인터페이스를 Jetpack Compose로 완전히 새로 만들었고 같은 날 릴리스에 실린다고 알린다. 다수의 다른 수정도 함께 들어간다. 스레드와 HN 댓글에 드러난 더 큰 계획은 이렇다. 나머지 AOSP 앱도 개편하거나 교체하고, 갤러리 앱은 통째로 바꾸며, AOSP 키보드도 뒤따를 수 있다. Messaging Layer Security를 통한 종단간 암호화 RCS는 장기 목표로, 사용자가 더는 Google 메시지를 쓰지 않아도 되게 하려는 것이다. GrapheneOS는 실제 RCS가 Google과 통신사의 독점 인프라에 크게 의존한다고 지적하며, 우선 Google의 방식을 복제하겠다고 밝혔다.
+***** Take
+진짜 뉴스는 RCS 대목이고, 그게 가장 어렵다. GrapheneOS는 통신사들이 말하지 않는 사실을 대놓고 말한다. 현실의 RCS는 Google 인프라 위에서 돌아가며, 그래서 SMS보다도 덜 개방적이다. AOSP 앱 교체는 감당 가능한 프로젝트다. 하지만 Google 메시지 없이 종단간 암호화 RCS를 돌린다는 건 사실상의 명세가 한 회사의 서버인 스택을 재구현한다는 뜻이고, 막히는 지점이 바로 거기다.
+***** Comments
+- RCS는 실제로는 개방형 플랫폼이 아니다. SMS/MMS만큼도 개방적이지 않다. 현실에서는 Google과 통신사의 독점 인프라에 크게 의존한다.
+- Ctrl+F로 clipboard를 찾아도 결과가 없다. 제목의 "보안 클립보드"는 뭘 말하는 건가? 이번 릴리스는 SMS/RCS 앱뿐이고 나머지는 앞으로의 계획 같다.
+- Opus 5와 GPT-6이 있으면 자족적이고 중요하지 않은 도구를 현대화하거나 아예 다시 쓰는 건 이제 금요일 오후 작업처럼 보인다. 다만 그게 큰 그림에서 얼마나 중요한지는 모르겠다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+GrapheneOS renueva sus apps por defecto y el portapapeles seguro
+***** TLDR
+La publicación anuncia que la app de Mensajes incluida en GrapheneOS se ha reconstruido con una interfaz completamente nueva en Jetpack Compose, incluida en una versión publicada el mismo día, junto con un gran lote de correcciones. El plan más amplio, detallado en el hilo y en los comentarios de HN: las apps de AOSP restantes se renovarán o reemplazarán, la Galería se sustituye por completo, el teclado de AOSP podría seguir, y RCS con cifrado de extremo a extremo mediante Messaging Layer Security es un objetivo a más largo plazo para que los usuarios no necesiten Google Messages. GrapheneOS señala que en la práctica RCS depende mucho de infraestructura propietaria de Google y de las operadoras, así que primero replicarán el enfoque de Google.
+***** Take
+La línea sobre RCS es la noticia real y la parte difícil. GrapheneOS dice en voz alta lo que las operadoras evitan decir: el RCS real corre sobre infraestructura de Google, lo que lo hace menos abierto que el SMS. Reemplazar las apps de AOSP es un proyecto manejable. Hacer funcionar RCS cifrado extremo a extremo sin Google Messages implica reimplementar una pila cuya especificación de facto es el servidor de una sola empresa, y ahí es donde esto se atasca.
+***** Comments
+- RCS no es una plataforma abierta en la práctica. Ni siquiera es tan abierta como SMS/MMS. Depende fuertemente de infraestructura propietaria de Google y de las operadoras.
+- Ctrl+F portapapeles, cero resultados. ¿A qué se refiere el "portapapeles seguro" del titular? La versión parece incluir solo la app de SMS/RCS, el resto es futuro.
+- Con Opus 5 y GPT-6, modernizar o incluso reescribir por completo herramientas autocontenidas y no críticas parece ahora trabajo de un viernes por la tarde. Aunque me pregunto qué importancia tiene esto en el gran esquema.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+GrapheneOS überarbeitet Standard-Apps und sichere Zwischenablage
+***** TLDR
+Der Beitrag kündigt an, dass die in GrapheneOS enthaltene Messaging-App mit einer komplett neuen Oberfläche in Jetpack Compose neu gebaut wurde und noch am selben Tag ausgeliefert wird, zusammen mit vielen weiteren Korrekturen. Der größere Plan, im Thread und in den HN-Kommentaren ausgeführt: Die übrigen AOSP-Apps werden überarbeitet oder ersetzt, die Galerie-App wird komplett ausgetauscht, die AOSP-Tastatur könnte folgen, und RCS mit Ende-zu-Ende-Verschlüsselung über Messaging Layer Security ist ein längerfristiges Ziel, damit Nutzer kein Google Messages mehr brauchen. GrapheneOS weist darauf hin, dass RCS in der Praxis stark von proprietärer Google- und Carrier-Infrastruktur abhängt, weshalb zunächst Googles Ansatz nachgebaut werden soll.
+***** Take
+Die RCS-Zeile ist die eigentliche Nachricht und der schwierige Teil. GrapheneOS spricht aus, was Netzbetreiber vermeiden: Das reale RCS läuft auf Googles Infrastruktur und ist damit weniger offen als SMS. Die AOSP-Apps zu ersetzen ist ein überschaubares Projekt. Verschlüsseltes RCS ohne Google Messages zum Laufen zu bringen heißt dagegen, einen Stack nachzubauen, dessen De-facto-Spezifikation der Server eines einzigen Unternehmens ist, und genau daran hakt es.
+***** Comments
+- RCS ist in der Praxis keine offene Plattform. Es ist nicht einmal so offen wie SMS/MMS. Es hängt real stark von proprietärer Google- und Carrier-Infrastruktur ab.
+- Strg+F nach Zwischenablage: keine Treffer. Worauf bezieht sich die "sichere Zwischenablage" im Titel? Das Release scheint nur die SMS/RCS-App zu sein, der Rest ist Zukunft.
+- Mit Opus 5 und GPT-6 wirkt es inzwischen wie eine Freitagnachmittagsaufgabe, in sich geschlossene, unkritische Werkzeuge zu modernisieren oder ganz neu zu schreiben. Ich frage mich aber, wie wichtig das im großen Ganzen ist.
