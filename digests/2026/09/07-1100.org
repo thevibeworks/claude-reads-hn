@@ -1,0 +1,546 @@
+#+TITLE: HN Digest 2026-09-07 11:00 UTC
+#+DATE: 2026-09-07T11:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+LG TVs listen with the screen off, Switzerland starts leaving Microsoft, and Nathan Fielder films Elizabeth Holmes
+
+* Highlights
+- Gamers Nexus catches LG TVs recording audio in standby and scanning your LAN
+- Switzerland moves 3,000 federal workstations to openDesk
+- A mathematician argues math is heading where classical music already went
+- GET Together: a social network where every post is a URL
+- Nathan Fielder's Holmes documentary premiered unannounced at Telluride
+
+* Stories
+
+** LG smart TVs caught logging audio with screen off and snooping on local devices :privacy:hardware:security:advertising:
+:PROPERTIES:
+:ID:       49594878
+:URL:      https://www.notebookcheck.net/LG-smart-TVs-caught-logging-audio-with-screen-off-and-snooping-on-local-devices.1391214.0.html
+:HN_URL:   https://news.ycombinator.com/item?id=49594878
+:POINTS:   199
+:COMMENTS: 105
+:BY:       chris_overseas
+:END:
+
+*** TLDR
+Gamers Nexus, working with Level1Techs and independent security researchers, captured LG TV traffic with Wireshark and found the sets recording clean microphone audio while the screen was in standby. Cut off from the network, a TV stored the voice data locally and uploaded it on reconnect. The TVs also scanned the local network for phones and smartwatches, collected nearby Wi-Fi names and signal strengths, and ran Automated Content Recognition to fingerprint whatever was on screen across every input. The data feeds LG Ad Solutions, which claims 363 million addressable devices in the US. Researchers also found remote code execution bugs in webOS, still under responsible disclosure. LG has not commented.
+
+*** Take
+The interesting part is not the microphone, it is the store-and-forward. Buffering recordings while offline and flushing them on reconnect is a design decision someone wrote a ticket for. The only reliable fix is the one the researchers gave: never let the TV on your network, and put a streaming box on the HDMI port.
+
+*** Comments
+
+**** rickdeckard
+:PROPERTIES:
+:COMMENT_ID: 49594950
+:END:
+This is quite a mixed set of topics mangled together, which is a pity because a cleaner separation would be more beneficial to get the point across: the ad data-collecting platform, the OS vulnerabilities, and the general behavior are three different problems.
+
+**** korzinka
+:PROPERTIES:
+:COMMENT_ID: 49595012
+:END:
+I bought an LG Smart TV 5 years ago, read the t&c where I was supposed to grant them any data they wanted, disagreed and kept all network functions disabled. I was ridiculed by my friends for that. At some point I thought, maybe I'm really crazy? Oh well, I'm not. Not a bad TV though, many HDMI ports!
+
+**** ninjagoo
+:PROPERTIES:
+:COMMENT_ID: 49595087
+:END:
+Telescreens are here! War is peace. Freedom is slavery. Ignorance is strength.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+LG 智能电视被抓到在息屏状态下录音并扫描局域网设备
+***** TLDR
+Gamers Nexus 与 Level1Techs 及独立安全研究者合作，用 Wireshark 抓包发现 LG 电视在待机息屏状态下仍在录制清晰的麦克风音频。断网时电视把语音数据存在本地，重新联网后上传。电视还会扫描局域网寻找手机和智能手表，收集附近 Wi-Fi 名称和信号强度，并用自动内容识别技术对所有输入源的画面做指纹。这些数据流向 LG Ad Solutions，该部门称在美国可触达 3.63 亿台设备。研究者还在 webOS 中发现了远程代码执行漏洞，目前仍在负责任披露流程中。LG 未作回应。
+***** Take
+重点不是麦克风，而是先存后传。离线时缓存录音、联网后集中上传，这是有人专门写了需求单才会有的设计。唯一可靠的办法就是研究者给的建议：永远别让电视上网，把流媒体盒子插在 HDMI 口上。
+***** Comments
+- 这篇把好几个不同的问题混在一起讲了，有点可惜。广告数据收集平台、操作系统漏洞、以及设备本身的行为，是三件不同的事，分开讲效果会更好。
+- 五年前我买了台 LG 智能电视，读了条款，发现要把所有数据都交给他们，我不同意，就把所有联网功能都关了。朋友们嘲笑我。有段时间我也想，是不是我真的太偏执了？现在看来不是。电视本身不错，HDMI 口够多！
+- 电幕来了！战争即和平，自由即奴役，无知即力量。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+LGのスマートTV、画面オフ状態で音声を記録しLAN内の機器を探索していた
+***** TLDR
+Gamers NexusがLevel1Techsおよび独立系セキュリティ研究者と共同でWiresharkによる通信解析を行い、LGのTVが待機状態で画面が消えている間もクリアなマイク音声を記録していることを確認した。ネットワークから切り離すと音声データを本体に保存し、再接続時にアップロードする。さらにLAN内のスマートフォンやスマートウォッチを探索し、周辺Wi-Fiの名称と電波強度を収集、自動コンテンツ認識で全入力の映像を識別していた。データはLG Ad Solutionsに送られ、同部門は米国だけで3億6300万台にリーチできるとしている。webOSにリモートコード実行の脆弱性も見つかり、責任ある開示の手続き中。LGはコメントしていない。
+***** Take
+問題はマイクよりも、保存してから送る仕組みのほうだ。オフライン中に録音を溜めて再接続時にまとめて送るのは、誰かが仕様として書いた設計である。確実な対策は研究者の助言どおり、TVをネットにつながず、HDMIにストリーミング端末を挿すことだけだ。
+***** Comments
+- 複数の別々の論点が一緒くたになっていて惜しい。広告データ収集プラットフォーム、OSの脆弱性、機器の挙動は別問題で、分けたほうが伝わる。
+- 5年前にLGのスマートTVを買い、規約を読んで全データを渡す前提だと知り、同意せずネットワーク機能を全部切った。友人には笑われた。自分が神経質すぎるのかとも思ったが、そうではなかった。TV自体は悪くない。HDMI端子も多い。
+- テレスクリーンの登場だ。戦争は平和なり、自由は隷従なり、無知は力なり。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+LG 스마트TV, 화면 꺼진 상태에서 음성 기록하고 내부망 기기 탐색
+***** TLDR
+Gamers Nexus가 Level1Techs 및 독립 보안 연구자들과 함께 Wireshark로 트래픽을 분석한 결과, LG TV가 대기 모드에서 화면이 꺼진 동안에도 선명한 마이크 음성을 기록하고 있었다. 네트워크를 끊으면 음성 데이터를 기기에 저장했다가 재연결 시 업로드했다. TV는 내부망에서 스마트폰과 스마트워치를 탐색하고, 주변 Wi-Fi 이름과 신호 세기를 수집했으며, 자동 콘텐츠 인식으로 모든 입력의 화면을 식별했다. 이 데이터는 LG Ad Solutions로 흘러가며, 이 부문은 미국에서만 3억 6300만 대에 도달할 수 있다고 밝힌다. webOS에서 원격 코드 실행 취약점도 발견돼 책임 공개 절차가 진행 중이다. LG는 입장을 내지 않았다.
+***** Take
+핵심은 마이크가 아니라 저장 후 전송 방식이다. 오프라인 상태에서 녹음을 쌓아두었다가 재연결 시 한꺼번에 보내는 것은 누군가 명세로 적어 넣은 설계다. 확실한 해법은 연구자들의 조언 그대로다. TV를 네트워크에 연결하지 말고 HDMI에 스트리밍 기기를 꽂아라.
+***** Comments
+- 여러 다른 주제가 뒤섞여 있어서 아쉽다. 광고 데이터 수집 플랫폼, OS 취약점, 기기 동작은 서로 다른 문제이고 나눠서 다루는 편이 전달에 낫다.
+- 5년 전 LG 스마트TV를 샀는데 약관을 읽어보니 원하는 데이터를 다 넘기라는 내용이었다. 동의하지 않고 네트워크 기능을 전부 껐다. 친구들에게 비웃음을 샀고, 내가 유별난 건가 싶기도 했다. 아니었다. TV 자체는 괜찮다. HDMI 포트도 많다.
+- 텔레스크린이 왔다. 전쟁은 평화, 자유는 예속, 무지는 힘.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Televisores LG grabando audio con la pantalla apagada y rastreando dispositivos de la red local
+***** TLDR
+Gamers Nexus, junto con Level1Techs e investigadores de seguridad independientes, capturó el tráfico de televisores LG con Wireshark y encontró que los equipos grababan audio nítido del micrófono con la pantalla en reposo. Al desconectarlos de la red, el televisor guardaba los datos de voz localmente y los subía al reconectarse. Los televisores también escaneaban la red local en busca de teléfonos y relojes inteligentes, recogían nombres y potencias de señal de las redes Wi-Fi cercanas y usaban reconocimiento automático de contenido para identificar lo que aparecía en pantalla en cualquier entrada. Los datos alimentan a LG Ad Solutions, que dice alcanzar 363 millones de dispositivos en Estados Unidos. También se hallaron fallos de ejecución remota de código en webOS, aún bajo divulgación responsable. LG no ha respondido.
+***** Take
+Lo relevante no es el micrófono sino el guardar y enviar después. Acumular grabaciones sin conexión y volcarlas al reconectar es una decisión de diseño que alguien escribió como requisito. La única solución fiable es la que dan los investigadores: no conectar nunca el televisor a la red y poner un reproductor externo en el puerto HDMI.
+***** Comments
+- Se mezclan varios temas distintos, y es una pena porque separarlos ayudaría a entender el punto: la plataforma de recolección de datos publicitarios, las vulnerabilidades del sistema operativo y el comportamiento del aparato son tres problemas diferentes.
+- Compré un televisor LG hace 5 años, leí las condiciones donde debía cederles todos los datos que quisieran, no acepté y dejé desactivadas todas las funciones de red. Mis amigos se rieron de mí. En algún momento pensé que quizá era yo el exagerado. Pues no. Buen televisor, eso sí, con muchos puertos HDMI.
+- Las telepantallas ya están aquí. La guerra es la paz, la libertad es la esclavitud, la ignorancia es la fuerza.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+LG-Smart-TVs zeichnen bei ausgeschaltetem Bildschirm Audio auf und durchsuchen das Heimnetz
+***** TLDR
+Gamers Nexus hat gemeinsam mit Level1Techs und unabhängigen Sicherheitsforschern den Datenverkehr von LG-Fernsehern mit Wireshark aufgezeichnet und festgestellt, dass die Geräte im Standby bei ausgeschaltetem Bildschirm klares Mikrofonaudio aufnehmen. Ohne Netzverbindung speicherte der Fernseher die Sprachdaten lokal und lud sie beim erneuten Verbinden hoch. Die Geräte durchsuchten außerdem das lokale Netz nach Telefonen und Smartwatches, sammelten Namen und Signalstärken benachbarter WLANs und identifizierten per Automated Content Recognition den Bildschirminhalt über alle Eingänge hinweg. Die Daten fließen zu LG Ad Solutions, das allein in den USA 363 Millionen erreichbare Geräte angibt. Zudem wurden Lücken für Remote Code Execution in webOS gefunden, die noch im Responsible-Disclosure-Verfahren sind. LG äußert sich nicht.
+***** Take
+Entscheidend ist nicht das Mikrofon, sondern das Zwischenspeichern und spätere Senden. Aufnahmen offline zu puffern und beim Verbinden nachzuliefern, ist eine Designentscheidung, die jemand als Anforderung formuliert hat. Die einzig verlässliche Abhilfe ist die der Forscher: den Fernseher nie ins Netz lassen und stattdessen eine Streaming-Box an den HDMI-Port hängen.
+***** Comments
+- Hier werden mehrere Themen vermengt, schade, denn eine klarere Trennung würde den Punkt besser rüberbringen: die Werbedatenplattform, die Schwachstellen des Betriebssystems und das Verhalten des Geräts sind drei verschiedene Probleme.
+- Ich habe vor 5 Jahren einen LG-Smart-TV gekauft, die AGB gelesen, in denen ich ihnen alle gewünschten Daten überlassen sollte, nicht zugestimmt und sämtliche Netzwerkfunktionen deaktiviert. Freunde haben mich ausgelacht. Zwischendurch dachte ich, vielleicht bin ich wirklich übertrieben. Bin ich nicht. Kein schlechter Fernseher übrigens, viele HDMI-Anschlüsse!
+- Die Telescreens sind da. Krieg ist Frieden, Freiheit ist Sklaverei, Unwissenheit ist Stärke.
+** Switzerland's Federal Government Is Replacing Microsoft on 3k Computers :opensource:government:microsoft:linux:
+:PROPERTIES:
+:ID:       49594251
+:URL:      https://itsfoss.com/news/switzerland-replace-microssoft-pilot/
+:HN_URL:   https://news.ycombinator.com/item?id=49594251
+:POINTS:   173
+:COMMENTS: 123
+:BY:       ivell
+:END:
+
+*** TLDR
+The Swiss Federal Chancellery started a pilot in September 2026 moving 3,000 workstations, roughly 7% of the federal government's 54,000 computers, from Microsoft to openDesk, a German open-source collaboration suite. A proof of concept with 172 employees covering core office functions came first. The pilot is meant to finish by the end of 2027, and the Swiss military plans to be off Microsoft 365 entirely by October 2026. The stated reasons are exposure of Swiss government data to US cloud legislation, dependence on a single foreign supplier, and licensing costs rising without much negotiating leverage. It follows the 2024 EMBAG open-source law and the Federal Council's December 2025 decision to treat digital sovereignty as a priority.
+
+*** Take
+Every previous government Linux migration died in year three when the spreadsheet macros and the calendar invites stopped working. What is different here is that the military has a hard October 2026 deadline, which is a commitment rather than a pilot. Watch that number, not the 3,000.
+
+*** Comments
+
+**** Atariman
+:PROPERTIES:
+:COMMENT_ID: 49594330
+:END:
+As a Swiss, I'm happy they finally try it. It's only around 5% of all government machines, but at least it's a start. We have to get independent asap from the US. OSS ftw!
+
+**** rich_sasha
+:PROPERTIES:
+:COMMENT_ID: 49594412
+:END:
+The real risk to MS here is when people take the plunge and see how much nicer a well supported Linux distro is compared to Windows. Will they want to buy their next home laptop with MSFT installed? Plus, if countries put a fraction of the savings into libre office development, the comparison gets even more lopsided.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+瑞士联邦政府将在 3000 台电脑上替换微软软件
+***** TLDR
+瑞士联邦总理府于 2026 年 9 月启动试点，把 3000 台工作站从微软迁移到德国开源协作平台 openDesk，约占联邦政府 5.4 万台电脑的 7%。此前已有 172 名员工参与的概念验证，覆盖核心办公功能。试点计划在 2027 年底完成，瑞士军方则计划在 2026 年 10 月前完全弃用 Microsoft 365。理由有三：美国云法律可能让外国当局接触瑞士政府数据、对单一外国供应商的依赖、以及在缺乏议价能力的情况下不断上涨的授权费用。这延续了 2024 年的 EMBAG 开源法律和联邦委员会 2025 年 12 月把数字主权列为重点的决定。
+***** Take
+以往的政府 Linux 迁移大多死在第三年，倒在表格宏和日历邀请上。这次不同的是军方定了 2026 年 10 月的硬性期限，那是承诺而不是试点。该盯的是这个日期，不是那 3000 台。
+***** Comments
+- 作为瑞士人，我很高兴他们终于开始尝试。虽然只占政府机器的 5% 左右，但至少是个开始。我们必须尽快摆脱对美国的依赖。开源万岁！
+- 微软真正的风险在于，人们一旦迈出这步，发现维护良好的 Linux 发行版比 Windows 舒服得多。那他们下次买家用笔记本还会要预装微软系统吗？而且如果各国把省下的钱拿出一部分投入自由办公软件开发，差距只会更明显。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+スイス連邦政府、3000台のPCでマイクロソフト製品を置き換えへ
+***** TLDR
+スイス連邦首相府は2026年9月、3000台のワークステーションをマイクロソフトからドイツ発のオープンソース協働基盤openDeskへ移行する試験運用を開始した。連邦政府が保有する約5万4000台の約7%にあたる。事前に172人の職員が中核的なオフィス機能を検証している。試験運用は2027年末までの完了を目標とし、スイス軍は2026年10月までにMicrosoft 365を完全に廃止する計画。理由は、米国のクラウド関連法によりスイス政府のデータが外国当局に渡る恐れ、単一の外国ベンダーへの依存、交渉力を欠いたまま上昇するライセンス費用の3点。2024年のEMBAG法と、2025年12月に連邦参事会がデジタル主権を重点課題としたことに沿う動きだ。
+***** Take
+これまでの政府のLinux移行は、表計算のマクロとカレンダー招待でつまずいて3年目に頓挫してきた。今回違うのは、軍が2026年10月という確定期限を切っている点だ。試験運用ではなく約束である。注目すべきは3000台ではなくその日付だ。
+***** Comments
+- スイス人として、ようやく挑戦してくれて嬉しい。政府機器の5%程度にすぎないが、始まりとしては十分だ。米国からできるだけ早く独立する必要がある。オープンソース万歳。
+- マイクロソフトにとっての本当のリスクは、人々が踏み切って、よく整備されたLinuxディストリビューションのほうがWindowsより快適だと気づくことだ。次に家庭用ノートPCを買うとき、Windows入りを選ぶだろうか。さらに各国が浮いた費用の一部を自由なオフィスソフトの開発に回せば、差はもっと開く。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+스위스 연방정부, 컴퓨터 3000대에서 마이크로소프트 제품 교체
+***** TLDR
+스위스 연방총리실은 2026년 9월 워크스테이션 3000대를 마이크로소프트에서 독일산 오픈소스 협업 플랫폼 openDesk로 옮기는 시범사업을 시작했다. 연방정부가 보유한 약 5만 4000대의 7% 수준이다. 앞서 172명의 직원이 핵심 사무 기능을 검증하는 개념 증명을 마쳤다. 시범사업은 2027년 말 완료가 목표이며, 스위스군은 2026년 10월까지 Microsoft 365를 완전히 걷어낼 계획이다. 이유는 미국 클라우드 법으로 스위스 정부 데이터가 외국 당국에 노출될 위험, 단일 해외 공급업체 의존, 협상력 없이 오르는 라이선스 비용 세 가지다. 2024년 EMBAG 오픈소스 법과 2025년 12월 연방각의의 디지털 주권 우선 결정에 따른 조치다.
+***** Take
+지금까지 정부의 리눅스 전환은 대개 3년차에 스프레드시트 매크로와 일정 초대 문제로 무너졌다. 이번에 다른 점은 군이 2026년 10월이라는 확정 기한을 걸었다는 것이다. 시범이 아니라 약속이다. 봐야 할 숫자는 3000대가 아니라 그 날짜다.
+***** Comments
+- 스위스인으로서 드디어 시도해줘서 기쁘다. 정부 기기의 5% 정도에 불과하지만 시작은 시작이다. 미국으로부터 가능한 한 빨리 독립해야 한다. 오픈소스 만세.
+- 마이크로소프트의 진짜 위험은 사람들이 한번 옮겨보고 잘 관리된 리눅스 배포판이 윈도우보다 훨씬 낫다는 걸 깨닫는 것이다. 다음에 집에서 쓸 노트북을 살 때 윈도우가 깔린 걸 고를까? 게다가 각국이 절감액의 일부라도 자유 오피스 소프트웨어 개발에 넣으면 격차는 더 벌어진다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+El gobierno federal suizo sustituye a Microsoft en 3.000 ordenadores
+***** TLDR
+La Cancillería Federal suiza puso en marcha en septiembre de 2026 un piloto que traslada 3.000 puestos de trabajo, cerca del 7% de los 54.000 ordenadores del gobierno federal, de Microsoft a openDesk, una suite colaborativa alemana de código abierto. Antes hubo una prueba de concepto con 172 empleados sobre las funciones ofimáticas básicas. El piloto debe terminar a finales de 2027 y el ejército suizo prevé abandonar Microsoft 365 por completo en octubre de 2026. Los motivos declarados son la exposición de datos del gobierno suizo a la legislación estadounidense sobre la nube, la dependencia de un único proveedor extranjero y unos costes de licencia crecientes sin capacidad de negociación. Sigue a la ley EMBAG de 2024 y a la decisión del Consejo Federal de diciembre de 2025 de priorizar la soberanía digital.
+***** Take
+Las migraciones a Linux de gobiernos anteriores morían en el tercer año, cuando fallaban las macros de las hojas de cálculo y las invitaciones de calendario. Aquí lo distinto es que el ejército tiene una fecha firme, octubre de 2026, que es un compromiso y no un piloto. Hay que mirar ese dato, no los 3.000.
+***** Comments
+- Como suizo, me alegra que por fin lo intenten. Es solo el 5% de las máquinas del gobierno, pero al menos es un comienzo. Tenemos que independizarnos de Estados Unidos cuanto antes. ¡Viva el software libre!
+- El verdadero riesgo para Microsoft es que la gente dé el paso y vea lo mucho más agradable que es una distribución de Linux bien mantenida frente a Windows. ¿Querrán comprar su próximo portátil doméstico con Windows preinstalado? Y si los países destinaran una parte del ahorro al desarrollo de suites libres, la comparación sería aún más desigual.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Schweizer Bundesverwaltung ersetzt Microsoft auf 3000 Rechnern
+***** TLDR
+Die Schweizer Bundeskanzlei hat im September 2026 einen Pilotbetrieb gestartet, der 3000 Arbeitsplätze und damit rund 7 Prozent der 54.000 Rechner der Bundesverwaltung von Microsoft auf openDesk umstellt, eine deutsche Open-Source-Kollaborationsplattform. Vorher lief ein Proof of Concept mit 172 Mitarbeitenden über die zentralen Bürofunktionen. Der Pilot soll bis Ende 2027 abgeschlossen sein, die Schweizer Armee will Microsoft 365 bereits bis Oktober 2026 vollständig ablösen. Als Gründe genannt werden der Zugriff ausländischer Behörden auf Schweizer Regierungsdaten über US-Cloud-Gesetze, die Abhängigkeit von einem einzigen ausländischen Anbieter und steigende Lizenzkosten ohne Verhandlungsspielraum. Es folgt dem EMBAG-Gesetz von 2024 und dem Entscheid des Bundesrats vom Dezember 2025, digitale Souveränität zur Priorität zu machen.
+***** Take
+Frühere Linux-Umstellungen in Verwaltungen scheiterten im dritten Jahr an Tabellenmakros und Kalendereinladungen. Neu ist hier, dass die Armee mit Oktober 2026 einen festen Termin gesetzt hat, also eine Zusage statt eines Pilotversuchs. Auf diese Zahl kommt es an, nicht auf die 3000.
+***** Comments
+- Als Schweizer freue ich mich, dass sie es endlich versuchen. Es sind nur etwa 5 Prozent aller Behördenrechner, aber immerhin ein Anfang. Wir müssen so schnell wie möglich unabhängig von den USA werden. OSS ftw!
+- Das eigentliche Risiko für Microsoft entsteht, wenn Leute den Schritt wagen und merken, wie viel angenehmer eine gut gepflegte Linux-Distribution gegenüber Windows ist. Wollen sie dann das nächste private Notebook noch mit Windows kaufen? Und wenn Länder einen Bruchteil der Einsparungen in freie Office-Software stecken, wird der Vergleich noch eindeutiger.
+** Is mathematics about to enter the conservatory? :mathematics:ai:academia:culture:
+:PROPERTIES:
+:ID:       49591793
+:URL:      https://mbmccoy.dev/posts/mathematical-conservatory/
+:HN_URL:   https://news.ycombinator.com/item?id=49591793
+:POINTS:   57
+:COMMENTS: 76
+:BY:       _alternator_
+:END:
+
+*** TLDR
+The author argues mathematics is on the path classical music already took: a discipline society preserves as culture rather than pays for as production. The trigger is AI. He cites OpenAI research placing mathematicians at the top of LLM exposure, Wang and Wu of Hunan University proving the Spherical Hadwiger Conjecture, open since 1974, with Codex helping fill in proof details and find gaps, Claude formalizing Fermat's Last Theorem in Lean, and his own check of the new proof with Claude Fable. His consolation is that math is already in a conservatory called the academy, so the shift may hurt less than in fields with real market demand. The open question is whether society will keep funding it once the output is cheap.
+
+*** Take
+The conservatory analogy cuts against the author. Conservatories did not preserve classical music's audience, they preserved its performers. If math goes the same way, the funding argument stops being about discovery and starts being about who is left able to check what the machine produced. That is a much weaker case to take to a budget committee.
+
+*** Comments
+
+**** dofm
+:PROPERTIES:
+:COMMENT_ID: 49591902
+:END:
+Our society does not support classical musicians the same way it supports popular musicians. It really does. Popular, rock, folk and classical musicians all earn much the same way now: teaching, occasional performance fees, weddings and galas, and music-related side gigs.
+
+**** madrox
+:PROPERTIES:
+:COMMENT_ID: 49591988
+:END:
+We are largely having a reckoning with whether a discipline is the process or the outcome. Music didn't enter the conservatory so much as the relative interest in various styles changed over time. Every field is having this existential crisis right now, from art to math.
+
+**** rtpg
+:PROPERTIES:
+:COMMENT_ID: 49592044
+:END:
+A small segment of society has decided the ability to perform it is worth preserving, and devotes a sliver of capital to that end. I had a whole discussion about this with a German friend whose husband works in opera.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+数学是否即将进入音乐学院？
+***** TLDR
+作者认为数学正走上古典音乐走过的路：社会把它当作文化保存下来，而不是当作生产付费。触发因素是 AI。他引用了 OpenAI 关于数学家受 LLM 影响程度最高的研究，湖南大学王与吴证明了 1974 年以来悬而未决的球面 Hadwiger 猜想（Codex 帮助补全证明细节并找出漏洞），Claude 在 Lean 中形式化了费马大定理，以及他自己用 Claude Fable 核查了这个新证明。他的安慰是数学早就待在一个叫学术界的音乐学院里，所以冲击可能比有真实市场需求的领域更小。悬而未决的是，当产出变得廉价之后社会还愿不愿意继续掏钱。
+***** Take
+音乐学院这个类比反而不利于作者的论点。音乐学院保住的不是古典音乐的听众，而是它的演奏者。如果数学走上同一条路，经费理由就不再是关于发现，而是关于还剩下谁有能力核查机器给出的结果。拿这个去跟预算委员会谈，说服力弱得多。
+***** Comments
+- 「社会对古典音乐家的支持不如对流行音乐家」——其实是支持的。如今流行、摇滚、民谣和古典音乐人的收入来源都差不多：教学、偶尔的演出费、婚礼和晚会、以及各种音乐相关的副业。
+- 我们正在集体清算一个问题：一门学科到底是过程还是结果。音乐并不是「进了音乐学院」，而是各种风格的相对关注度随时间变化了。从艺术到数学，每个领域现在都在经历同样的存在危机。
+- 只有一小部分人认定这种演奏能力值得保留，并为此投入很小一笔资金。我和一位德国朋友聊过这个，她的丈夫在歌剧院工作。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+数学は音楽院に入ろうとしているのか
+***** TLDR
+著者は、数学がクラシック音楽と同じ道をたどりつつあると論じる。社会が生産として対価を払う対象ではなく、文化として保存する対象になるという道だ。引き金はAIである。数学者がLLMの影響を最も受けるとしたOpenAIの調査、1974年以来未解決だった球面ハドヴィガー予想を湖南大学の王と呉がCodexの助けで証明した件（証明の細部の補完と抜けの発見に使った）、Claudeによるフェルマーの最終定理のLean形式化、そして著者自身がClaude Fableで新証明を検証したことを挙げる。慰めは、数学はすでに学術界という音楽院の中にいるため、実需のある分野より打撃が小さいかもしれない点だ。残る問いは、成果が安くなった後も社会が資金を出し続けるかである。
+***** Take
+音楽院のたとえは著者の主張に不利に働く。音楽院が守ったのはクラシック音楽の聴衆ではなく演奏者だった。数学が同じ道を行くなら、予算の論拠は発見ではなく、機械の出した結果を検証できる人材が残っているかという話に変わる。予算委員会に持ち込むには、はるかに弱い論拠だ。
+***** Comments
+- 「社会はクラシック音楽家をポピュラー音楽家ほど支えていない」とあるが、実際には支えている。今やポップ、ロック、フォーク、クラシックのいずれも収入源はほぼ同じだ。教えること、たまの出演料、結婚式やガラでの演奏、音楽関連の副業である。
+- 分野とは過程なのか成果なのか、という問いに我々は向き合っている。音楽が音楽院に入ったというより、様式ごとの関心の比重が時代とともに変わっただけだ。芸術から数学まで、あらゆる分野が今この実存的危機の只中にある。
+- 社会の一部が、その演奏能力は保存する価値があると判断し、わずかな資本を割いている。オペラの仕事をしている夫を持つドイツ人の友人と、この話をじっくりした。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+수학은 음악원으로 들어가려는가
+***** TLDR
+저자는 수학이 클래식 음악이 이미 걸어간 길로 가고 있다고 주장한다. 사회가 생산으로 대가를 지불하는 대상이 아니라 문화로 보존하는 대상이 된다는 것이다. 계기는 AI다. 수학자가 LLM의 영향을 가장 크게 받는다는 OpenAI 연구, 1974년부터 미해결이던 구면 하드비거 추측을 후난대의 왕과 우가 Codex의 도움으로 증명한 사례(증명 세부를 채우고 빈틈을 찾는 데 사용), Claude가 페르마의 마지막 정리를 Lean으로 형식화한 일, 그리고 저자가 Claude Fable로 새 증명을 검토한 경험을 근거로 든다. 위안이라면 수학은 이미 학계라는 음악원 안에 있어 실수요가 있는 분야보다 충격이 덜할 수 있다는 점이다. 남는 질문은 산출물이 싸진 뒤에도 사회가 계속 돈을 댈 것인가다.
+***** Take
+음악원 비유는 오히려 저자에게 불리하다. 음악원이 지킨 것은 클래식 음악의 청중이 아니라 연주자였다. 수학이 같은 길을 간다면 예산 논거는 발견이 아니라, 기계가 내놓은 결과를 검증할 사람이 남아 있느냐의 문제로 바뀐다. 예산 위원회에 들고 가기에는 훨씬 약한 논거다.
+***** Comments
+- '사회가 클래식 음악가를 대중 음악가만큼 지원하지 않는다'고 하는데, 사실 지원한다. 지금은 팝, 록, 포크, 클래식 모두 수입 구조가 비슷하다. 강의, 가끔 있는 공연료, 결혼식과 갈라 연주, 음악 관련 부업이다.
+- 우리는 한 분야가 과정인지 결과인지를 두고 정산을 하는 중이다. 음악이 음악원으로 들어갔다기보다, 양식별 관심의 비중이 시대에 따라 달라진 것이다. 예술부터 수학까지 모든 분야가 지금 같은 실존적 위기를 겪고 있다.
+- 사회의 일부가 그 연주 능력은 보존할 가치가 있다고 판단하고 아주 적은 자본을 할당한다. 오페라 일을 하는 남편을 둔 독일인 친구와 이 얘기를 길게 나눈 적이 있다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+¿Está la matemática a punto de entrar en el conservatorio?
+***** TLDR
+El autor sostiene que la matemática sigue el camino que ya tomó la música clásica: una disciplina que la sociedad conserva como cultura en lugar de pagar como producción. El detonante es la IA. Cita una investigación de OpenAI que sitúa a los matemáticos a la cabeza de la exposición a los LLM, la demostración de la conjetura esférica de Hadwiger, abierta desde 1974, por Wang y Wu de la Universidad de Hunan con ayuda de Codex para completar detalles y detectar lagunas, la formalización del último teorema de Fermat en Lean por Claude, y su propia revisión de la nueva demostración con Claude Fable. Su consuelo es que la matemática ya vive en un conservatorio llamado academia, así que el golpe puede ser menor que en campos con demanda real. La pregunta abierta es si la sociedad seguirá financiándola cuando el resultado sea barato.
+***** Take
+La analogía del conservatorio juega en contra del autor. Los conservatorios no preservaron el público de la música clásica, preservaron a sus intérpretes. Si la matemática va por ahí, el argumento presupuestario deja de ser sobre descubrir y pasa a ser sobre quién queda capaz de verificar lo que produjo la máquina. Ese argumento es mucho más débil ante un comité de presupuestos.
+***** Comments
+- «Nuestra sociedad no apoya a los músicos clásicos como apoya a los populares». Sí lo hace. Hoy los músicos de pop, rock, folk y clásica ganan casi igual: enseñando, con algún caché ocasional, bodas y galas, y trabajos secundarios relacionados con la música.
+- Estamos ajustando cuentas con la pregunta de si una disciplina es el proceso o el resultado. La música no entró tanto en el conservatorio como cambió el interés relativo por cada estilo con el tiempo. Todos los campos están teniendo esta crisis existencial ahora, del arte a la matemática.
+- Un segmento pequeño de la sociedad ha decidido que la capacidad de interpretarla merece preservarse y le dedica una porción mínima de capital. Tuve una larga conversación sobre esto con una amiga alemana cuyo marido trabaja en la ópera.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Steht die Mathematik vor dem Weg ins Konservatorium?
+***** TLDR
+Der Autor argumentiert, die Mathematik gehe den Weg, den die klassische Musik bereits genommen hat: eine Disziplin, die die Gesellschaft als Kultur bewahrt, statt sie als Leistung zu bezahlen. Auslöser ist die KI. Er verweist auf eine OpenAI-Untersuchung, die Mathematiker an die Spitze der LLM-Exposition setzt, auf den Beweis der sphärischen Hadwiger-Vermutung, offen seit 1974, durch Wang und Wu von der Universität Hunan mit Codex-Hilfe beim Ausfüllen von Beweisdetails und Aufspüren von Lücken, auf Claudes Formalisierung des großen fermatschen Satzes in Lean und auf seine eigene Prüfung des neuen Beweises mit Claude Fable. Sein Trost: Die Mathematik sitzt längst in einem Konservatorium namens Akademie, der Bruch könnte also milder ausfallen als in Feldern mit echter Marktnachfrage. Offen bleibt, ob die Gesellschaft weiter zahlt, wenn der Output billig ist.
+***** Take
+Der Vergleich mit dem Konservatorium spricht gegen den Autor. Konservatorien haben nicht das Publikum der klassischen Musik erhalten, sondern ihre Interpreten. Geht die Mathematik denselben Weg, dreht sich das Finanzierungsargument nicht mehr um Entdeckungen, sondern darum, wer noch prüfen kann, was die Maschine ausgegeben hat. Vor einem Haushaltsausschuss ist das ein deutlich schwächeres Argument.
+***** Comments
+- „Unsere Gesellschaft unterstützt klassische Musiker nicht so wie populäre." Doch, das tut sie. Pop-, Rock-, Folk- und Klassikmusiker verdienen heute weitgehend gleich: Unterricht, gelegentliche Auftrittsgagen, Hochzeiten und Galas, musiknahe Nebenjobs.
+- Wir rechnen gerade mit der Frage ab, ob eine Disziplin der Prozess oder das Ergebnis ist. Die Musik ist weniger ins Konservatorium gewandert, als dass sich das relative Interesse an den Stilen über die Zeit verschoben hat. Jedes Feld hat diese Existenzkrise gerade, von der Kunst bis zur Mathematik.
+- Ein kleiner Teil der Gesellschaft hat entschieden, dass die Fähigkeit zur Aufführung erhaltenswert ist, und stellt dafür einen Bruchteil an Kapital bereit. Ich hatte darüber ein langes Gespräch mit einer deutschen Freundin, deren Mann in der Oper arbeitet.
+** Show HN: GET Together – A social network where you don't need POST to Post :web:http:showhn:humor:
+:PROPERTIES:
+:ID:       49592840
+:URL:      https://gettogether.dev
+:HN_URL:   https://news.ycombinator.com/item?id=49592840
+:POINTS:   67
+:COMMENTS: 29
+:BY:       nchudleigh
+:END:
+
+*** TLDR
+A social network where creating a post is a GET request. You hit /post with name and text query parameters and get JSON back with a post ID. Posts are public, newest first, 280 characters, one post per 10 seconds, names 2 to 20 characters. There are optional extras: cookie-based sessions for deleting your own posts, UUIDs for retry safety, threading with parent=POST_ID, and a /heart endpoint for likes. English profanity and crypto content are banned. The site ships copy-paste examples in cURL, Python, JavaScript, Go and Rust.
+
+*** Take
+Making the whole API a URL means every post is shareable, bookmarkable, and pre-fetchable by anything that crawls a link. The 10-second rate limit is the only thing standing between this and a browser prefetcher posting on your behalf. Which is roughly the joke.
+
+*** Comments
+
+**** andruby
+:PROPERTIES:
+:COMMENT_ID: 49592901
+:END:
+Is this a honeypot for agents to break out of their sandboxes?
+
+**** atleastoptimal
+:PROPERTIES:
+:COMMENT_ID: 49592944
+:END:
+Wow I love GET requests and using them to share stuff with my fellow humans!
+
+**** Retr0id
+:PROPERTIES:
+:COMMENT_ID: 49592977
+:END:
+https://gettogether.dev/post?name=user&text=hello%20hn
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Show HN：GET Together，一个不需要 POST 就能发帖的社交网络
+***** TLDR
+一个把发帖做成 GET 请求的社交网络。访问 /post 并带上 name 和 text 查询参数，就会返回带帖子 ID 的 JSON。帖子公开、按时间倒序、限 280 字符、每 10 秒一帖、用户名 2 到 20 个字符。可选功能包括：基于 cookie 的会话用于删除自己的帖子、用 UUID 保证重试安全、用 parent=POST_ID 做回复串联、以及 /heart 端点点赞。禁止英文脏话和加密货币内容。站点提供了 cURL、Python、JavaScript、Go 和 Rust 的可直接复制的示例。
+***** Take
+把整个 API 变成一个 URL，意味着每条帖子都可分享、可收藏，也可被任何抓链接的东西预取。挡在浏览器预取器替你发帖之间的，只有那个 10 秒限流。而这大概正是这个笑话的重点。
+***** Comments
+- 这是不是给 AI 智能体逃出沙箱准备的蜜罐？
+- 哇我太喜欢 GET 请求了，还能用它和同类分享东西！
+- https://gettogether.dev/post?name=user&text=hello%20hn
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Show HN: GET Together、POSTなしで投稿できるソーシャルネットワーク
+***** TLDR
+投稿がGETリクエストで完結するソーシャルネットワーク。/post にnameとtextのクエリパラメータを付けて叩くと、投稿IDを含むJSONが返る。投稿は公開、新しい順、280文字まで、10秒に1投稿、名前は2〜20文字。任意機能として、自分の投稿を削除するためのCookieセッション、リトライ安全性のためのUUID、parent=POST_IDによる返信スレッド、いいね用の/heartエンドポイントがある。英語の卑語と暗号通貨関連の内容は禁止。cURL、Python、JavaScript、Go、Rustのコピペ用サンプルが用意されている。
+***** Take
+API全体をURLにするということは、あらゆる投稿が共有可能でブックマーク可能、そしてリンクを辿る何ものにもプリフェッチされうるということだ。ブラウザのプリフェッチャーが勝手に投稿するのを止めているのは10秒のレート制限だけである。まさにそこが冗談の核心だ。
+***** Comments
+- これはエージェントがサンドボックスから脱出するためのハニーポットでは？
+- GETリクエスト大好き、これで仲間と共有できるなんて最高だ！
+- https://gettogether.dev/post?name=user&text=hello%20hn
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Show HN: GET Together, POST 없이 글을 올리는 소셜 네트워크
+***** TLDR
+글쓰기가 GET 요청인 소셜 네트워크다. /post에 name과 text 쿼리 파라미터를 붙여 호출하면 글 ID가 담긴 JSON이 돌아온다. 글은 공개이고 최신순이며 280자 제한, 10초에 한 건, 이름은 2~20자다. 선택 기능으로 자기 글 삭제를 위한 쿠키 세션, 재시도 안전성을 위한 UUID, parent=POST_ID를 이용한 답글 스레드, 좋아요용 /heart 엔드포인트가 있다. 영어 비속어와 암호화폐 관련 내용은 금지다. cURL, Python, JavaScript, Go, Rust용 복사해 쓰는 예제가 제공된다.
+***** Take
+API 전체를 URL로 만들면 모든 글이 공유 가능하고 북마크 가능하며, 링크를 훑는 무엇에게든 프리페치될 수 있다. 브라우저 프리페처가 대신 글을 올리는 것을 막는 건 10초 레이트 리밋뿐이다. 그게 바로 이 농담의 핵심이다.
+***** Comments
+- 에이전트가 샌드박스를 탈출하라고 놓아둔 허니팟 아닌가?
+- 와 GET 요청 정말 좋아하는데, 이걸로 동료 인간들과 공유까지 하다니!
+- https://gettogether.dev/post?name=user&text=hello%20hn
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Show HN: GET Together, una red social donde no hace falta POST para publicar
+***** TLDR
+Una red social en la que publicar es una petición GET. Se llama a /post con los parámetros name y text en la URL y devuelve JSON con el ID de la publicación. Las publicaciones son públicas, las más recientes primero, 280 caracteres, una cada 10 segundos y nombres de 2 a 20 caracteres. Como extras opcionales hay sesiones por cookie para borrar lo propio, UUID para reintentos seguros, hilos con parent=POST_ID y un endpoint /heart para los me gusta. Están prohibidas las palabrotas en inglés y el contenido cripto. El sitio incluye ejemplos listos para copiar en cURL, Python, JavaScript, Go y Rust.
+***** Take
+Convertir toda la API en una URL significa que cada publicación es compartible, marcable y precargable por cualquier cosa que rastree enlaces. El límite de 10 segundos es lo único que separa esto de que un precargador del navegador publique en tu nombre. Que es justamente el chiste.
+***** Comments
+- ¿Es esto un señuelo para que los agentes escapen de sus entornos aislados?
+- ¡Me encantan las peticiones GET y usarlas para compartir cosas con mis congéneres humanos!
+- https://gettogether.dev/post?name=user&text=hello%20hn
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Show HN: GET Together, ein soziales Netzwerk ohne POST zum Posten
+***** TLDR
+Ein soziales Netzwerk, in dem ein Beitrag ein GET-Request ist. Man ruft /post mit den Query-Parametern name und text auf und bekommt JSON mit einer Beitrags-ID zurück. Beiträge sind öffentlich, neueste zuerst, 280 Zeichen, ein Beitrag alle 10 Sekunden, Namen zwischen 2 und 20 Zeichen. Optional gibt es Cookie-Sessions zum Löschen eigener Beiträge, UUIDs für sichere Wiederholungen, Threads über parent=POST_ID und einen /heart-Endpunkt für Likes. Englische Schimpfwörter und Krypto-Inhalte sind untersagt. Die Seite liefert fertige Beispiele für cURL, Python, JavaScript, Go und Rust.
+***** Take
+Wenn die gesamte API eine URL ist, wird jeder Beitrag teilbar, speicherbar und vorab abrufbar für alles, was Links crawlt. Das Rate-Limit von 10 Sekunden ist das Einzige, was einen Browser-Prefetcher davon abhält, in deinem Namen zu posten. Genau darin liegt der Witz.
+***** Comments
+- Ist das ein Honeypot, damit Agenten aus ihren Sandboxes ausbrechen?
+- Ich liebe GET-Requests und teile damit gern Dinge mit meinen Mitmenschen!
+- https://gettogether.dev/post?name=user&text=hello%20hn
+** 'You Can See Everything' Review: Nathan Fielder's Doc About Elizabeth Holmes :film:theranos:startups:media:
+:PROPERTIES:
+:ID:       49596119
+:URL:      https://variety.com/2026/film/reviews/nathan-fielder-surprise-film-telluride-elizabeth-holmes-1236853513/
+:HN_URL:   https://news.ycombinator.com/item?id=49596119
+:POINTS:   48
+:COMMENTS: 10
+:BY:       cianmm
+:END:
+
+*** TLDR
+Nathan Fielder and documentarian Lance Oppenheim co-directed a 174-minute film about Elizabeth Holmes, shot at her Del Mar home 35 days before she reported to prison. It premiered unannounced as a mystery screening at Telluride 2026. Holmes appears on camera and maintains she did nothing wrong. Amanda Seyfried, who played Holmes in Hulu's The Dropout, performs transcripts of Holmes' own words. Her partner Billy Evans and their children are in the footage. Variety's reviewer calls Fielder's questioning acidly quizzical and says the film gets its hooks in you, while emphasizing how unbroken Holmes' denial remains.
+
+*** Take
+Casting the actress who played Holmes to read the real Holmes' transcripts is the whole thesis in one move: the performance and the person have become hard to tell apart, including for Holmes. Fielder has spent a career on people who cannot stop performing, and this is the first time the subject faced 11 years in prison for it.
+
+*** Comments
+
+**** jiaosdjf
+:PROPERTIES:
+:COMMENT_ID: 49596180
+:END:
+I watched the entire trailer fully believing that Nathan Fielder had found the most unhinged uncanny look-alike actress to play Elizabeth Holmes. Finding out this was really Elizabeth Holmes was a huge shock.
+
+**** seabombs
+:PROPERTIES:
+:COMMENT_ID: 49596214
+:END:
+Love everything Nathan Fielder does. The trailer is awesome.
+
+**** saimiam
+:PROPERTIES:
+:COMMENT_ID: 49596251
+:END:
+Who's 'Bobby' mentioned in the article? Did the writer just mix up Billy Evans with Bobby?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+《你能看见一切》影评：Nathan Fielder 拍的伊丽莎白·霍姆斯纪录片
+***** TLDR
+Nathan Fielder 与纪录片导演 Lance Oppenheim 联合执导了这部 174 分钟的影片，主角是伊丽莎白·霍姆斯，拍摄地点是她在 Del Mar 的家，时间是她入狱前 35 天。影片在 2026 年特柳赖德电影节上以未事先公布的神秘放映首映。霍姆斯出镜，坚称自己没有做错任何事。曾在 Hulu 剧集《辍学者》中饰演霍姆斯的 Amanda Seyfried，在片中朗读霍姆斯本人话语的文字记录。她的伴侣 Billy Evans 和孩子们也出现在画面中。《综艺》的影评人称 Fielder 的提问尖刻而带着质疑，说这部片子会把你钩住，同时强调霍姆斯的否认丝毫未曾松动。
+***** Take
+让演过霍姆斯的女演员来念真霍姆斯的话语记录，这一招就说清了全片的主旨：表演和本人已经难以分辨，对霍姆斯自己也是如此。Fielder 的整个职业生涯都在拍那些停不下表演的人，而这一次，被拍的人要为此坐 11 年牢。
+***** Comments
+- 我看完整个预告片，一直以为 Nathan Fielder 找了个神似到诡异的疯批女演员来演伊丽莎白·霍姆斯。得知那真的是霍姆斯本人时，我震惊了。
+- Nathan Fielder 做什么我都喜欢。这预告片太棒了。
+- 文章里提到的 Bobby 是谁？作者是不是把 Billy Evans 写错了？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+『You Can See Everything』評：ネイサン・フィールダーによるエリザベス・ホームズのドキュメンタリー
+***** TLDR
+ネイサン・フィールダーがドキュメンタリー監督ランス・オッペンハイムと共同で監督した174分の作品。収監の35日前、デルマーの自宅で撮影されたエリザベス・ホームズを追う。2026年テルライド映画祭で予告なしのミステリー上映として初公開された。ホームズは本人が出演し、自分は何も悪いことをしていないと主張し続ける。Huluの『ドロップアウト』でホームズを演じたアマンダ・サイフリッドが、ホームズ本人の発言の記録を朗読する。パートナーのビリー・エヴァンスと子どもたちも映る。Varietyの評者はフィールダーの問いかけを辛辣で疑い深いと評し、作品に引き込まれると述べつつ、ホームズの否認が一切揺らがない点を強調している。
+***** Take
+ホームズを演じた女優に本人の発言記録を読ませる。この一手に主題が凝縮している。演技と本人の区別がつかなくなっており、それはホームズ自身にとってもそうだ。フィールダーは演じることをやめられない人間を撮り続けてきたが、被写体がそれで11年の実刑に直面したのは今回が初めてだ。
+***** Comments
+- 予告編を最後まで、ネイサン・フィールダーが常軌を逸したそっくり女優を見つけてエリザベス・ホームズを演じさせたのだと信じて見ていた。あれが本物のホームズだと知って衝撃を受けた。
+- ネイサン・フィールダーのやることは全部好きだ。予告編も最高。
+- 記事に出てくる「ボビー」って誰だ？筆者がビリー・エヴァンスと取り違えたのでは？
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+'You Can See Everything' 리뷰: 네이선 필더가 만든 엘리자베스 홈스 다큐멘터리
+***** TLDR
+네이선 필더가 다큐멘터리 감독 랜스 오펜하임과 공동 연출한 174분짜리 작품으로, 수감 35일 전 델마의 자택에서 촬영한 엘리자베스 홈스를 담았다. 2026년 텔루라이드 영화제에서 예고 없는 미스터리 상영으로 처음 공개됐다. 홈스는 직접 카메라 앞에 서서 자신은 잘못한 게 없다고 주장한다. 훌루 드라마 '드롭아웃'에서 홈스를 연기한 어맨다 사이프리드가 홈스 본인의 발언 기록을 낭독한다. 동반자 빌리 에번스와 아이들도 화면에 등장한다. 버라이어티 평자는 필더의 질문을 신랄하고 미심쩍어하는 방식이라 평하며 작품이 사람을 붙든다고 했고, 동시에 홈스의 부인이 조금도 흔들리지 않는다는 점을 강조했다.
+***** Take
+홈스를 연기했던 배우에게 실제 홈스의 발언 기록을 읽히는 것, 이 한 수에 주제가 다 들어 있다. 연기와 본인을 구분하기 어려워졌고, 그건 홈스 자신에게도 마찬가지다. 필더는 연기를 멈추지 못하는 사람들을 찍어 왔지만, 피사체가 그 대가로 11년형을 마주한 것은 이번이 처음이다.
+***** Comments
+- 예고편을 다 보는 내내 네이선 필더가 기괴할 정도로 닮은 배우를 찾아 엘리자베스 홈스를 연기시켰다고 믿었다. 그게 진짜 홈스였다는 걸 알고 크게 놀랐다.
+- 네이선 필더가 하는 건 다 좋아한다. 예고편 훌륭하다.
+- 기사에 나오는 '보비'는 누구지? 필자가 빌리 에번스와 헷갈린 건가?
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Crítica de 'You Can See Everything': el documental de Nathan Fielder sobre Elizabeth Holmes
+***** TLDR
+Nathan Fielder codirigió con el documentalista Lance Oppenheim una película de 174 minutos sobre Elizabeth Holmes, rodada en su casa de Del Mar 35 días antes de entrar en prisión. Se estrenó sin anuncio previo como proyección sorpresa en Telluride 2026. Holmes aparece ante la cámara y sostiene que no hizo nada malo. Amanda Seyfried, que la interpretó en la serie de Hulu The Dropout, lee transcripciones de las propias palabras de Holmes. Su pareja, Billy Evans, y los hijos de ambos aparecen en el metraje. El crítico de Variety describe el interrogatorio de Fielder como ácido e inquisitivo y dice que la película engancha, subrayando lo intacta que sigue la negación de Holmes.
+***** Take
+Poner a la actriz que interpretó a Holmes a leer las transcripciones de la Holmes real resume toda la tesis en un solo gesto: la interpretación y la persona ya cuestan de distinguir, también para ella. Fielder lleva una carrera filmando a gente que no puede dejar de actuar, y es la primera vez que la persona filmada se enfrenta a 11 años de cárcel por ello.
+***** Comments
+- Vi el tráiler entero convencido de que Nathan Fielder había encontrado a la actriz más perturbadoramente parecida para interpretar a Elizabeth Holmes. Descubrir que era la Holmes real fue un buen susto.
+- Me encanta todo lo que hace Nathan Fielder. El tráiler es magnífico.
+- ¿Quién es el «Bobby» que menciona el artículo? ¿El autor ha confundido a Billy Evans con Bobby?
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Kritik zu „You Can See Everything": Nathan Fielders Dokumentarfilm über Elizabeth Holmes
+***** TLDR
+Nathan Fielder hat gemeinsam mit dem Dokumentarfilmer Lance Oppenheim einen 174-minütigen Film über Elizabeth Holmes gedreht, aufgenommen in ihrem Haus in Del Mar, 35 Tage bevor sie ihre Haft antrat. Premiere war als unangekündigte Mystery-Vorführung in Telluride 2026. Holmes tritt selbst vor die Kamera und beharrt darauf, nichts falsch gemacht zu haben. Amanda Seyfried, die Holmes in der Hulu-Serie The Dropout spielte, trägt Transkripte von Holmes' eigenen Aussagen vor. Ihr Partner Billy Evans und die gemeinsamen Kinder sind im Material zu sehen. Der Variety-Kritiker nennt Fielders Fragen ätzend und misstrauisch, sagt, der Film ziehe einen hinein, und betont, wie unerschüttert Holmes' Leugnen bleibt.
+***** Take
+Die Schauspielerin, die Holmes gespielt hat, die Transkripte der echten Holmes lesen zu lassen, fasst die These in einem Zug: Darstellung und Person sind kaum noch zu trennen, auch für Holmes selbst. Fielder filmt seit jeher Menschen, die nicht aufhören können zu spielen. Zum ersten Mal drohen der gefilmten Person dafür elf Jahre Haft.
+***** Comments
+- Ich habe den ganzen Trailer in der Überzeugung gesehen, Nathan Fielder habe die unheimlichste Doppelgängerin aufgetrieben, um Elizabeth Holmes zu spielen. Dass das die echte Holmes war, hat mich umgehauen.
+- Ich liebe alles, was Nathan Fielder macht. Der Trailer ist großartig.
+- Wer ist der im Artikel erwähnte „Bobby"? Hat der Autor Billy Evans mit Bobby verwechselt?
