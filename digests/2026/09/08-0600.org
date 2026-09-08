@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-09-08 06:00 UTC
+#+DATE: 2026-09-08T06:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+An open-weight model starts a security countdown, Australia legislates the chronological feed, and agents turn out to be bad at testing
+
+* Highlights
+- GLM 5.3-flash: cheap local model, 84.5% on CyberGym, no guardrails after abliteration
+- Dan Luu: told to use TDD, agents wrote twice the tests and shipped worse code
+- Australia's Digital Duty of Care: a follows-only feed toggle, backed by A$109.2M fines
+- The LG rebuttal: rooted TV, encrypted payloads, and what nobody actually decrypted
+- John Margolies' roadside America: 11,710 slides, copyright restrictions lifted
+
+* Stories
+
+** We have a year to fix security everywhere :security:ai:llm:policy:
+:PROPERTIES:
+:ID:       49605691
+:URL:      https://jyn.dev/a-year-to-fix-security/
+:HN_URL:   https://news.ycombinator.com/item?id=49605691
+:POINTS:   70
+:COMMENTS: 32
+:BY:       saikatsg
+:END:
+
+*** TLDR
+The post argues GLM 5.3-flash changed the math on attack cost: it is open-weight, runs on roughly $9.5k of hardware, scores 84.5% on CyberGym and 54.4% on ExploitBench, and once abliterated drops to 0% refusals on Harmbench-320. That combination means exploitation can run unattended in a loop. The author gives about a year before comparable models are everywhere, and asks governments to fund security engineering, mandate assessments with risk-based fix deadlines, and extend banking and power grid rules, while companies hire people for triage and patch deployment, adopt formal verification and memory-safe languages, and shorten patch timelines.
+
+*** Take
+The benchmark numbers are the whole argument, and the thread went after the hardware claim instead. Both can hold: an M5 Mac Studio will not hit 45 tokens per second, and the gap the post names is still real. Finding bugs got cheap; shipping fixes did not.
+
+*** Comments
+
+**** hypfer
+:PROPERTIES:
+:COMMENT_ID: 49605892
+:END:
+The post also sounds like nonsense words to people who do understand the technology. Pinning that reaction on lack of knowledge is not a get-out-of-jail-free card.
+
+**** aenis
+:PROPERTIES:
+:COMMENT_ID: 49605930
+:END:
+I think we have less time. The models are already here and you can rent a GPU cluster; the only remaining limit is what the campaigns cost to run.
+
+**** sho
+:PROPERTIES:
+:COMMENT_ID: 49605977
+:END:
+The author has obviously never run an LLM on a Mac. In three seconds it will have barely started thinking about the second token.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+我们只有一年时间修复所有安全问题
+***** TLDR
+文章认为 GLM 5.3-flash 改变了攻击成本的算术：它是开放权重模型，约 9500 美元的硬件即可运行，在 CyberGym 上得分 84.5%，在 ExploitBench 上 54.4%，经过 abliteration 处理后在 Harmbench-320 上的拒绝率降为 0%。这意味着漏洞利用可以无人值守地循环运行。作者估计还有大约一年，同等能力的模型就会随处可见，并呼吁政府资助安全工程、强制安全评估并按风险设定修复期限、扩展银行与电网监管，同时企业应招募负责分类和补丁部署的人员，采用形式化验证与内存安全语言，缩短打补丁的周期。
+***** Take
+基准分数就是全部论据，而讨论区却盯着硬件说法不放。两者可以同时成立：M5 Mac Studio 达不到每秒 45 个 token，而文章指出的缺口依然真实。找漏洞变便宜了，部署修复没有。
+***** Comments
+- 对于真正懂这项技术的人来说，这篇文章同样像是胡言乱语。把这种反应归因于知识不足，并不能免责。
+- 我认为时间更少。模型已经在这里了，GPU 集群可以租用，唯一的限制是这类攻击活动的运行成本。
+- 作者显然没在 Mac 上跑过 LLM。三秒钟里，它才刚开始考虑第二个 token。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+セキュリティをすべて修正するのに残された時間は1年
+***** TLDR
+GLM 5.3-flashが攻撃コストの計算を変えたという主張。オープンウェイトで約9,500ドルのハードウェアで動作し、CyberGymで84.5%、ExploitBenchで54.4%を記録、abliteration処理後はHarmbench-320での拒否率が0%になる。つまり攻撃を無人でループ実行できる。著者は同等の性能のモデルが行き渡るまで約1年と見積もり、政府にはセキュリティエンジニアリングへの資金投入、リスクに応じた修正期限を伴う評価の義務化、銀行と電力網の規制拡大を、企業にはトリアージとパッチ配布の人員確保、形式検証とメモリ安全な言語の採用、パッチ適用期間の短縮を求めている。
+***** Take
+ベンチマークの数字こそが論拠なのに、スレッドはハードウェアの記述に食いついた。どちらも成り立つ。M5 Mac Studioで毎秒45トークンは出ないし、記事が指摘した溝も実在する。バグを見つけるのは安くなった。修正を配ることは安くなっていない。
+***** Comments
+- この記事は、技術を理解している人間にとっても意味不明な言葉の羅列に聞こえる。その反応を知識不足のせいにするのは免罪符にならない。
+- 残り時間はもっと短いと思う。モデルはすでにあり、GPUクラスタは借りられる。残る制約はキャンペーンの実行コストだけだ。
+- 著者は明らかにMacでLLMを動かしたことがない。3秒では2トークン目を考え始めた程度だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+모든 보안을 고칠 시간이 1년 남았다
+***** TLDR
+GLM 5.3-flash가 공격 비용 계산을 바꿨다는 주장이다. 오픈 웨이트 모델이고 약 9,500달러짜리 하드웨어에서 돌아가며 CyberGym 84.5%, ExploitBench 54.4%를 기록하고, abliteration을 거치면 Harmbench-320 거부율이 0%로 떨어진다. 즉 공격을 사람 없이 반복 실행할 수 있다는 뜻이다. 저자는 비슷한 성능의 모델이 흔해지기까지 약 1년으로 보고, 정부에는 보안 엔지니어링 예산과 위험 기반 수정 기한이 붙은 의무 평가, 은행과 전력망 규제 확대를, 기업에는 분류와 패치 배포 인력 확보, 형식 검증과 메모리 안전 언어 도입, 패치 주기 단축을 요구한다.
+***** Take
+벤치마크 숫자가 논거의 전부인데 토론은 하드웨어 주장에 매달렸다. 둘 다 사실일 수 있다. M5 Mac Studio는 초당 45토큰을 못 내고, 글이 짚은 격차도 여전히 실재한다. 버그를 찾는 일은 싸졌고, 수정을 배포하는 일은 그대로다.
+***** Comments
+- 이 글은 기술을 아는 사람에게도 헛소리처럼 들린다. 그 반응을 지식 부족 탓으로 돌리는 건 면죄부가 아니다.
+- 시간은 더 짧다고 본다. 모델은 이미 나와 있고 GPU 클러스터는 빌리면 된다. 남은 제약은 캠페인 운영 비용뿐이다.
+- 저자는 분명 Mac에서 LLM을 돌려본 적이 없다. 3초면 두 번째 토큰을 생각하기 시작할까 말까다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Tenemos un año para arreglar la seguridad en todas partes
+***** TLDR
+El texto sostiene que GLM 5.3-flash cambió el cálculo del coste de atacar: es de pesos abiertos, corre con unos 9.500 dólares de hardware, saca 84,5% en CyberGym y 54,4% en ExploitBench, y tras la abliteración cae a 0% de rechazos en Harmbench-320. Eso permite explotar vulnerabilidades en bucle y sin supervisión. El autor calcula un año antes de que haya modelos equivalentes por todas partes, y pide a los gobiernos financiar ingeniería de seguridad, exigir evaluaciones con plazos de corrección según riesgo y ampliar las reglas de banca y red eléctrica, mientras las empresas contratan gente para triaje y despliegue de parches, adoptan verificación formal y lenguajes con memoria segura, y acortan los plazos de parcheo.
+***** Take
+Los números de los benchmarks son todo el argumento, y el hilo se fue a discutir el hardware. Las dos cosas pueden ser ciertas: un M5 Mac Studio no llega a 45 tokens por segundo, y la brecha que señala el texto sigue ahí. Encontrar fallos se abarató; desplegar arreglos no.
+***** Comments
+- El texto también suena a palabrería para quienes sí entienden la tecnología. Achacar esa reacción a la ignorancia no es un salvoconducto.
+- Creo que tenemos menos tiempo. Los modelos ya están y se puede alquilar un clúster de GPU; el único límite es lo que cuesta ejecutar las campañas.
+- Está claro que el autor nunca ha ejecutado un LLM en un Mac. En tres segundos apenas habrá empezado a pensar el segundo token.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Wir haben ein Jahr, um überall die Sicherheit zu reparieren
+***** TLDR
+Der Text argumentiert, GLM 5.3-flash habe die Kostenrechnung für Angriffe verändert: offene Gewichte, lauffähig auf Hardware für rund 9.500 Dollar, 84,5% auf CyberGym und 54,4% auf ExploitBench, nach der Abliteration 0% Ablehnungen auf Harmbench-320. Damit lässt sich Ausnutzung unbeaufsichtigt in einer Schleife fahren. Der Autor rechnet mit etwa einem Jahr, bis vergleichbare Modelle überall verfügbar sind, und fordert von Regierungen Geld für Sicherheitsengineering, verpflichtende Prüfungen mit risikobasierten Fristen sowie erweiterte Regeln für Banken und Stromnetze, von Unternehmen Personal für Triage und Patch-Rollout, formale Verifikation, speichersichere Sprachen und kürzere Patch-Zeiten.
+***** Take
+Die Benchmark-Zahlen sind das ganze Argument, der Thread stritt stattdessen über die Hardware. Beides kann stimmen: Ein M5 Mac Studio schafft keine 45 Token pro Sekunde, und die Lücke, die der Text benennt, existiert trotzdem. Fehler zu finden ist billig geworden, Fixes auszurollen nicht.
+***** Comments
+- Der Text klingt auch für Leute, die die Technik verstehen, nach Wortsalat. Diese Reaktion auf fehlendes Wissen zu schieben, ist kein Freifahrtschein.
+- Ich glaube, wir haben weniger Zeit. Die Modelle sind da, GPU-Cluster kann man mieten; die einzige Grenze sind die Kosten solcher Kampagnen.
+- Der Autor hat offensichtlich nie ein LLM auf einem Mac laufen lassen. In drei Sekunden fängt es gerade an, über den zweiten Token nachzudenken.
+** How well do agents use test/verification techniques? :ai:testing:formal-methods:agents:
+:PROPERTIES:
+:ID:       49605246
+:URL:      https://danluu.com/agentic-testing/
+:HN_URL:   https://news.ycombinator.com/item?id=49605246
+:POINTS:   45
+:COMMENTS: 7
+:BY:       vinhnx
+:END:
+
+*** TLDR
+Dan Luu had coding agents implement Zstd compression under 26 conditions: plain default, TDD, property-based testing with Proptest, QuickCheck and Hegel, formal methods with Lean 4, Verus, TLA+, Alloy, ACL2, Kani and Creusot, plus fuzzing, mutation testing and snapshot testing. Default with no special instruction scored above average. TDD produced roughly twice as many tests and lower correctness. Property-based testing helped slightly at high effort. A joke condition, 'make no mistakes,' matched Default. Watching the transcripts, agents used the frameworks without understanding them: proving properties that did not matter, generating random inputs that mostly hit invalid code paths, and falling back to ordinary unit tests regardless of instruction.
+
+*** Take
+Telling an agent to use Verus gets you Verus syntax, not verification. The TDD result is the one worth sitting with: more tests, worse code, which is what happens when whoever writes the tests also decides what counts as correct.
+
+*** Comments
+
+**** gz09
+:PROPERTIES:
+:COMMENT_ID: 49605401
+:END:
+Reasonable results given how little Verus, TLA, Creusot and Lean code exists compared to everything else. Going beyond trivial proofs is much harder to write.
+
+**** siscia
+:PROPERTIES:
+:COMMENT_ID: 49605455
+:END:
+This experiment barely makes sense. How you test cannot be decoupled from how the code is architected, and the author never says how the code was structured.
+
+**** tomrod
+:PROPERTIES:
+:COMMENT_ID: 49605490
+:END:
+We throw benchmark after benchmark at systems and miss that the model is one part. Harnesses need tuning too, and tuning them can break previously working behavior.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+智能体使用测试与验证技术的水平如何？
+***** TLDR
+Dan Luu 让编码智能体在 26 种条件下实现 Zstd 压缩：无特殊指令的默认组、TDD、使用 Proptest/QuickCheck/Hegel 的基于属性测试、使用 Lean 4/Verus/TLA+/Alloy/ACL2/Kani/Creusot 的形式化方法，以及模糊测试、变异测试和快照测试。默认组的成绩高于平均水平；TDD 写出约两倍数量的测试，正确率却更低；基于属性的测试在高投入档位略有帮助；作为玩笑加入的“不要犯错”条件与默认组持平。从执行记录看，智能体只是套用框架而不理解它：证明无关紧要的性质，生成的随机输入大多落在无效代码路径上，并且不管给什么指令都退回到普通单元测试。
+***** Take
+让智能体用 Verus，你得到的是 Verus 的语法，不是验证。真正值得琢磨的是 TDD 的结果：测试更多，代码更差。当写测试的人同时决定什么算正确时，就会这样。
+***** Comments
+- 考虑到 Verus、TLA、Creusot 和 Lean 的代码量与其他语言相比少得可怜，这个结果算合理。写出超越平凡证明的代码本来就难得多。
+- 这个实验意义不大。测试方式无法与代码架构分开，而作者从未说明代码是怎么组织的。
+- 我们不停地给系统扔基准测试，却忽略了模型只是系统的一部分。工具链同样需要调优，而调优可能破坏原本正常的功能。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+エージェントはテストと検証の技法をどれだけ使えるのか
+***** TLDR
+Dan Luuはコーディングエージェントに26条件でZstd圧縮を実装させた。指示なしのデフォルト、TDD、Proptest・QuickCheck・Hegelによるプロパティベーステスト、Lean 4・Verus・TLA+・Alloy・ACL2・Kani・Creusotによる形式手法、さらにファジング、ミューテーションテスト、スナップショットテスト。指示なしのデフォルトが平均を上回り、TDDはテスト数が約2倍で正確性は低下。プロパティベーステストは高負荷設定でわずかに有効。冗談で入れた「ミスをするな」条件はデフォルトと同等だった。記録を見ると、エージェントはフレームワークを理解せずに使い、無関係な性質を証明し、無効なコードパスにばかり当たるランダム入力を生成し、指示に関わらず通常のユニットテストに戻っていた。
+***** Take
+Verusを使えと指示すれば得られるのはVerusの構文であって検証ではない。考えるべきはTDDの結果だ。テストは増え、コードは悪くなる。テストを書く側が何を正しいとするかも決めるとこうなる。
+***** Comments
+- Verus、TLA、Creusot、Leanのコード量が他に比べて極端に少ないことを考えれば妥当な結果だ。自明でない証明を書くのは元々ずっと難しい。
+- この実験はほとんど意味がない。テストの仕方はコードの設計と切り離せないのに、著者は設計について何も述べていない。
+- ベンチマークばかり投げつけて、モデルがシステムの一部でしかないことを見落としている。ハーネスも調整が必要で、調整すれば動いていた部分が壊れることもある。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+에이전트는 테스트와 검증 기법을 얼마나 잘 쓰는가
+***** TLDR
+Dan Luu는 코딩 에이전트에게 26가지 조건으로 Zstd 압축을 구현시켰다. 지시 없는 기본, TDD, Proptest·QuickCheck·Hegel을 쓴 속성 기반 테스트, Lean 4·Verus·TLA+·Alloy·ACL2·Kani·Creusot을 쓴 형식 기법, 그리고 퍼징, 뮤테이션 테스트, 스냅샷 테스트. 지시 없는 기본이 평균을 넘었고, TDD는 테스트를 약 두 배 많이 쓰고 정확성은 더 낮았다. 속성 기반 테스트는 높은 노력 설정에서 조금 나았다. 농담으로 넣은 '실수하지 마라' 조건은 기본과 같았다. 기록을 보면 에이전트는 프레임워크를 이해하지 못한 채 쓰면서 무관한 성질을 증명하고, 대부분 잘못된 코드 경로에 닿는 무작위 입력을 만들고, 어떤 지시를 받든 평범한 단위 테스트로 돌아갔다.
+***** Take
+에이전트에게 Verus를 쓰라고 하면 Verus 문법이 나오지 검증이 나오지 않는다. 곱씹을 결과는 TDD다. 테스트는 늘고 코드는 나빠졌다. 테스트를 쓰는 쪽이 무엇이 정답인지도 정하면 이렇게 된다.
+***** Comments
+- Verus, TLA, Creusot, Lean 코드가 다른 언어에 비해 워낙 적으니 납득할 만한 결과다. 사소하지 않은 증명을 쓰는 건 원래 훨씬 어렵다.
+- 이 실험은 별 의미가 없다. 테스트 방식은 코드 구조와 분리할 수 없는데 저자는 구조에 대해 말하지 않는다.
+- 우리는 시스템에 벤치마크만 계속 던지면서 모델이 시스템의 일부일 뿐이라는 걸 놓친다. 하네스도 튜닝이 필요하고, 튜닝하다 멀쩡하던 동작이 깨지기도 한다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+¿Qué tal usan los agentes las técnicas de test y verificación?
+***** TLDR
+Dan Luu hizo que agentes de programación implementaran compresión Zstd bajo 26 condiciones: por defecto sin instrucciones, TDD, tests basados en propiedades con Proptest, QuickCheck y Hegel, métodos formales con Lean 4, Verus, TLA+, Alloy, ACL2, Kani y Creusot, además de fuzzing, mutation testing y snapshot testing. La condición por defecto quedó por encima de la media. TDD generó cerca del doble de tests y menos corrección. Los tests basados en propiedades ayudaron algo con más esfuerzo. Una condición de broma, 'no cometas errores', igualó a la de por defecto. En las trazas, los agentes usaban los frameworks sin entenderlos: demostraban propiedades irrelevantes, generaban entradas aleatorias que caían en rutas inválidas y volvían a los tests unitarios de siempre pese a las instrucciones.
+***** Take
+Pedirle a un agente que use Verus te da sintaxis de Verus, no verificación. El resultado que hay que digerir es el de TDD: más tests y peor código, que es lo que pasa cuando quien escribe los tests también decide qué cuenta como correcto.
+***** Comments
+- Resultados razonables dada la poca cantidad de código en Verus, TLA, Creusot y Lean frente al resto. Ir más allá de pruebas triviales es mucho más difícil.
+- El experimento apenas tiene sentido. Cómo pruebas no se puede separar de cómo está arquitecturado el código, y el autor nunca dice cómo lo estructuró.
+- Lanzamos benchmark tras benchmark y olvidamos que el modelo es solo una parte. Los harnesses también hay que ajustarlos, y al hacerlo se puede romper lo que ya funcionaba.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Wie gut nutzen Agenten Test- und Verifikationstechniken?
+***** TLDR
+Dan Luu ließ Coding-Agenten Zstd-Kompression unter 26 Bedingungen umsetzen: Standard ohne Vorgabe, TDD, propertybasierte Tests mit Proptest, QuickCheck und Hegel, formale Methoden mit Lean 4, Verus, TLA+, Alloy, ACL2, Kani und Creusot, dazu Fuzzing, Mutation Testing und Snapshot Testing. Der Standard ohne Vorgabe lag über dem Durchschnitt. TDD erzeugte rund doppelt so viele Tests bei geringerer Korrektheit. Propertybasierte Tests halfen bei hohem Aufwand leicht. Die Scherzbedingung 'mach keine Fehler' lag gleichauf mit dem Standard. In den Protokollen nutzten die Agenten die Frameworks, ohne sie zu verstehen: Sie bewiesen belanglose Eigenschaften, erzeugten Zufallseingaben, die meist ungültige Codepfade trafen, und fielen unabhängig von der Vorgabe auf normale Unit-Tests zurück.
+***** Take
+Wer einem Agenten Verus vorschreibt, bekommt Verus-Syntax, keine Verifikation. Das Ergebnis, über das man nachdenken sollte, ist TDD: mehr Tests, schlechterer Code. Genau das passiert, wenn dieselbe Instanz die Tests schreibt und festlegt, was korrekt heißt.
+***** Comments
+- Nachvollziehbar, wenn man bedenkt, wie wenig Verus-, TLA-, Creusot- und Lean-Code es im Vergleich gibt. Über triviale Beweise hinauszugehen ist deutlich schwerer.
+- Das Experiment ergibt kaum Sinn. Wie man testet, lässt sich nicht von der Architektur des Codes trennen, und der Autor sagt nie, wie der Code aufgebaut war.
+- Wir werfen Benchmark um Benchmark auf Systeme und übersehen, dass das Modell nur ein Teil ist. Auch Harnesses brauchen Tuning, und dabei kann Funktionierendes kaputtgehen.
+** My Feed, My Way :policy:social:australia:regulation:
+:PROPERTIES:
+:ID:       49605782
+:URL:      https://www.pm.gov.au/media/my-feed-my-way
+:HN_URL:   https://news.ycombinator.com/item?id=49605782
+:POINTS:   27
+:COMMENTS: 11
+:BY:       dotcoma
+:END:
+
+*** TLDR
+The Albanese government released draft Digital Duty of Care legislation on September 8, its follow-up to the social media age ban. Under 'My Feed, My Way,' platforms must tell users what algorithm options exist and let anyone 16 and over switch to a feed containing only accounts they follow. The wider duty covers social media, online games, apps, AI chatbots and messaging: protect under-18s from addictive design, block material promoting eating disorders, misogyny, pornography, crime and cyberbullying, document risk mitigations, and remove nudify apps when the eSafety Commissioner asks. Penalties reach $109.2 million, with introduction to Parliament expected this year.
+
+*** Take
+A follows-only toggle is the smallest thing a regulator could demand, and needing a law to get it says how much the default is worth. The bill does not address the part Bluesky already demonstrated: give people feed control and most of them never touch it.
+
+*** Comments
+
+**** shubhamjain
+:PROPERTIES:
+:COMMENT_ID: 49605901
+:END:
+Enough with the free-speech and free-market rhetoric. Algorithmic feeds are actively poisoning our minds and should be regulated as strictly as possible.
+
+**** repeekad
+:PROPERTIES:
+:COMMENT_ID: 49605844
+:END:
+Bluesky already lets you pick feeds and even write your own algorithms. Technology Connections called it algorithmic complacency: people disliked having to decide what they wanted to follow.
+
+**** tshapedrob
+:PROPERTIES:
+:COMMENT_ID: 49605820
+:END:
+I hope they get it through, and I am curious what it does to screen time app sales in the region.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+我的信息流，我做主
+***** TLDR
+阿尔巴尼斯政府在 9 月 8 日发布了《数字关照义务》立法草案，作为社交媒体年龄限制的后续。根据“我的信息流，我做主”，平台必须告知用户有哪些算法选项，并让 16 岁以上的用户切换到只包含所关注账号的信息流。更广的义务覆盖社交媒体、网络游戏、应用、AI 聊天机器人和即时通讯：保护未成年人免受成瘾式设计影响，屏蔽宣扬饮食失调、厌女、色情、犯罪和网络霸凌的内容，记录风险缓解措施，并在电子安全专员通知后下架“脱衣”类应用。罚款最高可达 1.092 亿澳元，预计年内提交议会。
+***** Take
+只关注账号的开关是监管方能提出的最低要求，而要靠立法才能拿到它，说明默认设置有多值钱。法案没有触及 Bluesky 已经证明的那部分：把信息流控制权交给用户，大多数人根本不会去动它。
+***** Comments
+- 别再讲言论自由和自由市场那套了。算法信息流正在毒害我们的心智，应当受到尽可能严格的监管。
+- Bluesky 早就允许选择信息流，甚至可以自己写算法。Technology Connections 称之为“算法惰性”：人们不喜欢自己决定关注什么。
+- 希望这项法案能通过，也很想看看它会对该地区屏幕使用时间类应用的销量产生什么影响。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+マイフィード、マイウェイ
+***** TLDR
+アルバニージー政権が9月8日、SNS年齢制限に続くものとしてデジタル・デューティ・オブ・ケア法案の草案を公開した。「My Feed, My Way」では、プラットフォームはどのアルゴリズム選択肢があるかを利用者に通知し、16歳以上がフォロー中のアカウントのみのフィードに切り替えられるようにしなければならない。義務の対象はSNS、オンラインゲーム、アプリ、AIチャットボット、メッセージングに及ぶ。18歳未満を依存を誘う設計から守り、摂食障害・女性蔑視・ポルノ・犯罪賛美・ネットいじめを助長する内容を遮断し、リスク対策を文書化し、eSafetyコミッショナーの通知があればヌード化アプリを削除する。罰金は最大1億920万ドル、年内の議会提出を見込む。
+***** Take
+フォロー中のみへの切り替えは規制当局が求めうる最小限であり、それを得るのに法律が要る事実が、既定値の価値を物語る。法案が触れていないのはBlueskyがすでに示した点だ。フィードの制御権を渡しても、ほとんどの人は触らない。
+***** Comments
+- 表現の自由と自由市場の話はもう十分だ。アルゴリズムフィードは実際に人の思考を蝕んでおり、可能な限り厳しく規制すべきだ。
+- Blueskyはとっくにフィードを選べるし、自分でアルゴリズムを書くこともできる。Technology Connectionsはこれを「アルゴリズム的怠惰」と呼んだ。人は何をフォローするか自分で決めるのを嫌がった。
+- 通ってほしい。この地域でスクリーンタイム管理アプリの売上がどうなるかにも興味がある。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+내 피드, 내 방식대로
+***** TLDR
+앨버니지 정부가 9월 8일 소셜미디어 연령 제한의 후속으로 디지털 돌봄 의무 법안 초안을 공개했다. 'My Feed, My Way'에 따라 플랫폼은 어떤 알고리즘 선택지가 있는지 이용자에게 알리고, 16세 이상은 팔로우한 계정만 나오는 피드로 전환할 수 있어야 한다. 더 넓은 의무는 소셜미디어, 온라인 게임, 앱, AI 챗봇, 메신저까지 포함한다. 미성년자를 중독적 설계에서 보호하고, 섭식장애·여성혐오·포르노·범죄 미화·사이버불링을 조장하는 내용을 차단하며, 위험 완화 조치를 문서화하고, eSafety 커미셔너가 통보하면 누드 생성 앱을 내려야 한다. 벌금은 최대 1억 920만 달러이며 연내 의회 제출이 예상된다.
+***** Take
+팔로우 전용 전환은 규제 기관이 요구할 수 있는 최소치이고, 그걸 얻는 데 법이 필요하다는 사실이 기본값의 가치를 말해준다. 법안이 다루지 않은 건 Bluesky가 이미 보여준 부분이다. 피드 통제권을 줘도 대부분은 손대지 않는다.
+***** Comments
+- 표현의 자유와 자유시장 이야기는 이제 그만하자. 알고리즘 피드는 실제로 우리 정신을 망가뜨리고 있고 최대한 엄격히 규제해야 한다.
+- Bluesky는 이미 피드를 고를 수 있고 직접 알고리즘도 짤 수 있다. Technology Connections는 이를 '알고리즘적 안일함'이라 불렀다. 사람들은 무엇을 팔로우할지 스스로 정하는 걸 싫어했다.
+- 통과되면 좋겠다. 이 지역 스크린타임 앱 매출에 어떤 영향을 줄지도 궁금하다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Mi feed, a mi manera
+***** TLDR
+El gobierno de Albanese publicó el 8 de septiembre el borrador de la ley de Deber Digital de Cuidado, continuación del veto por edad en redes sociales. Con 'My Feed, My Way', las plataformas deberán informar a los usuarios de qué opciones de algoritmo existen y permitir que los mayores de 16 años pasen a un feed solo con las cuentas que siguen. El deber más amplio abarca redes sociales, juegos en línea, apps, chatbots de IA y mensajería: proteger a los menores del diseño adictivo, bloquear material que promueva trastornos alimentarios, misoginia, pornografía, crimen y ciberacoso, documentar las medidas de mitigación y retirar las apps de desnudos cuando lo pida la comisionada de eSafety. Las multas llegan a 109,2 millones de dólares y se espera su entrada en el Parlamento este año.
+***** Take
+Un interruptor de solo-seguidos es lo mínimo que puede exigir un regulador, y que haga falta una ley para conseguirlo dice cuánto vale el ajuste por defecto. La norma no toca lo que Bluesky ya demostró: dale a la gente control del feed y la mayoría nunca lo toca.
+***** Comments
+- Basta de retórica sobre libertad de expresión y libre mercado. Los feeds algorítmicos están envenenando nuestras mentes y deberían regularse con la mayor dureza posible.
+- Bluesky ya deja elegir feeds e incluso escribir tus propios algoritmos. Technology Connections lo llamó complacencia algorítmica: a la gente no le gustó tener que decidir a quién seguir.
+- Ojalá salga adelante, y me interesa ver qué le hace a las ventas de apps de tiempo de pantalla en la región.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Mein Feed, meine Regeln
+***** TLDR
+Die Regierung Albanese hat am 8. September den Entwurf für eine digitale Sorgfaltspflicht vorgelegt, den Nachfolger des Social-Media-Altersverbots. Unter 'My Feed, My Way' müssen Plattformen Nutzer über vorhandene Algorithmus-Optionen informieren und allen ab 16 erlauben, auf einen Feed nur mit abonnierten Accounts umzuschalten. Die weitere Pflicht umfasst soziale Netzwerke, Onlinespiele, Apps, KI-Chatbots und Messenger: Minderjährige vor suchterzeugendem Design schützen, Inhalte zu Essstörungen, Frauenfeindlichkeit, Pornografie, Kriminalitätsverherrlichung und Cybermobbing sperren, Risikomaßnahmen dokumentieren und Nudify-Apps auf Aufforderung der eSafety-Kommissarin entfernen. Die Strafen reichen bis 109,2 Millionen Dollar, die Einbringung ins Parlament wird noch dieses Jahr erwartet.
+***** Take
+Ein Schalter für Nur-Abonniertes ist das Geringste, was eine Aufsicht verlangen kann, und dass es dafür ein Gesetz braucht, zeigt den Wert der Voreinstellung. Was der Entwurf nicht adressiert, hat Bluesky längst vorgeführt: Gibt man Leuten Kontrolle über den Feed, rührt sie kaum jemand an.
+***** Comments
+- Genug von der Rhetorik über Meinungsfreiheit und freien Markt. Algorithmische Feeds vergiften unser Denken und gehören so streng wie möglich reguliert.
+- Bluesky lässt längst Feeds auswählen und sogar eigene Algorithmen schreiben. Technology Connections nannte es algorithmische Bequemlichkeit: Die Leute wollten nicht selbst entscheiden, wem sie folgen.
+- Ich hoffe, es geht durch, und bin gespannt, was das mit den Verkäufen von Screentime-Apps in der Region macht.
+** GamersNexus and LG: Or why rooting your TV is a bad idea :privacy:hardware:smart-tv:security:
+:PROPERTIES:
+:ID:       49605424
+:URL:      https://leaflet.pub/p/did:plc:yhgc5rlqhoezrx6fbawajxlh/3muwrqenzfk2n
+:HN_URL:   https://news.ycombinator.com/item?id=49605424
+:POINTS:   33
+:COMMENTS: 17
+:BY:       drasticactions
+:END:
+
+*** TLDR
+A rebuttal to the GamersNexus video on LG smart TVs. The author's points: the TV's traffic is TLS-encrypted, so neither the video nor the automatic content recognition study it cites decrypted any payloads, which makes the conclusions about what LG collects assumptions rather than findings. The mDNS and SSDP scanning shown is ordinary smart-device discovery. And the alarming on-device commands came after Wendell had already rooted the TV and logged in over SSH, which means the security model was broken by the tester. The author's bar for a real story: demonstrate a remote jailbreak with no user action.
+
+*** Take
+Correct about the method, wrong about what follows from it. 'Rooting broke the security model' is a fair critique of the demo and no answer at all to what the TV sends home, and the thread supplies the missing piece: webOS has had remote takeover bugs, so the no-user-action version is not hypothetical.
+
+*** Comments
+
+**** Retr0id
+:PROPERTIES:
+:COMMENT_ID: 49605551
+:END:
+There are ways to remotely jailbreak LG webOS TVs without user interaction, using the same or similar bugs.
+
+**** badsectoracula
+:PROPERTIES:
+:COMMENT_ID: 49605604
+:END:
+Do you actually want a channel with 2.66 million subscribers to show how to get remote access to TVs used by millions of people?
+
+**** rickdeckard
+:PROPERTIES:
+:COMMENT_ID: 49605498
+:END:
+The video mangles several topics together. A cleaner separation, starting with the ad and data-collection platform the TV makers run, would land the point much better.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+GamersNexus 与 LG：为什么给电视 root 不是个好主意
+***** TLDR
+这是对 GamersNexus 那期 LG 智能电视视频的反驳。作者的论点是：电视的流量经过 TLS 加密，视频和它引用的自动内容识别研究都没有解密任何载荷，因此关于 LG 收集了什么的结论只是假设而非发现；视频中展示的 mDNS 和 SSDP 扫描是智能设备的常规发现行为；而那些令人不安的设备端命令，是在 Wendell 已经把电视 root 并通过 SSH 登录之后执行的，也就是说安全模型是被测试者自己破坏的。作者认为真正有价值的证明是：演示一次无需用户操作的远程越狱。
+***** Take
+方法上说得对，推论上说错了。“root 破坏了安全模型”是对演示的合理批评，却完全没有回答电视究竟往外发送了什么。讨论区补上了缺失的一环：webOS 出过可远程接管的漏洞，所以“无需用户操作”的版本并非假设。
+***** Comments
+- 利用相同或类似的漏洞，是可以在无需用户交互的情况下远程越狱 LG webOS 电视的。
+- 你真的希望一个拥有 266 万订阅者的频道演示如何远程访问数百万人正在使用的电视吗？
+- 这期视频把好几个话题搅在一起。如果分得更清楚，从电视厂商运营的广告与数据收集平台讲起，观点会有力得多。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+GamersNexusとLG、あるいはテレビをrootすべきでない理由
+***** TLDR
+LGスマートテレビを扱ったGamersNexusの動画への反論。著者の論点は次の通り。テレビの通信はTLSで暗号化されており、動画も引用元の自動コンテンツ認識の研究もペイロードを復号していないため、LGが何を集めているかという結論は発見ではなく推測にすぎない。示されたmDNSとSSDPのスキャンはスマート機器の通常の探索動作だ。そして問題視された端末上のコマンドは、WendellがすでにテレビをrootしSSHでログインした後に実行されたもので、セキュリティモデルを壊したのは検証者自身である。著者が求める水準は、利用者の操作なしに遠隔でジェイルブレイクできることの実証だ。
+***** Take
+手法の指摘は正しいが、そこから導く結論が誤っている。「rootがセキュリティモデルを壊した」はデモへの妥当な批判であって、テレビが何を送信しているのかへの答えにはならない。欠けた部分はスレッドが埋めている。webOSには遠隔で乗っ取れる脆弱性の前例があり、操作不要版は仮定の話ではない。
+***** Comments
+- 同種の脆弱性を使えば、ユーザー操作なしでLG webOSのテレビを遠隔ジェイルブレイクする方法は存在する。
+- 登録者266万人のチャンネルに、何百万人が使うテレビへの遠隔アクセス方法を実演させたいのか？
+- 動画は複数の話題を詰め込みすぎている。テレビメーカーが運営する広告とデータ収集の基盤から始めて整理すれば、はるかに伝わったはずだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+GamersNexus와 LG, 혹은 TV를 루팅하면 안 되는 이유
+***** TLDR
+LG 스마트TV를 다룬 GamersNexus 영상에 대한 반박이다. 저자의 요지는 이렇다. TV 트래픽은 TLS로 암호화돼 있어 영상도, 인용된 자동 콘텐츠 인식 연구도 페이로드를 복호화하지 못했다. 따라서 LG가 무엇을 수집하는지에 대한 결론은 발견이 아니라 가정이다. 보여준 mDNS와 SSDP 스캔은 스마트 기기의 평범한 탐색 동작이다. 그리고 문제가 된 기기 내 명령들은 Wendell이 이미 TV를 루팅하고 SSH로 접속한 뒤 실행한 것이라, 보안 모델을 깬 쪽은 시험자 본인이다. 저자가 제시한 기준은 사용자 조작 없는 원격 탈옥의 실증이다.
+***** Take
+방법론 지적은 맞고 결론은 틀렸다. '루팅이 보안 모델을 깼다'는 시연에 대한 타당한 비판일 뿐 TV가 무엇을 밖으로 보내는지에 대한 답이 아니다. 빠진 조각은 스레드가 채웠다. webOS에는 원격 장악 취약점 전례가 있으니 사용자 조작 없는 버전은 가정이 아니다.
+***** Comments
+- 같거나 비슷한 버그를 이용하면 사용자 상호작용 없이 LG webOS TV를 원격으로 탈옥하는 방법이 있다.
+- 구독자 266만 채널이 수백만 명이 쓰는 TV에 원격 접속하는 법을 시연하기를 정말 바라나?
+- 영상이 여러 주제를 뒤섞었다. TV 제조사가 굴리는 광고와 데이터 수집 플랫폼부터 정리해 들어갔다면 훨씬 잘 전달됐을 것이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+GamersNexus y LG, o por qué rootear tu televisor es mala idea
+***** TLDR
+Una réplica al vídeo de GamersNexus sobre los televisores LG. Los puntos del autor: el tráfico del televisor va cifrado con TLS, así que ni el vídeo ni el estudio de reconocimiento automático de contenido que cita descifraron ningún payload, de modo que las conclusiones sobre lo que recoge LG son suposiciones y no hallazgos. El escaneo mDNS y SSDP mostrado es el descubrimiento normal de un dispositivo conectado. Y los comandos alarmantes en el aparato llegaron después de que Wendell rooteara el televisor y entrara por SSH, es decir, el modelo de seguridad lo rompió quien hacía la prueba. Su listón para una noticia real: demostrar un jailbreak remoto sin intervención del usuario.
+***** Take
+Acierta en el método y falla en lo que deduce. 'El rooteo rompió el modelo de seguridad' es una crítica justa a la demo y ninguna respuesta a qué envía el televisor, y el hilo aporta la pieza que falta: webOS ha tenido fallos de control remoto, así que la versión sin intervención del usuario no es hipotética.
+***** Comments
+- Existen formas de hacer jailbreak remoto a los televisores LG con webOS sin interacción del usuario, usando los mismos fallos o similares.
+- ¿De verdad quieres que un canal con 2,66 millones de suscriptores enseñe cómo acceder remotamente a televisores que usan millones de personas?
+- El vídeo mezcla varios temas. Una separación más limpia, empezando por la plataforma de publicidad y recogida de datos que operan los fabricantes, transmitiría mucho mejor la idea.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+GamersNexus und LG, oder warum das Rooten des Fernsehers eine schlechte Idee ist
+***** TLDR
+Eine Erwiderung auf das GamersNexus-Video zu LG-Smart-TVs. Die Punkte des Autors: Der Datenverkehr des Fernsehers ist TLS-verschlüsselt, weder das Video noch die zitierte Studie zur automatischen Inhaltserkennung hat Payloads entschlüsselt, die Aussagen darüber, was LG sammelt, sind also Annahmen und keine Befunde. Das gezeigte mDNS- und SSDP-Scannen ist die übliche Geräteerkennung. Und die alarmierenden Kommandos auf dem Gerät kamen, nachdem Wendell den Fernseher gerootet und sich per SSH eingeloggt hatte, das Sicherheitsmodell hat also der Tester selbst gebrochen. Sein Maßstab für eine echte Geschichte: ein Remote-Jailbreak ohne Zutun des Nutzers.
+***** Take
+Richtig bei der Methode, falsch bei der Schlussfolgerung. 'Das Rooten hat das Sicherheitsmodell gebrochen' ist berechtigte Kritik an der Demo und keinerlei Antwort darauf, was der Fernseher nach Hause sendet. Den fehlenden Teil liefert der Thread: webOS hatte bereits Lücken für Fernübernahmen, die Variante ohne Nutzeraktion ist also nicht hypothetisch.
+***** Comments
+- Es gibt Wege, LG-webOS-Fernseher ohne Nutzerinteraktion aus der Ferne zu jailbreaken, über dieselben oder ähnliche Lücken.
+- Willst du wirklich, dass ein Kanal mit 2,66 Millionen Abonnenten zeigt, wie man aus der Ferne auf Fernseher zugreift, die Millionen Menschen nutzen?
+- Das Video wirft mehrere Themen zusammen. Eine saubere Trennung, beginnend bei der Werbe- und Datensammelplattform der Hersteller, würde den Punkt viel besser treffen.
+** John Margolies' photographs of roadside America :photography:architecture:public-domain:history:
+:PROPERTIES:
+:ID:       49560682
+:URL:      https://publicdomainreview.org/collection/john-margolies-photographs-of-roadside-america/
+:HN_URL:   https://news.ycombinator.com/item?id=49560682
+:POINTS:   63
+:COMMENTS: 16
+:BY:       duck
+:END:
+
+*** TLDR
+A Public Domain Review collection of John Margolies (1940-2016), an architectural critic who spent nearly four decades photographing American roadside architecture: motels, miniature golf courses, diners, gas stations, pun-heavy signage, and buildings shaped like whatever they sold. His first book came out in 1981 and the work runs through the 2000s. The Library of Congress bought the complete archive of 11,710 color slides and lifted all copyright restrictions on the photographs, though artworks appearing inside some frames may still be covered. Around 1,555 images are on Flickr Commons at lower resolution.
+
+*** Take
+Margolies shot this stuff because it was already being torn down, and the archive ended up public domain at full resolution, which is the rare case of an institutional purchase working out for everyone. Go look at the buildings shaped like their own product.
+
+*** Comments
+
+**** profsummergig
+:PROPERTIES:
+:COMMENT_ID: 49561004
+:END:
+I love this. We need more whimsy. Refinement culture is taking over, even the new McDonald's design is private-equity refined.
+
+**** js2
+:PROPERTIES:
+:COMMENT_ID: 49560931
+:END:
+The Library of Congress has a nicer presentation of the complete collection, two clicks away from the submitted link.
+
+**** NDlurker
+:PROPERTIES:
+:COMMENT_ID: 49560877
+:END:
+I knew Bob's Java Jive would be on there. Wasn't expecting the buffalo from Jamestown, ND.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+约翰·马戈利斯镜头下的美国路边风景
+***** TLDR
+Public Domain Review 整理的约翰·马戈利斯（1940-2016）作品集。他是一位建筑评论家，用近四十年时间拍摄美国路边建筑：汽车旅馆、迷你高尔夫场、餐车餐厅、加油站、满是双关语的招牌，以及外形就是所售商品的房子。他的第一本书出版于 1981 年，创作延续到 2000 年代。美国国会图书馆购入了全部 11710 张彩色幻灯片，并解除了这些照片的所有版权限制，不过画面中出现的艺术作品可能仍受版权保护。约有 1555 张以较低分辨率发布在 Flickr Commons 上。
+***** Take
+马戈利斯拍这些，是因为它们当时已经在被拆除。如今整个档案以全分辨率进入公共领域，这是机构收购难得对所有人都有好处的例子。去看看那些做成自家商品形状的建筑吧。
+***** Comments
+- 太喜欢了。我们需要更多的奇思妙想。精致化的审美正在接管一切，连麦当劳的新设计都是一副私募基金调教出来的样子。
+- 国会图书馆对整个收藏的呈现更好，从提交的链接点两下就能到。
+- 我就知道 Bob's Java Jive 会在里面，倒是没想到会有北达科他州詹姆斯敦的那头野牛。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+ジョン・マーゴリーズが撮ったアメリカの沿道風景
+***** TLDR
+Public Domain Reviewによるジョン・マーゴリーズ（1940-2016）のコレクション。建築批評家だった彼は、約40年にわたりアメリカの沿道建築を撮り続けた。モーテル、ミニチュアゴルフ場、ダイナー、ガソリンスタンド、駄洒落だらけの看板、そして売っているもの自体の形をした建物。最初の著書は1981年で、撮影は2000年代まで続いた。米国議会図書館が11,710枚のカラースライドからなる全アーカイブを購入し、写真の著作権制限をすべて解除した。ただし画面に写り込んだ美術作品には権利が残る場合がある。約1,555点が低解像度でFlickr Commonsに公開されている。
+***** Take
+マーゴリーズがこれらを撮ったのは、当時すでに取り壊されつつあったからだ。そのアーカイブが高解像度のままパブリックドメインになった。機関による買い取りが全員の利益になった稀な例だ。商品そのものの形をした建物を見に行くといい。
+***** Comments
+- これは素晴らしい。もっと遊び心が必要だ。洗練の文化がすべてを覆いつつあり、マクドナルドの新デザインまでプライベートエクイティ好みに整えられている。
+- 議会図書館のほうが全コレクションをきれいに見せている。投稿されたリンクから2クリックで行ける。
+- Bob's Java Jiveは絶対あると思っていた。ノースダコタ州ジェームズタウンのバッファローは予想外だった。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+존 마골리스가 찍은 미국의 길가 풍경
+***** TLDR
+Public Domain Review가 정리한 존 마골리스(1940-2016) 컬렉션. 건축 비평가였던 그는 40년 가까이 미국 길가 건축을 찍었다. 모텔, 미니 골프장, 다이너, 주유소, 말장난 간판, 그리고 파는 물건 모양 그대로 지은 건물들. 첫 책은 1981년에 나왔고 작업은 2000년대까지 이어졌다. 미국 의회도서관이 컬러 슬라이드 11,710장 전체를 사들이고 사진의 저작권 제한을 모두 해제했다. 다만 화면 안에 찍힌 미술 작품은 여전히 권리가 남아 있을 수 있다. 약 1,555장이 저해상도로 Flickr Commons에 올라와 있다.
+***** Take
+마골리스가 이걸 찍은 건 당시 이미 헐리고 있었기 때문이다. 그 아카이브가 고해상도 그대로 퍼블릭 도메인이 됐다. 기관의 구매가 모두에게 이득이 된 드문 사례다. 자기가 파는 물건 모양으로 지은 건물들을 한번 보시라.
+***** Comments
+- 정말 좋다. 우리에겐 엉뚱함이 더 필요하다. 세련됨의 문화가 모든 걸 덮고 있고, 맥도날드 신규 디자인마저 사모펀드식으로 다듬어져 있다.
+- 의회도서관이 전체 컬렉션을 더 보기 좋게 정리해 뒀다. 올라온 링크에서 두 번만 클릭하면 된다.
+- Bob's Java Jive는 있을 줄 알았다. 노스다코타 제임스타운의 버펄로는 예상 못 했다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Las fotografías de John Margolies de la América de carretera
+***** TLDR
+Una colección de Public Domain Review sobre John Margolies (1940-2016), crítico de arquitectura que pasó casi cuatro décadas fotografiando la arquitectura de carretera estadounidense: moteles, minigolfs, diners, gasolineras, rótulos cargados de juegos de palabras y edificios con la forma de lo que vendían. Su primer libro es de 1981 y el trabajo llega hasta los años 2000. La Biblioteca del Congreso compró el archivo completo de 11.710 diapositivas en color y levantó todas las restricciones de copyright sobre las fotos, aunque las obras de arte que aparecen en algunas imágenes pueden seguir protegidas. Unas 1.555 están en Flickr Commons en menor resolución.
+***** Take
+Margolies fotografió esto porque ya lo estaban derribando, y el archivo acabó en dominio público a plena resolución, uno de esos raros casos en que una compra institucional sale bien para todos. Vale la pena mirar los edificios con forma de su propio producto.
+***** Comments
+- Me encanta. Necesitamos más fantasía. La cultura de lo refinado se está imponiendo, hasta el nuevo diseño de McDonald's está refinado por capital riesgo.
+- La Biblioteca del Congreso presenta mejor la colección completa, a dos clics del enlace enviado.
+- Sabía que Bob's Java Jive iba a estar. No esperaba el búfalo de Jamestown, Dakota del Norte.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+John Margolies' Fotografien des amerikanischen Straßenrands
+***** TLDR
+Eine Sammlung des Public Domain Review zu John Margolies (1940-2016), einem Architekturkritiker, der fast vier Jahrzehnte lang die Architektur amerikanischer Straßenränder fotografierte: Motels, Minigolfplätze, Diner, Tankstellen, Schilder voller Wortspiele und Gebäude in Form dessen, was sie verkauften. Sein erstes Buch erschien 1981, die Arbeit reicht bis in die 2000er. Die Library of Congress kaufte das komplette Archiv aus 11.710 Farbdias und hob alle Urheberrechtsbeschränkungen an den Fotos auf, wobei abgebildete Kunstwerke weiterhin geschützt sein können. Rund 1.555 Aufnahmen liegen in geringerer Auflösung auf Flickr Commons.
+***** Take
+Margolies fotografierte das, weil es schon damals abgerissen wurde. Nun liegt das Archiv in voller Auflösung gemeinfrei vor, einer der seltenen Fälle, in denen ein institutioneller Ankauf allen nützt. Schauen Sie sich die Gebäude an, die aussehen wie ihr eigenes Produkt.
+***** Comments
+- Großartig. Wir brauchen mehr Verspieltheit. Die Kultur des Abgeschliffenen übernimmt, sogar das neue McDonald's-Design wirkt private-equity-glattgezogen.
+- Die Library of Congress präsentiert die vollständige Sammlung schöner, zwei Klicks vom eingereichten Link entfernt.
+- Dass Bob's Java Jive dabei ist, war klar. Mit dem Büffel aus Jamestown, North Dakota, hatte ich nicht gerechnet.
