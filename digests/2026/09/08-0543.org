@@ -1,0 +1,504 @@
+#+TITLE: HN Digest 2026-09-08 05:43 UTC
+#+DATE: 2026-09-08T05:43:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+A 1999 CA root falls to a desktop PC, Jellyfin drops the 10, and the company behind D2 shuts down and open-sources its layout engine
+
+* Highlights
+- 512-bit CA roots from Netscape 4.51 factored in 32 hours on one Ryzen desktop
+- Jellyfin 12.0: schema rewrite, /emby/ endpoints gone, every plugin needs a rebuild
+- WeatherNext 3 forecasts hourly straight from raw satellite imagery
+- Terrastruct is shutting down, TALA is now MPL-2.0
+- Rubidium atoms in superposition agree with the equivalence principle
+
+* Stories
+
+** I've factored the RSA keys of a Certificate Authority from the 90s :security:cryptography:rsa:tls:
+:PROPERTIES:
+:ID:       49604637
+:URL:      https://mcpherrin.ca/2026/09/07/rsa.html
+:HN_URL:   https://news.ycombinator.com/item?id=49604637
+:POINTS:   226
+:COMMENTS: 44
+:BY:       ahlCVA
+:END:
+
+*** TLDR
+Matthew McPherrin pulled 512-bit root certificates out of archived Netscape 4.51 and Internet Explorer 3.02 installers and factored them with CADO-NFS: 32 hours for the E-Certify RSA 512 Gold Server root on a Ryzen 9 5950X, 29 hours for the client root, and about an hour on a GPU cluster for a VeriSign test code-signing root. He then issued forged certificates under those authorities and wrote a custom TLS server that Netscape 4.51 accepts, running at e-certify.fly.dev. Keys and tools are on GitHub. No modern browser trusts these roots, so the attack is a demonstration.
+
+*** Take
+The finding is not that 512-bit RSA is weak, everyone knew that. It is that a commercial CA shipped a key in 1999 with no minimum size rule to stop it, and that key now falls to one desktop over a weekend. The comment asking which governments archived that decade's traffic is the right follow-up question.
+
+*** Comments
+
+**** goalieca
+Basically 2 days on a consumer GPU to crack a 512 bit cert. Much of the traffic back then did not use ephemeral keys. Most of it wasn't even encrypted at all. I do wonder which governments are recording and saving traffic for later.
+
+**** jrmg
+In the 90s, how long did people expect it would be until consumer computer hardware would be able to do this so quickly?
+
+**** 63
+A bit unfortunate that so many of the interesting bits were left to AI. I would've enjoyed some commentary on why the custom TLS implementation was necessary.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+我分解了 90 年代某个证书颁发机构的 RSA 密钥
+***** TLDR
+Matthew McPherrin 从 archive.org 上的 Netscape 4.51 和 IE 3.02 安装包中提取出 512 位根证书，并用 CADO-NFS 完成分解：在一台 Ryzen 9 5950X 上，E-Certify RSA 512 Gold Server 根证书用了 32 小时，客户端根证书用了 29 小时；VeriSign 的一个代码签名测试根证书在 GPU 集群上约一小时。随后他用这些 CA 签发了伪造证书，并写了一个 Netscape 4.51 能接受的 TLS 服务器，运行在 e-certify.fly.dev。密钥和工具都放在 GitHub 上。现代浏览器不再信任这些根证书，所以这只是演示。
+***** Take
+重点不是 512 位 RSA 不安全，这谁都知道。重点是 1999 年一家商业 CA 就这样签发了这种密钥，当时没有任何最小长度规定拦住它，而这把密钥今天一台台式机一个周末就能撬开。有人在评论里问哪些政府存档了那个年代的流量，这才是该追问的问题。
+***** Comments
+- 用消费级 GPU 大概两天就能破解一张 512 位证书。那时候大量流量根本没有前向保密，很多甚至完全没加密。我很好奇有哪些政府在录下流量留着以后解密。
+- 在 90 年代，人们当时预计要多久消费级硬件才能这么快做到这一点？
+- 可惜有意思的部分很多都交给 AI 写了。我更想看看作者解释为什么需要自己实现 TLS。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+90年代の認証局のRSA鍵を因数分解した
+***** TLDR
+Matthew McPherrinはarchive.orgにあるNetscape 4.51とInternet Explorer 3.02のインストーラから512ビットのルート証明書を取り出し、CADO-NFSで因数分解した。Ryzen 9 5950XでE-Certify RSA 512 Gold Serverルートに32時間、クライアントルートに29時間、VeriSignのコード署名テストルートはGPUクラスタで約1時間。その後、これらのCA名義で偽証明書を発行し、Netscape 4.51が受け入れるTLSサーバをe-certify.fly.devで動かした。鍵とツールはGitHubで公開。現行ブラウザはこれらのルートを信頼していないため、あくまで実証だ。
+***** Take
+512ビットRSAが弱いことは誰でも知っている。問題は、1999年に商用CAが最小鍵長の規定もないままそんな鍵を配布し、その鍵が今では1台のデスクトップで週末に破れることだ。どの政府が当時のトラフィックを保存していたのか、というコメントの問いが正しい続きだ。
+***** Comments
+- コンシューマ向けGPUで2日あれば512ビット証明書は破れる。当時のトラフィックの多くは前方秘匿性がなく、そもそも暗号化されていないものも多かった。あとで復号するために記録を保存している政府がどれだけあるのか気になる。
+- 90年代当時、コンシューマ機がこれをここまで速くこなせるようになるまで何年かかると思われていたのだろう。
+- 面白い部分の多くをAIに任せてしまったのは残念。独自TLS実装がなぜ必要だったのかの解説が読みたかった。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+90년대 인증기관의 RSA 키를 소인수분해했다
+***** TLDR
+Matthew McPherrin은 archive.org에 남아 있는 Netscape 4.51과 Internet Explorer 3.02 설치 파일에서 512비트 루트 인증서를 꺼내 CADO-NFS로 분해했다. Ryzen 9 5950X에서 E-Certify RSA 512 Gold Server 루트는 32시간, 클라이언트 루트는 29시간, VeriSign 코드 서명 테스트 루트는 GPU 클러스터에서 약 1시간이 걸렸다. 이후 해당 CA 이름으로 위조 인증서를 발급하고 Netscape 4.51이 받아들이는 TLS 서버를 e-certify.fly.dev에 띄웠다. 키와 도구는 GitHub에 공개되어 있다. 현대 브라우저는 이 루트를 신뢰하지 않으므로 시연에 그친다.
+***** Take
+512비트 RSA가 약하다는 건 다 아는 사실이다. 핵심은 1999년 상용 CA가 최소 키 길이 규정도 없이 그런 키를 배포했고, 그 키가 지금은 데스크톱 한 대로 주말이면 깨진다는 점이다. 어느 정부가 그 시절 트래픽을 보관해 두었느냐는 댓글의 질문이 이어서 물어야 할 것이다.
+***** Comments
+- 소비자용 GPU로 이틀이면 512비트 인증서를 깬다. 그 시절 트래픽 상당수는 순방향 비밀성이 없었고 아예 암호화되지 않은 것도 많았다. 나중에 복호화하려고 트래픽을 저장해 둔 정부가 어디인지 궁금하다.
+- 90년대에는 소비자용 하드웨어가 이걸 이렇게 빨리 해내기까지 얼마나 걸릴 거라고 봤을까?
+- 재미있는 부분을 상당수 AI에 맡긴 건 아쉽다. 왜 자체 TLS 구현이 필요했는지에 대한 설명이 보고 싶었다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+He factorizado las claves RSA de una autoridad de certificación de los 90
+***** TLDR
+Matthew McPherrin extrajo certificados raíz de 512 bits de instaladores archivados de Netscape 4.51 e Internet Explorer 3.02 y los factorizó con CADO-NFS: 32 horas para la raíz E-Certify RSA 512 Gold Server en un Ryzen 9 5950X, 29 horas para la raíz de cliente y alrededor de una hora en un clúster de GPU para una raíz de prueba de firma de código de VeriSign. Después emitió certificados falsos bajo esas autoridades y escribió un servidor TLS que Netscape 4.51 acepta, alojado en e-certify.fly.dev. Las claves y herramientas están en GitHub. Ningún navegador actual confía en esas raíces, así que es una demostración.
+***** Take
+Lo relevante no es que RSA de 512 bits sea débil, eso ya se sabía. Es que en 1999 una CA comercial distribuyó una clave así sin ninguna regla de tamaño mínimo que lo impidiera, y hoy esa clave cae con un solo equipo de escritorio en un fin de semana. La pregunta del comentario sobre qué gobiernos archivaron el tráfico de aquella década es la continuación correcta.
+***** Comments
+- Unos dos días en una GPU de consumo para romper un certificado de 512 bits. Mucho tráfico de entonces no usaba claves efímeras y buena parte ni siquiera iba cifrada. Me pregunto qué gobiernos están guardando tráfico para descifrarlo más adelante.
+- En los 90, ¿cuánto tiempo creía la gente que faltaba para que el hardware doméstico hiciera esto tan rápido?
+- Es una pena que tantas partes interesantes se dejaran a la IA. Me habría gustado leer por qué era necesaria la implementación TLS propia.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Ich habe die RSA-Schlüssel einer Zertifizierungsstelle aus den 90ern faktorisiert
+***** TLDR
+Matthew McPherrin holte 512-Bit-Wurzelzertifikate aus archivierten Installern von Netscape 4.51 und Internet Explorer 3.02 und faktorisierte sie mit CADO-NFS: 32 Stunden für die Root E-Certify RSA 512 Gold Server auf einem Ryzen 9 5950X, 29 Stunden für die Client-Root und rund eine Stunde auf einem GPU-Cluster für eine VeriSign-Testroot zur Codesignatur. Anschließend stellte er unter diesen Zertifizierungsstellen gefälschte Zertifikate aus und schrieb einen TLS-Server, den Netscape 4.51 akzeptiert, erreichbar unter e-certify.fly.dev. Schlüssel und Werkzeuge liegen auf GitHub. Kein aktueller Browser vertraut diesen Roots, es bleibt eine Demonstration.
+***** Take
+Nicht dass 512-Bit-RSA schwach ist, war die Erkenntnis, das war bekannt. Sondern dass eine kommerzielle CA 1999 einen solchen Schlüssel ausliefern konnte, weil es keine Mindestgröße gab, und dass dieser Schlüssel heute an einem Wochenende auf einem einzigen Desktop fällt. Der Kommentar zur Frage, welche Regierungen den Verkehr jener Jahre archiviert haben, ist die richtige Anschlussfrage.
+***** Comments
+- Rund zwei Tage auf einer Consumer-GPU für ein 512-Bit-Zertifikat. Ein Großteil des damaligen Verkehrs nutzte keine ephemeren Schlüssel, vieles war überhaupt nicht verschlüsselt. Mich würde interessieren, welche Regierungen Verkehr aufzeichnen und für später aufheben.
+- Wie lange dachte man in den 90ern, würde es dauern, bis Consumer-Hardware das so schnell schafft?
+- Schade, dass so viele der interessanten Teile der KI überlassen wurden. Ich hätte gern gelesen, warum die eigene TLS-Implementierung nötig war.
+** Jellyfin 12.0 :selfhosted:jellyfin:media:opensource:
+:PROPERTIES:
+:ID:       49604861
+:URL:      https://jellyfin.org/posts/jellyfin-release-12.0/
+:HN_URL:   https://news.ycombinator.com/item?id=49604861
+:POINTS:   235
+:COMMENTS: 90
+:BY:       0xC0ncord
+:END:
+
+*** TLDR
+Jellyfin drops the leading 10 from its version number, so 10.12 becomes 12.0, and finishes the database rework started in 10.11. Playlists and collections store each item as its own row instead of loading the whole structure to count or edit it, episodes get alternate versions the way movies already had, book and comic metadata is read from OPF and ComicInfo files without a plugin, ListenBrainz ships as a built-in recommendation source, and the previously experimental UI is now the default. Breaking: the /emby/ and /mediabrowser/ endpoints are removed, plugins must be rebuilt for .NET 10, usernames become case-sensitive so accounts differing only in capitalisation fail migration, and first boot rewrites the schema and forces a full library scan.
+
+*** Take
+Renaming 10.12 to 12.0 is the honest move, because the plugin break, the removed legacy endpoints and the forced rescan cost you an evening in every sense that a major version does. Back up the database before you start. The upgrade reports in the thread are good, but they are from people who read the warnings first.
+
+*** Comments
+
+**** doctoboggan
+As a long time Plex user with a lifetime pass, I always enjoy seeing the good progress with Jellyfin as it will give me a soft landing for when Plex finally does something to make me move.
+
+**** bhaney
+I have a ~40TB library and was still on 10.10.7 because of all the performance issues with 10.11. Upgraded straight to 12.0 and was impressed with how quick and painless it was. Some titles disappeared until a rescan added them back.
+
+**** hi_hi
+I love Jellyfin, been using it for years alongside the ⁎arr stack. My daughter got into audiobooks so I installed Listenarr with a vibe coded MCP server so the family can manage their media.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Jellyfin 12.0
+***** TLDR
+Jellyfin 去掉了版本号开头的 10，10.12 变成 12.0，并完成了 10.11 开始的数据库重构。播放列表和合集现在把每个条目存成独立的一行，不必为了计数或编辑而加载整个结构；剧集像电影一样支持多版本；书籍和漫画的元数据直接从 OPF 和 ComicInfo 文件读取，不再需要插件；ListenBrainz 成为内置推荐来源；此前的实验性界面成为默认界面。破坏性变更：/emby/ 和 /mediabrowser/ 端点被移除，插件必须针对 .NET 10 重新编译，用户名区分大小写导致仅大小写不同的账号迁移失败，首次启动会重写数据库结构并强制全库扫描。
+***** Take
+把 10.12 改叫 12.0 是诚实的做法，因为插件失效、旧端点移除和强制重扫，从任何意义上都是一次大版本要耗掉你一个晚上。升级前先备份数据库。帖子里的升级反馈都不错，但那都是先读了警告的人写的。
+***** Comments
+- 作为持有终身授权的老 Plex 用户，我一直乐见 Jellyfin 的进步，等 Plex 哪天做出让我不得不搬家的事，我就有个软着陆。
+- 我有大约 40TB 的媒体库，因为 10.11 的性能问题一直停在 10.10.7。这次直接升到 12.0，快得出乎意料，也没出什么问题。有些条目一度消失，重扫一遍就回来了。
+- 我用 Jellyfin 很多年了，配合 ⁎arr 全家桶。女儿开始听有声书，我就装了 Listenarr，再加一个随手写的 MCP 服务，全家都能自己管理媒体。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Jellyfin 12.0
+***** TLDR
+Jellyfinはバージョン番号の先頭の10を外し、10.12が12.0になった。10.11で始めたデータベース刷新も完了。プレイリストとコレクションは各アイテムを個別の行として保存し、件数を数えたり編集したりするために構造全体を読み込む必要がなくなった。エピソードは映画と同様に別バージョンを持てるようになり、書籍とコミックのメタデータはプラグインなしでOPFとComicInfoから読み取られ、ListenBrainzが標準の推薦ソースとして同梱され、実験扱いだったUIが既定になった。破壊的変更として、/emby/と/mediabrowser/のエンドポイントは削除、プラグインは.NET 10向けの再ビルドが必須、ユーザー名は大文字小文字を区別するため大小文字だけが違うアカウントは移行に失敗し、初回起動でスキーマが書き換わりライブラリの全スキャンが走る。
+***** Take
+10.12を12.0と呼び直したのは正直な判断だ。プラグインの破壊、旧エンドポイントの削除、強制再スキャンは、どの意味でもメジャーバージョンらしく一晩を奪う。始める前にデータベースをバックアップすること。スレッドの報告は良好だが、いずれも警告を先に読んだ人のものだ。
+***** Comments
+- ライフタイムパスを持つ長年のPlexユーザーとして、Jellyfinの進歩は素直にうれしい。Plexがいつか移行せざるを得ないことをしたときの受け皿になる。
+- 40TBほどのライブラリがあり、10.11の性能問題のせいで10.10.7のままだった。12.0へ一気に上げたが驚くほど速く、問題もほぼなかった。一部の作品が消えたが再スキャンで戻った。
+- ⁎arr構成と一緒にJellyfinを何年も使っている。娘がオーディオブックを聴き始めたのでListenarrを入れ、手早く書いたMCPサーバを足して、家族が自分でメディアを管理できるようにした。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Jellyfin 12.0
+***** TLDR
+Jellyfin이 버전 번호 앞의 10을 떼면서 10.12가 12.0이 됐고, 10.11에서 시작한 데이터베이스 개편도 마무리됐다. 재생목록과 컬렉션은 항목마다 별도의 행으로 저장돼 개수를 세거나 편집하려고 전체 구조를 불러올 필요가 없어졌다. 에피소드도 영화처럼 대체 버전을 가질 수 있고, 책과 만화 메타데이터는 플러그인 없이 OPF와 ComicInfo에서 직접 읽으며, ListenBrainz가 기본 추천 소스로 포함되고, 실험 단계였던 UI가 기본값이 됐다. 호환성 변경으로 /emby/와 /mediabrowser/ 엔드포인트가 제거됐고, 플러그인은 .NET 10으로 재빌드해야 하며, 사용자명이 대소문자를 구분해 대소문자만 다른 계정은 마이그레이션에 실패하고, 첫 부팅에서 스키마가 재작성되며 전체 라이브러리 스캔이 강제된다.
+***** Take
+10.12를 12.0으로 부르기로 한 건 솔직한 결정이다. 플러그인 호환 파기, 레거시 엔드포인트 제거, 강제 재스캔은 어느 기준으로 봐도 저녁 시간을 잡아먹는 메이저 버전이다. 시작 전에 데이터베이스를 백업하라. 스레드의 업그레이드 후기는 좋지만, 모두 경고를 먼저 읽은 사람들의 후기다.
+***** Comments
+- 평생 이용권을 가진 오랜 Plex 사용자로서 Jellyfin의 발전은 늘 반갑다. Plex가 언젠가 떠날 이유를 만들면 부드럽게 착지할 곳이 된다.
+- 40TB 정도 라이브러리가 있고 10.11의 성능 문제 때문에 10.10.7에 머물러 있었다. 곧장 12.0으로 올렸는데 놀랄 만큼 빠르고 매끄러웠다. 일부 항목이 사라졌다가 재스캔 후 돌아왔다.
+- ⁎arr 스택과 함께 Jellyfin을 몇 년째 쓰고 있다. 딸이 오디오북을 듣기 시작해서 Listenarr를 설치하고 대충 만든 MCP 서버를 붙여 가족이 직접 미디어를 관리하게 했다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Jellyfin 12.0
+***** TLDR
+Jellyfin quita el 10 inicial del número de versión, así que 10.12 pasa a ser 12.0, y termina la reforma de la base de datos empezada en 10.11. Las listas de reproducción y colecciones guardan cada elemento como una fila propia en lugar de cargar toda la estructura para contarla o editarla, los episodios admiten versiones alternativas como ya hacían las películas, los metadatos de libros y cómics se leen de archivos OPF y ComicInfo sin plugin, ListenBrainz viene integrado como fuente de recomendaciones y la interfaz antes experimental es ahora la predeterminada. Cambios que rompen: se eliminan los endpoints /emby/ y /mediabrowser/, los plugins deben recompilarse para .NET 10, los nombres de usuario distinguen mayúsculas y las cuentas que solo difieren en eso fallan al migrar, y el primer arranque reescribe el esquema y fuerza un escaneo completo de la biblioteca.
+***** Take
+Llamar 12.0 a la 10.12 es lo honesto, porque la ruptura de plugins, los endpoints eliminados y el reescaneo obligatorio cuestan una tarde en todos los sentidos en que lo hace una versión mayor. Haz copia de la base de datos antes de empezar. Los informes de actualización del hilo son buenos, pero vienen de gente que leyó los avisos primero.
+***** Comments
+- Como usuario veterano de Plex con pase vitalicio, siempre me alegra ver el avance de Jellyfin: será un aterrizaje suave cuando Plex haga por fin algo que me obligue a mudarme.
+- Tengo una biblioteca de unos 40 TB y seguía en 10.10.7 por los problemas de rendimiento de 10.11. Actualicé directo a 12.0 y me sorprendió lo rápido e indoloro que fue. Algunos títulos desaparecieron hasta que un reescaneo los recuperó.
+- Uso Jellyfin desde hace años junto con el stack ⁎arr. Mi hija se aficionó a los audiolibros, así que instalé Listenarr con un servidor MCP hecho a las bravas para que la familia gestione sus medios.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Jellyfin 12.0
+***** TLDR
+Jellyfin streicht die führende 10 aus der Versionsnummer, aus 10.12 wird 12.0, und schließt den in 10.11 begonnenen Datenbankumbau ab. Playlists und Sammlungen speichern jedes Element als eigene Zeile, statt die ganze Struktur zum Zählen oder Bearbeiten zu laden, Episoden bekommen alternative Fassungen wie Filme, Buch- und Comic-Metadaten werden ohne Plugin aus OPF- und ComicInfo-Dateien gelesen, ListenBrainz ist als Empfehlungsquelle eingebaut und die zuvor experimentelle Oberfläche ist jetzt Standard. Brechende Änderungen: die Endpunkte /emby/ und /mediabrowser/ sind entfernt, Plugins müssen für .NET 10 neu gebaut werden, Benutzernamen unterscheiden Groß- und Kleinschreibung, sodass Konten, die sich nur darin unterscheiden, bei der Migration scheitern, und der erste Start schreibt das Schema um und erzwingt einen vollständigen Bibliotheksscan.
+***** Take
+10.12 in 12.0 umzubenennen ist ehrlich, denn kaputte Plugins, entfernte Alt-Endpunkte und der erzwungene Rescan kosten in jeder Hinsicht einen Abend, so wie es eine Hauptversion tut. Vorher die Datenbank sichern. Die Upgrade-Berichte im Thread sind gut, stammen aber von Leuten, die die Warnungen vorher gelesen haben.
+***** Comments
+- Als langjähriger Plex-Nutzer mit Lifetime-Pass freue ich mich über jeden Fortschritt bei Jellyfin, das wird meine weiche Landung, wenn Plex endlich etwas tut, das mich zum Wechsel zwingt.
+- Ich habe eine rund 40 TB große Bibliothek und war wegen der Performanceprobleme von 10.11 noch auf 10.10.7. Direkt auf 12.0 aktualisiert, und es ging erstaunlich schnell und schmerzlos. Ein paar Titel verschwanden, bis ein Rescan sie zurückholte.
+- Ich nutze Jellyfin seit Jahren zusammen mit dem ⁎arr-Stack. Meine Tochter hat Hörbücher entdeckt, also habe ich Listenarr installiert und einen schnell zusammengeschriebenen MCP-Server dazugestellt, damit die Familie ihre Medien selbst verwalten kann.
+** WeatherNext 3 :ai:weather:deepmind:google:
+:PROPERTIES:
+:ID:       49552299
+:URL:      https://deepmind.google/science/weathernext/
+:HN_URL:   https://news.ycombinator.com/item?id=49552299
+:POINTS:   293
+:COMMENTS: 66
+:BY:       matthieu_bl
+:END:
+
+*** TLDR
+DeepMind's WeatherNext 3 is an ensemble weather model that produces a new global forecast every hour and takes raw satellite imagery as input rather than a pre-processed analysis field. Resolution is 5km for temperature and humidity, 10km for variables like wind, and DeepMind claims accuracy holds in locations the model did not see in training. It powers forecasts in Google Search, Maps and Gemini, and is sold for enterprise use through BigQuery, Earth Engine, Google Maps Platform and Cloud Storage, with renewable energy operators named as a target customer. Weights are not released. The paper is linked as a PDF.
+
+*** Take
+Skipping the analysis step and ingesting satellite data directly is the real advance, since that is where the hourly cadence comes from. But the top comment is someone watching rain fall while the Google weather app shows none, and that gap is a product problem no model release fixes. The comment about shrinking observation inputs matters more than the benchmark: every forecaster, AI or physics-based, is fed by the same instruments.
+
+*** Comments
+
+**** bastawhiz
+It's great that they're working on this, but I'm puzzled at how awful the forecasts are in the Google weather app for my area. It shows no rain, the radar shows nothing, meanwhile it's pouring outside.
+
+**** throw0101a
+There's reduced data available for initial conditions, so I wonder how that will affect things.
+
+**** bilsbie
+It's crazy we'll never have forecasts as good as Dark Sky again. What kind of magic were they doing?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+WeatherNext 3
+***** TLDR
+DeepMind 的 WeatherNext 3 是一个集合预报模型，每小时生成一次新的全球预报，输入是原始卫星图像，而不是预处理后的分析场。温度和湿度的分辨率为 5 公里，风等变量为 10 公里，DeepMind 称模型在训练中未见过的地点同样保持精度。它已用于 Google 搜索、地图和 Gemini 的天气预报，并通过 BigQuery、Earth Engine、Google Maps Platform 和 Cloud Storage 面向企业销售，可再生能源运营商是点名的目标客户。权重未开放。论文以 PDF 形式给出。
+***** Take
+跳过分析场、直接吃卫星数据才是真正的进展，每小时更新的节奏正来自于此。但热评是有人一边看着外面下雨、一边看着 Google 天气显示无雨，这个落差是产品问题，发新模型解决不了。另一条关于观测数据减少的评论比跑分更重要：无论是 AI 还是数值模式，喂进去的都是同一批仪器的数据。
+***** Comments
+- 他们做这件事是好事，但我不明白为什么 Google 天气应用在我这里的预报这么糟。它显示没有雨，雷达图上什么都没有，而外面正在倾盆。
+- 现在可用于初始条件的观测数据变少了，我很好奇这会有什么影响。
+- 想想真离谱，我们再也不会有 Dark Sky 那么准的预报了。他们当年到底是怎么做到的？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+WeatherNext 3
+***** TLDR
+DeepMindのWeatherNext 3は、1時間ごとに新しい全球予報を出すアンサンブル気象モデルで、前処理済みの解析値ではなく生の衛星画像を直接入力に取る。解像度は気温と湿度が5km、風などは10kmで、DeepMindは学習時に見ていない場所でも精度が保たれると主張する。Google検索、マップ、Geminiの予報を支え、BigQuery、Earth Engine、Google Maps Platform、Cloud Storage経由で企業向けに提供される。想定顧客として再生可能エネルギー事業者が挙げられている。重みは公開されていない。論文はPDFで公開。
+***** Take
+解析ステップを飛ばして衛星データを直接取り込む点が本当の前進で、1時間ごとの更新もそこから来ている。ただし人気コメントは、外は土砂降りなのにGoogleの天気アプリが雨なしと表示するという話だ。その落差はモデルの発表では埋まらない製品側の問題である。観測データの縮小に触れたコメントのほうがベンチマークより重い。AIでも数値予報でも、入力を作るのは同じ観測機器だ。
+***** Comments
+- 取り組み自体はよいが、うちの地域のGoogle天気アプリの予報がひどいのが解せない。雨なしと表示され、レーダーにも何も映らないのに、外は土砂降りだ。
+- 初期条件に使えるデータが減っている。これがどう影響するのか気になる。
+- Dark Skyほど良い予報は二度と手に入らないと思うと信じがたい。あれは何をしていたんだろう。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+WeatherNext 3
+***** TLDR
+DeepMind의 WeatherNext 3는 매시간 새로운 전 지구 예보를 내놓는 앙상블 기상 모델로, 전처리된 분석장이 아니라 원시 위성 영상을 직접 입력으로 받는다. 해상도는 기온과 습도가 5km, 바람 같은 변수는 10km이며, DeepMind는 학습에서 보지 못한 지역에서도 정확도가 유지된다고 주장한다. Google 검색과 지도, Gemini의 예보를 구동하고 BigQuery, Earth Engine, Google Maps Platform, Cloud Storage를 통해 기업용으로 판매되며 재생에너지 사업자가 대상 고객으로 언급됐다. 가중치는 공개되지 않았고 논문은 PDF로 제공된다.
+***** Take
+분석 단계를 건너뛰고 위성 데이터를 직접 받아들이는 것이 진짜 진전이고, 매시간 갱신도 거기서 나온다. 그런데 최상단 댓글은 밖에 비가 쏟아지는데 Google 날씨 앱은 비가 없다고 표시한다는 이야기다. 그 간극은 모델 발표로 메워지지 않는 제품 문제다. 관측 데이터 축소를 언급한 댓글이 벤치마크보다 중요하다. AI든 수치예보든 입력을 만드는 장비는 같다.
+***** Comments
+- 이런 작업을 하는 건 좋은데, 우리 지역 Google 날씨 앱 예보가 왜 그렇게 형편없는지 모르겠다. 비가 없다고 나오고 레이더에도 아무것도 없는데 밖에는 폭우가 쏟아진다.
+- 초기 조건에 쓸 관측 데이터가 줄었는데, 그게 어떤 영향을 줄지 궁금하다.
+- 다시는 Dark Sky만큼 좋은 예보를 못 본다는 게 믿기지 않는다. 대체 무슨 마법을 부린 걸까.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+WeatherNext 3
+***** TLDR
+WeatherNext 3, de DeepMind, es un modelo meteorológico de conjunto que genera un nuevo pronóstico global cada hora y toma imágenes de satélite en bruto como entrada en lugar de un campo de análisis ya procesado. La resolución es de 5 km para temperatura y humedad y de 10 km para variables como el viento, y DeepMind afirma que la precisión se mantiene en lugares que el modelo no vio durante el entrenamiento. Alimenta los pronósticos de Google Search, Maps y Gemini, y se vende para uso empresarial a través de BigQuery, Earth Engine, Google Maps Platform y Cloud Storage, con los operadores de energías renovables como cliente objetivo. Los pesos no se publican. El artículo está enlazado en PDF.
+***** Take
+Saltarse el paso de análisis e ingerir datos de satélite directamente es el avance real, y de ahí sale la cadencia horaria. Pero el comentario más votado es alguien viendo llover mientras la app del tiempo de Google dice que no llueve, y esa distancia es un problema de producto que ningún lanzamiento de modelo arregla. El comentario sobre la reducción de observaciones pesa más que cualquier métrica: a todos los pronosticadores, con IA o con física, los alimentan los mismos instrumentos.
+***** Comments
+- Está bien que trabajen en esto, pero me desconcierta lo malos que son los pronósticos de la app del tiempo de Google en mi zona. No marca lluvia, el radar no muestra nada, y fuera está diluviando.
+- Hay menos datos disponibles para las condiciones iniciales, así que me pregunto cómo afectará eso.
+- Es increíble que nunca volvamos a tener pronósticos tan buenos como los de Dark Sky. ¿Qué magia hacían?
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+WeatherNext 3
+***** TLDR
+WeatherNext 3 von DeepMind ist ein Ensemble-Wettermodell, das stündlich eine neue globale Vorhersage erzeugt und rohe Satellitenbilder als Eingabe verwendet statt eines vorverarbeiteten Analysefelds. Die Auflösung liegt bei 5 km für Temperatur und Feuchte und 10 km für Größen wie Wind, und DeepMind gibt an, dass die Genauigkeit auch an Orten hält, die das Modell im Training nicht gesehen hat. Es liefert die Vorhersagen in Google Search, Maps und Gemini und wird über BigQuery, Earth Engine, Google Maps Platform und Cloud Storage an Unternehmen verkauft, genannt werden Betreiber erneuerbarer Energien. Die Gewichte werden nicht veröffentlicht, das Paper liegt als PDF vor.
+***** Take
+Den Analyseschritt zu überspringen und Satellitendaten direkt einzuspeisen ist der eigentliche Fortschritt, daher kommt der stündliche Takt. Der meistbeachtete Kommentar ist aber jemand, der in den Regen schaut, während die Google-Wetter-App keinen anzeigt, und diese Lücke ist ein Produktproblem, das keine Modellveröffentlichung schließt. Der Hinweis auf schrumpfende Beobachtungsdaten wiegt schwerer als jeder Benchmark: alle Vorhersagen, ob KI oder Physik, hängen an denselben Messgeräten.
+***** Comments
+- Schön, dass sie daran arbeiten, aber mich verwundert, wie schlecht die Vorhersagen der Google-Wetter-App für meine Gegend sind. Sie zeigt keinen Regen, das Radar zeigt nichts, und draußen schüttet es.
+- Für die Anfangsbedingungen stehen weniger Daten zur Verfügung, ich frage mich, wie sich das auswirkt.
+- Verrückt, dass wir nie wieder Vorhersagen so gut wie bei Dark Sky bekommen. Was haben die gemacht?
+** TALA Is Open-Source :opensource:diagrams:d2:devtools:
+:PROPERTIES:
+:ID:       49604150
+:URL:      https://d2lang.com/blog/tala-is-open-source/
+:HN_URL:   https://news.ycombinator.com/item?id=49604150
+:POINTS:   160
+:COMMENTS: 10
+:BY:       alixanderwang
+:END:
+
+*** TLDR
+TALA, Terrastruct's orthogonal autolayout algorithm for software architecture diagrams, is now open source under MPL-2.0, the same license as D2. It follows an announcement two days earlier that D2 is fiscally sponsored by Hack Club: the company that funded the project through a closed-source IDE and the paid layout engine is shutting down, the creator stays on as maintainer with limited time, and the project is looking for more maintainers.
+
+*** Take
+TALA was the proprietary piece meant to pay for D2, and it did not pay enough to keep the company alive, so it is free now. The commenter who said TALA was clearly better than ELK but cost more than his fun money budget is the whole business post-mortem in one sentence. Good outcome for users, and D2 under Hack Club sponsorship with one part-time maintainer is worth watching before you build a documentation pipeline on it.
+
+*** Comments
+
+**** ricardobeat
+The first few graphs are impressive, it does a much tidier job. The Go queue one is objectively worse. The TALA version makes it look more complicated than it is.
+
+**** aidenn0
+My first impressions of D2 were much worse than they should have been since the default layout engine is pretty terrible for some graphs. ELK is a big improvement, and TALA was sometimes a big improvement over ELK. I never purchased TALA because the cost was above my fun money amount.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+TALA 开源了
+***** TLDR
+TALA 是 Terrastruct 面向软件架构图的正交自动布局算法，现在以 MPL-2.0 开源，与 D2 使用同一许可证。两天前 D2 刚宣布由 Hack Club 提供财务托管：那家靠闭源 IDE 和付费布局引擎养项目的公司正在关闭，创建者继续担任维护者但时间有限，项目正在寻找更多维护者。
+***** Take
+TALA 本来是用来养活 D2 的闭源部分，结果没能养住公司，于是现在免费了。有评论说 TALA 明显比 ELK 好，但价格超出了他的「玩票预算」，这一句话就是整个商业复盘。对用户是好事；不过在把文档流水线押在 D2 上之前，值得先看看 Hack Club 托管加一位兼职维护者能撑多久。
+***** Comments
+- 前面几张图确实漂亮，排得整齐多了。但那张 Go 队列图明显更差，TALA 的版本让它看起来比实际更复杂。
+- 我对 D2 的第一印象比它应得的差很多，因为默认布局引擎在某些图上很糟。ELK 是很大的改进，而 TALA 有时又比 ELK 好一大截。我一直没买 TALA，因为价格超出了我的玩票预算。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+TALAがオープンソースに
+***** TLDR
+ソフトウェアアーキテクチャ図向けの直交自動レイアウトアルゴリズムであるTerrastructのTALAが、D2と同じMPL-2.0でオープンソース化された。2日前にはD2がHack Clubの財政的スポンサーシップに移ることが発表されている。クローズドソースのIDEと有料レイアウトエンジンで開発を支えてきた会社は畳まれ、作者は時間が限られる中で引き続きメンテナを務め、プロジェクトは追加のメンテナを募集している。
+***** Take
+TALAはD2を養うはずの独占部分だったが、会社を存続させるほどは稼げず、結果として無料になった。TALAはELKより明らかに良かったが価格が趣味の予算を超えていた、というコメントが事業の総括そのものだ。利用者には良い結末だが、Hack Clubの支援と非常勤メンテナ1人という体制は、ドキュメント基盤を載せる前に見極めたい。
+***** Comments
+- 最初のいくつかの図は見事で、はるかに整っている。ただGoのキューの図は明らかに悪化していて、TALA版は実際より複雑に見える。
+- D2の第一印象は不当に悪かった。既定のレイアウトエンジンが一部のグラフでかなりひどいからだ。ELKは大きな改善で、TALAはELKよりさらに良いこともあった。ただ価格が自分の趣味予算を超えていたので購入はしなかった。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+TALA가 오픈소스가 됐다
+***** TLDR
+소프트웨어 아키텍처 다이어그램용 직교 자동 배치 알고리즘인 Terrastruct의 TALA가 D2와 동일한 MPL-2.0으로 공개됐다. 이틀 전 D2가 Hack Club의 재정 후원을 받는다는 발표가 있었다. 비공개 IDE와 유료 레이아웃 엔진으로 개발을 지탱하던 회사는 문을 닫고, 제작자는 시간이 제한된 상태로 메인테이너를 계속 맡으며, 프로젝트는 추가 메인테이너를 찾고 있다.
+***** Take
+TALA는 D2를 먹여 살릴 독점 요소였지만 회사를 유지할 만큼 벌지 못했고, 그래서 지금 무료가 됐다. TALA가 ELK보다 확실히 나았지만 가격이 취미 예산을 넘었다는 댓글이 이 사업의 결산 전부다. 사용자에게는 좋은 결말이지만, Hack Club 후원과 파트타임 메인테이너 한 명이라는 구성은 문서 파이프라인을 얹기 전에 지켜볼 만하다.
+***** Comments
+- 앞쪽 그래프 몇 개는 인상적이고 훨씬 깔끔하다. 다만 Go 큐 다이어그램은 객관적으로 더 나쁘다. TALA 버전은 실제보다 복잡해 보이게 만든다.
+- 기본 레이아웃 엔진이 일부 그래프에서 형편없어서 D2의 첫인상이 부당하게 나빴다. ELK는 큰 개선이었고 TALA는 때때로 ELK보다 훨씬 나았다. 다만 가격이 내 취미 예산을 넘어서 사지 않았다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+TALA es código abierto
+***** TLDR
+TALA, el algoritmo de autodisposición ortogonal de Terrastruct para diagramas de arquitectura de software, pasa a ser código abierto bajo MPL-2.0, la misma licencia que D2. Llega dos días después del anuncio de que D2 está bajo patrocinio fiscal de Hack Club: la empresa que financiaba el proyecto con un IDE cerrado y el motor de disposición de pago está cerrando, el creador sigue como mantenedor con tiempo limitado y el proyecto busca más mantenedores.
+***** Take
+TALA era la pieza propietaria que debía pagar el desarrollo de D2 y no dio para mantener la empresa en pie, así que ahora es gratis. El comentarista que dijo que TALA era claramente mejor que ELK pero costaba más que su presupuesto de caprichos resume el post mortem del negocio en una frase. Buen desenlace para los usuarios, aunque conviene observar a D2 con patrocinio de Hack Club y un mantenedor a tiempo parcial antes de montar encima una cadena de documentación.
+***** Comments
+- Los primeros gráficos son impresionantes, queda mucho más ordenado. El de la cola en Go es objetivamente peor: la versión de TALA lo hace parecer más complicado de lo que es.
+- Mi primera impresión de D2 fue mucho peor de lo que debería porque el motor de disposición por defecto es bastante malo con ciertos grafos. ELK es una gran mejora, y TALA a veces mejoraba mucho a ELK. Nunca compré TALA porque su precio superaba mi presupuesto de caprichos.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+TALA ist Open Source
+***** TLDR
+TALA, der orthogonale Autolayout-Algorithmus von Terrastruct für Softwarearchitekturdiagramme, steht jetzt unter MPL-2.0, derselben Lizenz wie D2. Zwei Tage zuvor wurde bekannt gegeben, dass D2 fiskalisch von Hack Club getragen wird: die Firma, die das Projekt über eine geschlossene IDE und die kostenpflichtige Layout-Engine finanziert hat, wird geschlossen, der Autor bleibt mit begrenzter Zeit Maintainer, und das Projekt sucht weitere Maintainer.
+***** Take
+TALA war das proprietäre Stück, das D2 finanzieren sollte, und es hat nicht gereicht, um die Firma zu halten, also ist es jetzt kostenlos. Der Kommentar, TALA sei klar besser als ELK gewesen, habe aber mehr gekostet als sein Spaßbudget hergab, ist die ganze Geschäfts-Nachbetrachtung in einem Satz. Für Nutzer ein gutes Ergebnis, doch D2 mit Hack-Club-Trägerschaft und einem Teilzeit-Maintainer sollte man beobachten, bevor man eine Dokumentationspipeline darauf baut.
+***** Comments
+- Die ersten Graphen sind beeindruckend, das wirkt deutlich aufgeräumter. Der Go-Queue-Graph ist objektiv schlechter, die TALA-Fassung lässt ihn komplizierter aussehen, als er ist.
+- Mein erster Eindruck von D2 war viel schlechter als nötig, weil die Standard-Layout-Engine bei manchen Graphen ziemlich schlecht ist. ELK ist eine große Verbesserung, und TALA war manchmal deutlich besser als ELK. Gekauft habe ich TALA nie, der Preis lag über meinem Spaßbudget.
+** Scientists observe Einstein's gravity in the quantum world :physics:quantum:science:research:
+:PROPERTIES:
+:ID:       49569838
+:URL:      https://www.ox.ac.uk/news/2026-08-28-scientists-observe-einsteins-gravity-in-the-quantum-world
+:HN_URL:   https://news.ycombinator.com/item?id=49569838
+:POINTS:   194
+:COMMENTS: 45
+:BY:       mudil
+:END:
+
+*** TLDR
+A collaboration led by Ben-Gurion University with Ulm and Oxford, including Roger Penrose, split ultracold rubidium atoms into superposition on an atom chip using microwave pulses, held one arm in place with magnetic fields while the other fell ballistically, then recombined them and measured the phase difference. The result matches what Einstein's equivalence principle predicts when applied to a quantum system. Published in Science Advances. It does not show that gravity is quantised: the atoms are light and the timescales short. The group wants to repeat this with nanodiamonds and heavier masses, where Penrose expects quantum mechanics to break down.
+
+*** Take
+Careful experiment, headline that oversells it. What they confirmed is that the equivalence principle still holds for a superposed atom, not that anyone saw quantum gravity. The follow-up is the interesting part: push the mass up until Penrose's prediction that superposition collapses under its own gravity either survives or does not. The skeptical comment about this group's track record with big claims is fair to keep in mind.
+
+*** Comments
+
+**** MathMonkeyMan
+I found it hard to believe that they accounted for other forces precisely enough that they could attribute the phase change to gravity, but this is beyond me so I trust the result.
+
+**** gaze
+Vlatko tends to show up on papers with, let's say, big claims. Consider the superconducting qubit and tardigrade paper.
+
+**** pjungwir
+Are any of the fundamental forces blocked by an intervening object? I assume not, since there is nothing like that in the equations.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+科学家在量子世界中观测到爱因斯坦的引力
+***** TLDR
+由本古里安大学牵头、乌尔姆大学和牛津大学参与的国际合作（成员包括罗杰·彭罗斯）在原子芯片上用微波脉冲把超冷铷原子劈成叠加态，用磁场把其中一路固定住，另一路自由下落，再让两路重合并测量相位差。结果与把爱因斯坦等效原理用于量子系统时的预言一致，论文发表在《科学进展》。这并不表明引力被量子化：原子很轻，时间尺度也很短。团队希望用纳米金刚石和更重的质量重复实验，那正是彭罗斯预期量子力学会失效的区域。
+***** Take
+实验做得细致，标题却夸大了。他们证实的是等效原理对处于叠加态的原子依然成立，而不是有人看到了量子引力。真正有意思的是下一步：把质量往上推，看彭罗斯关于叠加态会在自身引力下坍缩的预言能否站住。有评论提醒这个圈子过往论文的大标题问题，这一点值得记住。
+***** Comments
+- 我很难相信他们能把其他作用力扣得这么干净，从而把相位变化归因于引力，不过这超出我的能力范围，我就先信这个结果。
+- Vlatko 常出现在那种，怎么说呢，主张很大的论文上。想想那篇超导量子比特加水熊虫的论文。
+- 有没有哪种基本力会被中间的物体挡住？我猜没有，因为方程里没有这样的东西。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+科学者が量子の世界でアインシュタインの重力を観測
+***** TLDR
+ベングリオン大学が主導し、ウルム大学とオックスフォード大学、そしてロジャー・ペンローズも加わった国際共同研究が、原子チップ上でマイクロ波パルスを使い、極低温のルビジウム原子を重ね合わせ状態に分けた。片方の経路を磁場で保持し、もう片方を自由落下させてから再結合し、位相差を測定した。結果は、アインシュタインの等価原理を量子系に適用したときの予測と一致した。論文はScience Advancesに掲載。重力が量子化されていることを示したわけではない。原子は軽く、時間スケールも短い。研究チームはナノダイヤモンドなどより重い質量で再現したいとしており、そこはペンローズが量子力学の破綻を予想する領域だ。
+***** Take
+実験は丁寧だが、見出しは誇張だ。確認されたのは重ね合わせ状態の原子でも等価原理が成り立つことであって、誰かが量子重力を見たわけではない。面白いのは次の段階で、質量を上げていき、重ね合わせが自らの重力で崩壊するというペンローズの予想が生き残るかどうかを見ることだ。このグループの大きな主張の履歴に触れた懐疑的なコメントは、覚えておいて損はない。
+***** Comments
+- 他の力をそこまで精密に差し引いて位相変化を重力に帰属できるとは信じがたいが、自分の手には余る話なので結果は信用する。
+- Vlatkoは、なんというか主張の大きい論文によく名前が出る。超伝導量子ビットとクマムシの論文を思い出してほしい。
+- 基本的な力の中に、間に物体があると遮られるものはあるのだろうか。方程式にそういう項はないので、ないと思うが。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+과학자들이 양자 세계에서 아인슈타인의 중력을 관측하다
+***** TLDR
+벤구리온대가 이끌고 울름대와 옥스퍼드대가 참여한 국제 공동연구팀이, 로저 펜로즈도 함께해, 원자칩 위에서 마이크로파 펄스로 극저온 루비듐 원자를 중첩 상태로 나눴다. 한쪽 경로는 자기장으로 붙잡아 두고 다른 쪽은 자유낙하시킨 뒤 다시 합쳐 위상차를 측정했다. 결과는 아인슈타인의 등가원리를 양자계에 적용했을 때의 예측과 일치했다. 논문은 Science Advances에 실렸다. 중력이 양자화되었음을 보인 것은 아니다. 원자는 가볍고 시간 척도도 짧다. 연구팀은 나노다이아몬드 등 더 무거운 질량으로 실험을 반복하려 하는데, 바로 그 영역에서 펜로즈는 양자역학이 무너진다고 본다.
+***** Take
+실험은 정교하지만 제목은 과장이다. 확인된 것은 중첩 상태의 원자에서도 등가원리가 성립한다는 사실이지, 누가 양자중력을 봤다는 뜻이 아니다. 흥미로운 건 다음 단계다. 질량을 계속 올려 중첩이 자기 중력으로 붕괴한다는 펜로즈의 예측이 살아남는지 보는 것이다. 이 그룹의 큰 주장 이력을 지적한 회의적 댓글도 염두에 둘 만하다.
+***** Comments
+- 다른 힘을 그 정도로 정밀하게 걸러내고 위상 변화를 중력 탓으로 돌릴 수 있다는 게 잘 믿기지 않지만, 내 이해를 넘어서는 영역이라 결과를 믿기로 한다.
+- Vlatko는 말하자면 주장이 큰 논문에 자주 이름을 올린다. 초전도 큐비트와 완보동물 논문을 떠올려 보라.
+- 기본 힘 중에 중간에 물체가 있으면 차단되는 게 있을까? 방정식에 그런 항이 없으니 없다고 생각한다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Científicos observan la gravedad de Einstein en el mundo cuántico
+***** TLDR
+Una colaboración liderada por la Universidad Ben-Gurión con Ulm y Oxford, con Roger Penrose entre los autores, dividió átomos ultrafríos de rubidio en superposición sobre un chip atómico mediante pulsos de microondas, mantuvo un brazo fijo con campos magnéticos mientras el otro caía libremente, y luego los recombinó para medir la diferencia de fase. El resultado coincide con lo que predice el principio de equivalencia de Einstein aplicado a un sistema cuántico. Publicado en Science Advances. No demuestra que la gravedad esté cuantizada: los átomos son ligeros y las escalas de tiempo cortas. El grupo quiere repetirlo con nanodiamantes y masas mayores, donde Penrose espera que la mecánica cuántica falle.
+***** Take
+Experimento cuidadoso, titular exagerado. Lo confirmado es que el principio de equivalencia sigue valiendo para un átomo en superposición, no que alguien haya visto gravedad cuántica. Lo interesante es la continuación: subir la masa hasta comprobar si sobrevive la predicción de Penrose de que la superposición colapsa bajo su propia gravedad. El comentario escéptico sobre el historial de este grupo con afirmaciones grandes conviene tenerlo presente.
+***** Comments
+- Me cuesta creer que hayan descontado las otras fuerzas con precisión suficiente como para atribuir el cambio de fase a la gravedad, pero esto me supera y me fío del resultado.
+- Vlatko suele aparecer en artículos con afirmaciones, digamos, grandes. Piensa en el del cúbit superconductor y el tardígrado.
+- ¿Alguna de las fuerzas fundamentales queda bloqueada por un objeto que se interponga? Supongo que no, porque nada de eso aparece en las ecuaciones.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Forscher beobachten Einsteins Gravitation in der Quantenwelt
+***** TLDR
+Eine Zusammenarbeit unter Federführung der Ben-Gurion-Universität mit Ulm und Oxford, an der auch Roger Penrose beteiligt ist, teilte ultrakalte Rubidiumatome mit Mikrowellenpulsen auf einem Atomchip in eine Überlagerung auf, hielt einen Arm mit Magnetfeldern fest, ließ den anderen frei fallen, führte beide wieder zusammen und maß die Phasendifferenz. Das Ergebnis stimmt mit dem überein, was Einsteins Äquivalenzprinzip für ein Quantensystem vorhersagt. Veröffentlicht in Science Advances. Es zeigt nicht, dass Gravitation quantisiert ist: die Atome sind leicht, die Zeitskalen kurz. Die Gruppe will das mit Nanodiamanten und schwereren Massen wiederholen, dort erwartet Penrose ein Versagen der Quantenmechanik.
+***** Take
+Sorgfältiges Experiment, überzogene Überschrift. Bestätigt wurde, dass das Äquivalenzprinzip auch für ein überlagertes Atom gilt, nicht dass jemand Quantengravitation gesehen hätte. Interessant ist die Fortsetzung: die Masse so weit erhöhen, bis Penroses Vorhersage, dass Überlagerung unter der eigenen Gravitation zusammenbricht, entweder standhält oder nicht. Der skeptische Kommentar zur Neigung dieser Gruppe zu großen Behauptungen ist es wert, im Hinterkopf zu bleiben.
+***** Comments
+- Ich finde es schwer zu glauben, dass sie andere Kräfte präzise genug berücksichtigt haben, um die Phasenänderung der Gravitation zuzuschreiben, aber das übersteigt mein Wissen, also vertraue ich dem Ergebnis.
+- Vlatko taucht öfter auf Arbeiten mit, sagen wir, großen Behauptungen auf. Man denke an das Paper mit supraleitendem Qubit und Bärtierchen.
+- Wird eine der fundamentalen Kräfte von einem dazwischenliegenden Objekt blockiert? Ich nehme an nicht, denn in den Gleichungen steht nichts dergleichen.
