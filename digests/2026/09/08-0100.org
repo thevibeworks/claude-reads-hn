@@ -1,0 +1,504 @@
+#+TITLE: HN Digest 2026-09-08 01:00 UTC
+#+DATE: 2026-09-08T01:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+LG TVs record with the screen off, Broadcom pulls the VMware exit ramp, and a backdoor rides in on GNU strip
+
+* Highlights
+- LG OLEDs log standby mic audio and scan your LAN, per Gamers Nexus packet captures
+- Broadcom 404s the VDDK, breaking agentless VMware migration for everyone but Proxmox
+- NixOS backdoored through a tampered GNU strip, no compiler required
+- Caltech undergrads offer $2M in AI credits for weekend attacks on open conjectures
+- Every standing LA building, dropped on the map in the year it was built
+
+* Stories
+
+** 216M Spy TVs - The LG Smart TV Problem ［video］ :privacy:hardware:surveillance:security:
+:PROPERTIES:
+:ID:       49592375
+:URL:      https://www.youtube.com/watch?v=6IFVTcM28KA
+:HN_URL:   https://news.ycombinator.com/item?id=49592375
+:POINTS:   476
+:COMMENTS: 708
+:BY:       treve
+:END:
+
+*** TLDR
+Gamers Nexus put LG OLEDs behind Wireshark and found the sets scanning the local network for phones and watches, logging nearby Wi-Fi names and signal strengths, running automated content recognition on every input, and capturing microphone audio while in standby. Cut the ethernet and the TV stored the voice files locally, then uploaded them once the network came back. LG's ad division claims 363 million secondary addressable devices in the US on top of roughly 216 million TVs sold. webOS remote code execution bugs are in responsible disclosure. LG has not commented.
+
+*** Take
+The buffering is the part with no innocent explanation. A TV that records with the screen off and holds the audio until it can reach a server was built expecting to be offline sometimes. LG's own appliance terms already make it your job to warn guests they may be recorded, which says they understood exactly what they shipped.
+
+*** Comments
+
+**** Animats
+LG's appliance contract terms make it your sole responsibility to obtain consent from any third party whose voice the product may capture.
+
+**** korzinka
+I read the terms five years ago, refused, and kept every network function disabled. My friends mocked me for it. Still a good TV, plenty of HDMI ports.
+
+**** spockz
+First a monitor that installs a root helper to serve ads, now a TV actively scanning the local network. What is next?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+2.16 亿台间谍电视：LG 智能电视问题（视频）
+***** TLDR
+Gamers Nexus 用 Wireshark 抓取 LG OLED 电视的流量，发现电视会扫描局域网内的手机和手表、记录附近 Wi-Fi 的名称与信号强度、对所有输入源运行自动内容识别，并在待机状态下采集麦克风音频。拔掉网线后电视会把语音文件存在本地，等网络恢复再上传。LG 广告部门称除约 2.16 亿台已售电视外，仅美国就可触达 3.63 亿台次级设备。webOS 的远程代码执行漏洞正在走责任披露流程。LG 未作回应。
+***** Take
+先缓存后上传这一点没有无辜的解释。一台在息屏状态下录音、并把音频留到能连上服务器再传的电视，设计之初就预设了会离线。LG 自己的家电条款早就把「告知在场客人可能被录音」的责任推给用户，这说明他们很清楚自己卖的是什么。
+***** Comments
+- LG 的家电合同条款规定，取得任何可能被产品录到声音的第三方的同意，完全是你自己的责任。
+- 五年前我读了条款，拒绝接受，把所有联网功能都关掉了。朋友们嘲笑我。电视本身不错，HDMI 接口也够多。
+- 先是显示器装个 root 权限的小工具来推广告，现在电视直接扫描局域网。下一步是什么？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+2億1600万台のスパイTV：LGスマートテレビ問題［動画］
+***** TLDR
+Gamers NexusがLGのOLEDテレビをWiresharkで解析し、ローカルネットワーク上のスマホや時計をスキャンし、近隣Wi-FiのSSIDと電波強度を記録し、全入力に対して自動コンテンツ認識を実行し、待機状態でもマイク音声を取得していることを確認した。イーサネットを抜くと音声ファイルをローカルに保存し、回線復帰後にアップロードした。LGの広告部門は、約2億1600万台のテレビ販売に加え、米国だけで3億6300万台の二次デバイスにリーチできると主張している。webOSのリモートコード実行の脆弱性は責任ある開示の途中。LGはコメントしていない。
+***** Take
+いったん保存して後で送るという挙動に無害な説明はない。画面を消したまま録音し、サーバーに届くまで音声を保持するテレビは、オフラインになる前提で設計されている。LG自身の家電規約が「録音され得る来客への告知は利用者の責任」と定めている時点で、何を出荷したか分かっていたということだ。
+***** Comments
+- LGの家電契約条項では、製品が音声を拾う可能性のある第三者から同意を得るのは利用者の完全な責任だとされている。
+- 5年前に規約を読んで拒否し、ネットワーク機能を全部切った。友人には笑われた。テレビ自体は悪くないし、HDMI端子も多い。
+- まずはroot権限のヘルパーを勝手に入れて広告を出すモニター、次はローカルネットワークを覗くテレビ。次は何だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+2억 1600만 대의 스파이 TV: LG 스마트 TV 문제 ［영상］
+***** TLDR
+Gamers Nexus가 Wireshark로 LG OLED TV의 트래픽을 분석한 결과, TV가 로컬 네트워크의 휴대폰과 시계를 스캔하고 주변 Wi-Fi 이름과 신호 강도를 기록하며 모든 입력에 대해 자동 콘텐츠 인식을 돌리고, 대기 상태에서도 마이크 음성을 수집하는 것으로 나타났다. 이더넷을 뽑으면 음성 파일을 로컬에 저장했다가 네트워크가 복구되면 업로드했다. LG 광고 부문은 약 2억 1600만 대의 TV 판매 외에 미국에서만 3억 6300만 대의 2차 기기에 도달할 수 있다고 주장한다. webOS의 원격 코드 실행 취약점은 책임 공개 절차를 밟는 중이다. LG는 아직 입장을 내지 않았다.
+***** Take
+저장했다가 나중에 올린다는 부분에는 선의의 해석이 없다. 화면이 꺼진 채로 녹음하고 서버에 닿을 때까지 음성을 들고 있는 TV는 오프라인 상태를 전제로 설계된 것이다. LG의 가전 약관이 이미 '녹음될 수 있는 손님에게 알릴 책임은 사용자에게 있다'고 못 박아 둔 것을 보면, 자기들이 무엇을 출하했는지 알고 있었다는 뜻이다.
+***** Comments
+- LG 가전 계약 조항은 제품이 음성을 담을 수 있는 제3자의 동의를 받는 것이 전적으로 사용자 책임이라고 규정한다.
+- 5년 전 약관을 읽고 거부한 뒤 네트워크 기능을 전부 껐다. 친구들은 나를 비웃었다. TV 자체는 괜찮고 HDMI 포트도 넉넉하다.
+- 먼저 루트 권한 도우미를 설치해 광고를 띄우는 모니터, 이제는 로컬 네트워크를 훑는 TV다. 다음은 뭔가.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+216 millones de televisores espía: el problema de las smart TV de LG ［vídeo］
+***** TLDR
+Gamers Nexus analizó con Wireshark el tráfico de televisores OLED de LG y encontró que escanean la red local en busca de móviles y relojes, registran nombres y potencia de las redes Wi-Fi cercanas, aplican reconocimiento automático de contenido a todas las entradas y captan audio del micrófono en modo reposo. Al desconectar el ethernet, el televisor guardaba los archivos de voz en local y los subía al recuperar la conexión. La división publicitaria de LG afirma llegar a 363 millones de dispositivos secundarios solo en EE. UU., además de unos 216 millones de televisores vendidos. Hay fallos de ejecución remota de código en webOS en divulgación responsable. LG no ha respondido.
+***** Take
+Lo que no tiene explicación inocente es que guarde y envíe después. Un televisor que graba con la pantalla apagada y retiene el audio hasta poder alcanzar un servidor está diseñado contando con quedarse sin red. Las propias condiciones de LG ya te obligan a avisar a tus invitados de que pueden ser grabados, así que sabían perfectamente qué estaban vendiendo.
+***** Comments
+- Las condiciones contractuales de los electrodomésticos de LG dicen que es responsabilidad exclusiva tuya obtener el consentimiento de cualquier tercero cuya voz pueda captar el producto.
+- Leí las condiciones hace cinco años, no acepté y dejé todas las funciones de red desactivadas. Mis amigos se rieron de mí. Buen televisor, por cierto, y con muchos puertos HDMI.
+- Primero un monitor que instala un ayudante con permisos de root para mostrar anuncios, ahora un televisor que rastrea la red local. ¿Qué viene después?
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+216 Millionen Spionage-Fernseher: das LG-Smart-TV-Problem ［Video］
+***** TLDR
+Gamers Nexus hat den Datenverkehr von LG-OLED-Fernsehern mit Wireshark aufgezeichnet und festgestellt, dass die Geräte das lokale Netz nach Handys und Uhren durchsuchen, Namen und Signalstärken benachbarter WLANs protokollieren, auf allen Eingängen automatische Inhaltserkennung laufen lassen und im Standby Mikrofonaudio aufnehmen. Nach dem Ziehen des Ethernet-Kabels speicherte der Fernseher die Sprachdateien lokal und lud sie hoch, sobald die Verbindung zurück war. LGs Werbesparte wirbt neben rund 216 Millionen verkauften Fernsehern mit 363 Millionen erreichbaren Zweitgeräten allein in den USA. Remote-Code-Execution-Lücken in webOS befinden sich in der Offenlegung. LG hat sich nicht geäußert.
+***** Take
+Das Zwischenspeichern ist der Punkt ohne harmlose Erklärung. Ein Fernseher, der bei ausgeschaltetem Bildschirm aufnimmt und das Audio behält, bis er einen Server erreicht, ist für Offline-Phasen gebaut worden. LGs eigene Gerätebedingungen legen die Pflicht, Gäste über mögliche Aufnahmen zu informieren, ohnehin dem Nutzer auf. Man wusste also, was man ausliefert.
+***** Comments
+- LGs Vertragsbedingungen für Haushaltsgeräte machen es allein zu deiner Verantwortung, die Zustimmung aller Dritten einzuholen, deren Stimme das Gerät aufnehmen könnte.
+- Ich habe die Bedingungen vor fünf Jahren gelesen, abgelehnt und alle Netzfunktionen deaktiviert gelassen. Meine Freunde haben mich ausgelacht. Kein schlechter Fernseher, viele HDMI-Anschlüsse.
+- Erst ein Monitor, der ein Root-Hilfsprogramm installiert und Werbung einblendet, jetzt ein Fernseher, der aktiv das lokale Netz durchsucht. Was kommt als Nächstes?
+** Leaving VMware just got harder after Broadcom pulled VDDK downloads :vmware:broadcom:enterprise:virtualization:
+:PROPERTIES:
+:ID:       49602699
+:URL:      https://www.virtualizationhowto.com/2026/09/leaving-vmware-just-got-harder-after-broadcom-pulled-vddk-downloads/
+:HN_URL:   https://news.ycombinator.com/item?id=49602699
+:POINTS:   78
+:COMMENTS: 34
+:BY:       josephcsible
+:END:
+
+*** TLDR
+Broadcom quietly turned the public download links for VMware's Virtual Disk Development Kit into 404s, with no deprecation notice, and told support customers the VDDK is no longer available for use or download and to go through authorized Technology Alliance Partners. VDDK is the library agentless migration and backup tools use to read virtual disks, so Azure Migrate, Red Hat's Migration Toolkit for Virtualization, Nutanix Move, virt-v2v, nbdkit and Platform9's vJailbreak are all affected. Proxmox ships its own importer and is not.
+
+*** Take
+Removing the exit ramp is a strange escalation when the existing complaint against Broadcom was already about price. Anyone mid-migration now pays a partner or falls back to slower agent-based copying, and anyone who had not started just learned to plan the exit before the next renewal instead of after it. The line in the article about Proxmox being unaffected is going to sell a lot of Proxmox.
+
+*** Comments
+
+**** soamv
+As an old ex-VMware engineer it is sad reading these. A lot of really cool engineering happened in VMware's heyday, and Broadcom seems to see the company as long past its ability to innovate.
+
+**** ramgine
+I got my current job because I could lead the Hyper-V to VMware migration. Just this year I led the VMware to Hyper-V migration.
+
+**** Jedd
+Migrating off ESXi to Proxmox was surprisingly painless: mount the ESXi hosts as storage and copy the VMs across.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Broadcom 撤下 VDDK 下载后，离开 VMware 更难了
+***** TLDR
+Broadcom 悄悄把 VMware 虚拟磁盘开发套件（VDDK）的公开下载链接改成了 404，没有任何弃用公告，并告知支持客户 VDDK 已不再提供使用或下载，需通过授权的技术联盟合作伙伴获取。VDDK 是无代理迁移和备份工具读取虚拟磁盘所依赖的库，因此 Azure Migrate、红帽的虚拟化迁移工具包、Nutanix Move、virt-v2v、nbdkit 以及 Platform9 的 vJailbreak 都受影响。Proxmox 自带导入工具，不受影响。
+***** Take
+原本对 Broadcom 的不满集中在价格上，如今直接拆掉出口通道，是一次奇怪的升级。迁移进行到一半的人要么去找合作伙伴付费，要么退回更慢的有代理复制；还没开始的人学到的教训是，退出计划要放在下一次续约之前，而不是之后。文章里那句「Proxmox 不受影响」大概会给 Proxmox 带来不少客户。
+***** Comments
+- 作为 VMware 的老员工，读这些新闻挺难受的。VMware 全盛时期做过很多很酷的工程，而 Broadcom 似乎认定这家公司早已丧失创新能力。
+- 我当年拿到现在这份工作，是因为能主导从 Hyper-V 到 VMware 的迁移。今年我主导了从 VMware 回到 Hyper-V 的迁移。
+- 从 ESXi 迁到 Proxmox 出乎意料地顺利：把 ESXi 主机挂载成存储，再把虚拟机复制过来就行。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+BroadcomがVDDKの配布を停止し、VMware離脱がさらに難しくなった
+***** TLDR
+BroadcomはVMwareのVirtual Disk Development Kit（VDDK）の公開ダウンロードリンクを予告なく404にし、サポート契約者にはVDDKはもう利用もダウンロードもできず、認定テクノロジーアライアンスパートナー経由にせよと伝えた。VDDKはエージェントレスの移行・バックアップツールが仮想ディスクを読むために使うライブラリで、Azure Migrate、Red HatのMigration Toolkit for Virtualization、Nutanix Move、virt-v2v、nbdkit、Platform9のvJailbreakが影響を受ける。独自のインポート機能を持つProxmoxは影響なし。
+***** Take
+Broadcomへの不満はこれまで価格の話だったのに、出口そのものを塞ぐのは妙な一手だ。移行中の企業はパートナーに金を払うか、遅いエージェント方式に戻るしかない。まだ着手していない企業は、次の更新の前に離脱計画を立てるべきだと学んだ。記事にある「Proxmoxは影響を受けない」の一文は、Proxmoxをかなり売ることになる。
+***** Comments
+- 元VMwareのエンジニアとしては読むのがつらい。全盛期には本当に面白い技術がたくさん生まれたが、Broadcomはこの会社をとうに革新力を失ったものと見ているようだ。
+- Hyper-VからVMwareへの移行を主導できたから今の職に就いた。そして今年、VMwareからHyper-Vへの移行を主導した。
+- ESXiからProxmoxへの移行は驚くほど楽だった。ESXiホストをストレージとしてマウントして、VMをコピーするだけ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+브로드컴이 VDDK 다운로드를 내리면서 VMware 탈출이 더 어려워졌다
+***** TLDR
+브로드컴이 VMware의 Virtual Disk Development Kit(VDDK) 공개 다운로드 링크를 아무 공지 없이 404로 바꾸고, 지원 고객에게는 VDDK를 더 이상 사용하거나 내려받을 수 없으며 공인 테크놀로지 얼라이언스 파트너를 거치라고 안내했다. VDDK는 에이전트리스 마이그레이션·백업 도구가 가상 디스크를 읽는 데 쓰는 라이브러리라, Azure Migrate, 레드햇의 Migration Toolkit for Virtualization, Nutanix Move, virt-v2v, nbdkit, Platform9의 vJailbreak가 모두 영향을 받는다. 자체 임포터를 갖춘 Proxmox는 영향이 없다.
+***** Take
+지금까지 브로드컴에 대한 불만은 가격 문제였는데, 아예 출구를 없애는 것은 이상한 확전이다. 마이그레이션 중인 곳은 파트너에게 비용을 내거나 더 느린 에이전트 방식으로 돌아가야 하고, 아직 시작하지 않은 곳은 다음 갱신 이후가 아니라 그 전에 탈출 계획을 세워야 한다는 걸 배웠다. 기사에 있는 'Proxmox는 영향 없음' 한 줄이 Proxmox를 꽤 많이 팔아줄 것이다.
+***** Comments
+- 옛 VMware 엔지니어로서 이런 기사를 읽는 건 씁쓸하다. 전성기에는 정말 멋진 엔지니어링이 많았는데, 브로드컴은 이 회사를 이미 혁신이 끝난 곳으로 보는 듯하다.
+- Hyper-V에서 VMware로 가는 마이그레이션을 이끌 수 있어서 지금 직장을 얻었다. 그리고 올해는 VMware에서 Hyper-V로 가는 마이그레이션을 이끌었다.
+- ESXi에서 Proxmox로 옮기는 건 의외로 수월했다. ESXi 호스트를 스토리지로 마운트하고 VM을 복사해 오면 끝이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Salir de VMware se complica: Broadcom retira las descargas del VDDK
+***** TLDR
+Broadcom convirtió en silencio los enlaces públicos de descarga del Virtual Disk Development Kit (VDDK) de VMware en errores 404, sin aviso de obsolescencia, y comunicó a los clientes con soporte que el VDDK ya no está disponible para uso ni descarga y que hay que pasar por partners autorizados del programa Technology Alliance. El VDDK es la biblioteca con la que las herramientas de migración y copia de seguridad sin agente leen los discos virtuales, así que afecta a Azure Migrate, al Migration Toolkit for Virtualization de Red Hat, a Nutanix Move, a virt-v2v, a nbdkit y a vJailbreak de Platform9. Proxmox, que trae su propio importador, no se ve afectado.
+***** Take
+Quitar la rampa de salida es una escalada extraña cuando la queja contra Broadcom ya iba de precios. Quien esté a mitad de migración pagará a un partner o volverá a la copia con agente, más lenta, y quien no hubiera empezado acaba de aprender que el plan de salida va antes de la próxima renovación, no después. La frase del artículo sobre que Proxmox no está afectado va a vender mucho Proxmox.
+***** Comments
+- Como antiguo ingeniero de VMware da pena leer esto. En su mejor época se hizo ingeniería realmente buena, y Broadcom parece ver a la empresa como algo que hace tiempo dejó de innovar.
+- Conseguí mi trabajo actual porque podía liderar la migración de Hyper-V a VMware. Este mismo año he liderado la migración de VMware a Hyper-V.
+- Migrar de ESXi a Proxmox fue sorprendentemente sencillo: montas los hosts ESXi como almacenamiento y copias las máquinas.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Der Abschied von VMware wird schwerer: Broadcom nimmt die VDDK-Downloads offline
+***** TLDR
+Broadcom hat die öffentlichen Download-Links für VMwares Virtual Disk Development Kit (VDDK) klammheimlich auf 404 gesetzt, ohne Abkündigung, und Supportkunden mitgeteilt, das VDDK sei weder nutzbar noch herunterladbar und laufe künftig über autorisierte Technology-Alliance-Partner. Das VDDK ist die Bibliothek, mit der agentenlose Migrations- und Backup-Werkzeuge virtuelle Festplatten lesen. Betroffen sind Azure Migrate, Red Hats Migration Toolkit for Virtualization, Nutanix Move, virt-v2v, nbdkit und Platform9s vJailbreak. Proxmox bringt einen eigenen Import mit und ist nicht betroffen.
+***** Take
+Die Ausfahrt zu sperren ist eine seltsame Eskalation, wenn sich die Kritik an Broadcom bisher am Preis entzündet hat. Wer mitten in der Migration steckt, zahlt jetzt einen Partner oder fällt auf langsameres agentenbasiertes Kopieren zurück. Wer noch nicht angefangen hat, hat gelernt, den Ausstieg vor der nächsten Vertragsverlängerung zu planen und nicht danach. Der Satz über Proxmox im Artikel wird eine Menge Proxmox verkaufen.
+***** Comments
+- Als alter Ex-VMware-Ingenieur ist das traurig zu lesen. In der Blütezeit entstand richtig gute Technik, und Broadcom sieht die Firma offenbar als längst innovationsmüde an.
+- Ich habe meinen jetzigen Job bekommen, weil ich die Migration von Hyper-V zu VMware leiten konnte. Dieses Jahr habe ich die Migration von VMware zu Hyper-V geleitet.
+- Der Umzug von ESXi zu Proxmox war überraschend schmerzfrei: ESXi-Hosts als Storage einbinden und die VMs herüberkopieren.
+** Trusting-Trust Attack against an Entire Linux Distribution :security:nixos:supplychain:compilers:
+:PROPERTIES:
+:ID:       49575515
+:URL:      https://arxiv.org/abs/2607.24888
+:HN_URL:   https://news.ycombinator.com/item?id=49575515
+:POINTS:   136
+:COMMENTS: 35
+:BY:       signa11
+:END:
+
+*** TLDR
+The paper backdoors NixOS without touching a compiler. The researchers tampered with GNU strip in the binary seed; the payload rewrites ELF files, copies itself into the next generation of strip, and survives after the seed drops out of the dependency closure. From that one binary they built a complete graphical installer with no build failures, and nearly every binary it ships carries a backdoor. They tested against a real nixpkgs revision.
+
+*** Take
+Nix sells itself on a hash-pinned build graph making tampering visible, and the paper's answer is that the hashes pin the inputs, not what the tools do to the output. Choosing strip over gcc is the whole trick: everyone watches the compiler, nobody audits the utility that removes symbols. The practical caveat from the thread is that x86 nixpkgs now bootstraps from 181 bytes, so the live exposure is on aarch64 and riscv64.
+
+*** Comments
+
+**** colinsane
+x86_64 and i686 nixpkgs no longer bootstrap from 25 bundled binaries but from a 181-byte seed. At publication this would apply to non-x86 platforms like aarch64-linux and riscv64-linux.
+
+**** Jach
+Glad they mention Wheeler's diverse double-compiling in 7.2, since a lot of people do not know it exists. They dismiss it as not applying here and I am not convinced by the argument.
+
+**** fjfaase
+I reviewed the live-bootstrap project, which starts from a small seed. There is a T-diagram showing every process executed in stage0.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+针对整个 Linux 发行版的「信任信任」攻击
+***** TLDR
+这篇论文没有动编译器就给 NixOS 植入了后门。研究者篡改了二进制种子中的 GNU strip：植入的载荷会改写 ELF 文件，把自己复制进下一代 strip，并在种子退出依赖闭包之后继续存活。仅凭这一个二进制文件，他们完整构建出了一个图形安装器，构建过程没有任何失败，而安装器交付的几乎每个二进制文件都带有后门。实验针对的是真实的 nixpkgs 版本。
+***** Take
+Nix 的卖点是哈希锁定的构建图能让篡改无所遁形，而这篇论文的回答是：哈希锁的是输入，不是工具对输出做了什么。选 strip 而不是 gcc 正是关键——所有人都盯着编译器，没人去审计那个只负责去掉符号的小工具。评论里的现实补充是，x86 的 nixpkgs 现在从 181 字节的种子引导，所以真正暴露的是 aarch64 和 riscv64。
+***** Comments
+- x86_64 和 i686 的 nixpkgs 已经不再从 25 个打包二进制引导，而是从 181 字节的种子开始。在论文发表时，这一攻击适用于 aarch64-linux、riscv64-linux 等非 x86 平台。
+- 很高兴他们在 7.2 节提到了 Wheeler 的「多样化双重编译」，很多人根本不知道它的存在。他们认为这里不适用，但这个论证没能说服我。
+- 我审查过 live-bootstrap 项目，它从一个很小的种子开始。有一张 T 型图列出了 stage0 中执行的每一个进程。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Linuxディストリビューション全体に対するTrusting-Trust攻撃
+***** TLDR
+この論文はコンパイラに触れずにNixOSへバックドアを仕込む。研究者はバイナリシード中のGNU stripを改変した。ペイロードはELFファイルを書き換え、次世代のstripへ自分を複製し、シードが依存クロージャから外れた後も生き残る。この1つのバイナリだけからビルド失敗なしにグラフィカルインストーラ一式を構築し、出荷されるほぼすべてのバイナリにバックドアが入った。検証は実際のnixpkgsリビジョンに対して行われている。
+***** Take
+Nixの売りはハッシュで固定されたビルドグラフが改ざんを可視化することだが、論文の答えは「ハッシュが固定するのは入力であって、ツールが出力に何をするかではない」だ。gccではなくstripを選んだ点が肝で、皆がコンパイラを見張る一方、シンボルを取り除くだけのユーティリティは誰も監査しない。スレッドの実務的な補足として、x86のnixpkgsは今や181バイトのシードから起動するため、実際に危ないのはaarch64とriscv64だ。
+***** Comments
+- x86_64とi686のnixpkgsは、25個の同梱バイナリではなく181バイトのシードからブートストラップするようになった。公開時点でこの攻撃はaarch64-linuxやriscv64-linuxなど非x86が対象になる。
+- 7.2節でWheelerの多様化二重コンパイルに触れているのはよい。存在自体を知らない人が多いからだ。今回は適用外だと退けているが、その論証には納得できない。
+- 小さなシードから始まるlive-bootstrapプロジェクトをレビューした。stage0で実行される全プロセスを示したT図がある。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+리눅스 배포판 전체를 겨냥한 Trusting-Trust 공격
+***** TLDR
+이 논문은 컴파일러를 건드리지 않고 NixOS에 백도어를 심는다. 연구진은 바이너리 시드에 있는 GNU strip을 변조했고, 페이로드는 ELF 파일을 다시 쓰고 다음 세대의 strip에 자신을 복제하며 시드가 의존성 클로저에서 빠진 뒤에도 살아남는다. 이 바이너리 하나로 빌드 실패 없이 완전한 그래픽 설치 프로그램을 만들었고, 배포되는 거의 모든 바이너리에 백도어가 들어갔다. 실제 nixpkgs 리비전을 대상으로 검증했다.
+***** Take
+Nix는 해시로 고정된 빌드 그래프가 변조를 드러낸다는 점을 내세우는데, 이 논문의 답은 해시가 고정하는 것은 입력이지 도구가 출력에 무슨 짓을 하는지가 아니라는 것이다. gcc가 아니라 strip을 고른 것이 핵심이다. 다들 컴파일러는 감시하지만 심볼을 제거하는 유틸리티를 감사하는 사람은 없다. 스레드의 현실적 보충은 x86 nixpkgs가 이제 181바이트 시드에서 부트스트랩하므로 실제 노출은 aarch64와 riscv64라는 것이다.
+***** Comments
+- x86_64와 i686 nixpkgs는 이제 번들 바이너리 25개가 아니라 181바이트 시드에서 부트스트랩한다. 발표 시점 기준으로 이 공격은 aarch64-linux, riscv64-linux 같은 비 x86 플랫폼에 해당한다.
+- 7.2절에서 Wheeler의 다양화 이중 컴파일을 언급한 건 반갑다. 존재조차 모르는 사람이 많으니까. 여기엔 적용되지 않는다고 일축했는데 그 논증은 설득력이 없다.
+- 작은 시드에서 시작하는 live-bootstrap 프로젝트를 검토한 적이 있다. stage0에서 실행되는 모든 프로세스를 보여주는 T 다이어그램이 있다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Ataque trusting-trust contra una distribución de Linux entera
+***** TLDR
+El artículo pone una puerta trasera en NixOS sin tocar el compilador. Los investigadores manipularon el GNU strip de la semilla binaria: la carga reescribe ficheros ELF, se copia en la siguiente generación de strip y sobrevive después de que la semilla salga del cierre de dependencias. A partir de ese único binario construyeron un instalador gráfico completo sin un solo fallo de compilación, y casi todos los binarios que entrega llevan puerta trasera. Lo probaron contra una revisión real de nixpkgs.
+***** Take
+Nix se vende porque un grafo de compilación fijado por hashes hace visible cualquier manipulación, y la respuesta del artículo es que los hashes fijan las entradas, no lo que las herramientas hacen con la salida. Elegir strip en lugar de gcc es todo el truco: todo el mundo vigila el compilador y nadie audita la utilidad que quita símbolos. El matiz práctico del hilo es que nixpkgs en x86 ya arranca desde 181 bytes, así que la exposición real está en aarch64 y riscv64.
+***** Comments
+- nixpkgs en x86_64 e i686 ya no arranca desde 25 binarios empaquetados, sino desde una semilla de 181 bytes. En la fecha de publicación esto aplicaría a plataformas no x86 como aarch64-linux y riscv64-linux.
+- Me alegra que mencionen la doble compilación diversificada de Wheeler en el 7.2, porque mucha gente ni sabe que existe. La descartan diciendo que aquí no aplica y el argumento no me convence.
+- Revisé el proyecto live-bootstrap, que parte de una semilla pequeña. Hay un diagrama en T con todos los procesos que se ejecutan en stage0.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Trusting-Trust-Angriff gegen eine komplette Linux-Distribution
+***** TLDR
+Die Arbeit versieht NixOS mit einer Hintertür, ohne den Compiler anzufassen. Die Forschenden manipulierten GNU strip im Binär-Seed: Die Payload schreibt ELF-Dateien um, kopiert sich in die nächste strip-Generation und überlebt, nachdem der Seed aus der Abhängigkeits-Closure verschwunden ist. Aus dieser einen Binärdatei bauten sie einen vollständigen grafischen Installer ohne einen einzigen Build-Fehler, und fast jede ausgelieferte Binärdatei trägt eine Hintertür. Getestet wurde gegen eine echte nixpkgs-Revision.
+***** Take
+Nix wirbt damit, dass ein per Hash fixierter Build-Graph Manipulation sichtbar macht. Die Antwort der Arbeit lautet: Die Hashes fixieren die Eingaben, nicht das, was die Werkzeuge mit der Ausgabe tun. strip statt gcc zu wählen ist der ganze Kniff. Alle beobachten den Compiler, niemand prüft das Hilfsprogramm, das nur Symbole entfernt. Der praktische Einwand aus dem Thread: nixpkgs auf x86 startet inzwischen aus 181 Bytes, das reale Risiko liegt also bei aarch64 und riscv64.
+***** Comments
+- nixpkgs bootstrappt auf x86_64 und i686 nicht mehr aus 25 mitgelieferten Binärdateien, sondern aus einem 181-Byte-Seed. Zum Publikationszeitpunkt gilt das hier also für Nicht-x86-Plattformen wie aarch64-linux und riscv64-linux.
+- Gut, dass sie Wheelers diverse double-compiling in 7.2 erwähnen, viele kennen das gar nicht. Sie tun es als hier nicht anwendbar ab, und das Argument überzeugt mich nicht.
+- Ich habe das Projekt live-bootstrap geprüft, das mit einem kleinen Seed startet. Es gibt ein T-Diagramm mit allen Prozessen, die in stage0 laufen.
+** Caltech Mathathon - first hackathon ever devoted to research level mathematics :math:ai:academia:competition:
+:PROPERTIES:
+:ID:       49596055
+:URL:      https://mathathonchallenge.com/index.html
+:HN_URL:   https://news.ycombinator.com/item?id=49596055
+:POINTS:   221
+:COMMENTS: 80
+:BY:       astroanax
+:END:
+
+*** TLDR
+A group of Caltech undergrads is running a three-day event from October 30 to November 1 where roughly a hundred teams get access to frontier models and try to attack open conjectures or build new theory. Judges score both the result and whether the team actually understands it. Prizes total more than $2M in AI credits and pay out in two rounds: an initial award, then more once the mathematics community verifies the work. The organizers say they take no money themselves and do not speak for Caltech or their sponsors.
+
+*** Take
+The two-round payout is the honest design choice, because it admits the first round is scoring plausibility rather than proof. The rest is harder to defend on its own terms: prizes denominated in the sponsors' own credits, and a format that asks for research mathematics on a weekend clock. One commenter puts it bluntly, that a weak CS department needed a way for students to get ML recognition, and the event reads that way too.
+
+*** Comments
+
+**** brian-bfz
+One of the organizers here. We are Caltech undergrads and do not represent Caltech, any department, or our sponsors. None of us are paid; all the funding raised goes to judges and participants.
+
+**** corinthia
+Recent Caltech grad. The CS department is very weak and has struggled to recruit, and a lot of the motivation here is creating a way for students to get ML recognition.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+加州理工 Mathathon：首个专注研究级数学的黑客松
+***** TLDR
+一群加州理工本科生将在 10 月 30 日至 11 月 1 日举办为期三天的活动，约一百支队伍可使用前沿模型，尝试攻克未解猜想或建立新理论。评委既评结果，也评参赛队是否真正理解自己的成果。奖金总额超过 200 万美元的 AI 额度，分两轮发放：先给初步奖励，待数学界验证成果后再追加。组织者称自己不拿报酬，也不代表加州理工或赞助方。
+***** Take
+分两轮发奖是这套设计里诚实的部分，因为它承认第一轮评的是「看起来成立」而非「已被证明」。其余部分就不太站得住：奖金用赞助商自家的额度结算，赛制又要求在一个周末里做出研究级数学。有评论说得直白——一个薄弱的 CS 系需要给学生一条获得机器学习「认可」的路径，这场活动读起来确实像这么回事。
+***** Comments
+- 我是组织者之一。我们是加州理工的本科生，不代表加州理工、任何院系或赞助方。我们没有任何报酬，募得的资金全部用于支付评委和参赛者。
+- 我是刚毕业的加州理工校友。CS 系非常弱，近年招人也很吃力，办这个活动的动机很大程度上是给学生一个在机器学习方向获得认可的途径。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Caltech Mathathon：研究レベルの数学に特化した初のハッカソン
+***** TLDR
+カリフォルニア工科大学の学部生グループが10月30日から11月1日までの3日間、約100チームにフロンティアモデルを提供し、未解決の予想や新しい理論の構築に挑ませるイベントを開く。審査では結果だけでなく、チームがその内容を本当に理解しているかも見る。賞金は総額200万ドル超のAIクレジットで、まず初期賞を出し、数学コミュニティが成果を検証した後に追加を支払う二段構え。主催者は報酬を受け取らず、Caltechやスポンサーを代表するものではないとしている。
+***** Take
+二段階の支払いは誠実な設計だ。第一段階が証明ではなく「もっともらしさ」の採点であることを認めているからだ。それ以外は擁護しにくい。賞金はスポンサー自身のクレジット建てで、週末という時計の中で研究数学を求める形式でもある。あるコメントは率直に、弱いCS学科が学生にML方面の「認知」を得させる手段を必要としたのだと書いていて、実際そう読める。
+***** Comments
+- 主催者の一人です。私たちはCaltechの学部生で、大学や学科、スポンサーを代表するものではありません。誰も報酬を受け取っておらず、集めた資金はすべて審査員と参加者に使われます。
+- 最近のCaltech卒業生です。CS学科は非常に弱く採用にも苦戦していて、この企画の動機の多くは学生がMLで評価を得る道をつくることにあります。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+칼텍 Mathathon: 연구 수준 수학에 특화된 최초의 해커톤
+***** TLDR
+칼텍 학부생들이 10월 30일부터 11월 1일까지 사흘간, 약 100개 팀에 프런티어 모델을 제공해 미해결 추측을 공략하거나 새 이론을 세우게 하는 행사를 연다. 심사는 결과뿐 아니라 팀이 그 내용을 실제로 이해하는지도 본다. 상금은 200만 달러가 넘는 AI 크레딧으로, 먼저 초기 상을 주고 수학계가 결과를 검증한 뒤 추가로 지급하는 2단계 방식이다. 주최 측은 자신들은 보수를 받지 않으며 칼텍이나 후원사를 대변하지 않는다고 밝혔다.
+***** Take
+2단계 지급은 이 설계에서 정직한 부분이다. 1단계가 증명이 아니라 그럴듯함을 채점한다는 걸 인정하기 때문이다. 나머지는 옹호하기 어렵다. 상금이 후원사 자체 크레딧으로 매겨져 있고, 주말이라는 시계 안에서 연구 수학을 요구하는 형식이다. 한 댓글은 약한 CS 학과가 학생들에게 ML 인정을 받을 통로가 필요했던 것이라고 직설적으로 말했고, 행사도 실제로 그렇게 읽힌다.
+***** Comments
+- 주최자 중 한 명입니다. 우리는 칼텍 학부생이고 학교나 학과, 후원사를 대변하지 않습니다. 아무도 보수를 받지 않으며 모금액은 전부 심사위원과 참가자에게 갑니다.
+- 최근 칼텍을 졸업했습니다. CS 학과는 매우 약하고 채용에도 어려움을 겪어 왔으며, 이 행사의 동기 상당수는 학생들이 ML 쪽에서 인정을 받을 길을 만드는 데 있습니다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Caltech Mathathon: el primer hackathon dedicado a matemáticas de nivel investigación
+***** TLDR
+Un grupo de estudiantes de grado de Caltech organiza un evento de tres días, del 30 de octubre al 1 de noviembre, en el que un centenar de equipos tendrán acceso a modelos de frontera para atacar conjeturas abiertas o construir teoría nueva. El jurado puntúa tanto el resultado como si el equipo entiende de verdad lo que ha hecho. Los premios superan los 2 millones de dólares en créditos de IA y se pagan en dos rondas: una inicial y otra cuando la comunidad matemática verifique el trabajo. Los organizadores dicen que no cobran nada y que no hablan en nombre de Caltech ni de sus patrocinadores.
+***** Take
+El pago en dos rondas es la decisión honesta del diseño, porque admite que la primera puntúa verosimilitud y no demostración. El resto se defiende peor: premios denominados en los créditos de los propios patrocinadores y un formato que pide matemática de investigación con reloj de fin de semana. Un comentarista lo dice sin rodeos: un departamento de informática débil necesitaba una vía para que sus estudiantes obtengan reconocimiento en ML, y el evento se lee así.
+***** Comments
+- Soy uno de los organizadores. Somos estudiantes de grado de Caltech y no representamos a Caltech, a ningún departamento ni a nuestros patrocinadores. Nadie cobra: todo lo recaudado va a jueces y participantes.
+- Me gradué hace poco en Caltech. El departamento de informática es muy flojo y le ha costado fichar gente, y buena parte de la motivación aquí es crear una forma de que los estudiantes consigan reconocimiento en ML.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Caltech Mathathon: der erste Hackathon für Mathematik auf Forschungsniveau
+***** TLDR
+Eine Gruppe von Caltech-Studierenden veranstaltet vom 30. Oktober bis 1. November ein dreitägiges Event, bei dem rund hundert Teams Zugang zu Frontier-Modellen bekommen, um offene Vermutungen anzugehen oder neue Theorie zu bauen. Die Jury bewertet sowohl das Ergebnis als auch, ob das Team es wirklich versteht. Die Preise umfassen über 2 Millionen Dollar an KI-Credits und werden in zwei Runden ausgezahlt: erst ein Anfangspreis, dann mehr, sobald die Fachwelt die Arbeit geprüft hat. Die Organisatoren erhalten nach eigenen Angaben kein Geld und sprechen weder für Caltech noch für ihre Sponsoren.
+***** Take
+Die zweistufige Auszahlung ist der ehrliche Teil des Konzepts, weil sie eingesteht, dass die erste Runde Plausibilität bewertet und nicht Beweis. Der Rest lässt sich schwerer verteidigen: Preise in den Credits der Sponsoren selbst und ein Format, das Forschungsmathematik unter Wochenend-Uhr verlangt. Ein Kommentar sagt es direkt: Ein schwaches CS-Department brauchte einen Weg, damit Studierende ML-Anerkennung bekommen. Genau so liest sich die Veranstaltung.
+***** Comments
+- Ich bin einer der Organisatoren. Wir sind Caltech-Studierende und vertreten weder Caltech noch ein Department oder unsere Sponsoren. Niemand von uns wird bezahlt, alle eingeworbenen Mittel gehen an Jury und Teilnehmende.
+- Ich habe kürzlich an Caltech abgeschlossen. Das CS-Department ist sehr schwach und tut sich schwer mit Berufungen, und ein großer Teil der Motivation hier ist, Studierenden einen Weg zu ML-Anerkennung zu verschaffen.
+** Watch Los Angeles get built, one building at a time (1880-2026) :dataviz:maps:urbanism:losangeles:
+:PROPERTIES:
+:ID:       49601655
+:URL:      https://lax-skyline.parcelscope.net/
+:HN_URL:   https://news.ycombinator.com/item?id=49601655
+:POINTS:   206
+:COMMENTS: 97
+:BY:       rustywasm
+:END:
+
+*** TLDR
+An interactive 3D map that drops every building standing in Los Angeles today onto the map in the year it was built, from 1880 to now, using LARIAC 2020 footprints and the LA County Assessor roll. You can filter by decade and by height, from the one-story median up to the towers. The page states its own limits: it shows only the surviving city, so demolished buildings never appear, and heights are exaggerated when zoomed out.
+
+*** Take
+The caveat is the most interesting thing on the page. Because demolitions are invisible, this is a map of what survived rather than what was built, and neighborhoods that were replaced piece by piece read as empty until whichever decade the current buildings went up. The thread turned it into a zoning argument within minutes, and the picture does support that reading: the additions thin out sharply after the 1980s.
+
+*** Comments
+
+**** kristopolous
+This is the construction date of buildings that survived. Palms was replaced building by building so it appears dark when it was not, and the 1890s downtown is entirely gone.
+
+**** epistasis
+It is amazing how little has changed recently. The massive downzoning of the 1980s did its job: prevent efficient land use and channel money from newcomers to landlords and homeowners.
+
+**** incanus77
+As others noted, this is more about the age of existing buildings than the construction of the city, but it is pretty neat.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+看洛杉矶一栋一栋建起来（1880-2026）
+***** TLDR
+一张交互式 3D 地图，把今天洛杉矶仍然矗立的每一栋建筑按建成年份逐年落到地图上，时间跨度从 1880 年到现在，数据来自 LARIAC 2020 建筑轮廓和洛杉矶县估价册。可以按年代和高度筛选，从中位数的一层楼一直到高塔。页面自己写明了局限：它只呈现「幸存的城市」，被拆除的建筑不会出现，缩小视角时高度会被夸大。
+***** Take
+页面上最有意思的正是那条免责说明。因为拆除是隐形的，这张图记录的是「留下来的」而非「建起来的」，那些被逐栋替换的社区在现有建筑落成之前一直是黑的。评论区几分钟内就把它变成了一场分区管制的辩论，而画面确实支持这种解读：1980 年代之后新增明显变稀。
+***** Comments
+- 这是幸存建筑的建造年份。Palms 是一栋一栋被替换掉的，所以看起来一片漆黑，其实并非如此；1890 年代的市中心也已经完全消失了。
+- 近年变化之少令人惊讶。1980 年代的大规模降密分区达到了目的：阻止土地被高效利用，把新来者的钱输送给房东和业主。
+- 正如别人指出的，这更像是现存建筑的年龄图，而不是城市建设过程图，不过依然很棒。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+ロサンゼルスが一棟ずつ建っていくのを見る（1880-2026）
+***** TLDR
+今日のロサンゼルスに現存するすべての建物を、建築年ごとに地図上へ落としていくインタラクティブな3Dマップ。1880年から現在までをカバーし、データはLARIAC 2020の建物外形とロサンゼルス郡の課税台帳。年代と高さ（中央値の1階建てから高層まで）で絞り込める。ページ自身が限界を明記している。表示されるのは「生き残った街」だけで、取り壊された建物は現れず、ズームアウト時には高さが誇張される。
+***** Take
+このページで一番面白いのは、その但し書きだ。取り壊しが見えないため、これは「建てられたもの」ではなく「残ったもの」の地図であり、一棟ずつ建て替えられた地区は現存建物が建った年代まで真っ暗なままになる。スレッドは数分でゾーニング論争に変わったが、絵はその読みを裏づけている。1980年代以降、追加は目に見えて減る。
+***** Comments
+- これは生き残った建物の建築年だ。Palmsは一棟ずつ置き換えられたので暗く見えるが実際は違うし、1890年代のダウンタウンは跡形もない。
+- 近年ほとんど変わっていないのが驚きだ。1980年代の大規模ダウンゾーニングは目的を果たした。効率的な土地利用を阻み、新住民の金を地主と持ち家層へ流す。
+- 他の人も指摘しているように、都市の建設過程というより現存建物の築年数の地図だが、それでも面白い。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+로스앤젤레스가 한 채씩 세워지는 과정 보기 (1880-2026)
+***** TLDR
+오늘날 로스앤젤레스에 남아 있는 모든 건물을 건축 연도에 맞춰 지도에 하나씩 올리는 인터랙티브 3D 지도다. 1880년부터 현재까지를 다루며 LARIAC 2020 건물 외곽선과 LA 카운티 과세 대장을 쓴다. 연대별, 높이별(중앙값인 1층부터 고층까지) 필터가 있다. 페이지가 스스로 한계를 밝힌다. 보이는 것은 '살아남은 도시'뿐이라 철거된 건물은 나타나지 않고, 축소하면 높이가 과장된다.
+***** Take
+이 페이지에서 가장 흥미로운 건 그 단서 조항이다. 철거가 보이지 않으니 이것은 '지어진 것'이 아니라 '남은 것'의 지도이고, 한 채씩 교체된 동네는 현재 건물이 올라간 연대까지 계속 비어 보인다. 스레드는 몇 분 만에 조닝 논쟁으로 바뀌었는데, 화면도 그 해석을 뒷받침한다. 1980년대 이후 새로 더해지는 양이 뚜렷하게 줄어든다.
+***** Comments
+- 이건 살아남은 건물의 건축 연도다. Palms는 한 채씩 교체돼서 어둡게 보이지만 실제로는 그렇지 않았고, 1890년대 다운타운은 통째로 사라졌다.
+- 최근 몇 년간 변한 게 이렇게 없다는 게 놀랍다. 1980년대의 대규모 다운조닝은 제 역할을 했다. 효율적인 토지 이용을 막고 신규 유입자의 돈을 집주인과 자가 보유자에게 흘려보내는 역할 말이다.
+- 다른 사람들이 짚었듯 도시가 지어지는 과정이라기보다 현존 건물의 나이 지도에 가깝다. 그래도 꽤 멋지다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Mira cómo se construyó Los Ángeles, edificio a edificio (1880-2026)
+***** TLDR
+Un mapa 3D interactivo que coloca cada edificio que hoy sigue en pie en Los Ángeles en el año en que se construyó, de 1880 a la actualidad, con las huellas de LARIAC 2020 y el padrón del tasador del condado. Se puede filtrar por década y por altura, desde la mediana de una planta hasta las torres. La propia página avisa de sus límites: solo muestra la ciudad superviviente, así que los edificios demolidos nunca aparecen, y las alturas se exageran al alejar el zoom.
+***** Take
+La advertencia es lo más interesante de la página. Como las demoliciones son invisibles, esto es un mapa de lo que sobrevivió y no de lo que se construyó, y los barrios reemplazados pieza a pieza se ven vacíos hasta la década en que se levantó lo que hay ahora. El hilo lo convirtió en una discusión sobre zonificación en cuestión de minutos, y la imagen respalda esa lectura: lo que se añade cae en picado después de los años ochenta.
+***** Comments
+- Esta es la fecha de construcción de los edificios que sobrevivieron. Palms se reemplazó edificio a edificio, así que aparece oscuro cuando no lo estaba, y el centro de los años 1890 ha desaparecido por completo.
+- Es asombroso lo poco que ha cambiado últimamente. La enorme rebaja de edificabilidad de los ochenta cumplió su función: impedir el uso eficiente del suelo y canalizar el dinero de los recién llegados hacia caseros y propietarios.
+- Como han dicho otros, esto habla más de la edad de los edificios existentes que de la construcción de la ciudad, pero está muy bien.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Zusehen, wie Los Angeles Haus für Haus entsteht (1880-2026)
+***** TLDR
+Eine interaktive 3D-Karte, die jedes heute in Los Angeles stehende Gebäude in dem Jahr auf die Karte setzt, in dem es gebaut wurde, von 1880 bis heute, auf Basis der LARIAC-2020-Grundrisse und der Steuerliste des LA County Assessor. Filtern lässt sich nach Jahrzehnt und Höhe, vom eingeschossigen Median bis zu den Türmen. Die Seite benennt ihre Grenzen selbst: Sie zeigt nur die überlebende Stadt, abgerissene Gebäude tauchen nie auf, und die Höhen sind beim Herauszoomen überzeichnet.
+***** Take
+Der Hinweis ist das Interessanteste auf der Seite. Weil Abrisse unsichtbar bleiben, ist das eine Karte dessen, was überlebt hat, nicht dessen, was gebaut wurde. Viertel, die Stück für Stück ersetzt wurden, wirken leer, bis das heutige Baujahr an der Reihe ist. Der Thread wurde binnen Minuten zur Zoning-Debatte, und das Bild stützt diese Lesart: Nach den Achtzigern kommt sichtbar wenig dazu.
+***** Comments
+- Das ist das Baujahr der Gebäude, die überlebt haben. Palms wurde Haus für Haus ersetzt und erscheint deshalb dunkel, obwohl es das nicht war, und die Innenstadt der 1890er ist komplett verschwunden.
+- Erstaunlich, wie wenig sich zuletzt verändert hat. Das massive Downzoning der Achtziger hat seinen Zweck erfüllt: effiziente Flächennutzung verhindern und das Geld der Zuziehenden zu Vermietern und Eigentümern lenken.
+- Wie andere schon sagten, geht es hier eher um das Alter der bestehenden Gebäude als um den Bau der Stadt, aber schön ist es trotzdem.
