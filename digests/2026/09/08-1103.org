@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-09-08 11:03 UTC
+#+DATE: 2026-09-08T11:03:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Arm bolts neural upscalers into a mobile GPU, Australia turns feed choice into a legal duty, and your page head still greets Internet Explorer
+
+* Highlights
+- Arm's Mali G2-Ultra NX: 24% faster, the rest is upscaling
+- Australia's duty of care covers games and AI chatbots, not just feeds
+- A field guide to the dead meta tags still in your markup
+- Agent sandboxes: Firecracker, and memory as a git repo of Markdown
+- Finnish soil trials: 20 seconds of dirt moves your skin microbiome
+
+* Stories
+
+** Arm Mali G2-Ultra NX GPU: desktop-class mobile gameplay with AI-native graphics :gpu:arm:graphics:mobile:
+:PROPERTIES:
+:ID:       49605511
+:URL:      https://newsroom.arm.com/blog/arm-mali-g2-ultra-nx-ai-native-mobile-graphics
+:HN_URL:   https://news.ycombinator.com/item?id=49605511
+:POINTS:   48
+:COMMENTS: 31
+:BY:       Re-Tails
+:END:
+
+*** TLDR
+Arm announced its first GPU with neural accelerators built into the graphics pipeline, alongside a new execution engine with up to twice the registers per warp and third-generation ray tracing hardware. The concrete claim is up to 24% higher benchmark performance over the previous generation and 14% on non-gaming workloads. Everything larger comes from the neural path: three techniques (Neural Super Sampling, Neural Frame Rate Upscaling, and a combined upscale-and-denoise for ray traced scenes) reach up to 120 FPS and, in Arm's Neural Dawn demo, up to 4x performance efficiency and up to 70% less external memory traffic than native rendering. Hardware Opacity Micromaps cut ray tracing work by up to 70% and lifted frame rates 30% in demos, with 13% lower DRAM traffic on ray tracing benchmarks. No phone maker, chip vendor or ship date is named.
+
+*** Take
+The honest number is 24%. Everything past it comes from rendering fewer pixels and inferring the rest, which on a phone is a defensible trade: the 70% cut in external memory traffic matters more than the frame counter, because memory bandwidth is what actually limits mobile GPUs and what actually drains the battery. The thread went straight past the silicon to drivers, which is where Mali has always lost, and an announcement naming no device and no date does not help.
+
+*** Comments
+
+**** pavlov
+:PROPERTIES:
+:COMMENT_ID: 49608613
+:END:
+All the hoopla about neural graphics seems to mean various forms of upscaling: spatial, temporal, denoising. It makes sense on mobile, but it is a bit disappointing that realtime 3D is shifting from modeling to slop filters.
+
+**** ksec
+:PROPERTIES:
+:COMMENT_ID: 49605780
+:END:
+With PowerVR mostly gone from the Mediatek roadmap, Mali is effectively the GPU IP on Android, other than Adreno, whose market keeps shrinking into the premium segment. I would love to know how good Mali actually is now compared to the others.
+
+**** eptcyka
+:PROPERTIES:
+:COMMENT_ID: 49605696
+:END:
+What about support in mesa?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Arm Mali G2-Ultra NX GPU：面向 AI 原生图形的桌面级移动游戏体验
+***** TLDR
+Arm 发布了第一款把神经加速器直接嵌入图形管线的 GPU，同时配备每 warp 寄存器最多翻倍的新执行引擎和第三代光线追踪硬件。实打实的数字是：相比上一代，跑分性能最高提升 24%，非游戏负载提升 14%。更大的提升都来自神经路径：三项技术（神经超采样、神经帧率插帧、以及针对光追场景的超采样加降噪）可达到 120 FPS，在 Arm 的 Neural Dawn 演示中，性能效率最高提升 4 倍，外部显存流量比原生渲染最多减少 70%。硬件层面的 Opacity Micromaps 让光追负载最多降低 70%，演示中帧率提升 30%，光追跑分的 DRAM 流量下降 13%。公告没有提到任何手机厂商、芯片厂商或上市时间。
+***** Take
+诚实的数字是 24%。其余提升来自少渲染像素、其余靠推理补齐，这在手机上是合理的取舍：外部显存流量下降 70% 比帧数更重要，因为限制移动 GPU 的正是内存带宽，耗电的也是它。讨论区直接跳过芯片本身去谈驱动，而驱动一直是 Mali 的失分项，公告里既没有设备也没有时间表，这一点也没帮上忙。
+***** Comments
+- 所谓神经图形的热闹，看下来就是各种形式的放大：空间的、时间的、降噪的。在手机上说得通，但实时 3D 从建模转向糊弄滤镜，还是有点让人失望。
+- PowerVR 基本退出联发科路线图之后，除了市场持续收缩、集中在高端的 Adreno，Mali 实质上就是安卓上的 GPU IP。我很想知道如今的 Mali 跟别家比到底如何。
+- mesa 那边的支持呢？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Arm Mali G2-Ultra NX GPU：AIネイティブグラフィックスによるデスクトップ級のモバイルゲーム
+***** TLDR
+Armはニューラルアクセラレータをグラフィックスパイプラインに組み込んだ初のGPUを発表した。warpあたりのレジスタが最大2倍の新実行エンジンと、第3世代のレイトレーシングハードウェアも備える。確かな数字は前世代比でベンチマーク性能が最大24%向上、非ゲーム負荷で14%向上というもの。それ以上の伸びはすべてニューラル側から来る。3つの技術（ニューラルスーパーサンプリング、ニューラルフレームレートアップスケーリング、レイトレース向けのアップスケールとデノイズの複合）で最大120FPSに達し、ArmのNeural Dawnデモでは性能効率が最大4倍、外部メモリ帯域はネイティブ描画比で最大70%削減されたという。ハードウェアのOpacity Micromapsはレイトレース負荷を最大70%削減し、デモではフレームレートが30%向上、レイトレースのベンチマークでDRAM帯域が13%減った。端末メーカーもチップベンダーも出荷時期も示されていない。
+***** Take
+誠実な数字は24%だ。それ以上は描くピクセルを減らし、残りを推論で埋めた結果である。携帯端末では妥当な取引だ。外部メモリ帯域の70%削減はフレーム数より重要で、モバイルGPUを縛るのも電池を減らすのもメモリ帯域だからだ。スレッドはシリコンを飛ばしてドライバの話に直行した。そこはMaliが常に負けてきた領域であり、端末名も時期も示さない発表はその印象を助けない。
+***** Comments
+- ニューラルグラフィックスの騒ぎは、結局のところ空間的・時間的・デノイズといった各種アップスケーリングのことらしい。モバイルでは理にかなうが、リアルタイム3Dがモデリングから雑な補正フィルタへ移っていくのは少し残念だ。
+- PowerVRがMediatekのロードマップからほぼ消えた今、市場が縮小して高価格帯に集中するAdrenoを除けば、MaliはAndroidにおける事実上唯一のGPU IPだ。今のMaliが他社と比べてどの程度なのかを知りたい。
+- mesaでのサポートはどうなっている？
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Arm Mali G2-Ultra NX GPU: AI 네이티브 그래픽으로 구현한 데스크톱급 모바일 게임
+***** TLDR
+Arm이 신경 가속기를 그래픽 파이프라인 안에 넣은 첫 GPU를 공개했다. warp당 레지스터가 최대 두 배인 새 실행 엔진과 3세대 레이 트레이싱 하드웨어도 함께 들어간다. 확실한 수치는 전 세대 대비 벤치마크 성능 최대 24% 향상, 비게임 작업 14% 향상이다. 그보다 큰 수치는 모두 신경 경로에서 나온다. 세 가지 기법(신경 슈퍼 샘플링, 신경 프레임레이트 업스케일링, 레이 트레이싱 장면용 업스케일 겸 디노이즈)으로 최대 120FPS에 도달하고, Arm의 Neural Dawn 데모에서는 성능 효율이 최대 4배, 외부 메모리 트래픽이 네이티브 렌더링 대비 최대 70% 감소했다고 한다. 하드웨어 Opacity Micromaps는 레이 트레이싱 부하를 최대 70% 줄였고 데모에서 프레임레이트를 30% 끌어올렸으며 레이 트레이싱 벤치마크의 DRAM 트래픽을 13% 낮췄다. 단말 제조사도 칩 업체도 출시 시점도 언급되지 않았다.
+***** Take
+정직한 숫자는 24%다. 그 이상은 픽셀을 덜 그리고 나머지를 추론으로 채운 결과다. 휴대폰에서는 합리적인 교환이다. 외부 메모리 트래픽 70% 절감이 프레임 수치보다 중요한데, 모바일 GPU를 실제로 제약하고 배터리를 실제로 소모하는 것이 메모리 대역폭이기 때문이다. 스레드는 실리콘을 건너뛰고 곧장 드라이버 이야기로 갔다. 그곳이 늘 Mali가 지던 지점이고, 기기도 일정도 밝히지 않은 발표는 도움이 되지 않는다.
+***** Comments
+- 신경 그래픽이라는 호들갑은 결국 공간적, 시간적, 디노이즈 등 각종 업스케일링을 뜻하는 듯하다. 모바일에서는 말이 되지만, 실시간 3D가 모델링에서 대충 보정 필터로 옮겨가는 건 조금 실망스럽다.
+- PowerVR이 미디어텍 로드맵에서 사실상 사라진 지금, 시장이 줄어들며 프리미엄에 집중하는 Adreno를 빼면 Mali가 안드로이드의 GPU IP나 다름없다. 지금의 Mali가 다른 곳과 비교해 얼마나 좋은지 정말 궁금하다.
+- mesa 지원은 어떻게 되나?
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+GPU Arm Mali G2-Ultra NX: juego móvil de clase escritorio con gráficos AI-native
+***** TLDR
+Arm anunció su primera GPU con aceleradores neuronales integrados en el pipeline gráfico, junto a un nuevo motor de ejecución con hasta el doble de registros por warp y hardware de trazado de rayos de tercera generación. La cifra concreta es hasta un 24% más de rendimiento en benchmarks frente a la generación anterior y un 14% en cargas que no son de juego. Todo lo demás viene de la vía neuronal: tres técnicas (Neural Super Sampling, Neural Frame Rate Upscaling y un combinado de reescalado y reducción de ruido para escenas con trazado de rayos) alcanzan hasta 120 FPS y, en la demo Neural Dawn de Arm, hasta 4 veces más eficiencia y hasta un 70% menos de tráfico de memoria externa que el renderizado nativo. Los Opacity Micromaps por hardware recortan hasta un 70% del trabajo de trazado de rayos y subieron los FPS un 30% en demos, con un 13% menos de tráfico DRAM en benchmarks de trazado de rayos. No se nombra ningún fabricante de móviles, ningún proveedor de chips ni fecha de salida.
+***** Take
+La cifra honesta es 24%. Lo demás sale de dibujar menos píxeles e inferir el resto, un intercambio razonable en un teléfono: el recorte del 70% en tráfico de memoria externa importa más que el contador de FPS, porque el ancho de banda de memoria es lo que de verdad limita a las GPU móviles y lo que de verdad gasta batería. El hilo se saltó el silicio y fue directo a los drivers, que es donde Mali siempre pierde, y que el anuncio no cite ni un dispositivo ni una fecha tampoco ayuda.
+***** Comments
+- Todo el ruido sobre gráficos neuronales parece significar varias formas de reescalado: espacial, temporal, reducción de ruido. En móvil tiene sentido, pero decepciona un poco que el 3D en tiempo real pase del modelado a los filtros de relleno.
+- Con PowerVR casi fuera de la hoja de ruta de Mediatek, Mali es efectivamente la IP de GPU en Android, salvo Adreno, cuyo mercado se encoge y se concentra en la gama alta. Me encantaría saber qué tan buena es hoy Mali frente a las demás.
+- ¿Y el soporte en mesa?
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Arm Mali G2-Ultra NX GPU: mobiles Spielen auf Desktop-Niveau mit AI-nativer Grafik
+***** TLDR
+Arm hat seine erste GPU mit neuronalen Beschleunigern direkt in der Grafikpipeline vorgestellt, dazu eine neue Ausführungseinheit mit bis zu doppelt so vielen Registern pro Warp und Raytracing-Hardware der dritten Generation. Die belastbare Zahl lautet bis zu 24% mehr Benchmark-Leistung gegenüber der Vorgängergeneration und 14% bei Nicht-Spiel-Lasten. Alles Größere stammt aus dem neuronalen Pfad: Drei Verfahren (Neural Super Sampling, Neural Frame Rate Upscaling sowie ein kombiniertes Hochskalieren und Entrauschen für Raytracing-Szenen) erreichen bis zu 120 FPS und in Arms Neural-Dawn-Demo bis zu vierfache Effizienz sowie bis zu 70% weniger externen Speicherverkehr als natives Rendering. Opacity Micromaps in Hardware senken die Raytracing-Last um bis zu 70% und hoben die Bildrate in Demos um 30%, bei 13% weniger DRAM-Verkehr in Raytracing-Benchmarks. Weder Gerätehersteller noch Chipanbieter noch ein Termin werden genannt.
+***** Take
+Die ehrliche Zahl ist 24%. Alles darüber entsteht daraus, weniger Pixel zu zeichnen und den Rest zu erschließen. Auf dem Telefon ist das ein vertretbarer Handel: Die 70% weniger externer Speicherverkehr zählen mehr als der Bildzähler, denn Speicherbandbreite ist das, was mobile GPUs tatsächlich begrenzt und was tatsächlich den Akku leert. Der Thread ging am Silizium vorbei direkt zu den Treibern, und genau dort verliert Mali seit jeher. Dass die Ankündigung weder ein Gerät noch ein Datum nennt, hilft dabei nicht.
+***** Comments
+- Der ganze Wirbel um neuronale Grafik scheint verschiedene Formen des Hochskalierens zu meinen: räumlich, zeitlich, entrauschend. Auf Mobilgeräten ergibt das Sinn, aber es enttäuscht ein wenig, dass Echtzeit-3D vom Modellieren zu Füllfiltern wandert.
+- Da PowerVR aus Mediateks Roadmap weitgehend verschwunden ist, ist Mali faktisch die GPU-IP unter Android, abgesehen von Adreno, dessen Markt schrumpft und sich auf das Premiumsegment konzentriert. Ich wüsste gern, wie gut Mali heute im Vergleich wirklich ist.
+- Und wie steht es um die Unterstützung in mesa?
+** My Feed, My Way :policy:australia:social-media:regulation:
+:PROPERTIES:
+:ID:       49605782
+:URL:      https://www.pm.gov.au/media/my-feed-my-way
+:HN_URL:   https://news.ycombinator.com/item?id=49605782
+:POINTS:   129
+:COMMENTS: 101
+:BY:       dotcoma
+:END:
+
+*** TLDR
+Revisit: this went into the morning edition with 11 comments and has since passed 100. Australia's draft Digital Duty of Care legislation, published 8 September 2026 and heading to Parliament this year, requires platforms to meet minimum safety standards: shield under-18s from addictive design and from content promoting eating disorders, misogyny, pornography, crime and self-harm, document their risk mitigations, and pull nudify apps when the eSafety Commissioner asks. The part with the name, My Feed My Way, is a prompt to users 16 and over to choose their default feed between algorithmic recommendations and posts only from accounts they follow. The duty applies to online games, apps, messaging and AI chatbots as well as social networks, with penalties up to A$109.2 million.
+
+*** Take
+The feed prompt is the headline and the smallest part of the bill. The operative clause is the duty of care itself: a A$109.2 million penalty attached to safety obligations reaching online games, messaging and AI chatbots, which makes this a chatbot regulation arriving inside a story about algorithm toggles. Nearly the whole thread argues about whether people will switch their feed back, and they probably will, while the part that changes what a company has to build gets no attention at all.
+
+*** Comments
+
+**** demibabs
+:PROPERTIES:
+:COMMENT_ID: 49605876
+:END:
+Right direction, but probably will not do much. Drug dealers are now required to give their customers the option to purchase salad instead of cocaine.
+
+**** petesergeant
+:PROPERTIES:
+:COMMENT_ID: 49605871
+:END:
+Nice idea, but three koala dollars says that in a year we find out most Australians switched back to the dopamine feed after a day or two. Nice to have the choice though.
+
+**** blfr
+:PROPERTIES:
+:COMMENT_ID: 49606210
+:END:
+Why do politicians pretend social networks are popular despite the algorithms rather than because of them? TikTok blew up by showing you what you want without touching a dozen dials. Maybe that is bad for people, but giving them control will not change it.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+我的信息流，我做主
+***** TLDR
+回访：早间那版收录时讨论只有 11 条，现在已超过 100 条。澳大利亚 2026 年 9 月 8 日公布的数字看护义务法案草案将于今年提交议会，要求平台满足最低安全标准：保护 18 岁以下用户免受成瘾性设计影响，屏蔽宣扬进食障碍、厌女、色情、犯罪和自残的内容，记录其风险缓解措施，并在 eSafety 专员要求时下架换脸脱衣类应用。带名字的那部分，是向 16 岁及以上用户弹出提示，让他们在算法推荐与只看已关注账号之间选择默认信息流。该义务不仅适用于社交网络，也覆盖网络游戏、应用、即时通讯和 AI 聊天机器人，罚款最高 1.092 亿澳元。
+***** Take
+信息流提示是标题，也是这部法案里最小的一块。真正起作用的是看护义务本身：1.092 亿澳元的罚则挂在一套延伸到网络游戏、即时通讯和 AI 聊天机器人的安全义务上，等于一部聊天机器人监管法藏在一则关于算法开关的新闻里。整条讨论几乎都在争论人们会不会把信息流切回去，大概率会切回去，而真正改变企业必须构建什么的那部分，无人问津。
+***** Comments
+- 方向没错，但大概起不了多大作用。相当于要求毒贩必须给顾客提供买沙拉而不是买可卡因的选项。
+- 想法不错，但我押三个考拉币：一年后我们会发现大多数澳大利亚人在一两天后就切回了多巴胺信息流。不过有得选总是好的。
+- 为什么政客要假装社交网络的流行是尽管有算法，而不是因为有算法？TikTok 爆红，正是因为不用你拨十几个旋钮就能推你想看的东西。也许这对人不好，但把控制权交回去改变不了什么。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+マイ・フィード、マイ・ウェイ
+***** TLDR
+再訪：朝の版で取り上げた時点ではコメント11件、いまは100件を超えた。オーストラリアが2026年9月8日に公表したデジタル注意義務法案の草案は年内に議会へ提出される。プラットフォームには最低限の安全基準が課される。18歳未満を依存的な設計や、摂食障害、女性蔑視、ポルノ、犯罪、自傷を助長する内容から守り、リスク緩和策を文書化し、eSafetyコミッショナーの要請があればヌード生成アプリを取り下げることだ。名前が付いている部分は、16歳以上の利用者に既定のフィードをアルゴリズム推薦かフォロー中のアカウントのみかで選ばせる通知である。義務の対象はSNSに限らずオンラインゲーム、アプリ、メッセージング、AIチャットボットに及び、罰金は最大1億920万豪ドル。
+***** Take
+フィードの選択通知は見出しであり、この法案で最も小さい部分だ。効いてくるのは注意義務そのもので、1億920万豪ドルの罰則がオンラインゲーム、メッセージング、AIチャットボットにまで届く安全義務に紐づいている。アルゴリズムの切り替えという話の中に、チャットボット規制が入ってきている。スレッドはほぼ全部が、人々がフィードを元に戻すかどうかを議論している。おそらく戻すだろう。だが企業が作らねばならないものを実際に変える部分には誰も触れていない。
+***** Comments
+- 方向は正しいが、たぶん大して効かない。麻薬の売人に、コカインの代わりにサラダを買う選択肢を客へ提示する義務を課すようなものだ。
+- 良い考えだが、コアラドル3枚賭けてもいい。1年後には大半のオーストラリア人が1日か2日でドーパミンのフィードに戻していると分かるはずだ。選べること自体は良いが。
+- なぜ政治家は、SNSがアルゴリズムにもかかわらず人気だというふりをするのか。TikTokが伸びたのは、十数個のつまみをいじらせずに見たいものを出したからだ。それが人に悪いのかもしれないが、操作権を渡しても変わらない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+내 피드, 내 방식대로
+***** TLDR
+재방문: 아침 판에 실릴 때는 댓글이 11개였는데 지금은 100개를 넘었다. 호주가 2026년 9월 8일 공개한 디지털 주의의무 법안 초안은 올해 안에 의회로 간다. 플랫폼은 최소 안전 기준을 지켜야 한다. 18세 미만을 중독적 설계와 섭식장애, 여성혐오, 음란물, 범죄, 자해를 조장하는 콘텐츠로부터 보호하고, 위험 완화 조치를 문서화하며, eSafety 커미셔너가 요청하면 누드 생성 앱을 내려야 한다. 이름이 붙은 부분은 16세 이상 이용자에게 기본 피드를 알고리즘 추천과 팔로우 계정 전용 중에서 고르게 하는 안내다. 이 의무는 소셜 네트워크뿐 아니라 온라인 게임, 앱, 메시징, AI 챗봇에도 적용되며 벌금은 최대 1억 920만 호주달러다.
+***** Take
+피드 선택 안내는 헤드라인이자 이 법안에서 가장 작은 부분이다. 실제로 작동하는 조항은 주의의무 자체다. 1억 920만 호주달러의 벌금이 온라인 게임과 메시징, AI 챗봇까지 닿는 안전 의무에 걸려 있다. 알고리즘 토글에 관한 기사 안에 챗봇 규제가 들어와 있는 셈이다. 스레드는 거의 전부 사람들이 피드를 되돌릴지를 두고 다투고 있고 아마 되돌릴 것이다. 정작 기업이 무엇을 만들어야 하는지를 바꾸는 부분에는 아무도 관심이 없다.
+***** Comments
+- 방향은 맞지만 큰 효과는 없을 것이다. 마약상에게 손님이 코카인 대신 샐러드를 살 선택지를 제공하도록 의무화하는 격이다.
+- 좋은 생각이지만 코알라 달러 세 개를 걸겠다. 1년 뒤면 대부분의 호주인이 하루 이틀 만에 도파민 피드로 돌아갔다는 걸 알게 될 것이다. 선택지가 있는 건 좋지만.
+- 정치인들은 왜 소셜 네트워크가 알고리즘에도 불구하고 인기 있는 척할까? 틱톡이 터진 건 열몇 개 손잡이를 만지지 않아도 보고 싶은 걸 보여줬기 때문이다. 그게 사람에게 나쁠 수는 있지만 통제권을 준다고 달라지지 않는다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Mi feed, a mi manera
+***** TLDR
+Revisita: entró en la edición de la mañana con 11 comentarios y ya pasa de 100. El borrador australiano de la ley de deber de cuidado digital, publicado el 8 de septiembre de 2026 y camino del Parlamento este año, exige que las plataformas cumplan estándares mínimos de seguridad: proteger a los menores de 18 del diseño adictivo y de contenidos que promuevan trastornos alimentarios, misoginia, pornografía, delitos y autolesiones, documentar sus medidas de mitigación de riesgos y retirar las apps de desnudos cuando lo pida la eSafety Commissioner. La parte que da nombre a todo es un aviso a los usuarios de 16 años o más para elegir su feed por defecto entre recomendaciones algorítmicas y solo publicaciones de las cuentas que siguen. El deber alcanza a juegos en línea, apps, mensajería y chatbots de IA además de las redes sociales, con multas de hasta 109,2 millones de dólares australianos.
+***** Take
+El aviso del feed es el titular y la parte más pequeña de la ley. La cláusula operativa es el deber de cuidado en sí: una multa de 109,2 millones ligada a obligaciones de seguridad que alcanzan juegos en línea, mensajería y chatbots de IA, es decir, una regulación de chatbots que llega dentro de una noticia sobre interruptores de algoritmo. Casi todo el hilo discute si la gente volverá a su feed anterior, y probablemente lo hará, mientras la parte que de verdad cambia lo que una empresa debe construir no recibe atención alguna.
+***** Comments
+- Va en la dirección correcta, pero probablemente no hará mucho. Ahora se exige a los traficantes que ofrezcan a sus clientes la opción de comprar ensalada en vez de cocaína.
+- Buena idea, pero apuesto tres dólares koala a que dentro de un año descubriremos que la mayoría de los australianos volvió al feed de dopamina a los dos días. Está bien tener la opción, eso sí.
+- ¿Por qué los políticos fingen que las redes sociales son populares a pesar de los algoritmos y no gracias a ellos? TikTok explotó porque te muestra lo que quieres sin tocar una docena de mandos. Quizá sea malo para la gente, pero darles control no lo cambiará.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Mein Feed, mein Weg
+***** TLDR
+Revisit: In der Morgenausgabe stand der Beitrag bei 11 Kommentaren, inzwischen sind es über 100. Australiens Entwurf eines digitalen Sorgfaltspflichtgesetzes, veröffentlicht am 8. September 2026 und noch dieses Jahr im Parlament, verpflichtet Plattformen auf Mindeststandards: Unter-18-Jährige vor süchtig machendem Design und vor Inhalten schützen, die Essstörungen, Frauenfeindlichkeit, Pornografie, Kriminalität und Selbstverletzung fördern, Risikominderungen dokumentieren und Nudify-Apps auf Anforderung der eSafety Commissioner entfernen. Der namensgebende Teil ist eine Abfrage an Nutzende ab 16, den Standard-Feed zu wählen: algorithmische Empfehlungen oder nur Beiträge abonnierter Konten. Die Pflicht gilt neben sozialen Netzwerken auch für Onlinespiele, Apps, Messaging und KI-Chatbots, mit Strafen bis zu 109,2 Millionen australischen Dollar.
+***** Take
+Die Feed-Abfrage ist die Schlagzeile und der kleinste Teil des Gesetzes. Die wirksame Klausel ist die Sorgfaltspflicht selbst: 109,2 Millionen Dollar Strafe, geknüpft an Sicherheitspflichten, die bis zu Onlinespielen, Messaging und KI-Chatbots reichen. Das ist eine Chatbot-Regulierung, die in einer Meldung über Algorithmus-Schalter ankommt. Der Thread streitet fast ausschließlich darüber, ob die Leute ihren Feed zurückstellen, und wahrscheinlich tun sie das, während der Teil, der verändert, was ein Unternehmen bauen muss, gar keine Beachtung findet.
+***** Comments
+- Richtige Richtung, wird aber wenig bewirken. Drogenhändler sind jetzt verpflichtet, ihren Kunden die Option zu geben, Salat statt Kokain zu kaufen.
+- Nette Idee, aber ich wette drei Koala-Dollar, dass wir in einem Jahr erfahren, dass die meisten Australier nach ein, zwei Tagen zum Dopamin-Feed zurückgewechselt sind. Die Wahl zu haben ist trotzdem gut.
+- Warum tun Politiker so, als seien soziale Netzwerke trotz der Algorithmen beliebt und nicht wegen ihnen? TikTok ist explodiert, weil es zeigt, was du sehen willst, ohne an einem Dutzend Reglern zu drehen. Vielleicht ist das schlecht für die Leute, aber ihnen die Kontrolle zu geben ändert es nicht.
+** The VMs Powering Mobile Agents (Instinct, Claude Code) :ai:agents:firecracker:infrastructure:
+:PROPERTIES:
+:ID:       49605644
+:URL:      https://rohanadwankar.github.io/posts/platforms.html
+:HN_URL:   https://news.ycombinator.com/item?id=49605644
+:POINTS:   36
+:COMMENTS: 7
+:BY:       RohanAdwankar
+:END:
+
+*** TLDR
+The author poked around inside the sandboxes of two agent platforms and wrote down what he found. Both run Firecracker microVMs as KVM guests with custom kernels. Claude Code boots a stripped init called process_api as PID 1, about 430ms to init and 6.4s to the harness, keeps conversation state on a writable volume that survives VM reclamation and reattaches on cold boot, uses host-minted OAuth tokens cached root-only and rotated per boot, and sends inference out as server-sent events over HTTP/2 to an egress gateway. Instinct rents E2B sandboxes: full Ubuntu 22.04 with systemd and an XFCE desktop in about 1.26s, 2 vCPU, 1.9 GB RAM, 29 GB disk. Its agent memory is a git repository of Markdown files under /memory with wiki-style links, pushed to S3 as a single git bundle keyed by user ID, with the agent as the commit author. Every Instinct tool call goes through server-side GraphQL, so the sandbox never talks to the model directly.
+
+*** Take
+Memory as a git repo of Markdown with the agent as commit author is the detail worth copying. It gives you diff, blame and rollback on agent state for free, in a format you can read without their client, and it fails in ways you can debug. One commenter expected a database or a graph and was let down to find three Markdown files, which has it backwards: three files that survive a crash are worth more than a graph you cannot inspect.
+
+*** Comments
+
+**** hypendev
+:PROPERTIES:
+:COMMENT_ID: 49607108
+:END:
+Firecracker all the way down, as always. What surprised me was that Instinct is just an agent slapped on top of markdown files in git. After hearing people talk about it I expected at least a database or a graph, something smart, but it is three markdown files.
+
+**** RohanAdwankar
+:PROPERTIES:
+:COMMENT_ID: 49605645
+:END:
+TLDR is they use firecracker with memory in git. I am a big fan of the memory in git part, and it would be interesting to see how the git history looks after using it for a longer period.
+
+**** quietraster
+:PROPERTIES:
+:COMMENT_ID: 49607021
+:END:
+Good breakdown. Did you notice meaningful differences in how the platforms handle filesystem persistence between sessions?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+驱动移动智能体的虚拟机（Instinct、Claude Code）
+***** TLDR
+作者钻进两个智能体平台的沙箱里，把看到的东西写了下来。两家都用 Firecracker 微虚拟机，以 KVM 客户机形式运行自定义内核。Claude Code 以一个精简的 init（名为 process_api）作为 PID 1 启动，约 430 毫秒完成 init、6.4 秒进入运行环境；对话状态存在可写卷上，虚拟机被回收后仍然保留，冷启动时重新挂载；使用由宿主签发、仅 root 可读并每次启动轮换的 OAuth 令牌；推理请求以 SSE 形式通过 HTTP/2 发往出口网关。Instinct 租用 E2B 沙箱：完整的 Ubuntu 22.04，带 systemd 和 XFCE 桌面，约 1.26 秒起来，2 个 vCPU、1.9 GB 内存、29 GB 磁盘。它的智能体记忆是 /memory 下一个由 Markdown 文件组成的 git 仓库，文件之间用 wiki 式链接，整体以 git bundle 按用户 ID 推送到 S3，提交作者就是智能体本身。Instinct 的每一次工具调用都走服务端 GraphQL，沙箱从不直接与模型通信。
+***** Take
+把记忆做成 Markdown 的 git 仓库、让智能体当提交作者，是这篇里最值得抄的细节。你白得了对智能体状态的 diff、blame 和回滚，格式不依赖他们的客户端也能读，出问题的方式还是可调试的。有位评论者本来期待数据库或图结构，看到三个 Markdown 文件后很失望，这其实搞反了：三个能在崩溃后活下来的文件，胜过一张你查不了的图。
+***** Comments
+- 一如既往，底下全是 firecracker。让我意外的是 Instinct 其实就是在 git 里的 markdown 文件上套了个智能体。听大家聊了那么久，我以为至少会有个数据库或者图之类聪明的东西，结果是三个 markdown 文件。
+- 简单说，他们用 firecracker，记忆放在 git 里。我很喜欢记忆放 git 这一点，用久一点之后看看 git 历史长什么样会挺有意思。
+- 拆解得不错。你有没有注意到，这些平台在跨会话的文件系统持久化上有什么实质差别？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+モバイルエージェントを動かすVM（Instinct、Claude Code）
+***** TLDR
+著者は2つのエージェントプラットフォームのサンドボックス内部を覗き、見えたものを書き留めた。どちらもFirecrackerのマイクロVMをKVMゲストとして動かし、カスタムカーネルを使っている。Claude Codeはprocess_apiという簡素化されたinitをPID 1として起動し、initまで約430ms、ハーネスまで約6.4秒。会話状態は書き込み可能なボリュームに置かれ、VMの回収後も残り、コールドブート時に再接続される。認証はホストが発行しrootのみが読めるOAuthトークンで、起動ごとに更新される。推論リクエストはHTTP/2上のSSEでエグレスゲートウェイへ送られる。InstinctはE2Bのサンドボックスを借りる。systemdとXFCEデスクトップを備えた完全なUbuntu 22.04が約1.26秒で立ち上がり、2 vCPU、1.9GBメモリ、29GBディスク。エージェントの記憶は/memory以下のMarkdownファイルからなるgitリポジトリで、ウィキ形式のリンクでつながり、ユーザーIDをキーにした単一のgit bundleとしてS3へ送られる。コミット作者はエージェント自身だ。Instinctのツール呼び出しはすべてサーバー側のGraphQLを経由するため、サンドボックスがモデルと直接やり取りすることはない。
+***** Take
+記憶をMarkdownのgitリポジトリにし、エージェントをコミット作者にするというのが、真似する価値のある細部だ。エージェントの状態に対するdiffとblameとロールバックが無料で手に入り、相手のクライアントなしで読める形式で残り、壊れ方もデバッグできる。あるコメント投稿者はデータベースやグラフを期待して、Markdown 3枚だと知って落胆していたが、それは逆だ。クラッシュを生き延びる3枚のファイルは、中を覗けないグラフより価値がある。
+***** Comments
+- いつも通り、下までfirecrackerだった。驚いたのはInstinctが、gitの中のmarkdownファイルの上にエージェントを載せただけだったことだ。あれだけ話題になっていたので、せめてデータベースかグラフか、何か賢いものがあると思っていたが、markdownが3枚だった。
+- 要するにfirecrackerを使い、記憶はgitに置いている。記憶をgitに置く部分が気に入っていて、長く使った後のgit履歴がどうなるか見てみたい。
+- 良い分析だ。セッションをまたいだファイルシステムの永続化について、プラットフォーム間で意味のある違いはあった？
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+모바일 에이전트를 돌리는 VM (Instinct, Claude Code)
+***** TLDR
+저자가 두 에이전트 플랫폼의 샌드박스 안을 들여다보고 본 것을 적었다. 둘 다 Firecracker 마이크로 VM을 KVM 게스트로 돌리며 커스텀 커널을 쓴다. Claude Code는 process_api라는 간소화된 init을 PID 1로 띄우고 init까지 약 430ms, 하네스까지 약 6.4초가 걸린다. 대화 상태는 쓰기 가능한 볼륨에 남아 VM 회수 후에도 살아남고 콜드 부팅 때 다시 붙는다. 인증은 호스트가 발급하고 root만 읽을 수 있으며 부팅마다 교체되는 OAuth 토큰을 쓰고, 추론 요청은 HTTP/2 위의 SSE로 이그레스 게이트웨이에 나간다. Instinct는 E2B 샌드박스를 빌린다. systemd와 XFCE 데스크톱을 갖춘 완전한 Ubuntu 22.04가 약 1.26초에 뜨고 2 vCPU, 1.9GB 램, 29GB 디스크를 쓴다. 에이전트 기억은 /memory 아래 Markdown 파일들로 된 git 저장소이며 위키식 링크로 이어지고, 사용자 ID를 키로 한 단일 git 번들로 S3에 올라간다. 커밋 작성자는 에이전트 자신이다. Instinct의 모든 도구 호출은 서버 측 GraphQL을 거치므로 샌드박스가 모델과 직접 통신하지 않는다.
+***** Take
+기억을 Markdown의 git 저장소로 두고 에이전트를 커밋 작성자로 삼은 것이 베낄 만한 지점이다. 에이전트 상태에 대한 diff와 blame, 롤백을 공짜로 얻고, 그들의 클라이언트 없이도 읽히는 형식으로 남으며, 고장 나는 방식도 디버깅할 수 있다. 한 댓글은 데이터베이스나 그래프를 기대했다가 Markdown 세 개를 보고 실망했지만 순서가 거꾸로다. 충돌을 견디는 파일 세 개가 들여다볼 수 없는 그래프보다 낫다.
+***** Comments
+- 언제나처럼 아래로 쭉 firecracker다. 놀란 건 Instinct가 git 안의 markdown 파일 위에 에이전트를 얹은 것뿐이었다는 점이다. 다들 하도 이야기하길래 최소한 데이터베이스나 그래프 같은 똑똑한 게 있을 줄 알았는데 markdown 세 개였다.
+- 요약하면 firecracker를 쓰고 기억은 git에 둔다. 기억을 git에 두는 부분이 마음에 들고, 오래 쓴 뒤 git 히스토리가 어떻게 보일지 궁금하다.
+- 정리 잘했다. 세션 간 파일시스템 지속성 처리에서 플랫폼 사이에 의미 있는 차이를 발견했나?
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Las VMs que mueven a los agentes móviles (Instinct, Claude Code)
+***** TLDR
+El autor husmeó dentro de los sandboxes de dos plataformas de agentes y anotó lo que encontró. Ambas usan microVMs de Firecracker como invitados KVM con kernels propios. Claude Code arranca un init reducido llamado process_api como PID 1, unos 430ms hasta init y 6,4s hasta el arnés, guarda el estado de conversación en un volumen escribible que sobrevive a la recuperación de la VM y se vuelve a montar en arranque en frío, usa tokens OAuth emitidos por el host, cacheados solo para root y rotados en cada arranque, y envía la inferencia como server-sent events sobre HTTP/2 a una pasarela de salida. Instinct alquila sandboxes de E2B: Ubuntu 22.04 completo con systemd y escritorio XFCE en torno a 1,26s, 2 vCPU, 1,9 GB de RAM y 29 GB de disco. Su memoria de agente es un repositorio git de archivos Markdown bajo /memory con enlaces estilo wiki, enviado a S3 como un único git bundle indexado por ID de usuario y con el agente como autor de los commits. Cada llamada a herramienta de Instinct pasa por GraphQL en servidor, así que el sandbox nunca habla directamente con el modelo.
+***** Take
+La memoria como repositorio git de Markdown con el agente firmando los commits es el detalle que vale la pena copiar. Te da diff, blame y rollback sobre el estado del agente gratis, en un formato legible sin su cliente, y falla de maneras que puedes depurar. Un comentarista esperaba una base de datos o un grafo y se decepcionó al ver tres archivos Markdown, pero es al revés: tres archivos que sobreviven a una caída valen más que un grafo que no puedes inspeccionar.
+***** Comments
+- Firecracker hasta el fondo, como siempre. Lo que me sorprendió es que Instinct sea solo un agente encima de archivos markdown en git. Después de oír a tanta gente hablar de él esperaba al menos una base de datos o un grafo, algo listo, pero son tres archivos markdown.
+- En resumen usan firecracker con la memoria en git. Me gusta mucho la parte de la memoria en git, y sería interesante ver cómo queda el historial tras usarlo durante más tiempo.
+- Buen análisis. ¿Notaste diferencias relevantes en cómo manejan las plataformas la persistencia del sistema de archivos entre sesiones?
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Die VMs hinter mobilen Agenten (Instinct, Claude Code)
+***** TLDR
+Der Autor hat sich in den Sandboxes zweier Agentenplattformen umgesehen und notiert, was er fand. Beide fahren Firecracker-MicroVMs als KVM-Gäste mit eigenen Kerneln. Claude Code startet ein abgespecktes Init namens process_api als PID 1, rund 430ms bis Init und 6,4s bis zur Harness, hält den Gesprächszustand auf einem beschreibbaren Volume, das die VM-Rückgabe überlebt und beim Kaltstart wieder eingehängt wird, nutzt vom Host ausgestellte OAuth-Token, die nur für root zwischengespeichert und pro Boot rotiert werden, und schickt Inferenz als Server-Sent Events über HTTP/2 an ein Egress-Gateway. Instinct mietet E2B-Sandboxes: vollständiges Ubuntu 22.04 mit systemd und XFCE-Desktop in etwa 1,26s, 2 vCPU, 1,9 GB RAM, 29 GB Disk. Der Agentenspeicher ist ein Git-Repository aus Markdown-Dateien unter /memory mit Wiki-Links, das als einzelnes Git-Bundle pro Nutzer-ID nach S3 geschoben wird, mit dem Agenten als Commit-Autor. Jeder Tool-Aufruf bei Instinct läuft über serverseitiges GraphQL, die Sandbox spricht also nie direkt mit dem Modell.
+***** Take
+Speicher als Git-Repository aus Markdown, mit dem Agenten als Commit-Autor, ist das kopierenswerte Detail. Man bekommt Diff, Blame und Rollback über den Agentenzustand geschenkt, in einem Format, das man ohne deren Client lesen kann, und es geht auf Arten kaputt, die sich debuggen lassen. Ein Kommentator erwartete eine Datenbank oder einen Graphen und war enttäuscht über drei Markdown-Dateien. Das ist verkehrt herum: Drei Dateien, die einen Absturz überstehen, sind mehr wert als ein Graph, in den man nicht hineinsehen kann.
+***** Comments
+- Firecracker bis ganz nach unten, wie immer. Überrascht hat mich, dass Instinct nur ein Agent auf Markdown-Dateien in Git ist. Nach all dem Gerede erwartete ich mindestens eine Datenbank oder einen Graphen, irgendetwas Cleveres, aber es sind drei Markdown-Dateien.
+- Kurz gesagt: Sie nutzen Firecracker mit dem Speicher in Git. Der Teil mit dem Speicher in Git gefällt mir sehr, und es wäre spannend zu sehen, wie die Git-Historie nach längerer Nutzung aussieht.
+- Gute Aufschlüsselung. Sind dir nennenswerte Unterschiede aufgefallen, wie die Plattformen die Persistenz des Dateisystems zwischen Sitzungen handhaben?
+** Antiquated HTML Snippets and Artefacts :html:web:frontend:history:
+:PROPERTIES:
+:ID:       49607991
+:URL:      https://vale.rocks/posts/html-relics
+:HN_URL:   https://news.ycombinator.com/item?id=49607991
+:POINTS:   21
+:COMMENTS: 3
+:BY:       patadune
+:END:
+
+*** TLDR
+A 3,000-word catalogue of HTML that sites still carry for environments that no longer exist. It covers X-UA-Compatible and IE conditional comments, Netscape's JavaScript entity comments, Apple's apple-touch-icon and apple-mobile-web-app-capable and apple-touch-startup-image, Microsoft's msapplication tag family for Windows pinning and tiles, UC Browser and QQ Browser orientation and fullscreen tags, Baidu transcoding blockers, HandheldFriendly and MobileOptimized from before the viewport meta tag, Twitter Cards and Facebook's earlier Share Partners system, pingback and Really Simple Discovery links, PICS content labels, ICBM geo coordinates, Skype Toolbar and Image Toolbar opt-outs, AJAX crawling fragments and prerender hints. The author's point is that almost none of this came from the specification. It accumulated as adaptation to competing browsers, extensions and third-party integrations, and stayed put after the reason for it disappeared.
+
+*** Take
+Read this with your own markup open in the next tab. These tags survive because removing them costs more attention than leaving them, and most arrived in a framework template before anyone on the current team was hired. The list doubles as a record of who once had enough market power to make you add a line to your HTML: Microsoft, Apple, Baidu, Facebook, Skype. Almost none of them can do that anymore, which is the actual story here.
+
+*** Comments
+
+**** Semaphor
+:PROPERTIES:
+:COMMENT_ID: 49608428
+:END:
+Conditional comments. We had so many IE holdouts that I think I only removed the last IE-specific fallbacks around 2021, and some conditional comments were still there until 2020.
+
+**** cprecioso
+:PROPERTIES:
+:COMMENT_ID: 49608482
+:END:
+I would only add the Safari pinned tabs meta tag, where you defined a simple black and white SVG that got used when a user pinned your tab, in colour when active and black when inactive.
+
+**** RobotToaster
+:PROPERTIES:
+:COMMENT_ID: 49608632
+:END:
+GeoURLs seem like they would still be useful today.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+过时的 HTML 片段与遗迹
+***** TLDR
+一份三千字的清单，列举网站至今仍带着、却服务于早已消失的环境的 HTML。内容包括 X-UA-Compatible 和 IE 条件注释、网景的 JavaScript 实体注释、苹果的 apple-touch-icon 与 apple-mobile-web-app-capable 与 apple-touch-startup-image、微软用于 Windows 磁贴和固定的 msapplication 系列标签、UC 浏览器和 QQ 浏览器的横竖屏与全屏标签、百度转码屏蔽标签、viewport 出现之前的 HandheldFriendly 和 MobileOptimized、Twitter Cards 和 Facebook 早期的 Share Partners、pingback 与 RSD 链接、PICS 内容分级、ICBM 地理坐标、Skype 工具栏和图片工具栏的关闭标记、AJAX 抓取片段以及预渲染提示。作者的论点是：这些几乎都不来自规范，而是为了适配互相竞争的浏览器、扩展和第三方集成而积累下来的，等到理由消失，标签还留在原地。
+***** Take
+建议一边读一边打开自己的页面源码。这些标签能活下来，是因为删掉它们花的注意力比留着更多，而且大多是在现在这批人入职之前，由某个框架模板带进来的。这份清单同时也是一份记录：曾经谁有足够的市场话语权，逼你在 HTML 里加一行。微软、苹果、百度、Facebook、Skype。如今他们几乎都做不到了，这才是真正的故事。
+***** Comments
+- 条件注释啊。我们站上还有那么多死守 IE 的用户，最后一批 IE 专用回退大概到 2021 年才删掉，有些条件注释一直留到了 2020 年。
+- 我只想再补一个 Safari 固定标签页的 meta：你要定义一个简单的黑白 SVG，用户固定标签页时就用它，激活时显示彩色，未激活时显示黑色。
+- GeoURL 感觉放到今天还挺有用的。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+時代遅れのHTMLスニペットと遺物
+***** TLDR
+もう存在しない環境のために、サイトが今も抱えているHTMLを3000語で並べた目録だ。X-UA-CompatibleとIEの条件付きコメント、NetscapeのJavaScriptエンティティコメント、Appleのapple-touch-iconやapple-mobile-web-app-capable、apple-touch-startup-image、Windowsのピン留めとタイル向けMicrosoftのmsapplication系タグ、UCブラウザとQQブラウザの画面向き・全画面タグ、Baiduのトランスコード抑止、viewport以前のHandheldFriendlyとMobileOptimized、Twitter CardsとFacebookの初期のShare Partners、pingbackとRSDのリンク、PICSのコンテンツラベル、ICBM座標、SkypeツールバーとImage Toolbarの無効化、AJAXクロール用フラグメント、プリレンダーのヒントなどを扱う。著者の主張は、これらのほとんどが仕様から来たのではなく、競合するブラウザや拡張、第三者連携への適応として積み重なり、理由が消えた後も残ったということだ。
+***** Take
+自分のマークアップを隣のタブに開いて読むといい。これらのタグが生き残るのは、消す手間のほうが残す手間より大きいからであり、多くは今のチームが入る前にフレームワークのテンプレートが持ち込んだものだ。この一覧は同時に、かつて誰があなたのHTMLに一行足させるだけの市場支配力を持っていたかの記録でもある。Microsoft、Apple、Baidu、Facebook、Skype。そのほとんどはもうそれができない。そこが本題だ。
+***** Comments
+- 条件付きコメントか。うちのサイトにはIEに留まるユーザーが多く、IE専用のフォールバックを最後に消したのは2021年ごろだったと思う。条件付きコメントも2020年までは残っていた。
+- Safariのピン留めタブ用metaタグも加えたい。白黒のシンプルなSVGを指定しておくと、タブをピン留めしたときに使われ、アクティブなら色付き、非アクティブなら黒で表示された。
+- GeoURLは今でも役に立ちそうだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+낡은 HTML 조각과 유물들
+***** TLDR
+이제 존재하지 않는 환경을 위해 사이트들이 여전히 지니고 다니는 HTML을 3천 단어로 정리한 목록이다. X-UA-Compatible과 IE 조건부 주석, 넷스케이프의 JavaScript 엔티티 주석, 애플의 apple-touch-icon과 apple-mobile-web-app-capable, apple-touch-startup-image, 윈도우 고정과 타일을 위한 마이크로소프트의 msapplication 계열 태그, UC 브라우저와 QQ 브라우저의 화면 방향과 전체화면 태그, 바이두 트랜스코딩 차단, viewport 이전 시대의 HandheldFriendly와 MobileOptimized, 트위터 카드와 페이스북의 초기 Share Partners, pingback과 RSD 링크, PICS 콘텐츠 등급, ICBM 좌표, 스카이프 툴바와 이미지 툴바 해제, AJAX 크롤링 프래그먼트, 프리렌더 힌트를 다룬다. 저자의 요지는 이 중 거의 어느 것도 명세에서 나오지 않았다는 것이다. 경쟁하는 브라우저와 확장, 서드파티 연동에 적응하며 쌓였고, 이유가 사라진 뒤에도 남았다.
+***** Take
+옆 탭에 자기 마크업을 띄워 놓고 읽기를 권한다. 이 태그들이 살아남는 이유는 지우는 데 드는 주의가 남겨두는 것보다 크기 때문이고, 대부분은 지금 팀원들이 합류하기 전에 프레임워크 템플릿이 들여놓은 것이다. 이 목록은 동시에 누가 한때 당신의 HTML에 한 줄을 추가하게 만들 만큼 시장 지배력을 가졌는지에 대한 기록이다. 마이크로소프트, 애플, 바이두, 페이스북, 스카이프. 이제는 거의 아무도 그럴 수 없고, 그게 진짜 이야기다.
+***** Comments
+- 조건부 주석이라니. 우리 사이트에는 IE를 고수하는 사용자가 워낙 많아서 IE 전용 폴백을 마지막으로 지운 게 2021년쯤이었던 것 같고, 조건부 주석 일부는 2020년까지 남아 있었다.
+- 사파리 고정 탭용 meta 태그 하나만 더 넣고 싶다. 단순한 흑백 SVG를 지정해두면 사용자가 탭을 고정했을 때 쓰였고, 활성일 때는 컬러, 비활성일 때는 검정으로 표시됐다.
+- GeoURL은 오늘날에도 쓸모 있어 보인다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Fragmentos y artefactos anticuados de HTML
+***** TLDR
+Un catálogo de 3.000 palabras sobre el HTML que los sitios siguen arrastrando para entornos que ya no existen. Cubre X-UA-Compatible y los comentarios condicionales de IE, los comentarios de entidad JavaScript de Netscape, las etiquetas de Apple apple-touch-icon, apple-mobile-web-app-capable y apple-touch-startup-image, la familia msapplication de Microsoft para anclar y hacer mosaicos en Windows, las etiquetas de orientación y pantalla completa de UC Browser y QQ Browser, los bloqueadores de transcodificación de Baidu, HandheldFriendly y MobileOptimized de antes de la etiqueta viewport, las Twitter Cards y el antiguo sistema Share Partners de Facebook, los enlaces de pingback y Really Simple Discovery, las etiquetas de contenido PICS, las coordenadas ICBM, las exclusiones de la barra de Skype y de la Image Toolbar, los fragmentos de rastreo AJAX y las pistas de prerenderizado. La tesis del autor es que casi nada de esto salió de la especificación: se acumuló como adaptación a navegadores en competencia, extensiones e integraciones de terceros, y se quedó cuando el motivo desapareció.
+***** Take
+Léelo con tu propio marcado abierto en la pestaña de al lado. Estas etiquetas sobreviven porque quitarlas cuesta más atención que dejarlas, y la mayoría llegó en una plantilla de framework antes de que contrataran a nadie del equipo actual. La lista funciona además como registro de quién tuvo alguna vez poder de mercado suficiente para obligarte a añadir una línea a tu HTML: Microsoft, Apple, Baidu, Facebook, Skype. Casi ninguno puede hacerlo ya, y esa es la historia de verdad.
+***** Comments
+- Los comentarios condicionales. Teníamos tantos usuarios aferrados a IE que creo que solo quité los últimos fallbacks específicos de IE hacia 2021, y algunos comentarios condicionales siguieron ahí hasta 2020.
+- Yo solo añadiría la meta etiqueta de pestañas ancladas de Safari, en la que definías un SVG sencillo en blanco y negro que se usaba cuando alguien anclaba tu pestaña: a color si estaba activa y en negro si no.
+- Las GeoURL parecen algo que aún hoy sería útil.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Veraltete HTML-Schnipsel und Artefakte
+***** TLDR
+Ein 3.000 Wörter langer Katalog des HTML, das Seiten für längst verschwundene Umgebungen mit sich herumtragen. Behandelt werden X-UA-Compatible und die Conditional Comments des IE, Netscapes JavaScript-Entity-Kommentare, Apples apple-touch-icon, apple-mobile-web-app-capable und apple-touch-startup-image, Microsofts msapplication-Familie für Windows-Pinning und Kacheln, die Ausrichtungs- und Vollbild-Tags von UC Browser und QQ Browser, Baidus Transcoding-Blocker, HandheldFriendly und MobileOptimized aus der Zeit vor dem Viewport-Tag, Twitter Cards und Facebooks frühere Share Partners, Pingback- und RSD-Links, PICS-Inhaltslabels, ICBM-Koordinaten, die Abschaltungen für Skype-Toolbar und Image Toolbar, AJAX-Crawling-Fragmente und Prerender-Hinweise. Der Punkt des Autors: Fast nichts davon stammt aus der Spezifikation. Es hat sich als Anpassung an konkurrierende Browser, Erweiterungen und Drittintegrationen angesammelt und blieb liegen, nachdem der Grund verschwunden war.
+***** Take
+Lies das mit dem eigenen Markup im Nachbartab. Diese Tags überleben, weil ihr Entfernen mehr Aufmerksamkeit kostet als ihr Verbleib, und die meisten kamen über ein Framework-Template ins Haus, bevor irgendjemand aus dem heutigen Team eingestellt wurde. Die Liste ist zugleich eine Aufzeichnung darüber, wer einmal genug Marktmacht hatte, dich zu einer zusätzlichen Zeile HTML zu bewegen: Microsoft, Apple, Baidu, Facebook, Skype. Fast keiner davon kann das noch, und das ist hier die eigentliche Geschichte.
+***** Comments
+- Conditional Comments. Wir hatten so viele IE-Nachzügler, dass ich die letzten IE-spezifischen Fallbacks wohl erst um 2021 entfernt habe, und einige Conditional Comments hielten sich bis 2020.
+- Ich würde nur noch das Meta-Tag für angeheftete Safari-Tabs ergänzen, für das man ein einfaches Schwarzweiß-SVG definierte, das beim Anheften eines Tabs verwendet wurde: farbig bei aktivem Tab, schwarz bei inaktivem.
+- GeoURLs wirken, als wären sie auch heute noch nützlich.
+** Why getting your hands dirty is good for you :health:microbiome:science:research:
+:PROPERTIES:
+:ID:       49608023
+:URL:      https://www.bbc.com/future/article/20260904-how-getting-your-hands-dirty-boosts-your-health-within-weeks
+:HN_URL:   https://news.ycombinator.com/item?id=49608023
+:POINTS:   30
+:COMMENTS: 21
+:BY:       HatchedLake721
+:END:
+
+*** TLDR
+BBC Future rounds up mostly Finnish research on soil contact. In Grönroos's experiment, rubbing hands with soil, peat and moss for 20 seconds raised both the abundance and the variety of skin microbes, and the effect survived a rinse under the tap, but the skin returned close to baseline quickly, so it needs repeating to matter. Roslund's daycare trial ran 28 days of play on a forest floor with a follow-up a year later: those children had more skin microbial diversity and fewer potential pathogens than children in paved yards, and higher gammaproteobacteria diversity tracked with more regulatory T cells. A sandbox trial comparing microbially diverse soil against low-diversity soil, a month of adults growing vegetables indoors, and two weeks of office green walls all pointed the same way: more skin bacteria diversity, more anti-inflammatory cytokines, fewer pro-inflammatory ones, more Lactobacillus. The researchers say plainly that whether this reduces asthma or allergies is still unclear.
+
+*** Take
+The immune markers are real measurements, and the studies are small and Finnish, which is the sentence that belongs after every headline of this shape. The more useful finding is buried in the sandbox trial: the comparison was diverse soil against low-diversity soil, not dirt against no dirt. If that holds, the depleted soil in a city planter box may do very little, and the advice is not to get dirty but to get near living soil.
+
+*** Comments
+
+**** nxobject
+:PROPERTIES:
+:COMMENT_ID: 49608472
+:END:
+I look forward to a hyper-optimizer streamlining this into a daily workflow. I have a bucket of mud that I stick my hands in for 15 minutes every morning. Every weekend I inoculate it at a 1:5:5 ratio with biologically active stream dirt, after petri-dishing to check for activity.
+
+**** chistev
+:PROPERTIES:
+:COMMENT_ID: 49608393
+:END:
+Dirt is good to prevent you from getting sick easily.
+
+**** jeanmichelselli
+:PROPERTIES:
+:COMMENT_ID: 49608227
+:END:
+And we needed an article from the BBC to be aware of this?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+为什么弄脏双手对你有好处
+***** TLDR
+BBC Future 汇总了多项以芬兰为主的土壤接触研究。在 Grönroos 的实验中，用土壤、泥炭和苔藓搓手 20 秒，皮肤微生物的数量和种类都会上升，用自来水冲洗后效果仍在，但皮肤很快回到接近基线的状态，所以需要反复接触才有意义。Roslund 的托儿所试验让孩子在森林地面上玩 28 天，一年后随访：这批孩子的皮肤微生物多样性高于在铺装场地玩耍的孩子，潜在病原体更少，且 γ-变形菌多样性越高，调节性 T 细胞越多。另有对比高多样性与低多样性土壤的沙坑试验、成年人室内种菜一个月的试验、以及办公室绿墙两周的试验，结论方向一致：皮肤细菌多样性上升，抗炎细胞因子增多，促炎细胞因子减少，乳酸杆菌增加。研究者明确表示，这是否能降低哮喘或过敏风险仍不清楚。
+***** Take
+免疫标志物是实打实测出来的，而这些研究样本小、且集中在芬兰，这句话应该跟在每一个这种形状的标题后面。更有用的发现藏在沙坑试验里：对照的不是不玩土，而是低多样性的土。如果这个结论成立，城市花坛里那种贫瘠土壤可能作用甚微，建议就不是去弄脏手，而是去接触有生命的土壤。
+***** Comments
+- 我很期待看到有效率狂人把这套东西打磨成日常流程。我有一桶泥，每天早上把手插进去 15 分钟。每个周末按 1:5:5 的比例接入有生物活性的溪泥，接之前先用培养皿确认活性。
+- 接触泥土有助于让你不那么容易生病。
+- 这事还得等 BBC 写篇文章我们才知道？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+手を汚すことがなぜ体に良いのか
+***** TLDR
+BBC Futureが、主にフィンランドの土壌接触研究をまとめている。Grönroosの実験では、土や泥炭、苔で20秒間手をこすると皮膚の微生物の量も種類も増え、水道水ですすいだ後も効果は残った。ただし皮膚は速やかにほぼ元の状態に戻るため、繰り返さなければ意味がない。Roslundの保育園試験では森林の地面で28日間遊ばせ、1年後に追跡した。その子どもたちは舗装された園庭の子どもより皮膚の微生物多様性が高く、潜在的な病原体は少なく、ガンマプロテオバクテリアの多様性が高いほど制御性T細胞も多かった。多様性の高い土と低い土を比べた砂場試験、成人が1か月間室内で野菜を育てた試験、オフィスの緑の壁で2週間過ごした試験も、いずれも同じ方向を示した。皮膚の細菌多様性が増え、抗炎症性サイトカインが増え、炎症性サイトカインが減り、乳酸菌が増える。研究者は、これが喘息やアレルギーを減らすかどうかはまだ不明だと明言している。
+***** Take
+免疫マーカーは実測値であり、研究は小規模でフィンランドに偏っている。この形の見出しの後には、常にその一文が続くべきだ。より役に立つ発見は砂場試験に埋もれている。比較したのは土あり対土なしではなく、多様性の高い土対低い土だった。これが成り立つなら、都市のプランターの痩せた土はほとんど効かないかもしれず、助言は手を汚せではなく生きた土に近づけになる。
+***** Comments
+- 効率化マニアがこれを毎朝のワークフローに磨き上げるのを楽しみにしている。泥のバケツがあり、毎朝15分間そこに手を突っ込む。週末には生物学的に活発な小川の泥を1:5:5の比で加える。加える前にシャーレで活性を確認する。
+- 土に触れるのは、簡単に病気にならないために良い。
+- これを知るのにBBCの記事が必要だったのか。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+손을 더럽히는 것이 몸에 좋은 이유
+***** TLDR
+BBC Future가 주로 핀란드의 토양 접촉 연구들을 정리했다. Grönroos의 실험에서는 흙과 이탄, 이끼로 20초간 손을 문지르자 피부 미생물의 양과 종류가 모두 늘었고 수돗물로 헹군 뒤에도 효과가 남았다. 다만 피부는 빠르게 원래 상태에 가깝게 돌아가므로 반복해야 의미가 있다. Roslund의 어린이집 시험은 숲 바닥에서 28일간 놀게 하고 1년 뒤 추적했다. 그 아이들은 포장된 마당에서 논 아이들보다 피부 미생물 다양성이 높고 잠재 병원체가 적었으며, 감마프로테오박테리아 다양성이 높을수록 조절 T세포가 많았다. 다양성이 높은 흙과 낮은 흙을 비교한 모래놀이 시험, 성인이 한 달간 실내에서 채소를 기른 시험, 사무실 그린월에서 2주를 보낸 시험 모두 같은 방향을 가리켰다. 피부 세균 다양성이 늘고 항염 사이토카인이 늘며 염증성 사이토카인이 줄고 락토바실루스가 늘었다. 연구자들은 이것이 천식이나 알레르기를 줄이는지는 아직 불분명하다고 분명히 밝힌다.
+***** Take
+면역 지표는 실제로 측정된 값이고, 연구들은 규모가 작으며 핀란드에 몰려 있다. 이런 형태의 헤드라인 뒤에는 늘 그 문장이 따라와야 한다. 더 쓸모 있는 발견은 모래놀이 시험에 묻혀 있다. 비교 대상은 흙이 있느냐 없느냐가 아니라 다양성이 높은 흙과 낮은 흙이었다. 이게 사실이라면 도시 화단의 척박한 흙은 거의 효과가 없을 수 있고, 조언은 손을 더럽히라가 아니라 살아 있는 흙 가까이 가라가 된다.
+***** Comments
+- 효율 최적화에 빠진 사람이 이걸 매일의 워크플로로 다듬는 걸 기대한다. 진흙 통이 있고 매일 아침 15분씩 손을 넣는다. 주말마다 생물학적으로 활발한 개울 흙을 1:5:5 비율로 넣는데, 넣기 전에 배양접시로 활성을 확인한다.
+- 흙을 만지는 건 쉽게 아프지 않게 해준다.
+- 이걸 알려면 BBC 기사가 필요했나?
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Por qué ensuciarse las manos es bueno para ti
+***** TLDR
+BBC Future repasa investigaciones sobre contacto con el suelo, en su mayoría finlandesas. En el experimento de Grönroos, frotarse las manos con tierra, turba y musgo durante 20 segundos aumentó la abundancia y la variedad de microbios de la piel, y el efecto sobrevivió a un enjuague de grifo, pero la piel volvió pronto a algo cercano al punto de partida, así que hay que repetirlo para que cuente. El ensayo de guardería de Roslund consistió en 28 días de juego sobre suelo forestal con seguimiento un año después: esos niños tenían más diversidad microbiana en la piel y menos patógenos potenciales que los de patios pavimentados, y a mayor diversidad de gammaproteobacterias, más células T reguladoras. Un ensayo de arenero comparando tierra microbianamente diversa con tierra pobre, un mes de adultos cultivando verduras en interior y dos semanas con muros verdes de oficina apuntaron en la misma dirección: más diversidad bacteriana en la piel, más citocinas antiinflamatorias, menos proinflamatorias y más Lactobacillus. Los investigadores dicen con claridad que sigue sin estar claro si esto reduce el asma o las alergias.
+***** Take
+Los marcadores inmunitarios son mediciones reales, y los estudios son pequeños y finlandeses, que es la frase que debería seguir a todo titular con esta forma. El hallazgo más útil está enterrado en el ensayo del arenero: la comparación era tierra diversa contra tierra pobre, no tierra contra nada. Si eso se sostiene, el suelo agotado de una jardinera urbana puede hacer muy poco, y el consejo no es ensuciarse sino acercarse a suelo vivo.
+***** Comments
+- Espero con ganas que un hiperoptimizador convierta esto en un flujo de trabajo diario. Tengo un cubo de barro donde meto las manos 15 minutos cada mañana. Los fines de semana lo inoculo en proporción 1:5:5 con tierra biológicamente activa de arroyo, tras comprobar su actividad en placa de Petri.
+- La tierra es buena para que no te pongas enfermo con facilidad.
+- ¿Y necesitábamos un artículo de la BBC para enterarnos de esto?
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Warum es gut für dich ist, dir die Hände schmutzig zu machen
+***** TLDR
+BBC Future fasst überwiegend finnische Forschung zum Bodenkontakt zusammen. In Grönroos' Experiment stiegen nach 20 Sekunden Händereiben mit Erde, Torf und Moos sowohl Menge als auch Vielfalt der Hautmikroben, und der Effekt überstand ein Abspülen unter dem Wasserhahn. Die Haut kehrte allerdings rasch nahe an den Ausgangszustand zurück, es braucht also Wiederholung. Roslunds Kita-Studie ließ Kinder 28 Tage auf Waldboden spielen, mit Nachuntersuchung ein Jahr später: Diese Kinder hatten mehr mikrobielle Vielfalt auf der Haut und weniger potenzielle Erreger als Kinder auf gepflasterten Höfen, und höhere Gammaproteobakterien-Vielfalt ging mit mehr regulatorischen T-Zellen einher. Ein Sandkastenversuch mit mikrobiell vielfältiger gegen artenarme Erde, ein Monat Gemüseanbau von Erwachsenen in Innenräumen und zwei Wochen mit begrünten Bürowänden wiesen in dieselbe Richtung: mehr Hautbakterienvielfalt, mehr entzündungshemmende Zytokine, weniger entzündungsfördernde, mehr Lactobacillus. Die Forschenden sagen deutlich, dass unklar bleibt, ob das Asthma oder Allergien verringert.
+***** Take
+Die Immunmarker sind echte Messwerte, und die Studien sind klein und finnisch, und dieser Satz gehört hinter jede Schlagzeile dieser Bauart. Der nützlichere Befund steckt im Sandkastenversuch: Verglichen wurde vielfältige Erde gegen artenarme Erde, nicht Dreck gegen keinen Dreck. Wenn das hält, bringt der ausgelaugte Boden im städtischen Pflanzkasten womöglich sehr wenig, und der Rat lautet nicht, sich schmutzig zu machen, sondern in die Nähe von lebendigem Boden zu kommen.
+***** Comments
+- Ich freue mich schon auf den Hyperoptimierer, der daraus einen täglichen Workflow macht. Ich habe einen Eimer Schlamm, in den ich jeden Morgen 15 Minuten die Hände stecke. Am Wochenende impfe ich ihn im Verhältnis 1:5:5 mit biologisch aktivem Bachschlamm, nachdem ich die Aktivität auf einer Petrischale geprüft habe.
+- Dreck ist gut dafür, nicht so leicht krank zu werden.
+- Und dafür brauchten wir einen Artikel der BBC?
