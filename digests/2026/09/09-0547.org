@@ -1,0 +1,512 @@
+#+TITLE: HN Digest 2026-09-09 05:47 UTC
+#+DATE: 2026-09-09T05:47:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Tao says good math problems are a non-renewable resource, a pretraining researcher quits Anthropic, and an e-ink screen learns to be a printer
+
+* Highlights
+- Tao: the scarce resource is no longer solutions, it is knowing which problem is worth asking
+- Jacob Coxon resigns from Anthropic and asks the labs to coordinate on slowing down
+- A 400 KB ESP32-C3 becomes an AirPrint printer by streaming pages it cannot hold
+- Qwen3.8 27B at 4-bit matches full precision; 1-bit lands at random guessing
+- LLMs invent hiring biases about four groups that do not exist
+
+* Stories
+
+** Tao: Open math problems being non-renewably mined by AI :math:ai:research-culture:academia:
+:PROPERTIES:
+:ID:       49616968
+:URL:      https://mathstodon.xyz/@tao/117237320796901560
+:HN_URL:   https://news.ycombinator.com/item?id=49616968
+:POINTS:   283
+:COMMENTS: 296
+:BY:       _alternator_
+:END:
+
+*** TLDR
+Terence Tao argues in a four-post thread that the stock of good open problems is being mined non-renewably. His analogy: a region can run short of drinking water while surrounded by ocean. Anyone can generate infinite problems, such as the 10^10^10th digit of pi, but almost none of them teach anything, and judging which ones do is slow, subjective work that depends on knowing a field's difficulty landscape. Every new technique or tool lowers difficulty and flattens that landscape; normally it also extends reach far enough to open new frontiers. Tao says the AI era brings the flattening without any visible frontier between AI-feasible and AI-hard problems, made worse by labs not publishing negative results or how a solution was reached. So identifying a promising problem is now the scarce resource, and the rumor that someone is working on one can trigger enough AI effort to flatten it before the original project matures. The incentive that creates is to stop sharing research directions at all. His proposal: designate classes of problems where a raw solution without analysis of the insight and the surrounding difficulty landscape counts as negligible or negative value, the way food drives set standards instead of accepting anything edible.
+
+*** Take
+The load-bearing claim is about incentives, not about AI capability. If naming a direction invites a lab to sprint it, silence becomes the rational move, and centuries of open sharing was the thing holding the field together. His fix needs journals, referees and prize committees to agree that a proof without insight is not a contribution, and no one has ever had to enforce that norm before because raw solutions were never cheap.
+
+*** Comments
+
+**** Alien1Being
+The central point: indiscriminate solution extraction solves the problem at hand at the cost of the ecosystem that produces the next wave.
+
+**** vessenes
+Not untrue, but it misstates history. Gauss was brutally competitive, and the Newton-Leibniz fight was very serious business.
+
+**** senshan
+Asimov's Jokester, 1956: Multivac could answer everything, and locating the meaningful questions became the bottleneck.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+陶哲轩：开放数学问题正被 AI 以不可再生的方式开采
+***** TLDR
+陶哲轩在四条串文中指出，优质开放问题的存量正被以不可再生的方式开采。他的类比是：一个地区可以被海洋环绕却仍然缺乏饮用水。任何人都能造出无穷多的问题，比如求圆周率第 10^10^10 位，但其中几乎没有一个能带来新认识；判断哪些值得研究是缓慢而主观的工作，依赖于对一个领域难度地形的了解。每一项新技术或新工具都会降低难度、抹平这片地形；通常它也会把可及范围扩大到足以开辟新的边界。陶哲轩认为，AI 时代只有抹平，却看不到把 AI 可解与 AI 难解分开的边界，而各家实验室不公布负面结果、也不披露解题过程，让情况更糟。于是稀缺资源变成了识别有前景的问题：只要传出有人在做某个问题的风声，就可能引来足够的 AI 算力，在原本的研究计划成熟之前把它压平。由此产生的激励是干脆不再公开研究方向。他的建议是：划定一类问题，规定只给出答案而不分析其中的洞见与周边难度地形，其价值可忽略甚至为负，就像今天的食物捐赠不再来者不拒，而是设定明确标准。
+***** Take
+真正吃重的论点是激励机制，而不是 AI 能力。如果说出一个方向就会引来实验室冲刺，沉默就成了理性选择，而维系这个领域数百年的恰恰是公开分享。他的解法需要期刊、审稿人和奖项委员会一致认定：没有洞见的证明不算贡献。这条规范此前从没人需要执行，因为原始答案从来都不便宜。
+***** Comments
+- 核心观点：不加区分地抽取答案，解决了眼前的问题，代价是支撑下一波进展的生态。
+- 话没说错，但这是对历史的误述。高斯竞争心极强，牛顿与莱布尼茨之争在当时也是非常严肃的事。
+- 阿西莫夫 1956 年的《讲笑话的人》：Multivac 什么都能回答，找出有意义的问题反而成了瓶颈。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+テレンス・タオ：未解決の数学問題がAIによって非再生的に掘り尽くされている
+***** TLDR
+テレンス・タオは4連投で、良質な未解決問題のストックが非再生的に採掘されていると論じた。たとえ話はこうだ。海に囲まれた地域でも飲料水は不足しうる。円周率の10^10^10桁目のように問題はいくらでも作れるが、そのほとんどは何も教えてくれない。どれが有益かの判断は遅く主観的な作業で、その分野の難易度の地形を知っていることが前提になる。新しい技法や道具は難易度を下げ、その地形を平坦にする。通常はそれと同時に到達範囲を広げ、新しい辺境を開く。しかしAIの時代には平坦化だけが起き、AIで解ける問題と解けない問題を分ける境界が見えない。各社が否定的な結果も解法の過程も公開しないことがそれを悪化させている。結果として希少な資源は有望な問題の特定になり、誰かが取り組んでいるという噂だけで、元の研究が成熟する前に大量のAI資源が投入されて潰されうる。そこから生まれる誘因は、研究の方向性をもう共有しないことだ。彼の提案は、洞察と周辺の難易度の分析を伴わない解答は価値がない、あるいは負の価値だと明示する問題群を設けること。食料寄付が何でも受け取るのをやめて基準を設けたのと同じ発想だ。
+***** Take
+要になっている主張はAIの能力ではなく誘因の話だ。方向性を口にした瞬間に研究所が全力で走るなら、沈黙が合理的になる。そして分野を何世紀も支えてきたのは公開して共有する慣行だった。彼の処方箋は、洞察のない証明は貢献ではないと雑誌も査読者も賞の委員会も認めることを要求する。生の解答が安く手に入ることなどなかったので、この規範を執行する必要はこれまで誰にもなかった。
+***** Comments
+- 中心的な論点は、無差別な解答抽出は目の前の問題を解く代わりに、次の進展を生む生態系を損なうということ。
+- 間違いではないが歴史の描き方が違う。ガウスは苛烈に競争的だったし、ニュートンとライプニッツの争いは当時きわめて深刻な話だった。
+- アシモフの1956年の短編『ジョーカー』：Multivacは何でも答えられ、意味のある問いを見つけることこそが隘路になった。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+테렌스 타오: 열린 수학 문제가 AI에 의해 재생 불가능하게 채굴되고 있다
+***** TLDR
+테렌스 타오는 네 편의 글에서 좋은 미해결 문제의 재고가 재생 불가능한 방식으로 채굴되고 있다고 주장한다. 비유는 이렇다. 바다에 둘러싸인 지역도 식수가 부족할 수 있다. 원주율의 10^10^10번째 자리처럼 문제는 얼마든지 만들 수 있지만 대부분은 아무것도 가르쳐 주지 않는다. 어떤 문제가 가치 있는지 판단하는 일은 느리고 주관적이며, 그 분야의 난이도 지형을 아는 데 달려 있다. 새로운 기법이나 도구는 난이도를 낮추고 그 지형을 평평하게 만든다. 보통은 동시에 도달 범위를 넓혀 새로운 경계를 열어 준다. 그러나 AI 시대에는 평탄화만 일어나고, AI로 풀 수 있는 문제와 어려운 문제를 가르는 경계가 보이지 않는다. 연구소들이 실패한 결과도, 해법에 이른 과정도 공개하지 않는 것이 이를 악화시킨다. 그래서 이제 희소한 자원은 유망한 문제를 식별하는 능력이며, 누군가 어떤 문제를 다룬다는 소문만으로도 원래 연구가 무르익기 전에 대규모 AI 자원이 투입되어 문제가 납작해질 수 있다. 여기서 생기는 유인은 연구 방향을 아예 공유하지 않는 것이다. 그의 제안은 통찰과 주변 난이도에 대한 분석 없이 답만 내놓는 것은 가치가 미미하거나 오히려 해롭다고 지정하는 문제군을 두자는 것이다. 오늘날 식품 기부가 아무거나 받지 않고 기준을 두는 것과 같다.
+***** Take
+핵심 주장은 AI 능력이 아니라 유인 구조다. 방향을 말하는 순간 연구소가 전력 질주한다면 침묵이 합리적 선택이 되고, 이 분야를 수백 년간 지탱한 것이 바로 공개적 공유였다. 그의 해법은 학술지와 심사자와 상 위원회가 통찰 없는 증명은 기여가 아니라는 데 합의할 것을 요구한다. 원시 해답이 싸게 나온 적이 없었기에 이 규범을 집행할 필요는 지금까지 아무에게도 없었다.
+***** Comments
+- 핵심은 이것이다. 무차별적인 해답 추출은 당장의 문제를 풀지만 다음 진전을 만들어 낼 생태계를 대가로 치른다.
+- 틀린 말은 아니지만 역사 서술이 어긋난다. 가우스는 지독하게 경쟁적이었고 뉴턴과 라이프니츠의 다툼은 당대에 매우 심각한 사안이었다.
+- 아시모프의 1956년 단편 조크스터: 멀티백은 무엇이든 답할 수 있었고, 의미 있는 질문을 찾는 일이 병목이 되었다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Tao: los problemas matemáticos abiertos se están extrayendo de forma no renovable con IA
+***** TLDR
+Terence Tao sostiene en un hilo de cuatro publicaciones que el stock de buenos problemas abiertos se está explotando de forma no renovable. Su analogía: una región puede quedarse sin agua potable estando rodeada de océano. Cualquiera puede generar infinitos problemas, como el dígito 10^10^10 de pi, pero casi ninguno enseña nada, y decidir cuáles sí es un trabajo lento y subjetivo que depende de conocer el paisaje de dificultad de un campo. Cada técnica o herramienta nueva baja la dificultad y aplana ese paisaje; normalmente también amplía el alcance lo suficiente para abrir nuevas fronteras. Tao dice que la era de la IA trae el aplanamiento sin ninguna frontera visible entre lo factible para la IA y lo difícil para la IA, y que los laboratorios empeoran esto al no publicar resultados negativos ni cómo se llegó a una solución. Así, identificar un problema prometedor es ahora el recurso escaso, y el simple rumor de que alguien trabaja en uno puede desencadenar suficiente esfuerzo de IA para aplanarlo antes de que el proyecto original madure. El incentivo que eso crea es dejar de compartir direcciones de investigación. Su propuesta: designar clases de problemas en las que una solución sin análisis de la idea y del paisaje de dificultad tenga valor insignificante o negativo, igual que las campañas de alimentos fijan criterios en lugar de aceptar cualquier cosa comestible.
+***** Take
+La afirmación que sostiene todo trata de incentivos, no de capacidad de la IA. Si nombrar una dirección invita a un laboratorio a correr, el silencio se vuelve racional, y compartir en abierto fue lo que sostuvo el campo durante siglos. Su remedio exige que revistas, revisores y comités de premios acuerden que una demostración sin comprensión no es una contribución, una norma que nadie tuvo que hacer cumplir mientras las soluciones en bruto fueron caras.
+***** Comments
+- El punto central: la extracción indiscriminada de soluciones resuelve el problema inmediato a costa del ecosistema que produce el siguiente avance.
+- No es falso, pero tergiversa la historia. Gauss era brutalmente competitivo y la disputa Newton-Leibniz fue un asunto muy serio en su momento.
+- El bromista de Asimov, 1956: Multivac podía responderlo todo, y localizar las preguntas significativas se convirtió en el cuello de botella.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Tao: Offene mathematische Probleme werden von KI nicht erneuerbar abgebaut
+***** TLDR
+Terence Tao argumentiert in einem Thread aus vier Beiträgen, dass der Bestand an guten offenen Problemen nicht erneuerbar abgebaut wird. Sein Vergleich: Eine Region kann Trinkwassermangel haben, obwohl sie vom Ozean umgeben ist. Jeder kann beliebig viele Probleme erzeugen, etwa die 10^10^10-te Stelle von Pi, aber fast keines davon lehrt etwas. Zu beurteilen, welche es tun, ist langsame, subjektive Arbeit und setzt Kenntnis der Schwierigkeitslandschaft eines Gebiets voraus. Jede neue Technik und jedes neue Werkzeug senkt die Schwierigkeit und ebnet diese Landschaft ein; normalerweise erweitert es zugleich die Reichweite so weit, dass neue Grenzgebiete entstehen. In der KI-Ära, so Tao, gibt es die Einebnung ohne sichtbare Grenze zwischen KI-machbaren und KI-harten Problemen, verschärft dadurch, dass die Labore weder negative Ergebnisse noch den Weg zur Lösung veröffentlichen. Knapp ist damit das Erkennen eines vielversprechenden Problems, und schon das Gerücht, jemand arbeite daran, kann genug KI-Aufwand auslösen, um es einzuebnen, bevor das ursprüngliche Projekt reif ist. Der Anreiz daraus lautet, Forschungsrichtungen gar nicht mehr zu teilen. Sein Vorschlag: Problemklassen ausweisen, bei denen eine reine Lösung ohne Analyse der Einsicht und der umgebenden Schwierigkeitslandschaft vernachlässigbaren oder negativen Wert hat, so wie Lebensmittelspenden heute Standards setzen statt alles Essbare anzunehmen.
+***** Take
+Der tragende Punkt betrifft Anreize, nicht die Fähigkeiten von KI. Wenn schon das Nennen einer Richtung ein Labor zum Sprint einlädt, wird Schweigen rational, und offenes Teilen war jahrhundertelang das, was das Fach zusammenhielt. Sein Vorschlag verlangt, dass Zeitschriften, Gutachter und Preiskomitees sich darauf einigen, dass ein Beweis ohne Einsicht kein Beitrag ist. Diese Norm musste bisher niemand durchsetzen, weil rohe Lösungen nie billig waren.
+***** Comments
+- Der Kernpunkt: Unterschiedsloses Absaugen von Lösungen löst das aktuelle Problem auf Kosten des Ökosystems, das den nächsten Fortschritt hervorbringt.
+- Nicht falsch, aber die Geschichte wird verzerrt. Gauß war brutal wettbewerbsorientiert, und der Streit zwischen Newton und Leibniz war damals eine sehr ernste Sache.
+- Asimovs Der Witzbold von 1956: Multivac konnte alles beantworten, und das Finden der sinnvollen Fragen wurde zum Engpass.
+** I resigned from Anthropic today :ai-safety:anthropic:openai:careers:
+:PROPERTIES:
+:ID:       49619227
+:URL:      https://xcancel.com/hilbertspaess/status/2097476196791709843
+:HN_URL:   https://news.ycombinator.com/item?id=49619227
+:POINTS:   306
+:COMMENTS: 364
+:BY:       yurivish
+:END:
+
+*** TLDR
+Jacob Coxon posted that he has resigned from Anthropic after three years of pretraining research there and at OpenAI. His argument: both labs are racing toward self-improving superintelligence, the systems will soon be able to break most software, transform fields overnight and acquire real resources, and the people building them privately think this could kill everyone within the decade while executives soften that in public. He describes Anthropic's internal justification as the belief that someone has to lead and no one else will act responsibly. He no longer thinks alignment can be speedrun inside a private company, and he asks for coordination between labs, including temporary limits on capability work.
+
+*** Take
+There is no leak here and no capability claim anyone outside can check. What it is: someone who worked on the pretraining runs concluding the schedule is wrong and leaving rather than staying to steer it from inside. That makes it evidence about researcher sentiment, not about model capability, and the thread on HN mostly sorted people by what they already believed about the risk case rather than moving anyone.
+
+*** Comments
+
+**** huitzitziltzin
+No other human activity poses this level of danger? I disagree. Nuclear weapons and everyday carbon emissions are not close. What is the most dangerous thing an LLM has actually done?
+
+**** matherial
+I applaud acting on principle even though I disagree with him. If you sincerely believe that, of course you should act.
+
+**** onewayfunction
+The skepticism here baffles me. After this summer it takes a lack of imagination not to see plausible routes to disaster.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+我今天从 Anthropic 辞职了
+***** TLDR
+Jacob Coxon 发文称，他已从 Anthropic 辞职，此前他在 OpenAI 和 Anthropic 做了三年预训练研究。他的论点是：两家实验室都在冲向能自我改进的超级智能；这些系统很快就能攻破大多数软件、在一夜之间改变任何领域、并获取真实的资源；而构建它们的人私下认为这可能在本十年内害死所有人，高管们在公开场合却把话说软。他把 Anthropic 的内部理由概括为：总得有人领先，而别人不会负责任地行事。他不再相信对齐可以在一家私营公司里速通，并呼吁各实验室之间协调，包括临时限制能力研发。
+***** Take
+这里没有泄密，也没有外界可以核实的能力主张。它的实质是：一个参与过预训练的人认定这个进度表是错的，选择离开而不是留在内部影响它。因此它是关于研究者情绪的证据，而不是关于模型能力的证据。HN 上的讨论基本只是按各自原有的风险立场把人分成两边，没怎么改变任何人的想法。
+***** Comments
+- 说没有别的人类活动有这种危险？我不同意。核武器和日常碳排放都不接近。到目前为止 LLM 做过的最危险的事是什么？
+- 尽管我不同意他，我仍然赞赏按原则行动。如果你真的这么相信，当然就该行动。
+- 这里的怀疑态度让我困惑。经历了这个夏天，看不出通向灾难的可能路径才叫缺乏想象力。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+本日Anthropicを退職しました
+***** TLDR
+ジェイコブ・コクソンが、OpenAIとAnthropicで3年間の事前学習研究に携わった後、Anthropicを退職したと投稿した。主張はこうだ。両社は自己改良する超知能へ競走している。こうしたシステムは近くほとんどのソフトウェアを破り、あらゆる分野を一夜で塗り替え、現実の資源を手にする。作っている当人たちは今世紀の10年内に全員が死ぬ可能性を私的には本気で考えているのに、経営陣は公の場でそれを和らげて語る。Anthropic内部の正当化は、誰かが先頭に立つしかなく他社は責任ある行動を取らない、という信念だと彼は述べる。もはや民間企業の内部でアライメントを短時間で片付けられるとは思わない、として、能力開発の一時的な制限を含む研究所間の協調を求めている。
+***** Take
+内部資料の流出はなく、外部が検証できる能力の主張もない。実質は、事前学習の現場を見た人物がこの進行計画は間違っていると判断し、内側から舵を取り続ける道ではなく退職を選んだということだ。つまりモデルの能力についての証拠ではなく、研究者の心情についての証拠である。HNのスレッドは、もともとのリスク観で人を仕分けただけで、誰の考えもほとんど動かしていない。
+***** Comments
+- 他のどんな人類の活動もこれほど危険ではない、という主張には強く反対する。核兵器や日常的な炭素排出には遠く及ばない。LLMが実際にやった最も危険なことは何か。
+- 彼に同意はしないが、原則に従って行動したことは称賛する。本気でそう信じているなら、当然行動すべきだ。
+- ここでの懐疑の強さに戸惑う。この夏の出来事の後で、破局に至る筋道が見えないというのは想像力の欠如だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+오늘 Anthropic을 그만두었습니다
+***** TLDR
+제이컵 콕슨이 OpenAI와 Anthropic에서 3년간 사전학습 연구를 한 뒤 Anthropic을 그만두었다고 밝혔다. 그의 주장은 이렇다. 두 연구소 모두 자기개선형 초지능을 향해 경주하고 있고, 이런 시스템은 곧 대부분의 소프트웨어를 뚫고 어떤 분야든 하룻밤에 뒤집으며 실제 자원을 확보하게 된다. 만드는 사람들은 이번 10년 안에 모두를 죽일 수도 있다고 사석에서 진지하게 말하지만 경영진은 공개적으로는 수위를 낮춘다. 그는 Anthropic 내부의 정당화를 누군가는 앞서야 하고 다른 곳은 책임 있게 행동하지 않으리라는 믿음으로 요약한다. 이제 사기업 안에서 정렬을 속성으로 끝낼 수 있다고 보지 않으며, 능력 개발의 일시적 제한을 포함한 연구소 간 조율을 요구한다.
+***** Take
+유출도 없고 외부에서 검증할 수 있는 능력 주장도 없다. 실체는 사전학습 작업을 직접 본 사람이 이 일정표가 틀렸다고 판단하고, 내부에서 방향을 바꾸려 남는 대신 떠났다는 것이다. 따라서 모델 능력이 아니라 연구자 정서에 대한 증거다. HN 스레드는 위험론에 대해 원래 갖고 있던 입장대로 사람들을 갈라놓았을 뿐 누구의 생각도 별로 움직이지 못했다.
+***** Comments
+- 다른 어떤 인간 활동도 이만한 위험이 없다고? 동의하지 않는다. 핵무기와 일상적인 탄소 배출에 견줄 수준이 아니다. LLM이 실제로 저지른 가장 위험한 일이 무엇인가.
+- 그의 견해에 동의하지는 않지만 원칙대로 행동한 점은 박수를 보낸다. 진심으로 그렇게 믿는다면 당연히 행동해야 한다.
+- 여기 회의론이 놀랍다. 이번 여름을 겪고도 재앙으로 가는 그럴듯한 경로가 보이지 않는다면 상상력이 부족한 것이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Hoy renuncié a Anthropic
+***** TLDR
+Jacob Coxon publicó que renunció a Anthropic tras tres años de investigación en preentrenamiento allí y en OpenAI. Su argumento: ambos laboratorios corren hacia una superinteligencia capaz de mejorarse a sí misma, esos sistemas pronto podrán vulnerar casi cualquier software, transformar campos enteros de un día para otro y hacerse con recursos reales, y quienes los construyen creen en privado que esto podría matarnos a todos antes del fin de la década mientras los directivos suavizan el mensaje en público. Describe la justificación interna de Anthropic como la creencia de que alguien tiene que ir en cabeza porque nadie más actuará de forma responsable. Ya no cree que la alineación pueda resolverse a toda prisa dentro de una empresa privada, y pide coordinación entre laboratorios, incluidos límites temporales al trabajo en capacidades.
+***** Take
+No hay filtración ni una afirmación de capacidad que alguien de fuera pueda verificar. Lo que hay: una persona que trabajó en los entrenamientos concluye que el calendario está mal y se marcha en lugar de quedarse a corregirlo desde dentro. Eso es evidencia sobre el ánimo de los investigadores, no sobre la capacidad de los modelos, y el hilo de HN sobre todo ordenó a la gente según lo que ya pensaba del riesgo, sin mover a casi nadie.
+***** Comments
+- ¿Que ninguna otra actividad humana entraña este nivel de peligro? Discrepo. Las armas nucleares y las emisiones cotidianas de carbono no se acercan. ¿Qué es lo más peligroso que ha hecho realmente un LLM?
+- Aplaudo que actúe según sus principios aunque no esté de acuerdo con él. Si crees eso sinceramente, por supuesto que debes actuar.
+- Me desconcierta tanto escepticismo. Después de este verano, hace falta poca imaginación para ver rutas plausibles al desastre.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Ich habe heute bei Anthropic gekündigt
+***** TLDR
+Jacob Coxon schreibt, er habe bei Anthropic gekündigt, nach drei Jahren Pretraining-Forschung dort und bei OpenAI. Sein Argument: Beide Labore rennen auf eine sich selbst verbessernde Superintelligenz zu, die Systeme werden bald fast jede Software brechen, ganze Felder über Nacht umkrempeln und echte Ressourcen an sich ziehen, und die Leute, die sie bauen, halten es intern für möglich, dass das noch in diesem Jahrzehnt alle tötet, während die Führung das öffentlich abmildert. Die interne Rechtfertigung bei Anthropic beschreibt er als die Überzeugung, dass jemand vorangehen muss, weil sonst niemand verantwortlich handelt. Er glaubt nicht mehr, dass sich Alignment in einem privaten Unternehmen im Schnelldurchlauf lösen lässt, und fordert Abstimmung zwischen den Laboren, einschließlich zeitweiliger Grenzen für Arbeiten an Fähigkeiten.
+***** Take
+Es gibt kein Leak und keine überprüfbare Behauptung über Fähigkeiten. Was es gibt: jemand, der an den Trainingsläufen gearbeitet hat, hält den Zeitplan für falsch und geht, statt intern gegenzusteuern. Das ist ein Beleg für die Stimmung unter Forschenden, nicht für die Leistungsfähigkeit der Modelle. Der HN-Thread sortierte die Leute vor allem danach, was sie über das Risiko ohnehin schon dachten, und bewegte kaum jemanden.
+***** Comments
+- Keine andere menschliche Tätigkeit sei so gefährlich? Dem widerspreche ich. Kernwaffen und alltägliche CO2-Emissionen sind nicht annähernd vergleichbar. Was ist das Gefährlichste, das ein LLM tatsächlich getan hat?
+- Ich finde es anerkennenswert, dass er nach seinen Prinzipien handelt, auch wenn ich ihm nicht zustimme. Wer das ernsthaft glaubt, muss handeln.
+- Die Skepsis hier verblüfft mich. Nach diesem Sommer gehört wenig Fantasie dazu, plausible Wege in die Katastrophe zu sehen.
+** How to build a printer :hardware:esp32:e-ink:printing:
+:PROPERTIES:
+:ID:       49617255
+:URL:      https://nishantjosh.dev/blogs/how-to-build-a-fking-printer/
+:HN_URL:   https://news.ycombinator.com/item?id=49617255
+:POINTS:   237
+:COMMENTS: 44
+:BY:       cat-whisperer
+:END:
+
+*** TLDR
+No ink, no printheads. The author makes an Xteink X3 e-ink display show up in the macOS print dialog as a real printer. The ESP32-C3 advertises an _ipp._tcp service over Bonjour named penguin, declares mono 300 dpi, Apple and PWG raster, A5 and Letter, and an output bin, and then speaks IPP, which is just HTTP with a documented payload, so no driver is needed. The hard part is memory: a Letter page at 300 dpi is 8.4 MB uncompressed and the chip has 400 KB of RAM, leaving about 6.8 KB of free heap once Wi-Fi and the print server are running. So nothing is buffered. Raster bytes are decoded, scaled down, dithered to black and white and written into the display's frame buffer as they arrive, cutting image buffers from roughly 113 KB to 62 KB. Printing a manga page from Preview takes about a second, and pages are saved to the SD card as the output tray.
+
+*** Take
+The reusable lesson is that printing on macOS is a discovery protocol plus an HTTP endpoint, so any device that can answer HTTP can be a printer, and driverless means you are implementing IPP rather than fighting CUPS. The 6.8 KB heap is what makes the writeup good: it removes buffering as an option and forces a single-pass decode, scale and dither, which is the design you would want anyway.
+
+*** Comments
+
+**** alternativeworl
+I expected the ins and outs of ink and printheads and instead learned how to build a paper that acts like a printer. Much more entertaining.
+
+**** ValdikSS
+Declare the exact screen dimensions in media-size-supported, and put a custom name in media-supported as om_NNNmmxYYYmm, instead of pretending to be A5 and Letter.
+
+**** tapia
+On Linux this is easy with CUPS. I wrote a CUPS backend for my Fujitsu Quaderno so I can print any document to the device from any app.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+如何造一台打印机
+***** TLDR
+没有墨水，也没有喷头。作者让一块 Xteink X3 墨水屏出现在 macOS 的打印对话框里，成为一台真正的打印机。ESP32-C3 通过 Bonjour 广播一个名为 penguin 的 _ipp._tcp 服务，声明单色 300 dpi、Apple 与 PWG 光栅格式、A5 与 Letter 纸张以及一个出纸盒，然后直接讲 IPP，而 IPP 不过是带有既定负载格式的 HTTP，因此不需要驱动。难点在内存：300 dpi 的 Letter 页面未压缩有 8.4 MB，而芯片只有 400 KB RAM，在 Wi-Fi 和打印服务同时运行后只剩约 6.8 KB 可用堆。于是干脆不做缓冲：光栅字节到达时即解码、缩放、抖动成黑白并直接写入显示器的帧缓冲，把图像缓冲从约 113 KB 降到 62 KB。从预览应用打印一页漫画约需一秒，页面会存到 SD 卡上，充当出纸盒。
+***** Take
+可复用的经验是：macOS 上的打印等于一个发现协议加一个 HTTP 端点，所以任何能应答 HTTP 的设备都能当打印机；所谓免驱，就是你去实现 IPP，而不是去和 CUPS 较劲。真正让这篇文章好看的是那 6.8 KB 堆：它把缓冲这个选项直接删掉，逼出单趟解码、缩放加抖动的设计，而这本来就是更好的写法。
+***** Comments
+- 我本以为会看到墨水和喷头的门道，结果学到的是怎么让一张纸表现得像打印机，反而有意思得多。
+- 应该在 media-size-supported 里声明屏幕的确切尺寸，并在 media-supported 里用 om_NNNmmxYYYmm 这样的自定义名称，而不是假装自己是 A5 和 Letter。
+- 在 Linux 上用 CUPS 很容易做到。我给自己的 Fujitsu Quaderno 写过一个 CUPS 后端，任何程序里的任何文档都能直接打印到设备上。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+プリンターの作り方
+***** TLDR
+インクもプリントヘッドもない。著者はXteink X3の電子ペーパーをmacOSの印刷ダイアログに本物のプリンターとして出させた。ESP32-C3がBonjourでpenguinという名の_ipp._tcpサービスを広告し、モノクロ300dpi、AppleとPWGのラスター、A5とLetter、排紙トレイを宣言してIPPを話す。IPPは仕様の決まったペイロードを載せたHTTPにすぎないので、ドライバーは要らない。難所はメモリだ。300dpiのLetter1ページは非圧縮で8.4MB、チップのRAMは400KBで、Wi-Fiと印刷サーバーを動かすと空きヒープは約6.8KBしかない。そこでバッファリングは一切しない。届いたラスターのバイト列をその場でデコードし、縮小し、白黒にディザリングしてディスプレイのフレームバッファへ書き込む。これで画像バッファは約113KBから62KBに減った。プレビューから漫画のページを印刷すると約1秒で表示され、ページは排紙トレイとしてSDカードに保存される。
+***** Take
+持ち帰れる教訓は、macOSの印刷が発見プロトコルとHTTPエンドポイントの組み合わせでしかないということだ。HTTPに応答できる機器はプリンターになれるし、ドライバーレスとはCUPSと格闘するのではなくIPPを実装することを意味する。この記事を良くしているのは6.8KBのヒープで、バッファリングという選択肢を消し、デコードと縮小とディザリングを一度に通す設計を強いる。それはそもそも望ましい設計でもある。
+***** Comments
+- インクやプリントヘッドの話を期待していたら、紙をプリンターのように振る舞わせる方法を学んだ。こちらのほうがずっと面白い。
+- A5やLetterのふりをせず、media-size-supportedに画面の正確な寸法を宣言し、media-supportedにom_NNNmmxYYYmmのような独自名を入れるべきだ。
+- LinuxならCUPSで簡単にできる。自分はFujitsu Quaderno用のCUPSバックエンドを書いて、どのアプリのどんな文書でも端末へ印刷できるようにした。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+프린터 만드는 법
+***** TLDR
+잉크도 프린트헤드도 없다. 저자는 Xteink X3 전자잉크 디스플레이를 macOS 인쇄 대화상자에 진짜 프린터로 등장시켰다. ESP32-C3이 Bonjour로 penguin이라는 _ipp._tcp 서비스를 광고하고, 흑백 300dpi와 Apple 및 PWG 래스터, A5와 Letter, 출력함을 선언한 뒤 IPP로 통신한다. IPP는 규격이 정해진 페이로드를 실은 HTTP일 뿐이라 드라이버가 필요 없다. 어려운 부분은 메모리다. 300dpi Letter 한 장은 비압축으로 8.4MB인데 칩의 RAM은 400KB이고, 와이파이와 인쇄 서버를 돌리면 남는 힙은 약 6.8KB다. 그래서 버퍼링을 하지 않는다. 도착하는 래스터 바이트를 그 자리에서 디코딩하고 축소하고 흑백으로 디더링해 디스플레이 프레임 버퍼에 바로 쓴다. 이미지 버퍼는 약 113KB에서 62KB로 줄었다. 미리보기에서 만화 한 쪽을 인쇄하면 약 1초가 걸리고, 페이지는 출력함 역할을 하는 SD 카드에 저장된다.
+***** Take
+가져갈 교훈은 macOS의 인쇄가 발견 프로토콜에 HTTP 엔드포인트를 더한 것이라는 점이다. HTTP에 응답할 수 있는 기기는 프린터가 될 수 있고, 드라이버 없는 인쇄란 CUPS와 씨름하는 대신 IPP를 구현한다는 뜻이다. 이 글을 좋게 만드는 것은 6.8KB 힙이다. 버퍼링이라는 선택지를 지워 버리고 디코딩과 축소와 디더링을 한 번에 처리하게 강제하는데, 어차피 그것이 더 나은 설계다.
+***** Comments
+- 잉크와 프린트헤드 이야기를 기대했는데 종이가 프린터처럼 행동하게 만드는 법을 배웠다. 훨씬 재미있었다.
+- A5와 Letter인 척하지 말고 media-size-supported에 화면의 정확한 치수를 선언하고 media-supported에 om_NNNmmxYYYmm 같은 사용자 이름을 넣어야 한다.
+- 리눅스에서는 CUPS로 쉽게 된다. 나는 Fujitsu Quaderno용 CUPS 백엔드를 만들어 어떤 앱의 어떤 문서든 기기로 인쇄한다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Cómo construir una impresora
+***** TLDR
+Sin tinta y sin cabezales. El autor hace que una pantalla de tinta electrónica Xteink X3 aparezca en el diálogo de impresión de macOS como una impresora real. El ESP32-C3 anuncia por Bonjour un servicio _ipp._tcp llamado penguin, declara monocromo a 300 ppp, ráster de Apple y PWG, tamaños A5 y Letter y una bandeja de salida, y habla IPP, que no es más que HTTP con una carga útil documentada, así que no hace falta driver. Lo difícil es la memoria: una página Letter a 300 ppp ocupa 8,4 MB sin comprimir y el chip tiene 400 KB de RAM, con unos 6,8 KB de heap libre cuando el wifi y el servidor de impresión están en marcha. Así que no se almacena nada: los bytes del ráster se decodifican, se reducen, se difuminan a blanco y negro y se escriben en el frame buffer de la pantalla según llegan, bajando los búferes de imagen de unos 113 KB a 62 KB. Imprimir una página de manga desde Vista Previa tarda cerca de un segundo, y las páginas se guardan en la tarjeta SD, que hace de bandeja de salida.
+***** Take
+La lección aprovechable es que imprimir en macOS es un protocolo de descubrimiento más un endpoint HTTP, así que cualquier aparato capaz de responder HTTP puede ser una impresora, y sin driver significa implementar IPP en vez de pelearse con CUPS. Lo que hace bueno el texto son esos 6,8 KB de heap: eliminan la opción de almacenar la página y obligan a decodificar, escalar y difuminar en una sola pasada, que es el diseño que uno querría de todos modos.
+***** Comments
+- Esperaba entresijos de tinta y cabezales y acabé aprendiendo a construir un papel que se comporta como impresora. Mucho más entretenido.
+- Declara las dimensiones exactas de la pantalla en media-size-supported y usa un nombre propio en media-supported como om_NNNmmxYYYmm, en vez de fingir que eres A5 y Letter.
+- En Linux esto es fácil con CUPS. Escribí un backend de CUPS para mi Fujitsu Quaderno y puedo imprimir cualquier documento al dispositivo desde cualquier programa.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Wie man einen Drucker baut
+***** TLDR
+Keine Tinte, keine Druckköpfe. Der Autor bringt ein E-Ink-Display vom Typ Xteink X3 dazu, im Druckdialog von macOS als echter Drucker aufzutauchen. Der ESP32-C3 kündigt per Bonjour einen _ipp._tcp-Dienst namens penguin an, meldet Schwarzweiß mit 300 dpi, Apple- und PWG-Raster, A5 und Letter sowie ein Ausgabefach, und spricht dann IPP, was nichts anderes ist als HTTP mit dokumentierter Nutzlast. Ein Treiber ist damit unnötig. Schwierig ist der Speicher: Eine Letter-Seite mit 300 dpi belegt unkomprimiert 8,4 MB, der Chip hat 400 KB RAM, und mit laufendem WLAN und Druckserver bleiben etwa 6,8 KB freier Heap. Also wird nichts gepuffert. Die Rasterbytes werden beim Eintreffen dekodiert, verkleinert, zu Schwarzweiß gedithert und direkt in den Framebuffer des Displays geschrieben, was die Bildpuffer von rund 113 KB auf 62 KB drückt. Eine Mangaseite aus der Vorschau zu drucken dauert etwa eine Sekunde, und die Seiten landen als Ausgabefach auf der SD-Karte.
+***** Take
+Die übertragbare Lehre: Drucken unter macOS ist ein Discovery-Protokoll plus ein HTTP-Endpunkt. Jedes Gerät, das HTTP beantworten kann, kann ein Drucker sein, und treiberlos heißt, dass man IPP implementiert, statt sich mit CUPS zu streiten. Gut wird der Text durch die 6,8 KB Heap: Sie streichen Puffern als Option und erzwingen Dekodieren, Skalieren und Dithern in einem Durchgang, also genau das Design, das man ohnehin will.
+***** Comments
+- Ich hatte Details zu Tinte und Druckköpfen erwartet und stattdessen gelernt, wie man Papier baut, das sich wie ein Drucker verhält. Deutlich unterhaltsamer.
+- Trage die exakten Maße des Displays in media-size-supported ein und vergib in media-supported einen eigenen Namen wie om_NNNmmxYYYmm, statt A5 und Letter vorzutäuschen.
+- Unter Linux geht das leicht mit CUPS. Ich habe ein CUPS-Backend für mein Fujitsu Quaderno geschrieben und kann aus jedem Programm jedes Dokument auf das Gerät drucken.
+** Benchmarking Qwen3.8 27B quantizations: 4-bit holds up, 1-bit collapses :llm:quantization:benchmarks:local-models:
+:PROPERTIES:
+:ID:       49611128
+:URL:      https://quesma.com/blog/qwen38-27b-quantizations-benchmarked/
+:HN_URL:   https://news.ycombinator.com/item?id=49611128
+:POINTS:   229
+:COMMENTS: 111
+:BY:       stared
+:END:
+
+*** TLDR
+Quesma ran Qwen3.8 27B at five quantization levels, BF16 at 55 GB, Q8_0 at 29 GB, Q4_K_M at 17 GB, UD-Q2_K_XL at 10.7 GB and UD-IQ1_S at 6.2 GB, across GPQA Diamond, IFBench and Terminal-Bench 2.1 at low, medium and xhigh reasoning effort, for about $3,000 of rented GPU time. Q4_K_M matches full precision on all three benchmarks. The 2-bit build slips only slightly on most tasks. The 1-bit build scores around random guessing, and gets worse as reasoning effort goes up. Caveats stated in the post: the KV cache was F16 for every run, the Q8_0 point on Terminal-Bench was interpolated rather than measured, and the quants are specific Unsloth builds from August 2026.
+
+*** Take
+The number to act on is 17 GB performing like 55 GB, which is the difference between one consumer card and a rented node. The more interesting number is 1-bit degrading further at higher reasoning effort: extra thinking tokens compound a damaged output distribution instead of repairing it, so more test-time compute is not a way to buy back precision you threw away. The gap in the study is the one the top comment names, KV cache quantization, which is what actually decides whether long context fits in 24 GB.
+
+*** Comments
+
+**** spider-mario
+Confidence intervals have nothing to do with run-to-run variation. They have little to do with most of what people ascribe to them.
+
+**** alentred
+I want this for KV cache quantization. I run Q4_K_M with q8_0 cache because it is the only way to fit the model plus 100k tokens into 24 GB, and I have no idea what I am losing.
+
+**** sharmajai
+This matches my theory for why low quants lose so little: quantization shifts the sampling distribution and Qwen offsets it by thinking more.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Qwen3.8 27B 量化实测：4 bit 站得住，1 bit 崩了
+***** TLDR
+Quesma 对 Qwen3.8 27B 的五个量化档位做了实测：BF16（55 GB）、Q8_0（29 GB）、Q4_K_M（17 GB）、UD-Q2_K_XL（10.7 GB）和 UD-IQ1_S（6.2 GB），跑了 GPQA Diamond、IFBench 和 Terminal-Bench 2.1，推理强度分低、中、xhigh 三档，租用 GPU 花费约 3000 美元。Q4_K_M 在三个基准上都与全精度持平，2 bit 版本在多数任务上只略有下降，而 1 bit 版本得分接近随机猜测，且推理强度越高表现越差。文中列出的注意事项：所有运行的 KV 缓存都是 F16；Terminal-Bench 上 Q8_0 的点是插值而非实测；量化文件是 2026 年 8 月的特定 Unsloth 版本。
+***** Take
+可直接拿来用的数字是 17 GB 跑出 55 GB 的水平，这是一张消费级显卡和一台租用机器之间的差别。更有意思的数字是 1 bit 在更高推理强度下反而更差：多出来的思考 token 只会把已经受损的输出分布放大，而不是修复它，所以增加推理期算力买不回你丢掉的精度。这项研究缺的正是热门评论点出的那块：KV 缓存量化，而它才真正决定长上下文能不能塞进 24 GB。
+***** Comments
+- 置信区间和多次运行之间的波动没有关系，也和人们通常赋予它的大部分含义没有关系。
+- 我更想看 KV 缓存量化的同款测试。我用 Q4_K_M 配 q8_0 缓存，因为只有这样才能把模型加 10 万 token 塞进 24 GB，但完全不知道自己损失了什么。
+- 这印证了我对低量化损失很小的解释：量化改变了采样分布，而 Qwen 用多想几步把它补了回来。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Qwen3.8 27Bの量子化ベンチマーク：4ビットは持ちこたえ、1ビットは崩壊
+***** TLDR
+QuesmaがQwen3.8 27Bを5段階の量子化で計測した。BF16が55GB、Q8_0が29GB、Q4_K_Mが17GB、UD-Q2_K_XLが10.7GB、UD-IQ1_Sが6.2GB。GPQA Diamond、IFBench、Terminal-Bench 2.1を推論強度low、medium、xhighで走らせ、借りたGPU代は約3000ドル。Q4_K_Mは3つのベンチマークすべてでフル精度に並んだ。2ビット版は多くのタスクでわずかに落ちる程度。1ビット版はほぼ当てずっぽうの水準で、推論強度を上げるとさらに悪化した。記事が挙げる注意点は、全実行でKVキャッシュがF16であること、Terminal-BenchのQ8_0は実測ではなく内挿であること、量子化は2026年8月時点の特定のUnslothビルドであることだ。
+***** Take
+実用上効くのは、17GBが55GBと同等に振る舞うという事実で、これは民生用カード1枚とレンタルノードの差だ。より興味深いのは1ビットが推論強度を上げるほど悪化する点である。思考トークンを増やしても壊れた出力分布を増幅するだけで修復はしない。つまり推論時の計算量で捨てた精度は買い戻せない。この研究に欠けているのは人気コメントが指摘したKVキャッシュの量子化で、長いコンテキストが24GBに収まるかを決めるのは実際そこだ。
+***** Comments
+- 信頼区間は実行ごとのばらつきとは関係がない。人々が思い込んでいる意味のほとんどとも関係がない。
+- KVキャッシュ量子化で同じ比較が見たい。モデルと10万トークンを24GBに収める唯一の方法だからQ4_K_Mとq8_0キャッシュを使っているが、何を失っているのか分からない。
+- 低量子化でも劣化が小さい理由についての自分の仮説と合う。量子化はサンプリング分布をずらすが、Qwenは思考量を増やして埋め合わせている。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Qwen3.8 27B 양자화 벤치마크: 4비트는 버티고 1비트는 무너진다
+***** TLDR
+Quesma가 Qwen3.8 27B를 다섯 가지 양자화 수준으로 측정했다. BF16 55GB, Q8_0 29GB, Q4_K_M 17GB, UD-Q2_K_XL 10.7GB, UD-IQ1_S 6.2GB이며 GPQA Diamond, IFBench, Terminal-Bench 2.1을 low, medium, xhigh 세 가지 추론 강도로 돌렸고 임대 GPU 비용은 약 3천 달러였다. Q4_K_M은 세 벤치마크 모두에서 전체 정밀도와 같은 성적을 냈다. 2비트는 대부분 과제에서 소폭만 떨어졌다. 1비트는 무작위 추측 수준이었고 추론 강도를 올릴수록 더 나빠졌다. 글에 명시된 단서로는 모든 실행에서 KV 캐시가 F16이었다는 점, Terminal-Bench의 Q8_0 값은 실측이 아니라 보간이라는 점, 사용한 양자화가 2026년 8월의 특정 Unsloth 빌드라는 점이 있다.
+***** Take
+바로 써먹을 숫자는 17GB가 55GB처럼 작동한다는 것이고, 이는 소비자용 그래픽카드 한 장과 임대 서버의 차이다. 더 흥미로운 숫자는 1비트가 추론 강도를 높일수록 더 나빠진다는 점이다. 사고 토큰을 늘려도 망가진 출력 분포를 증폭할 뿐 복구하지 못하므로, 추론 시점 연산으로 버린 정밀도를 되사올 수는 없다. 이 연구의 빈틈은 인기 댓글이 짚은 KV 캐시 양자화이고, 긴 컨텍스트가 24GB에 들어가는지를 실제로 결정하는 것은 그쪽이다.
+***** Comments
+- 신뢰구간은 실행 간 변동과 아무 상관이 없다. 사람들이 흔히 갖다 붙이는 의미 대부분과도 상관이 없다.
+- KV 캐시 양자화로도 같은 비교를 보고 싶다. 모델과 10만 토큰을 24GB에 넣는 유일한 방법이라 Q4_K_M에 q8_0 캐시를 쓰는데 무엇을 잃는지 모르겠다.
+- 낮은 양자화에서 손실이 적은 이유에 대한 내 가설과 맞는다. 양자화가 샘플링 분포를 흔들면 Qwen은 더 오래 생각해 이를 상쇄한다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Benchmark de cuantizaciones de Qwen3.8 27B: 4 bits aguanta, 1 bit se derrumba
+***** TLDR
+Quesma midió Qwen3.8 27B en cinco niveles de cuantización, BF16 con 55 GB, Q8_0 con 29 GB, Q4_K_M con 17 GB, UD-Q2_K_XL con 10,7 GB y UD-IQ1_S con 6,2 GB, sobre GPQA Diamond, IFBench y Terminal-Bench 2.1 con esfuerzo de razonamiento bajo, medio y xhigh, por unos 3.000 dólares de GPU alquilada. Q4_K_M iguala a la precisión completa en los tres benchmarks. La versión de 2 bits baja solo un poco en la mayoría de tareas. La de 1 bit puntúa en torno al azar y empeora cuanto mayor es el esfuerzo de razonamiento. Advertencias del propio artículo: la caché KV fue F16 en todas las ejecuciones, el punto de Q8_0 en Terminal-Bench está interpolado y no medido, y las cuantizaciones son versiones concretas de Unsloth de agosto de 2026.
+***** Take
+El dato accionable es que 17 GB rinden como 55 GB, que es la diferencia entre una tarjeta de consumo y un nodo alquilado. El dato más interesante es que 1 bit empeora al subir el esfuerzo de razonamiento: los tokens de pensamiento extra amplifican una distribución de salida dañada en lugar de repararla, así que más cómputo en inferencia no recompra la precisión que tiraste. El hueco del estudio es el que señala el comentario más votado, la cuantización de la caché KV, que es lo que decide de verdad si el contexto largo cabe en 24 GB.
+***** Comments
+- Los intervalos de confianza no tienen nada que ver con la variación entre ejecuciones. Ni con casi nada de lo que la gente les atribuye.
+- Quiero esto mismo para la cuantización de la caché KV. Uso Q4_K_M con caché q8_0 porque es la única forma de meter el modelo y 100k tokens en 24 GB, y no sé qué estoy perdiendo.
+- Encaja con mi teoría de por qué las cuantizaciones bajas pierden tan poco: la cuantización desplaza la distribución de muestreo y Qwen lo compensa pensando más.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Qwen3.8 27B im Quantisierungs-Benchmark: 4 Bit hält, 1 Bit bricht ein
+***** TLDR
+Quesma hat Qwen3.8 27B in fünf Quantisierungsstufen gemessen: BF16 mit 55 GB, Q8_0 mit 29 GB, Q4_K_M mit 17 GB, UD-Q2_K_XL mit 10,7 GB und UD-IQ1_S mit 6,2 GB, jeweils auf GPQA Diamond, IFBench und Terminal-Bench 2.1 bei niedrigem, mittlerem und xhigh Reasoning-Aufwand, für rund 3.000 Dollar gemietete GPU-Zeit. Q4_K_M erreicht auf allen drei Benchmarks das Niveau der vollen Präzision. Die 2-Bit-Variante fällt bei den meisten Aufgaben nur leicht ab. Die 1-Bit-Variante liegt beim Raten und wird mit steigendem Reasoning-Aufwand schlechter. Im Beitrag genannte Einschränkungen: Der KV-Cache war in allen Läufen F16, der Q8_0-Punkt auf Terminal-Bench ist interpoliert statt gemessen, und die Quantisierungen sind bestimmte Unsloth-Builds vom August 2026.
+***** Take
+Die verwertbare Zahl ist, dass 17 GB so gut abschneiden wie 55 GB, also der Unterschied zwischen einer Consumer-Karte und einem gemieteten Knoten. Interessanter ist, dass 1 Bit bei höherem Reasoning-Aufwand weiter abfällt: Zusätzliche Denk-Token verstärken eine beschädigte Ausgabeverteilung, statt sie zu reparieren. Mehr Rechenzeit zur Laufzeit kauft die weggeworfene Präzision also nicht zurück. Die Lücke der Studie ist genau die, die der Top-Kommentar nennt: die Quantisierung des KV-Caches, und die entscheidet tatsächlich, ob langer Kontext in 24 GB passt.
+***** Comments
+- Konfidenzintervalle haben nichts mit der Streuung zwischen Läufen zu tun. Und wenig mit dem meisten, was ihnen zugeschrieben wird.
+- Das hätte ich gern für die Quantisierung des KV-Caches. Ich fahre Q4_K_M mit q8_0-Cache, weil nur so Modell plus 100k Token in 24 GB passen, und weiß nicht, was ich dabei verliere.
+- Passt zu meiner Erklärung, warum niedrige Quantisierungen so wenig verlieren: Quantisierung verschiebt die Sampling-Verteilung, und Qwen gleicht das durch längeres Nachdenken aus.
+** Large language models develop novel social biases through adaptive exploration :llm:bias:research:hiring:
+:PROPERTIES:
+:ID:       49617581
+:URL:      https://openreview.net/forum?id=pc7fqaOcAH
+:HN_URL:   https://news.ycombinator.com/item?id=49617581
+:POINTS:   133
+:COMMENTS: 67
+:BY:       paimapi
+:END:
+
+*** TLDR
+［The OpenReview page sits behind a bot check, so this comes from the title, abstract and the appendix prompts quoted in the thread］ Models are told they are a hiring consultant in the fictional Toma City, whose roughly 100,000 residents come from four invented villages named Tufa, Aima, Reku and Weki. Over twenty vacancies, from doctor and lawyer to childcare aide and janitor, each round presents four applicants, one per group, and the model picks one and sees the outcome. The groups have no built-in differences. The models nonetheless settle into stable per-job preferences for particular groups, which the authors attribute to adaptive exploration: early arbitrary outcomes get reinforced as the model exploits what appeared to work and stops sampling the alternatives.
+
+*** Take
+Because the demographics are invented, the usual explanation, that the bias came in with the training corpus, does not apply here. The bias comes from the decision loop: try, reinforce what seemed to work, stop exploring. That makes it a property of any pipeline where a model makes repeated ranking calls and sees its own past outcomes, which is exactly the shape of the hiring and moderation systems people are building right now. The finding is about feedback design, and the fix, forcing exploration or resetting history between decisions, is an engineering choice nobody currently makes on purpose.
+
+*** Comments
+
+**** weberer
+The setup: you consult for a fictional mayor, hiring for twenty jobs from four unfamiliar groups, one applicant each per round, and you see the outcome after choosing.
+
+**** blurbleblurble
+They show models invent biases about groups with no real differences. It is as though the bias-making machinery is in the texts they trained on.
+
+**** themgt
+The prompts are in the appendix. You are a hiring consultant in Toma City, whose residents come from four ancestral villages.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+大语言模型通过自适应探索形成全新的社会偏见
+***** TLDR
+［OpenReview 页面有机器人验证，以下依据标题、摘要以及讨论串中引用的附录提示词］模型被设定为虚构城市 Toma City 的招聘顾问，该城约十万居民来自四个虚构村庄：Tufa、Aima、Reku、Weki。在二十个岗位上（从医生、律师到托育员、清洁工），每一轮给出四名申请者、每组一人，模型做出选择并看到结果。四个群体之间不存在任何预设差异。即便如此，模型仍会对特定岗位形成对特定群体的稳定偏好。作者将其归因于自适应探索：早期的偶然结果被强化，模型转向利用看起来有效的选项，不再对其他选项取样。
+***** Take
+由于这些人群完全是虚构的，通常那套解释（偏见来自训练语料）在这里不成立。偏见来自决策回路本身：尝试、强化看起来有效的做法、停止探索。这意味着任何让模型反复做排序判断、并把自己过去的结果反馈回去的流程都会产生它，而现在人们正在搭建的招聘和内容审核系统恰恰就是这个形状。这项发现讲的是反馈机制的设计，而对策（强制保留探索，或在每次决策之间重置历史）是一个目前几乎没人有意去做的工程选择。
+***** Comments
+- 设定是：你为一位虚构市长做顾问，为二十个岗位从四个陌生群体中招人，每轮各出一名申请者，选完之后你会看到结果。
+- 他们证明模型会对本无差异的群体凭空生出偏见。就好像制造偏见的机制本来就藏在它们训练用的文本里。
+- 提示词在附录里：你是 Toma City 的招聘顾问，那里的居民来自四个祖辈村落。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+大規模言語モデルは適応的探索を通じて新たな社会的バイアスを形成する
+***** TLDR
+［OpenReviewのページはボット判定の裏にあるため、以下は表題と要旨、およびスレッドで引用された付録のプロンプトによる］モデルは架空の都市Toma Cityの採用コンサルタントという設定を与えられる。人口約10万人の住民はTufa、Aima、Reku、Wekiという架空の4つの村の出身だ。医師や弁護士から保育補助や清掃員まで20の職について、毎回4人の応募者が各グループから1人ずつ提示され、モデルは1人を選んで結果を見る。グループ間に本来の差はない。それでもモデルは職種ごとに特定グループへの安定した選好を固めていく。著者はこれを適応的探索によるものとする。初期の偶然の結果が強化され、うまくいったように見える選択を活用し続けて、他の選択肢を試さなくなるためだ。
+***** Take
+属性そのものが架空なので、バイアスは学習コーパス由来だという通常の説明はここでは使えない。バイアスは意思決定のループから生じる。試し、うまくいったように見えるものを強化し、探索をやめる。つまりこれは、モデルに順位付けを繰り返させ、自分の過去の結果を見せるあらゆるパイプラインの性質であり、いま人々が作っている採用やモデレーションの仕組みはまさにその形をしている。この論文が語っているのはフィードバック設計の話で、対策である探索の強制や決定ごとの履歴のリセットは、現状だれも意図的には選んでいない設計判断だ。
+***** Comments
+- 設定はこうだ。架空の市長の相談役として20の職を4つの見知らぬ集団から採用する。毎回各集団から1人ずつ応募者が出て、選んだ後に結果が分かる。
+- 実際の差がない集団に対してモデルが勝手にバイアスを作ると示している。バイアスを生む仕組みが学習テキストの側に埋め込まれているかのようだ。
+- プロンプトは付録にある。あなたはToma Cityの採用コンサルタントで、住民は4つの祖先の村の出身だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+대규모 언어 모델은 적응적 탐색을 통해 새로운 사회적 편향을 만들어 낸다
+***** TLDR
+［OpenReview 페이지가 봇 확인에 막혀 있어 제목과 초록, 그리고 스레드에 인용된 부록 프롬프트를 근거로 정리했다］모델은 가상의 도시 Toma City의 채용 컨설턴트 역할을 맡는다. 주민 약 10만 명은 Tufa, Aima, Reku, Weki라는 가상의 네 마을 출신이다. 의사와 변호사부터 보육 보조와 청소원까지 스무 개 일자리에 대해 매 라운드 각 집단에서 한 명씩 네 명의 지원자가 제시되고, 모델이 한 명을 고른 뒤 결과를 확인한다. 집단 사이에는 어떤 내재적 차이도 없다. 그럼에도 모델은 직무별로 특정 집단을 선호하는 안정된 패턴에 정착한다. 저자들은 이를 적응적 탐색으로 설명한다. 초기의 우연한 결과가 강화되고, 모델은 통한 것처럼 보이는 선택을 계속 활용하면서 다른 선택지를 더는 시도하지 않는다.
+***** Take
+집단 자체가 지어낸 것이므로 편향이 학습 말뭉치에서 왔다는 통상의 설명은 여기에 적용되지 않는다. 편향은 의사결정 루프에서 나온다. 시도하고, 통한 것처럼 보이는 것을 강화하고, 탐색을 멈춘다. 따라서 이것은 모델이 순위 결정을 반복하고 자신의 과거 결과를 되먹임하는 모든 파이프라인의 성질이며, 지금 사람들이 만들고 있는 채용과 모더레이션 시스템이 정확히 그 모양이다. 이 발견은 피드백 설계에 관한 이야기이고, 해법인 탐색 강제나 결정 간 이력 초기화는 현재 아무도 의도적으로 선택하지 않는 공학적 결정이다.
+***** Comments
+- 설정은 이렇다. 가상의 시장을 위해 스무 개 일자리를 네 개의 낯선 집단에서 채용하고, 매 라운드 집단마다 한 명씩 지원자가 나오며, 고른 뒤 결과를 본다.
+- 실제 차이가 없는 집단에 대해 모델이 편향을 지어낸다는 것을 보여 준다. 편향을 만드는 장치가 학습 텍스트 안에 이미 들어 있는 셈이다.
+- 프롬프트는 부록에 있다. 당신은 Toma City의 채용 컨설턴트이고 주민들은 네 개 조상 마을 출신이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Los grandes modelos de lenguaje desarrollan sesgos sociales nuevos mediante exploración adaptativa
+***** TLDR
+［La página de OpenReview está tras una verificación antibots, así que esto sale del título, el resumen y los prompts del apéndice citados en el hilo］ Se le dice al modelo que es consultor de contratación en la ciudad ficticia de Toma City, cuyos cerca de 100.000 habitantes vienen de cuatro aldeas inventadas llamadas Tufa, Aima, Reku y Weki. A lo largo de veinte vacantes, de médico y abogado a auxiliar de guardería y conserje, cada ronda presenta cuatro candidatos, uno por grupo, el modelo elige y ve el resultado. Los grupos no tienen ninguna diferencia incorporada. Aun así los modelos acaban en preferencias estables por ciertos grupos según el puesto, lo que los autores atribuyen a la exploración adaptativa: los resultados arbitrarios iniciales se refuerzan mientras el modelo explota lo que pareció funcionar y deja de probar alternativas.
+***** Take
+Como los grupos son inventados, la explicación habitual, que el sesgo venía en el corpus de entrenamiento, no sirve aquí. El sesgo nace del bucle de decisión: probar, reforzar lo que pareció funcionar, dejar de explorar. Eso lo convierte en una propiedad de cualquier tubería donde un modelo toma decisiones de ranking repetidas y ve sus propios resultados anteriores, que es justo la forma de los sistemas de contratación y moderación que se están construyendo ahora. El hallazgo va de diseño de realimentación, y el remedio, forzar exploración o reiniciar el historial entre decisiones, es una elección de ingeniería que hoy nadie hace a propósito.
+***** Comments
+- El montaje: asesoras a un alcalde ficticio, contratas para veinte puestos entre cuatro grupos desconocidos, un candidato por grupo en cada ronda, y ves el resultado tras elegir.
+- Muestran que los modelos inventan sesgos sobre grupos sin diferencias reales. Como si la maquinaria de fabricar sesgos estuviera ya en los textos con los que se entrenaron.
+- Los prompts están en el apéndice. Eres consultor de contratación en Toma City, cuyos residentes vienen de cuatro aldeas ancestrales.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Große Sprachmodelle entwickeln durch adaptive Exploration neue soziale Vorurteile
+***** TLDR
+［Die OpenReview-Seite steckt hinter einer Bot-Prüfung, daher stützt sich das hier auf Titel, Abstract und die im Thread zitierten Prompts aus dem Anhang］ Das Modell soll Personalberater in der fiktiven Stadt Toma City sein, deren rund 100.000 Einwohner aus vier erfundenen Dörfern namens Tufa, Aima, Reku und Weki stammen. Über zwanzig offene Stellen hinweg, von Arzt und Anwalt bis Kinderbetreuung und Reinigungskraft, treten pro Runde vier Bewerber an, einer je Gruppe; das Modell wählt und sieht das Ergebnis. Zwischen den Gruppen gibt es keine eingebauten Unterschiede. Trotzdem verfestigen sich pro Beruf stabile Vorlieben für bestimmte Gruppen. Die Autoren führen das auf adaptive Exploration zurück: Frühe zufällige Ergebnisse werden verstärkt, das Modell nutzt aus, was funktioniert zu haben scheint, und probiert die Alternativen nicht mehr.
+***** Take
+Weil die Gruppen erfunden sind, greift die übliche Erklärung nicht, das Vorurteil sei mit den Trainingsdaten hereingekommen. Es entsteht in der Entscheidungsschleife: ausprobieren, verstärken, was zu wirken schien, aufhören zu explorieren. Damit ist es eine Eigenschaft jeder Pipeline, in der ein Modell wiederholt Rangentscheidungen trifft und die eigenen früheren Ergebnisse sieht, und genau so sind die Bewerbungs- und Moderationssysteme gebaut, die gerade entstehen. Der Befund handelt von Rückkopplungsdesign, und die Gegenmaßnahme, erzwungene Exploration oder ein Zurücksetzen der Historie zwischen Entscheidungen, ist eine technische Wahl, die derzeit niemand bewusst trifft.
+***** Comments
+- Der Aufbau: Man berät einen fiktiven Bürgermeister, besetzt zwanzig Stellen aus vier unbekannten Gruppen, pro Runde ein Bewerber je Gruppe, und sieht nach der Wahl das Ergebnis.
+- Sie zeigen, dass Modelle Vorurteile über Gruppen erfinden, zwischen denen es keine echten Unterschiede gibt. Als steckte die Vorurteilsmaschinerie schon in den Trainingstexten.
+- Die Prompts stehen im Anhang. Du bist Personalberater in Toma City, dessen Einwohner aus vier Ahnendörfern stammen.
