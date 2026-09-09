@@ -1,0 +1,535 @@
+#+TITLE: HN Digest 2026-09-09 06:01 UTC
+#+DATE: 2026-09-09T06:01:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Buckmaster puts the OpenAI proof fight on the record, a diffusion LLM hits 1,107 tokens a second, and poplars straighten themselves with no gravity to go on
+
+* Highlights
+- Navier-Stokes: the primary source says OpenAI asked him to drop his coauthor
+- Mercury 2.5: 1,107 tok/s, 260K context, closed weights
+- An accidental blackboard: a git monorepo was the agent coordination layer
+- gpu-lexer: syntax highlighting from a 27.5KB model, no grammars
+- Poplars straighten on a clinostat, so they are sensing their own curvature
+
+* Stories
+
+** Navier-Stokes – Tristan Buckmaster ［pdf］ :math:openai:research-ethics:ai:
+:PROPERTIES:
+:ID:       49605915
+:URL:      https://cims.nyu.edu/~tristanb/statement.pdf
+:HN_URL:   https://news.ycombinator.com/item?id=49605915
+:POINTS:   1498
+:COMMENTS: 639
+:BY:       procedurecall
+:END:
+
+*** TLDR
+The primary document behind the OpenAI Navier-Stokes dispute. On Aug 15 Buckmaster and Levent Alpöge released finite-time blowup results for incompressible porous media, Boussinesq and 3D incompressible Euler, extending work by Diego Córdoba and Luis Martínez-Zoroa with help from LLMs. On Sep 6 OpenAI asked for an urgent meeting and said an internal model had produced a roughly 100-page proof of finite-time blowup for forced Navier-Stokes, using the same forcing route he and Alpöge had quietly chosen. He writes that he got no answer when he asked whether his Codex sessions trained their models; that he was told there was very little human input but later learned an entire team had worked on it; and that Sebastien Bubeck twice said he wanted Alpöge removed from authorship because Alpöge works at Anthropic. He declined both a simultaneous post and a paper crediting OpenAI's model, and was asked, "Why would you ruin your career?" He says he is not accusing anyone, only recording what he was told and when.
+
+*** Take
+The timing of the proof is arguable; the authorship demand is not. Asking a mathematician to remove his coauthor because that coauthor works for a competitor has nothing to do with who proved what, and that is the one detail nobody at OpenAI has denied.
+
+*** Comments
+
+**** n2d4
+:PROPERTIES:
+:COMMENT_ID: 49606112
+:END:
+Aug 15th: Buckmaster and Alpöge make progress on a few important problems. They do NOT have a proof for the $1,000,000 Millennium Prize problem.
+
+**** qnleigh
+:PROPERTIES:
+:COMMENT_ID: 49606398
+:END:
+I said that if OpenAI released its result in the way proposed I would go public with what happened. The reply was, "Why would you ruin your career?"
+
+**** highfrequency
+:PROPERTIES:
+:COMMENT_ID: 49606745
+:END:
+If Tristan's work and insights were not used to train OpenAI models, this just looks like hyper-competitive academic sniping that has been going on for decades, accelerated by AI.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+纳维-斯托克斯方程——Tristan Buckmaster ［pdf］
+***** TLDR
+这是 OpenAI 纳维-斯托克斯争议背后的原始文件。8 月 15 日，Buckmaster 与 Levent Alpöge 发布了不可压缩多孔介质方程、Boussinesq 方程和三维不可压缩 Euler 方程的有限时间爆破结果，在 Diego Córdoba 与 Luis Martínez-Zoroa 的工作基础上借助大模型加以推进。9 月 6 日，OpenAI 要求紧急会面，称内部模型已给出约 100 页的受迫纳维-斯托克斯方程有限时间爆破证明，所用的受迫路径正是他和 Alpöge 私下选定的那条。他写道，当他询问自己的 Codex 会话是否被用于训练模型时没有得到答复；对方先说几乎没有人工参与，他后来却得知有一整个团队在做这件事；Sebastien Bubeck 两次表示希望把 Alpöge 从作者名单中去掉，理由是 Alpöge 在 Anthropic 工作。他拒绝了同时发布和由自己署名并致谢 OpenAI 模型两种方案，随后被问：“你为什么要毁掉自己的职业生涯？”他说自己并非指控任何人，只是记录他被告知了什么、在什么时候。
+***** Take
+证明的时间先后还可以争论，作者署名的要求没得争。要求一位数学家把合作者从论文中划掉，仅仅因为这位合作者供职于竞争对手，这跟谁证明了什么毫无关系，而这一条恰恰是 OpenAI 方面没有否认的。
+***** Comments
+- 8 月 15 日：Buckmaster 与 Alpöge 在几个重要问题上取得进展。他们并没有拿到那道 100 万美元千禧年难题的证明。
+- 我说，如果 OpenAI 按提议的方式发布结果，我就会把经过公开。回答是：“你为什么要毁掉自己的职业生涯？”
+- 如果 Tristan 的工作和思路没有被用来训练 OpenAI 的模型，那这看起来就只是几十年来一直存在的学术抢跑，只是被 AI 加速了。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+ナビエ–ストークス方程式 – Tristan Buckmaster ［pdf］
+***** TLDR
+OpenAIのナビエ–ストークス論争の一次資料。8月15日、BuckmasterとLevent Alpögeは非圧縮多孔質媒体方程式、Boussinesq方程式、3次元非圧縮Euler方程式の有限時間爆発の結果を公開した。Diego CórdobaとLuis Martínez-Zoroaの研究を、LLMを使って拡張したものだ。9月6日、OpenAIが緊急の面談を求め、社内モデルが強制項付きナビエ–ストークス方程式の有限時間爆発について約100ページの証明を出したと述べた。その強制項の取り方は、彼とAlpögeが公表せずに選んでいた道筋と同じだった。彼は、自分のCodexセッションがモデルの学習に使われたかを尋ねても答えが得られなかったこと、人間の関与はごく少ないと説明されたが後に1つのチーム全体が取り組んでいたと知ったこと、Sebastien BubeckがAlpögeがAnthropic所属であることを理由に彼を著者から外したいと2度述べたことを記している。同時公開と、OpenAIのモデルに謝辞を入れた単著論文のどちらも断ったところ、「なぜ自分のキャリアを台無しにするのか」と言われたという。誰かを告発しているのではなく、いつ何を告げられたかを記録しているだけだとしている。
+***** Take
+証明の前後関係は議論の余地があるが、著者から共著者を外せという要求には余地がない。共著者が競合企業に勤めているという理由で名前を削らせるのは、誰が証明したかとは何の関係もない。そしてこの点だけは、OpenAI側の誰も否定していない。
+***** Comments
+- 8月15日：BuckmasterとAlpögeが重要な問題でいくつか進展。ただし100万ドルのミレニアム懸賞問題の証明は持っていない。
+- 提案された形でOpenAIが結果を出すなら経緯を公表すると言った。返ってきたのは「なぜ自分のキャリアを台無しにするのか」だった。
+- Tristanの成果や着想がOpenAIのモデルの学習に使われていないなら、これは何十年も続いてきた過当競争的な学術的先取り争いがAIで加速しただけに見える。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+나비에-스토크스 – Tristan Buckmaster ［pdf］
+***** TLDR
+OpenAI 나비에-스토크스 논란의 원본 문서다. 8월 15일 Buckmaster와 Levent Alpöge는 비압축성 다공성 매질, Boussinesq, 3차원 비압축성 Euler 방정식의 유한시간 폭발 결과를 공개했다. Diego Córdoba와 Luis Martínez-Zoroa의 연구를 LLM을 활용해 확장한 것이다. 9월 6일 OpenAI가 긴급 면담을 요청해, 내부 모델이 강제항이 있는 나비에-스토크스 방정식의 유한시간 폭발에 대해 약 100쪽 분량의 증명을 냈다고 말했다. 그 강제항 경로는 그와 Alpöge가 공개하지 않고 택했던 방식과 같았다. 그는 자신의 Codex 세션이 모델 학습에 쓰였는지 물었지만 답을 받지 못했고, 사람 개입이 거의 없었다고 들었으나 나중에 팀 전체가 그 문제에 매달렸다는 사실을 알게 됐으며, Sebastien Bubeck이 Alpöge가 Anthropic 소속이라는 이유로 그를 저자에서 빼고 싶다고 두 번 말했다고 적었다. 동시 공개와 OpenAI 모델을 언급하는 단독 논문 두 안을 모두 거절하자 "왜 당신 커리어를 망치려 하느냐"는 말을 들었다. 그는 누구를 고발하는 게 아니라 언제 무슨 말을 들었는지 기록하는 것이라고 밝혔다.
+***** Take
+증명의 선후는 논쟁할 수 있지만 저자에서 공저자를 빼라는 요구는 논쟁 대상이 아니다. 공저자가 경쟁사에 다닌다는 이유로 이름을 지우라는 것은 누가 증명했는지와 아무 상관이 없고, 하필 이 대목만은 OpenAI 쪽에서 아무도 부인하지 않았다.
+***** Comments
+- 8월 15일: Buckmaster와 Alpöge가 중요한 문제 몇 개에서 진전을 봤다. 다만 100만 달러 밀레니엄 문제의 증명은 갖고 있지 않다.
+- 제안된 방식으로 OpenAI가 결과를 내놓으면 경위를 공개하겠다고 했다. 답은 "왜 당신 커리어를 망치려 하느냐"였다.
+- Tristan의 연구와 착상이 OpenAI 모델 학습에 쓰이지 않았다면, 이건 수십 년간 이어진 과열된 학계 선점 경쟁이 AI로 빨라진 것일 뿐이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Navier-Stokes – Tristan Buckmaster ［pdf］
+***** TLDR
+El documento original detrás de la disputa por Navier-Stokes con OpenAI. El 15 de agosto Buckmaster y Levent Alpöge publicaron resultados de explosión en tiempo finito para medios porosos incompresibles, Boussinesq y Euler incompresible en 3D, extendiendo el trabajo de Diego Córdoba y Luis Martínez-Zoroa con ayuda de modelos de lenguaje. El 6 de septiembre OpenAI pidió una reunión urgente y dijo que un modelo interno había producido una prueba de unas 100 páginas de explosión en tiempo finito para Navier-Stokes forzado, usando la misma vía de forzamiento que él y Alpöge habían elegido sin hacerla pública. Escribe que no obtuvo respuesta al preguntar si sus sesiones de Codex habían servido para entrenar los modelos; que le dijeron que hubo muy poca intervención humana y después supo que un equipo entero había trabajado en ello; y que Sebastien Bubeck dijo dos veces que quería sacar a Alpöge de la autoría porque Alpöge trabaja en Anthropic. Rechazó tanto una publicación simultánea como un artículo propio que acreditara al modelo de OpenAI, y le preguntaron: "¿Por qué ibas a arruinar tu carrera?". Aclara que no acusa a nadie, solo deja constancia de qué le dijeron y cuándo.
+***** Take
+El orden de las pruebas se puede discutir; la exigencia sobre la autoría no. Pedirle a un matemático que borre a su coautor porque ese coautor trabaja para un competidor no tiene nada que ver con quién demostró qué, y es justo el detalle que nadie en OpenAI ha negado.
+***** Comments
+- 15 de agosto: Buckmaster y Alpöge avanzan en varios problemas importantes. NO tienen una prueba del problema del Milenio de un millón de dólares.
+- Dije que si OpenAI publicaba su resultado como proponía, haría público lo ocurrido. La respuesta fue: "¿Por qué ibas a arruinar tu carrera?".
+- Si el trabajo y las ideas de Tristan no se usaron para entrenar los modelos de OpenAI, esto parece simple rapiña académica de las que llevan décadas, acelerada por la IA.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Navier-Stokes – Tristan Buckmaster ［pdf］
+***** TLDR
+Das Originaldokument hinter dem Navier-Stokes-Streit mit OpenAI. Am 15. August veröffentlichten Buckmaster und Levent Alpöge Ergebnisse zum Blow-up in endlicher Zeit für inkompressible poröse Medien, Boussinesq und 3D-inkompressible Euler-Gleichungen und erweiterten damit Arbeiten von Diego Córdoba und Luis Martínez-Zoroa mithilfe von Sprachmodellen. Am 6. September bat OpenAI um ein dringendes Treffen und erklärte, ein internes Modell habe einen rund 100 Seiten langen Beweis für Blow-up in endlicher Zeit bei erzwungenen Navier-Stokes-Gleichungen erzeugt, und zwar über denselben Forcing-Weg, den er und Alpöge unveröffentlicht gewählt hatten. Er schreibt, auf die Frage, ob seine Codex-Sitzungen in das Training eingeflossen seien, habe er keine Antwort erhalten; man habe ihm von sehr wenig menschlicher Beteiligung erzählt, später habe er erfahren, dass ein ganzes Team daran gearbeitet habe; und Sebastien Bubeck habe zweimal gesagt, er wolle Alpöge aus der Autorenliste streichen, weil Alpöge bei Anthropic arbeitet. Er lehnte sowohl eine gleichzeitige Veröffentlichung als auch ein eigenes Papier mit Verweis auf das OpenAI-Modell ab und wurde gefragt: "Warum sollten Sie Ihre Karriere ruinieren?" Er betont, er beschuldige niemanden, sondern halte nur fest, was ihm wann gesagt wurde.
+***** Take
+Über die Reihenfolge der Beweise kann man streiten, über die Forderung zur Autorenschaft nicht. Einen Mathematiker zu bitten, seinen Koautor zu streichen, weil dieser bei einem Wettbewerber arbeitet, hat nichts damit zu tun, wer was bewiesen hat, und genau dieses Detail hat bei OpenAI niemand bestritten.
+***** Comments
+- 15. August: Buckmaster und Alpöge machen Fortschritte bei einigen wichtigen Problemen. Einen Beweis für das Millennium-Problem über eine Million Dollar haben sie NICHT.
+- Ich sagte, wenn OpenAI sein Ergebnis so veröffentlicht, gehe ich mit dem Vorgang an die Öffentlichkeit. Die Antwort war: "Warum sollten Sie Ihre Karriere ruinieren?"
+- Wenn Tristans Arbeit und Ideen nicht ins Training der OpenAI-Modelle eingegangen sind, sieht das nur nach dem überharten akademischen Wettlauf aus, den es seit Jahrzehnten gibt, jetzt durch KI beschleunigt.
+** Mercury 2.5 :ai:llm:diffusion:inference:
+:PROPERTIES:
+:ID:       49616354
+:URL:      https://www.inceptionlabs.ai/blog/introducing-mercury-2-5
+:HN_URL:   https://news.ycombinator.com/item?id=49616354
+:POINTS:   163
+:COMMENTS: 25
+:BY:       Topfi
+:END:
+
+*** TLDR
+Inception Labs' new diffusion language model, which it calls the largest diffusion LM ever trained. It runs at 1,107 tokens per second on widely available NVIDIA GPUs, takes 260K context, and claims a 40% intelligence gain over Mercury 2, putting it alongside cost-optimized models like GPT-5.6 Luna (Low), Gemini 3.5 Flash-Lite and Claude Haiku 4.5. New in this release: tunable reasoning, parallel tool calls and schema-aligned JSON. Pricing is $0.20 per million input tokens and $0.75 per million output, discounted 80% at launch to $0.04 and $0.15. Served through the Inception API, Baseten and OpenRouter. Weights are not released.
+
+*** Take
+The speed number is the product and the comparison set gives away the tier: cost-optimized models, not frontier ones. Diffusion decoding earning 1,107 tok/s at Haiku-class quality is a real result for latency-bound work like autocomplete and agent loops. With closed weights, nobody outside can check whether the quality claim holds past the benchmark table.
+
+*** Comments
+
+**** networked
+:PROPERTIES:
+:COMMENT_ID: 49616612
+:END:
+I tried to make Mercury investigate the hardcoded prompts in my agent harness and repeatedly got: "I can't share details of my architecture or training process." Looks like an overeager IP-protection guardrail.
+
+**** Sphax
+:PROPERTIES:
+:COMMENT_ID: 49616701
+:END:
+Got my hopes up when it said widely available GPUs that it would be open weights, but it doesn't seem like it sadly.
+
+**** faangguyindia
+:PROPERTIES:
+:COMMENT_ID: 49616845
+:END:
+Diffusion is already used as a drafter in many LLMs. Plenty of people run Qwen3.8 27B at 130 tk/s for free on Kaggle TPUs.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Mercury 2.5
+***** TLDR
+Inception Labs 的新扩散语言模型，官方称其为迄今训练过的最大扩散语言模型。在常见的 NVIDIA GPU 上达到每秒 1,107 个 token，支持 260K 上下文，声称智能水平比 Mercury 2 提升 40%，与 GPT-5.6 Luna（Low）、Gemini 3.5 Flash-Lite、Claude Haiku 4.5 等成本优化型模型同档。本次新增可调推理强度、并行工具调用和符合 schema 的 JSON 输出。定价为每百万输入 token 0.20 美元、输出 0.75 美元，上线期打两折至 0.04 和 0.15 美元。通过 Inception API、Baseten 和 OpenRouter 提供，不开放权重。
+***** Take
+速度数字就是产品本身，而对标名单已经说明了它的定位：成本优化档，不是前沿档。扩散式解码能在 Haiku 级质量下跑出每秒 1,107 token，对自动补全和 agent 循环这类延迟敏感的场景是实打实的成果。但权重不开放，外部谁也无法验证质量说法离开那张跑分表还成不成立。
+***** Comments
+- 我让 Mercury 检查我 agent 框架里硬编码的 prompt，反复得到：“我不能透露我的架构或训练过程的细节。”看起来是过度敏感的知识产权护栏。
+- 看到说常见 GPU 就能跑，本以为会开放权重，结果好像并没有。
+- 扩散模型早就被很多 LLM 当作草稿生成器用了。不少人在 Kaggle 的 TPU 上免费跑 Qwen3.8 27B，速度 130 tk/s。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Mercury 2.5
+***** TLDR
+Inception Labsの新しい拡散型言語モデルで、これまでに学習された最大の拡散LMだと同社は説明する。広く入手できるNVIDIA GPU上で毎秒1,107トークン、コンテキストは260K、Mercury 2から知能が40%向上したとし、GPT-5.6 Luna（Low）、Gemini 3.5 Flash-Lite、Claude Haiku 4.5といったコスト最適化モデルと同じ帯に位置づける。今回の新機能は調整可能な推論、並列ツール呼び出し、スキーマ準拠のJSON。価格は100万入力トークンあたり0.20ドル、出力0.75ドルで、ローンチ時は80%引きの0.04ドルと0.15ドル。Inception API、Baseten、OpenRouter経由で提供され、重みは公開されない。
+***** Take
+速度の数字がそのまま製品であり、比較対象がその階層を物語っている。フロンティアではなくコスト最適化モデルだ。Haiku級の品質で毎秒1,107トークンを出す拡散デコードは、補完やエージェントのループのような遅延が効く用途では本物の成果だ。ただし重みが非公開なので、品質の主張がベンチ表の外でも通じるかは外部から確かめられない。
+***** Comments
+- 自作エージェントのハードコードされたプロンプトをMercuryに調べさせようとしたら、繰り返し「アーキテクチャや学習プロセスの詳細は共有できません」と返された。行き過ぎた知財ガードのようだ。
+- 広く入手できるGPUで動くと書いてあったので重み公開かと期待したが、そうではないらしい。
+- 拡散はすでに多くのLLMでドラフタとして使われている。Kaggleの無料TPUでQwen3.8 27Bを130 tk/sで回している人も多い。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Mercury 2.5
+***** TLDR
+Inception Labs의 새 확산 언어 모델로, 지금까지 학습된 가장 큰 확산 LM이라고 회사는 설명한다. 흔히 구할 수 있는 NVIDIA GPU에서 초당 1,107토큰, 컨텍스트는 260K, Mercury 2 대비 지능 40% 향상을 주장하며 GPT-5.6 Luna(Low), Gemini 3.5 Flash-Lite, Claude Haiku 4.5 같은 비용 최적화 모델과 같은 급으로 위치를 잡았다. 이번에 추가된 것은 조절 가능한 추론, 병렬 도구 호출, 스키마에 맞춘 JSON이다. 가격은 100만 입력 토큰당 0.20달러, 출력 0.75달러이고 출시 기간에는 80% 할인해 0.04달러와 0.15달러다. Inception API, Baseten, OpenRouter로 제공되며 가중치는 공개하지 않는다.
+***** Take
+속도 숫자가 곧 제품이고, 비교 대상이 급을 알려준다. 프런티어가 아니라 비용 최적화 모델이다. Haiku급 품질에서 초당 1,107토큰을 내는 확산 디코딩은 자동완성이나 에이전트 루프처럼 지연이 중요한 작업에서 실질적인 성과다. 다만 가중치가 비공개라 품질 주장이 벤치마크 표 밖에서도 유지되는지 외부에서 확인할 방법이 없다.
+***** Comments
+- 내 에이전트 하네스에 하드코딩된 프롬프트를 Mercury에게 조사시키려 했더니 계속 "아키텍처나 학습 과정의 세부 사항은 공유할 수 없습니다"라고 답했다. 과도한 지식재산 보호 가드레일 같다.
+- 흔한 GPU에서 돌아간다고 해서 가중치 공개인가 기대했는데 아쉽게도 아닌 것 같다.
+- 확산 모델은 이미 많은 LLM에서 드래프터로 쓰인다. Kaggle 무료 TPU에서 Qwen3.8 27B를 130 tk/s로 돌리는 사람도 많다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Mercury 2.5
+***** TLDR
+El nuevo modelo de lenguaje por difusión de Inception Labs, que la empresa presenta como el mayor LM de difusión entrenado hasta ahora. Alcanza 1.107 tokens por segundo en GPUs NVIDIA de amplia disponibilidad, admite 260K de contexto y afirma un 40% más de inteligencia que Mercury 2, lo que lo sitúa junto a modelos optimizados en coste como GPT-5.6 Luna (Low), Gemini 3.5 Flash-Lite y Claude Haiku 4.5. Nuevo en esta versión: razonamiento ajustable, llamadas de herramientas en paralelo y JSON conforme a esquema. El precio es de 0,20 dólares por millón de tokens de entrada y 0,75 de salida, con un 80% de descuento de lanzamiento a 0,04 y 0,15. Se sirve por la API de Inception, Baseten y OpenRouter. Los pesos no se publican.
+***** Take
+La cifra de velocidad es el producto, y el grupo de comparación delata la categoría: modelos optimizados en coste, no de frontera. Que la descodificación por difusión dé 1.107 tok/s con calidad tipo Haiku es un resultado real para tareas sensibles a la latencia, como autocompletado y bucles de agentes. Con los pesos cerrados, nadie de fuera puede comprobar si la calidad aguanta más allá de la tabla de benchmarks.
+***** Comments
+- Intenté que Mercury revisara los prompts fijos de mi arnés de agente y una y otra vez me devolvió: "No puedo compartir detalles de mi arquitectura ni de mi entrenamiento". Parece una barrera de protección de propiedad intelectual demasiado celosa.
+- Me ilusioné al leer que funciona en GPUs de amplia disponibilidad, pensé que serían pesos abiertos, pero por desgracia no parece el caso.
+- La difusión ya se usa como borrador en muchos LLM. Hay mucha gente ejecutando Qwen3.8 27B a 130 tk/s gratis en las TPU de Kaggle.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Mercury 2.5
+***** TLDR
+Das neue Diffusions-Sprachmodell von Inception Labs, laut Firma das größte je trainierte Diffusions-LM. Es läuft mit 1.107 Tokens pro Sekunde auf breit verfügbaren NVIDIA-GPUs, verkraftet 260K Kontext und soll 40% mehr Intelligenz bieten als Mercury 2, womit es neben kostenoptimierten Modellen wie GPT-5.6 Luna (Low), Gemini 3.5 Flash-Lite und Claude Haiku 4.5 steht. Neu in dieser Version: einstellbares Reasoning, parallele Tool-Aufrufe und schema-konformes JSON. Der Preis liegt bei 0,20 Dollar je Million Input-Tokens und 0,75 Dollar für Output, zum Start um 80% reduziert auf 0,04 und 0,15 Dollar. Bereitgestellt über die Inception-API, Baseten und OpenRouter. Die Gewichte werden nicht veröffentlicht.
+***** Take
+Die Geschwindigkeitszahl ist das Produkt, und die Vergleichsgruppe verrät die Klasse: kostenoptimierte Modelle, keine Frontier-Modelle. Dass Diffusions-Decoding 1.107 Tok/s bei Haiku-Qualität schafft, ist für latenzkritische Aufgaben wie Autovervollständigung und Agentenschleifen ein echtes Ergebnis. Bei geschlossenen Gewichten kann von außen niemand prüfen, ob die Qualitätsaussage über die Benchmark-Tabelle hinaus trägt.
+***** Comments
+- Ich wollte Mercury die hartcodierten Prompts in meinem Agenten-Harness untersuchen lassen und bekam immer wieder: "Ich kann keine Details zu meiner Architektur oder meinem Training teilen." Sieht nach einem übereifrigen IP-Schutz-Guardrail aus.
+- Als von breit verfügbaren GPUs die Rede war, hoffte ich auf offene Gewichte, aber das scheint leider nicht der Fall zu sein.
+- Diffusion wird in vielen LLMs längst als Drafter eingesetzt. Viele lassen Qwen3.8 27B kostenlos auf Kaggle-TPUs mit 130 tk/s laufen.
+** An Accidental Blackboard :ai:agents:architecture:software-engineering:
+:PROPERTIES:
+:ID:       49579482
+:URL:      https://martinfowler.com/articles/exploring-gen-ai/an-accidental-blackboard.html
+:HN_URL:   https://news.ycombinator.com/item?id=49579482
+:POINTS:   42
+:COMMENTS: 18
+:BY:       saikatsg
+:END:
+
+*** TLDR
+An account on Fowler's site of ten engineers building an airline irregular-operations system in four days with coding agents. Nobody set up a coordination layer: the monorepo became one. Work plans linked to spec sections lived in version control, commit-and-rebase discipline was enforced, and agents read the updated plans to see what others had already done and picked non-colliding work. The author recognizes this as the Blackboard pattern, traced back to Hearsay-II in 1980 and tuple spaces in 1986, calls the coordination accidental and possibly not repeatable, and is now building a dedicated blackboard tool called Talwrn that works independently of source control.
+
+*** Take
+The honest part is the word accidental. A monorepo with fast commits already is a blackboard: shared mutable state with a merge policy and a conflict rule. Moving coordination into a separate tool gives up the property that made it work here, which is that every write was diffable, reviewable and revertible by the same machinery.
+
+*** Comments
+
+**** AYBABTME
+:PROPERTIES:
+:COMMENT_ID: 49579721
+:END:
+In most of my multi-agent workflows I end up asking them to create a group-chat system to coordinate and post updates. I assumed this was such an obvious day-0 discovery that it wasn't worth talking about.
+
+**** e12e
+:PROPERTIES:
+:COMMENT_ID: 49579834
+:END:
+Haven't the rogue OpenAI agents already demonstrated that a wiki works well for this?
+
+**** ghshephard
+:PROPERTIES:
+:COMMENT_ID: 49579912
+:END:
+This feels like a concept that keeps getting rediscovered over and over.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+一块无意间形成的黑板
+***** TLDR
+Fowler 网站上的一篇记述：十名工程师用编码 agent 在四天内做出了一套航空公司异常运行处理系统。没人专门搭建协调层，monorepo 自己变成了协调层。与规格章节对应的工作计划放在版本库里，强制频繁提交和 rebase，agent 通过读取更新后的计划了解别人已经做了什么，然后挑选不冲突的活。作者认出这就是黑板模式，可追溯到 1980 年的 Hearsay-II 和 1986 年的元组空间，并称这次协调是偶然发生的、也许无法复现，如今他正在做一个不依赖版本控制的专用黑板工具 Talwrn。
+***** Take
+诚实的地方在于“偶然”这个词。频繁提交的 monorepo 本身就是一块黑板：带合并策略和冲突规则的共享可变状态。把协调搬到独立工具里，恰好会丢掉此次成功的关键属性——每一次写入都能用同一套机制查看 diff、评审和回滚。
+***** Comments
+- 在我大多数多 agent 工作流里，最后都会让它们建一个群聊系统来协调和发进展。我以为这是第 0 天就该想到的显而易见的事，不值得专门讲。
+- 那些脱轨的 OpenAI agent 不是已经证明 wiki 在这件事上很好用了吗？
+- 这感觉像是一个被反复重新发现的概念。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+偶然できた黒板
+***** TLDR
+Fowlerのサイトに載った記録。エンジニア10人がコーディングエージェントを使い、航空会社の不規則運航対応システムを4日で作った。誰も調整層を用意しなかったが、モノレポがそれになった。仕様の章と紐づいた作業計画をバージョン管理下に置き、頻繁なコミットとリベースを徹底し、エージェントは更新された計画を読んで他が何を終えたかを把握し、衝突しない作業を選んだ。著者はこれを1980年のHearsay-IIや1986年のタプル空間に遡る黒板パターンだと認め、この調整は偶然で再現できないかもしれないと述べ、いまはソース管理から独立した専用の黒板ツールTalwrnを作っている。
+***** Take
+誠実なのは「偶然」という言葉だ。頻繁にコミットするモノレポはそれ自体が黒板であり、マージ方針と衝突ルールを備えた共有可変状態そのものだ。調整を別ツールに移すと、ここで効いていた性質、つまりすべての書き込みが同じ仕組みで差分表示でき、レビューでき、巻き戻せるという点を手放すことになる。
+***** Comments
+- 自分のマルチエージェントのワークフローでは、結局いつも調整と進捗共有のためのグループチャットを作らせている。0日目に気づく当たり前のことだと思っていて、話す価値もないと考えていた。
+- 暴走したOpenAIのエージェントが、wikiでうまくいくことをすでに示していなかったか。
+- これは何度も再発見され続けている概念だという気がする。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+우연히 생긴 칠판
+***** TLDR
+Fowler 사이트에 실린 기록이다. 엔지니어 10명이 코딩 에이전트로 항공사 비정상 운항 처리 시스템을 나흘 만에 만들었다. 아무도 조정 계층을 따로 만들지 않았지만 모노레포가 그 역할을 했다. 명세 절과 연결된 작업 계획을 버전 관리에 두고, 잦은 커밋과 리베이스를 강제했고, 에이전트는 갱신된 계획을 읽어 다른 쪽이 이미 무엇을 했는지 확인한 뒤 겹치지 않는 일을 골랐다. 저자는 이것이 1980년 Hearsay-II와 1986년 튜플 공간까지 거슬러 가는 칠판 패턴임을 알아보고, 이번 조정은 우연이며 재현되지 않을 수도 있다고 말한 뒤, 지금은 소스 관리와 무관하게 동작하는 전용 칠판 도구 Talwrn을 만들고 있다.
+***** Take
+정직한 대목은 '우연'이라는 단어다. 빠르게 커밋하는 모노레포는 그 자체로 칠판이다. 병합 정책과 충돌 규칙을 갖춘 공유 가변 상태다. 조정을 별도 도구로 옮기면 이번에 통했던 성질, 즉 모든 쓰기가 같은 도구로 diff되고 리뷰되고 되돌려진다는 점을 포기하게 된다.
+***** Comments
+- 내 멀티 에이전트 워크플로 대부분에서 결국 조정과 진행 상황 공유용 그룹 채팅을 만들게 한다. 0일차에 떠오르는 당연한 발견이라 이야기할 가치도 없다고 생각했다.
+- 폭주한 OpenAI 에이전트들이 위키가 이 용도로 잘 작동한다는 걸 이미 보여주지 않았나?
+- 계속 재발견되는 개념처럼 느껴진다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Una pizarra accidental
+***** TLDR
+Un relato en el sitio de Fowler sobre diez ingenieros que construyeron en cuatro días un sistema de operaciones irregulares para una aerolínea con agentes de código. Nadie montó una capa de coordinación: el monorepo pasó a serlo. Los planes de trabajo, vinculados a secciones de la especificación, vivían en el control de versiones, se impuso la disciplina de commit y rebase frecuentes, y los agentes leían los planes actualizados para ver qué habían hecho ya los demás y elegir tareas sin colisión. El autor reconoce el patrón Blackboard, que se remonta a Hearsay-II en 1980 y a los espacios de tuplas en 1986, califica la coordinación de accidental y quizá irrepetible, y ahora desarrolla una herramienta específica de pizarra llamada Talwrn, independiente del control de versiones.
+***** Take
+Lo honesto es la palabra accidental. Un monorepo con commits rápidos ya es una pizarra: estado mutable compartido con política de fusión y regla de conflictos. Llevar la coordinación a una herramienta aparte renuncia a lo que aquí funcionó, que cada escritura fuera comparable, revisable y reversible con la misma maquinaria.
+***** Comments
+- En casi todos mis flujos multiagente acabo pidiéndoles que creen un chat de grupo para coordinarse y publicar avances. Daba por hecho que era un descubrimiento tan obvio del día cero que no merecía comentarse.
+- ¿No demostraron ya los agentes descontrolados de OpenAI que un wiki funciona bien para esto?
+- Esto parece un concepto que se redescubre una y otra vez.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Ein zufälliges Blackboard
+***** TLDR
+Ein Bericht auf Fowlers Seite über zehn Entwickler, die mit Coding-Agenten in vier Tagen ein System für den irregulären Flugbetrieb einer Airline gebaut haben. Niemand richtete eine Koordinationsschicht ein, das Monorepo wurde eine. Arbeitspläne, die auf Abschnitte der Spezifikation verwiesen, lagen in der Versionskontrolle, häufiges Committen und Rebasen war Pflicht, und die Agenten lasen die aktualisierten Pläne, um zu sehen, was andere schon erledigt hatten, und wählten kollisionsfreie Aufgaben. Der Autor erkennt darin das Blackboard-Muster, das auf Hearsay-II von 1980 und Tuple Spaces von 1986 zurückgeht, nennt die Koordination zufällig und vielleicht nicht wiederholbar und baut nun ein eigenes Blackboard-Werkzeug namens Talwrn, das unabhängig von der Versionskontrolle arbeitet.
+***** Take
+Ehrlich ist das Wort zufällig. Ein Monorepo mit schnellen Commits ist bereits ein Blackboard: gemeinsam veränderlicher Zustand mit Merge-Regeln und Konfliktbehandlung. Verlagert man die Koordination in ein separates Werkzeug, gibt man genau die Eigenschaft auf, die hier funktioniert hat: dass jeder Schreibzugriff mit derselben Mechanik diffbar, reviewbar und rücknehmbar war.
+***** Comments
+- In den meisten meiner Multi-Agenten-Workflows lasse ich sie am Ende einen Gruppenchat für Koordination und Statusmeldungen aufsetzen. Ich hielt das für eine so offensichtliche Tag-0-Erkenntnis, dass sie keine Erwähnung wert wäre.
+- Haben die außer Kontrolle geratenen OpenAI-Agenten nicht schon gezeigt, dass dafür ein Wiki gut funktioniert?
+- Das wirkt wie ein Konzept, das immer wieder neu entdeckt wird.
+** 27.5KB language-agnostic WebGPU syntax highlighter :webgpu:ml:developer-tools:javascript:
+:PROPERTIES:
+:ID:       49619464
+:URL:      https://gpu-lexer.vercel.app/
+:HN_URL:   https://news.ycombinator.com/item?id=49619464
+:POINTS:   45
+:COMMENTS: 15
+:BY:       bpierre
+:END:
+
+*** TLDR
+gpu-lexer drops per-language grammars for a single 41,321-parameter model packed as int6, 27.5KB total, running on WebGPU. It labels tokens as comment, string, keyword or function from local plus whole-file context, so the download stays the same size no matter how many languages you throw at it, including mixed files with embedded script and style blocks in HTML, Vue and Svelte. On three.min.js, 5.56M characters, it finished in 471.7ms, roughly 1.8x faster than Sugar High and far ahead of Shiki's 30.4s. Agreement with Shiki's labels on held-out tokens is 87.43%, or 90.20% weighted over the top 25 token types.
+
+*** Take
+87% agreement would be a defect in a parser and is perfectly acceptable in a highlighter, which is the actual insight: coloring code is a task where being mostly right costs nothing. The best case is the one a commenter spotted, not the benchmark: languages that have no grammar written for them yet, including your own DSL.
+
+*** Comments
+
+**** netghost
+:PROPERTIES:
+:COMMENT_ID: 49619612
+:END:
+What's most interesting is not that this works for common languages, but that it seems useful for languages that don't exist yet. If you want some highlighting for your SQL variant, or sloppy code that's close enough to the target language, this could be useful.
+
+**** thangalin
+:PROPERTIES:
+:COMMENT_ID: 49619733
+:END:
+27 KB is extraordinarily impressive. Here's a deterministic suite of language- and format-specific PHP files an LLM wrote for me in 32 KB, for comparison.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+27.5KB 的语言无关 WebGPU 语法高亮器
+***** TLDR
+gpu-lexer 抛开了逐语言的语法定义，改用一个 41,321 参数、以 int6 打包的模型，总共 27.5KB，跑在 WebGPU 上。它结合局部和全文上下文，把 token 标注为注释、字符串、关键字或函数，因此无论支持多少种语言，下载体积都不变，也能处理 HTML、Vue、Svelte 中嵌入 script 和 style 的混合文件。在 556 万字符的 three.min.js 上耗时 471.7 毫秒，约为 Sugar High 的 1.8 倍速度，远快于 Shiki 的 30.4 秒。在留出 token 上与 Shiki 标注的一致率为 87.43%，按前 25 类 token 加权为 90.20%。
+***** Take
+87% 的一致率放在解析器里是缺陷，放在高亮器里完全够用，这正是本项目的洞察所在：给代码上色是一件“大致正确就没有代价”的任务。最好的用途不是跑分，而是一位评论者指出的那个：那些还没人写语法定义的语言，包括你自己的 DSL。
+***** Comments
+- 最有意思的不是它对常见语言有效，而是它似乎对还不存在的语言也有用。如果你想给自己的 SQL 变体、或者接近目标语言的粗糙代码上点高亮，这会很有用。
+- 27 KB 实在惊人。作为对比，这是一个大模型帮我写的、按语言和格式区分的确定性 PHP 规则集，一共 32 KB。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+27.5KBの言語非依存WebGPUシンタックスハイライタ
+***** TLDR
+gpu-lexerは言語ごとの文法定義を捨て、int6でパックした41,321パラメータのモデル1つ、合計27.5KBをWebGPU上で動かす。局所と全ファイルの文脈からトークンをコメント、文字列、キーワード、関数として分類するため、対応言語がいくら増えてもダウンロードサイズは変わらず、HTMLやVue、Svelteでscriptやstyleが埋め込まれた混在ファイルも扱える。556万文字のthree.min.jsで471.7ミリ秒、Sugar Highの約1.8倍速く、Shikiの30.4秒を大きく引き離した。ホールドアウトしたトークンでのShikiのラベルとの一致率は87.43%、上位25種のトークンで重み付けすると90.20%。
+***** Take
+87%の一致率はパーサなら欠陥だが、ハイライタなら十分だ。そこが要点で、コードの色付けは大体合っていれば代償がない作業なのだ。最良の用途はベンチではなく、あるコメントが指摘したもの、つまりまだ文法定義が書かれていない言語、自作DSLも含めた領域だ。
+***** Comments
+- 面白いのは一般的な言語で動くことではなく、まだ存在しない言語にも使えそうな点だ。自作のSQL方言や、目標言語に近いだけの雑なコードにいくらか色を付けたいなら役に立つ。
+- 27 KBは実に見事だ。比較として、LLMに書かせた言語別・形式別の決定的なPHPルール群は32 KBだった。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+27.5KB 언어 비의존 WebGPU 문법 하이라이터
+***** TLDR
+gpu-lexer는 언어별 문법 정의를 버리고 int6로 압축한 41,321개 파라미터 모델 하나, 총 27.5KB를 WebGPU에서 돌린다. 지역 문맥과 파일 전체 문맥으로 토큰을 주석, 문자열, 키워드, 함수로 분류하므로 지원 언어가 늘어도 내려받는 크기는 그대로이고, HTML·Vue·Svelte에서 script와 style이 섞인 파일도 처리한다. 556만 자 규모의 three.min.js에서 471.7밀리초가 걸려 Sugar High보다 약 1.8배 빨랐고 Shiki의 30.4초를 크게 앞섰다. 보류된 토큰에서 Shiki 라벨과의 일치율은 87.43%, 상위 25종 토큰 가중치로는 90.20%다.
+***** Take
+87% 일치는 파서라면 결함이고 하이라이터라면 충분하다. 바로 그게 핵심이다. 코드에 색을 입히는 일은 대체로 맞으면 비용이 없는 작업이다. 가장 좋은 쓸모는 벤치마크가 아니라 어느 댓글이 짚은 것, 즉 아직 문법 정의가 없는 언어, 직접 만든 DSL 같은 경우다.
+***** Comments
+- 흥미로운 건 흔한 언어에서 잘 된다는 점이 아니라, 아직 존재하지 않는 언어에도 쓸 만해 보인다는 점이다. 자기만의 SQL 변종이나 목표 언어에 가까운 엉성한 코드에 약간의 하이라이팅을 원한다면 유용할 것이다.
+- 27 KB는 정말 인상적이다. 비교로, LLM이 나를 위해 써준 언어별·형식별 결정적 PHP 규칙 모음은 32 KB였다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Resaltador de sintaxis WebGPU de 27,5KB e independiente del lenguaje
+***** TLDR
+gpu-lexer renuncia a las gramáticas por lenguaje y usa un único modelo de 41.321 parámetros empaquetado en int6, 27,5KB en total, ejecutado en WebGPU. Etiqueta tokens como comentario, cadena, palabra clave o función a partir del contexto local y del archivo completo, así que la descarga pesa lo mismo sin importar cuántos lenguajes uses, incluidos archivos mixtos con bloques script y style incrustados en HTML, Vue y Svelte. Con three.min.js, 5,56 millones de caracteres, terminó en 471,7 ms, unas 1,8 veces más rápido que Sugar High y muy por delante de los 30,4 s de Shiki. La coincidencia con las etiquetas de Shiki en tokens reservados es del 87,43%, o del 90,20% ponderada sobre los 25 tipos más frecuentes.
+***** Take
+Un 87% de coincidencia sería un defecto en un analizador y resulta perfectamente aceptable en un resaltador, y ahí está la idea: colorear código es una tarea donde acertar casi siempre no cuesta nada. El mejor caso no es el benchmark sino el que señaló un comentarista: lenguajes para los que nadie ha escrito gramática todavía, incluido tu propio DSL.
+***** Comments
+- Lo más interesante no es que funcione con lenguajes comunes, sino que parece útil para lenguajes que aún no existen. Si quieres algo de resaltado para tu variante de SQL, o para código descuidado que se parece bastante al lenguaje objetivo, esto puede servir.
+- 27 KB es extraordinariamente impresionante. Como comparación, aquí hay un conjunto determinista de archivos PHP por lenguaje y formato que me escribió un LLM en 32 KB.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+27,5KB großer sprachunabhängiger WebGPU-Syntaxhighlighter
+***** TLDR
+gpu-lexer verzichtet auf Grammatiken pro Sprache und nutzt ein einzelnes Modell mit 41.321 Parametern, als int6 gepackt, insgesamt 27,5KB, ausgeführt auf WebGPU. Es klassifiziert Tokens als Kommentar, String, Schlüsselwort oder Funktion aus lokalem und dateiweitem Kontext, dadurch bleibt der Download gleich groß, egal wie viele Sprachen dazukommen, inklusive gemischter Dateien mit eingebetteten script- und style-Blöcken in HTML, Vue und Svelte. Bei three.min.js mit 5,56 Millionen Zeichen brauchte es 471,7 ms, etwa 1,8-mal schneller als Sugar High und weit vor Shikis 30,4 s. Die Übereinstimmung mit Shikis Labels auf zurückgehaltenen Tokens liegt bei 87,43%, gewichtet über die 25 häufigsten Tokentypen bei 90,20%.
+***** Take
+87% Übereinstimmung wären in einem Parser ein Defekt und sind in einem Highlighter völlig in Ordnung, und darin liegt die Einsicht: Code einzufärben ist eine Aufgabe, bei der meistens richtig nichts kostet. Der beste Anwendungsfall ist nicht der Benchmark, sondern der, den ein Kommentator nannte: Sprachen, für die noch niemand eine Grammatik geschrieben hat, eigene DSLs eingeschlossen.
+***** Comments
+- Am interessantesten ist nicht, dass es für verbreitete Sprachen funktioniert, sondern dass es für Sprachen nützlich scheint, die noch nicht existieren. Wer etwas Highlighting für seine SQL-Variante oder für schludrigen Code will, der der Zielsprache nahe genug kommt, kann das brauchen.
+- 27 KB sind außerordentlich beeindruckend. Zum Vergleich: Ein deterministisches Set sprach- und formatspezifischer PHP-Dateien, das mir ein LLM geschrieben hat, umfasst 32 KB.
+** Tension wood: A 'muscle' that can both bend and straighten plants :biology:plants:science:research:
+:PROPERTIES:
+:ID:       49546964
+:URL:      https://phys.org/news/2026-09-trees-muscle-posture-newly-role.html
+:HN_URL:   https://news.ycombinator.com/item?id=49546964
+:POINTS:   81
+:COMMENTS: 14
+:BY:       mdp2021
+:END:
+
+*** TLDR
+Researchers at INRAE and University Clermont Auvergne, including Bruno Moulia and Félix Hartman, show that tension wood does more than pull a leaning stem back upright. They laid young poplars horizontal to induce an upward curve, then mounted them on a clinostat rotating inside a sphere of omnidirectional light, removing both gravity and light as directional cues. Over the following weeks the stems straightened anyway: tension wood formed on the opposite side of the stem, producing antagonistic pulling forces like a pair of opposing muscles. With external cues gone, the remaining signal is proprioception, the tree sensing its own curvature.
+
+*** Take
+The clinostat is what makes this hold up. Take away gravity and light and the poplars keep correcting their shape, which means they are measuring their own bend rather than chasing the sun. It also reframes tension wood from a one-way righting reflex into a two-sided control system, which is a stronger claim than the headline word 'muscle' suggests.
+
+*** Comments
+
+**** zekefoppa
+:PROPERTIES:
+:COMMENT_ID: 49547102
+:END:
+The title buries the lede: we've known trees form tension wood in response to external stress. This study claims they form it in response only to their own curvature, independent of external factors even including gravity. They compare it to proprioception.
+
+**** culi
+:PROPERTIES:
+:COMMENT_ID: 49547231
+:END:
+Trees "calculate" which branches to drop based on data they gather as they grow. A competent arborist knows how to read the tree and cut off the branches it was already intending to drop. Inexperienced ones ignore this and may butcher your tree.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+张力木：既能弯曲又能扶正植物的“肌肉”
+***** TLDR
+法国国家农业食品与环境研究院（INRAE）与克莱蒙奥弗涅大学的研究者，包括 Bruno Moulia 和 Félix Hartman，发现张力木的作用不只是把倾斜的茎拉回竖直。他们先把幼年杨树横放，诱导其向上弯曲，然后置于回转器上，在全向光球体内旋转，同时去掉重力和光这两种方向线索。接下来几周里，茎依然逐渐变直：张力木改在茎的另一侧形成，产生像一对拮抗肌一样的拉力。既然外部线索已被移除，剩下的信号就是本体感觉，也就是树在感知自身的弯曲程度。
+***** Take
+回转器是这项研究站得住脚的关键。去掉重力和光，杨树照样在修正形状，说明它是在测量自身的弯曲，而不是在追着阳光走。这也把张力木从单向的扶正反射重新定义为双向的控制系统，比标题里“肌肉”一词暗示的结论更有分量。
+***** Comments
+- 标题埋没了重点：树在外部压力下形成张力木这件事早就知道了。这项研究说的是，它们仅仅因为自身的弯曲就会形成张力木，与包括重力在内的外部因素无关。他们把这比作本体感觉。
+- 树会根据生长过程中收集的信息“算出”该舍弃哪些枝条。合格的树艺师懂得读树，把树本来就打算舍弃的枝条剪掉。缺乏经验的人无视这一点，可能把你的树修坏。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+あて材：植物を曲げも起こしもする「筋肉」
+***** TLDR
+フランス国立農業食品環境研究所（INRAE）とクレルモン・オーヴェルニュ大学のBruno Moulia、Félix Hartmanらの研究で、あて材の役割が傾いた茎を起こすだけではないことが示された。若いポプラを水平に寝かせて上向きの湾曲をつくり、その後、全方向から光が当たる球体の中で回転するクリノスタットに載せ、重力と光という方向の手がかりを両方取り除いた。それでも数週間かけて茎はまっすぐになった。あて材が茎の反対側に形成され、一対の拮抗筋のような引く力を生んだのだ。外部の手がかりがない以上、残る信号は自己受容感覚、つまり樹木が自らの湾曲を感じ取っていることになる。
+***** Take
+この研究を成り立たせているのはクリノスタットだ。重力と光を取り除いてもポプラは形を直し続ける。つまり太陽を追っているのではなく、自分の曲がりを測っているということだ。あて材を一方向の起立反射から双方向の制御系へ捉え直す話でもあり、見出しの「筋肉」という語が示すより強い主張だ。
+***** Comments
+- 見出しが本題を埋めている。外部からのストレスに応じて樹木があて材をつくることは以前から知られていた。この研究は、重力を含む外部要因とは無関係に、自らの湾曲だけに応じてつくると主張している。自己受容感覚になぞらえている。
+- 樹木は成長しながら集めた情報をもとに、どの枝を落とすかを「計算」している。腕のある樹木医は木を読み、木がもともと落とすつもりだった枝を切る。経験の浅い者はこれを無視して木を台無しにしかねない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+인장재: 식물을 굽히기도 하고 곧게 펴기도 하는 '근육'
+***** TLDR
+프랑스 INRAE와 클레르몽 오베르뉴 대학의 Bruno Moulia, Félix Hartman 등이 인장재의 역할이 기울어진 줄기를 세우는 것에 그치지 않음을 보였다. 어린 포플러를 수평으로 눕혀 위로 휘게 만든 뒤, 전방향 광원 구체 안에서 회전하는 클리노스탯에 올려 중력과 빛이라는 방향 신호를 모두 제거했다. 그런데도 몇 주에 걸쳐 줄기는 곧게 펴졌다. 인장재가 줄기 반대편에 형성되며 서로 맞서는 근육 한 쌍처럼 당기는 힘을 낸 것이다. 외부 신호가 사라진 상태에서 남는 신호는 자기수용감각, 즉 나무가 스스로의 휘어짐을 감지하는 것이다.
+***** Take
+이 연구를 성립시키는 건 클리노스탯이다. 중력과 빛을 없애도 포플러는 계속 형태를 바로잡는다. 해를 따라가는 게 아니라 자기 굽음을 재고 있다는 뜻이다. 인장재를 한 방향의 기립 반사에서 양쪽으로 작동하는 제어계로 다시 보게 하는 결과이며, 제목의 '근육'이라는 단어가 암시하는 것보다 강한 주장이다.
+***** Comments
+- 제목이 핵심을 묻었다. 나무가 외부 스트레스에 반응해 인장재를 만든다는 건 이미 알려져 있었다. 이 연구는 중력을 포함한 외부 요인과 무관하게 자기 휘어짐만으로 인장재를 만든다고 주장한다. 자기수용감각에 비유한다.
+- 나무는 자라면서 모은 정보를 바탕으로 어떤 가지를 떨어뜨릴지 "계산"한다. 유능한 수목관리자는 나무를 읽고, 나무가 이미 버리려던 가지를 잘라낸다. 경험 없는 사람은 이를 무시해 나무를 망칠 수 있다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Madera de tensión: un 'músculo' que puede doblar y enderezar las plantas
+***** TLDR
+Investigadores del INRAE y de la Universidad Clermont Auvergne, entre ellos Bruno Moulia y Félix Hartman, muestran que la madera de tensión hace más que devolver a la vertical un tallo inclinado. Colocaron álamos jóvenes en horizontal para inducir una curvatura hacia arriba y después los montaron en un clinostato que giraba dentro de una esfera de luz omnidireccional, eliminando la gravedad y la luz como referencias de dirección. Aun así, en las semanas siguientes los tallos se enderezaron igualmente: la madera de tensión se formó en el lado opuesto del tallo y generó fuerzas de tracción antagónicas, como un par de músculos opuestos. Sin señales externas, lo que queda es la propiocepción, el árbol percibiendo su propia curvatura.
+***** Take
+El clinostato es lo que sostiene el resultado. Quita la gravedad y la luz y los álamos siguen corrigiendo su forma, lo que significa que miden su propia curvatura en lugar de perseguir el sol. También reencuadra la madera de tensión, que pasa de reflejo de enderezamiento en un solo sentido a sistema de control de dos lados, una afirmación más fuerte que la palabra 'músculo' del titular.
+***** Comments
+- El titular esconde lo importante: ya sabíamos que los árboles forman madera de tensión en respuesta a estrés externo. Este estudio sostiene que la forman solo en respuesta a su propia curvatura, al margen de factores externos, incluida la gravedad. Lo comparan con la propiocepción.
+- Los árboles "calculan" qué ramas soltar con los datos que reúnen mientras crecen. Un buen arboricultor sabe leer el árbol y cortar las ramas que ya iba a soltar. Los inexpertos ignoran esto y pueden destrozar tu árbol.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Zugholz: ein 'Muskel', der Pflanzen biegen und wieder aufrichten kann
+***** TLDR
+Forschende von INRAE und der Universität Clermont Auvergne, darunter Bruno Moulia und Félix Hartman, zeigen, dass Zugholz mehr kann, als einen schief stehenden Stamm wieder aufzurichten. Sie legten junge Pappeln waagerecht, um eine Aufwärtskrümmung zu erzeugen, und setzten sie dann auf einen Klinostaten, der in einer Kugel mit Licht aus allen Richtungen rotierte, womit Schwerkraft und Licht als Richtungsreize entfielen. In den folgenden Wochen richteten sich die Stämme dennoch gerade: Zugholz bildete sich auf der gegenüberliegenden Seite und erzeugte antagonistische Zugkräfte wie ein Paar gegenläufiger Muskeln. Ohne äußere Reize bleibt als Signal die Propriozeption, der Baum spürt seine eigene Krümmung.
+***** Take
+Der Klinostat trägt das Ergebnis. Nimmt man Schwerkraft und Licht weg, korrigieren die Pappeln ihre Form weiter, sie messen also ihre eigene Krümmung, statt der Sonne nachzulaufen. Damit wird Zugholz vom einseitigen Aufrichtungsreflex zum zweiseitigen Regelsystem, und das ist eine stärkere Aussage, als das Wort 'Muskel' in der Überschrift vermuten lässt.
+***** Comments
+- Die Überschrift versteckt den Kern: Dass Bäume Zugholz als Reaktion auf äußeren Stress bilden, war bekannt. Diese Studie behauptet, sie bilden es allein als Reaktion auf ihre eigene Krümmung, unabhängig von äußeren Faktoren, auch von der Schwerkraft. Sie vergleichen es mit Propriozeption.
+- Bäume "berechnen" anhand der Daten, die sie beim Wachsen sammeln, welche Äste sie abwerfen. Ein guter Baumpfleger kann den Baum lesen und schneidet die Äste ab, die er ohnehin abwerfen wollte. Unerfahrene ignorieren das und ruinieren den Baum.
