@@ -1,0 +1,503 @@
+#+TITLE: HN Digest 2026-09-10 10:56 UTC
+#+DATE: 2026-09-10T10:56:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+DeepSeek ships a 552B model called Flash, Apple's camera starts signing its pixels, and Windows XP picked your user tile with reservoir sampling
+
+* Highlights
+- DeepSeek-V4.1-Flash: MIT licensed, 552B params, 890 bytes of KV cache per token
+- iPhone 18 Pro signs sensor data so you can prove a photo was not edited
+- Windows XP chose your user picture with one-pass reservoir sampling
+- An octopus that lives in colonies of 40 and still has no scientific name
+
+* Stories
+
+** DeepSeek v4.1 Flash :ai:llm:open-weights:deepseek:
+:PROPERTIES:
+:ID:       49639090
+:URL:      https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash
+:HN_URL:   https://news.ycombinator.com/item?id=49639090
+:POINTS:   418
+:COMMENTS: 197
+:BY:       Liwink
+:END:
+
+*** TLDR
+DeepSeek released V4.1-Flash under the MIT license: a multimodal model with 552B backbone parameters, a 40-layer causal encoder-decoder split 20/20, 8B parameters active during prefill and 16B during decode, a 1M token context, and 45T multimodal training tokens. The headline change is memory, not size: CSA2 cuts the KV cache to 890 bytes per token, about a quarter of V4-Flash, and SWA bounded replay cuts the persistent footprint to roughly an eighth. Reported results include 90.6% on Terminal-Bench 2.1, 74.2% on DeepSWE v1.1, and a 3471 Codeforces rating.
+
+*** Take
+Calling a 552B model Flash when the last Flash was 284B is a naming decision the thread caught within minutes, and it is fair: nobody is running this on a desk. The cache number is the actual release. 890 bytes per token is what turns a million-token context from a spec line into something you can serve, and DeepSeek published how they got there, which is more than most labs shipping comparable numbers did.
+
+*** Comments
+
+**** revolvingthrow
+The original v4 flash was 284B, which was large but still somewhat reasonable for running locally. This one is 552B, so almost twice that. It's not really flash anymore, imo.
+
+**** kouteiheika
+It's so refreshing to see DeepSeek's tech report full of juicy details, meanwhile comparable system cards are mostly safety sections and benchmark numbers.
+
+**** rao-v
+Every single model release is packed with new and crazy clever ideas and somehow they always commit to training them at near frontier scale.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+DeepSeek v4.1 Flash
+***** TLDR
+DeepSeek 以 MIT 许可证发布了 V4.1-Flash：多模态模型，主干参数 552B，40 层因果编码器-解码器架构（20 层编码 + 20 层解码），预填充阶段激活 8B 参数、解码阶段激活 16B，上下文长度 100 万 token，训练数据为 45 万亿多模态 token。最大的变化不是规模而是内存：CSA2 把 KV 缓存压到每 token 890 字节，约为 V4-Flash 的四分之一，SWA 有界重放把常驻占用降到约八分之一。公布成绩包括 Terminal-Bench 2.1 达 90.6%、DeepSWE v1.1 达 74.2%、Codeforces 评分 3471。
+***** Take
+上一代 Flash 是 284B，这一代 552B 还叫 Flash，评论区几分钟内就指出了这点，而且说得没错：没人能在自己桌上跑它。真正的发布重点是缓存数字。每 token 890 字节，才让百万 token 上下文从规格表上的一行变成可以真正提供服务的东西，而且 DeepSeek 公开了做法，这比很多拿出同等数字的实验室都要多。
+***** Comments
+- 上一代 v4 flash 是 284B，虽然大但本地跑还算合理。这个是 552B，几乎翻倍。在我看来已经不算 flash 了。
+- 看到 DeepSeek 的技术报告里满是干货真让人舒服，而同类的系统卡片大多是安全章节和基准分数。
+- 他们每次发布模型都塞满了新的、聪明得离谱的想法，而且总能在接近前沿的规模上把它们训出来。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+DeepSeek v4.1 Flash
+***** TLDR
+DeepSeekがV4.1-FlashをMITライセンスで公開した。バックボーン552Bパラメータのマルチモーダルモデルで、40層の因果エンコーダ・デコーダ構成（エンコーダ20層＋デコーダ20層）、プリフィル時8B・デコード時16Bのアクティブパラメータ、コンテキスト長100万トークン、学習データは45兆マルチモーダルトークン。目玉は規模ではなくメモリで、CSA2によりKVキャッシュは1トークンあたり890バイト、V4-Flashの約4分の1に縮小し、SWA境界リプレイで常駐分は約8分の1になった。公表スコアはTerminal-Bench 2.1が90.6%、DeepSWE v1.1が74.2%、Codeforcesレーティング3471。
+***** Take
+前世代のFlashが284Bだったのに552BをFlashと呼ぶのは、スレッドが数分で指摘した通り無理がある。手元のマシンで動かせる規模ではない。本当の成果はキャッシュの数字だ。1トークン890バイトという値が、100万トークンのコンテキストをスペック表の一行から実際に提供できるものに変える。しかもDeepSeekはその手法を公開した。同等の数字を出した他の研究所の多くはそこまでしていない。
+***** Comments
+- 元のv4 flashは284Bで、大きいとはいえローカル実行はまだ現実的だった。これは552Bでほぼ倍。もうflashとは言えないと思う。
+- DeepSeekのテックレポートが中身で埋まっているのは本当に気持ちがいい。一方で同種のシステムカードは安全性の章とベンチマーク数値ばかりだ。
+- リリースごとに新しくて突拍子もなく賢いアイデアが詰まっていて、しかも毎回フロンティアに近い規模で学習までやり切ってくる。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+DeepSeek v4.1 Flash
+***** TLDR
+DeepSeek가 V4.1-Flash를 MIT 라이선스로 공개했다. 백본 552B 파라미터 멀티모달 모델로, 40층 인과 인코더-디코더 구조(인코더 20층 + 디코더 20층), 프리필 단계 8B·디코딩 단계 16B 활성 파라미터, 100만 토큰 컨텍스트, 45조 멀티모달 토큰 학습이다. 핵심은 규모가 아니라 메모리다. CSA2로 KV 캐시가 토큰당 890바이트, V4-Flash의 약 4분의 1로 줄었고 SWA 제한 리플레이로 상주 사용량은 약 8분의 1이 됐다. 공개된 성적은 Terminal-Bench 2.1 90.6%, DeepSWE v1.1 74.2%, Codeforces 레이팅 3471이다.
+***** Take
+직전 Flash가 284B였는데 552B를 Flash라 부르는 건 스레드가 몇 분 만에 짚어낸 그대로 무리다. 책상 위에서 돌릴 수 있는 크기가 아니다. 진짜 성과는 캐시 숫자다. 토큰당 890바이트라는 값이 100만 토큰 컨텍스트를 스펙표의 한 줄에서 실제로 서비스할 수 있는 것으로 바꾼다. 게다가 DeepSeek는 그 방법을 공개했고, 비슷한 수치를 내놓은 다른 연구소 대부분은 그러지 않았다.
+***** Comments
+- 원래 v4 flash는 284B로, 크긴 했지만 로컬 실행이 그럭저럭 가능한 수준이었다. 이번 건 552B로 거의 두 배다. 내 기준으로는 이제 flash가 아니다.
+- DeepSeek의 기술 보고서가 알찬 내용으로 가득한 건 정말 반갑다. 반면 비슷한 시스템 카드는 대부분 안전성 항목과 벤치마크 수치다.
+- 릴리스마다 새롭고 기발한 아이디어가 가득한데, 매번 프런티어에 가까운 규모로 학습까지 해낸다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+DeepSeek v4.1 Flash
+***** TLDR
+DeepSeek publicó V4.1-Flash con licencia MIT: un modelo multimodal con 552B parámetros de backbone, una arquitectura causal codificador-decodificador de 40 capas repartidas 20/20, 8B parámetros activos en prefill y 16B en decodificación, contexto de 1 millón de tokens y 45 billones de tokens multimodales de entrenamiento. El cambio principal es la memoria, no el tamaño: CSA2 reduce la caché KV a 890 bytes por token, cerca de un cuarto de V4-Flash, y SWA bounded replay deja la huella persistente en torno a un octavo. Los resultados publicados incluyen 90,6% en Terminal-Bench 2.1, 74,2% en DeepSWE v1.1 y un rating de 3471 en Codeforces.
+***** Take
+Llamar Flash a un modelo de 552B cuando el Flash anterior tenía 284B es una decisión que el hilo detectó en minutos, y con razón: nadie va a ejecutar esto en su escritorio. El dato de la caché es el verdadero lanzamiento. 890 bytes por token es lo que convierte un contexto de un millón de tokens en algo servible y no en una línea de la ficha técnica, y DeepSeek explicó cómo lo logró, que es más de lo que hicieron la mayoría de los laboratorios con cifras comparables.
+***** Comments
+- El v4 flash original era de 284B, grande pero todavía razonable para ejecutarlo en local. Este es de 552B, casi el doble. Para mí ya no es flash.
+- Da gusto ver el informe técnico de DeepSeek lleno de detalles, mientras que las fichas de sistema comparables son sobre todo capítulos de seguridad y números de benchmark.
+- Cada lanzamiento viene cargado de ideas nuevas e ingeniosas y siempre se comprometen a entrenarlas a una escala cercana a la frontera.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+DeepSeek v4.1 Flash
+***** TLDR
+DeepSeek hat V4.1-Flash unter MIT-Lizenz veröffentlicht: ein multimodales Modell mit 552B Backbone-Parametern, einer 40-lagigen kausalen Encoder-Decoder-Architektur im Verhältnis 20/20, 8B aktiven Parametern beim Prefill und 16B beim Decoding, 1 Million Token Kontext und 45 Billionen multimodalen Trainings-Tokens. Die entscheidende Änderung betrifft den Speicher, nicht die Größe: CSA2 senkt den KV-Cache auf 890 Byte pro Token, etwa ein Viertel von V4-Flash, und SWA Bounded Replay drückt den dauerhaften Verbrauch auf rund ein Achtel. Genannte Ergebnisse sind 90,6% auf Terminal-Bench 2.1, 74,2% auf DeepSWE v1.1 und ein Codeforces-Rating von 3471.
+***** Take
+Ein 552B-Modell Flash zu nennen, nachdem das vorige Flash 284B hatte, hat der Thread innerhalb von Minuten bemerkt, und zu Recht: auf dem Schreibtisch läuft das niemandem. Die eigentliche Nachricht ist die Cache-Zahl. 890 Byte pro Token machen aus einer Million Token Kontext etwas Betreibbares statt einer Zeile im Datenblatt, und DeepSeek hat offengelegt, wie sie dahin gekommen sind. Das ist mehr, als die meisten Labore mit vergleichbaren Zahlen geliefert haben.
+***** Comments
+- Das ursprüngliche v4 Flash hatte 284B, groß, aber lokal noch einigermaßen machbar. Dieses hat 552B, also fast das Doppelte. Flash ist das meiner Meinung nach nicht mehr.
+- Es ist erfrischend, dass DeepSeeks Tech-Report voller Details ist, während vergleichbare System Cards überwiegend aus Sicherheitskapiteln und Benchmark-Zahlen bestehen.
+- Jede Veröffentlichung steckt voller neuer und verblüffend kluger Ideen, und sie trainieren sie jedes Mal auf nahezu Frontier-Skala.
+** iPhone 18 Pro and iPhone 18 Pro Max :apple:hardware:camera:provenance:
+:PROPERTIES:
+:ID:       49630151
+:URL:      https://www.apple.com/newsroom/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/
+:HN_URL:   https://news.ycombinator.com/item?id=49630151
+:POINTS:   367
+:COMMENTS: 403
+:BY:       meetpateltech
+:END:
+
+*** TLDR
+Apple's Pro phones get the A20 Pro with a 6-core CPU and 7-core GPU that Apple claims is 40% faster than A19 Pro, a dual 16-core Neural Engine, and a vapor chamber with three times the surface area. The 48MP main camera gains a mechanical variable aperture: six laser-cut blades stepping between f/1.48, f/1.8, f/2.8 and f/4, with manual aperture, shutter and white balance controls plus a live histogram. Apple Reference Image signs sensor data at capture and has Private Cloud Compute turn it into an unalterable reference you can compare edited versions against in Photos. eSIM-only models are rated up to 36 hours of video playback, 45 on the Pro Max. $1,199 and $1,299, preorders September 12, on sale September 18 in 65+ countries.
+
+*** Take
+The variable aperture is the first Pro camera change in years that is optics rather than a processing pipeline, and six physical blades in a phone is genuinely hard. Reference Image is the more consequential feature and the one Apple explained least. A camera that cryptographically signs what its sensor saw is a provenance system, and provenance systems are worth exactly as much as the answer to who can verify them and what happens when the signature is absent. Apple announced the signing and said nothing about the verifying.
+
+*** Comments
+
+**** quinncom
+I love that it has a feature to prove images came from the real world. The camera captures signed sensor data that Private Cloud Compute develops into an unalterable reference image.
+
+**** nateb2022
+I would love to see some pro features hit the Pro. More than 2 active eSIMs, a dual modem, or Thunderbolt rather than normie USB-C so you can record ProRes to an SSD.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+iPhone 18 Pro 和 iPhone 18 Pro Max
+***** TLDR
+苹果的 Pro 机型换上 A20 Pro：6 核 CPU、7 核 GPU，官方称比 A19 Pro 快 40%，双 16 核神经网络引擎，蒸发腔散热面积提升至三倍。4800 万像素主摄加入机械可变光圈，六片激光切割叶片可在 f/1.48、f/1.8、f/2.8 和 f/4 之间切换，并支持手动光圈、快门、白平衡以及实时直方图。Apple Reference Image 在拍摄瞬间对传感器数据签名，由 Private Cloud Compute 生成不可篡改的参考图像，可在「照片」中与编辑版本对比。纯 eSIM 机型标称视频播放最长 36 小时，Pro Max 为 45 小时。售价 1199 美元和 1299 美元，9 月 12 日预订，9 月 18 日在 65 个以上国家和地区开售。
+***** Take
+可变光圈是多年来第一次属于光学而非处理流程的 Pro 相机改动，在手机里塞进六片实体叶片确实不容易。Reference Image 影响更大，但苹果解释得最少。一台会对传感器所见内容做密码学签名的相机就是一套溯源系统，而溯源系统的价值完全取决于两个问题的答案：谁有权验证，以及签名缺失时会怎样。苹果宣布了签名，对验证一字未提。
+***** Comments
+- 我很喜欢这个能证明图像来自真实世界的功能。相机会记录带签名的传感器数据，由 Private Cloud Compute 生成不可篡改的参考图像。
+- 我更希望 Pro 上能出现一些真正的专业功能。比如同时启用超过 2 个 eSIM、双基带，或者用 Thunderbolt 而不是普通 USB-C，这样可以把 ProRes 直接录到 SSD 上。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+iPhone 18 ProとiPhone 18 Pro Max
+***** TLDR
+AppleのProモデルはA20 Proを搭載。6コアCPUと7コアGPUでA19 Pro比40%高速とされ、16コアNeural Engineを2基備え、ベイパーチャンバーの表面積は3倍になった。4800万画素のメインカメラには機械式可変絞りが入り、レーザーカットされた6枚の羽根がf/1.48、f/1.8、f/2.8、f/4を切り替える。絞り・シャッター・ホワイトバランスの手動操作とライブヒストグラムも追加された。Apple Reference Imageは撮影時にセンサーデータへ署名し、Private Cloud Computeが改変不可能な参照画像を生成して、写真アプリで編集版と比較できる。eSIM専用モデルのビデオ再生は最大36時間、Pro Maxは45時間。価格は1,199ドルと1,299ドル、予約開始は9月12日、発売は9月18日で65以上の国と地域。
+***** Take
+可変絞りは、ここ数年のProカメラの変更で初めて処理パイプラインではなく光学の話だ。スマートフォンに物理的な羽根6枚を入れるのは素直に難しい。影響が大きいのはReference Imageの方で、Appleの説明が最も薄いのもそこだ。センサーが見たものに暗号署名するカメラは出所証明の仕組みであり、その価値は誰が検証できるのか、署名がない場合どうなるのかという二つの答えで決まる。Appleは署名を発表し、検証については何も言わなかった。
+***** Comments
+- 画像が現実世界から来たことを証明できる機能はいい。カメラが署名付きのセンサーデータを記録し、Private Cloud Computeが改変不可能な参照画像を作る。
+- Proには本当のプロ向け機能が来てほしい。有効なeSIMを2つ以上、デュアルモデム、あるいは普通のUSB-CではなくThunderboltにしてProResをSSDに直接記録できるようにするとか。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+iPhone 18 Pro와 iPhone 18 Pro Max
+***** TLDR
+애플의 프로 모델에 A20 Pro가 들어간다. 6코어 CPU와 7코어 GPU로 A19 Pro보다 40% 빠르다고 주장하며, 16코어 뉴럴 엔진 두 개와 표면적이 3배인 베이퍼 챔버를 갖췄다. 4800만 화소 메인 카메라에는 기계식 가변 조리개가 들어가, 레이저로 잘라낸 여섯 장의 날개가 f/1.48, f/1.8, f/2.8, f/4를 오간다. 조리개·셔터·화이트밸런스 수동 조작과 실시간 히스토그램도 추가됐다. Apple Reference Image는 촬영 시점에 센서 데이터에 서명하고 Private Cloud Compute가 변경 불가능한 기준 이미지를 만들어, 사진 앱에서 편집본과 비교할 수 있게 한다. eSIM 전용 모델은 비디오 재생 최대 36시간, Pro Max는 45시간이다. 가격은 1,199달러와 1,299달러, 예약은 9월 12일, 출시는 9월 18일 65개국 이상이다.
+***** Take
+가변 조리개는 최근 몇 년간 프로 카메라 변경 중 처음으로 처리 파이프라인이 아니라 광학의 이야기다. 휴대폰에 물리적인 날개 여섯 장을 넣는 일은 실제로 어렵다. 더 중요한 기능은 Reference Image이고, 애플이 가장 설명을 덜 한 부분도 그것이다. 센서가 본 것에 암호학적으로 서명하는 카메라는 출처 증명 체계이며, 그런 체계의 가치는 누가 검증할 수 있는지, 서명이 없을 때 어떻게 되는지라는 두 답에 전부 달려 있다. 애플은 서명을 발표했고 검증에 대해서는 아무 말도 하지 않았다.
+***** Comments
+- 이미지가 실제 세계에서 왔음을 증명하는 기능이 마음에 든다. 카메라가 서명된 센서 데이터를 담고 Private Cloud Compute가 변경 불가능한 기준 이미지를 만든다.
+- 프로 모델에 진짜 프로 기능이 들어오면 좋겠다. 활성 eSIM 2개 초과, 듀얼 모뎀, 아니면 평범한 USB-C 대신 썬더볼트를 넣어 ProRes를 SSD에 바로 녹화하게 하는 것 같은.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+iPhone 18 Pro y iPhone 18 Pro Max
+***** TLDR
+Los teléfonos Pro de Apple llevan el A20 Pro, con CPU de 6 núcleos y GPU de 7 núcleos que Apple dice es 40% más rápida que el A19 Pro, doble Neural Engine de 16 núcleos y una cámara de vapor con el triple de superficie. La cámara principal de 48MP gana apertura variable mecánica: seis láminas cortadas por láser que pasan entre f/1,48, f/1,8, f/2,8 y f/4, con controles manuales de apertura, obturador y balance de blancos más un histograma en vivo. Apple Reference Image firma los datos del sensor en el momento de la captura y deja que Private Cloud Compute los convierta en una referencia inalterable con la que comparar versiones editadas en Fotos. Los modelos solo eSIM se anuncian con hasta 36 horas de reproducción de vídeo, 45 en el Pro Max. Cuestan 1.199 y 1.299 dólares, con reservas el 12 de septiembre y venta el 18 de septiembre en más de 65 países.
+***** Take
+La apertura variable es el primer cambio en la cámara Pro en años que es óptica y no una tubería de procesado, y meter seis láminas físicas en un teléfono es de verdad difícil. Reference Image es la función con más consecuencias y la que Apple explicó menos. Una cámara que firma criptográficamente lo que vio su sensor es un sistema de procedencia, y esos sistemas valen exactamente lo que valga la respuesta a quién puede verificar y qué pasa cuando falta la firma. Apple anunció la firma y no dijo nada sobre la verificación.
+***** Comments
+- Me encanta que tenga una función para demostrar que las imágenes vienen del mundo real. La cámara captura datos firmados del sensor que Private Cloud Compute convierte en una imagen de referencia inalterable.
+- Me gustaría ver funciones realmente pro en el Pro. Más de 2 eSIM activas, doble módem, o Thunderbolt en lugar del USB-C corriente para grabar ProRes en un SSD.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+iPhone 18 Pro und iPhone 18 Pro Max
+***** TLDR
+Apples Pro-Modelle bekommen den A20 Pro mit 6-Kern-CPU und 7-Kern-GPU, die laut Apple 40% schneller als der A19 Pro ist, eine doppelte 16-Kern-Neural-Engine und eine Vapor Chamber mit dreifacher Oberfläche. Die 48-MP-Hauptkamera erhält eine mechanische Blende: sechs lasergeschnittene Lamellen wechseln zwischen f/1,48, f/1,8, f/2,8 und f/4, dazu manuelle Steuerung von Blende, Belichtungszeit und Weißabgleich sowie ein Live-Histogramm. Apple Reference Image signiert die Sensordaten bei der Aufnahme, Private Cloud Compute entwickelt daraus eine unveränderliche Referenz, mit der sich bearbeitete Fassungen in Fotos vergleichen lassen. Die eSIM-only-Modelle sind mit bis zu 36 Stunden Videowiedergabe angegeben, beim Pro Max 45. Preise: 1.199 und 1.299 Dollar, Vorbestellung ab 12. September, Verkauf ab 18. September in über 65 Ländern.
+***** Take
+Die variable Blende ist die erste Änderung an der Pro-Kamera seit Jahren, die Optik statt Bildverarbeitung ist, und sechs physische Lamellen in ein Telefon zu bringen ist wirklich schwer. Folgenreicher ist Reference Image, und genau das hat Apple am wenigsten erklärt. Eine Kamera, die kryptografisch signiert, was ihr Sensor gesehen hat, ist ein Provenienzsystem, und solche Systeme sind genau so viel wert wie die Antwort darauf, wer prüfen darf und was passiert, wenn die Signatur fehlt. Apple hat das Signieren angekündigt und zum Prüfen nichts gesagt.
+***** Comments
+- Mir gefällt, dass es eine Funktion gibt, die beweist, dass Bilder aus der echten Welt kommen. Die Kamera erfasst signierte Sensordaten, aus denen Private Cloud Compute ein unveränderliches Referenzbild entwickelt.
+- Ich würde im Pro gerne echte Pro-Funktionen sehen. Mehr als 2 aktive eSIMs, ein zweites Modem, oder Thunderbolt statt gewöhnlichem USB-C, damit man ProRes auf eine SSD aufnehmen kann.
+** What algorithm did Windows XP use to choose your initial user picture? :windows:algorithms:history:microsoft:
+:PROPERTIES:
+:ID:       49640646
+:URL:      https://devblogs.microsoft.com/oldnewthing/20260909-00/?p=112683
+:HN_URL:   https://news.ycombinator.com/item?id=49640646
+:POINTS:   53
+:COMMENTS: 24
+:BY:       soheilpro
+:END:
+
+*** TLDR
+Raymond Chen explains that Windows XP assigned your initial user tile with one-pass reservoir sampling at k=1: walk the Default Pictures directory once and, at the nth file, replace the current pick with probability 1/n. No counting pass first, so fewer filesystem calls on the slowest part of the operation, and the result stays correct if files are added or removed mid-walk. The randomness came from RtlRandomEx seeded with GetTickCount, and the loop stopped after 100 pictures as a safety limit.
+
+*** Take
+The algorithm is textbook. What is worth noticing is that someone spent design effort avoiding a second directory enumeration on a code path that runs once per account creation, and got a function that cannot break when the directory changes underneath it as a side effect. The 100-picture cap is the tell that they thought about the failure case too. That is what the top commenter is mourning, and the complaint is fair even if the stakes here were tiny.
+
+*** Comments
+
+**** cgio
+The times when people spent an extra brain cycle to avoid billions of second passes.
+
+**** mawadev
+Technically I could solve it the same way, but these days you have so many tasks on your desk that you don't think about the problem and implications at all. If someone only gave me 2 minutes for this, because they think it is very simple...
+
+**** jasonvorhe
+A couple of screenshots would've been useful for the post-millennial generations that never got to see the beauty of XP.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Windows XP 用什么算法挑选你的初始用户头像？
+***** TLDR
+Raymond Chen 解释道，Windows XP 用 k=1 的一趟蓄水池抽样来决定你的初始用户头像：遍历 Default Pictures 目录一次，在第 n 个文件处以 1/n 的概率替换当前选中项。不需要先数一遍文件，因此在最慢的环节上减少了文件系统调用，而且即使遍历过程中有文件增删，结果依然正确。随机数来自以 GetTickCount 播种的 RtlRandomEx，循环在 100 张图片后停止作为安全上限。
+***** Take
+算法本身是教科书内容。值得注意的是，有人愿意在一条每个账户只跑一次的代码路径上花心思去避免第二次目录枚举，顺带得到了一个在目录被改动时也不会出错的函数。100 张的上限说明他们连失败情形都想过了。这正是热评在惋惜的东西，尽管这里的代价其实很小，这份惋惜也说得通。
+***** Comments
+- 那是人们愿意多花一点脑力，去省下数十亿次第二遍扫描的年代。
+- 技术上我也能这么解，但现在桌上任务太多，根本不会去想问题本身和它的影响。如果有人觉得这事很简单，只给我 2 分钟……
+- 配几张截图会很有帮助，毕竟千禧年后出生的人没机会见过 XP 的「美」。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Windows XPはどんなアルゴリズムで初期ユーザー画像を選んでいたのか
+***** TLDR
+Raymond Chenによると、Windows XPは初期ユーザータイルをk=1の一回走査のリザーバーサンプリングで決めていた。Default Picturesディレクトリを一度だけ走査し、n番目のファイルで確率1/nで現在の選択を置き換える。先に数える走査が不要なので最も遅い部分のファイルシステム呼び出しが減り、走査中にファイルが増減しても結果は正しいままになる。乱数はGetTickCountで種を与えたRtlRandomExで、安全策としてループは100枚で打ち切られる。
+***** Take
+アルゴリズム自体は教科書どおりだ。注目すべきは、アカウント作成時に一度しか走らないコードパスで二度目のディレクトリ列挙を避けるために設計の手間をかけ、その副産物としてディレクトリが途中で変わっても壊れない関数を得ている点だ。100枚の上限は失敗ケースまで考えた証拠でもある。トップコメントが惜しんでいるのはそこで、ここでの損得は小さいとはいえその嘆きは筋が通っている。
+***** Comments
+- 余分に頭を使って、何十億回の二度目の走査を避けていた時代だ。
+- 技術的には同じように解けるが、今は机の上の仕事が多すぎて、問題そのものや影響を考えることがない。とても簡単だと思われて2分しかもらえなかったら……
+- スクリーンショットが何枚かあれば、XPの「美しさ」を見たことのないミレニアル以降の世代に役立っただろう。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Windows XP는 어떤 알고리즘으로 초기 사용자 사진을 골랐나
+***** TLDR
+Raymond Chen의 설명에 따르면 Windows XP는 초기 사용자 타일을 k=1 단일 패스 저수지 샘플링으로 정했다. Default Pictures 디렉터리를 한 번만 훑으면서 n번째 파일에서 1/n 확률로 현재 선택을 교체한다. 먼저 개수를 세는 패스가 없으니 가장 느린 구간의 파일 시스템 호출이 줄고, 훑는 도중 파일이 추가되거나 삭제돼도 결과는 여전히 올바르다. 난수는 GetTickCount로 시드를 준 RtlRandomEx이며, 안전장치로 루프는 사진 100장에서 멈춘다.
+***** Take
+알고리즘은 교과서적이다. 눈에 띄는 건 계정 생성 때 한 번만 실행되는 코드 경로에서 두 번째 디렉터리 열거를 피하려고 설계 노력을 들였고, 그 덕에 디렉터리가 도중에 바뀌어도 깨지지 않는 함수를 얻었다는 점이다. 100장 상한은 실패 상황까지 생각했다는 증거다. 상위 댓글이 아쉬워하는 게 바로 이 부분이고, 여기서 걸린 이해관계는 작았더라도 그 아쉬움은 타당하다.
+***** Comments
+- 사람들이 뇌를 한 번 더 써서 수십억 번의 두 번째 패스를 피했던 시절이다.
+- 기술적으로는 나도 같은 방식으로 풀 수 있지만, 요즘은 책상에 일이 너무 많아 문제와 그 함의를 생각하지 않는다. 아주 간단해 보인다고 2분만 준다면…
+- 스크린샷 몇 장이 있었다면 XP의 '아름다움'을 본 적 없는 밀레니얼 이후 세대에게 도움이 됐을 것이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+¿Qué algoritmo usaba Windows XP para elegir tu imagen de usuario inicial?
+***** TLDR
+Raymond Chen explica que Windows XP asignaba la imagen inicial de usuario con muestreo de reservorio de una sola pasada con k=1: recorrer el directorio de imágenes por defecto una vez y, en el archivo n, sustituir la elección actual con probabilidad 1/n. Sin pasada previa de conteo, con lo que hay menos llamadas al sistema de archivos en la parte más lenta, y el resultado sigue siendo correcto si se añaden o eliminan archivos durante el recorrido. La aleatoriedad venía de RtlRandomEx sembrado con GetTickCount, y el bucle se detenía a las 100 imágenes como límite de seguridad.
+***** Take
+El algoritmo es de manual. Lo que merece atención es que alguien dedicó esfuerzo de diseño a evitar una segunda enumeración del directorio en una ruta de código que se ejecuta una vez por cuenta creada, y obtuvo de paso una función que no se rompe si el directorio cambia mientras se recorre. El tope de 100 imágenes indica que también pensaron en el caso de fallo. Eso es lo que lamenta el comentario más votado, y la queja es justa aunque aquí lo que estuviera en juego fuera mínimo.
+***** Comments
+- Los tiempos en que la gente gastaba un ciclo mental extra para evitar miles de millones de segundas pasadas.
+- Técnicamente podría resolverlo igual, pero hoy tienes tantas tareas sobre la mesa que no piensas en el problema ni en sus implicaciones. Si alguien solo me diera 2 minutos porque le parece muy simple...
+- Un par de capturas habrían venido bien para las generaciones posteriores al milenio que nunca vieron la belleza de XP.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Welchen Algorithmus nutzte Windows XP zur Wahl des ersten Benutzerbildes?
+***** TLDR
+Raymond Chen erklärt, dass Windows XP das erste Benutzerbild per Reservoir Sampling in einem Durchlauf mit k=1 bestimmte: das Verzeichnis der Standardbilder einmal durchlaufen und bei der n-ten Datei die bisherige Wahl mit Wahrscheinlichkeit 1/n ersetzen. Kein vorheriger Zähldurchlauf, also weniger Dateisystemaufrufe am langsamsten Teil, und das Ergebnis bleibt korrekt, wenn während des Durchlaufs Dateien dazukommen oder verschwinden. Der Zufall kam von RtlRandomEx, initialisiert mit GetTickCount, und die Schleife brach nach 100 Bildern als Sicherheitsgrenze ab.
+***** Take
+Der Algorithmus steht im Lehrbuch. Bemerkenswert ist, dass jemand Entwurfsarbeit investiert hat, um eine zweite Verzeichnisauflistung auf einem Codepfad zu vermeiden, der einmal pro Kontoerstellung läuft, und als Nebeneffekt eine Funktion bekam, die nicht bricht, wenn sich das Verzeichnis unter ihr ändert. Die Grenze von 100 Bildern zeigt, dass auch der Fehlerfall bedacht wurde. Genau das vermisst der oberste Kommentar, und der Einwand ist berechtigt, auch wenn hier wenig auf dem Spiel stand.
+***** Comments
+- Die Zeiten, in denen Leute einen zusätzlichen Denkzyklus aufwendeten, um Milliarden zweiter Durchläufe zu vermeiden.
+- Technisch könnte ich es genauso lösen, aber heute liegen so viele Aufgaben auf dem Tisch, dass man über das Problem und seine Folgen gar nicht nachdenkt. Wenn mir jemand nur 2 Minuten dafür gibt, weil er es für sehr einfach hält...
+- Ein paar Screenshots wären hilfreich gewesen für die Generationen nach der Jahrtausendwende, die die Schönheit von XP nie gesehen haben.
+** I think I hate the internet :internet:culture:privacy:
+:PROPERTIES:
+:ID:       49639104
+:URL:      https://strategictree.bearblog.dev/i-think-i-hate-the-internet/
+:HN_URL:   https://news.ycombinator.com/item?id=49639104
+:POINTS:   64
+:COMMENTS: 44
+:BY:       saikatsg
+:END:
+
+*** TLDR
+A blog post arguing the internet stopped paying for itself. The concrete complaint is compulsory apps: parking, banking and even the recycling centre now require one, so opting out is no longer a preference. Around that the author stacks the upkeep, a £600 phone on a monthly contract, a password manager, a VPN, multi-factor auth and an adblocker needed to make pages readable, plus the updates, notifications and charging. They deleted Facebook in 2018, then Instagram and WhatsApp, and report losing nothing except low-value content, with in-person friendships getting stronger.
+
+*** Take
+The mandatory-app half is solid and underrated: when the council car park only accepts an app, the cost of abstaining is set by someone else. The expense half is where the thread pushed back hard, and correctly, because adblockers and password managers are free and a four-year-old phone still works. Two different arguments are bundled here, and only one of them needs the internet to be at fault.
+
+*** Comments
+
+**** alexgieg
+In my country WhatsApp is obligatory. Everyone uses it, businesses and banks included, and no one at all uses SMS. Technically it's possible to go without it, but life becomes so much harder.
+
+**** arjie
+My wife still uses an iPhone 13 and life for her is not particularly different from my iPhone 16. You don't have to do any of this stuff.
+
+**** roenxi
+There seems to be a profound confusion that people come with an evil bit and we're going to toggle technology so that those people can't use it and everyone else can.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+我觉得我讨厌互联网
+***** TLDR
+一篇博客文章认为互联网已不再划算。具体的抱怨是强制性 App：停车、银行，甚至回收站点现在都要装一个，于是「不用」已经不再是一种选择。围绕这点，作者又堆上各种维护成本：按月签约的 600 英镑手机、密码管理器、VPN、多因素认证，以及为了让网页能读而必须装的广告拦截器，还有更新、通知和充电。他在 2018 年删掉了 Facebook，随后删掉 Instagram 和 WhatsApp，说除了低价值内容什么都没损失，线下友谊反而更牢固了。
+***** Take
+强制性 App 那一半是扎实且被低估的：当市政停车场只收 App，放弃使用的代价由别人替你定。费用那一半则被评论区狠狠反驳，而且反驳得对，因为广告拦截器和密码管理器都是免费的，四年前的手机也照样能用。这里捆在一起的是两个论点，只有其中一个需要互联网来背责。
+***** Comments
+- 在我的国家，WhatsApp 是强制的。所有人都用，企业和银行也一样，根本没人用短信。技术上确实可以不用，但生活会难上很多。
+- 我太太还在用 iPhone 13，她的生活和我用 iPhone 16 没什么差别。这些事你根本不必都做。
+- 这里似乎有个很深的误解：好像人身上带着一个「作恶位」，我们只要调一下技术，就能让那些人用不了而其他人能用。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+自分はインターネットが嫌いなのかもしれない
+***** TLDR
+インターネットはもう元が取れていない、というブログ記事。具体的な不満は必須アプリで、駐車場も銀行も、果てはリサイクル施設までアプリを要求するので、使わないという選択はもはや選択肢ではない。その周りに著者は維持コストを積み上げる。月々の契約で支払う600ポンドの端末、パスワードマネージャー、VPN、多要素認証、ページを読めるようにするための広告ブロッカー、さらに更新、通知、充電。著者は2018年にFacebookを消し、続いてInstagramとWhatsAppも消したが、失ったのは価値の低いコンテンツだけで、対面の友人関係はむしろ強くなったという。
+***** Take
+必須アプリの側は堅く、かつ過小評価されている。市営駐車場がアプリしか受け付けないなら、使わない場合のコストは他人が決めることになる。費用の側はスレッドが強く、そして正しく反論した部分だ。広告ブロッカーもパスワードマネージャーも無料で、4年前の端末も十分動く。ここでは二つの別の主張が束ねられていて、インターネットに責任があると言う必要があるのは片方だけだ。
+***** Comments
+- 私の国ではWhatsAppは必須だ。企業も銀行も含めて全員が使い、SMSは誰も使わない。技術的には使わずに済むが、生活はかなり苦しくなる。
+- 妻はいまもiPhone 13を使っているが、私のiPhone 16と生活は特に変わらない。挙げられていることを全部やる必要はない。
+- 人には「悪のビット」が備わっていて、技術を切り替えればその人たちだけ使えなくなり他の全員は使える、という深い思い違いがあるように見える。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+나는 인터넷이 싫은 것 같다
+***** TLDR
+인터넷이 더 이상 본전을 뽑지 못한다고 주장하는 블로그 글이다. 구체적인 불만은 필수 앱이다. 주차, 은행, 심지어 재활용 수거장까지 앱을 요구하니 쓰지 않겠다는 선택은 더 이상 선택이 아니다. 그 주위에 저자는 유지 비용을 쌓는다. 월 약정으로 들고 있는 600파운드 휴대폰, 비밀번호 관리자, VPN, 다중 인증, 페이지를 읽을 수 있게 해주는 광고 차단기, 그리고 업데이트와 알림과 충전. 저자는 2018년에 페이스북을 지우고 이어 인스타그램과 왓츠앱도 지웠는데, 잃은 것은 가치 낮은 콘텐츠뿐이고 직접 만나는 친구 관계는 더 단단해졌다고 한다.
+***** Take
+필수 앱 쪽 절반은 단단하고 과소평가돼 있다. 시영 주차장이 앱만 받으면 쓰지 않는 비용은 남이 정한다. 비용 쪽 절반은 스레드가 강하게, 그리고 옳게 반박한 부분이다. 광고 차단기와 비밀번호 관리자는 무료이고 4년 된 휴대폰도 잘 돌아간다. 여기에는 서로 다른 두 주장이 묶여 있고, 인터넷에 책임을 물어야 하는 건 그중 하나뿐이다.
+***** Comments
+- 우리 나라에서는 왓츠앱이 필수다. 기업과 은행까지 모두가 쓰고 문자는 아무도 쓰지 않는다. 기술적으로는 안 쓰고 살 수 있지만 삶이 훨씬 고달파진다.
+- 아내는 여전히 아이폰 13을 쓰는데 내 아이폰 16과 생활이 특별히 다르지 않다. 나열된 일들을 전부 할 필요는 없다.
+- 사람에게 '악한 비트'가 달려 있어서 기술을 한 번 조정하면 그 사람들만 못 쓰게 되고 나머지는 다 쓸 수 있다는 깊은 착각이 있는 것 같다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Creo que odio internet
+***** TLDR
+Una entrada de blog que sostiene que internet dejó de compensar. La queja concreta son las apps obligatorias: aparcar, el banco e incluso el punto de reciclaje exigen una, así que renunciar ya no es una preferencia. Alrededor de eso el autor acumula el mantenimiento: un teléfono de 600 libras con contrato mensual, un gestor de contraseñas, una VPN, autenticación de varios factores y un bloqueador de anuncios necesario para poder leer las páginas, además de actualizaciones, notificaciones y cargas. Borró Facebook en 2018, luego Instagram y WhatsApp, y dice no haber perdido nada salvo contenido de poco valor, con las amistades en persona más fuertes.
+***** Take
+La mitad de las apps obligatorias es sólida y está subestimada: cuando el aparcamiento municipal solo acepta una app, el coste de abstenerse lo fija otro. La mitad del gasto es donde el hilo replicó con fuerza, y con razón, porque los bloqueadores de anuncios y los gestores de contraseñas son gratis y un teléfono de hace cuatro años sigue funcionando. Aquí van juntos dos argumentos distintos y solo uno necesita que la culpa sea de internet.
+***** Comments
+- En mi país WhatsApp es obligatorio. Todo el mundo lo usa, empresas y bancos incluidos, y nadie usa SMS. Técnicamente se puede vivir sin él, pero la vida se vuelve mucho más difícil.
+- Mi mujer sigue usando un iPhone 13 y su vida no es especialmente distinta de la mía con un iPhone 16. No hace falta hacer nada de todo eso.
+- Parece haber una confusión profunda: como si la gente viniera con un bit de maldad y fuéramos a ajustar la tecnología para que esas personas no puedan usarla y el resto sí.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Ich glaube, ich hasse das Internet
+***** TLDR
+Ein Blogbeitrag argumentiert, das Internet rechne sich nicht mehr. Der konkrete Vorwurf sind Pflicht-Apps: Parken, Bankgeschäfte und sogar der Recyclinghof verlangen eine, also ist Verzicht keine Vorliebe mehr. Darum herum stapelt der Autor den Unterhalt: ein Telefon für 600 Pfund im Monatsvertrag, ein Passwortmanager, ein VPN, Mehrfaktor-Authentifizierung und ein Adblocker, damit Seiten lesbar sind, dazu Updates, Benachrichtigungen und Laden. Er löschte 2018 Facebook, dann Instagram und WhatsApp, und habe nichts verloren außer geringwertigen Inhalten, während Freundschaften vor Ort stärker wurden.
+***** Take
+Die Hälfte zu den Pflicht-Apps ist belastbar und wird unterschätzt: wenn der städtische Parkplatz nur eine App akzeptiert, bestimmt jemand anderes die Kosten des Verzichts. Bei der Kostenhälfte hat der Thread deutlich widersprochen, und das zu Recht, denn Adblocker und Passwortmanager sind kostenlos und ein vier Jahre altes Telefon funktioniert weiter. Hier sind zwei verschiedene Argumente gebündelt, und nur eines braucht das Internet als Schuldigen.
+***** Comments
+- In meinem Land ist WhatsApp Pflicht. Alle nutzen es, Unternehmen und Banken eingeschlossen, und niemand nutzt SMS. Technisch geht es ohne, aber das Leben wird deutlich schwerer.
+- Meine Frau nutzt noch ein iPhone 13, und ihr Leben unterscheidet sich nicht besonders von meinem mit einem iPhone 16. Man muss all diese Dinge nicht tun.
+- Da steckt eine tiefe Verwirrung drin: als kämen Menschen mit einem Bösartigkeits-Bit und man müsste die Technik nur so schalten, dass genau die sie nicht nutzen können und alle anderen doch.
+** Larger Pacific Striped Octopus :biology:science:wikipedia:octopus:
+:PROPERTIES:
+:ID:       49621018
+:URL:      https://en.wikipedia.org/wiki/Larger_Pacific_striped_octopus
+:HN_URL:   https://news.ycombinator.com/item?id=49621018
+:POINTS:   69
+:COMMENTS: 39
+:BY:       olalonde
+:END:
+
+*** TLDR
+The Wikipedia entry for an eastern Pacific octopus recorded off Panama, Guatemala, Nicaragua, Colombia and Baja California at depths of 7 to 100 metres on mud and sand. It breaks most of the rules for its order: it lives in groups of up to 40 rather than alone, mates beak to beak in a tangle of arms without the usual risk of cannibalism, and spawns repeatedly instead of dying after one brood. It hunts differently by prey, stalking shrimp with an extended arm and suckers turned outward but pouncing straight onto crabs. Documented in the 1970s, it still has no formal scientific description and no binomial name.
+
+*** Take
+Fifty years undescribed is the real story, and it is a funding and taxonomy story rather than a mystery. Repeat spawning is the detail that matters most: an octopus that survives reproduction means adults and juveniles overlap, which is the precondition for anything that looks like learning from each other. And the top comment is right that an article titled Larger never says how large (roughly tennis ball size).
+
+*** Comments
+
+**** teiferer
+Irony: nowhere on that page does it say how large that octopus actually is. An inch? 2 meters? It's about tennis ball size. Somebody should add that to the wiki.
+
+**** TulliusCicero
+Being fairly new to scientific observation, it has yet to be scientifically described, so it has no official scientific name. It takes over 50 years to come up with a scientific name for a species?
+
+**** NewJazz
+One critical feature of these octopuses is that they don't just die after mating, which opens up possibilities like teaching their young skills they have acquired.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+大太平洋条纹章鱼
+***** TLDR
+维基百科上一种东太平洋章鱼的条目，记录见于巴拿马、危地马拉、尼加拉瓜、哥伦比亚和下加利福尼亚，栖息在 7 至 100 米深的泥沙底。它几乎违反了本目的所有规则：群居，最多 40 只一起，而不是独居；交配时喙对喙、手臂缠绕，没有通常的同类相食风险；而且能多次产卵，而不是产一次后死去。它按猎物改变捕猎方式，对虾是伸出手臂、吸盘朝外地慢慢靠近，对蟹则直接扑上去。该物种在 1970 年代被记录，至今仍没有正式的科学描述，也没有学名。
+***** Take
+五十年未被描述才是真正的新闻，而这是经费和分类学的问题，不是什么谜团。最要紧的细节是多次产卵：一只章鱼能在繁殖后活下来，意味着成体和幼体会共存，而这正是任何类似相互学习的行为得以存在的前提。另外热评说得对，一篇标题叫「大」的条目从没说它到底多大（大约网球大小）。
+***** Comments
+- 讽刺的是，整个页面从没说这种章鱼到底多大。一英寸？两米？大约网球大小。该有人把这个加到维基上。
+- 由于对它的科学观察还比较新，它尚未被科学描述，所以没有正式学名。给一个物种起学名要花 50 多年？
+- 这些章鱼的一个关键特征是交配后不会直接死去，这带来了一些可能性，比如把学到的技能教给后代。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+オオマダコ（Larger Pacific Striped Octopus）
+***** TLDR
+東太平洋のタコについてのWikipedia項目。パナマ、グアテマラ、ニカラグア、コロンビア、バハ・カリフォルニア沖で、水深7〜100メートルの泥や砂の底から記録されている。この種は目の常識をほとんど破る。単独ではなく最大40匹の群れで暮らし、交接は嘴を合わせて腕を絡める形で行われ、通常の共食いの危険がない。さらに一度の産卵で死ぬのではなく繰り返し産卵する。獲物によって狩り方も変え、エビには腕を伸ばして吸盤を外向きにして近づき、カニには直接飛びかかる。1970年代に記録されたが、いまも正式な学術記載がなく学名もない。
+***** Take
+50年間記載されていないことが本当のニュースであり、それは謎ではなく研究費と分類学の話だ。最も重要な細部は繰り返し産卵で、繁殖を生き延びるタコなら成体と幼体が共存する。それが互いに学ぶように見える行動が成り立つ前提だ。そして「Larger」という題の項目が大きさに一言も触れていないというトップコメントの指摘は正しい（だいたいテニスボール大）。
+***** Comments
+- 皮肉なことに、そのページにはこのタコが実際どれくらい大きいのか一切書かれていない。1インチ？2メートル？だいたいテニスボール大だ。誰かwikiに追記すべきだ。
+- 科学的観察がまだ新しいため学術記載がなく、正式な学名もない。種に学名をつけるのに50年以上かかるのか？
+- このタコの重要な特徴は交接後にそのまま死なない点で、獲得した技能を子に教えるといった可能性が開ける。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+큰태평양줄무늬문어
+***** TLDR
+동태평양 문어에 대한 위키백과 항목이다. 파나마, 과테말라, 니카라과, 콜롬비아, 바하칼리포르니아 해역의 수심 7~100미터 진흙과 모래 바닥에서 기록됐다. 이 종은 같은 목의 규칙을 거의 다 깬다. 홀로 살지 않고 최대 40마리 집단으로 지내며, 부리를 맞대고 팔을 얽은 자세로 교미해 흔한 동족포식 위험이 없고, 한 번 산란하고 죽는 대신 여러 번 산란한다. 먹이에 따라 사냥법도 바꿔, 새우에게는 팔을 뻗어 빨판을 바깥으로 향한 채 다가가고 게에게는 곧바로 덮친다. 1970년대에 기록됐지만 아직 정식 학술 기재가 없고 학명도 없다.
+***** Take
+50년간 기재되지 않았다는 게 진짜 기사이고, 이건 미스터리가 아니라 연구비와 분류학의 문제다. 가장 중요한 대목은 반복 산란이다. 번식을 하고도 살아남는 문어라면 성체와 유체가 함께 존재하고, 그것이 서로 배우는 것처럼 보이는 행동의 전제다. 그리고 '큰'이라는 제목의 항목이 크기를 한 번도 말하지 않는다는 상위 댓글의 지적은 옳다(대략 테니스공 크기).
+***** Comments
+- 아이러니한 건 그 페이지 어디에도 이 문어가 실제로 얼마나 큰지 안 나온다는 점이다. 1인치? 2미터? 대략 테니스공 크기다. 누군가 위키에 추가해야 한다.
+- 과학적 관찰이 비교적 최근이라 아직 학술 기재가 되지 않았고 정식 학명도 없다. 한 종에 학명을 붙이는 데 50년이 넘게 걸린다고?
+- 이 문어들의 핵심 특징은 교미 후 곧바로 죽지 않는다는 점이고, 그래서 습득한 기술을 새끼에게 가르치는 것 같은 가능성이 열린다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Pulpo rayado mayor del Pacífico
+***** TLDR
+La entrada de Wikipedia de un pulpo del Pacífico oriental registrado frente a Panamá, Guatemala, Nicaragua, Colombia y Baja California, a entre 7 y 100 metros de profundidad sobre fondos de lodo y arena. Rompe casi todas las reglas de su orden: vive en grupos de hasta 40 individuos en lugar de en solitario, se aparea pico a pico en un enredo de brazos sin el riesgo habitual de canibalismo y desova varias veces en lugar de morir tras una puesta. Caza distinto según la presa: acecha a los camarones con un brazo extendido y las ventosas hacia fuera, pero se lanza directamente sobre los cangrejos. Documentado en los años setenta, sigue sin descripción científica formal ni nombre binomial.
+***** Take
+Cincuenta años sin describir es la verdadera noticia, y es una historia de financiación y taxonomía más que un misterio. El dato que más importa es el desove repetido: un pulpo que sobrevive a la reproducción implica que adultos y juveniles coinciden, que es la condición previa para cualquier cosa que se parezca a aprender unos de otros. Y el comentario más votado tiene razón: un artículo titulado mayor nunca dice cuán grande es (más o menos una pelota de tenis).
+***** Comments
+- Lo irónico es que en ninguna parte de esa página dice cuán grande es realmente el pulpo. ¿Una pulgada? ¿2 metros? Es más o menos del tamaño de una pelota de tenis. Alguien debería añadirlo al wiki.
+- Al ser bastante nuevo para la observación científica, todavía no ha sido descrito y no tiene nombre científico oficial. ¿Se tardan más de 50 años en ponerle nombre científico a una especie?
+- Una característica clave de estos pulpos es que no mueren tras el apareamiento, lo que abre posibilidades como enseñar a sus crías habilidades que han adquirido.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Großer Pazifischer Streifenkrake
+***** TLDR
+Der Wikipedia-Eintrag zu einem Kraken des östlichen Pazifik, belegt vor Panama, Guatemala, Nicaragua, Kolumbien und Baja California, in 7 bis 100 Metern Tiefe auf Schlamm und Sand. Er bricht fast alle Regeln seiner Ordnung: er lebt in Gruppen von bis zu 40 Tieren statt einzeln, paart sich Schnabel an Schnabel in einem Gewirr von Armen ohne das übliche Kannibalismusrisiko und laicht mehrfach, statt nach einer Brut zu sterben. Er jagt je nach Beute anders: Garnelen pirscht er mit ausgestrecktem Arm und nach außen gedrehten Saugnäpfen an, auf Krabben springt er direkt. Dokumentiert in den 1970ern, fehlt ihm bis heute eine formale wissenschaftliche Beschreibung und ein Artname.
+***** Take
+Fünfzig Jahre ohne Beschreibung ist die eigentliche Nachricht, und das ist eine Geschichte über Förderung und Taxonomie, kein Rätsel. Das wichtigste Detail ist das mehrfache Laichen: ein Krake, der die Fortpflanzung überlebt, heißt, dass Erwachsene und Jungtiere gleichzeitig da sind, und das ist die Voraussetzung für alles, was nach Lernen voneinander aussieht. Und der oberste Kommentar hat recht: ein Artikel mit dem Wort größer nennt nie eine Größe (etwa Tennisballgröße).
+***** Comments
+- Die Ironie: nirgendwo auf dieser Seite steht, wie groß der Krake eigentlich ist. Ein Zoll? 2 Meter? Er hat etwa Tennisballgröße. Das sollte jemand ins Wiki schreiben.
+- Da er für die wissenschaftliche Beobachtung recht neu ist, wurde er noch nicht beschrieben und hat keinen offiziellen wissenschaftlichen Namen. Dauert es über 50 Jahre, einen Artnamen zu finden?
+- Ein entscheidendes Merkmal dieser Kraken ist, dass sie nach der Paarung nicht einfach sterben, was Möglichkeiten eröffnet, etwa ihren Jungen erlernte Fähigkeiten beizubringen.
