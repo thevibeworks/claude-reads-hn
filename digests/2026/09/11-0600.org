@@ -1,0 +1,512 @@
+#+TITLE: HN Digest 2026-09-11 06:00 UTC
+#+DATE: 2026-09-11T06:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+OpenAI rents out the agent loop, a camera signs its own photos, and a $42k Linux box goes on sale
+
+* Highlights
+- OpenAI Agents API: they host the session, you bring the tools
+- Proof of Capture: a camera that signs a perceptual hash into the pixels
+- Thelio Mira AI: 192GB of GPU memory, starting at $3,299 and ending nowhere near it
+- DStretch: a 1970s JPL algorithm keeps finding rock art nobody could see
+- A free 35-chapter music theory textbook that covers sonata form and jazz
+
+* Stories
+
+** OpenAI Agents API :ai:openai:agents:api:
+:PROPERTIES:
+:ID:       49649213
+:URL:      https://developers.openai.com/api/docs/guides/agents-api/overview
+:HN_URL:   https://news.ycombinator.com/item?id=49649213
+:POINTS:   207
+:COMMENTS: 123
+:BY:       aquir
+:END:
+
+*** TLDR
+OpenAI shipped a managed agent runtime with four primitives: Agent (model plus instructions, tools, MCP servers), Environment (an optional sandbox for files and shell commands), Session (durable state across many turns), and Events/Items. OpenAI runs session management, orchestration, context compaction and recovery; you supply the tools and pick whether the sandbox is theirs or yours. Unlike the Responses API, a session survives across turns, can delegate to subagents, and can resume interrupted work. Billing is model rates plus tool calls and container time. US data residency only, and no Zero Data Retention.
+
+*** Take
+The interesting part is not the API, it is which half OpenAI kept. Tools and execution stay with you; the loop, the state and the context compaction stay with them. That is exactly the half that is annoying to build and expensive to leave. No ZDR and US-only residency means a large share of enterprise buyers cannot touch it yet, which is why the comments are full of people who already run their own VM and see no reason to stop.
+
+*** Comments
+
+**** bluesnowmonkey
+We are still figuring out the right abstraction for agents as a product. Building your own harness is a deep rabbit hole, and open-source harnesses are coupled to an environment. Where does the state persist if I am a Cloudflare Worker with no filesystem?
+
+**** andrewchambers
+I run codex in a regular qemu VM and drive it from my phone with remote control. Works extremely well. I see why an API makes sense, just be aware you may not need the lock-in if you can set up your own VMs.
+
+**** baalimago
+With the Agents SDK I built sandbox, Slack and knowledge-base integrations myself and stayed strict about what I expose to OpenAI. The API reduces hosting, but hosting a Python service is easy.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+OpenAI Agents API
+***** TLDR
+OpenAI 推出托管式智能体运行时，包含四个基本概念：Agent（模型加指令、工具、MCP 服务器）、Environment（可选的文件与命令沙箱）、Session（跨多轮的持久状态）以及 Events/Items。会话管理、编排、上下文压缩和恢复由 OpenAI 负责，工具由你提供，沙箱可以用他们的也可以用自己的。与 Responses API 不同，会话可跨轮次保留、可委派子智能体、可恢复中断的工作。计费为模型费用加工具调用和容器时长。仅限美国数据驻留，不支持零数据留存。
+***** Take
+关键不在于这个 API，而在于 OpenAI 留下了哪一半。工具和执行环境归你，循环、状态和上下文压缩归他们。恰好是最难写也最难迁走的那一半。没有零数据留存且只限美国驻留，意味着大量企业客户现在根本用不了，所以评论区全是已经自建虚拟机、看不出有什么理由换的人。
+***** Comments
+- 我们还在摸索智能体作为产品的正确抽象。自建 harness 是个很深的坑，开源 harness 又和运行环境绑死。如果我跑在没有文件系统的 Cloudflare Worker 上，状态存哪里？
+- 我在普通的 qemu 虚拟机里跑 codex，用手机远程控制，效果非常好。我理解做成 API 的道理，但如果你能自己搭虚拟机，未必需要被锁定。
+- 我用 Agents SDK 自己做了沙箱、Slack 和知识库集成，严格控制暴露给 OpenAI 的内容。这个 API 省去了托管，但托管一个 Python 服务本来也不难。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+OpenAI Agents API
+***** TLDR
+OpenAIがマネージドなエージェント実行環境を公開した。構成要素は4つ。Agent（モデルと指示、ツール、MCPサーバー）、Environment（ファイルとコマンド実行の任意のサンドボックス）、Session（複数ターンをまたぐ永続状態）、Events/Items。セッション管理、オーケストレーション、コンテキスト圧縮、復旧はOpenAI側が担い、ツールは利用者が用意し、サンドボックスは自前でもOpenAI提供でも選べる。Responses APIと違いセッションはターンをまたいで存続し、サブエージェントへの委譲や中断作業の再開ができる。課金はモデル料金にツール呼び出しとコンテナ時間が加算される。データ所在は米国のみ、ゼロデータ保持は非対応。
+***** Take
+注目点はAPIそのものではなく、OpenAIがどちら側を手元に残したかだ。ツールと実行は利用者、ループと状態とコンテキスト圧縮はOpenAI。作るのが面倒で、乗り換えるのに金がかかるのはまさに後者だ。ゼロデータ保持なし、米国のみという条件では多くの企業がまだ使えない。だからコメント欄は、すでに自前のVMを回していて乗り換える理由が見当たらない人であふれている。
+***** Comments
+- エージェントを製品として提供する正しい抽象はまだ誰も分かっていない。自前のharnessを作るのは深い沼だし、OSSのharnessは実行環境に結びついている。ファイルシステムのないCloudflare Workerなら状態はどこに置く？
+- 普通のqemu VMでcodexを動かし、リモート操作でスマホから使っている。非常に快適だ。APIにする理由は分かるが、自分でVMを立てられるなら囲い込まれる必要はない。
+- Agents SDKでサンドボックスとSlackとナレッジベースの連携を自作し、OpenAIに渡す情報を厳しく絞った。このAPIはホスティングの手間を減らすが、Pythonサービスの運用自体は難しくない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+OpenAI Agents API
+***** TLDR
+OpenAI가 관리형 에이전트 런타임을 내놓았다. 구성 요소는 네 가지로 Agent(모델과 지시문, 도구, MCP 서버), Environment(파일과 명령 실행을 위한 선택적 샌드박스), Session(여러 턴에 걸친 지속 상태), Events/Items다. 세션 관리와 오케스트레이션, 컨텍스트 압축, 복구는 OpenAI가 맡고 도구는 사용자가 제공하며 샌드박스는 자체 호스팅도 가능하다. Responses API와 달리 세션이 턴을 넘어 유지되고 서브에이전트 위임과 중단된 작업 재개가 된다. 과금은 모델 요금에 도구 호출과 컨테이너 사용 시간이 더해진다. 데이터 소재지는 미국뿐이고 제로 데이터 보존은 지원하지 않는다.
+***** Take
+핵심은 API 자체가 아니라 OpenAI가 어느 쪽을 쥐었는가다. 도구와 실행은 사용자 몫, 루프와 상태와 컨텍스트 압축은 OpenAI 몫이다. 만들기 성가시고 빠져나가기 비싼 쪽이 정확히 후자다. 제로 데이터 보존이 없고 미국 소재지만 지원한다는 건 상당수 기업 고객이 아직 쓸 수 없다는 뜻이고, 그래서 댓글은 이미 자체 VM을 돌리며 바꿀 이유를 못 찾는 사람들로 가득하다.
+***** Comments
+- 에이전트를 제품으로 파는 올바른 추상화는 아직 아무도 모른다. 직접 harness를 만드는 건 깊은 수렁이고, 오픈소스 harness는 실행 환경에 묶여 있다. 파일시스템 없는 Cloudflare Worker라면 상태는 어디에 두나?
+- 평범한 qemu VM에서 codex를 돌리고 휴대폰으로 원격 조작한다. 아주 잘 작동한다. API로 만드는 이유는 알겠지만, VM을 직접 띄울 수 있다면 굳이 종속될 필요는 없다.
+- Agents SDK로 샌드박스와 Slack, 지식베이스 연동을 직접 만들고 OpenAI에 노출하는 범위를 엄격히 제한했다. 이 API는 호스팅 부담을 줄여주지만 파이썬 서비스 운영 자체는 어렵지 않다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+OpenAI Agents API
+***** TLDR
+OpenAI lanzó un entorno de ejecución gestionado para agentes con cuatro piezas: Agent (modelo con instrucciones, herramientas y servidores MCP), Environment (un sandbox opcional para archivos y comandos), Session (estado persistente entre muchos turnos) y Events/Items. OpenAI se encarga de la gestión de sesiones, la orquestación, la compactación de contexto y la recuperación; tú aportas las herramientas y eliges si el sandbox es suyo o tuyo. A diferencia de la Responses API, la sesión sobrevive entre turnos, puede delegar en subagentes y reanudar trabajo interrumpido. Se cobra la tarifa del modelo más las llamadas a herramientas y el tiempo de contenedor. Solo hay residencia de datos en EE. UU. y no admite Zero Data Retention.
+***** Take
+Lo interesante no es la API, sino qué mitad se quedó OpenAI. Las herramientas y la ejecución son tuyas; el bucle, el estado y la compactación de contexto son suyos. Justo la mitad que molesta construir y sale cara de abandonar. Sin ZDR y con residencia solo en EE. UU., buena parte del mercado empresarial todavía no puede tocarlo, y por eso los comentarios están llenos de gente que ya corre su propia VM y no ve motivo para cambiar.
+***** Comments
+- Seguimos buscando la abstracción correcta para vender agentes como producto. Construir tu propio harness es un pozo sin fondo y los harness de código abierto están atados a un entorno. ¿Dónde se guarda el estado si soy un Cloudflare Worker sin sistema de archivos?
+- Corro codex en una VM de qemu normal y la manejo desde el móvil con control remoto. Funciona muy bien. Entiendo que hagan una API, pero si sabes montar tus VMs quizá no necesites el bloqueo.
+- Con el Agents SDK me hice el sandbox y las integraciones con Slack y la base de conocimiento, y fui muy estricto con lo que expongo a OpenAI. La API reduce el hosting, pero mantener un servicio en Python es fácil.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+OpenAI Agents API
+***** TLDR
+OpenAI hat eine verwaltete Agenten-Laufzeit veröffentlicht, mit vier Bausteinen: Agent (Modell plus Anweisungen, Tools, MCP-Server), Environment (optionale Sandbox für Dateien und Befehle), Session (dauerhafter Zustand über viele Turns) und Events/Items. Sitzungsverwaltung, Orchestrierung, Kontextverdichtung und Wiederherstellung übernimmt OpenAI; die Tools liefert man selbst und kann die Sandbox auch selbst hosten. Anders als bei der Responses API überdauert eine Session mehrere Turns, kann an Subagenten delegieren und unterbrochene Arbeit fortsetzen. Abgerechnet werden Modellpreise plus Tool-Aufrufe und Container-Laufzeit. Datenhaltung nur in den USA, Zero Data Retention wird nicht unterstützt.
+***** Take
+Spannend ist nicht die API, sondern welche Hälfte OpenAI behalten hat. Tools und Ausführung bleiben beim Kunden, die Schleife, der Zustand und die Kontextverdichtung bei OpenAI. Genau die Hälfte, die lästig zu bauen und teuer zu verlassen ist. Ohne ZDR und nur mit US-Datenhaltung fällt ein großer Teil der Unternehmenskunden vorerst aus, und deshalb sind die Kommentare voll von Leuten, die längst eigene VMs betreiben und keinen Grund zum Wechseln sehen.
+***** Comments
+- Die richtige Abstraktion für Agenten als Produkt hat noch niemand gefunden. Ein eigenes Harness zu bauen ist ein tiefes Loch, und Open-Source-Harnesses hängen an einer Umgebung. Wo liegt der Zustand, wenn ich ein Cloudflare Worker ohne Dateisystem bin?
+- Ich lasse codex in einer normalen qemu-VM laufen und steuere es per Fernsteuerung vom Handy. Funktioniert hervorragend. Eine API ergibt Sinn, aber wer eigene VMs aufsetzen kann, braucht die Bindung nicht.
+- Mit dem Agents SDK habe ich Sandbox, Slack und Wissensdatenbank selbst angebunden und streng begrenzt, was OpenAI zu sehen bekommt. Die API spart Hosting, aber einen Python-Dienst zu betreiben ist einfach.
+** Proof of Capture: Apple Reference Image, but open source and using steganography :security:cryptography:photography:opensource:
+:PROPERTIES:
+:ID:       49649222
+:URL:      https://merybenavente.me/blog/proof-of-capture
+:HN_URL:   https://news.ycombinator.com/item?id=49649222
+:POINTS:   88
+:COMMENTS: 52
+:BY:       merybenavente
+:END:
+
+*** TLDR
+María Benavente and Alex Hornstein built a camera that signs its own photos. It hashes what the image looks like rather than its bytes (a perceptual hash), so the signature survives compression and resizing, then embeds the signed hash in the pixels as a frequency-domain watermark (DWT plus DCT) instead of in metadata, so it survives being shared. The private key lives in an ATECC608 secure element, never leaves the chip, and the chip locks down on tampering. The author states the obvious hole up front: photograph a screen showing an AI image and you get a validly signed photo of a fake, and neither this, Apple's Reference Image, nor C2PA solves that.
+
+*** Take
+The honest framing is the best part of the project: it proves a sensor saw something, not that the something was real. The comments found the sharper problem, which is that a perceptual hash is not a cryptographic one. Second-preimage attacks against PhotoDNA and PDQ are published, so an attacker who can find a different image with the same pHash gets to reuse a real signature on a fake photo. Signing a non-cryptographic digest with a very good key still gives you a non-cryptographic guarantee.
+
+*** Comments
+
+**** Retr0id
+They sign a perceptual hash rather than an exact checksum. Perceptual hashes are non-cryptographic. Collision attacks certainly exist, but what about preimages? A preimage would completely break this. There is a paper demonstrating second-preimage attacks on PhotoDNA and PDQ.
+
+**** treyd
+Nobody is pointing out the obvious hole: you can control the wires going into the photosensor controller and feed it whatever image you want. Not trivial, but a grad student with an FPGA could probably do it.
+
+**** fitzn
+Here is a toy for embedding small text into images steganographically: github.com/fitzn/atrium
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Proof of Capture：开源版苹果参考图像，用隐写术实现
+***** TLDR
+María Benavente 和 Alex Hornstein 做了一台会给自己拍的照片签名的相机。它对图像的视觉内容而非字节做哈希（感知哈希），因此签名能在压缩和缩放后存活，再用频域水印（DWT 加 DCT）把签名后的哈希嵌入像素而不是元数据，所以转发后依然保留。私钥存在 ATECC608 安全芯片里，永不离开芯片，一旦被篡改就自锁。作者一开始就承认了明显的漏洞：对着显示 AI 图片的屏幕拍一张，就能得到一张签名有效的假照片，而这一点无论是本项目、苹果的参考图像还是 C2PA 都没有解决。
+***** Take
+这个项目最好的地方是它的诚实：它证明的是传感器看到了某个东西，而不是那个东西是真的。评论区找到了更尖锐的问题：感知哈希不是密码学哈希。针对 PhotoDNA 和 PDQ 的第二原像攻击已有论文，攻击者只要找到一张 pHash 相同的不同图像，就能把真实签名套到假照片上。用再好的密钥去签一个非密码学摘要，得到的仍然是非密码学的保证。
+***** Comments
+- 他们签的是感知哈希而不是精确校验和。感知哈希不是密码学哈希。碰撞攻击肯定存在，但原像攻击呢？一次原像攻击就能彻底击穿这个方案。已经有论文展示了对 PhotoDNA 和 PDQ 的第二原像攻击。
+- 没人提到最明显的漏洞：你可以控制接进感光元件控制器的线，喂给它任何你想要的图像。不算简单，但一个拿着 FPGA 的研究生大概能做到。
+- 这里有个把短文本隐写进图片的小玩具：github.com/fitzn/atrium
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Proof of Capture：Appleのリファレンス画像をオープンソースとステガノグラフィで
+***** TLDR
+María BenaventeとAlex Hornsteinが、自分で撮った写真に署名するカメラを作った。バイト列ではなく見た目をハッシュ化する知覚ハッシュを使うため、圧縮やリサイズを経ても署名が残る。署名済みハッシュはメタデータではなく周波数領域の透かし（DWTとDCT）としてピクセルに埋め込まれ、共有されても消えない。秘密鍵はATECC608セキュアエレメント内にあり、チップから出ることはなく、改ざん時はロックダウンする。著者は明白な穴を最初に認めている。AI画像を映した画面を撮れば、正しく署名された偽写真ができる。これは本プロジェクトも、AppleのReference Imageも、C2PAも解決していない。
+***** Take
+このプロジェクトの一番の美点は誠実さだ。証明できるのはセンサーが何かを見たことであって、それが本物だったことではない。コメント欄はより鋭い問題を指摘した。知覚ハッシュは暗号学的ハッシュではない。PhotoDNAとPDQへの第二原像攻撃はすでに論文がある。同じpHashを持つ別画像を見つけられる攻撃者は、本物の署名を偽写真に転用できる。どれほど良い鍵で署名しても、非暗号学的なダイジェストからは非暗号学的な保証しか出てこない。
+***** Comments
+- 彼らが署名しているのは正確なチェックサムではなく知覚ハッシュだ。知覚ハッシュは暗号学的ではない。衝突攻撃は当然あるが、原像攻撃はどうか。原像が作れればこの仕組みは完全に破れる。PhotoDNAとPDQへの第二原像攻撃を示した論文がある。
+- 明らかな穴を誰も指摘していない。フォトセンサーのコントローラーに入る配線を握れば、好きな画像を送り込める。簡単ではないが、FPGAを持った院生なら何とかするだろう。
+- 画像に短いテキストをステガノグラフィで埋め込むおもちゃがある：github.com/fitzn/atrium
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Proof of Capture: 애플 레퍼런스 이미지를 오픈소스와 스테가노그래피로
+***** TLDR
+María Benavente와 Alex Hornstein이 자기가 찍은 사진에 서명하는 카메라를 만들었다. 바이트가 아니라 보이는 모습을 해시하는 지각 해시를 쓰기 때문에 압축과 크기 변경을 거쳐도 서명이 남고, 서명된 해시는 메타데이터가 아니라 주파수 영역 워터마크(DWT와 DCT)로 픽셀에 심어져 공유 후에도 살아남는다. 개인 키는 ATECC608 보안 칩 안에 있으며 칩 밖으로 나오지 않고 변조 시 잠긴다. 저자는 명백한 구멍을 먼저 인정한다. AI 이미지가 띄워진 화면을 찍으면 서명이 유효한 가짜 사진이 나오며, 이 프로젝트도 애플의 Reference Image도 C2PA도 이를 해결하지 못한다.
+***** Take
+이 프로젝트의 가장 좋은 점은 솔직함이다. 증명하는 것은 센서가 무언가를 봤다는 사실이지 그 무언가가 진짜라는 사실이 아니다. 댓글은 더 날카로운 문제를 짚었다. 지각 해시는 암호학적 해시가 아니다. PhotoDNA와 PDQ에 대한 제2 역상 공격은 이미 논문으로 나와 있고, 같은 pHash를 갖는 다른 이미지를 찾을 수 있는 공격자는 진짜 서명을 가짜 사진에 옮겨 붙일 수 있다. 아무리 좋은 키로 서명해도 비암호학적 다이제스트에서는 비암호학적 보장만 나온다.
+***** Comments
+- 이들이 서명하는 건 정확한 체크섬이 아니라 지각 해시다. 지각 해시는 암호학적이지 않다. 충돌 공격은 당연히 있고, 역상 공격은 어떤가? 역상이 뚫리면 이 방식은 완전히 무너진다. PhotoDNA와 PDQ에 대한 제2 역상 공격을 보여준 논문이 있다.
+- 명백한 취약점을 아무도 말하지 않는다. 이미지 센서 컨트롤러로 들어가는 배선을 장악하면 원하는 이미지를 먹일 수 있다. 쉽지는 않지만 FPGA를 든 대학원생이면 해낼 것이다.
+- 이미지에 짧은 텍스트를 스테가노그래피로 넣는 장난감이 있다: github.com/fitzn/atrium
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Proof of Capture: la imagen de referencia de Apple, pero de código abierto y con esteganografía
+***** TLDR
+María Benavente y Alex Hornstein construyeron una cámara que firma sus propias fotos. Calcula un hash de cómo se ve la imagen y no de sus bytes (un hash perceptual), así que la firma sobrevive a la compresión y al redimensionado, y luego incrusta ese hash firmado en los píxeles como marca de agua en el dominio de la frecuencia (DWT más DCT) en vez de en los metadatos, así que sobrevive al compartirse. La clave privada vive en un elemento seguro ATECC608, nunca sale del chip y este se bloquea ante manipulaciones. La autora admite el agujero evidente desde el principio: fotografía una pantalla con una imagen generada por IA y obtienes una foto falsa correctamente firmada, algo que ni este proyecto, ni Reference Image de Apple, ni C2PA resuelven.
+***** Take
+Lo mejor del proyecto es su franqueza: demuestra que un sensor vio algo, no que ese algo fuera real. Los comentarios encontraron el problema más afilado: un hash perceptual no es criptográfico. Hay ataques de segunda preimagen publicados contra PhotoDNA y PDQ, así que quien logre otra imagen con el mismo pHash puede reutilizar una firma auténtica sobre una foto falsa. Firmar un resumen no criptográfico con una clave excelente sigue dando una garantía no criptográfica.
+***** Comments
+- Firman un hash perceptual y no una suma de verificación exacta. Los hashes perceptuales no son criptográficos. Los ataques de colisión existen, ¿pero y las preimágenes? Una preimagen rompe esto del todo. Hay un artículo con ataques de segunda preimagen contra PhotoDNA y PDQ.
+- Nadie señala el agujero obvio: puedes controlar los cables que entran al controlador del fotosensor y darle la imagen que quieras. No es trivial, pero un estudiante de posgrado con una FPGA seguramente lo consigue.
+- Aquí va un juguete para incrustar texto corto en imágenes de forma esteganográfica: github.com/fitzn/atrium
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Proof of Capture: Apples Referenzbild, aber quelloffen und mit Steganografie
+***** TLDR
+María Benavente und Alex Hornstein haben eine Kamera gebaut, die ihre eigenen Fotos signiert. Sie hasht, wie das Bild aussieht, und nicht seine Bytes (ein perzeptueller Hash), damit die Signatur Kompression und Skalierung übersteht. Der signierte Hash wird als Wasserzeichen im Frequenzbereich (DWT plus DCT) in die Pixel eingebettet statt in die Metadaten, also übersteht er auch das Weiterteilen. Der private Schlüssel liegt in einem ATECC608-Sicherheitschip, verlässt ihn nie, und der Chip sperrt sich bei Manipulation. Die Autorin nennt das offensichtliche Loch gleich zu Beginn: Fotografiert man einen Bildschirm mit einem KI-Bild, erhält man ein korrekt signiertes Foto einer Fälschung, und weder dieses Projekt noch Apples Reference Image noch C2PA lösen das.
+***** Take
+Das Beste an dem Projekt ist seine Ehrlichkeit: Es beweist, dass ein Sensor etwas gesehen hat, nicht dass dieses Etwas echt war. Die Kommentare fanden das schärfere Problem: Ein perzeptueller Hash ist kein kryptografischer. Zu PhotoDNA und PDQ sind Second-Preimage-Angriffe veröffentlicht; wer ein anderes Bild mit demselben pHash findet, kann eine echte Signatur auf ein gefälschtes Foto übertragen. Wer einen nicht kryptografischen Digest mit einem sehr guten Schlüssel signiert, bekommt trotzdem nur eine nicht kryptografische Garantie.
+***** Comments
+- Sie signieren einen perzeptuellen Hash statt einer exakten Prüfsumme. Perzeptuelle Hashes sind nicht kryptografisch. Kollisionsangriffe gibt es sicher, aber wie steht es um Preimages? Ein Preimage bricht das Verfahren komplett. Es gibt ein Paper mit Second-Preimage-Angriffen auf PhotoDNA und PDQ.
+- Niemand nennt das offensichtliche Loch: Man kann die Leitungen zum Fotosensor-Controller kontrollieren und ihm ein beliebiges Bild unterschieben. Nicht trivial, aber ein Doktorand mit einem FPGA schafft das vermutlich.
+- Hier ein Spielzeug, um kurze Texte steganografisch in Bilder einzubetten: github.com/fitzn/atrium
+** Technique for Manipulating Satellite Photos Now Reveals Ancient Images (2025) :science:archaeology:imaging:nasa:
+:PROPERTIES:
+:ID:       49645437
+:URL:      https://spinoff.nasa.gov/Manipulating_Satellite_Photos_Now_Reveals_Ancient_Images
+:HN_URL:   https://news.ycombinator.com/item?id=49645437
+:POINTS:   305
+:COMMENTS: 47
+:BY:       gumby
+:END:
+
+*** TLDR
+Decorrelation stretch was developed at NASA JPL in the 1970s from the Karhunen-Loeve transform. It does not just raise contrast, it remaps the original colors into an expanded color space so near-identical hues separate. Ronald Alley sped it up in the 1990s by collapsing the intermediate image steps into a single matrix multiplication. Around 2005, Jon Harman, a retired mathematician with a Berkeley PhD in algebra, saw Mars rover imagery using it and wrote the DStretch plug-in for faded rock art. It has since surfaced more than 200 paintings at Angkor Wat, 15 undocumented figures at Årsand 1 in Norway, rarely depicted animals at Beni Hassan in Egypt, and layers of later additions to rock art at Writing-on-Stone in Alberta.
+
+*** Take
+A fifty-year-old linear algebra trick is still finding paintings that were sitting in plain sight, which says more about how narrow human color perception is than about the algorithm. The best comment in the thread reimplements it in GIMP in three menu steps: decompose to LAB, auto-level the A and B channels, recompose. Worth remembering when the next imaging startup wants a subscription for it.
+
+*** Comments
+
+**** matja
+You can do something similar in GIMP: Colors > Components > Decompose > LAB, then on the A/B chroma layers use Colors > Levels > Auto Input Levels and move the midpoint to the median, then Compose > LAB.
+
+**** Waterluvian
+False colour composites were a Eureka moment for me in undergrad remote sensing. Absorbing that the way my eyes see the world is not canonical changed how I think about signals and sensors.
+
+**** freetime2
+My first thought was really, nobody thought of this until now? But the DStretch plugin has been around since 2005 and people have used contrast enhancement and multispectral imaging long before that. Not exactly news, but still a cool success story.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+一种处理卫星照片的技术如今能还原古代图像（2025）
+***** TLDR
+去相关拉伸由 NASA 喷气推进实验室在 1970 年代基于 Karhunen-Loève 变换开发。它不只是提高对比度，而是把原始颜色映射到扩展后的色彩空间，让极为接近的色调分离开来。1990 年代 Ronald Alley 把中间图像步骤合并成一次矩阵乘法，大幅提速。2005 年前后，拥有伯克利代数博士学位的退休数学家 Jon Harman 看到火星车影像用了这项技术，为褪色岩画写了 DStretch 插件。此后它在吴哥窟发现了两百多幅壁画，在挪威 Årsand 1 遗址发现 15 个未记录的人形，在埃及贝尼哈桑发现罕见动物形象，并在艾伯塔省 Writing-on-Stone 揭示了岩画上后人添加的层次。
+***** Take
+一个五十年前的线性代数技巧，至今还在找出明明就在眼前的壁画，这说明的更多是人眼色彩感知有多狭窄，而不是算法有多神。帖子里最好的一条评论用 GIMP 三步就复现了它：分解成 LAB、对 A/B 通道自动调整色阶、再合成。等下一家影像创业公司想为此收订阅费时，记得这一点。
+***** Comments
+- 在 GIMP 里可以做类似的事：颜色 > 分量 > 分解 > LAB，然后对 A/B 色度图层用 颜色 > 色阶 > 自动输入色阶，把中点移到中位数，最后 合成 > LAB。
+- 假彩色合成是我本科遥感课上的顿悟时刻。意识到我眼睛看到的世界并不是唯一标准，彻底改变了我对信号和传感器的理解。
+- 我第一反应是：真的？到现在才有人想到？但 DStretch 插件 2005 年就有了，而对比度增强和多光谱成像用得更早。算不上新闻，但仍然是个漂亮的成功案例。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+衛星写真を加工する技術が古代の図像を浮かび上がらせる（2025）
+***** TLDR
+非相関ストレッチはカルーネン・レーベ変換をもとに1970年代のNASAジェット推進研究所で開発された。単にコントラストを上げるのではなく、元の色を拡張した色空間へ写像し、ほとんど同じに見える色同士を引き離す。1990年代にRonald Alleyが中間画像の処理を一回の行列積にまとめて高速化した。2005年ごろ、バークレーで代数の博士号を取った退職数学者Jon Harmanが火星探査車の画像でこの手法を知り、褪色した岩絵向けにDStretchプラグインを書いた。以後、アンコールワットで200点以上の絵画、ノルウェーのÅrsand 1遺跡で未記録の15の図像、エジプトのベニ・ハッサンで珍しい動物の描写、アルバータ州Writing-on-Stoneで岩絵への後世の加筆層が見つかっている。
+***** Take
+50年前の線形代数の小技が、目の前にあった絵をいまだに掘り出している。これは アルゴリズムの凄さより、人間の色覚がいかに狭いかを物語る。スレッドで一番良かったコメントは、GIMPのメニュー3手で同じことをやってみせる。LABに分解し、A/Bチャンネルをオートレベル、再合成。次に画像処理のスタートアップがこれをサブスクで売り込んできたら思い出したい。
+***** Comments
+- GIMPでも近いことができる。色 > 分解 > LAB、A/Bのクロマレイヤーに 色 > レベル > 自動入力レベルをかけて中間点を中央値へ移動、最後に 合成 > LAB。
+- フォールスカラー合成は学部のリモートセンシングで味わった発見の瞬間だった。自分の目が見る世界が唯一の基準ではないと腑に落ちて、信号とセンサーの捉え方が変わった。
+- 最初は「今さら誰も思いつかなかったのか」と思った。だがDStretchプラグインは2005年からあるし、コントラスト強調や多波長撮像はもっと前から使われている。ニュースとは言い難いが、それでも見事な成功例だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+위성 사진을 다루는 기법이 고대 그림을 드러낸다 (2025)
+***** TLDR
+탈상관 스트레치는 1970년대 NASA 제트추진연구소에서 카루넨-뢰베 변환을 바탕으로 개발됐다. 단순히 대비를 높이는 게 아니라 원래 색을 확장된 색 공간으로 다시 매핑해 거의 같아 보이는 색조를 갈라놓는다. 1990년대 Ronald Alley가 중간 이미지 단계를 행렬 곱셈 한 번으로 합쳐 훨씬 빠르게 만들었다. 2005년 무렵 버클리에서 대수학 박사를 받은 은퇴 수학자 Jon Harman이 화성 탐사차 영상에서 이 기법을 보고 바랜 암각화를 위한 DStretch 플러그인을 만들었다. 이후 앙코르와트에서 200점이 넘는 그림, 노르웨이 Årsand 1 유적에서 기록에 없던 15개 형상, 이집트 베니하산에서 드물게 묘사된 동물들, 앨버타 Writing-on-Stone에서 후대에 덧그려진 층이 드러났다.
+***** Take
+50년 된 선형대수 기법이 눈앞에 있던 그림을 아직도 찾아낸다. 알고리즘이 대단하다기보다 인간의 색 지각이 얼마나 좁은지를 보여주는 이야기다. 스레드에서 가장 좋은 댓글은 GIMP 메뉴 세 번으로 같은 걸 해낸다. LAB으로 분해하고, A/B 채널에 자동 레벨을 걸고, 다시 합성. 다음번에 어떤 이미징 스타트업이 이걸 구독료로 팔려고 하면 떠올릴 만하다.
+***** Comments
+- GIMP에서도 비슷하게 할 수 있다. 색 > 성분 > 분해 > LAB, A/B 크로마 레이어에 색 > 레벨 > 자동 입력 레벨을 적용하고 중간점을 중앙값으로 옮긴 뒤 합성 > LAB.
+- 가색 합성은 학부 원격탐사 수업에서의 깨달음의 순간이었다. 내 눈이 보는 세계가 표준이 아니라는 걸 받아들이면서 신호와 센서를 보는 방식이 바뀌었다.
+- 처음엔 정말 지금까지 아무도 생각 못 했나 싶었다. 그런데 DStretch 플러그인은 2005년부터 있었고 대비 강화나 다중분광 촬영은 훨씬 전부터 쓰였다. 뉴스라기엔 무리지만 그래도 멋진 성공 사례다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Una técnica para manipular fotos de satélite revela imágenes antiguas (2025)
+***** TLDR
+El estiramiento por decorrelación se desarrolló en el JPL de la NASA en los años setenta a partir de la transformada de Karhunen-Loève. No se limita a subir el contraste: remapea los colores originales a un espacio de color ampliado para separar tonos casi idénticos. En los noventa, Ronald Alley lo aceleró reduciendo los pasos intermedios a una sola multiplicación de matrices. Hacia 2005, Jon Harman, matemático jubilado con un doctorado en álgebra por Berkeley, vio imágenes del rover marciano que lo usaban y escribió el plug-in DStretch para arte rupestre descolorido. Desde entonces han aparecido más de 200 pinturas en Angkor Wat, 15 figuras sin documentar en Årsand 1 (Noruega), animales poco representados en Beni Hassan (Egipto) y capas añadidas después sobre el arte rupestre de Writing-on-Stone (Alberta).
+***** Take
+Un truco de álgebra lineal de hace cincuenta años sigue encontrando pinturas que estaban a la vista, lo que dice más sobre lo estrecha que es la percepción humana del color que sobre el algoritmo. El mejor comentario del hilo lo reimplementa en GIMP en tres pasos de menú: descomponer a LAB, autonivelar los canales A y B, recomponer. Conviene recordarlo cuando la próxima startup de imagen quiera cobrar una suscripción por ello.
+***** Comments
+- En GIMP puedes hacer algo parecido: Colores > Componentes > Descomponer > LAB, en las capas de croma A/B usa Colores > Niveles > Niveles de entrada automáticos y mueve el punto medio a la mediana, y luego Componer > LAB.
+- Los compuestos en falso color fueron mi momento de revelación en teledetección durante la carrera. Asumir que la forma en que mis ojos ven el mundo no es la canónica cambió cómo pienso en señales y sensores.
+- Mi primera reacción fue: ¿en serio, nadie lo pensó hasta ahora? Pero el plugin DStretch existe desde 2005 y la mejora de contraste y la imagen multiespectral se usan desde mucho antes. No es noticia, pero sigue siendo un buen caso de éxito.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Eine Technik zur Bearbeitung von Satellitenfotos macht antike Bilder sichtbar (2025)
+***** TLDR
+Decorrelation Stretch entstand in den 1970er Jahren am NASA-JPL auf Basis der Karhunen-Loève-Transformation. Es erhöht nicht nur den Kontrast, sondern bildet die ursprünglichen Farben auf einen erweiterten Farbraum ab, sodass fast identische Töne auseinandertreten. In den 1990ern beschleunigte Ronald Alley das Verfahren, indem er die Zwischenschritte zu einer einzigen Matrixmultiplikation zusammenfasste. Um 2005 sah Jon Harman, ein pensionierter Mathematiker mit Berkeley-Doktor in Algebra, Marsrover-Bilder mit dieser Technik und schrieb das DStretch-Plug-in für verblasste Felsmalerei. Seitdem kamen über 200 Malereien in Angkor Wat zum Vorschein, 15 undokumentierte Figuren am norwegischen Fundort Årsand 1, selten dargestellte Tiere in Beni Hassan in Ägypten und spätere Übermalungsschichten in Writing-on-Stone in Alberta.
+***** Take
+Ein fünfzig Jahre alter Trick aus der linearen Algebra findet noch immer Malereien, die offen sichtbar waren. Das sagt mehr über die enge menschliche Farbwahrnehmung als über den Algorithmus. Der beste Kommentar im Thread baut das Verfahren in GIMP mit drei Menüschritten nach: nach LAB zerlegen, A- und B-Kanal automatisch nivellieren, wieder zusammensetzen. Gut zu wissen, wenn das nächste Bildverarbeitungs-Start-up dafür ein Abo verkaufen will.
+***** Comments
+- In GIMP geht Ähnliches: Farben > Komponenten > Zerlegen > LAB, auf den A/B-Chroma-Ebenen Farben > Werte > Automatische Eingabewerte und den Mittelpunkt auf den Median schieben, dann Zusammensetzen > LAB.
+- Falschfarbenkompositionen waren im Fernerkundungsstudium mein Aha-Moment. Zu begreifen, dass die Sicht meiner Augen nicht die kanonische ist, hat mein Verständnis von Signalen und Sensoren verändert.
+- Mein erster Gedanke war: Wirklich, darauf ist bis jetzt niemand gekommen? Aber das DStretch-Plugin gibt es seit 2005, und Kontrastverstärkung und Multispektralaufnahmen sind viel älter. Keine Neuigkeit, aber eine schöne Erfolgsgeschichte.
+** Thelio Mira AI Linux Workstation: 192 GB GPU Memory :hardware:linux:ai:gpu:
+:PROPERTIES:
+:ID:       49651372
+:URL:      https://system76.com/workstations/thelio-mira-ai
+:HN_URL:   https://news.ycombinator.com/item?id=49651372
+:POINTS:   76
+:COMMENTS: 49
+:BY:       jonifico
+:END:
+
+*** TLDR
+System76 is selling a desktop AI workstation built on an AMD Ryzen 9000 CPU (8 to 16 cores), up to 192 GB of DDR5, Gen 5 NVMe up to 4 TB, and Pop!_OS 24.04 with COSMIC or Ubuntu. The 192 GB of GPU memory in the headline comes from two RTX Pro 6000 cards at 96 GB each; cheaper configurations run a single RTX Pro 4000 at 24 GB or AMD Radeon AI PRO cards. The base price is $3,299 and the fully specified machine passes $42,000.
+
+*** Take
+The headline number and the starting price describe two different computers. At $3,299 you get 64 GB of system RAM and a 4 GB GPU, which is not an AI workstation by any definition being used in 2026; the 192 GB configuration is two RTX Pro 6000s, and the cards are most of the $42,000. That is a defensible price for what Nvidia charges, but calling the range affordable while the top end costs as much as a car is the part the thread will not let go.
+
+*** Comments
+
+**** lxe
+I thought it was a pricing mistake. But no, you just have to select the variations. $42,412.00
+
+**** layer8
+They call it System76's affordable, GPU-focused workstation. From $3,299 with just 64 GB RAM and a 4 GB GPU to over $50,000. Very affordable indeed.
+
+**** rrgok
+Is this a marketing stunt? Doesn't AI need high bandwidth memory like a GPU has? Is DDR5 bandwidth really enough?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Thelio Mira AI Linux 工作站：192 GB 显存
+***** TLDR
+System76 在售一款桌面 AI 工作站，配 AMD Ryzen 9000 处理器（8 到 16 核）、最高 192 GB DDR5 内存、最高 4 TB 的 Gen 5 NVMe，系统为带 COSMIC 桌面的 Pop!_OS 24.04 或 Ubuntu。标题里的 192 GB 显存来自两块各 96 GB 的 RTX Pro 6000；更便宜的配置是单块 24 GB 的 RTX Pro 4000 或 AMD Radeon AI PRO。起售价 3,299 美元，满配超过 42,000 美元。
+***** Take
+标题里的数字和起售价说的是两台不同的机器。3,299 美元买到的是 64 GB 内存加 4 GB 显卡，按 2026 年的任何标准都算不上 AI 工作站；192 GB 的版本是两块 RTX Pro 6000，而这两块卡占了四万二千美元中的大头。考虑到英伟达的定价，这个价格站得住脚，但顶配贵得能买一辆车还称整个系列实惠，这正是帖子里揪住不放的地方。
+***** Comments
+- 我以为是标错价了。结果不是，你只要把配置选上去就行。42,412.00 美元。
+- 他们说这是 System76 实惠的、以 GPU 为核心的工作站。从 3,299 美元（只有 64 GB 内存和 4 GB 显卡）到五万多美元。真是相当实惠。
+- 这是营销噱头吗？AI 不是需要显卡那样的高带宽内存吗？DDR5 的带宽真的够用？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Thelio Mira AI Linuxワークステーション：GPUメモリ192GB
+***** TLDR
+System76がデスクトップ型のAIワークステーションを販売している。AMD Ryzen 9000（8〜16コア）、最大192GBのDDR5、最大4TBのGen 5 NVMe、OSはCOSMIC搭載のPop!_OS 24.04またはUbuntu。見出しの192GBのGPUメモリは96GBのRTX Pro 6000を2枚挿した構成で、安い構成は24GBのRTX Pro 4000が1枚かAMD Radeon AI PROになる。価格は3,299ドルから、フル構成では42,000ドルを超える。
+***** Take
+見出しの数字と開始価格は別々のマシンの話だ。3,299ドルで手に入るのはシステムメモリ64GBとGPUメモリ4GB。2026年の基準ではAIワークステーションとは呼べない。192GB構成はRTX Pro 6000が2枚で、4万2千ドルの大半はこのカード代だ。NVIDIAの値付けを思えば妥当な価格だが、最上位が車一台分するのに「手頃」と称する点をスレッドは見逃していない。
+***** Comments
+- 価格の入力ミスかと思った。違った。構成を選んでいくだけでこうなる。42,412.00ドル。
+- System76の手頃でGPU重視のワークステーション、だそうだ。メモリ64GBとGPU 4GBだけの3,299ドルから5万ドル超まで。実に手頃なことで。
+- これは宣伝目的なのか？AIにはGPUのような高帯域メモリが要るのでは？DDR5の帯域で本当に足りるのか？
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Thelio Mira AI 리눅스 워크스테이션: GPU 메모리 192GB
+***** TLDR
+System76이 데스크톱 AI 워크스테이션을 판매한다. AMD 라이젠 9000(8~16코어), 최대 192GB DDR5, 최대 4TB Gen 5 NVMe, 운영체제는 COSMIC 데스크톱의 Pop!_OS 24.04 또는 우분투다. 제목의 192GB GPU 메모리는 96GB짜리 RTX Pro 6000 두 장을 꽂은 구성이고, 저가 구성은 24GB RTX Pro 4000 한 장이나 AMD 라데온 AI PRO다. 기본가는 3,299달러이고 최대 구성은 42,000달러를 넘는다.
+***** Take
+제목의 숫자와 시작 가격은 서로 다른 컴퓨터 이야기다. 3,299달러짜리는 시스템 메모리 64GB에 GPU 메모리 4GB로, 2026년 기준 어떤 정의로도 AI 워크스테이션이 아니다. 192GB 구성은 RTX Pro 6000 두 장이고 4만 2천 달러의 대부분이 그 카드값이다. 엔비디아 가격을 생각하면 방어 가능한 값이지만, 최상위가 자동차 한 대 값인데 제품군을 '합리적'이라 부르는 대목을 스레드가 놓아주지 않는다.
+***** Comments
+- 가격 오타인 줄 알았다. 아니었다. 옵션을 올려 선택하면 그렇게 된다. 42,412.00달러.
+- System76의 합리적이고 GPU 중심인 워크스테이션이라고 한다. 램 64GB에 GPU 4GB짜리 3,299달러부터 5만 달러 넘는 구성까지. 정말 합리적이다.
+- 마케팅용인가? AI는 GPU 같은 고대역폭 메모리가 필요한 것 아닌가? DDR5 대역폭으로 정말 충분한가?
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Estación de trabajo Linux Thelio Mira AI: 192 GB de memoria GPU
+***** TLDR
+System76 vende una estación de trabajo de escritorio para IA con CPU AMD Ryzen 9000 (de 8 a 16 núcleos), hasta 192 GB de DDR5, NVMe Gen 5 de hasta 4 TB y Pop!_OS 24.04 con COSMIC o Ubuntu. Los 192 GB de memoria GPU del titular salen de dos tarjetas RTX Pro 6000 de 96 GB cada una; las configuraciones baratas llevan una sola RTX Pro 4000 de 24 GB o tarjetas AMD Radeon AI PRO. El precio base es de 3.299 dólares y la máquina totalmente equipada supera los 42.000.
+***** Take
+La cifra del titular y el precio de partida describen dos ordenadores distintos. Por 3.299 dólares te llevas 64 GB de RAM y una GPU de 4 GB, que no es una estación de trabajo de IA bajo ninguna definición vigente en 2026; la configuración de 192 GB son dos RTX Pro 6000, y las tarjetas se comen casi todos los 42.000 dólares. Es un precio defendible dado lo que cobra Nvidia, pero llamar asequible a la gama mientras el tope cuesta lo que un coche es justo lo que el hilo no perdona.
+***** Comments
+- Pensé que era un error de precio. Pues no, solo hay que ir seleccionando las variantes. 42.412,00 dólares.
+- La llaman la estación de trabajo asequible y centrada en GPU de System76. Desde 3.299 dólares con solo 64 GB de RAM y una GPU de 4 GB hasta más de 50.000. Muy asequible, sí.
+- ¿Esto es un golpe de marketing? ¿La IA no necesita memoria de alto ancho de banda como la de una GPU? ¿De verdad basta con el ancho de banda de DDR5?
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Thelio Mira AI Linux-Workstation: 192 GB GPU-Speicher
+***** TLDR
+System76 verkauft eine Desktop-Workstation für KI mit AMD Ryzen 9000 (8 bis 16 Kerne), bis zu 192 GB DDR5, Gen-5-NVMe bis 4 TB und Pop!_OS 24.04 mit COSMIC oder Ubuntu. Die 192 GB GPU-Speicher aus der Überschrift entstehen aus zwei RTX Pro 6000 mit je 96 GB; günstigere Varianten haben eine einzelne RTX Pro 4000 mit 24 GB oder AMD-Radeon-AI-PRO-Karten. Der Einstiegspreis liegt bei 3.299 Dollar, die Vollausstattung übersteigt 42.000 Dollar.
+***** Take
+Die Schlagzeile und der Einstiegspreis beschreiben zwei verschiedene Rechner. Für 3.299 Dollar bekommt man 64 GB Arbeitsspeicher und eine GPU mit 4 GB, was nach keiner Definition von 2026 eine KI-Workstation ist. Die 192-GB-Variante sind zwei RTX Pro 6000, und die Karten machen den Großteil der 42.000 Dollar aus. Angesichts der Nvidia-Preise ist das vertretbar, aber die Baureihe erschwinglich zu nennen, während die Spitzenkonfiguration so viel wie ein Auto kostet, lässt der Thread nicht durchgehen.
+***** Comments
+- Ich hielt es für einen Preisfehler. War es nicht, man muss nur die Varianten auswählen. 42.412,00 Dollar.
+- Sie nennen es die erschwingliche, GPU-orientierte Workstation von System76. Von 3.299 Dollar mit nur 64 GB RAM und einer 4-GB-GPU bis über 50.000 Dollar. Sehr erschwinglich in der Tat.
+- Ist das ein Marketing-Gag? Braucht KI nicht Speicher mit hoher Bandbreite wie bei einer GPU? Reicht die Bandbreite von DDR5 wirklich?
+** Music Theory for the 21st-Century Classroom :music:education:opensource:textbook:
+:PROPERTIES:
+:ID:       49647134
+:URL:      https://musictheory.pugetsound.edu/mt21c/MusicTheory.html
+:HN_URL:   https://news.ycombinator.com/item?id=49647134
+:POINTS:   197
+:COMMENTS: 85
+:BY:       aanet
+:END:
+
+*** TLDR
+Robert Hutchinson's free 35-chapter music theory textbook, published under the GNU Free Documentation License and built with the PreTeXt framework. It runs from pitch, notation, scales, rhythm and intervals through triads, seventh chords, cadences, voice leading and counterpoint, into binary, ternary, sonata and rondo forms, chromatic harmony and modulation, then set theory, serialism and minimalism, and ends on jazz and popular music. Every chapter has exercises with answers in the back matter, the whole thing is searchable and hyperlinked, and the homework and assignments for a full self-study course are on the parent site.
+
+*** Take
+This is a working undergraduate curriculum, free, under a license that lets you fork it. The chapters on popular song form and jazz sitting next to sonata form are the real argument here: most theory texts treat everything after 1900 as an appendix. The complaint in the thread about the title is fair; 21st-century classroom describes the delivery, not the content, and the content is the reason to bookmark it.
+
+*** Comments
+
+**** ultrasounder
+The homepage at musictheory.pugetsound.edu has the homework, assignments and everything else needed to follow along as a self-learner. Neat.
+
+**** sedivy94
+SVG illustrations too? Delicious. This is how an online textbook should be done.
+
+**** tantalor
+Very cool, but what does this have to do with a 21st-century classroom? Is that just a meaningless phrase to sound modern?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+面向 21 世纪课堂的音乐理论
+***** TLDR
+Robert Hutchinson 编写的免费音乐理论教材，共 35 章，采用 GNU 自由文档许可证，用 PreTeXt 框架构建。内容从音高、记谱、音阶、节奏和音程，到三和弦、七和弦、终止式、声部进行和对位，再到二段体、三段体、奏鸣曲式和回旋曲式、半音和声与转调，接着是集合理论、序列主义和简约主义，最后落在爵士与流行音乐。每章都有练习，答案在书末，全书可搜索、带超链接，完整自学课程的作业和习题都在母站上。
+***** Take
+这是一套能真正用起来的本科课程，免费，而且许可证允许你分叉。流行歌曲曲式和爵士的章节与奏鸣曲式并列，这才是它真正的主张：多数理论教材把 1900 年之后的一切都当作附录。帖子里对标题的吐槽有道理，21 世纪课堂说的是呈现方式而不是内容，而内容才是值得收藏的理由。
+***** Comments
+- musictheory.pugetsound.edu 首页上有作业、练习以及自学者跟着学所需的一切。不错。
+- 还有 SVG 插图？太棒了。在线教材就该这么做。
+- 很棒，但这跟 21 世纪课堂有什么关系？这是不是只是个听起来现代的空话？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+21世紀の教室のための音楽理論
+***** TLDR
+Robert Hutchinsonによる無料の音楽理論教科書。全35章、GNU Free Documentation Licenseで公開され、PreTeXtフレームワークで作られている。音高、記譜、音階、リズム、音程から、三和音、七の和音、終止形、声部進行、対位法へ進み、二部形式、三部形式、ソナタ形式、ロンド形式、半音階和声と転調、さらに集合論、セリー主義、ミニマリズムを経て、ジャズとポピュラー音楽で締める。各章に練習問題があり解答は巻末、全体が検索可能でリンクが張られ、独学用のコース課題は親サイトに揃っている。
+***** Take
+そのまま使える学部レベルのカリキュラムが無料で、しかもフォークを許すライセンスだ。ポピュラー音楽の形式とジャズの章がソナタ形式と並んでいることこそ本題で、多くの理論書は1900年以降をすべて付録扱いにする。タイトルへの不満はもっともだ。21世紀の教室は届け方を指していて中身を指していない。そして中身こそブックマークする理由だ。
+***** Comments
+- musictheory.pugetsound.eduのトップに宿題も課題も、独学で追いかけるのに必要なものが全部ある。いいね。
+- SVGの図版まで？最高だ。オンライン教科書はこうあるべきだ。
+- とても良いが、21世紀の教室と何の関係が？現代風に聞かせるだけの空虚な言い回しでは？
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+21세기 교실을 위한 음악 이론
+***** TLDR
+Robert Hutchinson이 쓴 무료 음악 이론 교재로 35개 장 분량이며 GNU 자유 문서 라이선스로 공개됐고 PreTeXt 프레임워크로 만들어졌다. 음고, 기보, 음계, 리듬, 음정에서 시작해 삼화음, 7화음, 종지, 성부 진행, 대위법을 거쳐 2부·3부 형식, 소나타와 론도 형식, 반음계 화성과 전조로 이어지고, 집합 이론, 음렬주의, 미니멀리즘을 지나 재즈와 대중음악으로 끝난다. 각 장에 연습문제가 있고 해답은 뒤에 실려 있으며 전체가 검색과 하이퍼링크로 연결된다. 독학용 과제와 숙제는 상위 사이트에 있다.
+***** Take
+그대로 쓸 수 있는 학부 커리큘럼이 무료이고, 포크를 허용하는 라이선스까지 달려 있다. 대중음악 형식과 재즈 장이 소나타 형식과 나란히 놓인 것이 진짜 주장이다. 대부분의 이론서는 1900년 이후를 부록 취급한다. 제목에 대한 불만은 타당하다. 21세기 교실이라는 말은 전달 방식을 가리킬 뿐 내용이 아니며, 북마크할 이유는 내용에 있다.
+***** Comments
+- musictheory.pugetsound.edu 홈페이지에 숙제와 과제 등 독학자가 따라가는 데 필요한 게 다 있다. 좋다.
+- SVG 삽화까지? 훌륭하다. 온라인 교재는 이렇게 만들어야 한다.
+- 아주 좋은데, 21세기 교실과 무슨 상관인가? 그냥 현대적으로 들리려는 빈말 아닌가?
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Teoría musical para el aula del siglo XXI
+***** TLDR
+El libro de texto gratuito de teoría musical de Robert Hutchinson, con 35 capítulos, publicado bajo la Licencia de Documentación Libre de GNU y construido con el framework PreTeXt. Va desde altura, notación, escalas, ritmo e intervalos hasta tríadas, acordes de séptima, cadencias, conducción de voces y contrapunto, sigue con las formas binaria, ternaria, sonata y rondó, la armonía cromática y la modulación, y pasa por la teoría de conjuntos, el serialismo y el minimalismo antes de terminar en jazz y música popular. Cada capítulo trae ejercicios con soluciones al final, todo es buscable y está hipervinculado, y los deberes y tareas de un curso completo de autoestudio están en el sitio principal.
+***** Take
+Es un plan de estudios universitario que funciona, gratis y con una licencia que permite bifurcarlo. Que los capítulos de forma en la música popular y de jazz estén junto a la forma sonata es el verdadero argumento: la mayoría de los textos de teoría tratan todo lo posterior a 1900 como un apéndice. La queja del hilo sobre el título es justa: aula del siglo XXI describe el formato, no el contenido, y el contenido es la razón para guardarlo.
+***** Comments
+- La página principal, musictheory.pugetsound.edu, tiene los deberes, las tareas y todo lo necesario para seguirlo por tu cuenta. Genial.
+- ¿Y también ilustraciones en SVG? Delicioso. Así debería hacerse un libro de texto en línea.
+- Muy bueno, pero ¿qué tiene que ver con el aula del siglo XXI? ¿Es solo una frase vacía para sonar moderno?
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Musiktheorie für das Klassenzimmer des 21. Jahrhunderts
+***** TLDR
+Robert Hutchinsons kostenloses Musiktheorie-Lehrbuch mit 35 Kapiteln, veröffentlicht unter der GNU Free Documentation License und mit dem PreTeXt-Framework gebaut. Es reicht von Tonhöhe, Notation, Tonleitern, Rhythmus und Intervallen über Dreiklänge, Septakkorde, Kadenzen, Stimmführung und Kontrapunkt bis zu Zwei- und Dreiteiligkeit, Sonaten- und Rondoform, chromatischer Harmonik und Modulation, dann Mengenlehre, Serialismus und Minimalismus, und endet bei Jazz und Popmusik. Jedes Kapitel hat Übungen mit Lösungen im Anhang, das Ganze ist durchsuchbar und verlinkt, und Hausaufgaben sowie Aufgabenblätter für einen vollständigen Selbstlernkurs stehen auf der Hauptseite.
+***** Take
+Das ist ein funktionierendes Bachelor-Curriculum, kostenlos und unter einer Lizenz, die das Forken erlaubt. Dass die Kapitel zu Popsong-Form und Jazz neben der Sonatenform stehen, ist das eigentliche Argument: Die meisten Theoriebücher behandeln alles nach 1900 als Anhang. Die Kritik am Titel im Thread ist berechtigt. Klassenzimmer des 21. Jahrhunderts beschreibt die Darreichung, nicht den Inhalt, und der Inhalt ist der Grund zum Lesezeichen.
+***** Comments
+- Auf musictheory.pugetsound.edu liegen Hausaufgaben, Übungsblätter und alles, was man zum Selbststudium braucht. Schön.
+- Sogar SVG-Illustrationen? Herrlich. So sollte ein Online-Lehrbuch aussehen.
+- Sehr schön, aber was hat das mit einem Klassenzimmer des 21. Jahrhunderts zu tun? Ist das nur eine leere Phrase, damit es modern klingt?
