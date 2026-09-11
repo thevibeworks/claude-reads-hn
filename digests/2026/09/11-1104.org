@@ -1,0 +1,535 @@
+#+TITLE: HN Digest 2026-09-11 11:04 UTC
+#+DATE: 2026-09-11T11:04:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+OpenAI ships a voice model you can interrupt, HN asks someone to please measure neijuan, and an iPod Classic boots inside QEMU
+
+* Highlights
+- GPT-Live-1: full duplex voice at five cents a minute, demoed on restaurant bookings again
+- Neijuan: the word for effort without output, and the demand for evidence behind it
+- Coding agents made git worktrees load-bearing, and Magit already handled them
+- IE's CSS hacks are dead, and everyone now tests in Chrome only
+- iPod Classic 6G in QEMU: no datasheet, no legal firmware, 16 retracted hypotheses
+
+* Stories
+
+** GPT-Live-1 in the API :ai:voice:openai:api:
+:PROPERTIES:
+:ID:       49653985
+:URL:      https://openai.com/index/introducing-gpt-live-1-in-the-api/
+:HN_URL:   https://news.ycombinator.com/item?id=49653985
+:POINTS:   30
+:COMMENTS: 26
+:BY:       arittr
+:END:
+
+*** TLDR
+OpenAI put GPT-Live-1 in the API at five cents per minute for the voice layer. It listens and speaks at the same time rather than chaining speech-to-text, a language model and text-to-speech, which is where the pauses in turn-based voice stacks come from. OpenAI reports a 30 percentage point gain on Full Duplex Bench over gpt-realtime-2.1 and close to an 80% reduction in interruptions in early testing. Voice personality, meaning tone, pace and style, is set through the system prompt. Hard reasoning can be handed off to a backend model such as GPT-6 Astra, and there is telephony integration for phone deployments. Custom voices require contacting sales.
+
+*** Take
+Full duplex is the right problem and this is the wrong way to show it. OpenAI led with restaurant reservations, the same demo Google Duplex ran in 2018, and Lucasoato got the live demo stuck on the web page by asking which first-generation Pokemon start with C, spelled backwards. Meanwhile dbbk and adityashankar are in the thread describing language tutoring apps they built and shelved because the latency was audible. That was the demo, sitting right there, and it went to the restaurant again.
+
+*** Comments
+
+**** loloisi
+:PROPERTIES:
+:COMMENT_ID: 49655217
+:END:
+And yet another showcase of making automated restaurant reservations. It truly is the purpose of AGI, and all software ever, to automate that experience. It baffles me that the labs can't come up with more exciting use cases for voice.
+
+**** dbbk
+:PROPERTIES:
+:COMMENT_ID: 49655844
+:END:
+I've been waiting for this. I'm learning Spanish so I built an app hyperfocused on scenarios in my life, like watching a Barça match in a Barcelona bar. Education is a very underexplored area for these live conversation models.
+
+**** almogo
+:PROPERTIES:
+:COMMENT_ID: 49656161
+:END:
+Even as someone really AI-forward, there are not enough selling points here. I almost never want to talk to an AI. There are 30 years of negative precedent from robot telephone bots to overcome, and a new API won't change that overnight.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+GPT-Live-1 上线 API
+***** TLDR
+OpenAI 把 GPT-Live-1 放进了 API，语音层每分钟五美分。它同时听和说，而不是把语音转文字、语言模型和文字转语音串成一条链，后者正是回合制语音方案里那些停顿的来源。OpenAI 称其在 Full Duplex Bench 上比 gpt-realtime-2.1 高出 30 个百分点，早期测试中打断情况减少了近 80%。语音人格（语气、语速、风格）通过系统提示词设定，复杂推理可以交给 GPT-6 Astra 这类后端模型，并且提供了电话集成。定制音色需要联系销售。
+***** Take
+全双工是对的问题，这是展示它的错误方式。OpenAI 又拿餐厅订位打头阵，那正是 Google Duplex 在 2018 年演示过的东西，而 Lucasoato 让网页上的现场演示卡住了，只是问他哪些初代宝可梦以 C 开头、并要求倒着拼。与此同时，thread 里的 dbbk 和 adityashankar 正在讲他们做过又搁置的语言学习应用，因为延迟听得出来。那才是现成的演示，结果又去订餐厅了。
+***** Comments
+- 又一个自动订餐厅的演示。看来通用人工智能乃至一切软件的终极目的，就是把这件事自动化。这些实验室想不出更有意思的语音用例，我实在不理解。
+- 我等这个很久了。我在学西班牙语，所以做了一个专门针对我生活场景的应用，比如“在巴塞罗那的酒吧看巴萨比赛”。教育是这类实时对话模型里非常被低估的领域。
+- 就算我对 AI 很积极，这里的卖点也不够。我几乎从不想和 AI 说话。要克服的是三十年来电话机器人留下的负面印象，一个新 API 不可能一夜之间改变这一点。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+GPT-Live-1 が API に登場
+***** TLDR
+OpenAI が GPT-Live-1 を API に投入した。音声レイヤーは1分あたり5セント。音声認識、言語モデル、音声合成を数珠つなぎにするのではなく、聞くことと話すことを同時に行う。ターン制の音声スタックにある間が生じるのは、まさにその数珠つなぎのせいだ。OpenAI は Full Duplex Bench で gpt-realtime-2.1 を30ポイント上回り、初期テストで割り込みが約80%減ったとしている。声の人格、つまり口調、速度、話し方はシステムプロンプトで設定する。難しい推論は GPT-6 Astra のようなバックエンドモデルに任せられ、電話向けの統合も用意されている。カスタム音声は営業への問い合わせが必要だ。
+***** Take
+全二重は正しい課題で、これは見せ方を間違えている。OpenAI が先頭に置いたのはレストラン予約で、Google Duplex が2018年にやったのと同じデモだ。そして Lucasoato は、初代ポケモンで C から始まるものを逆から綴って答えろと頼んだだけで、ページ上のライブデモを止めてしまった。一方スレッドでは dbbk と adityashankar が、遅延が耳につくせいで作っては棚上げした語学学習アプリの話をしている。デモはそこにあったのに、また予約の話になった。
+***** Comments
+- またレストラン予約の自動化のデモか。汎用人工知能、いやあらゆるソフトウェアの目的は本当にそれを自動化することらしい。各研究所がもっと面白い音声の用途を思いつけないのが不思議でならない。
+- これを待っていた。スペイン語を学んでいるので、自分の生活の場面に特化したアプリを作った。たとえば「バルセロナのバルでバルサの試合を見る」といった具合だ。こうしたライブ会話モデルにとって教育は非常に未開拓の領域だと思う。
+- AI に前向きな自分でも、ここには決め手が足りない。AI と話したいと思うことはほとんどない。乗り越えるべきは電話の自動応答が30年かけて残した悪印象で、新しい API 一つで一夜にして変わるとは思えない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+API에 들어온 GPT-Live-1
+***** TLDR
+OpenAI가 GPT-Live-1을 API에 올렸다. 음성 계층은 분당 5센트다. 음성 인식, 언어 모델, 음성 합성을 사슬처럼 엮는 대신 듣기와 말하기를 동시에 한다. 턴 방식 음성 스택의 어색한 침묵은 바로 그 사슬에서 나온다. OpenAI는 Full Duplex Bench에서 gpt-realtime-2.1보다 30퍼센트포인트 앞섰고 초기 테스트에서 말이 끊기는 경우가 약 80% 줄었다고 밝혔다. 어조와 속도, 말투 같은 음성 인격은 시스템 프롬프트로 정한다. 어려운 추론은 GPT-6 Astra 같은 백엔드 모델에 넘길 수 있고 전화 연동도 제공된다. 맞춤 음성은 영업팀에 문의해야 한다.
+***** Take
+전이중 통신은 옳은 문제이고, 이건 그것을 보여주는 틀린 방식이다. OpenAI는 또 식당 예약을 앞세웠다. 구글 듀플렉스가 2018년에 한 바로 그 데모다. 그리고 Lucasoato는 1세대 포켓몬 중 C로 시작하는 것을 거꾸로 철자해 달라고 물었을 뿐인데 웹페이지의 라이브 데모를 멈춰 세웠다. 한편 스레드에서는 dbbk와 adityashankar가 지연이 들려서 만들다 접은 언어 학습 앱 이야기를 하고 있다. 데모가 바로 거기 있었는데 또 식당으로 갔다.
+***** Comments
+- 또 식당 예약 자동화 시연이다. 범용 인공지능은 물론 모든 소프트웨어의 목적이 정말로 그 일을 자동화하는 것인가 보다. 연구소들이 더 흥미로운 음성 활용을 떠올리지 못한다는 게 당혹스럽다.
+- 이걸 기다렸다. 스페인어를 배우는 중이라 내 생활 장면에 맞춘 앱을 만들었다. 예를 들어 '바르셀로나 바에서 바르사 경기 보기' 같은 것이다. 이런 실시간 대화 모델에서 교육은 아주 덜 탐구된 영역이다.
+- AI에 상당히 우호적인 편인데도 여기엔 결정적인 이유가 없다. 나는 AI와 말하고 싶은 적이 거의 없다. 넘어야 할 것은 전화 자동응답이 30년간 쌓은 나쁜 기억이고, 새 API 하나로 하룻밤에 바뀌지는 않는다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+GPT-Live-1 en la API
+***** TLDR
+OpenAI puso GPT-Live-1 en la API a cinco centavos por minuto para la capa de voz. Escucha y habla al mismo tiempo en lugar de encadenar reconocimiento de voz, modelo de lenguaje y síntesis, que es de donde salen las pausas de las arquitecturas por turnos. OpenAI declara una mejora de 30 puntos porcentuales en Full Duplex Bench frente a gpt-realtime-2.1 y cerca de un 80% menos de interrupciones en las pruebas iniciales. La personalidad de la voz, es decir tono, ritmo y estilo, se define desde el prompt de sistema. El razonamiento difícil puede delegarse a un modelo de fondo como GPT-6 Astra, y hay integración telefónica. Las voces personalizadas requieren hablar con ventas.
+***** Take
+El dúplex completo es el problema correcto y esta es la forma incorrecta de mostrarlo. OpenAI encabezó con reservas de restaurante, la misma demo que Google Duplex hizo en 2018, y Lucasoato dejó colgada la demo en vivo de la página preguntando qué Pokémon de primera generación empiezan con C, deletreados al revés. Mientras tanto, dbbk y adityashankar cuentan en el hilo las apps de aprendizaje de idiomas que construyeron y abandonaron porque la latencia se oía. Esa era la demo, ahí mismo, y volvieron al restaurante.
+***** Comments
+- Otra demostración más de reservas automáticas en restaurantes. Al parecer el propósito de la IA general, y de todo el software, es automatizar esa experiencia. Me desconcierta que los laboratorios no den con usos de voz más interesantes.
+- Llevaba tiempo esperando esto. Estoy aprendiendo español y construí una app centrada en escenarios de mi vida, por ejemplo ver un partido del Barça en un bar de Barcelona. La educación es un área muy poco explorada para estos modelos de conversación en vivo.
+- Incluso siendo alguien muy a favor de la IA, aquí no hay argumentos suficientes. Casi nunca quiero hablar con una IA. Hay treinta años de precedentes malos con los contestadores automáticos, y una API nueva no lo cambia de la noche a la mañana.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+GPT-Live-1 in der API
+***** TLDR
+OpenAI hat GPT-Live-1 in die API gebracht, fünf Cent pro Minute für die Sprachschicht. Es hört und spricht gleichzeitig, statt Spracherkennung, Sprachmodell und Sprachsynthese hintereinanderzuschalten, woher die Pausen rundenbasierter Sprachsysteme stammen. OpenAI nennt 30 Prozentpunkte Vorsprung auf Full Duplex Bench gegenüber gpt-realtime-2.1 und rund 80% weniger Unterbrechungen in frühen Tests. Die Stimmpersönlichkeit, also Ton, Tempo und Stil, wird über den System-Prompt gesetzt. Schwieriges Schlussfolgern lässt sich an ein Hintergrundmodell wie GPT-6 Astra abgeben, und es gibt eine Telefonieanbindung. Für eigene Stimmen muss man den Vertrieb kontaktieren.
+***** Take
+Vollduplex ist das richtige Problem und dies der falsche Weg, es zu zeigen. OpenAI führte mit Restaurantreservierungen auf, derselben Demo, die Google Duplex 2018 vorführte, und Lucasoato brachte die Live-Demo auf der Seite zum Stehen, indem er fragte, welche Pokémon der ersten Generation mit C beginnen, rückwärts buchstabiert. Im Thread erzählen derweil dbbk und adityashankar von Sprachlern-Apps, die sie gebaut und wegen hörbarer Latenz beiseitegelegt haben. Das war die Demo, direkt greifbar, und es wurde wieder das Restaurant.
+***** Comments
+- Schon wieder eine Vorführung automatischer Restaurantreservierungen. Offenbar ist der Zweck künstlicher allgemeiner Intelligenz, und aller Software überhaupt, genau diese Erfahrung zu automatisieren. Mich verblüfft, dass den Laboren keine spannenderen Sprachanwendungen einfallen.
+- Darauf habe ich gewartet. Ich lerne Spanisch und habe eine App gebaut, die ganz auf Szenen aus meinem Leben zugeschnitten ist, etwa ein Barça-Spiel in einer Bar in Barcelona zu schauen. Bildung ist für solche Live-Konversationsmodelle ein sehr wenig erschlossenes Feld.
+- Selbst als jemand, der KI sehr zugewandt ist, finde ich hier zu wenig Argumente. Ich will fast nie mit einer KI sprechen. Es sind dreißig Jahre schlechter Erfahrungen mit Telefonrobotern aufzuholen, und eine neue API ändert das nicht über Nacht.
+** Neijuan :culture:economics:china:labor:
+:PROPERTIES:
+:ID:       49655176
+:URL:      https://en.wikipedia.org/wiki/Neijuan
+:HN_URL:   https://news.ycombinator.com/item?id=49655176
+:POINTS:   45
+:COMMENTS: 12
+:BY:       vermilingua
+:END:
+
+*** TLDR
+Neijuan (内卷), literally 'to curl inwards', names a condition where effort keeps intensifying without matching gains in output or efficiency. The concept starts as involution, coined by the anthropologist Alexander Goldenweiser in 1937 and popularized by Clifford Geertz's study of Javanese rice farming, where more and more labor produced flat productivity. Chinese scholars adapted it to rural economics before it turned into internet slang around 2020, helped by a viral photo of a Tsinghua student working on a laptop while riding his bike. It now covers tutoring spend and school-district moves that start at daycare, 996 schedules, and overqualified graduates in low-skill jobs. The government position flipped: after years of celebrating hard work, the Party's theoretical journal now frames neijuan as a macroeconomic problem, unhealthy competition feeding deflation and market instability, and regulators have started intervening in business practices.
+
+*** Take
+The page is on the front page because Armin Ronacher's post on AI coding links to it, and JumpCrisscross asks the question that decides whether the word is useful: has anyone measured this? The idea is intuitive and suspiciously easy to apply to anything you already dislike, which is the failure mode that ate the bullshit-jobs hypothesis. lensecat, writing a sociology PhD on exactly this, concedes the hard part is operationalizing output quality. A word that describes effort with no return is genuinely handy. It is also unfalsifiable until someone picks a task whose output value cannot drift and counts the tokens.
+
+*** Comments
+
+**** JumpCrisscross
+:PROPERTIES:
+:COMMENT_ID: 49655781
+:END:
+It's hypothesising a phenomenon. I'm looking for a measure. The phenomenon is intuitively correct, but also suspiciously attractive. Sort of like the bullshit-job hypothesis, where every job one doesn't like can conveniently be termed bullshit absent any rigour.
+
+**** lensecat
+:PROPERTIES:
+:COMMENT_ID: 49655817
+:END:
+I'm doing a PhD in sociology of work, with a background in software development, and want to run such a study on software development with AI. It's quite hard to find a good setting, because it's hard to operationalise quality.
+
+**** anovikov
+:PROPERTIES:
+:COMMENT_ID: 49655749
+:END:
+1920s style crisis of overproduction with Chinese characteristics.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+内卷
+***** TLDR
+内卷字面意思是“向内蜷曲”，指的是投入不断加码、产出和效率却不见相应增长的状态。这个概念源自 involution，由人类学家 Alexander Goldenweiser 于 1937 年提出，经 Clifford Geertz 对爪哇稻作的研究而广为人知：劳动力越投越多，生产率却停滞不前。中国学者先把它用于农村经济分析，2020 年前后它变成网络流行语，清华学生一边骑车一边用笔记本的照片走红推了一把。如今它涵盖从托儿所就开始的补习开销和学区房搬迁、996 作息，以及高学历者从事低技能工作。官方立场也翻转了：在多年褒扬奋斗之后，党的理论刊物如今把内卷定性为宏观经济问题，即无序竞争助推通缩和市场不稳，监管部门已开始干预企业行为。
+***** Take
+这个页面出现在首页，是因为 Armin Ronacher 关于 AI 编程的文章链接了它。JumpCrisscross 问出了决定这个词是否有用的问题：有人测量过吗？这个想法直觉上成立，也太容易套到你本来就不喜欢的任何事情上，而这正是“狗屁工作”假说栽跟头的地方。正在以此为题写社会学博士论文的 lensecat 承认，难点在于如何把产出质量操作化。一个用来描述“努力却没有回报”的词确实好用，但在有人挑出一项产出价值不会漂移的任务、并去数 token 之前，它是不可证伪的。
+***** Comments
+- 它提出的是一个现象假设。我想要的是一个度量。这个现象直觉上是对的，但也吸引人得可疑。有点像“狗屁工作”假说：任何你不喜欢的工作，都可以在毫无严谨性的情况下被称作狗屁。
+- 我在读劳动社会学博士，之前做过软件开发，想针对“用 AI 做软件开发”做这样一项研究。难点在于很难找到合适的场景，因为质量很难操作化。
+- 带有中国特色的 1920 年代式生产过剩危机。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+内巻（ネイジュアン）
+***** TLDR
+内巻（ネイジュアン）は字義どおりには「内側に巻き込む」で、努力ばかりが強まり、産出や効率がそれに見合って伸びない状態を指す。概念の出発点は involution で、人類学者 Alexander Goldenweiser が1937年に用い、Clifford Geertz によるジャワの稲作研究で広まった。労働をいくら投入しても生産性は横ばいだった、というものだ。中国の研究者がまず農村経済の分析に取り入れ、2020年ごろにネットスラングとなった。自転車をこぎながらノートパソコンを使う清華大の学生の写真が拡散したことも後押しした。いまでは保育園から始まる塾代や学区への引っ越し、996 の勤務形態、学歴過剰な卒業生が低技能職に就く状況までを含む。政府の姿勢も反転した。長年にわたり勤勉を称えた末に、党の理論誌はいま内巻をマクロ経済上の問題、すなわち不健全な競争がデフレと市場の不安定を招くものとして位置づけ、規制当局は企業慣行への介入を始めている。
+***** Take
+このページがトップに上がっているのは、AI コーディングについての Armin Ronacher の記事がリンクしているからだ。そして JumpCrisscross が、この語の有用性を決める問いを投げている。誰か測ったのか、と。この発想は直感的に正しく、同時に、自分がもともと気に入らない何にでも当てはめられるという点で疑わしいほど魅力的だ。ブルシット・ジョブ仮説を飲み込んだのと同じ失敗の型である。まさにこれを主題に社会学の博士論文を書いている lensecat は、難しいのは産出の質を操作化することだと認めている。努力しても見返りがない状態を指す語は確かに便利だ。だが、産出価値がぶれない課題を誰かが選んでトークンを数えるまでは、反証できない。
+***** Comments
+- これは現象の仮説を立てているだけだ。私が求めているのは尺度だ。現象そのものは直感的には正しいが、同時に疑わしいほど魅力的でもある。ブルシット・ジョブ仮説と同じで、気に入らない仕事は厳密さ抜きにいくらでもブルシットと呼べてしまう。
+- 私は労働社会学で博士課程にいて、ソフトウェア開発の経験もある。AI を使ったソフトウェア開発でこうした研究をやりたいのだが、適した場を見つけるのが難しい。質を操作化するのが難しいからだ。
+- 中国的特色を備えた1920年代型の過剰生産恐慌。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+네이좐(内卷)
+***** TLDR
+네이좐(内卷)은 글자 그대로 '안으로 말려 들어간다'는 뜻으로, 투입은 계속 강해지는데 산출이나 효율은 그만큼 늘지 않는 상태를 가리킨다. 개념의 출발점은 인볼루션으로, 인류학자 Alexander Goldenweiser가 1937년에 쓴 말이고 Clifford Geertz의 자바 벼농사 연구로 널리 퍼졌다. 노동을 더 넣어도 생산성은 제자리였다는 이야기다. 중국 학자들이 먼저 농촌 경제 분석에 가져다 썼고, 2020년 무렵 인터넷 유행어가 됐다. 자전거를 타면서 노트북을 쓰는 칭화대 학생 사진이 퍼진 것도 한몫했다. 지금은 어린이집부터 시작되는 사교육비와 학군 이사, 996 근무, 과잉 학력 졸업자의 저숙련 취업까지 아우른다. 정부 입장도 뒤집혔다. 오랫동안 근면을 칭송한 끝에, 당 이론지는 이제 네이좐을 거시경제 문제로, 즉 불건전한 경쟁이 디플레이션과 시장 불안정을 낳는 현상으로 규정하고, 규제 당국은 기업 관행에 개입하기 시작했다.
+***** Take
+이 문서가 첫 화면에 올라온 건 AI 코딩에 관한 Armin Ronacher의 글이 링크했기 때문이고, JumpCrisscross는 이 단어의 쓸모를 가르는 질문을 던진다. 누가 측정은 해봤는가. 이 발상은 직관적으로 맞고, 동시에 원래 마음에 안 들던 무엇에나 갖다 붙일 수 있어서 의심스러울 만큼 매력적이다. 불쉿 잡 가설을 삼킨 것과 같은 실패 방식이다. 바로 이 주제로 노동사회학 박사 논문을 쓰는 lensecat도 어려운 지점은 산출 품질을 조작적으로 정의하는 것이라고 인정한다. 노력해도 돌아오는 게 없는 상태를 가리키는 말은 분명 유용하다. 다만 산출 가치가 흔들리지 않는 과제를 골라 토큰을 세어보기 전까지는 반증할 수 없다.
+***** Comments
+- 이건 현상을 가설로 세우는 것이다. 나는 측정치를 찾고 있다. 현상 자체는 직관적으로 맞지만 의심스러울 만큼 매력적이기도 하다. 불쉿 잡 가설과 비슷하다. 마음에 안 드는 일은 엄밀함 없이 죄다 불쉿이라고 부를 수 있게 된다.
+- 나는 노동사회학 박사과정에 있고 소프트웨어 개발 경력이 있다. AI를 쓰는 소프트웨어 개발에 대해 이런 연구를 하고 싶은데, 적절한 환경을 찾기가 꽤 어렵다. 품질을 조작적으로 정의하기가 어렵기 때문이다.
+- 중국적 특색을 가진 1920년대식 과잉생산 공황.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Neijuan
+***** TLDR
+Neijuan (内卷), literalmente 'enrollarse hacia adentro', nombra una situación en la que el esfuerzo se intensifica sin aumentos proporcionales de producción o eficiencia. El concepto parte de la involución, acuñada por el antropólogo Alexander Goldenweiser en 1937 y difundida por el estudio de Clifford Geertz sobre el cultivo de arroz en Java, donde más y más trabajo daba una productividad plana. Académicos chinos lo adaptaron a la economía rural antes de que se convirtiera en jerga de internet hacia 2020, ayudado por la foto viral de un estudiante de Tsinghua trabajando con el portátil mientras iba en bicicleta. Hoy abarca el gasto en clases particulares y las mudanzas por distrito escolar que empiezan en la guardería, las jornadas 996 y los titulados sobrecualificados en empleos de baja cualificación. La postura oficial se dio la vuelta: tras años de exaltar el trabajo duro, la revista teórica del Partido presenta ahora el neijuan como un problema macroeconómico, competencia insana que alimenta la deflación y la inestabilidad, y los reguladores han empezado a intervenir en prácticas empresariales.
+***** Take
+La página está en portada porque el artículo de Armin Ronacher sobre programar con IA la enlaza, y JumpCrisscross plantea la pregunta que decide si el término sirve: ¿alguien lo ha medido? La idea es intuitiva y sospechosamente fácil de aplicar a cualquier cosa que ya te disguste, que es justo el fallo que se comió la hipótesis de los trabajos de mierda. lensecat, que hace un doctorado en sociología sobre esto, admite que lo difícil es operacionalizar la calidad del resultado. Una palabra para el esfuerzo sin retorno es genuinamente útil. También es infalsable hasta que alguien elija una tarea cuyo valor de salida no pueda desplazarse y cuente los tokens.
+***** Comments
+- Está planteando un fenómeno como hipótesis. Yo busco una medida. El fenómeno es intuitivamente correcto, pero también sospechosamente atractivo. Algo así como la hipótesis de los trabajos de mierda, donde cualquier empleo que a uno no le gusta puede llamarse basura sin ningún rigor.
+- Hago un doctorado en sociología del trabajo, con formación previa en desarrollo de software, y quiero hacer un estudio así sobre desarrollo de software con IA. Es bastante difícil encontrar un buen escenario, porque cuesta operacionalizar la calidad.
+- Una crisis de sobreproducción al estilo de los años veinte, con características chinas.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Neijuan
+***** TLDR
+Neijuan (内卷), wörtlich 'sich nach innen einrollen', bezeichnet einen Zustand, in dem sich der Aufwand immer weiter steigert, ohne dass Ertrag oder Effizienz entsprechend zunehmen. Der Begriff geht auf Involution zurück, geprägt vom Anthropologen Alexander Goldenweiser 1937 und bekannt geworden durch Clifford Geertz' Studie zum javanischen Reisanbau, wo immer mehr Arbeit zu gleichbleibender Produktivität führte. Chinesische Forschende übertrugen ihn zunächst auf die ländliche Ökonomie, bevor er um 2020 zum Internetausdruck wurde, befördert vom viralen Foto eines Tsinghua-Studenten, der auf dem Fahrrad am Laptop arbeitet. Heute umfasst er Nachhilfeausgaben und Umzüge in bessere Schulbezirke ab der Kita, 996-Arbeitszeiten und überqualifizierte Absolventen in gering qualifizierten Jobs. Die Haltung der Regierung hat sich gedreht: Nach Jahren des Lobes auf harte Arbeit behandelt das Theorieorgan der Partei Neijuan nun als makroökonomisches Problem, als ungesunden Wettbewerb, der Deflation und Marktinstabilität nährt, und Regulierer greifen in Geschäftspraktiken ein.
+***** Take
+Die Seite steht auf der Startseite, weil Armin Ronachers Text über Programmieren mit KI darauf verlinkt, und JumpCrisscross stellt die Frage, an der sich entscheidet, ob der Begriff etwas taugt: Hat das jemand gemessen? Die Idee ist intuitiv und verdächtig leicht auf alles anzuwenden, was einem ohnehin missfällt. Genau daran ist die Bullshit-Jobs-These zerfallen. lensecat, der genau dazu in Arbeitssoziologie promoviert, räumt ein, dass die Operationalisierung der Ergebnisqualität das Schwierige ist. Ein Wort für Aufwand ohne Ertrag ist wirklich nützlich. Es ist auch unfalsifizierbar, bis jemand eine Aufgabe wählt, deren Ergebniswert nicht verrutschen kann, und die Tokens zählt.
+***** Comments
+- Hier wird ein Phänomen als Hypothese aufgestellt. Ich suche ein Maß. Das Phänomen ist intuitiv richtig, aber auch verdächtig attraktiv. Ähnlich wie die Bullshit-Jobs-These, bei der sich jede Tätigkeit, die einem nicht gefällt, ohne jede Strenge als Bullshit bezeichnen lässt.
+- Ich promoviere in Arbeitssoziologie und komme aus der Softwareentwicklung. Ich würde gern genau so eine Studie zur Softwareentwicklung mit KI machen, aber es ist schwierig, ein geeignetes Setting zu finden, weil sich Qualität schwer operationalisieren lässt.
+- Eine Überproduktionskrise im Stil der 1920er Jahre, mit chinesischen Besonderheiten.
+** Working with Git Worktrees in Magit :git:emacs:devtools:workflow:
+:PROPERTIES:
+:ID:       49606281
+:URL:      https://emacsredux.com/blog/2026/09/02/working-with-git-worktrees-in-magit/
+:HN_URL:   https://news.ycombinator.com/item?id=49606281
+:POINTS:   58
+:COMMENTS: 19
+:BY:       srijan4
+:END:
+
+*** TLDR
+Emacs Redux walks through Magit's worktree support, all under the Z prefix: Z b checks out an existing branch in a new worktree, Z c creates a branch and a worktree together, Z g jumps between worktree status buffers, Z m moves a worktree and Z k deletes one. Each worktree gets its own status buffer, and commands act on the worktree that holds the current buffer. The author says he came to worktrees through AI coding agents, which create one per task so several agents or several sessions can work the same repository in parallel, and recommends creating worktrees as siblings rather than nested inside the main checkout so ordinary tools do not trip over them.
+
+*** Take
+Worktrees shipped in git in 2015 and mostly sat there until coding agents made parallel checkouts a daily need. The thread splits on whether that justifies better tooling or proves worktrees are the wrong abstraction: simonhamp and hyfgfh both say clone the repo again, and on a copy-on-write filesystem that is genuinely cheaper and has none of the one-branch-one-checkout rule miggol runs into. Magit's version wins on ergonomics, not on model.
+
+*** Comments
+
+**** anilakar
+:PROPERTIES:
+:COMMENT_ID: 49654726
+:END:
+Worktrees are a must if you work with monorepos or just multiple branches in general. Lack of conventions, or rather the braindead defaults, and having to explicitly type out everything is what hinders adoption the most.
+
+**** simonhamp
+:PROPERTIES:
+:COMMENT_ID: 49655834
+:END:
+Just use copy-on-write clones. They're way more flexible, faster and easier to reason about. I don't get spending all this time on tooling that tries to ease working with worktrees when they're just not the right abstraction.
+
+**** miggol
+:PROPERTIES:
+:COMMENT_ID: 49655792
+:END:
+You can only have a branch checked out once across all your worktrees, and Magit plain refuses when it's taken elsewhere. I wish it would offer to switch to that worktree instead, or detach head there and check out here.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+在 Magit 中使用 Git Worktree
+***** TLDR
+Emacs Redux 介绍了 Magit 对 worktree 的支持，全部挂在 Z 前缀下：Z b 把已有分支检出到新的 worktree，Z c 同时创建分支和 worktree，Z g 在各 worktree 的状态缓冲区之间跳转，Z m 移动 worktree，Z k 删除。每个 worktree 有自己的状态缓冲区，命令作用于当前缓冲区所在的那个 worktree。作者说他是因为 AI 编码代理才开始用 worktree 的：代理为每个任务建一个，于是多个代理或多个会话可以并行处理同一个仓库。他建议把 worktree 建成主检出的同级目录而不是嵌套在里面，以免普通工具出错。
+***** Take
+worktree 2015 年就进了 git，此后基本无人问津，直到编码代理让并行检出成为日常需求。thread 里的分歧在于：这究竟是该做更好的工具，还是证明 worktree 本就是错误的抽象。simonhamp 和 hyfgfh 都主张再克隆一份仓库，在写时复制文件系统上这确实更便宜，也不会遇到 miggol 碰上的“一个分支只能检出一次”的限制。Magit 的方案赢在人机工程，而不是模型本身。
+***** Comments
+- 如果你用单体仓库，或者只是经常在多个分支之间切换，worktree 是必需品。真正阻碍它普及的是缺少约定，或者说是那些糟糕的默认值，以及什么都得显式敲出来。
+- 直接用写时复制的克隆就好。它更灵活、更快、也更容易理解。我不明白为什么要花这么多时间做工具来缓解 worktree 的麻烦，它本来就不是对的抽象。
+- 一个分支在你所有的 worktree 里只能被检出一次，而当它已经在别处被占用时，Magit 干脆直接拒绝。我希望它能提供切换到那个 worktree，或者在那边分离 HEAD 然后在这边检出的选项。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Magit で Git Worktree を扱う
+***** TLDR
+Emacs Redux が Magit の worktree 対応を解説している。すべて Z プレフィックスの下にある。Z b は既存ブランチを新しい worktree にチェックアウトし、Z c はブランチと worktree を同時に作り、Z g は worktree のステータスバッファ間を移動し、Z m は移設、Z k は削除だ。各 worktree は自分のステータスバッファを持ち、コマンドは現在のバッファがある worktree に作用する。著者は AI コーディングエージェントをきっかけに worktree を使い始めたという。エージェントはタスクごとに一つ作るので、複数のエージェントやセッションが同じリポジトリを並行して扱える。通常のツールが混乱しないよう、worktree はメインの作業ツリーの中に入れ子にせず兄弟階層に作ることを勧めている。
+***** Take
+worktree は2015年に git に入り、そのまま眠っていた。コーディングエージェントが並行チェックアウトを日常的な必要にするまでは。スレッドの意見は二つに割れる。ツールを良くすべきだという側と、worktree がそもそも間違った抽象だという側だ。simonhamp と hyfgfh はリポジトリをもう一度クローンすればいいと言う。コピーオンライトのファイルシステムなら確かに安上がりで、miggol がぶつかる「同じブランチは一度しかチェックアウトできない」制約もない。Magit 版が勝っているのは使い勝手であって、モデルではない。
+***** Comments
+- モノレポを扱うなら、あるいは単に複数ブランチを行き来するなら worktree は必須だ。普及を最も妨げているのは規約のなさ、というより頭の悪い既定値と、何もかも明示的に打ち込まねばならない点だ。
+- コピーオンライトのクローンを使えばいい。そのほうが柔軟で速く、理解しやすい。worktree を楽にするためのツールにこれだけ時間をかける意味がわからない。そもそも適切な抽象ではない。
+- 一つのブランチは全 worktree の中で一度しかチェックアウトできず、他で使われていると Magit はきっぱり拒否する。その worktree に切り替えるか、向こうで HEAD を切り離してこちらでチェックアウトするかを提案してほしい。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Magit에서 Git 워크트리 다루기
+***** TLDR
+Emacs Redux가 Magit의 워크트리 지원을 설명한다. 모두 Z 접두사 아래에 있다. Z b는 기존 브랜치를 새 워크트리에 체크아웃하고, Z c는 브랜치와 워크트리를 함께 만들고, Z g는 워크트리 상태 버퍼 사이를 오가며, Z m은 옮기고, Z k는 지운다. 각 워크트리는 자기 상태 버퍼를 갖고, 명령은 현재 버퍼가 속한 워크트리에 적용된다. 저자는 AI 코딩 에이전트 때문에 워크트리를 쓰기 시작했다고 말한다. 에이전트가 작업마다 하나씩 만들어서 여러 에이전트나 여러 세션이 같은 저장소를 동시에 다룰 수 있다는 것이다. 일반 도구가 헷갈리지 않도록 워크트리는 메인 체크아웃 안에 중첩하지 말고 형제 디렉터리로 만들라고 권한다.
+***** Take
+워크트리는 2015년에 git에 들어왔고 그 뒤로 대체로 방치돼 있었다. 코딩 에이전트가 병렬 체크아웃을 일상적인 필요로 만들기 전까지는. 스레드는 이것이 더 나은 도구가 필요하다는 근거인지, 워크트리가 애초에 잘못된 추상이라는 증거인지를 두고 갈린다. simonhamp와 hyfgfh는 저장소를 한 번 더 클론하라고 말하고, 쓰기 시 복사 파일시스템에서는 실제로 그게 더 싸며 miggol이 겪는 '브랜치 하나는 한 번만 체크아웃' 제약도 없다. Magit 쪽이 이기는 건 사용성이지 모델이 아니다.
+***** Comments
+- 모노레포를 다루거나 그냥 여러 브랜치를 오간다면 워크트리는 필수다. 보급을 가장 막는 건 관례의 부재, 정확히는 형편없는 기본값과 모든 걸 일일이 타이핑해야 한다는 점이다.
+- 그냥 쓰기 시 복사 클론을 써라. 훨씬 유연하고 빠르고 이해하기 쉽다. 애초에 맞지 않는 추상인 워크트리를 편하게 만들려고 이렇게 많은 도구에 시간을 쓰는 이유를 모르겠다.
+- 브랜치 하나는 모든 워크트리를 통틀어 한 번만 체크아웃할 수 있고, 다른 데서 쓰고 있으면 Magit은 그냥 거부한다. 그 워크트리로 전환하거나, 저쪽에서 HEAD를 분리하고 여기서 체크아웃하는 선택지를 줬으면 좋겠다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Trabajar con git worktrees en Magit
+***** TLDR
+Emacs Redux repasa el soporte de worktrees en Magit, todo bajo el prefijo Z: Z b saca una rama existente en un worktree nuevo, Z c crea rama y worktree a la vez, Z g salta entre los búferes de estado de cada worktree, Z m mueve uno y Z k lo elimina. Cada worktree tiene su propio búfer de estado y los comandos actúan sobre el worktree que contiene el búfer actual. El autor cuenta que llegó a los worktrees por los agentes de programación con IA, que crean uno por tarea para que varios agentes o sesiones trabajen el mismo repositorio en paralelo, y recomienda crearlos como hermanos y no anidados dentro del checkout principal para que las herramientas normales no se confundan.
+***** Take
+Los worktrees llegaron a git en 2015 y quedaron casi sin usar hasta que los agentes de programación hicieron de los checkouts paralelos una necesidad diaria. El hilo se divide entre quienes ven ahí un argumento para mejores herramientas y quienes lo ven como prueba de que los worktrees son la abstracción equivocada: simonhamp y hyfgfh dicen que basta con clonar otra vez el repositorio, y en un sistema de archivos con copia en escritura eso sale más barato y no tiene la regla de una rama por checkout con la que choca miggol. La versión de Magit gana en ergonomía, no en modelo.
+***** Comments
+- Los worktrees son imprescindibles si trabajas con monorepos o simplemente con varias ramas. Lo que más frena su adopción es la falta de convenciones, o más bien los valores por defecto absurdos, y tener que escribirlo todo de forma explícita.
+- Usa clones con copia en escritura. Son mucho más flexibles, más rápidos y más fáciles de razonar. No entiendo tanto tiempo dedicado a herramientas que suavizan el uso de worktrees cuando simplemente no son la abstracción correcta.
+- Solo puedes tener una rama sacada una vez entre todos tus worktrees, y Magit se niega sin más cuando está ocupada en otro. Ojalá ofreciera cambiar a ese worktree, o soltar el head allí y sacarla aquí.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Mit Git-Worktrees in Magit arbeiten
+***** TLDR
+Emacs Redux erklärt die Worktree-Unterstützung in Magit, alles unter dem Präfix Z: Z b checkt einen vorhandenen Branch in einem neuen Worktree aus, Z c legt Branch und Worktree zusammen an, Z g springt zwischen den Statuspuffern der Worktrees, Z m verschiebt einen und Z k löscht ihn. Jeder Worktree bekommt seinen eigenen Statuspuffer, und Befehle wirken auf den Worktree, in dem der aktuelle Puffer liegt. Der Autor kam über KI-Coding-Agenten zu Worktrees, die pro Aufgabe einen anlegen, sodass mehrere Agenten oder Sitzungen parallel am selben Repository arbeiten. Er rät, Worktrees als Geschwisterverzeichnisse anzulegen statt verschachtelt im Haupt-Checkout, damit gewöhnliche Werkzeuge nicht stolpern.
+***** Take
+Worktrees kamen 2015 in git und lagen brach, bis Coding-Agenten parallele Checkouts zur täglichen Notwendigkeit machten. Der Thread teilt sich daran, ob das für bessere Werkzeuge spricht oder beweist, dass Worktrees die falsche Abstraktion sind: simonhamp und hyfgfh sagen beide, klont das Repository einfach erneut, und auf einem Copy-on-Write-Dateisystem ist das tatsächlich billiger und kennt die Ein-Branch-ein-Checkout-Regel nicht, an der miggol scheitert. Magits Variante gewinnt bei der Ergonomie, nicht beim Modell.
+***** Comments
+- Worktrees sind Pflicht, wenn man mit Monorepos oder überhaupt mit mehreren Branches arbeitet. Was die Verbreitung am meisten bremst, ist das Fehlen von Konventionen, genauer die hirnlosen Voreinstellungen, und dass man alles ausschreiben muss.
+- Nimm einfach Copy-on-Write-Klone. Die sind flexibler, schneller und leichter zu durchschauen. Ich verstehe nicht, warum so viel Zeit in Werkzeuge fließt, die den Umgang mit Worktrees erleichtern sollen, wenn das schlicht nicht die richtige Abstraktion ist.
+- Ein Branch lässt sich über alle Worktrees hinweg nur einmal auschecken, und Magit verweigert es rundheraus, wenn er anderswo belegt ist. Ich hätte gern die Wahl, stattdessen zu diesem Worktree zu wechseln oder dort den Head zu lösen und hier auszuchecken.
+** CSS Curiosities of the Past :css:web:history:browsers:
+:PROPERTIES:
+:ID:       49654962
+:URL:      https://vale.rocks/posts/css-relics
+:HN_URL:   https://news.ycombinator.com/item?id=49654962
+:POINTS:   14
+:COMMENTS: 4
+:BY:       robin_reala
+:END:
+
+*** TLDR
+Vale catalogues the CSS hacks that Internet Explorer's parsing bugs forced on the web. Asterisk, underscore and hyphen prefixes on property names targeted specific IE versions without conditional comments. IE7 and earlier accepted any bang prefix as equivalent to !important, so !ie and !banana both worked. Selectors like ⁎ html {} and ⁎:first-child+html {} identified browser versions at the document level. IE's internal hasLayout flag caused rendering breakage that zoom: 1 fixed without visible side effects. expression() let IE5 through IE7 run JavaScript from inside a stylesheet, which was powerful and destroyed performance before being removed in IE8. DirectX-backed filters supplied opacity, gradients and transparent PNG support at the cost of broken font antialiasing. The post closes on vendor prefixes, meant for experimental features but shipped to production so widely that browsers had to keep supporting them, with -webkit-text-stroke now working everywhere.
+
+*** Take
+expression() is the relic worth remembering: a stylesheet that executed JavaScript on every layout recalculation, and someone will rebuild it inside a CSS-in-JS runtime before the decade is out. But the sharpest line in the thread is nottorp's. The hacks are gone and what replaced them is a monoculture. We went from writing a rule five ways to writing it once and testing it only in Chrome, which is a different failure with a lower bug count and a worse long-term shape.
+
+*** Comments
+
+**** meerita
+:PROPERTIES:
+:COMMENT_ID: 49656273
+:END:
+I was having a peaceful day until these CSS curiosities brought back memories of my painful days. It's really good that we don't need to deal with such hacks and vendor-specific things anymore. The last project I worked on that targeted IE7 and IE8 was in 2018.
+
+**** nottorp
+:PROPERTIES:
+:COMMENT_ID: 49656344
+:END:
+Unfortunately not needing those hacks means everyone targets Chrome. Then you end up with bad performance or broken sites in Firefox, which is the only browser that can still run proper uBlock Origin.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+过去那些 CSS 奇观
+***** TLDR
+Vale 盘点了 Internet Explorer 的解析 bug 逼出来的那些 CSS hack。在属性名前加星号、下划线或连字符，可以在不用条件注释的情况下只针对特定 IE 版本。IE7 及更早版本把任何感叹号前缀都当成 !important，所以 !ie 和 !banana 都能用。像 ⁎ html {} 和 ⁎:first-child+html {} 这样的选择器能在文档层面识别浏览器版本。IE 内部的 hasLayout 标志会导致渲染错乱，而 zoom: 1 能在不产生可见副作用的情况下修好它。expression() 让 IE5 到 IE7 可以在样式表里执行 JavaScript，功能强大，也毁掉了性能，最终在 IE8 中被移除。基于 DirectX 的 filter 提供了透明度、渐变和透明 PNG 支持，代价是字体抗锯齿被破坏。文章最后谈到厂商前缀：它们本是为实验性特性准备的，却被大量用到生产环境，以至于浏览器不得不永远支持下去，-webkit-text-stroke 如今在所有浏览器上都能用。
+***** Take
+最值得记住的遗物是 expression()：一张会在每次重排时执行 JavaScript 的样式表，而在这个十年结束前，一定会有人在某个 CSS-in-JS 运行时里把它重新造出来。但 thread 里最锋利的一句来自 nottorp。hack 消失了，取而代之的是单一生态。我们从把一条规则写五遍，变成只写一遍、并且只在 Chrome 里测试，这是另一种失败：bug 更少，长期形态更糟。
+***** Comments
+- 本来是平静的一天，直到这些 CSS 奇观把我那段痛苦的日子全勾了回来。不用再对付这些 hack 和厂商专有的东西，真是太好了。我最后一次做需要兼容 IE7、IE8 的项目是 2018 年。
+- 遗憾的是，不需要这些 hack 意味着所有人都只面向 Chrome。于是在 Firefox 上你会遇到性能糟糕或者页面直接崩坏，而 Firefox 是唯一还能跑完整版 uBlock Origin 的浏览器。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+過去の CSS 奇譚
+***** TLDR
+Vale が、Internet Explorer のパースのバグが web に強いた CSS のハックを並べている。プロパティ名にアスタリスク、アンダースコア、ハイフンを付ければ、条件付きコメントなしで特定の IE バージョンだけを狙えた。IE7 以前は感嘆符で始まる任意の接尾辞を !important と同等に受け取ったので、!ie でも !banana でも通った。⁎ html {} や ⁎:first-child+html {} といったセレクタは文書単位でブラウザのバージョンを判別できた。IE 内部の hasLayout フラグは描画の崩れを招き、zoom: 1 が見た目を変えずにそれを直した。expression() は IE5 から IE7 でスタイルシートの中から JavaScript を実行させ、強力である一方で性能を壊し、IE8 で削除された。DirectX ベースの filter は不透明度、グラデーション、透過 PNG を提供したが、フォントのアンチエイリアスを壊した。締めくくりはベンダープレフィックスだ。実験的機能のためのものだったのに本番環境で広く使われ、ブラウザは永久に支えざるを得なくなった。-webkit-text-stroke はいまやどこでも動く。
+***** Take
+覚えておく価値のある遺物は expression() だ。レイアウト再計算のたびに JavaScript を走らせるスタイルシート。この10年が終わる前に、誰かが CSS-in-JS のランタイムの中でこれを作り直すだろう。だがスレッドで最も鋭いのは nottorp の一言だ。ハックは消え、代わりに来たのは単一文化だった。一つのルールを五通り書く時代から、一通り書いて Chrome でしか試さない時代へ。バグは減ったが、長期的な形はむしろ悪い別種の失敗だ。
+***** Comments
+- 穏やかな一日だったのに、この CSS 奇譚のせいで苦しかった日々の記憶がよみがえった。こうしたハックやベンダー固有のものに付き合わなくてよくなったのは本当にありがたい。IE7 と IE8 に対応する必要があった最後の案件は2018年だった。
+- 残念ながら、それらのハックが要らないということは、みんなが Chrome だけを見ているということだ。その結果 Firefox では性能が悪かったりサイトが壊れたりする。まともな uBlock Origin を今なお動かせる唯一のブラウザなのに。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+지난 시절의 CSS 유물들
+***** TLDR
+Vale가 인터넷 익스플로러의 파싱 버그가 웹에 강요했던 CSS 핵들을 정리했다. 속성 이름 앞에 별표, 밑줄, 하이픈을 붙이면 조건부 주석 없이 특정 IE 버전만 겨냥할 수 있었다. IE7 이전은 느낌표로 시작하는 어떤 접미사든 !important와 동등하게 받아들여서 !ie도 !banana도 통했다. ⁎ html {}이나 ⁎:first-child+html {} 같은 선택자는 문서 수준에서 브라우저 버전을 가려냈다. IE 내부의 hasLayout 플래그는 렌더링을 망가뜨렸고 zoom: 1이 눈에 띄는 부작용 없이 이를 고쳤다. expression()은 IE5부터 IE7까지 스타일시트 안에서 자바스크립트를 실행하게 해줬는데, 강력했고 성능을 무너뜨렸으며 IE8에서 제거됐다. DirectX 기반 필터는 투명도, 그러데이션, 투명 PNG를 제공하는 대신 글꼴 안티에일리어싱을 깨뜨렸다. 글은 벤더 접두사로 끝난다. 실험적 기능을 위한 것이었지만 프로덕션에 워낙 널리 쓰여서 브라우저들이 계속 지원해야 했고, -webkit-text-stroke는 이제 어디서나 동작한다.
+***** Take
+기억할 만한 유물은 expression()이다. 레이아웃을 다시 계산할 때마다 자바스크립트를 실행하는 스타일시트. 이번 십 년이 끝나기 전에 누군가 CSS-in-JS 런타임 안에서 이걸 다시 만들 것이다. 하지만 스레드에서 가장 날카로운 말은 nottorp의 것이다. 핵은 사라졌고 그 자리를 단일 생태계가 차지했다. 규칙 하나를 다섯 가지로 쓰던 시대에서, 한 번 쓰고 크롬에서만 확인하는 시대로 왔다. 버그는 줄었지만 장기적으로는 더 나쁜 모양의 다른 실패다.
+***** Comments
+- 평온한 하루였는데 이 CSS 유물들이 고통스러웠던 시절의 기억을 되살렸다. 이런 핵과 벤더 전용 기능을 더 이상 상대하지 않아도 된다는 건 정말 다행이다. IE7과 IE8을 지원해야 했던 마지막 프로젝트가 2018년이었다.
+- 안타깝게도 그 핵들이 필요 없다는 건 모두가 크롬만 겨냥한다는 뜻이다. 그러면 파이어폭스에서 성능이 나쁘거나 사이트가 깨진다. 제대로 된 uBlock Origin을 여전히 돌릴 수 있는 유일한 브라우저인데도 말이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Curiosidades de CSS del pasado
+***** TLDR
+Vale cataloga los hacks de CSS que los fallos de análisis de Internet Explorer impusieron a la web. Prefijar propiedades con asterisco, guion bajo o guion permitía apuntar a versiones concretas de IE sin comentarios condicionales. IE7 y anteriores aceptaban cualquier prefijo con exclamación como equivalente a !important, así que funcionaban tanto !ie como !banana. Selectores como ⁎ html {} y ⁎:first-child+html {} identificaban versiones del navegador a nivel de documento. La bandera interna hasLayout de IE provocaba fallos de renderizado que zoom: 1 corregía sin efectos visibles. expression() permitía a IE5 hasta IE7 ejecutar JavaScript desde dentro de una hoja de estilos, algo potente que arruinaba el rendimiento y acabó eliminado en IE8. Los filtros basados en DirectX daban opacidad, degradados y PNG transparentes a costa de romper el suavizado de fuentes. El texto cierra con los prefijos de fabricante, pensados para funciones experimentales pero tan usados en producción que los navegadores tuvieron que mantenerlos, con -webkit-text-stroke funcionando hoy en todas partes.
+***** Take
+expression() es la reliquia que vale la pena recordar: una hoja de estilos que ejecutaba JavaScript en cada recálculo de diseño, y alguien la reconstruirá dentro de un runtime de CSS-in-JS antes de que acabe la década. Pero la frase más afilada del hilo es la de nottorp. Los hacks se fueron y lo que los sustituyó es un monocultivo. Pasamos de escribir una regla de cinco formas a escribirla una vez y probarla solo en Chrome, que es otro fracaso, con menos errores y peor forma a largo plazo.
+***** Comments
+- Tenía un día tranquilo hasta que estas curiosidades de CSS me trajeron recuerdos de mis días dolorosos. Es una suerte que ya no haya que lidiar con esos hacks ni con cosas específicas de cada fabricante. El último proyecto que hice apuntando a IE7 e IE8 fue en 2018.
+- Por desgracia, no necesitar esos hacks significa que todo el mundo apunta a Chrome. Y acabas con mal rendimiento o sitios rotos en Firefox, que es el único navegador que todavía puede ejecutar uBlock Origin en condiciones.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+CSS-Kuriositäten von früher
+***** TLDR
+Vale sammelt die CSS-Hacks, die die Parser-Fehler des Internet Explorer dem Web aufgezwungen haben. Sternchen, Unterstrich oder Bindestrich vor Eigenschaftsnamen adressierten bestimmte IE-Versionen ohne Conditional Comments. IE7 und älter akzeptierten jedes Ausrufezeichen-Präfix als Äquivalent zu !important, also funktionierten !ie ebenso wie !banana. Selektoren wie ⁎ html {} und ⁎:first-child+html {} erkannten Browserversionen auf Dokumentebene. Das interne hasLayout-Flag des IE verursachte Darstellungsfehler, die zoom: 1 ohne sichtbare Nebenwirkungen behob. expression() ließ IE5 bis IE7 JavaScript aus einem Stylesheet heraus ausführen, mächtig und zugleich verheerend für die Performance, bis es in IE8 entfernt wurde. DirectX-gestützte Filter lieferten Transparenz, Verläufe und transparente PNGs zum Preis kaputter Schriftglättung. Zum Schluss geht es um Vendor-Präfixe, gedacht für experimentelle Funktionen, aber so breit in Produktion eingesetzt, dass Browser sie dauerhaft unterstützen mussten. -webkit-text-stroke läuft heute überall.
+***** Take
+expression() ist das Relikt, das man sich merken sollte: ein Stylesheet, das bei jeder Layout-Neuberechnung JavaScript ausführte. Jemand wird das noch in diesem Jahrzehnt in einer CSS-in-JS-Laufzeit nachbauen. Die schärfste Bemerkung im Thread stammt aber von nottorp. Die Hacks sind weg, und was sie ersetzt hat, ist eine Monokultur. Aus einer Regel in fünf Varianten wurde eine Regel, die nur in Chrome getestet wird. Ein anderes Scheitern, mit weniger Fehlern und schlechterer Langzeitform.
+***** Comments
+- Ich hatte einen friedlichen Tag, bis diese CSS-Kuriositäten Erinnerungen an meine schmerzhaften Jahre zurückbrachten. Es ist wirklich gut, dass man sich mit solchen Hacks und herstellerspezifischen Dingen nicht mehr herumschlagen muss. Mein letztes Projekt mit IE7 und IE8 als Ziel war 2018.
+- Leider heißt es, diese Hacks nicht zu brauchen, dass alle auf Chrome zielen. Dann hat man schlechte Performance oder kaputte Seiten in Firefox, dem einzigen Browser, der noch ein richtiges uBlock Origin ausführen kann.
+** iPod Classic 6G in QEMU :emulation:qemu:reverseengineering:retrocomputing:
+:PROPERTIES:
+:ID:       49611240
+:URL:      https://www.reddit.com/r/emulation/s/VL4Au2HGxq
+:HN_URL:   https://news.ycombinator.com/item?id=49611240
+:POINTS:   13
+:COMMENTS: 2
+:BY:       dmonterocrespo
+:END:
+
+*** TLDR
+［the Reddit thread refuses requests from logged-out clients, so this is from the author's own account of the work, posted to HN］ dmonterocrespo built a QEMU machine for the iPod Classic 6G, based on Samsung's S5L8702, that boots Apple's original unmodified retailOS. Navigation, the disk, the screen and the music library came up, but the music player rendered only partially and produced no sound. The firmware is encrypted and there is no legal download, so he extracted it from his own 2008 iPod using emCORE and decrypted the image himself. The boot ROM cannot be read from a running device, which he confirmed the hard way while the iPod rebooted on him repeatedly. There is no datasheet for the SoC, so every register that unlocks a piece of hardware had to be inferred from writes the guest firmware performs. He counts roughly 16 hypotheses retracted along the way and four separate bugs between him and a working music player, the last of which was his own doing. Cover Flow is next.
+
+*** Take
+This is the part of emulation work that never makes the screenshot: no datasheet, no legal firmware, a boot ROM you can only fail to read, and a register map reconstructed from what the guest tries to write to it. Sixteen retracted hypotheses is the real unit of progress here, and publishing them is more useful than the demo video. The post is sitting at 13 points because it is a Reddit link about a music player from 2008, which says more about how link aggregation ranks things than about the work.
+
+*** Comments
+
+**** dmonterocrespo
+:PROPERTIES:
+:COMMENT_ID: 49611241
+:END:
+The firmware is from Apple and is encrypted, so there's no legal download. I extracted the contents of the flash memory from my own iPod using emCORE and decrypted the image myself. The boot ROM cannot be read from the running device. I confirmed that the hard way, and my iPod restarted several times along the way.
+
+**** dmonterocrespo
+:PROPERTIES:
+:COMMENT_ID: 49612839
+:END:
+Unlocking the music player gave me a lot of trouble. I searched freemyipod.org for memory register information, but there was nothing for this particular iPod that could help. Now I'm trying to unlock Cover Flow, which I loved the first time I saw it on my iPod.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+在 QEMU 里跑 iPod Classic 6G
+***** TLDR
+［Reddit 帖子拒绝未登录客户端访问，以下内容来自作者本人发在 HN 上的自述］dmonterocrespo 为基于三星 S5L8702 的 iPod Classic 6G 写了一个 QEMU 机器型号，能启动苹果原版未修改的 retailOS。导航、磁盘、屏幕和音乐库都跑起来了，但音乐播放器只渲染了一部分，而且没有声音。固件是加密的，也没有合法下载途径，于是他用 emCORE 从自己那台 2008 年的 iPod 里把闪存内容提取出来，自己解密了镜像。引导 ROM 无法在设备运行时读取，这一点他是吃了苦头才确认的，过程中 iPod 重启了好几次。这颗 SoC 没有数据手册，因此每一个用于解锁某块硬件的寄存器，都只能从客体固件自己写入的值里推断出来。他说沿途大约推翻了 16 个假设，横在他和可用音乐播放器之间的是四个不同的 bug，最后一个是他自己造成的。下一步是 Cover Flow。
+***** Take
+这正是模拟器工作中永远上不了截图的那部分：没有数据手册，没有合法固件，一块只能读失败的引导 ROM，以及一张靠客体往里写什么来反推出的寄存器映射表。这里真正的进度单位是十六个被推翻的假设，把它们公开出来比一段演示视频有用得多。这篇帖子只有 13 分，因为它是一个关于 2008 年音乐播放器的 Reddit 链接，这说明的是链接聚合怎么排序，而不是这项工作本身的价值。
+***** Comments
+- 固件来自苹果并且是加密的，没有合法下载途径。我用 emCORE 从自己的 iPod 里提取了闪存内容，自己解密了镜像。引导 ROM 无法在设备运行时读取，这一点我是吃了苦头才确认的，过程中 iPod 重启了好几次。
+- 解锁音乐播放器让我非常头疼。我在 freemyipod.org 上找过内存寄存器的资料，但没有任何关于这一款 iPod 的信息能帮到我。现在我在试着解锁 Cover Flow，第一次在自己的 iPod 上看到它时我就很喜欢。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+iPod Classic 6G を QEMU で動かす
+***** TLDR
+［Reddit のスレッドは未ログインのクライアントからの取得を拒むため、以下は著者自身が HN に投稿した説明にもとづく］dmonterocrespo が、Samsung の S5L8702 を搭載した iPod Classic 6G 用の QEMU マシンを作り、Apple の未改変の retailOS を起動させた。ナビゲーション、ディスク、画面、音楽ライブラリは立ち上がったが、音楽プレーヤーは部分的にしか描画されず、音も出なかった。ファームウェアは暗号化されていて合法的な入手先がないため、彼は自分の2008年製 iPod から emCORE でフラッシュメモリの内容を吸い出し、イメージを自分で復号した。ブート ROM は動作中の端末からは読めない。それを身をもって確かめる過程で、iPod は何度も再起動した。SoC のデータシートは存在せず、ハードウェアの一部を解放するレジスタは、ゲスト側ファームウェアが行う書き込みから推測するほかなかった。途中で撤回した仮説はおよそ16、動く音楽プレーヤーとの間には別々のバグが四つあり、最後の一つは自分のせいだったという。次は Cover Flow だ。
+***** Take
+これはエミュレーション作業のうち、決してスクリーンショットには写らない部分だ。データシートなし、合法なファームウェアなし、読もうとして失敗することしかできないブート ROM、そしてゲストが書き込もうとする値から組み直したレジスタマップ。ここでの進捗の単位は撤回した16の仮説であり、それを公開することはデモ動画より役に立つ。この投稿が13ポイントなのは、2008年の音楽プレーヤーについての Reddit リンクだからで、それが語っているのは仕事の中身ではなくリンク集積の順位付けのほうだ。
+***** Comments
+- ファームウェアは Apple のもので暗号化されており、合法的なダウンロード先はない。自分の iPod から emCORE でフラッシュメモリの内容を取り出し、イメージは自分で復号した。ブート ROM は動作中の端末からは読めない。それを身をもって確かめる過程で、iPod は何度も再起動した。
+- 音楽プレーヤーの解放にはとても苦労した。freemyipod.org でメモリレジスタの情報を探したが、この機種に役立つものは何もなかった。いまは Cover Flow の解放に取り組んでいる。自分の iPod で初めて見たときから気に入っていた機能だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+QEMU에서 돌아가는 iPod Classic 6G
+***** TLDR
+［레딧 스레드가 로그인하지 않은 클라이언트의 요청을 거부해서, 아래는 저자가 HN에 직접 올린 설명을 바탕으로 한다］ dmonterocrespo가 삼성 S5L8702를 쓰는 iPod Classic 6G용 QEMU 머신을 만들어, 애플의 원본 그대로인 retailOS를 부팅시켰다. 탐색, 디스크, 화면, 음악 라이브러리는 올라왔지만 음악 플레이어는 일부만 그려졌고 소리도 나지 않았다. 펌웨어는 암호화돼 있고 합법적인 내려받기 경로가 없어서, 그는 자기 2008년형 iPod에서 emCORE로 플래시 메모리 내용을 뽑아내고 이미지를 직접 복호화했다. 부트 ROM은 동작 중인 기기에서 읽을 수 없는데, 그는 그 사실을 몸으로 확인했고 그 과정에서 iPod이 여러 번 재시작했다. SoC 데이터시트가 없어서 하드웨어를 열어주는 레지스터는 모두 게스트 펌웨어가 쓰는 값에서 추론해야 했다. 그는 도중에 철회한 가설이 대략 16개였고, 작동하는 음악 플레이어까지 버그가 네 개 있었으며 마지막 하나는 자기 탓이었다고 말한다. 다음은 커버 플로우다.
+***** Take
+이건 에뮬레이션 작업 중 스크린샷에는 결코 담기지 않는 부분이다. 데이터시트도 없고, 합법적인 펌웨어도 없고, 읽으려다 실패할 수만 있는 부트 ROM이 있고, 게스트가 무엇을 쓰려 하는지로 재구성한 레지스터 지도가 있다. 여기서 진짜 진척의 단위는 철회한 가설 열여섯 개이고, 그것을 공개하는 편이 데모 영상보다 유용하다. 이 글이 13점에 머무는 건 2008년 음악 플레이어에 관한 레딧 링크이기 때문인데, 그건 작업의 가치보다 링크 집계가 무엇을 위로 올리는지를 말해준다.
+***** Comments
+- 펌웨어는 애플 것이고 암호화돼 있어서 합법적인 내려받기 경로가 없다. 내 iPod에서 emCORE로 플래시 메모리 내용을 추출하고 이미지는 직접 복호화했다. 부트 ROM은 동작 중인 기기에서 읽을 수 없다. 그걸 힘들게 확인했고, 그 과정에서 iPod이 여러 번 재시작했다.
+- 음악 플레이어를 여는 데 애를 많이 먹었다. freemyipod.org에서 메모리 레지스터 정보를 찾아봤지만 이 기종에 도움이 될 만한 건 없었다. 지금은 커버 플로우를 여는 중이다. 내 iPod에서 처음 봤을 때부터 좋아했던 기능이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+iPod Classic 6G en QEMU
+***** TLDR
+［el hilo de Reddit rechaza las peticiones de clientes sin sesión, así que esto proviene del relato que el propio autor publicó en HN］ dmonterocrespo construyó una máquina QEMU para el iPod Classic 6G, basado en el S5L8702 de Samsung, que arranca el retailOS original de Apple sin modificar. La navegación, el disco, la pantalla y la biblioteca musical funcionaron, pero el reproductor se dibujaba solo en parte y no daba sonido. El firmware está cifrado y no hay descarga legal, así que extrajo el contenido de la memoria flash de su propio iPod de 2008 con emCORE y descifró la imagen él mismo. La ROM de arranque no se puede leer desde el dispositivo en marcha, algo que confirmó por las malas mientras el iPod se le reiniciaba varias veces. No existe hoja de datos del SoC, así que cada registro que desbloquea una parte del hardware tuvo que deducirse de las escrituras que hace el firmware invitado. Cuenta unas 16 hipótesis retiradas por el camino y cuatro fallos distintos entre él y un reproductor funcional, el último de ellos obra suya. Cover Flow es lo siguiente.
+***** Take
+Esta es la parte del trabajo de emulación que nunca sale en la captura de pantalla: sin hoja de datos, sin firmware legal, una ROM de arranque que solo puedes fracasar en leer y un mapa de registros reconstruido a partir de lo que el invitado intenta escribir en él. Dieciséis hipótesis retiradas son aquí la verdadera unidad de progreso, y publicarlas resulta más útil que el vídeo de demostración. El post está en 13 puntos porque es un enlace de Reddit sobre un reproductor de 2008, lo que dice más sobre cómo ordena las cosas la agregación de enlaces que sobre el trabajo.
+***** Comments
+- El firmware es de Apple y está cifrado, así que no hay descarga legal. Extraje el contenido de la memoria flash de mi propio iPod con emCORE y descifré la imagen yo mismo. La ROM de arranque no se puede leer desde el dispositivo en marcha. Lo confirmé por las malas, y mi iPod se reinició varias veces por el camino.
+- Desbloquear el reproductor de música me dio muchos problemas. Busqué información de registros de memoria en freemyipod.org, pero no había nada de este iPod concreto que sirviera. Ahora intento desbloquear Cover Flow, que me encantó la primera vez que lo vi en mi iPod.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+iPod Classic 6G in QEMU
+***** TLDR
+［der Reddit-Thread verweigert Anfragen von nicht angemeldeten Clients, daher stammt dies aus dem Bericht, den der Autor selbst auf HN gepostet hat］ dmonterocrespo hat eine QEMU-Maschine für den iPod Classic 6G gebaut, der auf Samsungs S5L8702 basiert, und bringt damit Apples unverändertes retailOS zum Starten. Navigation, Festplatte, Bildschirm und Musikbibliothek liefen, der Musikplayer wurde aber nur teilweise gezeichnet und blieb stumm. Die Firmware ist verschlüsselt und es gibt keinen legalen Download, also las er den Flash-Inhalt seines eigenen iPod von 2008 mit emCORE aus und entschlüsselte das Image selbst. Das Boot-ROM lässt sich vom laufenden Gerät nicht lesen, was er auf die harte Tour bestätigte, während der iPod ihm mehrfach neu startete. Für den SoC existiert kein Datenblatt, also musste jedes Register, das ein Stück Hardware freischaltet, aus den Schreibzugriffen der Gast-Firmware erschlossen werden. Er zählt rund 16 im Lauf der Arbeit zurückgezogene Hypothesen und vier verschiedene Fehler zwischen sich und einem funktionierenden Player, den letzten davon selbst verursacht. Als Nächstes kommt Cover Flow.
+***** Take
+Das ist der Teil der Emulationsarbeit, der es nie auf den Screenshot schafft: kein Datenblatt, keine legale Firmware, ein Boot-ROM, an dem man nur scheitern kann, und eine Registerkarte, rekonstruiert aus dem, was der Gast hineinzuschreiben versucht. Sechzehn zurückgezogene Hypothesen sind hier die eigentliche Einheit des Fortschritts, und sie zu veröffentlichen nützt mehr als das Demovideo. Der Beitrag steht bei 13 Punkten, weil er ein Reddit-Link über einen Musikspieler von 2008 ist, was mehr über die Sortierung von Linksammlungen aussagt als über die Arbeit.
+***** Comments
+- Die Firmware stammt von Apple und ist verschlüsselt, es gibt also keinen legalen Download. Ich habe den Inhalt des Flash-Speichers aus meinem eigenen iPod mit emCORE ausgelesen und das Image selbst entschlüsselt. Das Boot-ROM lässt sich vom laufenden Gerät nicht lesen. Das habe ich auf die harte Tour bestätigt, und mein iPod startete dabei mehrfach neu.
+- Den Musikplayer freizuschalten hat mir große Mühe gemacht. Ich habe auf freemyipod.org nach Informationen zu Speicherregistern gesucht, aber zu genau diesem iPod gab es nichts Brauchbares. Jetzt versuche ich, Cover Flow freizuschalten, das ich mochte, seit ich es zum ersten Mal auf meinem iPod gesehen habe.
