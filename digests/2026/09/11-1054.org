@@ -1,0 +1,512 @@
+#+TITLE: HN Digest 2026-09-11 10:54 UTC
+#+DATE: 2026-09-11T10:54:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Forgejo patches a critical RCE, a 16-year-old puts out fires with sound, and the same model scores 23 points apart depending on who hosts it
+
+* Highlights
+- Forgejo 16.0.4: template expansion ran before git init, so a template could plant its own .git
+- Vortex Tech: a 12V battery, a frequency generator and a speaker that kills flames in 5 to 8 seconds
+- OpenRouter: DeepSeek V4 Flash scores 81% on tool calling at one host, 58% at another
+- Cherenkov: the blue glow is real, the 'faster than light' headline needs three more words
+- Nine coding harnesses on a laptop: bloated system prompts cost you four minutes before the first token
+
+* Stories
+
+** Forgejo <=16.0.3 Critical RCE :security:git:rce:forgejo:opensource:
+:PROPERTIES:
+:ID:       49645907
+:URL:      https://codeberg.org/forgejo/forgejo/src/branch/forgejo/release-notes-published/16.0.4.md
+:HN_URL:   https://news.ycombinator.com/item?id=49645907
+:POINTS:   191
+:COMMENTS: 70
+:BY:       weierstass
+:END:
+
+*** TLDR
+Forgejo 16.0.4 fixes a critical remote code execution bug in repository templates. When generating a repo from a template, Forgejo cloned it, deleted the .git folder, then ran variable expansion, then initialized git. Expansion could write a new .git folder with attacker-controlled config, giving a malicious template arbitrary file reads and code execution on the server. The fix removes .git after expansion instead of before. Two more security fixes ship in the same release: scoped API tokens could exceed their permissions on pull requests with 'allow maintainer edit' set, and anyone with read access could fetch the metadata and contents of draft release attachments (the same bug as Gitea's CVE-2026-27660). The release notes assign no CVE to the RCE itself.
+
+*** Take
+This is an ordering bug, not a clever exploit: the code sanitized the repo, then handed it to a step that could un-sanitize it. Any operation that writes attacker-controlled paths has to run before the cleanup, never after. The part of the thread people will remember is Gitea's maintainer arriving to confirm Gitea is unaffected while explicitly saying nobody should be shamed for disclosing.
+
+*** Comments
+
+**** amiga386
+Points at the milestone rather than the release notes: the fix prevents template expansion from interfering with git repo initialization, because expansion happened after the .git folder was removed.
+
+**** techknowlogick
+Only posting here because I've been asked about it. Gitea is protected against both of these issues. Security incidents happen to everyone and we shouldn't shame anyone for reporting them.
+
+**** keel-control
+This was my first thought after they disallowed LLM contributions. They may not use AI to check for vulnerabilities but attackers are going to.
+
+*** i18n                                                  :i18n:
+
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+RCE crítica en Forgejo <=16.0.3
+***** TLDR
+Forgejo 16.0.4 corrige una ejecución remota de código crítica en las plantillas de repositorio. Al generar un repo desde una plantilla, Forgejo la clonaba, borraba la carpeta .git, luego expandía las variables y después inicializaba git. La expansión podía escribir una nueva carpeta .git con configuración controlada por el atacante, lo que daba a una plantilla maliciosa lectura arbitraria de archivos y ejecución de código en el servidor. El arreglo elimina .git después de la expansión en vez de antes. La misma versión trae dos correcciones más: los tokens de API con alcance limitado podían exceder sus permisos en pull requests con 'allow maintainer edit' activado, y cualquiera con acceso de lectura podía obtener los metadatos y el contenido de los adjuntos de releases en borrador (el mismo fallo que CVE-2026-27660 de Gitea). Las notas no asignan CVE a la RCE.
+***** Take
+Es un error de orden, no un exploit ingenioso: el código saneaba el repo y luego se lo entregaba a un paso capaz de deshacer ese saneamiento. Toda operación que escriba rutas controladas por el atacante debe ejecutarse antes de la limpieza, nunca después. Lo que quedará del hilo es el mantenedor de Gitea apareciendo para confirmar que Gitea no está afectado mientras dice explícitamente que nadie debería ser avergonzado por reportar.
+***** Comments
+- Señala el milestone en lugar de las notas de la versión: el arreglo evita que la expansión de plantillas interfiera con la inicialización del repo git, porque la expansión ocurría después de borrar la carpeta .git.
+- Solo escribo porque me lo han preguntado. Gitea está protegido contra ambos problemas. Los incidentes de seguridad le pasan a todos y no deberíamos avergonzar a nadie por reportarlos.
+- Fue lo primero que pensé cuando prohibieron las contribuciones con LLM. Puede que ellos no usen IA para buscar vulnerabilidades, pero los atacantes sí lo harán.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Kritische RCE in Forgejo <=16.0.3
+***** TLDR
+Forgejo 16.0.4 behebt eine kritische Remote Code Execution in Repository-Vorlagen. Beim Erzeugen eines Repos aus einer Vorlage klonte Forgejo diese, löschte den .git-Ordner, führte dann die Variablenexpansion aus und initialisierte danach git. Die Expansion konnte einen neuen .git-Ordner mit angreiferkontrollierter Konfiguration schreiben, womit eine bösartige Vorlage beliebige Dateien lesen und Code auf dem Server ausführen konnte. Der Fix entfernt .git nach der Expansion statt davor. Dieselbe Version bringt zwei weitere Sicherheitsfixes: eingeschränkte API-Tokens konnten ihre Rechte bei Pull Requests mit 'allow maintainer edit' überschreiten, und jeder mit Lesezugriff konnte Metadaten und Inhalte von Anhängen unveröffentlichter Releases abrufen (derselbe Fehler wie Giteas CVE-2026-27660). Den Release Notes zufolge gibt es für die RCE keine CVE-Nummer.
+***** Take
+Das ist ein Reihenfolgefehler, kein raffinierter Exploit: Der Code säuberte das Repo und übergab es dann an einen Schritt, der diese Säuberung rückgängig machen konnte. Jede Operation, die angreiferkontrollierte Pfade schreibt, muss vor dem Aufräumen laufen, nie danach. Im Gedächtnis bleibt vom Thread, wie Giteas Maintainer auftaucht, bestätigt dass Gitea nicht betroffen ist, und ausdrücklich sagt, niemand solle für eine Meldung beschämt werden.
+***** Comments
+- Verweist auf den Milestone statt auf die Release Notes: Der Fix verhindert, dass die Template-Expansion die Initialisierung des git-Repos stört, denn die Expansion lief nach dem Entfernen des .git-Ordners.
+- Ich schreibe nur, weil ich danach gefragt wurde. Gitea ist gegen beide Probleme geschützt. Sicherheitsvorfälle passieren jedem, und niemand sollte für eine Meldung beschämt werden.
+- Das war mein erster Gedanke, nachdem sie LLM-Beiträge verboten haben. Sie nutzen vielleicht keine KI zur Suche nach Schwachstellen, aber Angreifer werden es tun.
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Forgejo <=16.0.3 심각한 RCE
+***** TLDR
+Forgejo 16.0.4가 저장소 템플릿의 심각한 원격 코드 실행 취약점을 고쳤다. 템플릿에서 저장소를 만들 때 Forgejo는 템플릿을 클론하고 .git 폴더를 지운 뒤 변수 확장을 실행하고 그다음에 git을 초기화했다. 확장 단계에서 공격자가 제어하는 설정이 담긴 새 .git 폴더를 쓸 수 있었고, 악성 템플릿으로 서버의 임의 파일을 읽고 코드를 실행할 수 있었다. 수정은 .git을 확장 이전이 아니라 이후에 제거하도록 바꿨다. 같은 릴리스에 보안 수정 두 건이 더 있다. 'allow maintainer edit'이 켜진 풀 리퀘스트에서 범위가 제한된 API 토큰이 권한을 넘어설 수 있었고, 읽기 권한만 있어도 초안 릴리스 첨부파일의 메타데이터와 내용을 가져올 수 있었다(Gitea의 CVE-2026-27660과 같은 문제). 릴리스 노트는 이 RCE에 CVE 번호를 부여하지 않았다.
+***** Take
+정교한 익스플로잇이 아니라 순서 문제다. 코드가 저장소를 정리한 뒤, 그 정리를 되돌릴 수 있는 단계에 넘겼다. 공격자가 제어하는 경로를 쓰는 작업은 정리 이후가 아니라 반드시 이전에 실행돼야 한다. 이 스레드에서 오래 남을 장면은 Gitea 메인테이너가 나타나 Gitea는 영향받지 않는다고 확인하면서, 취약점을 신고한 사람을 비난해선 안 된다고 분명히 말한 대목이다.
+***** Comments
+- 릴리스 노트 대신 마일스톤을 가리킨다. 수정은 템플릿 확장이 git 저장소 초기화를 방해하지 못하게 막는 것인데, 확장이 .git 폴더를 지운 뒤에 실행됐기 때문이다.
+- 질문을 받아서 씁니다. Gitea는 두 문제 모두에 대해 안전합니다. 보안 사고는 누구에게나 일어나며, 신고한 사람을 비난해서는 안 됩니다.
+- LLM 기여를 금지했을 때 제일 먼저 든 생각입니다. 그들은 취약점 탐색에 AI를 안 쓸지 몰라도 공격자는 씁니다.
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Forgejo <=16.0.3 の重大なRCE
+***** TLDR
+Forgejo 16.0.4がリポジトリテンプレートの重大なリモートコード実行を修正した。テンプレートからリポジトリを生成する際、Forgejoはテンプレートをクローンし、.gitフォルダを削除し、その後に変数展開を行ってからgitを初期化していた。展開の段階で攻撃者が制御する設定を含む新しい.gitフォルダを書き込めたため、悪意あるテンプレートでサーバー上の任意ファイル読み取りとコード実行が可能だった。修正では.gitの削除を展開の前ではなく後に行う。同じリリースにセキュリティ修正が2件ある。'allow maintainer edit'が有効なプルリクエストでスコープ制限付きAPIトークンが権限を超えられた件と、読み取り権限だけで下書きリリースの添付ファイルのメタデータと内容を取得できた件（GiteaのCVE-2026-27660と同じ問題）だ。リリースノートはこのRCEにCVE番号を割り当てていない。
+***** Take
+巧妙なエクスプロイトではなく順序のバグだ。コードはリポジトリを一度きれいにしてから、そのきれいさを取り消せる処理に渡していた。攻撃者が制御するパスを書き込む処理は、後片付けの後ではなく必ず前に実行しなければならない。このスレッドで長く記憶に残るのは、Giteaのメンテナが現れてGiteaは影響を受けないと確認しつつ、報告した人を責めるべきではないと明言した部分だろう。
+***** Comments
+- リリースノートではなくマイルストーンを示している。修正はテンプレート展開がgitリポジトリの初期化を妨げないようにするもので、展開が.gitフォルダ削除の後に走っていたのが原因だ。
+- 聞かれたので書いています。Giteaは両方の問題に対して保護されています。セキュリティ事案は誰にでも起こるもので、報告した人を責めるべきではありません。
+- LLMによる貢献を禁止したとき最初に思ったことです。彼らは脆弱性探しにAIを使わないかもしれませんが、攻撃者は使います。
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Forgejo <=16.0.3 严重 RCE 漏洞
+***** TLDR
+Forgejo 16.0.4 修复了仓库模板中的严重远程代码执行漏洞。从模板生成仓库时，Forgejo 先克隆模板、删除 .git 目录，然后做变量展开，最后才初始化 git。变量展开这一步可以写出一个由攻击者控制配置的新 .git 目录，于是恶意模板能在服务器上任意读取文件并执行代码。修复方案改为在展开之后而不是之前删除 .git。同一版本还修了两个安全问题：在开启 'allow maintainer edit' 的 PR 上，受限作用域的 API token 能越权；以及只有读权限的人也能取到草稿 release 附件的元数据和内容（与 Gitea 的 CVE-2026-27660 是同一个问题）。发布说明没有给这个 RCE 分配 CVE 编号。
+***** Take
+这是顺序错误，不是什么精巧的漏洞利用：代码先把仓库清理干净，然后交给一个能把清理结果撤销的步骤。任何会写入攻击者可控路径的操作，都必须排在清理之前，绝不能排在之后。这个帖子里最值得记住的一幕，是 Gitea 的维护者现身确认 Gitea 不受影响，同时明确表示不该因为有人报告漏洞就羞辱他们。
+***** Comments
+- 他指向的是 milestone 而不是发布说明：修复的是让模板展开不再干扰 git 仓库初始化，因为展开发生在删除 .git 目录之后。
+- 只是因为有人问我才来发言。Gitea 对这两个问题都有防护。安全事件谁都会遇到，不该羞辱报告问题的人。
+- 他们禁止 LLM 贡献时我第一个想到的就是这个。他们可能不用 AI 找漏洞，但攻击者一定会用。
+** Mexican student creates an acoustic fire extinguisher to put out fire in seconds :science:hardware:fire-safety:acoustics:education:
+:PROPERTIES:
+:ID:       49652237
+:URL:      https://www.upsocl.com/en/16-year-old-mexican-student-creates-an-acoustic-fire-extinguisher-that-uses-sound-waves-to-put-out-fires-in-seconds/
+:HN_URL:   https://news.ycombinator.com/item?id=49652237
+:POINTS:   233
+:COMMENTS: 80
+:BY:       rguiscard
+:END:
+
+*** TLDR
+Ángela Karime Venegas Hernández, 16, a student at CETIS 78 in Altamira, Tamaulipas, built a device she calls Vortex Tech: a 12-volt battery, a frequency generator and a speaker emitting 30 pulses per second. The low-frequency pressure waves push oxygen away from the flame front, putting out fires in 5 to 8 seconds. She ran over 100 tests on candles, wood, flammable liquids, cooking grease and electronic equipment, and reports no residue and no harm to the operator. She is set to represent Mexico at an international science fair.
+
+*** Take
+The thread found the prior art within minutes, and it is real: acoustic extinguishers have been built and filmed for more than a decade, including a well-known DARPA effort, and none became a product. The reason is physical, not bureaucratic. Sound displaces oxygen but removes no heat, so anything still above its ignition temperature relights the moment the speaker stops. That limits the idea to fixed-distance cases like grills and grain silos, which is exactly where the thread's most informed comment pointed. None of that is a knock on a 16-year-old who built the thing and tested it a hundred times.
+
+*** Comments
+
+**** nilslindemann
+A search for 'youtube acoustic fire extinguisher' shows it has already been invented a few times by people all over the world.
+
+**** jll29
+I will not ask if she patented it, or if others had the idea before, or if it is ready to be productized. Just simply: it is great that young people, driven by personal curiosity, go and explore their ideas.
+
+**** Animats
+This seems to be a known technology but hasn't made it as a product. It might have potential for very specific types of extinguishing, such as grills and grain silos, where the distance from extinguisher to trouble spot is fixed.
+
+*** i18n                                                  :i18n:
+
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Una estudiante mexicana crea un extintor acústico que apaga el fuego en segundos
+***** TLDR
+Ángela Karime Venegas Hernández, de 16 años, estudiante del CETIS 78 en Altamira, Tamaulipas, construyó un dispositivo al que llama Vortex Tech: una batería de 12 voltios, un generador de frecuencias y una bocina que emite 30 pulsos por segundo. Las ondas de presión de baja frecuencia alejan el oxígeno del frente de llama y apagan el fuego en 5 a 8 segundos. Hizo más de 100 pruebas con velas, madera, líquidos inflamables, grasa de cocina y equipos electrónicos, y reporta que no deja residuos ni daña a quien lo usa. Representará a México en una feria científica internacional.
+***** Take
+El hilo encontró los antecedentes en minutos, y son reales: se han construido y filmado extintores acústicos durante más de una década, incluido un conocido proyecto de DARPA, y ninguno llegó al mercado. La razón es física, no burocrática. El sonido desplaza el oxígeno pero no retira calor, así que todo lo que siga por encima de su temperatura de ignición se reenciende en cuanto se apaga la bocina. Eso limita la idea a casos de distancia fija como parrillas y silos de grano, justo lo que señaló el comentario mejor informado del hilo. Nada de eso resta mérito a una chica de 16 años que construyó el aparato y lo probó cien veces.
+***** Comments
+- Buscar 'youtube acoustic fire extinguisher' muestra que ya lo han inventado varias veces personas de todo el mundo.
+- No voy a preguntar si lo patentó, ni si otros tuvieron la idea antes, ni si está listo para producirse. Simplemente: es genial que gente joven, movida por su curiosidad, explore sus ideas.
+- Parece una tecnología conocida que no ha llegado a ser producto. Podría tener potencial para casos muy concretos, como parrillas y silos de grano, donde la distancia al foco es fija.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Mexikanische Schülerin baut akustischen Feuerlöscher, der Flammen in Sekunden löscht
+***** TLDR
+Ángela Karime Venegas Hernández, 16, Schülerin am CETIS 78 in Altamira, Tamaulipas, baute ein Gerät namens Vortex Tech: eine 12-Volt-Batterie, ein Frequenzgenerator und ein Lautsprecher mit 30 Impulsen pro Sekunde. Die niederfrequenten Druckwellen drängen den Sauerstoff von der Flammenfront weg und löschen Feuer in 5 bis 8 Sekunden. Sie führte über 100 Tests mit Kerzen, Holz, brennbaren Flüssigkeiten, Küchenfett und Elektronik durch und berichtet von keinen Rückständen und keiner Gefahr für die bedienende Person. Sie soll Mexiko auf einer internationalen Wissenschaftsmesse vertreten.
+***** Take
+Der Thread fand den Stand der Technik binnen Minuten, und er ist real: Akustische Löscher werden seit über einem Jahrzehnt gebaut und gefilmt, darunter ein bekanntes DARPA-Projekt, und keiner wurde ein Produkt. Der Grund ist physikalisch, nicht bürokratisch. Schall verdrängt Sauerstoff, entzieht aber keine Wärme, also entzündet sich alles oberhalb seiner Zündtemperatur wieder, sobald der Lautsprecher aufhört. Das begrenzt die Idee auf Fälle mit festem Abstand wie Grills und Getreidesilos, worauf der sachkundigste Kommentar im Thread genau hinwies. Nichts davon schmälert, dass eine 16-Jährige das Gerät gebaut und hundertmal getestet hat.
+***** Comments
+- Eine Suche nach 'youtube acoustic fire extinguisher' zeigt, dass es weltweit schon mehrfach erfunden wurde.
+- Ich frage nicht, ob sie es patentiert hat, ob andere die Idee vorher hatten oder ob es produktreif ist. Einfach nur: Es ist großartig, dass junge Menschen aus eigener Neugier ihre Ideen verfolgen.
+- Das scheint bekannte Technik zu sein, die es nie zum Produkt geschafft hat. Für sehr spezielle Fälle wie Grills und Getreidesilos, wo der Abstand zum Brandherd fest ist, könnte sie Potenzial haben.
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+멕시코 학생이 몇 초 만에 불을 끄는 음향 소화기를 만들다
+***** TLDR
+타마울리파스주 알타미라의 CETIS 78에 다니는 16세 앙헬라 카리메 베네가스 에르난데스가 'Vortex Tech'라는 장치를 만들었다. 12볼트 배터리, 주파수 발생기, 초당 30회 펄스를 내는 스피커로 구성된다. 저주파 압력파가 화염면에서 산소를 밀어내 5~8초 만에 불을 끈다. 그는 양초, 나무, 인화성 액체, 조리용 기름, 전자기기를 대상으로 100회 넘게 시험했고 잔여물이 없고 사용자에게 해가 없다고 밝혔다. 국제 과학 박람회에서 멕시코를 대표할 예정이다.
+***** Take
+스레드는 몇 분 만에 선행 사례를 찾아냈고 그건 사실이다. 음향 소화기는 10년 넘게 만들어지고 촬영돼 왔으며 잘 알려진 DARPA 과제도 있었지만 제품이 된 적은 없다. 이유는 관료주의가 아니라 물리다. 소리는 산소를 밀어내지만 열은 빼앗지 못하므로, 발화 온도 이상으로 남아 있는 것은 스피커가 멈추는 순간 다시 불이 붙는다. 그래서 이 아이디어는 그릴이나 곡물 사일로처럼 거리가 고정된 경우로 한정되는데, 스레드에서 가장 정보가 밝은 댓글이 바로 그 점을 짚었다. 물론 이 중 어느 것도 직접 만들고 백 번 시험한 16세 학생을 깎아내리는 말은 아니다.
+***** Comments
+- 'youtube acoustic fire extinguisher'로 검색해 보면 전 세계 사람들이 이미 여러 번 발명했다는 걸 알 수 있다.
+- 특허를 냈는지, 전에 같은 아이디어를 낸 사람이 있었는지, 제품화가 가능한지는 묻지 않겠다. 그저 호기심에 이끌린 젊은이가 자기 아이디어를 탐구한다는 게 멋질 뿐이다.
+- 이미 알려진 기술인데 제품이 되지는 못한 것 같다. 그릴이나 곡물 사일로처럼 소화기와 화원의 거리가 고정된 아주 특정한 경우에는 가능성이 있을지도 모른다.
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+メキシコの学生が数秒で消火する音響消火器を製作
+***** TLDR
+タマウリパス州アルタミラのCETIS 78に通う16歳のアンヘラ・カリメ・ベネガス・エルナンデスが、Vortex Techと名付けた装置を作った。12ボルトの電池、周波数発生器、毎秒30パルスを出すスピーカーで構成される。低周波の圧力波が火炎面から酸素を押しのけ、5〜8秒で消火する。ろうそく、木材、可燃性液体、調理油、電子機器を対象に100回以上の試験を行い、残渣が出ず使用者にも害がないと報告している。国際科学フェアでメキシコ代表として発表する予定だ。
+***** Take
+スレッドは数分で先行事例を見つけ、それは事実だ。音響消火器は10年以上前から作られ動画にもなっており、有名なDARPAの取り組みもあったが、製品になったものはない。理由は官僚主義ではなく物理だ。音は酸素を押しのけるが熱は奪わないので、発火温度を超えたままのものはスピーカーを止めた瞬間に再着火する。だからこの発想はグリルや穀物サイロのように距離が固定された用途に限られる。スレッドで最も詳しいコメントが指摘したのがまさにそこだった。とはいえ、実際に作って100回試した16歳を否定する話ではない。
+***** Comments
+- 'youtube acoustic fire extinguisher'で検索すると、世界中の人が既に何度も発明していることがわかる。
+- 特許を取ったのか、先に同じ発想をした人がいたのか、製品化できるのかは問わない。ただ単純に、好奇心に動かされた若者が自分のアイデアを探究するのは素晴らしい。
+- 既知の技術だが製品化はされていないようだ。グリルや穀物サイロのように消火器と火元の距離が固定される、ごく限られた用途なら可能性はあるかもしれない。
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+墨西哥学生做出几秒内灭火的声波灭火器
+***** TLDR
+塔毛利帕斯州阿尔塔米拉 CETIS 78 的 16 岁学生安赫拉·卡里梅·贝内加斯·埃尔南德斯做了一台她称为 Vortex Tech 的装置：一块 12 伏电池、一个频率发生器和一个每秒发出 30 次脉冲的扬声器。低频压力波把氧气推离火焰面，5 到 8 秒内灭火。她在蜡烛、木材、易燃液体、厨房油脂和电子设备上做了 100 多次测试，称不留残留物、也不会伤到使用者。她将代表墨西哥参加国际科学展。
+***** Take
+帖子里几分钟就翻出了先例，而且确实存在：声波灭火器十多年来被反复制作和拍摄，包括一个知名的 DARPA 项目，但没有一个变成产品。原因是物理层面的，不是审批层面的。声波能推开氧气，却带不走热量，所以只要温度仍在燃点之上，扬声器一停就会复燃。这就把这个思路限制在烤架、粮仓这类距离固定的场景里，而帖子里最内行的那条评论指的正是这一点。这些都不构成对一个亲手做出装置并测试上百次的 16 岁学生的贬低。
+***** Comments
+- 搜一下 'youtube acoustic fire extinguisher' 就知道，世界各地的人已经发明过好几次了。
+- 我不打算问她有没有申请专利、之前是否有人想过、能不能产品化。只想说：年轻人出于好奇去探索自己的想法，这很棒。
+- 这似乎是已知技术，只是没做成产品。在烤架、粮仓这类灭火器与火源距离固定的特定场景里，也许有潜力。
+** So you want to use OpenRouter? :ai:llm:infrastructure:openrouter:benchmarks:
+:PROPERTIES:
+:ID:       49621546
+:URL:      https://mmoustafa.com/blog/so-you-want-to-use-openrouter/
+:HN_URL:   https://news.ycombinator.com/item?id=49621546
+:POINTS:   110
+:COMMENTS: 14
+:BY:       player85
+:END:
+
+*** TLDR
+The author runs Olly, an iMessage AI assistant, on open-weight models through OpenRouter, and documents how much the host behind the model name matters. Same weights, different providers: DeepSeek V4 Flash scored 90% on GPQA and 81% on tool calling at the first-party provider versus 75% and 58% at DigitalOcean. Vision requests fail silently at some hosts, returning 'no image provided' with HTTP 200. The reasoning.effort parameter is accepted everywhere but ignored by DigitalOcean, GMICloud, Mancer and Venice, which return identical token counts at every setting. Declared quantization (fp4, fp8, bf16) does not predict quality. Other traps: tool calls returned as raw XML, reasoning models returning HTTP 200 with null content, conflicting history-format requirements, and per-IP rate limiting that makes local testing unrepresentative. The advice is to benchmark per provider for your own workload, parse tool calls client-side, test from production, and keep flexible fallback chains instead of pinning one host.
+
+*** Take
+OpenRouter sells one API across many models, but this data says the unit of quality is the provider, not the model. A 23-point tool-calling gap under an identical model name means the abstraction is leaking the exact variable you were paying it to hide. The silent failures are worse than the slow ones: a vision request that returns HTTP 200 and 'no image provided' will pass every health check you have and quietly degrade your product.
+
+*** Comments
+
+**** _ink_
+That explains a lot. I was using OpenClaw with OpenRouter but stopped because the results were so inconsistent for the same prompt. I thought OpenClaw was at fault, never would have guessed there are differences between providers.
+
+**** CubsFan1060
+Their billing limits don't work either. Someone used my key from Singapore: it had a $10 daily limit and they spent $100. There are no protections for your API key, no restrictions by country or IP.
+
+**** alexcz
+Strict JSON output also does not work on all the endpoints of the models, so I have to go through them one by one, try it out, and then only whitelist them.
+
+*** i18n                                                  :i18n:
+
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+¿Así que quieres usar OpenRouter?
+***** TLDR
+El autor mantiene Olly, un asistente de IA en iMessage, sobre modelos de pesos abiertos a través de OpenRouter, y documenta cuánto importa el proveedor detrás del nombre del modelo. Mismos pesos, distintos proveedores: DeepSeek V4 Flash sacó 90% en GPQA y 81% en llamadas a herramientas con el proveedor original, frente a 75% y 58% en DigitalOcean. Las peticiones con imágenes fallan en silencio en algunos hosts, que devuelven 'no image provided' con HTTP 200. El parámetro reasoning.effort se acepta en todas partes pero lo ignoran DigitalOcean, GMICloud, Mancer y Venice, que devuelven los mismos conteos de tokens en cualquier ajuste. La cuantización declarada (fp4, fp8, bf16) no predice la calidad. Otras trampas: llamadas a herramientas devueltas como XML crudo, modelos de razonamiento que devuelven HTTP 200 con contenido nulo, requisitos de formato de historial contradictorios y límites de tasa por IP que hacen que las pruebas locales no sean representativas. La recomendación: medir por proveedor con tu propia carga, parsear las llamadas a herramientas en el cliente, probar desde producción y mantener cadenas de respaldo flexibles en vez de fijar un solo host.
+***** Take
+OpenRouter vende una sola API para muchos modelos, pero estos datos dicen que la unidad de calidad es el proveedor, no el modelo. Una diferencia de 23 puntos en llamadas a herramientas bajo un nombre de modelo idéntico significa que la abstracción está filtrando justo la variable que pagabas por ocultar. Los fallos silenciosos son peores que los lentos: una petición de visión que devuelve HTTP 200 y 'no image provided' pasará todos tus health checks mientras degrada tu producto sin avisar.
+***** Comments
+- Eso explica mucho. Usaba OpenClaw con OpenRouter y lo dejé porque los resultados eran inconsistentes con el mismo prompt. Pensé que la culpa era de OpenClaw, nunca habría imaginado que hay diferencias entre proveedores.
+- Sus límites de facturación tampoco funcionan. Alguien usó mi clave desde Singapur: tenía un límite diario de 10 dólares y gastaron 100. No hay protecciones para tu clave de API, ni restricciones por país o IP.
+- La salida JSON estricta tampoco funciona en todos los endpoints de los modelos, así que tengo que ir uno por uno, probarlo y solo entonces ponerlo en la lista blanca.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Du willst also OpenRouter nutzen?
+***** TLDR
+Der Autor betreibt Olly, einen iMessage-KI-Assistenten, auf Open-Weight-Modellen über OpenRouter und dokumentiert, wie sehr der Anbieter hinter dem Modellnamen zählt. Gleiche Gewichte, verschiedene Anbieter: DeepSeek V4 Flash erreichte beim Erstanbieter 90% bei GPQA und 81% bei Tool Calling, bei DigitalOcean dagegen 75% und 58%. Bildanfragen scheitern bei manchen Hosts still und liefern 'no image provided' mit HTTP 200. Der Parameter reasoning.effort wird überall akzeptiert, aber von DigitalOcean, GMICloud, Mancer und Venice ignoriert, die bei jeder Einstellung identische Tokenzahlen zurückgeben. Die angegebene Quantisierung (fp4, fp8, bf16) sagt nichts über die Qualität. Weitere Fallen: Tool Calls als rohes XML, Reasoning-Modelle mit HTTP 200 und leerem Inhalt, widersprüchliche Anforderungen ans History-Format und Rate Limiting pro IP, das lokale Tests unbrauchbar macht. Die Empfehlung: pro Anbieter für die eigene Last benchmarken, Tool Calls clientseitig parsen, aus der Produktion heraus testen und flexible Fallback-Ketten statt eines festen Hosts.
+***** Take
+OpenRouter verkauft eine API für viele Modelle, aber diese Daten sagen: Die Qualitätseinheit ist der Anbieter, nicht das Modell. 23 Punkte Unterschied beim Tool Calling unter identischem Modellnamen heißt, die Abstraktion lässt genau die Variable durch, für deren Verbergen man bezahlt. Die stillen Fehler sind schlimmer als die langsamen: Eine Bildanfrage, die HTTP 200 und 'no image provided' liefert, besteht jeden Health Check und verschlechtert dein Produkt unbemerkt.
+***** Comments
+- Das erklärt einiges. Ich habe OpenClaw mit OpenRouter benutzt und aufgehört, weil die Ergebnisse beim gleichen Prompt so inkonsistent waren. Ich dachte, OpenClaw sei schuld, und hätte nie vermutet, dass es Unterschiede zwischen Anbietern gibt.
+- Ihre Abrechnungslimits funktionieren auch nicht. Jemand hat meinen Key aus Singapur benutzt: Tageslimit 10 Dollar, ausgegeben 100. Es gibt keinerlei Schutz für den API-Key, keine Einschränkung nach Land oder IP.
+- Strikte JSON-Ausgabe funktioniert ebenfalls nicht an allen Endpunkten der Modelle, also muss ich sie einzeln durchgehen, ausprobieren und erst dann freischalten.
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+OpenRouter를 쓰고 싶다고?
+***** TLDR
+저자는 iMessage용 AI 비서 Olly를 OpenRouter 위의 오픈 웨이트 모델로 운영하면서, 모델 이름 뒤의 공급자가 얼마나 중요한지를 기록했다. 같은 가중치라도 공급자에 따라 달랐다. DeepSeek V4 Flash는 1차 공급자에서 GPQA 90%, 툴 호출 81%였지만 DigitalOcean에서는 75%와 58%였다. 일부 호스트는 이미지 요청에서 조용히 실패해 HTTP 200과 함께 'no image provided'를 돌려준다. reasoning.effort 파라미터는 어디서나 받아들여지지만 DigitalOcean, GMICloud, Mancer, Venice는 이를 무시하고 어떤 설정에서도 동일한 토큰 수를 반환한다. 선언된 양자화(fp4, fp8, bf16)는 품질을 예측하지 못한다. 그 밖에 툴 호출이 원시 XML로 오는 경우, 추론 모델이 HTTP 200에 내용이 null인 경우, 히스토리 형식 요구가 서로 충돌하는 경우, IP 단위 속도 제한 탓에 로컬 테스트가 대표성이 없어지는 문제가 있다. 조언은 자기 워크로드로 공급자별 벤치마크를 돌리고, 툴 호출을 클라이언트에서 파싱하고, 운영 환경에서 테스트하고, 한 호스트에 고정하는 대신 유연한 폴백 체인을 두라는 것이다.
+***** Take
+OpenRouter는 여러 모델을 하나의 API로 판다. 그런데 이 데이터가 말하는 품질의 단위는 모델이 아니라 공급자다. 같은 모델 이름에서 툴 호출 점수가 23포인트 벌어진다는 건, 돈을 내고 감추려 했던 바로 그 변수를 추상화가 흘리고 있다는 뜻이다. 조용한 실패가 느린 실패보다 나쁘다. HTTP 200과 'no image provided'를 돌려주는 비전 요청은 모든 헬스 체크를 통과하면서 제품 품질만 조용히 떨어뜨린다.
+***** Comments
+- 많은 게 설명된다. OpenClaw를 OpenRouter와 함께 쓰다가 같은 프롬프트인데도 결과가 너무 들쭉날쭉해서 그만뒀다. OpenClaw 탓인 줄 알았지 공급자마다 차이가 있을 거라곤 생각도 못했다.
+- 결제 한도도 작동하지 않는다. 누군가 싱가포르에서 내 키를 썼는데, 하루 10달러 한도였지만 100달러를 썼다. API 키를 보호할 장치가 없고 국가나 IP 제한도 없다.
+- 엄격한 JSON 출력도 모든 모델 엔드포인트에서 되는 게 아니다. 그래서 하나씩 직접 시험해 보고 되는 것만 화이트리스트에 넣는다.
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+OpenRouterを使いたい？
+***** TLDR
+著者はiMessage向けAIアシスタントOllyをOpenRouter経由のオープンウェイトモデルで動かし、モデル名の裏にいるプロバイダーがどれほど効くかを記録した。同じ重みでもプロバイダーが違えば結果が違う。DeepSeek V4 Flashは一次プロバイダーでGPQA 90%、ツール呼び出し81%だったが、DigitalOceanでは75%と58%だった。画像リクエストが黙って失敗し、HTTP 200とともに'no image provided'を返すホストもある。reasoning.effortパラメータはどこでも受け付けられるが、DigitalOcean、GMICloud、Mancer、Veniceは無視し、どの設定でも同じトークン数を返す。申告された量子化（fp4、fp8、bf16）は品質を予測しない。他にも、ツール呼び出しが生のXMLで返る、推論モデルがHTTP 200で内容がnull、履歴フォーマットの要件が食い違う、IP単位のレート制限でローカルテストが実態を反映しない、といった罠がある。助言は、自分のワークロードでプロバイダーごとにベンチマークを取り、ツール呼び出しはクライアント側でパースし、本番環境からテストし、1つのホストに固定せず柔軟なフォールバック連鎖を持つこと。
+***** Take
+OpenRouterは多数のモデルに対する単一のAPIを売っているが、このデータが示す品質の単位はモデルではなくプロバイダーだ。同じモデル名でツール呼び出しに23ポイントの差が出るということは、隠すために金を払っていたまさにその変数が抽象化から漏れているということだ。静かな失敗は遅い失敗より厄介だ。HTTP 200と'no image provided'を返す画像リクエストは、あらゆるヘルスチェックを通過しながら製品の品質だけを静かに下げる。
+***** Comments
+- いろいろ腑に落ちた。OpenClawをOpenRouterで使っていたが、同じプロンプトでも結果がばらつきすぎてやめた。OpenClawのせいだと思っていて、プロバイダーごとに差があるとは思いもしなかった。
+- 課金上限も機能していない。誰かがシンガポールから私のキーを使い、1日10ドルの上限なのに100ドル使われた。APIキーを守る仕組みがなく、国やIPによる制限もない。
+- 厳密なJSON出力もすべてのモデルのエンドポイントで動くわけではないので、1つずつ試して通ったものだけをホワイトリストに入れている。
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+所以你想用 OpenRouter？
+***** TLDR
+作者用 OpenRouter 上的开放权重模型运行 iMessage AI 助手 Olly，并记录了模型名字背后的供应商有多重要。权重相同、供应商不同，结果差很多：DeepSeek V4 Flash 在第一方供应商上 GPQA 拿 90%、工具调用 81%，在 DigitalOcean 上只有 75% 和 58%。有些主机处理图像请求时会静默失败，返回 HTTP 200 加一句 'no image provided'。reasoning.effort 参数处处都接受，但 DigitalOcean、GMICloud、Mancer 和 Venice 直接忽略，无论怎么设置返回的 token 数都一样。声明的量化精度（fp4、fp8、bf16）并不能预测质量。其他坑还包括：工具调用以原始 XML 返回、推理模型返回 HTTP 200 但内容为 null、历史消息格式要求互相冲突、按 IP 限速导致本地测试没有代表性。建议是：用自己的实际负载逐个供应商做基准测试、在客户端解析工具调用、从生产环境测试、保留灵活的回退链而不是锁定单一主机。
+***** Take
+OpenRouter 卖的是一套 API 对接众多模型，但这些数据说明，质量的单位是供应商，不是模型。同一个模型名字下工具调用差出 23 个百分点，意味着这层抽象正好漏掉了你花钱想屏蔽的那个变量。静默失败比慢更麻烦：一个返回 HTTP 200 和 'no image provided' 的视觉请求，会通过你所有的健康检查，同时悄悄拉低产品质量。
+***** Comments
+- 这解释了很多事。我之前用 OpenClaw 配 OpenRouter，因为同一个提示词结果太不稳定就停了。我以为是 OpenClaw 的问题，完全没想到供应商之间有差别。
+- 他们的计费上限也不管用。有人从新加坡用了我的 key，日限额 10 美元却花掉了 100 美元。API key 没有任何保护，也没有按国家或 IP 的限制。
+- 严格 JSON 输出也不是所有模型端点都支持，所以我只能一个个试，试通了才加进白名单。
+** Cherenkov Radiation - traveling faster than light :physics:nuclear:science:astronomy:
+:PROPERTIES:
+:ID:       49655286
+:URL:      http://www.iaea.org/newscenter/news/what-is-cherenkov-radiation
+:HN_URL:   https://news.ycombinator.com/item?id=49655286
+:POINTS:   63
+:COMMENTS: 46
+:BY:       andsoitis
+:END:
+
+*** TLDR
+The IAEA explainer covers why spent fuel pools glow blue. Charged particles from radioactive decay can move faster than light does inside water, where light travels at roughly 75% of its vacuum speed. The particles disturb atoms along their path, those atoms emit photons to return to equilibrium, and the result is a shock wave analogous to a sonic boom. The energies involved put those photons at short wavelengths, which is why the glow is blue and violet. The IAEA's interest is practical: inspectors use Cherenkov viewing devices (DCVD and XCVD) to check that the spent fuel sitting in a storage pond matches what the state declared, which is how diversion of nuclear material gets caught.
+
+*** Take
+The headline says faster than light, the article says faster than light in water, and the thread spent 46 comments on the missing three words. The genuinely useful correction came from a working physicist: the biggest application of Cherenkov radiation is not safeguards but high-energy astrophysics, where atmospheric Cherenkov telescopes read the light from particle cascades because they cannot see gamma rays directly. An IAEA page only listing IAEA uses is not wrong, just narrow.
+
+*** Comments
+
+**** nuccy
+The title is misleading, it should say 'travelling faster than light in a medium'. Nothing here travels faster than light in vacuum.
+
+**** maxnoe
+The article only mentions the uses of the IAEA. I'm biased because I work in the field, but by far the most wide reaching application of Cherenkov radiation is detecting high energy particles, particularly in astrophysics.
+
+**** prathje
+Changes in the EM field always propagate at c, the speed of causality. Single EM waves do not magically slow down in a medium.
+
+*** i18n                                                  :i18n:
+
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Radiación de Cherenkov: viajar más rápido que la luz
+***** TLDR
+El explicador del OIEA cuenta por qué brillan de azul las piscinas de combustible gastado. Las partículas cargadas de la desintegración radiactiva pueden moverse más rápido que la luz dentro del agua, donde la luz viaja a cerca del 75% de su velocidad en el vacío. Las partículas perturban los átomos a su paso, esos átomos emiten fotones al volver al equilibrio y el resultado es una onda de choque análoga a un estampido sónico. Las energías implicadas sitúan esos fotones en longitudes de onda cortas, y por eso el brillo es azul y violeta. El interés del OIEA es práctico: los inspectores usan dispositivos de visión Cherenkov (DCVD y XCVD) para comprobar que el combustible gastado en una piscina coincide con lo declarado por el Estado, que es como se detecta el desvío de material nuclear.
+***** Take
+El titular dice más rápido que la luz, el artículo dice más rápido que la luz en el agua, y el hilo dedicó 46 comentarios a las tres palabras que faltan. La corrección realmente útil vino de un físico en activo: la mayor aplicación de la radiación de Cherenkov no son las salvaguardias sino la astrofísica de altas energías, donde los telescopios Cherenkov atmosféricos leen la luz de las cascadas de partículas porque no pueden ver los rayos gamma directamente. Una página del OIEA que solo enumera usos del OIEA no está equivocada, solo es estrecha.
+***** Comments
+- El título es engañoso, debería decir 'viajar más rápido que la luz en un medio'. Aquí nada viaja más rápido que la luz en el vacío.
+- El artículo solo menciona los usos del OIEA. Tengo sesgo porque trabajo en el campo, pero con diferencia la aplicación más extendida de la radiación de Cherenkov es detectar partículas de alta energía, sobre todo en astrofísica.
+- Los cambios en el campo electromagnético siempre se propagan a c, la velocidad de la causalidad. Las ondas electromagnéticas individuales no se frenan mágicamente en un medio.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Tscherenkow-Strahlung: schneller als das Licht unterwegs
+***** TLDR
+Die IAEO-Erklärung beschreibt, warum Abklingbecken blau leuchten. Geladene Teilchen aus radioaktivem Zerfall können sich in Wasser schneller bewegen als das Licht dort, denn im Wasser läuft Licht mit etwa 75% seiner Vakuumgeschwindigkeit. Die Teilchen stören die Atome auf ihrem Weg, diese Atome senden beim Zurückkehren ins Gleichgewicht Photonen aus, und es entsteht eine Stoßwelle analog zum Überschallknall. Die beteiligten Energien führen zu kurzen Wellenlängen, weshalb das Leuchten blau und violett ist. Das Interesse der IAEO ist praktisch: Inspektoren nutzen Tscherenkow-Sichtgeräte (DCVD und XCVD), um zu prüfen, ob der abgebrannte Brennstoff im Becken der Erklärung des Staates entspricht. So wird Abzweigung von Kernmaterial entdeckt.
+***** Take
+Die Überschrift sagt schneller als Licht, der Artikel sagt schneller als Licht im Wasser, und der Thread verbrachte 46 Kommentare mit den fehlenden drei Wörtern. Die wirklich nützliche Korrektur kam von einem Physiker aus der Praxis: Die größte Anwendung der Tscherenkow-Strahlung sind nicht Safeguards, sondern die Hochenergie-Astrophysik, wo atmosphärische Tscherenkow-Teleskope das Licht von Teilchenkaskaden auslesen, weil sie Gammastrahlen nicht direkt sehen können. Eine IAEO-Seite, die nur IAEO-Anwendungen nennt, ist nicht falsch, nur eng.
+***** Comments
+- Der Titel führt in die Irre, er müsste 'schneller als Licht in einem Medium' lauten. Nichts hier bewegt sich schneller als Licht im Vakuum.
+- Der Artikel nennt nur die Anwendungen der IAEO. Ich bin befangen, weil ich im Feld arbeite, aber die mit Abstand weitreichendste Anwendung ist der Nachweis hochenergetischer Teilchen, besonders in der Astrophysik.
+- Änderungen im EM-Feld breiten sich immer mit c aus, der Geschwindigkeit der Kausalität. Einzelne EM-Wellen werden in einem Medium nicht auf magische Weise langsamer.
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+체렌코프 복사: 빛보다 빠르게 달린다
+***** TLDR
+IAEA의 설명 글은 사용후핵연료 저장조가 왜 파랗게 빛나는지를 다룬다. 방사성 붕괴에서 나온 하전 입자는 물속에서 빛보다 빠르게 움직일 수 있다. 물속에서 빛의 속도는 진공에서의 약 75%이기 때문이다. 입자가 지나가며 원자를 교란하고, 그 원자들이 평형으로 돌아가며 광자를 내놓는데, 그 결과가 소닉붐에 비유되는 충격파다. 관련된 에너지가 크기 때문에 광자의 파장이 짧아지고, 그래서 빛이 파랗고 보랏빛으로 보인다. IAEA의 관심은 실용적이다. 사찰관은 체렌코프 관측 장비(DCVD, XCVD)로 저장조의 사용후핵연료가 해당 국가의 신고 내용과 맞는지 확인하며, 핵물질 전용은 이렇게 적발된다.
+***** Take
+제목은 빛보다 빠르다고 하고 본문은 물속의 빛보다 빠르다고 하는데, 스레드는 그 빠진 몇 단어를 두고 댓글 46개를 썼다. 정말 쓸모 있는 지적은 현업 물리학자에게서 나왔다. 체렌코프 복사의 가장 큰 응용은 핵 안전조치가 아니라 고에너지 천체물리학이다. 감마선을 직접 볼 수 없기 때문에 대기 체렌코프 망원경이 입자 다발이 만든 빛을 읽는다. IAEA 페이지가 IAEA의 용도만 나열한 게 틀린 건 아니고, 그저 좁을 뿐이다.
+***** Comments
+- 제목이 오해를 부른다. '매질 속에서 빛보다 빠르게'라고 해야 한다. 여기서 진공 속 빛보다 빠른 것은 없다.
+- 이 글은 IAEA의 용도만 언급한다. 내가 이 분야에서 일하니 편향이 있겠지만, 체렌코프 복사의 가장 폭넓은 응용은 고에너지 입자 검출, 특히 천체물리학 쪽이다.
+- 전자기장의 변화는 언제나 인과의 속도인 c로 전파된다. 개별 전자기파가 매질에서 마법처럼 느려지는 게 아니다.
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+チェレンコフ放射：光より速く進む
+***** TLDR
+IAEAの解説記事は、使用済み燃料プールが青く光る理由を扱っている。放射性崩壊で生じた荷電粒子は、水中の光より速く動ける。水中では光は真空中の約75%の速さだからだ。粒子が通り道の原子を乱し、それらの原子が平衡に戻る際に光子を放ち、ソニックブームに似た衝撃波が生じる。関わるエネルギーが大きいため光子の波長は短くなり、だから青や紫に見える。IAEAの関心は実務的だ。査察官はチェレンコフ観察装置（DCVDとXCVD）を使い、貯蔵プール内の使用済み燃料が当該国の申告と一致するかを確認する。核物質の転用はこうして見つかる。
+***** Take
+見出しは光より速いと言い、本文は水中の光より速いと言い、スレッドは足りない数語について46件のコメントを費やした。本当に有益な指摘は現役の物理学者から出た。チェレンコフ放射の最大の応用は保障措置ではなく高エネルギー天体物理学で、ガンマ線を直接見られないため、大気チェレンコフ望遠鏡が粒子カスケードの光を読む。IAEAのページがIAEAの用途しか挙げていないのは間違いではなく、範囲が狭いだけだ。
+***** Comments
+- タイトルが誤解を招く。「媒質中で光より速く」と書くべきだ。ここで真空中の光より速いものは何もない。
+- この記事はIAEAの用途しか挙げていない。この分野で働いているので偏りはあるが、チェレンコフ放射の最も広い応用は高エネルギー粒子の検出、とくに天体物理学だ。
+- 電磁場の変化は常に因果の速度cで伝わる。個々の電磁波が媒質中で魔法のように遅くなるわけではない。
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+切伦科夫辐射：比光跑得更快
+***** TLDR
+国际原子能机构的科普文解释了乏燃料水池为什么泛蓝光。放射性衰变产生的带电粒子可以比水中的光跑得更快，因为水中光速只有真空中的约 75%。粒子沿途扰动原子，这些原子回到平衡态时释放光子，形成类似音爆的冲击波。由于涉及的能量较高，这些光子波长较短，因此发出的光偏蓝偏紫。IAEA 关心这件事的理由很实际：核查人员用切伦科夫观察设备（DCVD 和 XCVD）核对水池中的乏燃料是否与该国申报一致，核材料被转用就是这样被发现的。
+***** Take
+标题说比光快，正文说比水中的光快，帖子为这几个缺失的词写了 46 条评论。真正有用的补充来自一位在职物理学家：切伦科夫辐射最大的应用不是核保障，而是高能天体物理。由于无法直接看到伽马射线，大气切伦科夫望远镜读的是粒子级联产生的光。IAEA 的页面只列 IAEA 的用途并没有错，只是窄了些。
+***** Comments
+- 标题有误导性，应该写成「在介质中比光更快」。这里没有任何东西比真空中的光更快。
+- 这篇文章只提到了 IAEA 的用途。我在这个领域工作所以有偏向，但切伦科夫辐射应用最广的其实是高能粒子探测，尤其是天体物理。
+- 电磁场的变化始终以因果速度 c 传播。单个电磁波并不会在介质中神奇地慢下来。
+** Nine coding harnesses vs. your laptop :ai:llm:local-inference:benchmarks:tooling:
+:PROPERTIES:
+:ID:       49651221
+:URL:      https://nasutton.notion.site/Nine-coding-harnesses-vs-your-laptop-3d139990182b80d59fa3cf500f0450ba
+:HN_URL:   https://news.ycombinator.com/item?id=49651221
+:POINTS:   108
+:COMMENTS: 31
+:BY:       nasutton12
+:END:
+
+*** TLDR
+The author ran the same eight Exercism exercises through nine coding harnesses (mini-swe-agent, pi, cline, codex, dsh, goose, crush, opencode, and their own harness called chad) on an M4 MacBook Pro with 24GB of RAM, all pointed at one llama.cpp server running Qwen 3.8 27B at 3-bit with a shared 32,768-token cache and identical sampling parameters. The metrics are wait before the first token, wait on later turns, cache reuse and experienced tokens per second, rather than CPU or RAM. Three groups emerged: lean and stable (pi, mini-swe-agent, chad) with trim prompts and 96-99% cache reuse; heavy but disciplined (dsh, cline, codex, goose) with long system prompts that still worked; and heavy to start (crush, opencode) at three to four minutes before the first token. Coupling the server and the agent in one process took throughput from 7.9 to 17.4 tokens per second.
+
+*** Take
+The real finding is a cost nobody budgets for: harness prompt size is a tax you only pay on local inference. In a data center prefill is close to free, so a 10,000-token system prompt is invisible; on a laptop it is four minutes of staring at a cursor. That reframes what a lean harness is for. Worth stating plainly that the winning harness is the author's own, which is the oldest result in benchmarking, though the methodology here is unusually specific about how it was measured.
+
+*** Comments
+
+**** OleksandrC
+If you're looking for a coding agent that fits resource-constrained environments and works well with local models, you might like hax: a 0.7 MB dynamically linked native C binary, a few MBs of RAM when running.
+
+**** julesrms
+HN has had a stream of agent harness benchmarks floating past, and every time I wonder where the people creating these tests are looking when deciding which harnesses to test. Right now nobody seems to bother testing mine.
+
+**** alex_john_m
+What is this supposed to mean? 'it spreads up to 50% between nights, so nothing between the lean arms is a finding.'
+
+*** i18n                                                  :i18n:
+
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Nueve harnesses de codificación contra tu portátil
+***** TLDR
+El autor pasó los mismos ocho ejercicios de Exercism por nueve harnesses de codificación (mini-swe-agent, pi, cline, codex, dsh, goose, crush, opencode y el suyo propio, llamado chad) en un MacBook Pro M4 con 24GB de RAM, todos apuntando a un mismo servidor llama.cpp con Qwen 3.8 27B a 3 bits, caché compartida de 32.768 tokens y parámetros de muestreo idénticos. Las métricas son la espera antes del primer token, la espera en turnos posteriores, la reutilización de caché y los tokens por segundo percibidos, no CPU ni RAM. Surgieron tres grupos: ligeros y estables (pi, mini-swe-agent, chad) con prompts escuetos y 96-99% de reutilización de caché; pesados pero disciplinados (dsh, cline, codex, goose) con prompts de sistema largos que aun así funcionan; y pesados al arrancar (crush, opencode) con tres a cuatro minutos antes del primer token. Acoplar el servidor y el agente en un solo proceso subió el rendimiento de 7,9 a 17,4 tokens por segundo.
+***** Take
+El hallazgo de fondo es un coste que nadie presupuesta: el tamaño del prompt del harness es un impuesto que solo pagas en inferencia local. En un centro de datos el prefill es casi gratis, así que un prompt de sistema de 10.000 tokens es invisible; en un portátil son cuatro minutos mirando el cursor. Eso replantea para qué sirve un harness ligero. Conviene decir sin rodeos que el harness ganador es el del propio autor, el resultado más viejo del mundo de los benchmarks, aunque aquí la metodología es inusualmente específica sobre cómo se midió.
+***** Comments
+- Si buscas un agente de codificación que encaje en entornos con pocos recursos y funcione bien con modelos locales, quizá te guste hax: un binario nativo en C de 0,7 MB enlazado dinámicamente, unos pocos MB de RAM al ejecutarse.
+- En HN pasa un flujo constante de benchmarks de harnesses de agentes, y cada vez me pregunto dónde miran quienes crean estas pruebas al decidir qué harnesses probar. Ahora mismo nadie se molesta en probar el mío.
+- ¿Qué se supone que significa esto? 'se dispersa hasta un 50% entre noches, así que nada entre los brazos ligeros es un hallazgo.'
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Neun Coding-Harnesses gegen deinen Laptop
+***** TLDR
+Der Autor ließ dieselben acht Exercism-Aufgaben durch neun Coding-Harnesses laufen (mini-swe-agent, pi, cline, codex, dsh, goose, crush, opencode und sein eigenes namens chad), auf einem M4 MacBook Pro mit 24GB RAM, alle gegen denselben llama.cpp-Server mit Qwen 3.8 27B in 3 Bit, gemeinsamem Cache von 32.768 Token und identischen Sampling-Parametern. Gemessen wurden Wartezeit bis zum ersten Token, Wartezeit in späteren Runden, Cache-Wiederverwendung und erlebte Token pro Sekunde, nicht CPU oder RAM. Es bildeten sich drei Gruppen: schlank und stabil (pi, mini-swe-agent, chad) mit knappen Prompts und 96-99% Cache-Wiederverwendung; schwer, aber diszipliniert (dsh, cline, codex, goose) mit langen System-Prompts, die trotzdem funktionierten; und schwer beim Start (crush, opencode) mit drei bis vier Minuten bis zum ersten Token. Server und Agent in einem Prozess zu koppeln hob den Durchsatz von 7,9 auf 17,4 Token pro Sekunde.
+***** Take
+Der eigentliche Befund ist eine Kostenstelle, die niemand einplant: Die Promptgröße des Harness ist eine Steuer, die man nur bei lokaler Inferenz zahlt. Im Rechenzentrum ist Prefill praktisch gratis, ein System-Prompt mit 10.000 Token also unsichtbar; auf einem Laptop sind das vier Minuten Starren auf den Cursor. Das rückt zurecht, wofür ein schlanker Harness gut ist. Man sollte klar sagen, dass der Sieger der Harness des Autors selbst ist, das älteste Ergebnis im Benchmarking, auch wenn die Methodik hier ungewöhnlich genau beschreibt, wie gemessen wurde.
+***** Comments
+- Wer einen Coding-Agenten für ressourcenarme Umgebungen sucht, der gut mit lokalen Modellen läuft, mag hax mögen: ein 0,7 MB großes, dynamisch gelinktes natives C-Binary, wenige MB RAM zur Laufzeit.
+- Auf HN zieht ein Strom von Agent-Harness-Benchmarks vorbei, und jedes Mal frage ich mich, wo die Leute hinschauen, wenn sie entscheiden, welche Harnesses sie testen. Gerade testet niemand meinen.
+- Was soll das heißen? 'es streut bis zu 50% zwischen Nächten, also ist nichts zwischen den schlanken Armen ein Befund.'
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+코딩 하네스 아홉 개 대 당신의 노트북
+***** TLDR
+저자는 동일한 Exercism 연습문제 여덟 개를 아홉 개의 코딩 하네스(mini-swe-agent, pi, cline, codex, dsh, goose, crush, opencode, 그리고 본인이 만든 chad)로 돌렸다. 환경은 24GB 램의 M4 맥북 프로이며, 모두 3비트 Qwen 3.8 27B를 띄운 하나의 llama.cpp 서버를 바라보고 32,768 토큰 캐시를 공유하며 샘플링 파라미터도 동일하게 맞췄다. 측정 항목은 CPU나 램이 아니라 첫 토큰까지의 대기, 이후 턴의 대기, 캐시 재사용률, 체감 초당 토큰 수다. 세 그룹이 나왔다. 가볍고 안정적인 쪽(pi, mini-swe-agent, chad)은 프롬프트가 짧고 캐시 재사용률이 96~99%였다. 무겁지만 절제된 쪽(dsh, cline, codex, goose)은 시스템 프롬프트가 길어도 제 역할을 했다. 시작이 무거운 쪽(crush, opencode)은 첫 토큰까지 3~4분이 걸렸다. 서버와 에이전트를 한 프로세스로 묶자 처리량이 초당 7.9 토큰에서 17.4 토큰으로 올랐다.
+***** Take
+진짜 발견은 아무도 예산에 넣지 않는 비용이다. 하네스의 프롬프트 크기는 로컬 추론에서만 내는 세금이다. 데이터센터에서는 프리필이 거의 공짜라 1만 토큰짜리 시스템 프롬프트도 보이지 않지만, 노트북에서는 커서를 4분 동안 쳐다보는 시간이 된다. 가벼운 하네스가 왜 필요한지가 여기서 달라진다. 다만 1위가 저자 본인의 하네스라는 점은 분명히 짚어야 한다. 벤치마크에서 가장 오래된 결과다. 그래도 이번 방법론은 어떻게 측정했는지를 유난히 구체적으로 밝히고 있다.
+***** Comments
+- 자원이 빠듯한 환경에 맞고 로컬 모델과도 잘 맞는 코딩 에이전트를 찾는다면 hax가 괜찮을 수 있다. 동적 링크된 0.7MB짜리 네이티브 C 바이너리이고 실행 중 램도 몇 MB 수준이다.
+- HN에는 에이전트 하네스 벤치마크가 끊임없이 올라온다. 그때마다 이런 테스트를 만드는 사람들이 무엇을 테스트할지 어디를 보고 정하는지 궁금하다. 지금 아무도 내 것을 시험해 보지 않는다.
+- 이게 무슨 뜻인가? '밤마다 최대 50%까지 퍼지므로, 가벼운 쪽 사이의 차이는 유의미한 발견이 아니다.'
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+9つのコーディングハーネス対あなたのノートPC
+***** TLDR
+著者は同じExercismの課題8問を9つのコーディングハーネス（mini-swe-agent、pi、cline、codex、dsh、goose、crush、opencode、そして自作のchad）で走らせた。環境は24GB RAMのM4 MacBook Proで、すべてが3ビット量子化のQwen 3.8 27Bを載せた1台のllama.cppサーバーを参照し、32,768トークンのキャッシュを共有し、サンプリングパラメータも揃えた。指標はCPUやRAMではなく、最初のトークンまでの待ち時間、後続ターンの待ち時間、キャッシュ再利用率、体感トークン毎秒だ。3つのグループが現れた。軽量で安定（pi、mini-swe-agent、chad）はプロンプトが簡潔でキャッシュ再利用率96〜99%。重いが規律的（dsh、cline、codex、goose）はシステムプロンプトが長くても機能した。起動が重い（crush、opencode）は最初のトークンまで3〜4分かかった。サーバーとエージェントを1プロセスに結合すると、スループットは毎秒7.9トークンから17.4トークンへ上がった。
+***** Take
+本当の発見は、誰も予算に入れていないコストだ。ハーネスのプロンプトサイズは、ローカル推論でのみ支払う税金である。データセンターではプリフィルがほぼ無料なので1万トークンのシステムプロンプトは見えないが、ノートPCではカーソルを4分間眺める時間になる。軽量なハーネスの意味づけが変わる。もっとも、勝ったのが著者自身のハーネスである点ははっきり書いておくべきだ。ベンチマークで最も古い結果である。とはいえ、この計測方法の記述は珍しく具体的だ。
+***** Comments
+- 資源の限られた環境に収まり、ローカルモデルともよく合うコーディングエージェントを探しているならhaxが向くかもしれない。動的リンクの0.7MBのネイティブCバイナリで、実行時のRAMも数MBだ。
+- HNにはエージェントハーネスのベンチマークが次々流れてくる。そのたびに、こうしたテストを作る人はどこを見てテスト対象を選んでいるのかと思う。今のところ誰も私のものを試してくれない。
+- これはどういう意味だ？「夜ごとに最大50%ばらつくので、軽量勢の間の差は所見ではない。」
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+九个编码 harness 对上你的笔记本
+***** TLDR
+作者把同样八道 Exercism 练习题分别交给九个编码 harness（mini-swe-agent、pi、cline、codex、dsh、goose、crush、opencode，以及他自己写的 chad），环境是 24GB 内存的 M4 MacBook Pro，全部指向同一台跑 3 比特 Qwen 3.8 27B 的 llama.cpp 服务器，共享 32768 token 的缓存，采样参数也保持一致。指标不是 CPU 或内存，而是首个 token 之前的等待、后续轮次的等待、缓存复用率和体感每秒 token 数。结果分成三组：轻量稳定组（pi、mini-swe-agent、chad）提示词精简，缓存复用率 96%~99%；偏重但克制组（dsh、cline、codex、goose）系统提示词很长但仍能正常工作；启动沉重组（crush、opencode）首个 token 要等三到四分钟。把服务器和 agent 耦合进同一个进程后，吞吐从每秒 7.9 token 提升到 17.4 token。
+***** Take
+真正的发现是一笔没人做预算的成本：harness 的提示词体积是一种只在本地推理时才缴的税。在数据中心里 prefill 几乎免费，一万 token 的系统提示词根本看不见；在笔记本上它就是盯着光标等四分钟。这让「轻量 harness」的意义完全不同了。同时也该直说，夺冠的是作者自己的 harness，这是基准测试里最古老的一种结果，不过这次的方法论对如何测量交代得异常具体。
+***** Comments
+- 如果你想找一个能塞进资源受限环境、又能配合本地模型的编码 agent，可以看看 hax：0.7 MB 的动态链接原生 C 二进制，运行时内存只有几 MB。
+- HN 上 agent harness 的基准测试一个接一个飘过，每次我都想知道做这些测试的人到底是看哪里决定测哪些 harness 的。反正现在没人愿意测我的。
+- 这句话是什么意思？「它在不同夜晚之间波动可达 50%，所以轻量组之间的差异不算发现。」
