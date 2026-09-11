@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-09-11 01:00 UTC
+#+DATE: 2026-09-11T01:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Shopify walks back React Native, a mathematician accuses OpenAI of scooping him, and Anthropic names DeepSeek and Moonshot
+
+* Highlights
+- Shopify rebuilds its apps in Swift and Kotlin because agents made native cheap again
+- Andreas Thom: OpenAI's denial about training on his ChatGPT conversations was 'plainly dishonest'
+- Anthropic's threat report says DeepSeek, Xiaomi and Moonshot piped their own users' chats into Claude
+- Rust is now tier-1 at Microsoft, with a new MSVC codegen backend
+- PlanetScale ships sharded Postgres, closed source, after months of dunking on the open one
+
+* Stories
+
+** Shopify is moving from React Native back to Swift and Kotlin :mobile:react-native:swift:kotlin:ai:
+:PROPERTIES:
+:ID:       49643982
+:URL:      https://shopify.engineering/back-to-native
+:HN_URL:   https://news.ycombinator.com/item?id=49643982
+:POINTS:   751
+:COMMENTS: 507
+:BY:       fnthawar2
+:END:
+
+*** TLDR
+Shopify picked React Native in 2020 because one codebase was cheaper than two. It now says LLMs invalidated that assumption: agents can port a feature to the second platform using the first as reference, so the cost gap that justified React Native is gone. The Shop app went from proof of concept to a published native app in 12 weeks. The main Shopify app, over 300 screens plus widgets and Apple Watch, is mid-migration and ships later in 2026. They built an internal system called Helix where agents propose checkpoint sequences that require tests, visual verification and code review before continuing, plus an architecture that runs business logic headlessly for millisecond feedback loops. The post lists no performance numbers and no engineer counts.
+
+*** Take
+The honest version of this post is that Shopify was already paying for React Native in performance work and framework upgrades, and agents just moved the break-even point. Notice what is missing: not one startup time, binary size or crash rate figure to show native is better. The argument is entirely about cost of production, not quality of product. netshade, who actually did one of these migrations, says the LLM framing is wrong and the work was mostly done before January 2026. Meanwhile Skia and FlashList, two libraries Shopify maintained for everyone else, now have an uncertain future.
+
+*** Comments
+
+**** hectdev
+:PROPERTIES:
+:COMMENT_ID: 49651594
+:END:
+As an iOS Engineer that has been fighting the battle against every C-level type who brings up the subject of a shared codebase my whole career, I feel very validated.
+
+**** netshade
+:PROPERTIES:
+:COMMENT_ID: 49645618
+:END:
+I agree with advising people to move off React Native, though I think the story that 'LLM enabled an otherwise too-expensive migration to consider' is not correct. I was part of a migration from a mid-size React Native app to a Swift/Kotlin native app redo, and the majority of the work occurred before January 2026 and without LLM code.
+
+**** sergiotapia
+:PROPERTIES:
+:COMMENT_ID: 49644354
+:END:
+Major loss for react native community at large with Skia and Flashlist dying. :(
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Shopify 从 React Native 退回 Swift 和 Kotlin
+***** TLDR
+Shopify 在 2020 年选择 React Native，是因为一套代码比两套便宜。现在它说 LLM 推翻了这个前提：智能体可以拿第一个平台的实现作参照，把功能移植到第二个平台，于是当初支撑 React Native 的成本差距消失了。Shop 应用从概念验证到上架原生版本用了 12 周。主力 Shopify 应用有 300 多个界面，还有小组件和 Apple Watch 支持，迁移正在进行中，2026 年晚些时候发布。他们内部搭了一套叫 Helix 的系统：智能体提出检查点序列，每一步都要通过测试、视觉验证和代码审查才能继续，另外还有一套能无头运行业务逻辑的架构，把反馈循环压到毫秒级。这篇文章没有给出任何性能数字，也没有给出工程师人数。
+***** Take
+这篇文章诚实的版本是：Shopify 本来就在性能优化和框架升级上为 React Native 付费，智能体只是挪动了盈亏平衡点。注意缺了什么：没有一个启动时间、包体积或崩溃率数据来证明原生更好。整个论证讲的是生产成本，不是产品质量。真正做过这种迁移的 netshade 说，LLM 这个说法不对，大部分工作在 2026 年 1 月之前就完成了。与此同时，Shopify 替整个社区维护的 Skia 和 FlashList 前景不明。
+***** Comments
+- 作为一个整个职业生涯都在跟每一个提"共享代码库"的高管作对的 iOS 工程师，我感到非常被验证了。
+- 我同意劝大家离开 React Native，但我认为"LLM 让原本太贵的迁移变得可行"这个说法不对。我参与过把一个中型 React Native 应用重做成 Swift/Kotlin 原生应用，大部分工作发生在 2026 年 1 月之前，而且没有用 LLM 写代码。
+- 对整个 React Native 社区来说，Skia 和 FlashList 的消亡是重大损失。:(
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+ShopifyがReact NativeからSwiftとKotlinに戻る
+***** TLDR
+Shopifyが2020年にReact Nativeを選んだのは、コードベース一つのほうが二つより安かったからだ。今回、LLMがその前提を覆したと同社は言う。エージェントが一方のプラットフォームの実装を参照して機能をもう一方に移植できるため、React Nativeを正当化していたコスト差が消えた。Shopアプリは概念実証から公開された ネイティブアプリまで12週間。300画面超にウィジェットとApple Watch対応を持つ本体のShopifyアプリは移行中で、2026年後半に出荷予定。社内にはHelixというシステムを作った。エージェントがチェックポイントの手順を提案し、各段階でテスト、目視確認、コードレビューの承認を得ないと先に進めない。加えてビジネスロジックをヘッドレスで動かすアーキテクチャでフィードバックをミリ秒単位にした。記事に性能数値もエンジニア数も一切ない。
+***** Take
+正直に書くならこうだ。ShopifyはReact Nativeの代金を性能改善とフレームワーク追従という形ですでに払っており、エージェントは損益分岐点を動かしただけだ。欠けているものに注目したい。ネイティブのほうが良いと示す起動時間もバイナリサイズもクラッシュ率も一つもない。論証は全部生産コストの話で、製品の質の話ではない。実際にこの移行をやったnetshadeは、LLMという筋書きは違う、作業の大半は2026年1月より前に終わっていたと言う。一方でShopifyが他社のために維持してきたSkiaとFlashListの先行きは不透明になった。
+***** Comments
+- 共有コードベースの話を持ち出す経営陣と生涯戦ってきたiOSエンジニアとして、強く正当化された気分だ。
+- React Nativeから離れろという助言には同意するが、「LLMのおかげで高すぎた移行が検討可能になった」という筋書きは正しくないと思う。中規模のReact NativeアプリをSwift/Kotlinのネイティブアプリに作り直す移行に関わったが、作業の大半は2026年1月より前、LLMのコードなしで行われた。
+- SkiaとFlashlistが終わるのはReact Nativeコミュニティ全体にとって大きな損失だ。:(
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Shopify, React Native에서 Swift와 Kotlin으로 복귀
+***** TLDR
+Shopify가 2020년에 React Native를 택한 이유는 코드베이스 하나가 둘보다 쌌기 때문이다. 이제 회사는 LLM이 그 전제를 무너뜨렸다고 말한다. 에이전트가 한쪽 플랫폼 구현을 참고해 기능을 다른 쪽으로 옮길 수 있어서, React Native를 정당화하던 비용 격차가 사라졌다는 것이다. Shop 앱은 개념 증명에서 출시된 네이티브 앱까지 12주가 걸렸다. 화면 300개가 넘고 위젯과 Apple Watch를 지원하는 본체 Shopify 앱은 마이그레이션 중이며 2026년 하반기에 출시된다. 사내에는 Helix라는 시스템을 만들었다. 에이전트가 체크포인트 순서를 제안하고, 각 단계마다 테스트와 시각적 검증, 코드 리뷰 승인을 받아야 진행된다. 여기에 비즈니스 로직을 헤드리스로 돌리는 아키텍처로 피드백 루프를 밀리초 단위로 줄였다. 글에는 성능 수치도 엔지니어 수도 없다.
+***** Take
+이 글의 정직한 판본은 이렇다. Shopify는 이미 성능 작업과 프레임워크 업그레이드라는 형태로 React Native 비용을 치르고 있었고, 에이전트는 손익분기점을 옮겼을 뿐이다. 빠진 것을 보라. 네이티브가 낫다는 걸 보여줄 시작 시간도, 바이너리 크기도, 크래시율도 하나 없다. 논증은 전부 생산 비용 이야기지 제품 품질 이야기가 아니다. 실제로 이런 마이그레이션을 해본 netshade는 LLM 서사가 틀렸고 작업 대부분이 2026년 1월 이전에 끝났다고 말한다. 한편 Shopify가 커뮤니티를 위해 유지하던 Skia와 FlashList의 앞날은 불투명해졌다.
+***** Comments
+- 공유 코드베이스 이야기를 꺼내는 임원들과 평생 싸워온 iOS 엔지니어로서 크게 정당화된 기분이다.
+- React Native에서 떠나라는 조언에는 동의하지만 'LLM이 너무 비쌌던 마이그레이션을 가능하게 했다'는 이야기는 맞지 않다고 본다. 중형 React Native 앱을 Swift/Kotlin 네이티브 앱으로 다시 만드는 작업에 참여했는데, 대부분의 작업은 2026년 1월 이전에 LLM 코드 없이 이뤄졌다.
+- Skia와 Flashlist가 사라지는 건 React Native 커뮤니티 전체에 큰 손실이다. :(
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Shopify vuelve de React Native a Swift y Kotlin
+***** TLDR
+Shopify eligió React Native en 2020 porque una sola base de código era más barata que dos. Ahora dice que los LLM invalidaron ese supuesto: los agentes pueden portar una función a la segunda plataforma usando la primera como referencia, así que la diferencia de costes que justificaba React Native desapareció. La app Shop pasó de prueba de concepto a app nativa publicada en 12 semanas. La app principal de Shopify, con más de 300 pantallas además de widgets y soporte para Apple Watch, está en plena migración y sale a finales de 2026. Construyeron un sistema interno llamado Helix en el que los agentes proponen secuencias de puntos de control que exigen pruebas, verificación visual y revisión de código antes de continuar, más una arquitectura que ejecuta la lógica de negocio sin interfaz para tener ciclos de retroalimentación de milisegundos. El artículo no da ninguna cifra de rendimiento ni número de ingenieros.
+***** Take
+La versión honesta de este artículo es que Shopify ya pagaba por React Native en trabajo de rendimiento y actualizaciones del framework, y los agentes solo movieron el punto de equilibrio. Fíjense en lo que falta: ni un solo dato de tiempo de arranque, tamaño del binario o tasa de fallos que demuestre que lo nativo es mejor. El argumento va enteramente de coste de producción, no de calidad del producto. netshade, que hizo una de estas migraciones, dice que el encuadre de los LLM es falso y que el trabajo estaba casi terminado antes de enero de 2026. Mientras tanto, Skia y FlashList, dos bibliotecas que Shopify mantenía para todos los demás, tienen ahora un futuro incierto.
+***** Comments
+- Como ingeniero de iOS que lleva toda la carrera peleando contra cada directivo que saca el tema de una base de código compartida, me siento muy validado.
+- Estoy de acuerdo en aconsejar dejar React Native, pero creo que la historia de que 'el LLM hizo viable una migración demasiado cara' no es correcta. Participé en migrar una app React Native mediana a una app nativa en Swift/Kotlin, y la mayor parte del trabajo ocurrió antes de enero de 2026 y sin código de LLM.
+- Gran pérdida para la comunidad de React Native con la muerte de Skia y Flashlist. :(
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Shopify wechselt von React Native zurück zu Swift und Kotlin
+***** TLDR
+Shopify entschied sich 2020 für React Native, weil eine Codebasis billiger war als zwei. Jetzt sagt das Unternehmen, LLMs hätten diese Annahme entkräftet: Agenten können ein Feature auf die zweite Plattform portieren und dabei die erste als Vorlage nutzen, womit der Kostenvorteil von React Native wegfällt. Die Shop-App ging in 12 Wochen vom Prototyp zur veröffentlichten nativen App. Die Haupt-App von Shopify mit über 300 Bildschirmen plus Widgets und Apple-Watch-Unterstützung wird gerade migriert und erscheint später im Jahr 2026. Intern haben sie ein System namens Helix gebaut, in dem Agenten Checkpoint-Folgen vorschlagen, die vor dem Weitermachen Tests, visuelle Prüfung und Code-Review verlangen, dazu eine Architektur, die Geschäftslogik headless ausführt und Rückmeldungen im Millisekundenbereich liefert. Der Beitrag nennt keine Leistungszahlen und keine Entwicklerzahlen.
+***** Take
+Die ehrliche Fassung dieses Beitrags lautet: Shopify hat für React Native ohnehin in Form von Performance-Arbeit und Framework-Updates bezahlt, und Agenten haben nur den Break-even verschoben. Man beachte, was fehlt: keine einzige Zahl zu Startzeit, Binärgröße oder Absturzrate, die zeigt, dass nativ besser ist. Das Argument dreht sich vollständig um Produktionskosten, nicht um Produktqualität. netshade, der eine solche Migration tatsächlich durchgeführt hat, sagt, die LLM-Erzählung stimme nicht und der Großteil der Arbeit sei vor Januar 2026 passiert. Unterdessen ist die Zukunft von Skia und FlashList, zwei Bibliotheken, die Shopify für alle anderen gepflegt hat, ungewiss.
+***** Comments
+- Als iOS-Entwickler, der sein ganzes Berufsleben gegen jede Führungskraft gekämpft hat, die das Thema gemeinsame Codebasis aufbringt, fühle ich mich sehr bestätigt.
+- Ich stimme dem Rat zu, von React Native wegzugehen, halte aber die Erzählung 'LLMs haben eine sonst zu teure Migration ermöglicht' für falsch. Ich war an der Neuentwicklung einer mittelgroßen React-Native-App in Swift/Kotlin beteiligt, und der Großteil der Arbeit fand vor Januar 2026 und ohne LLM-Code statt.
+- Großer Verlust für die gesamte React-Native-Community mit dem Ende von Skia und Flashlist. :(
+** More questions about whether researchers can trust OpenAI with unpublished math :ai:openai:math:ethics:privacy:
+:PROPERTIES:
+:ID:       49639408
+:URL:      https://mathstodon.xyz/@andreasthom/117240535270608201
+:HN_URL:   https://news.ycombinator.com/item?id=49639408
+:POINTS:   640
+:COMMENTS: 618
+:BY:       pred_
+:END:
+
+*** TLDR
+Mathematician Andreas Thom posted a three-part thread about OpenAI's non-sofic group announcement. He says he and a Dresden colleague spent months discussing the expander matching problem with ChatGPT, then emailed OpenAI's Mark Sellke and Sebastien Bubeck asking two separate questions: whether those conversations entered training data, and whether they were accessible to the solving process. Sellke's entire reply was 'that did not happen.' Thom argues that answer only addressed the second question, and calls it unjustifiably broad and plainly dishonest. He notes OpenAI now says in the separate Buckmaster-Alpöge case that no specific user data was accessed but that it 'cannot rule out that de-identified data derived from their usage of our products helped improve our models.' Thom disabled model training on 29 June, points out that setting is prospective and unauditable, and says the model's command of his specific technique, which was not the main line of attack on non-soficity, is what made him suspicious.
+
+*** Take
+The mathematically interesting detail is not the denial, it is the route. Thom says his approach with Gabor Kun was not the promising one, and OpenAI's model took it anyway. That is a weak signal but it is the kind a mathematician notices. The forward-looking problem is worse than the credit dispute: a lab that both hosts researchers' scratch work and races them to publication has an unresolvable conflict of interest, and 'trust our opt-out toggle' is not a resolution. Commenter r0ze-at-hn has the only concrete defense on offer, which is timestamping everything in public on GitHub. That is a bleak thing for a research culture to have to do.
+
+*** Comments
+
+**** nezi
+:PROPERTIES:
+:COMMENT_ID: 49648436
+:END:
+It's a useful analogy to compare OpenAI to a human collaborator. These researchers willingly collaborated with an OpenAI model, giving it ideas, and OpenAI provided useful replies. Then OpenAI publishes work along the lines of this collaboration without attributing the researchers. If OpenAI was a human researcher, this would be highly unethical.
+
+**** Legend2440
+:PROPERTIES:
+:COMMENT_ID: 49638501
+:END:
+This is a really weak claim. The evidence they offer is just 'someone somewhere says they had a discussion with AI about the topic at some point'. They don't even claim to have had a proof, only to have been working on it.
+
+**** r0ze-at-hn
+:PROPERTIES:
+:COMMENT_ID: 49639206
+:END:
+Doing some research and at this point doing it very much in the open with dates on GitHub so if any AI Lab says they re-discover my exact work it will be obvious that the AI used or was trained on my work.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+关于研究者能否把未发表的数学托付给 OpenAI 的更多疑问
+***** TLDR
+数学家 Andreas Thom 就 OpenAI 的非 sofic 群公告发了一组三条的串文。他说自己和德累斯顿的一位同事花了好几个月跟 ChatGPT 讨论扩张图匹配问题，随后写邮件给 OpenAI 的 Mark Sellke 和 Sebastien Bubeck，问了两个分开的问题：这些对话是否进入了训练数据，以及求解过程是否能访问它们。Sellke 的全部回复是"那件事没有发生"。Thom 认为这个回答只针对第二个问题，称它宽泛得没有依据、明显不诚实。他指出 OpenAI 在另一起 Buckmaster-Alpöge 事件中如今表示没有访问特定用户数据，但"无法排除源自他们使用我们产品的去标识化数据帮助改进了我们的模型"。Thom 在 6 月 29 日关闭了模型训练，指出那个开关只对将来生效且无法审计，并说模型对他那套具体技术的熟练掌握让他起了疑心，因为那条路线并不是攻克非 sofic 性的主攻方向。
+***** Take
+数学上有意思的细节不是那句否认，而是路线。Thom 说他和 Gabor Kun 的方法并不是被看好的那条，OpenAI 的模型偏偏走了这条。这是个弱信号，但正是数学家会注意到的那种。比署名争议更麻烦的是往后的问题：一个既托管研究者草稿又抢在他们前面发表的实验室，存在无法化解的利益冲突，而"相信我们的退出开关"不构成化解。评论者 r0ze-at-hn 给出了唯一具体的自保办法：把一切都带日期公开推到 GitHub 上。一个研究共同体要被迫这么做，是件很压抑的事。
+***** Comments
+- 把 OpenAI 比作人类合作者是个有用的类比。这些研究者自愿与 OpenAI 的模型合作，给了它想法，OpenAI 给出了有用的回应。然后 OpenAI 沿着这场合作的思路发表成果，不署研究者的名。如果 OpenAI 是个人类研究者，这将是严重不道德的。
+- 这个指控其实很弱。他们给出的证据只是"某人在某处说自己某个时候跟 AI 讨论过这个话题"。他们甚至没有声称自己有证明，只说自己在研究它。
+- 我现在做研究会非常公开地做，在 GitHub 上留下日期，这样如果哪家 AI 实验室说重新发现了我的成果，就能明显看出那个 AI 用了或者训练过我的工作。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+未発表の数学をOpenAIに預けて大丈夫かという新たな疑問
+***** TLDR
+数学者Andreas Thomが、OpenAIの非ソフィック群の発表について三連投稿を行った。彼はドレスデンの同僚とともにエキスパンダー・マッチング問題を数か月にわたりChatGPTと議論し、その後OpenAIのMark SellkeとSebastien Bubeckに、二つの別々の問いをメールで送ったという。会話が学習データに入ったのか、そして解答過程からアクセス可能だったのか、である。Sellkeの返答は「それは起きていない」の一文だけだった。Thomはこの回答が二つ目の問いにしか答えておらず、根拠なく広範で明確に不誠実だと述べる。OpenAIは別件のBuckmaster-Alpögeの事案について、特定のユーザーデータへのアクセスはなかったとしつつ「当社製品の利用に由来する非識別化データがモデルの改善に寄与した可能性は排除できない」と述べている。Thomは6月29日に学習を無効化したが、その設定は将来にしか効かず監査もできないと指摘する。また、非ソフィック性への主攻ルートではなかった自分の手法をモデルが的確に使ったことが疑念の発端だという。
+***** Take
+数学的に興味深いのは否認そのものではなく、経路のほうだ。ThomはGabor Kunとの手法が有望な路線ではなかったと言うのに、OpenAIのモデルはそこを通った。弱い証拠ではあるが、数学者なら気づく類のものだ。功績争い以上に厄介なのは今後の問題で、研究者の未整理の作業を預かりながら発表競争で先を行く研究所は解消不能な利益相反を抱えており、「オプトアウトの設定を信じてくれ」はその解消にならない。コメント投稿者r0ze-at-hnが挙げる唯一の具体的な自衛策は、すべてを日付つきでGitHubに公開することだ。研究文化がそこまで強いられるのは暗い話である。
+***** Comments
+- OpenAIを人間の共同研究者になぞらえるのは有益だ。研究者たちは自らOpenAIのモデルと協働し、アイデアを与え、有用な返答を得た。そのあとOpenAIはその協働の延長線上の成果を、研究者に帰属を示さずに発表した。OpenAIが人間の研究者なら、これは極めて非倫理的だ。
+- 主張としてはかなり弱い。示された根拠は「どこかの誰かが、いつかAIとその話題を議論したと言っている」だけだ。証明を持っていたとすら主張しておらず、取り組んでいたと言っているにすぎない。
+- 今は研究をかなりオープンに、GitHubに日付を残しながら進めている。どこかのAI研究所が私の仕事を再発見したと言っても、そのAIが私の成果を使ったか学習したかが明白になるように。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+미발표 수학을 OpenAI에 맡겨도 되는가에 대한 새로운 의문
+***** TLDR
+수학자 Andreas Thom이 OpenAI의 비소픽 군 발표에 관해 세 편짜리 글을 올렸다. 그는 드레스덴의 동료와 함께 확장자 매칭 문제를 몇 달간 ChatGPT와 논의한 뒤 OpenAI의 Mark Sellke와 Sebastien Bubeck에게 두 가지 별개의 질문을 메일로 보냈다고 한다. 그 대화가 학습 데이터에 들어갔는지, 그리고 풀이 과정에서 접근 가능했는지다. Sellke의 답변 전문은 '그런 일은 없었다'였다. Thom은 그 답이 두 번째 질문만 다뤘다며, 근거 없이 광범위하고 명백히 부정직하다고 말한다. 그는 OpenAI가 별건인 Buckmaster-Alpöge 사안에 대해 특정 사용자 데이터에 접근하지 않았다면서도 '제품 사용에서 파생된 비식별 데이터가 모델 개선에 기여했을 가능성은 배제할 수 없다'고 말한 점을 지적한다. Thom은 6월 29일 학습을 껐지만 그 설정은 앞으로만 적용되고 감사할 수도 없다고 말한다. 또 비소픽성 공략의 주력 노선이 아니었던 자신의 기법을 모델이 능숙하게 다룬 점이 의심의 출발이었다고 한다.
+***** Take
+수학적으로 흥미로운 대목은 부인이 아니라 경로다. Thom은 Gabor Kun과의 접근법이 유망한 노선이 아니었다고 말하는데, OpenAI 모델은 하필 그 길로 갔다. 약한 신호지만 수학자라면 알아챌 종류다. 공로 다툼보다 더 고약한 건 앞으로의 문제다. 연구자의 미완성 작업을 보관하면서 동시에 발표 경쟁에서 앞서가는 연구소는 해소 불가능한 이해충돌을 안고 있고, '우리 옵트아웃 스위치를 믿으라'는 해소가 되지 못한다. 댓글 작성자 r0ze-at-hn이 내놓은 유일한 구체적 방어책은 모든 것을 날짜와 함께 GitHub에 공개하는 것이다. 연구 문화가 여기까지 내몰린다는 건 암울한 일이다.
+***** Comments
+- OpenAI를 인간 공동연구자에 빗대는 건 유용하다. 연구자들은 자발적으로 OpenAI 모델과 협업하며 아이디어를 줬고 유용한 답을 받았다. 그런 다음 OpenAI는 그 협업의 연장선에 있는 결과를 연구자 표기 없이 발표했다. OpenAI가 인간 연구자였다면 이는 매우 비윤리적이다.
+- 주장이 상당히 약하다. 제시된 증거는 '어딘가의 누군가가 언젠가 그 주제로 AI와 논의했다고 말한다'가 전부다. 증명을 가지고 있었다고 주장하지도 않았고, 연구 중이었다고만 했다.
+- 요즘은 연구를 아주 공개적으로, GitHub에 날짜를 남기며 한다. 어떤 AI 연구소가 내 작업을 재발견했다고 말해도 그 AI가 내 결과물을 쓰거나 학습했다는 게 분명히 드러나도록.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Más dudas sobre si los investigadores pueden confiar matemáticas inéditas a OpenAI
+***** TLDR
+El matemático Andreas Thom publicó un hilo de tres partes sobre el anuncio de OpenAI del grupo no sófico. Dice que él y un colega de Dresde pasaron meses discutiendo el problema de emparejamiento de expansores con ChatGPT, y después escribieron a Mark Sellke y Sebastien Bubeck de OpenAI con dos preguntas separadas: si esas conversaciones entraron en los datos de entrenamiento y si eran accesibles al proceso de resolución. La respuesta completa de Sellke fue 'eso no ocurrió'. Thom sostiene que esa respuesta solo cubría la segunda pregunta, y la califica de injustificadamente amplia y claramente deshonesta. Señala que OpenAI ahora dice, en el caso aparte de Buckmaster-Alpöge, que no accedió a datos concretos de usuarios pero que 'no puede descartar que datos desidentificados derivados del uso de nuestros productos hayan ayudado a mejorar nuestros modelos'. Thom desactivó el entrenamiento el 29 de junio, apunta que ese ajuste es prospectivo y no auditable, y dice que el dominio del modelo sobre su técnica concreta, que no era la vía principal de ataque a la no soficidad, fue lo que le hizo sospechar.
+***** Take
+El detalle matemáticamente interesante no es la negativa, es la ruta. Thom dice que su enfoque con Gabor Kun no era el prometedor, y el modelo de OpenAI lo tomó igualmente. Es una señal débil, pero del tipo que un matemático nota. El problema a futuro es peor que la disputa por la autoría: un laboratorio que aloja el trabajo en borrador de los investigadores y a la vez compite con ellos por publicar tiene un conflicto de interés irresoluble, y 'confía en nuestro interruptor de exclusión' no lo resuelve. El comentarista r0ze-at-hn ofrece la única defensa concreta disponible: fechar todo públicamente en GitHub. Es algo sombrío para una cultura de investigación.
+***** Comments
+- Es útil comparar a OpenAI con un colaborador humano. Estos investigadores colaboraron voluntariamente con un modelo de OpenAI, le dieron ideas y recibieron respuestas útiles. Luego OpenAI publica un trabajo en la línea de esa colaboración sin atribuir nada a los investigadores. Si OpenAI fuera un investigador humano, esto sería muy poco ético.
+- La afirmación es bastante débil. La prueba que ofrecen es solo 'alguien en algún sitio dice que habló con una IA sobre el tema en algún momento'. Ni siquiera afirman haber tenido una demostración, solo haber estado trabajando en ella.
+- Ahora hago investigación muy en abierto, con fechas en GitHub, para que si algún laboratorio de IA dice que redescubrió exactamente mi trabajo, quede claro que esa IA usó o fue entrenada con lo mío.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Weitere Zweifel, ob Forscher OpenAI unveröffentlichte Mathematik anvertrauen können
+***** TLDR
+Der Mathematiker Andreas Thom hat einen dreiteiligen Thread zur OpenAI-Ankündigung einer nicht-sofischen Gruppe veröffentlicht. Er habe mit einem Dresdner Kollegen monatelang das Expander-Matching-Problem mit ChatGPT diskutiert und danach Mark Sellke und Sebastien Bubeck von OpenAI zwei getrennte Fragen gemailt: ob diese Gespräche in die Trainingsdaten eingingen und ob sie dem Lösungsprozess zugänglich waren. Sellkes gesamte Antwort lautete: 'Das ist nicht passiert.' Thom argumentiert, diese Antwort habe nur die zweite Frage betroffen, und nennt sie ungerechtfertigt pauschal und schlicht unehrlich. Er verweist darauf, dass OpenAI im separaten Fall Buckmaster-Alpöge inzwischen sagt, es habe keine konkreten Nutzerdaten abgerufen, könne aber 'nicht ausschließen, dass de-identifizierte Daten aus der Nutzung unserer Produkte zur Verbesserung unserer Modelle beigetragen haben'. Thom hat das Modelltraining am 29. Juni deaktiviert, weist darauf hin, dass diese Einstellung nur in die Zukunft wirkt und nicht prüfbar ist, und sagt, die souveräne Beherrschung seiner speziellen Technik durch das Modell habe ihn misstrauisch gemacht, denn sie war nicht die Hauptangriffslinie auf Nicht-Sofizität.
+***** Take
+Das mathematisch interessante Detail ist nicht das Dementi, sondern der Weg. Thom sagt, sein Ansatz mit Gabor Kun sei nicht der aussichtsreiche gewesen, und OpenAIs Modell ging ihn trotzdem. Das ist ein schwaches Signal, aber genau die Sorte, die ein Mathematiker bemerkt. Das Zukunftsproblem wiegt schwerer als der Streit um die Anerkennung: Ein Labor, das zugleich die Vorarbeiten von Forschenden hostet und mit ihnen um die Publikation wettläuft, hat einen unauflösbaren Interessenkonflikt, und 'vertraut unserem Opt-out-Schalter' löst ihn nicht. Kommentator r0ze-at-hn nennt die einzige konkrete Verteidigung: alles öffentlich mit Datum auf GitHub festhalten. Für eine Forschungskultur ist das ein trübes Fazit.
+***** Comments
+- Es ist ein nützlicher Vergleich, OpenAI wie einen menschlichen Mitarbeiter zu betrachten. Diese Forschenden haben freiwillig mit einem OpenAI-Modell zusammengearbeitet, ihm Ideen gegeben und nützliche Antworten erhalten. Dann veröffentlicht OpenAI Arbeiten in derselben Richtung, ohne die Forschenden zu nennen. Wäre OpenAI ein menschlicher Forscher, wäre das höchst unethisch.
+- Das ist eine sehr schwache Behauptung. Der einzige Beleg ist 'irgendjemand sagt irgendwo, er habe irgendwann mit einer KI über das Thema gesprochen'. Sie behaupten nicht einmal, einen Beweis gehabt zu haben, nur daran gearbeitet zu haben.
+- Ich forsche inzwischen sehr offen und mit Datumsstempeln auf GitHub, damit klar erkennbar ist, dass eine KI meine Arbeit genutzt hat oder damit trainiert wurde, falls ein KI-Labor behauptet, genau das wiederentdeckt zu haben.
+** Detecting and countering misuse of AI: September 2026 :ai:security:privacy:anthropic:china:
+:PROPERTIES:
+:ID:       49647300
+:URL:      https://www.anthropic.com/threat-intelligence-report-september-2026
+:HN_URL:   https://news.ycombinator.com/item?id=49647300
+:POINTS:   79
+:COMMENTS: 144
+:BY:       garo-pro
+:END:
+
+*** TLDR
+Anthropic's threat report covers December 2025 to August 2026 across cyber operations, influence operations, surveillance, biological misuse, conventional weapons, scams and distillation. The section getting the attention is distillation. Anthropic says it disrupted attacks from seven China-based labs that route requests through proxy 'transfer stations', create thousands of accounts with stolen cards and API keys, and buy user transcripts from resellers. It names DeepSeek, Xiaomi and Moonshot as having fed conversations between their own models and their own users into Claude, then trained on Claude's replies. Those relayed sessions contained names, email addresses and company data from hundreds of end users in at least a dozen languages, many arriving via third-party model routers popular in the US and Europe. The report quotes extraction prompts verbatim, including one instructing Claude to translate its prior reasoning into katakana-only Japanese. Anthropic also says a distilled model can inherit dangerous capabilities without the safeguards, and that these practices likely violate privacy law and the labs' own terms.
+
+*** Take
+The bioweapons framing is what Anthropic wants discussed; the privacy finding is the part with named defendants. If the report is accurate, a European developer hitting a model router got their code and credentials shipped to a Chinese lab and then to Anthropic, and nobody in that chain told them. That is a concrete, checkable claim about three named companies, and it deserves a response from them rather than another round of jokes about Claude flagging Emily Dickinson. HN mostly went for the jokes. hnburnsy has the sharpest real objection: the report names China, Russia and Yemen repeatedly and gets vague about actors elsewhere.
+
+*** Comments
+
+**** m-hodges
+:PROPERTIES:
+:COMMENT_ID: 49649276
+:END:
+We discovered that Moonshot AI, the company that produces the Kimi family of models, silently forwarded customer requests to Claude, instead of processing them using Kimi. These users thought they were using a Kimi model, but received responses from Claude instead. DeepSeek also silently relayed exchanges to Claude without informing DeepSeek's users.
+
+**** hnburnsy
+:PROPERTIES:
+:COMMENT_ID: 49649985
+:END:
+Quite the double standard here. We identified a cell of threat actors based in northern Yemen, a China-based threat actor, likely freelance Russia-based threat actors... hiding the country elsewhere makes it really suspicious, at least to me.
+
+**** tedsanders
+:PROPERTIES:
+:COMMENT_ID: 49647999
+:END:
+The potential proliferation of biological weapons is serious. Millions could die. It's easy to joke about before it happens, but try to imagine how this thread might look after the successful deployment of a biological weapon by a rogue state or non-state actor.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+检测和对抗 AI 滥用：2026 年 9 月
+***** TLDR
+Anthropic 的威胁情报报告覆盖 2025 年 12 月至 2026 年 8 月，涉及网络行动、影响力行动、监控、生物滥用、常规武器、诈骗和蒸馏。引发关注的是蒸馏那一节。Anthropic 称它挫败了来自七家中国实验室的攻击，这些实验室通过代理"中转站"路由请求，用盗刷的信用卡和被窃的 API 密钥创建数千个账号，还从转售方购买用户会话记录。报告点名 DeepSeek、小米和月之暗面，说它们把自家模型与自家用户的对话喂给 Claude，再拿 Claude 的回复做训练。这些被转发的会话包含数百名终端用户的姓名、邮箱和公司数据，涉及至少十几种语言，其中很多来自欧美常用的第三方模型路由服务。报告还原样引用了提取提示词，包括一条要求 Claude 把先前推理翻译成纯片假名日语的指令。Anthropic 另称被蒸馏出的模型会继承危险能力却不继承防护措施，这些做法很可能违反隐私法和这些实验室自己的服务条款。
+***** Take
+生物武器这个框架是 Anthropic 希望大家讨论的；而隐私这一节才是点了名的部分。如果报告属实，一位欧洲开发者调用模型路由服务，代码和凭据被送到了一家中国实验室，再被送到 Anthropic，这条链路上没人告诉过他。这是关于三家具名公司的具体、可核查的指控，值得它们回应，而不是再来一轮关于 Claude 把艾米莉·狄金森判为危险内容的段子。HN 上大多数人选了段子。hnburnsy 提出了最尖锐的实质质疑：报告反复点名中国、俄罗斯和也门，说到其他地方的行为者就含糊其辞。
+***** Comments
+- 我们发现，生产 Kimi 系列模型的月之暗面把客户请求悄悄转发给了 Claude，而不是用 Kimi 处理。这些用户以为自己在用 Kimi 模型，收到的却是 Claude 的回复。DeepSeek 也在未告知用户的情况下把对话转发给了 Claude。
+- 这里的双重标准很明显。我们识别出位于也门北部的一个威胁行为者团伙、一个中国的威胁行为者、可能是俄罗斯的自由职业威胁行为者……换到别的地方就隐去国家，至少在我看来非常可疑。
+- 生物武器扩散的可能性是严肃的事。可能有数百万人死亡。事情发生之前开玩笑很容易，但设想一下，如果某个流氓国家或非国家行为者成功部署了生物武器，这个帖子回头看会是什么样。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+AI悪用の検知と対抗：2026年9月
+***** TLDR
+Anthropicの脅威インテリジェンス報告書は2025年12月から2026年8月を対象に、サイバー作戦、影響工作、監視、生物学的悪用、通常兵器、詐欺、蒸留を扱う。注目が集まっているのは蒸留の節だ。Anthropicは中国拠点の七つの研究所による攻撃を阻止したとし、これらは「中継所」と呼ばれるプロキシ経由でリクエストを送り、盗んだカードやAPIキーで数千のアカウントを作り、転売業者からユーザーの会話記録を購入していたという。報告書はDeepSeek、Xiaomi、Moonshotを名指しし、自社モデルと自社ユーザーの会話をClaudeに流し込み、Claudeの返答を学習データにしていたとする。中継されたセッションには数百人のエンドユーザーの氏名、メールアドレス、企業データが十数言語にわたって含まれ、多くは欧米で広く使われる第三者のモデルルーター経由だった。報告書は抽出用プロンプトを原文のまま引用しており、直前の推論をカタカナのみの日本語に翻訳させる指示も含まれる。Anthropicは、蒸留されたモデルは危険な能力を引き継ぐ一方で安全策は引き継がず、これらの行為はプライバシー法と各研究所自身の利用規約に反する可能性が高いとも述べている。
+***** Take
+生物兵器という枠組みはAnthropicが議論してほしい部分であり、名指しの被告がいるのはプライバシーの所見のほうだ。報告書が正確なら、モデルルーターを使った欧州の開発者のコードと認証情報が中国の研究所に渡り、さらにAnthropicに渡り、その経路の誰も本人に知らせていない。これは名指しされた三社についての具体的で検証可能な主張であり、ClaudeがEmily Dickinsonを危険扱いしたという冗談の応酬ではなく、当事者からの回答に値する。HNはおおむね冗談のほうを選んだ。実質的な反論として最も鋭いのはhnburnsyで、報告書は中国、ロシア、イエメンを繰り返し名指しする一方、それ以外の地域の主体については曖昧になると指摘している。
+***** Comments
+- Kimiシリーズのモデルを作るMoonshot AIが、顧客のリクエストをKimiで処理せず、密かにClaudeへ転送していたことが判明した。ユーザーはKimiを使っているつもりでClaudeの応答を受け取っていた。DeepSeekも利用者に知らせずやり取りをClaudeへ中継していた。
+- これはかなりの二重基準だ。イエメン北部の脅威主体の一団、中国拠点の脅威主体、ロシア拠点のフリーランスと思われる脅威主体……他の地域では国名を伏せるのは、少なくとも私にはかなり怪しく見える。
+- 生物兵器の拡散の可能性は深刻だ。数百万人が死ぬかもしれない。起きる前に冗談を言うのは簡単だが、ならず者国家や非国家主体が生物兵器の展開に成功したあとでこのスレッドがどう見えるか想像してほしい。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+AI 오용 탐지와 대응: 2026년 9월
+***** TLDR
+Anthropic의 위협 인텔리전스 보고서는 2025년 12월부터 2026년 8월까지를 다루며 사이버 작전, 영향력 공작, 감시, 생물학적 오용, 재래식 무기, 사기, 증류를 포함한다. 주목받는 건 증류 부분이다. Anthropic은 중국에 기반한 일곱 개 연구소의 공격을 차단했다고 밝혔다. 이들은 '중계소'라 불리는 프록시를 통해 요청을 보내고, 도난 카드와 API 키로 수천 개 계정을 만들고, 재판매업자에게서 사용자 대화 기록을 사들였다. 보고서는 DeepSeek, 샤오미, 문샷을 지목하며, 이들이 자사 모델과 자사 사용자의 대화를 Claude에 밀어 넣은 뒤 Claude의 답변을 학습에 썼다고 말한다. 중계된 세션에는 수백 명 최종 사용자의 이름, 이메일 주소, 회사 데이터가 최소 열두 개 언어로 담겨 있었고 상당수는 미국과 유럽에서 널리 쓰이는 제3자 모델 라우터를 거쳤다. 보고서는 추출용 프롬프트를 원문 그대로 인용하는데, 직전 추론을 가타카나만 쓴 일본어로 번역하라는 지시도 있다. Anthropic은 증류된 모델이 위험한 능력은 물려받되 안전장치는 물려받지 못하며, 이런 관행이 개인정보법과 각 연구소 자체 약관을 위반할 가능성이 높다고 덧붙였다.
+***** Take
+생물무기 프레임은 Anthropic이 논의되길 바라는 쪽이고, 이름이 적시된 피고가 있는 쪽은 개인정보 항목이다. 보고서가 정확하다면, 모델 라우터를 쓴 유럽 개발자의 코드와 자격증명이 중국 연구소로, 다시 Anthropic으로 넘어갔고 그 사슬의 누구도 본인에게 알리지 않았다. 이는 지목된 세 회사에 대한 구체적이고 검증 가능한 주장이며, Claude가 에밀리 디킨슨을 위험물로 분류했다는 농담 대신 당사자들의 답변을 받을 만한 사안이다. HN은 대체로 농담 쪽을 골랐다. 실질적으로 가장 날카로운 반론은 hnburnsy의 것으로, 보고서가 중국과 러시아, 예멘은 반복해서 지목하면서 다른 지역 행위자에 대해서는 모호해진다는 지적이다.
+***** Comments
+- Kimi 계열 모델을 만드는 Moonshot AI가 고객 요청을 Kimi로 처리하지 않고 몰래 Claude로 전달한 사실을 확인했다. 사용자들은 Kimi 모델을 쓴다고 생각했지만 Claude의 응답을 받았다. DeepSeek도 사용자에게 알리지 않고 대화를 Claude로 중계했다.
+- 이건 상당한 이중 잣대다. 예멘 북부의 위협 행위자 조직, 중국 기반 위협 행위자, 러시아 기반 프리랜서로 보이는 위협 행위자… 다른 곳에서는 국가를 감추는 건 적어도 내게는 매우 수상해 보인다.
+- 생물무기 확산 가능성은 심각한 문제다. 수백만 명이 죽을 수 있다. 벌어지기 전에는 농담하기 쉽지만, 불량 국가나 비국가 행위자가 생물무기 배치에 성공한 뒤 이 스레드가 어떻게 보일지 상상해 보라.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Detección y respuesta al uso indebido de la IA: septiembre de 2026
+***** TLDR
+El informe de inteligencia de amenazas de Anthropic cubre de diciembre de 2025 a agosto de 2026 e incluye operaciones cibernéticas, operaciones de influencia, vigilancia, uso indebido biológico, armas convencionales, estafas y destilación. La sección que acapara la atención es la de destilación. Anthropic dice haber frenado ataques de siete laboratorios con base en China que enrutan peticiones por servicios proxy llamados 'estaciones de transferencia', crean miles de cuentas con tarjetas y claves de API robadas y compran transcripciones de usuarios a revendedores. Nombra a DeepSeek, Xiaomi y Moonshot por meter en Claude conversaciones entre sus propios modelos y sus propios usuarios y luego entrenar con las respuestas de Claude. Esas sesiones retransmitidas contenían nombres, correos y datos de empresa de cientos de usuarios finales en al menos una docena de idiomas, y muchas llegaron a través de enrutadores de modelos de terceros populares en EE. UU. y Europa. El informe cita literalmente prompts de extracción, entre ellos uno que pide a Claude traducir su razonamiento previo a japonés solo en katakana. Anthropic añade que un modelo destilado puede heredar capacidades peligrosas sin las salvaguardas, y que estas prácticas probablemente infringen la ley de privacidad y los propios términos de esos laboratorios.
+***** Take
+El encuadre de las armas biológicas es lo que Anthropic quiere que se discuta; el hallazgo de privacidad es la parte con acusados con nombre y apellido. Si el informe es exacto, a un desarrollador europeo que usó un enrutador de modelos le enviaron su código y sus credenciales a un laboratorio chino y de ahí a Anthropic, y nadie en esa cadena se lo dijo. Es una afirmación concreta y verificable sobre tres empresas señaladas, y merece una respuesta de ellas en lugar de otra ronda de chistes sobre Claude marcando a Emily Dickinson. HN se fue mayoritariamente a los chistes. hnburnsy plantea la objeción real más afilada: el informe nombra a China, Rusia y Yemen una y otra vez, y se vuelve vago con los actores de otros sitios.
+***** Comments
+- Descubrimos que Moonshot AI, la empresa que produce los modelos Kimi, reenviaba en silencio las peticiones de clientes a Claude en lugar de procesarlas con Kimi. Los usuarios creían usar un modelo Kimi y recibían respuestas de Claude. DeepSeek también retransmitió intercambios a Claude sin informar a sus usuarios.
+- Vaya doble rasero. Identificamos una célula de actores de amenazas en el norte de Yemen, un actor con base en China, probables actores autónomos con base en Rusia... ocultar el país en otros casos me resulta muy sospechoso.
+- La posible proliferación de armas biológicas es algo serio. Podrían morir millones. Es fácil bromear antes de que ocurra, pero imaginen cómo se vería este hilo tras el despliegue exitoso de un arma biológica por un Estado canalla o un actor no estatal.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Missbrauch von KI erkennen und abwehren: September 2026
+***** TLDR
+Anthropics Bericht zur Bedrohungslage deckt Dezember 2025 bis August 2026 ab und behandelt Cyberoperationen, Einflussoperationen, Überwachung, biologischen Missbrauch, konventionelle Waffen, Betrug und Destillation. Aufmerksamkeit erregt der Abschnitt zur Destillation. Anthropic sagt, es habe Angriffe von sieben in China ansässigen Laboren gestoppt, die Anfragen über Proxy-'Transferstationen' leiten, mit gestohlenen Karten und API-Schlüsseln Tausende Konten anlegen und Nutzer-Transkripte von Wiederverkäufern kaufen. Der Bericht nennt DeepSeek, Xiaomi und Moonshot: Sie hätten Gespräche zwischen ihren eigenen Modellen und ihren eigenen Nutzern in Claude eingespeist und anschließend auf Claudes Antworten trainiert. Diese weitergeleiteten Sitzungen enthielten Namen, E-Mail-Adressen und Firmendaten von Hunderten Endnutzern in mindestens einem Dutzend Sprachen, viele davon über in den USA und Europa verbreitete Modell-Router von Drittanbietern. Der Bericht zitiert Extraktions-Prompts wörtlich, darunter die Anweisung, Claude solle seine vorherige Argumentation in reines Katakana-Japanisch übersetzen. Anthropic sagt zudem, ein destilliertes Modell könne gefährliche Fähigkeiten ohne die Schutzmechanismen erben, und diese Praktiken verstießen wahrscheinlich gegen Datenschutzrecht und die eigenen Nutzungsbedingungen der Labore.
+***** Take
+Der Bioverbotsrahmen ist das, worüber Anthropic diskutiert sehen will; der Datenschutzbefund ist der Teil mit namentlich benannten Beschuldigten. Stimmt der Bericht, dann gingen Code und Zugangsdaten einer europäischen Entwicklerin, die einen Modell-Router nutzte, an ein chinesisches Labor und von dort an Anthropic, und niemand in dieser Kette hat es ihr gesagt. Das ist eine konkrete, prüfbare Behauptung über drei benannte Unternehmen und verdient eine Antwort von ihnen statt einer weiteren Runde Witze darüber, dass Claude Emily Dickinson beanstandet. HN entschied sich überwiegend für die Witze. Den schärfsten sachlichen Einwand hat hnburnsy: Der Bericht nennt China, Russland und Jemen wiederholt beim Namen und wird bei Akteuren anderswo vage.
+***** Comments
+- Wir haben festgestellt, dass Moonshot AI, das Unternehmen hinter den Kimi-Modellen, Kundenanfragen still an Claude weiterleitete, statt sie mit Kimi zu verarbeiten. Die Nutzer glaubten, ein Kimi-Modell zu verwenden, erhielten aber Antworten von Claude. Auch DeepSeek leitete Austausche an Claude weiter, ohne die eigenen Nutzer zu informieren.
+- Das ist schon ein deutliches Messen mit zweierlei Maß. Wir identifizierten eine Zelle von Bedrohungsakteuren im Norden Jemens, einen in China ansässigen Akteur, mutmaßlich freiberufliche Akteure in Russland ... anderswo das Land zu verschweigen, wirkt auf mich sehr verdächtig.
+- Die mögliche Verbreitung biologischer Waffen ist eine ernste Sache. Millionen könnten sterben. Vorher lässt sich leicht darüber scherzen, aber stellt euch vor, wie dieser Thread nach dem erfolgreichen Einsatz einer Biowaffe durch einen Schurkenstaat oder nichtstaatlichen Akteur aussehen würde.
+** Rust is tier-1 language at Microsoft :rust:microsoft:compilers:windows:memory-safety:
+:PROPERTIES:
+:ID:       49643546
+:URL:      https://rustfoundation.org/media/guest-post-rust-is-tier-1-language-at-microsoft/
+:HN_URL:   https://news.ycombinator.com/item?id=49643546
+:POINTS:   593
+:COMMENTS: 338
+:BY:       mmastrac
+:END:
+
+*** TLDR
+Victor Ciura, a principal engineer on Microsoft's Rust tooling team, writes that Rust now sits alongside C++, C# and TypeScript internally: a paved path from local development to production, with secure toolchain builds, developer tooling, quality workflows, platform integration and SDL compliance. The concrete piece of engineering is rustc_codegen_utc, a code generation backend that connects Rust to MSVC rather than relying solely on LLVM. It is production-ready as of early 2026, self-hosted since Rust 1.90, and more than 100 Microsoft repositories build with it today. The goal is one codegen platform for both Rust and C++ on Windows, which gets Windows binary hardening, debugging, profiling and cross-language optimization between Rust and C++.
+
+*** Take
+The codegen backend matters more than the tier-1 label. Microsoft owns MSVC, and the reason Rust could never fully belong on Windows was that it arrived with LLVM's toolchain and none of Microsoft's. rustc_codegen_utc closes that gap, and cross-language optimization between Rust and C++ is the thing large Windows codebases actually need for incremental migration. The obvious question, asked by swiftcoder in the thread, is whether it ever ships outside Microsoft. Separately, that 'one engineer, one month, one million lines' conversion goal deserves the skepticism gregw2 gives it: automated ports move the effort to validation, they do not remove it.
+
+*** Comments
+
+**** pjmlp
+:PROPERTIES:
+:COMMENT_ID: 49644131
+:END:
+This is very big news, all major OS vendors that also have a role in C and C++ language tooling now have diversified their options in systems programming languages for greenfield development. Additionally we finally get some public news about the MSVC integration.
+
+**** swiftcoder
+:PROPERTIES:
+:COMMENT_ID: 49644395
+:END:
+I guess the big question is whether they are going to open up rustc_codegen_utc for use outside of Microsoft?
+
+**** gregw2
+:PROPERTIES:
+:COMMENT_ID: 49647310
+:END:
+I've worked on projects where the core bits of code were '90%' converted by some automated tool, and in my view the overall benefit to the project timeline was probably only 20-30% because of the Amdahl's-law-type overheads of validation and bits of code not supported.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Rust 成为微软的一级语言
+***** TLDR
+微软 Rust 工具链团队的首席工程师 Victor Ciura 撰文称，Rust 现在与 C++、C# 和 TypeScript 并列为内部一级语言：从本地开发到生产环境有一条铺好的路，包含安全的工具链构建、开发者工具、质量流程、平台集成以及 SDL 合规。工程上的实质是 rustc_codegen_utc，一个把 Rust 接到 MSVC 而不只依赖 LLVM 的代码生成后端。它自 2026 年初起可用于生产，从 Rust 1.90 开始自举，目前已有 100 多个微软代码仓库用它构建。目标是让 Rust 和 C++ 在 Windows 上共用一套代码生成平台，从而获得 Windows 的二进制加固、调试、性能分析，以及 Rust 与 C++ 之间的跨语言优化。
+***** Take
+代码生成后端比一级语言这个称号重要得多。MSVC 是微软自己的，而 Rust 一直无法真正融入 Windows，原因就是它带来的是 LLVM 那套工具链，没有微软的那套。rustc_codegen_utc 补上了这个缺口，而 Rust 与 C++ 之间的跨语言优化，正是大型 Windows 代码库做渐进式迁移真正需要的东西。明显的问题由帖子里的 swiftcoder 提出：它会不会开放给微软之外的人用。另外，"一个工程师、一个月、一百万行"那个转换目标值得 gregw2 给出的怀疑：自动移植把工作量转移到了验证环节，并没有消除它。
+***** Comments
+- 这是重大新闻，所有同时在 C 和 C++ 语言工具链上有话语权的主流操作系统厂商，如今在新项目的系统编程语言上都有了更多选择。而且我们终于看到关于 MSVC 集成的公开消息了。
+- 我想最大的问题是，他们会不会把 rustc_codegen_utc 开放给微软之外使用？
+- 我参与过一些项目，核心代码被某个自动化工具"转换了 90%"，但在我看来对项目周期的整体收益大概只有 20% 到 30%，因为验证环节和不被支持的那部分代码带来了阿姆达尔定律式的额外开销。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+RustがMicrosoftのTier-1言語に
+***** TLDR
+MicrosoftのRustツール担当プリンシパルエンジニアVictor Ciuraによれば、Rustは社内でC++、C#、TypeScriptと同格になった。ローカル開発から本番までの舗装された道筋があり、安全なツールチェーンのビルド、開発者向けツール、品質ワークフロー、プラットフォーム統合、SDL準拠が含まれる。技術的な核はrustc_codegen_utcで、RustをLLVMだけに頼らずMSVCへつなぐコード生成バックエンドだ。2026年初頭から本番利用可能、Rust 1.90以降はセルフホスト、現在100を超えるMicrosoftのリポジトリがこれでビルドされている。目標はWindows上でRustとC++が同じコード生成基盤を共有することで、Windowsのバイナリ強化、デバッグ、プロファイリング、RustとC++間の言語横断最適化が得られる。
+***** Take
+Tier-1という肩書きより、コード生成バックエンドのほうが重要だ。MSVCはMicrosoft自身のものであり、RustがWindowsに完全には馴染めなかった理由は、LLVMのツールチェーンを携えてきてMicrosoftのものを持っていなかったことにある。rustc_codegen_utcはその隙間を埋め、RustとC++の言語横断最適化は、大規模なWindowsコードベースが段階的移行で実際に必要とするものだ。当然の疑問はスレッドのswiftcoderが投げている。Microsoft以外にも提供されるのか、という点だ。別途、「エンジニア1人、1か月、100万行」という変換目標はgregw2の懐疑に値する。自動移植は労力を検証工程へ移すだけで、なくしはしない。
+***** Comments
+- これは大きなニュースだ。CやC++の言語ツールにも関わる主要OSベンダーがすべて、新規開発のシステムプログラミング言語の選択肢を広げたことになる。しかもMSVC統合について公の情報がようやく出てきた。
+- 大きな疑問は、rustc_codegen_utcをMicrosoft以外でも使えるように公開するのかどうかだろう。
+- 中核コードを自動ツールで「90%」変換したプロジェクトに関わったことがあるが、検証の手間やツール非対応の部分というアムダールの法則的なオーバーヘッドのせいで、日程面の恩恵は全体で20〜30%程度だったと思う。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Rust, 마이크로소프트의 1급 언어가 되다
+***** TLDR
+마이크로소프트 Rust 툴링 팀의 수석 엔지니어 Victor Ciura는 Rust가 이제 사내에서 C++, C#, TypeScript와 같은 급이 됐다고 쓴다. 로컬 개발에서 프로덕션까지 포장된 길이 있고, 안전한 툴체인 빌드, 개발자 도구, 품질 워크플로, 플랫폼 통합, SDL 준수가 포함된다. 기술적 핵심은 rustc_codegen_utc로, Rust를 LLVM에만 의존하지 않고 MSVC에 연결하는 코드 생성 백엔드다. 2026년 초부터 프로덕션에 쓸 수 있고 Rust 1.90부터 셀프 호스팅되며 현재 100개 넘는 마이크로소프트 저장소가 이걸로 빌드된다. 목표는 윈도우에서 Rust와 C++가 하나의 코드 생성 기반을 공유하는 것이며, 이를 통해 윈도우 바이너리 강화, 디버깅, 프로파일링, 그리고 Rust와 C++ 사이의 언어 간 최적화를 얻는다.
+***** Take
+1급 언어라는 이름표보다 코드 생성 백엔드가 훨씬 중요하다. MSVC는 마이크로소프트 것이고, Rust가 윈도우에 온전히 뿌리내리지 못한 이유는 LLVM 툴체인을 들고 왔을 뿐 마이크로소프트의 것은 없었기 때문이다. rustc_codegen_utc가 그 틈을 메우고, Rust와 C++ 사이의 언어 간 최적화는 대형 윈도우 코드베이스가 점진적 이전에 실제로 필요로 하는 것이다. 당연한 질문은 스레드에서 swiftcoder가 던진다. 마이크로소프트 밖으로도 공개될 것인가. 별도로 '엔지니어 한 명, 한 달, 백만 줄'이라는 변환 목표는 gregw2의 회의를 받을 만하다. 자동 이식은 노력을 검증 단계로 옮길 뿐 없애지 않는다.
+***** Comments
+- 정말 큰 뉴스다. C와 C++ 언어 도구에도 관여하는 주요 OS 공급사들이 이제 모두 신규 개발용 시스템 프로그래밍 언어의 선택지를 넓혔다. 게다가 MSVC 통합에 관한 공개 소식이 드디어 나왔다.
+- 가장 큰 질문은 rustc_codegen_utc를 마이크로소프트 외부에서도 쓸 수 있게 열어줄 것인가 하는 점이겠다.
+- 핵심 코드를 어떤 자동화 도구가 '90%' 변환해 준 프로젝트에 참여한 적이 있는데, 검증 부담과 지원되지 않는 코드 조각 같은 암달의 법칙식 오버헤드 때문에 일정 면에서 전체 이득은 20~30% 정도였다고 본다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Rust es lenguaje de nivel 1 en Microsoft
+***** TLDR
+Victor Ciura, ingeniero principal del equipo de herramientas de Rust en Microsoft, escribe que Rust está ya al nivel de C++, C# y TypeScript dentro de la empresa: un camino allanado del desarrollo local a producción, con compilaciones seguras de la cadena de herramientas, utilidades para desarrolladores, flujos de calidad, integración con la plataforma y cumplimiento del SDL. La pieza concreta de ingeniería es rustc_codegen_utc, un backend de generación de código que conecta Rust con MSVC en vez de depender solo de LLVM. Está listo para producción desde principios de 2026, es autohospedado desde Rust 1.90 y hoy más de 100 repositorios de Microsoft se compilan con él. El objetivo es una única plataforma de generación de código para Rust y C++ en Windows, lo que aporta endurecimiento de binarios, depuración, perfilado y optimización entre lenguajes entre Rust y C++.
+***** Take
+El backend de generación de código importa más que la etiqueta de nivel 1. MSVC es de Microsoft, y la razón por la que Rust nunca terminó de encajar en Windows es que llegaba con la cadena de herramientas de LLVM y con nada de la de Microsoft. rustc_codegen_utc cierra ese hueco, y la optimización entre lenguajes entre Rust y C++ es justo lo que las grandes bases de código de Windows necesitan para migrar por partes. La pregunta obvia, que plantea swiftcoder en el hilo, es si llegará a salir de Microsoft. Aparte, el objetivo de conversión de 'un ingeniero, un mes, un millón de líneas' merece el escepticismo de gregw2: los ports automáticos trasladan el esfuerzo a la validación, no lo eliminan.
+***** Comments
+- Es una noticia enorme: todos los grandes fabricantes de sistemas operativos que además tienen un papel en las herramientas de C y C++ han diversificado sus opciones de lenguaje de sistemas para proyectos nuevos. Y por fin tenemos noticias públicas sobre la integración con MSVC.
+- Supongo que la gran pregunta es si van a abrir rustc_codegen_utc para usarlo fuera de Microsoft.
+- He trabajado en proyectos donde una herramienta automática convirtió el '90%' del código central, y en mi opinión el beneficio global para el calendario fue quizá del 20 al 30%, por las sobrecargas tipo ley de Amdahl de la validación y de los trozos de código no soportados.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Rust ist Tier-1-Sprache bei Microsoft
+***** TLDR
+Victor Ciura, Principal Engineer im Rust-Tooling-Team von Microsoft, schreibt, dass Rust intern nun neben C++, C# und TypeScript steht: ein geebneter Weg von der lokalen Entwicklung bis in die Produktion, mit sicheren Toolchain-Builds, Entwicklerwerkzeugen, Qualitätsprozessen, Plattformintegration und SDL-Konformität. Das konkrete Stück Technik ist rustc_codegen_utc, ein Codegenerierungs-Backend, das Rust an MSVC anbindet, statt allein auf LLVM zu setzen. Es ist seit Anfang 2026 produktionsreif, seit Rust 1.90 selbst gehostet, und mehr als 100 Microsoft-Repositories bauen heute damit. Ziel ist eine gemeinsame Codegen-Plattform für Rust und C++ unter Windows, was Binärhärtung, Debugging, Profiling und sprachübergreifende Optimierung zwischen Rust und C++ bringt.
+***** Take
+Das Codegen-Backend wiegt schwerer als das Tier-1-Etikett. MSVC gehört Microsoft, und Rust konnte unter Windows nie ganz heimisch werden, weil es LLVMs Toolchain mitbrachte und nichts von Microsofts. rustc_codegen_utc schließt diese Lücke, und die sprachübergreifende Optimierung zwischen Rust und C++ ist genau das, was große Windows-Codebasen für eine schrittweise Migration brauchen. Die naheliegende Frage stellt swiftcoder im Thread: Wird es je außerhalb von Microsoft verfügbar sein? Davon abgesehen verdient das Umstellungsziel 'ein Entwickler, ein Monat, eine Million Zeilen' die Skepsis von gregw2: Automatische Portierungen verschieben den Aufwand in die Validierung, sie beseitigen ihn nicht.
+***** Comments
+- Das ist eine sehr große Nachricht: Alle großen Betriebssystemhersteller, die zugleich eine Rolle bei C- und C++-Tooling spielen, haben ihre Optionen für Systemprogrammierung bei Neuentwicklungen erweitert. Außerdem gibt es endlich öffentliche Informationen zur MSVC-Integration.
+- Die große Frage dürfte sein, ob sie rustc_codegen_utc auch außerhalb von Microsoft nutzbar machen.
+- Ich habe an Projekten gearbeitet, in denen die Kernteile des Codes von einem automatischen Werkzeug zu '90%' konvertiert wurden, und der Gesamtnutzen für den Zeitplan lag meiner Einschätzung nach nur bei 20 bis 30%, wegen der Amdahl-artigen Zusatzkosten für Validierung und nicht unterstützte Codeteile.
+** Neki – Sharded Postgres :postgres:databases:sharding:planetscale:open-source:
+:PROPERTIES:
+:ID:       49645686
+:URL:      https://planetscale.com/blog/introducing-neki
+:HN_URL:   https://news.ycombinator.com/item?id=49645686
+:POINTS:   195
+:COMMENTS: 107
+:BY:       simon_weber
+:END:
+
+*** TLDR
+PlanetScale CTO Nick Van Wiggeren announced Neki, sharded Postgres in platform preview, built on eight years of running large sharded MySQL clusters. Four components: routers that speak the Postgres wire protocol and plan distributed execution, shards that are real unmodified Postgres clusters with one primary and two or more replicas across availability zones, connection pooling sidecars that benefit from PlanetScale controlling both ends, and a control plane for health monitoring, failover, schema changes, upgrades and resharding. A JSON data topology maps logical tables to physical shards. You can run it unsharded first and reshard later as a workflow. It is not for production use yet. The post never says whether Neki is open source, and PlanetScale is not promising that it will be.
+
+*** Take
+The engineering pitch is sound: real Postgres on every shard, no forked storage engine, no hidden shard key, and the resharding workflow is the part that hurts most when you roll your own. The launch around it is a mess. Several commenters got deep into the post before they could say what Neki is, which gk1 lays out section by section. And PlanetScale spent weeks criticising Supabase's open-source Multigres before shipping a closed, hosted-only preview, which is the specific thing xyzzy_plugh is angry about. Also unanswered in the post: cross-shard foreign keys and constraints, which ragall flags and which is where these systems usually disappoint.
+
+*** Comments
+
+**** gk1
+:PROPERTIES:
+:COMMENT_ID: 49646333
+:END:
+Folks, in your launch posts remember to describe what you're launching and what it's for. Ideally in the opening paragraph. Intro: explains problem but not what is Neki. Why Neki: explains alternatives and why they suck but not what is Neki. How does Neki work: describes the technical components but not what is Neki.
+
+**** xyzzy_plugh
+:PROPERTIES:
+:COMMENT_ID: 49648095
+:END:
+I love how the Planetscale CEO has been shitting on multigres, Supabase's equivalent to Neki, and gloating about how superior Neki is, and yet Neki is not even open source! Congrats on the, checks notes, closed launch, I guess?
+
+**** ragall
+:PROPERTIES:
+:COMMENT_ID: 49646530
+:END:
+I see no mention of foreign keys, or any other constraints, across shards. If, as I suspect, they're not implemented, it would still be useful but at the level of Spanner 10 years ago.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Neki——分片的 Postgres
+***** TLDR
+PlanetScale 的 CTO Nick Van Wiggeren 宣布了 Neki，一个进入平台预览阶段的分片 Postgres，基于该公司八年运营大型分片 MySQL 集群的经验。四个组件：使用 Postgres 线协议并规划分布式执行的路由器；由未经修改的真实 Postgres 集群构成的分片，每个分片一主加两个以上跨可用区的副本；因为 PlanetScale 同时掌控两端而受益的连接池边车；以及负责健康监控、故障转移、模式变更、升级和重分片的控制平面。一份 JSON 数据拓扑把逻辑表映射到物理分片。你可以先不分片地运行，之后再把重分片作为一个工作流执行。目前还不可用于生产环境。文章始终没有说 Neki 是否开源，PlanetScale 也没有承诺会开源。
+***** Take
+技术主张是站得住的：每个分片上都是真正的 Postgres，没有分叉的存储引擎，没有隐藏的分片键，而重分片工作流恰恰是自建方案里最痛的那部分。围绕它的发布则一团糟。好几位评论者读了很久才搞明白 Neki 是什么，gk1 逐节列出了问题所在。而且 PlanetScale 先用了几周时间批评 Supabase 开源的 Multigres，然后交付了一个闭源、仅托管的预览版，这正是 xyzzy_plugh 生气的点。文章还有一个未答的问题：跨分片的外键和约束。ragall 提出了这一点，而这通常正是这类系统让人失望的地方。
+***** Comments
+- 各位，写发布文的时候记得说清楚你在发布什么、它是干什么用的。最好写在第一段。引言：讲了问题，但没讲 Neki 是什么。为什么要 Neki：讲了替代方案有多糟，但没讲 Neki 是什么。Neki 怎么工作：描述了技术组件，还是没讲 Neki 是什么。
+- 我真喜欢这出：PlanetScale 的 CEO 一直在贬低 Supabase 的同类项目 multigres，吹嘘 Neki 有多优越，结果 Neki 连开源都不是！恭喜你们完成了这场——我看看——闭源发布？
+- 我没看到任何关于跨分片外键或其他约束的说明。如果像我猜的那样没有实现，它仍然有用，但也就是十年前 Spanner 的水平。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Neki — シャーディングされたPostgres
+***** TLDR
+PlanetScaleのCTO Nick Van Wiggerenが、プラットフォームプレビュー段階のシャーディング対応Postgres「Neki」を発表した。大規模なシャーディングMySQLクラスタを8年運用した知見に基づく。構成要素は4つ。Postgresのワイヤプロトコルを話し分散実行を計画するルーター、変更を加えていない本物のPostgresクラスタから成るシャード（1台のプライマリと可用性ゾーンをまたぐ2台以上のレプリカ）、PlanetScaleが両端を握るからこそ効くコネクションプーリングのサイドカー、そしてヘルス監視、フェイルオーバー、スキーマ変更、アップグレード、リシャーディングを担うコントロールプレーン。JSONのデータトポロジーが論理テーブルを物理シャードに対応づける。最初はシャーディングなしで動かし、後からワークフローとしてリシャーディングできる。まだ本番利用向けではない。記事はNekiがオープンソースかどうかを一切述べておらず、PlanetScaleもそうすると約束していない。
+***** Take
+技術的な訴求は筋が通っている。各シャードが本物のPostgresで、ストレージエンジンをフォークせず、シャードキーを隠さない。そしてリシャーディングのワークフローこそ、自前で組むと最も痛い部分だ。一方、発表のやり方は散らかっている。複数のコメント投稿者が記事をかなり読み進めるまでNekiが何か言えなかったと述べ、gk1は節ごとにその問題を並べている。さらにPlanetScaleは、Supabaseのオープンソース版に当たるMultigresを何週間も批判しておきながら、クローズドでホスト専用のプレビューを出した。そこがxyzzy_plughの怒りどころだ。記事が答えていない点はもう一つ、シャードをまたぐ外部キーと制約である。ragallが指摘するとおり、この種のシステムが期待を裏切りがちなのはまさにそこだ。
+***** Comments
+- みなさん、ローンチ記事では何をローンチしたのか、何のためのものかを書いてほしい。できれば冒頭の段落で。導入：問題は説明しているがNekiが何かは書いていない。なぜNekiか：代替案のダメさは説明しているがNekiが何かは書いていない。Nekiの仕組み：技術要素は説明しているがNekiが何かは書いていない。
+- PlanetScaleのCEOがSupabaseのNeki相当品であるmultigresをこき下ろし、Nekiの優位を誇ってきたのに、当のNekiはオープンソースですらないというのが実にいい。えーと、クローズドなローンチ、おめでとうということでいいのかな？
+- シャードをまたぐ外部キーやその他の制約への言及が見当たらない。想像どおり未実装なら、それでも有用ではあるが、10年前のSpanner程度の水準だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Neki — 샤딩된 Postgres
+***** TLDR
+PlanetScale CTO Nick Van Wiggeren이 플랫폼 프리뷰 단계의 샤딩 Postgres인 Neki를 발표했다. 대규모 샤딩 MySQL 클러스터를 8년간 운영한 경험에서 나왔다. 구성 요소는 넷이다. Postgres 와이어 프로토콜을 쓰며 분산 실행을 계획하는 라우터, 수정하지 않은 진짜 Postgres 클러스터로 이뤄진 샤드(프라이머리 1대와 가용 영역에 걸친 복제본 2대 이상), PlanetScale이 양쪽 끝을 모두 제어하기에 이득을 보는 커넥션 풀링 사이드카, 그리고 헬스 모니터링과 페일오버, 스키마 변경, 업그레이드, 리샤딩을 맡는 컨트롤 플레인. JSON 데이터 토폴로지가 논리 테이블을 물리 샤드에 매핑한다. 처음엔 샤딩 없이 돌리다가 나중에 리샤딩을 워크플로로 실행할 수 있다. 아직 프로덕션용은 아니다. 글은 Neki가 오픈소스인지 전혀 말하지 않으며, PlanetScale도 그러겠다고 약속하지 않는다.
+***** Take
+기술적 주장은 탄탄하다. 샤드마다 진짜 Postgres가 돌고, 스토리지 엔진을 포크하지 않으며, 샤드 키를 숨기지 않는다. 그리고 리샤딩 워크플로는 직접 만들 때 가장 아픈 부분이다. 반면 런칭은 엉망이다. 여러 댓글 작성자가 한참 읽고서야 Neki가 뭔지 말할 수 있었다고 했고, gk1은 그 문제를 절 단위로 짚는다. 게다가 PlanetScale은 몇 주 동안 Supabase의 오픈소스 Multigres를 깎아내린 뒤 폐쇄적이고 호스팅 전용인 프리뷰를 내놨다. 바로 이 지점이 xyzzy_plugh가 화를 내는 이유다. 글이 답하지 않은 것이 하나 더 있다. 샤드 간 외래 키와 제약 조건인데, ragall이 짚었듯 이런 시스템이 대개 실망을 주는 지점이다.
+***** Comments
+- 여러분, 런칭 글에서는 무엇을 내놓는지, 무엇에 쓰는 것인지 꼭 적어 주세요. 되도록 첫 문단에요. 도입: 문제는 설명하지만 Neki가 뭔지는 없음. 왜 Neki인가: 대안이 왜 별로인지는 설명하지만 Neki가 뭔지는 없음. Neki는 어떻게 동작하나: 기술 구성요소는 설명하지만 여전히 Neki가 뭔지는 없음.
+- PlanetScale CEO가 Supabase의 Neki 격인 multigres를 줄곧 깎아내리며 Neki가 얼마나 우월한지 자랑해 왔는데, 정작 Neki는 오픈소스도 아니라니 정말 대단하다. 어디 보자, 폐쇄형 런칭을 축하해야 하나?
+- 샤드 간 외래 키나 다른 제약 조건에 대한 언급이 전혀 보이지 않는다. 짐작대로 구현되지 않았다면 여전히 쓸모는 있겠지만, 10년 전 Spanner 수준이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Neki: Postgres fragmentado
+***** TLDR
+Nick Van Wiggeren, CTO de PlanetScale, anunció Neki, Postgres fragmentado en vista previa de plataforma, construido sobre ocho años operando grandes clústeres MySQL fragmentados. Cuatro componentes: enrutadores que hablan el protocolo de cable de Postgres y planifican la ejecución distribuida; fragmentos que son clústeres de Postgres reales y sin modificar, con un primario y dos o más réplicas repartidas en zonas de disponibilidad; sidecars de agrupación de conexiones que se benefician de que PlanetScale controle ambos extremos; y un plano de control para monitorización de salud, conmutación por error, cambios de esquema, actualizaciones y refragmentación. Una topología de datos en JSON asigna tablas lógicas a fragmentos físicos. Se puede empezar sin fragmentar y refragmentar después como un flujo de trabajo. Todavía no es para producción. El artículo nunca dice si Neki es de código abierto, y PlanetScale no promete que lo vaya a ser.
+***** Take
+El argumento técnico se sostiene: Postgres real en cada fragmento, sin motor de almacenamiento bifurcado, sin clave de fragmentación oculta, y el flujo de refragmentación es justo lo que más duele cuando lo montas tú. El lanzamiento que lo envuelve es un desastre. Varios comentaristas leyeron media entrada antes de poder decir qué es Neki, algo que gk1 desglosa sección por sección. Y PlanetScale pasó semanas criticando el Multigres de código abierto de Supabase antes de sacar una vista previa cerrada y solo alojada, que es exactamente lo que enfada a xyzzy_plugh. Sin respuesta también: claves foráneas y restricciones entre fragmentos, que señala ragall y donde estos sistemas suelen decepcionar.
+***** Comments
+- Gente, en vuestros artículos de lanzamiento recordad describir qué lanzáis y para qué sirve. A ser posible en el primer párrafo. Introducción: explica el problema pero no qué es Neki. Por qué Neki: explica las alternativas y por qué son malas, pero no qué es Neki. Cómo funciona Neki: describe los componentes técnicos, pero no qué es Neki.
+- Me encanta que el CEO de PlanetScale lleve tiempo despotricando contra multigres, el equivalente de Supabase a Neki, presumiendo de lo superior que es Neki, ¡y resulta que Neki ni siquiera es de código abierto! Enhorabuena por el, a ver, lanzamiento cerrado, supongo.
+- No veo mención alguna a claves foráneas ni a otras restricciones entre fragmentos. Si, como sospecho, no están implementadas, seguiría siendo útil, pero al nivel del Spanner de hace diez años.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Neki – geshardetes Postgres
+***** TLDR
+PlanetScale-CTO Nick Van Wiggeren hat Neki vorgestellt, geshardetes Postgres in einer Plattform-Vorschau, aufgebaut auf acht Jahren Betrieb großer geshardeter MySQL-Cluster. Vier Komponenten: Router, die das Postgres-Wire-Protokoll sprechen und die verteilte Ausführung planen; Shards, die echte, unveränderte Postgres-Cluster mit einem Primary und zwei oder mehr Replicas über Verfügbarkeitszonen hinweg sind; Sidecars für Connection Pooling, die davon profitieren, dass PlanetScale beide Enden kontrolliert; und eine Control Plane für Health-Monitoring, Failover, Schemaänderungen, Upgrades und Resharding. Eine JSON-Datentopologie bildet logische Tabellen auf physische Shards ab. Man kann zunächst ungeshardet starten und später als Workflow resharden. Für den Produktivbetrieb ist es noch nicht gedacht. Der Beitrag sagt nirgends, ob Neki quelloffen ist, und PlanetScale verspricht es auch nicht.
+***** Take
+Technisch überzeugt die Sache: echtes Postgres auf jedem Shard, kein geforkter Storage-Engine, kein verborgener Shard-Key, und der Resharding-Workflow ist genau der Teil, der beim Eigenbau am meisten wehtut. Der Launch drumherum ist misslungen. Mehrere Kommentierende waren tief im Beitrag, bevor sie sagen konnten, was Neki ist; gk1 führt das Abschnitt für Abschnitt vor. Und PlanetScale hat wochenlang Supabases quelloffenes Multigres kritisiert und liefert dann eine geschlossene, nur gehostete Vorschau, woran sich xyzzy_plugh stört. Ebenfalls unbeantwortet: Fremdschlüssel und Constraints über Shards hinweg, worauf ragall hinweist und wo solche Systeme üblicherweise enttäuschen.
+***** Comments
+- Leute, schreibt in euren Launch-Beiträgen bitte, was ihr veröffentlicht und wofür es gut ist. Am besten im ersten Absatz. Einleitung: erklärt das Problem, aber nicht, was Neki ist. Warum Neki: erklärt die Alternativen und warum sie schlecht sind, aber nicht, was Neki ist. Wie funktioniert Neki: beschreibt die technischen Komponenten, aber nicht, was Neki ist.
+- Großartig, wie der PlanetScale-CEO auf multigres eingedroschen hat, Supabases Gegenstück zu Neki, und damit prahlte, wie überlegen Neki sei, und dann ist Neki nicht einmal quelloffen! Glückwunsch zum, ich schaue nach, geschlossenen Launch, nehme ich an.
+- Ich sehe keinerlei Erwähnung von Fremdschlüsseln oder anderen Constraints über Shards hinweg. Falls sie, wie ich vermute, nicht implementiert sind, wäre es immer noch nützlich, aber auf dem Niveau von Spanner vor zehn Jahren.
