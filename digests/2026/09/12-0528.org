@@ -1,0 +1,510 @@
+#+TITLE: HN Digest 2026-09-12 05:28 UTC
+#+DATE: 2026-09-12T05:28:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Google hides its result URLs, pandas gets an obituary, and Chavin priests ran on DMT
+
+* Highlights
+- Google wraps every organic result in an opaque /goto redirect
+- Pandas vs Polars vs DuckDB on a billion rows: 4m28s vs 5s vs 5s
+- Nine design axes explain why no two async/await runtimes agree
+
+* Stories
+
+** Google no longer provides direct URLs in search results :google:search:privacy:scraping:
+:PROPERTIES:
+:ID:       49668386
+:URL:      https://www.autom.dev/blog/google-search-goto-links
+:HN_URL:   https://news.ycombinator.com/item?id=49668386
+:POINTS:   180
+:COMMENTS: 94
+:BY:       1e1a
+:END:
+
+*** TLDR
+Google Search now rewrites organic result links to google.com/goto?url=..., where the url parameter is a Google-specific encoding that cannot be decoded offline. The destination only appears in the Location header if you send a request back to Google for each result. Autom, a Google Search API vendor, says this has been consistent for logged-out and private sessions since late August 2026, and that it has updated its own pipeline to resolve the redirects. The obvious cost falls on scrapers, SEO tools and AI crawlers, who now need one extra request per link.
+
+*** Take
+Framing this as anti-scraping is convenient, because the same change also means Google sees a click on every result it shows you, including the ones you open in a new tab. The people writing the post sell a scraping API and have already worked around it in a day. The tracking survives.
+
+*** Comments
+
+**** userbinator
+They obfuscated URLs in Chrome first, then on the results page, and a year ago Google stopped working without JavaScript. This is the next step.
+
+**** lubujackson
+Google died when they shifted from returning websites to returning answers. For actual web search I use Yandex now.
+
+**** rmunn
+I moved to DuckDuckGo once it was clear two people searching the same term got different results.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+谷歌搜索结果不再提供直接网址
+***** TLDR
+谷歌搜索现在把自然结果的链接改写为 google.com/goto?url=...，其中 url 参数使用谷歌专有编码，无法离线解码。只有针对每条结果再向谷歌发一次请求，才能从 Location 头里拿到目标地址。谷歌搜索 API 服务商 Autom 表示，自 2026 年 8 月底起，退出登录和隐私模式下一直是这样，并称已更新自家管线来解析这些跳转。成本明显落在爬虫、SEO 工具和 AI 抓取方身上，它们现在每条链接都要多发一次请求。
+***** Take
+说这是反爬虫很方便，因为同一个改动也意味着谷歌能看到你点击的每一条结果，包括新标签页打开的那些。写这篇文章的人自己卖爬虫 API，一天就绕过去了。留下来的是追踪。
+***** Comments
+- 他们先在 Chrome 里混淆网址，接着是结果页，一年前谷歌又变成没有 JavaScript 就用不了。这是下一步。
+- 谷歌从返回网站转向返回答案的那一刻就死了。真要搜网页，我现在用 Yandex。
+- 当两个人搜同一个词得到不同结果变得明显时，我就转用 DuckDuckGo 了。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Google、検索結果で直接URLを出さなくなる
+***** TLDR
+Google検索は自然検索結果のリンクを google.com/goto?url=... に書き換えている。urlパラメータはGoogle独自のエンコードで、オフラインでは復号できない。各結果についてGoogleへもう一度リクエストを送り、Locationヘッダーを読まないと遷移先が分からない。Google検索APIを提供するAutomによると、2026年8月下旬からログアウト時とプライベートモードで一貫してこの形式になっており、同社は自社パイプラインをリダイレクト解決に対応させたという。負担はスクレイパー、SEOツール、AIクローラーに向かい、リンクごとにリクエストが1回増える。
+***** Take
+スクレイピング対策という説明は都合がいい。同じ変更で、新しいタブで開いた分も含め、表示した結果へのクリックをGoogleがすべて把握できるからだ。この記事を書いた会社自身がスクレイピングAPIを売っていて、1日で回避している。残るのは追跡だ。
+***** Comments
+- まずChromeでURLを隠し、次に検索結果ページ、1年前にはJavaScriptなしでは動かなくなった。これはその次の段階だ。
+- Googleはウェブサイトを返すのをやめて答えを返すと決めた時点で終わった。実際のウェブ検索にはYandexを使っている。
+- 同じ語で検索しても人によって結果が違うと分かった時点でDuckDuckGoに移った。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+구글, 검색 결과에서 더 이상 직접 URL을 주지 않는다
+***** TLDR
+구글 검색이 자연 검색 결과 링크를 google.com/goto?url=... 형태로 바꾸고 있다. url 파라미터는 구글 고유 인코딩이라 오프라인에서는 해독할 수 없고, 결과마다 구글에 요청을 한 번 더 보내 Location 헤더를 읽어야 목적지가 드러난다. 구글 검색 API 업체 Autom은 2026년 8월 말부터 로그아웃 상태와 시크릿 모드에서 일관되게 이 방식이 적용되고 있으며, 자사 파이프라인을 리다이렉트 해석에 맞춰 갱신했다고 밝혔다. 비용은 스크레이퍼, SEO 도구, AI 크롤러가 떠안는다. 링크마다 요청이 하나씩 늘어난다.
+***** Take
+스크래핑 방지라는 설명은 편리하다. 같은 변경으로 구글은 새 탭으로 연 것까지 포함해 보여준 모든 결과의 클릭을 보게 되기 때문이다. 이 글을 쓴 쪽은 스크래핑 API를 파는 회사이고 하루 만에 우회했다. 남는 것은 추적이다.
+***** Comments
+- 크롬에서 먼저 URL을 가렸고, 다음은 검색 결과 페이지였고, 1년 전에는 자바스크립트 없이는 작동하지 않게 됐다. 이건 그다음 단계다.
+- 구글은 웹사이트 대신 답변을 돌려주겠다고 선언한 시점에 죽었다. 실제 웹 검색에는 얀덱스를 쓴다.
+- 같은 검색어로 사람마다 다른 결과가 나온다는 게 분명해지자 덕덕고로 옮겼다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Google ya no muestra las URLs directas en los resultados de búsqueda
+***** TLDR
+Google Search reescribe los enlaces de resultados orgánicos como google.com/goto?url=..., donde el parámetro url usa una codificación propia de Google que no se puede descifrar sin conexión. El destino solo aparece en la cabecera Location si se envía una petición de vuelta a Google por cada resultado. Autom, proveedor de una API de búsqueda de Google, dice que esto es constante en sesiones sin sesión iniciada y en modo privado desde finales de agosto de 2026, y que ya adaptó su propio sistema para resolver las redirecciones. El coste recae en scrapers, herramientas SEO y rastreadores de IA, que ahora necesitan una petición extra por enlace.
+***** Take
+Llamarlo medida antiscraping resulta cómodo, porque el mismo cambio hace que Google vea cada clic en los resultados que muestra, incluidos los que abres en una pestaña nueva. Quienes escriben el artículo venden una API de scraping y lo sortearon en un día. Lo que queda es el rastreo.
+***** Comments
+- Primero ofuscaron las URLs en Chrome, luego en la página de resultados, y hace un año Google dejó de funcionar sin JavaScript. Este es el siguiente paso.
+- Google murió cuando pasó de devolver sitios web a devolver respuestas. Para buscar de verdad en la web uso Yandex.
+- Me pasé a DuckDuckGo cuando quedó claro que dos personas buscando lo mismo recibían resultados distintos.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Google liefert keine direkten URLs mehr in den Suchergebnissen
+***** TLDR
+Die Google-Suche schreibt Links organischer Treffer auf google.com/goto?url=... um. Der url-Parameter nutzt eine Google-eigene Kodierung, die sich offline nicht dekodieren lässt. Das Ziel steht nur im Location-Header, wenn man für jeden Treffer eine weitere Anfrage an Google schickt. Autom, Anbieter einer Google-Search-API, berichtet, dass das seit Ende August 2026 bei ausgeloggten und privaten Sitzungen durchgängig auftritt, und hat die eigene Pipeline auf das Auflösen der Weiterleitungen umgestellt. Die Kosten tragen Scraper, SEO-Werkzeuge und KI-Crawler, die nun eine zusätzliche Anfrage pro Link brauchen.
+***** Take
+Die Einordnung als Anti-Scraping-Maßnahme ist praktisch, denn dieselbe Änderung zeigt Google jeden Klick auf jeden ausgelieferten Treffer, auch die in einem neuen Tab geöffneten. Die Autoren verkaufen selbst eine Scraping-API und haben es an einem Tag umgangen. Was bleibt, ist das Tracking.
+***** Comments
+- Erst wurden die URLs in Chrome verschleiert, dann auf der Ergebnisseite, und vor einem Jahr lief Google ohne JavaScript nicht mehr. Das ist der nächste Schritt.
+- Google war in dem Moment tot, als es von Webseiten auf Antworten umgestellt hat. Für echte Websuche nehme ich Yandex.
+- Ich bin zu DuckDuckGo gewechselt, als klar wurde, dass zwei Leute mit derselben Suchanfrage unterschiedliche Ergebnisse bekommen.
+** Pandas Should Go Extinct :python:data:pandas:duckdb:
+:PROPERTIES:
+:ID:       49668198
+:URL:      https://eddie.codes/posts/pandas-should-go-extinct/
+:HN_URL:   https://news.ycombinator.com/item?id=49668198
+:POINTS:   96
+:COMMENTS: 56
+:BY:       __eddie__
+:END:
+
+*** TLDR
+The argument is that pandas hits a wall somewhere between 10 and 100GB because it is eager, single-threaded and loads everything into memory, and that teams respond by jumping to Spark or Snowflake for data that still fits on one machine. The benchmark: a one billion row aggregation takes pandas 4m28s and 38.12GB of RAM, Polars 5.04s and 18.02GB, DuckDB 5.19s and 1.93GB. On a 3GB NYC taxi dataset DuckDB ran 93% faster using 67x less memory. The recommendation is Polars or DuckDB as the medium-data tier.
+
+*** Take
+The memory column is the real finding, not the wall-clock one. DuckDB doing the billion-row job in under 2GB is what kills the argument for spinning up a cluster. The title oversells it though: pandas is the interchange format half the ecosystem speaks, and nothing on that benchmark table replaces that.
+
+*** Comments
+
+**** mulmboy
+Polars is slower for small work. Sort a 5000x3 float64 frame and it takes about 2.5x as long, and setting POLARS_MAX_THREADS to 1 makes it faster.
+
+**** minimaxir
+It has been a while since an actual data science post made the front page. Polars has been better than pandas for a while, but the DS ecosystem has been fairly stagnant.
+
+**** rmunn
+Cute title. I thought I was about to read a contrarian ecologist on the actual animal.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+pandas 该灭绝了
+***** TLDR
+作者认为 pandas 在 10GB 到 100GB 之间会撞墙：它是即时求值、单线程，并把全部数据装进内存；结果团队面对单机就能处理的数据，却跳去用 Spark 或 Snowflake。基准测试：十亿行聚合，pandas 用时 4 分 28 秒、占用 38.12GB 内存，Polars 用 5.04 秒、18.02GB，DuckDB 用 5.19 秒、1.93GB。在 3GB 的纽约出租车数据上，DuckDB 快 93%，内存少 67 倍。建议是把 Polars 或 DuckDB 当作中等数据层。
+***** Take
+真正的发现是内存那一列，不是耗时。DuckDB 用不到 2GB 跑完十亿行，这才终结了搭集群的理由。不过标题言过其实：pandas 是半个生态通用的交换格式，基准表上没有任何东西能替代这一点。
+***** Comments
+- 小数据下 Polars 更慢。对 5000x3 的 float64 表排序，它要多花约 2.5 倍时间，把 POLARS_MAX_THREADS 设为 1 反而更快。
+- 很久没在首页看到真正的数据科学文章了。Polars 比 pandas 好已经有一阵子，但数据科学生态基本停滞。
+- 标题挺有意思。我还以为要读一篇反主流生态学家谈真熊猫的文章。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+pandasは絶滅すべきだ
+***** TLDR
+pandasは即時評価かつシングルスレッドで全データをメモリに載せるため、10GBから100GBのあたりで行き詰まる。その結果、1台で足りるデータなのにSparkやSnowflakeへ飛んでしまう、という主張だ。ベンチマークでは10億行の集計にpandasは4分28秒・38.12GB、Polarsは5.04秒・18.02GB、DuckDBは5.19秒・1.93GB。3GBのNYCタクシーデータではDuckDBが93%高速でメモリは67分の1だった。中規模データ層としてPolarsかDuckDBを使えという結論。
+***** Take
+重要なのは実行時間ではなくメモリの列だ。DuckDBが10億行を2GB未満で処理した事実が、クラスタを立てる理由を消す。ただしタイトルは誇張だ。pandasはエコシステムの半分が話す交換フォーマットであり、あの表のどれもその役割は代替しない。
+***** Comments
+- 小さい処理ではPolarsのほうが遅い。5000x3のfloat64フレームのソートで約2.5倍かかり、POLARS_MAX_THREADSを1にすると速くなる。
+- 本物のデータサイエンスの記事がフロントページに来るのは久しぶりだ。Polarsがpandasより良いのは以前からだが、DS界隈はかなり停滞している。
+- 面白いタイトルだ。逆張りの生態学者が本物のパンダの話をするのかと思った。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+판다스는 멸종해야 한다
+***** TLDR
+pandas는 즉시 실행에 단일 스레드이고 모든 데이터를 메모리에 올리기 때문에 10GB에서 100GB 사이에서 벽에 부딪히고, 그 결과 한 대에서 충분히 처리할 데이터인데도 팀들이 스파크나 스노우플레이크로 넘어간다는 주장이다. 벤치마크는 10억 행 집계에서 pandas 4분 28초·38.12GB, Polars 5.04초·18.02GB, DuckDB 5.19초·1.93GB. 3GB 뉴욕 택시 데이터에서는 DuckDB가 93% 빠르고 메모리는 67분의 1이었다. 결론은 중간 규모 데이터 계층으로 Polars나 DuckDB를 쓰라는 것.
+***** Take
+진짜 발견은 실행 시간이 아니라 메모리 열이다. DuckDB가 10억 행을 2GB 미만으로 처리했다는 점이 클러스터를 띄울 명분을 없앤다. 다만 제목은 과장이다. pandas는 생태계 절반이 쓰는 교환 포맷이고, 저 벤치마크 표의 어떤 것도 그 역할을 대신하지 않는다.
+***** Comments
+- 작은 작업에서는 Polars가 더 느리다. 5000x3 float64 프레임을 정렬하면 약 2.5배 걸리고, POLARS_MAX_THREADS를 1로 두면 오히려 빨라진다.
+- 진짜 데이터 사이언스 글이 첫 페이지에 오른 건 오랜만이다. Polars가 pandas보다 낫다는 건 한참 전부터지만 DS 생태계는 꽤 정체돼 있다.
+- 제목이 재밌다. 반골 생태학자가 진짜 판다 이야기를 하는 줄 알았다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Pandas debería extinguirse
+***** TLDR
+El argumento es que pandas choca con un muro entre los 10 y los 100GB porque es de evaluación inmediata, de un solo hilo y carga todo en memoria, y que los equipos reaccionan saltando a Spark o Snowflake con datos que aún caben en una sola máquina. El banco de pruebas: una agregación de mil millones de filas tarda 4m28s y 38,12GB de RAM en pandas, 5,04s y 18,02GB en Polars, y 5,19s y 1,93GB en DuckDB. Con 3GB de datos de taxis de Nueva York, DuckDB fue un 93% más rápido usando 67 veces menos memoria. La recomendación es Polars o DuckDB como capa de datos medianos.
+***** Take
+El hallazgo real es la columna de memoria, no la del tiempo. Que DuckDB resuelva mil millones de filas con menos de 2GB es lo que deja sin sentido levantar un clúster. El título exagera: pandas es el formato de intercambio que habla medio ecosistema, y nada en esa tabla lo sustituye.
+***** Comments
+- Polars es más lento en trabajos pequeños. Ordena un marco de 5000x3 en float64 y tarda unas 2,5 veces más; con POLARS_MAX_THREADS a 1 va más rápido.
+- Hacía tiempo que no llegaba a portada un artículo de ciencia de datos de verdad. Polars lleva tiempo siendo mejor que pandas, pero el ecosistema está bastante estancado.
+- Buen título. Pensé que iba a leer a un ecólogo contrarian hablando del animal.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Pandas sollte aussterben
+***** TLDR
+Das Argument: pandas stößt zwischen 10 und 100GB an eine Grenze, weil es eager und single-threaded arbeitet und alles in den Speicher lädt. Teams weichen deshalb auf Spark oder Snowflake aus, obwohl die Daten noch auf eine Maschine passen. Der Benchmark: eine Aggregation über eine Milliarde Zeilen braucht mit pandas 4m28s und 38,12GB RAM, mit Polars 5,04s und 18,02GB, mit DuckDB 5,19s und 1,93GB. Beim 3GB großen NYC-Taxi-Datensatz war DuckDB 93% schneller bei 67-fach geringerem Speicherbedarf. Empfohlen werden Polars oder DuckDB als Ebene für mittlere Datenmengen.
+***** Take
+Der eigentliche Befund steht in der Speicherspalte, nicht in der Laufzeit. Dass DuckDB eine Milliarde Zeilen mit unter 2GB schafft, nimmt dem Cluster die Begründung. Der Titel übertreibt allerdings: pandas ist das Austauschformat, das das halbe Ökosystem spricht, und nichts in dieser Tabelle ersetzt das.
+***** Comments
+- Bei kleinen Aufgaben ist Polars langsamer. Sortiere einen 5000x3-float64-Frame und es dauert etwa 2,5-mal so lange; mit POLARS_MAX_THREADS auf 1 wird es schneller.
+- Es ist lange her, dass ein echter Data-Science-Beitrag auf der Startseite stand. Polars ist seit einiger Zeit besser als pandas, aber das DS-Ökosystem stagniert ziemlich.
+- Netter Titel. Ich dachte, ich lese gleich einen eigenwilligen Ökologen über das Tier.
+** I've operated petabyte-scale ClickHouse clusters for 5 years :clickhouse:databases:infrastructure:ops:
+:PROPERTIES:
+:ID:       49601138
+:URL:      https://www.tinybird.co/blog/what-i-learned-operating-clickhouse
+:HN_URL:   https://news.ycombinator.com/item?id=49601138
+:POINTS:   191
+:COMMENTS: 73
+:BY:       adastral
+:END:
+
+*** TLDR
+Operational notes from five years of running ClickHouse at Tinybird. Rough capacity math: a 32-core machine handles about 5GB/s of uncompressed data, so a 300TB table serving 1,000 QPS needs roughly 10 replicas. The most common failure is ingestion: too many small parts create a merge backlog, a heavy query eats the CPU, inserts pile up and the server OOMs. Zero-copy replication over S3 is described as buggy and capable of losing data. Format incompatibilities break upgrades two or three times a year. Other advice: keep a write-only replica, put ZooKeeper on separate hardware, hold sub-second query replicas under 40% load, default to ZSTD(1), and expect to read the source code. Above 20k rows/s with active schema changes, you need a full-time person.
+
+*** Take
+The honest line in the post is that a competent operator cuts hardware needs by three to four times. That is the actual pricing model for ClickHouse: cheap per byte, expensive per engineer, and the engineer is the part that is hard to hire.
+
+*** Comments
+
+**** zbentley
+Needing a full-time person above 20k rows/s is what DBA culture used to cover. They worked with application teams to steer schemas and queries.
+
+**** swyx
+Note to the author: whatever adds the registered symbol is also breaking your GitHub links.
+
+**** walthamstow
+Turned on the Fulham v Crystal Palace game and found Fulham wearing ClickHouse shirts and Palace wearing Temporal AI. My worlds colliding.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+我运维 PB 级 ClickHouse 集群已经五年
+***** TLDR
+Tinybird 五年 ClickHouse 运维笔记。粗略容量估算：32 核机器约能处理 5GB/s 未压缩数据，所以 300TB 表要支撑 1000 QPS 大约需要 10 个副本。最常见的故障出在写入：小分片太多造成合并积压，一个重查询吃光 CPU，插入开始堆积，服务器 OOM。基于 S3 的零拷贝复制被形容为有 bug 且可能丢数据。格式不兼容每年会让升级出问题两三次。其他建议：保留一个只写副本，把 ZooKeeper 放在独立硬件上，让亚秒级查询副本负载低于 40%，默认用 ZSTD(1)，并做好读源码的准备。当写入超过 2 万行每秒且频繁改表结构时，就需要一个全职的人。
+***** Take
+文中最实在的一句是：一个称职的运维能把硬件需求降到三到四分之一。这就是 ClickHouse 真正的定价模型：按字节便宜，按工程师昂贵，而工程师恰恰是最难招的那部分。
+***** Comments
+- 超过每秒 2 万行就要配全职，这正是过去 DBA 文化覆盖的事。他们会和应用团队一起调表结构和查询。
+- 提醒作者：那个加注册商标符号的东西同时也把你的 GitHub 链接弄坏了。
+- 打开富勒姆对水晶宫的比赛，发现富勒姆球衣上印着 ClickHouse，水晶宫印着 Temporal AI。两个世界撞一起了。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+ペタバイト規模のClickHouseクラスタを5年運用してきた
+***** TLDR
+TinybirdでのClickHouse運用5年分のメモ。おおまかな容量計算では32コアのマシンで非圧縮データ約5GB/sをさばけるので、300TBのテーブルで1,000QPSを出すにはレプリカが約10台必要になる。最も多い障害は取り込み側だ。小さなパートが増えすぎてマージが滞り、重いクエリがCPUを食い尽くし、インサートが積み上がってOOMに至る。S3上のゼロコピーレプリケーションはバグが多くデータを失いうると書かれている。フォーマット非互換は年に2、3回アップグレードを壊す。他の助言としては、書き込み専用レプリカを持つ、ZooKeeperを別ハードに置く、サブ秒クエリ用レプリカを負荷40%未満に保つ、既定はZSTD(1)、そしてソースコードを読む覚悟をすること。毎秒2万行を超えてスキーマ変更も頻繁なら専任者が要る。
+***** Take
+記事で一番正直なのは、有能な運用者がハードウェア要件を3〜4分の1にするという一文だ。それがClickHouseの実際の価格構造である。バイト当たりは安く、エンジニア当たりは高く、そしてそのエンジニアこそ採用が難しい。
+***** Comments
+- 毎秒2万行を超えたら専任が必要というのは、かつてDBA文化が担っていた部分だ。彼らはアプリチームと組んでスキーマとクエリを導いていた。
+- 著者へ。登録商標記号を付けている処理が、GitHubへのリンクも壊している。
+- フラム対クリスタル・パレスを見たら、フラムのシャツにClickHouse、パレスにTemporal AIと入っていた。2つの世界の衝突だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+페타바이트급 클릭하우스 클러스터를 5년간 운영했다
+***** TLDR
+Tinybird에서 클릭하우스를 5년간 운영하며 정리한 메모. 대략적인 용량 계산으로 32코어 머신이 비압축 데이터 약 5GB/s를 처리하므로, 300TB 테이블로 1,000 QPS를 내려면 레플리카가 약 10대 필요하다. 가장 흔한 장애는 적재 쪽이다. 작은 파트가 너무 많이 생겨 머지가 밀리고, 무거운 쿼리가 CPU를 다 먹고, 인서트가 쌓이다가 OOM이 난다. S3 기반 제로카피 복제는 버그가 많고 데이터를 잃을 수 있다고 적혀 있다. 포맷 비호환은 1년에 두세 번 업그레이드를 깨뜨린다. 그 외 조언: 쓰기 전용 레플리카를 두고, 주키퍼는 별도 하드웨어에 올리고, 서브초 쿼리용 레플리카는 부하 40% 아래로 유지하고, 기본 압축은 ZSTD(1)로 하고, 소스 코드를 읽을 각오를 하라. 초당 2만 행을 넘고 스키마 변경이 잦다면 전담 인력이 필요하다.
+***** Take
+글에서 가장 솔직한 문장은 유능한 운영자가 하드웨어 요구량을 3~4배 줄인다는 대목이다. 그것이 클릭하우스의 실제 가격 구조다. 바이트당은 싸고 엔지니어당은 비싸며, 하필 그 엔지니어를 구하기가 어렵다.
+***** Comments
+- 초당 2만 행을 넘으면 전담자가 필요하다는 건 예전 DBA 문화가 맡던 일이다. 그들은 애플리케이션 팀과 함께 스키마와 쿼리를 잡아줬다.
+- 저자에게: 등록상표 기호를 붙이는 그 처리가 깃허브 링크도 망가뜨리고 있다.
+- 풀럼 대 크리스털 팰리스 경기를 켰더니 풀럼 유니폼에 ClickHouse, 팰리스에 Temporal AI가 박혀 있더라. 두 세계가 충돌했다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Llevo cinco años operando clústeres de ClickHouse a escala de petabytes
+***** TLDR
+Notas operativas de cinco años con ClickHouse en Tinybird. Cálculo aproximado de capacidad: una máquina de 32 núcleos procesa unos 5GB/s de datos sin comprimir, así que una tabla de 300TB que sirva 1.000 QPS necesita unas 10 réplicas. El fallo más común está en la ingesta: demasiadas partes pequeñas generan un atasco de merges, una consulta pesada se come la CPU, los inserts se acumulan y el servidor se queda sin memoria. La replicación zero-copy sobre S3 se describe como defectuosa y capaz de perder datos. Las incompatibilidades de formato rompen actualizaciones dos o tres veces al año. Otros consejos: mantener una réplica solo de escritura, poner ZooKeeper en hardware aparte, dejar las réplicas de consultas sub-segundo por debajo del 40% de carga, usar ZSTD(1) por defecto y asumir que habrá que leer el código fuente. Por encima de 20.000 filas por segundo con cambios de esquema frecuentes, hace falta una persona a tiempo completo.
+***** Take
+La frase más honesta del artículo es que un operador competente reduce las necesidades de hardware entre tres y cuatro veces. Ese es el verdadero modelo de precios de ClickHouse: barato por byte, caro por ingeniero, y el ingeniero es justo la parte difícil de contratar.
+***** Comments
+- Necesitar a alguien a tiempo completo por encima de 20.000 filas/s es lo que cubría la vieja cultura de DBA. Trabajaban con los equipos de aplicación para guiar esquemas y consultas.
+- Aviso al autor: lo que añade el símbolo de marca registrada también está rompiendo tus enlaces a GitHub.
+- Puse el Fulham contra el Crystal Palace y vi a Fulham con camisetas de ClickHouse y al Palace con Temporal AI. Mis dos mundos chocando.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Ich betreibe seit fünf Jahren ClickHouse-Cluster im Petabyte-Bereich
+***** TLDR
+Betriebsnotizen aus fünf Jahren ClickHouse bei Tinybird. Grobe Kapazitätsrechnung: eine 32-Kern-Maschine schafft etwa 5GB/s unkomprimierte Daten, eine 300TB-Tabelle mit 1.000 QPS braucht also rund 10 Replikate. Der häufigste Ausfall liegt bei der Ingestion: zu viele kleine Parts erzeugen einen Merge-Rückstau, eine schwere Query frisst die CPU, Inserts stauen sich, der Server läuft in OOM. Zero-Copy-Replikation über S3 wird als fehlerhaft und datenverlustanfällig beschrieben. Formatinkompatibilitäten brechen zwei- bis dreimal im Jahr Upgrades. Weitere Ratschläge: ein Replikat nur für Schreibvorgänge, ZooKeeper auf eigener Hardware, Replikate für Sub-Sekunden-Queries unter 40% Last halten, standardmäßig ZSTD(1), und damit rechnen, den Quellcode zu lesen. Ab 20.000 Zeilen pro Sekunde mit laufenden Schemaänderungen braucht es eine Vollzeitkraft.
+***** Take
+Der ehrlichste Satz im Text: eine kompetente Betreuung senkt den Hardwarebedarf um das Drei- bis Vierfache. Das ist das eigentliche Preismodell von ClickHouse: billig pro Byte, teuer pro Engineer, und genau dieser Engineer ist schwer zu finden.
+***** Comments
+- Dass es ab 20.000 Zeilen/s eine Vollzeitkraft braucht, war früher Aufgabe der DBA-Kultur. Die haben mit den Anwendungsteams Schemata und Queries abgestimmt.
+- Hinweis an den Autor: Was das Markenzeichen einfügt, zerschießt auch deine GitHub-Links.
+- Ich schalte Fulham gegen Crystal Palace ein und sehe ClickHouse auf den Trikots von Fulham und Temporal AI bei Palace. Da kollidieren meine Welten.
+** A Design Space Exploration of Async/Await :programming-languages:async:concurrency:research:
+:PROPERTIES:
+:ID:       49626718
+:URL:      https://cel.cs.brown.edu/blog/design-space-async-await/
+:HN_URL:   https://news.ycombinator.com/item?id=49626718
+:POINTS:   211
+:COMMENTS: 48
+:BY:       wcrichton
+:END:
+
+*** TLDR
+Brown's CEL group compared seven async/await runtimes and found nine design axes where they disagree, grouped into start of life (eagerness, whether await actually suspends), end of life (extent, reference strength, destruction, exception propagation) and cancellation (awareness, direction, persistence). Swift and Trio use dynamic extent, tying a task's lifetime to its spawning scope; most others let tasks live indefinitely. The headline result: across three variations of one small test program, no two runtimes produce the same output. C++ is unplaceable in the taxonomy because every axis is configurable.
+
+*** Take
+This explains why async knowledge does not transfer between languages even though the keywords are identical. The same code, moved from Python to JavaScript to Rust, differs on when it starts, whether an unawaited failure surfaces, and what a cancel actually does. Anyone designing a new language should read the table before picking defaults.
+
+*** Comments
+
+**** spankalee
+I'm building a language with async/await and had to make all these decisions without this framework. Turns out I picked mostly Trio with a bit of JavaScript.
+
+**** biorach
+It was clear the runtimes differed, but nine dimensions? Async looks self-contained and it is not.
+
+**** jcelerier
+I hoped C++ would let you pick along these axes, and it does, which means every library lands somewhere different.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+async/await 的设计空间探索
+***** TLDR
+布朗大学 CEL 小组比较了七种 async/await 运行时，找出九条彼此不一致的设计轴，分为生命起点（是否立即执行、await 是否真的挂起）、生命终点（作用范围、引用强度、销毁方式、异常传播）和取消（可感知性、传播方向、可恢复性）。Swift 和 Trio 采用动态作用范围，把任务寿命绑定到创建它的作用域；其他多数让任务无限期存活。核心结论：同一个小测试程序的三个变体，没有任何两个运行时给出相同输出。C++ 无法归入分类，因为每条轴都可配置。
+***** Take
+这解释了为什么关键字一样，async 的知识却无法跨语言迁移。同一段代码从 Python 换到 JavaScript 再换到 Rust，何时开始执行、未 await 的失败会不会浮现、取消到底做了什么，全都不同。要设计新语言的人，选默认值之前先看这张表。
+***** Comments
+- 我在做一门带 async/await 的语言，这些决定都得自己拍板，没有这套框架。结果发现我基本选了 Trio，加一点 JavaScript。
+- 运行时之间有差别是早就清楚的，但九个维度？async 看起来自成一体，其实不是。
+- 我本来希望 C++ 能让你在这些轴上自由取舍，结果确实可以，于是每个库落在不同的位置。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+async/awaitの設計空間の探索
+***** TLDR
+ブラウン大学CELグループが7つのasync/awaitランタイムを比較し、実装が食い違う9つの設計軸を特定した。軸は生成時（即時実行かどうか、awaitが実際に中断するか）、終了時（有効範囲、参照の強さ、破棄方法、例外の伝播）、キャンセル（認識、伝播方向、再開可能性）に分類される。SwiftとTrioは動的な有効範囲を採り、タスクの寿命を生成スコープに縛る。他の多くは無期限に生かす。中心的な結果は、1つの小さなテストプログラムの3つの変種について、同じ出力を返すランタイムの組が1つもなかったことだ。C++は全軸が設定可能なため分類に収まらない。
+***** Take
+キーワードが同じでもasyncの知識が言語間で移らない理由がこれで分かる。同じコードをPythonからJavaScript、Rustへ移すと、いつ開始するか、awaitしなかった失敗が表に出るか、キャンセルが何をするかがすべて変わる。新しい言語を設計する人は、デフォルトを決める前にこの表を見るべきだ。
+***** Comments
+- async/await付きの言語を作っていて、この枠組みなしに全部決めるしかなかった。結果としてほぼTrio、少しJavaScriptを選んでいた。
+- ランタイムごとに違うのは前から明らかだったが、9次元とは。asyncは自己完結して見えるがそうではない。
+- C++ならこれらの軸を自分で選べればいいと思ったら実際に選べる。つまりライブラリごとに着地点が違う。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+async/await 설계 공간 탐색
+***** TLDR
+브라운대 CEL 그룹이 async/await 런타임 7종을 비교해 서로 어긋나는 설계 축 9개를 찾아냈다. 축은 생성 시점(즉시 실행 여부, await가 실제로 중단하는지), 종료 시점(범위, 참조 강도, 파괴 방식, 예외 전파), 취소(인지, 전파 방향, 재개 가능성)로 묶인다. 스위프트와 Trio는 동적 범위를 써서 태스크 수명을 생성 스코프에 묶고, 나머지 대부분은 무기한 살려둔다. 핵심 결과는 작은 테스트 프로그램의 세 변형에 대해 같은 출력을 내는 런타임 조합이 하나도 없었다는 것이다. C++는 모든 축이 설정 가능해 분류에 넣을 수 없다.
+***** Take
+키워드가 같은데도 async 지식이 언어 사이에서 옮겨가지 않는 이유가 여기 있다. 같은 코드를 파이썬에서 자바스크립트로, 다시 러스트로 옮기면 언제 시작하는지, await하지 않은 실패가 드러나는지, 취소가 실제로 무엇을 하는지가 전부 달라진다. 새 언어를 설계한다면 기본값을 정하기 전에 이 표를 보는 게 좋다.
+***** Comments
+- async/await가 있는 언어를 만들면서 이 틀 없이 모든 결정을 내려야 했다. 알고 보니 대부분 Trio에 자바스크립트를 조금 섞은 선택이었다.
+- 런타임마다 다르다는 건 알고 있었지만 아홉 개 차원이라니. async는 자족적으로 보이지만 그렇지 않다.
+- C++가 이 축들을 직접 고르게 해주면 좋겠다 싶었는데 실제로 그렇다. 그래서 라이브러리마다 착지점이 다르다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Una exploración del espacio de diseño de async/await
+***** TLDR
+El grupo CEL de Brown comparó siete runtimes de async/await y encontró nueve ejes de diseño en los que discrepan, agrupados en inicio de vida (si se ejecuta de inmediato, si await suspende de verdad), fin de vida (alcance, fuerza de la referencia, destrucción, propagación de excepciones) y cancelación (conciencia, dirección, persistencia). Swift y Trio usan alcance dinámico y atan la vida de la tarea al ámbito que la crea; la mayoría del resto deja que las tareas vivan indefinidamente. El resultado principal: con tres variantes de un mismo programa de prueba, no hay dos runtimes que produzcan la misma salida. C++ no encaja en la taxonomía porque cada eje es configurable.
+***** Take
+Esto explica por qué el conocimiento sobre async no se traslada entre lenguajes aunque las palabras clave sean idénticas. El mismo código, llevado de Python a JavaScript y a Rust, cambia en cuándo empieza, en si un fallo no esperado sale a la luz y en qué hace realmente una cancelación. Quien diseñe un lenguaje nuevo debería mirar esa tabla antes de fijar los valores por defecto.
+***** Comments
+- Estoy construyendo un lenguaje con async/await y tuve que tomar todas estas decisiones sin este marco. Resulta que elegí casi todo Trio con algo de JavaScript.
+- Ya se sabía que los runtimes diferían, pero ¿nueve dimensiones? async parece autocontenido y no lo es.
+- Esperaba que C++ te dejara elegir en estos ejes, y lo hace, lo que significa que cada librería acaba en un punto distinto.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Eine Erkundung des Designraums von async/await
+***** TLDR
+Die CEL-Gruppe in Brown hat sieben async/await-Runtimes verglichen und neun Designachsen gefunden, auf denen sie auseinandergehen: Lebensbeginn (sofortige Ausführung, ob await wirklich suspendiert), Lebensende (Gültigkeitsbereich, Referenzstärke, Zerstörung, Ausnahmeweitergabe) und Abbruch (Wahrnehmung, Richtung, Fortsetzbarkeit). Swift und Trio nutzen dynamischen Gültigkeitsbereich und binden die Lebensdauer einer Task an den erzeugenden Scope; die meisten anderen lassen Tasks unbegrenzt leben. Das Kernergebnis: Bei drei Varianten eines kleinen Testprogramms liefern keine zwei Runtimes dieselbe Ausgabe. C++ lässt sich nicht einordnen, weil jede Achse konfigurierbar ist.
+***** Take
+Das erklärt, warum async-Wissen zwischen Sprachen nicht übertragbar ist, obwohl die Schlüsselwörter gleich heißen. Derselbe Code von Python nach JavaScript nach Rust unterscheidet sich darin, wann er startet, ob ein nicht abgewarteter Fehler sichtbar wird und was ein Abbruch tatsächlich bewirkt. Wer eine neue Sprache entwirft, sollte die Tabelle lesen, bevor er Standardwerte festlegt.
+***** Comments
+- Ich baue eine Sprache mit async/await und musste all diese Entscheidungen ohne dieses Raster treffen. Herausgekommen ist überwiegend Trio mit etwas JavaScript.
+- Dass sich die Runtimes unterscheiden, war klar, aber neun Dimensionen? async wirkt in sich geschlossen und ist es nicht.
+- Ich hoffte, C++ ließe einen entlang dieser Achsen wählen, und genau das tut es. Also landet jede Bibliothek woanders.
+** Mind-altering drugs played key role in rise of Andean civilization :archaeology:science:history:anthropology:
+:PROPERTIES:
+:ID:       49662020
+:URL:      https://www.science.org/content/article/mind-altering-drugs-played-key-role-rise-andean-civilization
+:HN_URL:   https://news.ycombinator.com/item?id=49662020
+:POINTS:   132
+:COMMENTS: 86
+:BY:       geneticdrifts
+:END:
+
+*** TLDR
+Excavations at Chavin de Huantar in Peru, led by Stanford's John Rick, turned up 21 bone tubes with residues of tobacco and vilca seeds, which contain bufotenine, DMT and 5-MEO-DMT, alongside polished graphite mirrors and a 4.5m granite stela. The site ran from about 1200 to 550 BCE. At Atalla, 450km away, cactus-shaped cups carry lipid residues consistent with degraded mescaline, and a wooden snuff tablet from the Bolivian Mount Sajama region dates to 250-550 CE. Rick's reading is that ritual leaders used controlled access to altered states to build authority, a template Tiwanaku and Wari later used to expand through ideology rather than conquest, until the Inca shifted to coercive state power.
+
+*** Take
+The strong claim here is not that ancient people took drugs, it is that access was restricted. Small private chambers, a handful of tubes, and mirrors to manage what the initiate sees: that is an early ritual monopoly, and it is a better explanation for durable authority than most theories that rely on grain surpluses.
+
+*** Comments
+
+**** clickety_clack
+Many of our present-day subterranean spaces are also covered in art and strewn with drug paraphernalia. Can we really say it played a key role in the rise of the civilization?
+
+**** embedding-shape
+The article credits recent psychedelic research for the shift. As one archaeologist puts it, there was long a feeling that drugs made you sick and addicted, and today there is a new openness.
+
+**** slowin
+A lot of the geometric designs in Indigenous pottery and architecture are thought to come directly from hallucinogenic plants like datura.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+致幻药物在安第斯文明兴起中起了关键作用
+***** TLDR
+由斯坦福大学 John Rick 主持的秘鲁查文德万塔尔遗址发掘，出土了 21 根骨管，残留物含烟草和 vilca 种子成分（含蟾毒色胺、DMT 和 5-MEO-DMT），同时还有抛光石墨镜和一块 4.5 米高的花岗岩石碑。该遗址存续于约公元前 1200 年至前 550 年。在 450 公里外的 Atalla，仙人掌形杯子上的脂质残留与降解的麦司卡林相符；玻利维亚萨哈马山地区的一块木质鼻烟板年代为公元 250 至 550 年。Rick 的解读是，仪式领袖通过控制进入意识改变状态的途径来建立权威；蒂瓦纳库和瓦里后来沿用这一模式，以意识形态而非征服扩张，直到印加转向强制性的国家权力。
+***** Take
+这里的强主张不是古人用药，而是使用权被限制。狭小的密室、寥寥几根骨管、用来控制受礼者所见的镜子，这是早期的仪式垄断，比多数依赖粮食剩余的理论更能解释权威为何持久。
+***** Comments
+- 我们今天的不少地下空间同样满是艺术品和吸毒用具。真的能说它在文明兴起中起了关键作用吗？
+- 文章把这种转变归功于近年的迷幻剂研究。用一位考古学家的话说，过去长期认为毒品让人生病成瘾，如今有了新的开放态度。
+- 原住民陶器和建筑上的许多几何图案，被认为直接来自曼陀罗之类的致幻植物。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+向精神性の薬物がアンデス文明の勃興で重要な役割を果たした
+***** TLDR
+スタンフォード大学のJohn Rickが率いるペルーのチャビン・デ・ワンタル遺跡の発掘で、タバコとビルカ種子（ブフォテニン、DMT、5-MEO-DMTを含む）の残留物が付いた骨製の管21本が、磨かれた黒鉛の鏡や高さ4.5mの花崗岩の石碑とともに見つかった。遺跡はおよそ紀元前1200年から前550年まで続いた。450km離れたAtallaではサボテン形の杯に劣化したメスカリンと整合する脂質残留があり、ボリビアのサハマ山地域の木製嗅ぎタバコ板は紀元250〜550年のものだ。Rickの解釈では、儀礼の指導者は意識変容へのアクセスを管理することで権威を築き、ティワナクとワリは後にその型を用いて征服ではなくイデオロギーで拡大し、インカに至って強制的な国家権力へ移行した。
+***** Take
+ここでの強い主張は古代人が薬物を使ったことではなく、その利用が制限されていたことだ。狭い個室、わずかな管、入信者が見るものを操る鏡。これは初期の儀礼の独占であり、穀物の余剰に頼る多くの説明よりも、権威が長続きした理由をうまく説明する。
+***** Comments
+- 現代の地下空間の多くも芸術で覆われ薬物の道具が散らばっている。それが文明の勃興で重要な役割を果たしたと本当に言えるのか。
+- 記事はこの転換を近年のサイケデリック研究の功績としている。ある考古学者いわく、長らく薬物は病気と依存をもたらすものと見られてきたが、今は新しい開放性があるという。
+- 先住民の陶器や建築の幾何学模様の多くは、ダチュラのような幻覚植物に直接由来すると考えられている。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+환각 물질이 안데스 문명의 부상에 핵심 역할을 했다
+***** TLDR
+스탠퍼드대 John Rick이 이끈 페루 차빈데우안타르 발굴에서 담배와 빌카 씨앗(부포테닌, DMT, 5-MEO-DMT 함유) 잔류물이 남은 뼈 대롱 21개가 연마된 흑연 거울, 높이 4.5m 화강암 석비와 함께 나왔다. 유적은 기원전 약 1200년부터 550년까지 이어졌다. 450km 떨어진 Atalla에서는 선인장 모양 잔에서 분해된 메스칼린과 일치하는 지질 잔류물이 확인됐고, 볼리비아 사하마산 지역의 목제 코담배 판은 서기 250~550년의 것이다. Rick의 해석은 의례 지도자들이 의식 변성 상태에 대한 접근을 통제해 권위를 세웠고, 티와나쿠와 와리가 이 틀을 이어받아 정복이 아닌 이념으로 확장했으며, 잉카에 이르러 강압적 국가 권력으로 옮겨갔다는 것이다.
+***** Take
+여기서 강한 주장은 고대인이 약물을 썼다는 게 아니라 그 접근이 제한돼 있었다는 점이다. 좁은 밀실, 몇 개뿐인 대롱, 입문자가 보는 것을 조율하는 거울. 이것은 초기 형태의 의례 독점이고, 곡물 잉여에 기대는 대부분의 이론보다 권위가 오래간 이유를 더 잘 설명한다.
+***** Comments
+- 오늘날의 지하 공간들도 벽화로 덮이고 약물 도구가 널려 있다. 그게 문명의 부상에 핵심 역할을 했다고 정말 말할 수 있을까.
+- 기사는 이 변화를 최근의 환각제 연구 덕으로 돌린다. 한 고고학자의 말처럼, 오랫동안 약물은 병들고 중독되게 만든다는 인식이 있었지만 지금은 새로운 개방성이 있다.
+- 원주민 토기와 건축의 기하학 문양 상당수는 흰독말풀 같은 환각 식물에서 직접 왔다고 본다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Las drogas psicoactivas tuvieron un papel clave en el auge de la civilización andina
+***** TLDR
+Las excavaciones en Chavín de Huántar, en Perú, dirigidas por John Rick, de Stanford, sacaron a la luz 21 tubos de hueso con residuos de tabaco y semillas de vilca, que contienen bufotenina, DMT y 5-MEO-DMT, junto a espejos de grafito pulido y una estela de granito de 4,5 metros. El sitio estuvo activo entre aproximadamente 1200 y 550 a.C. En Atalla, a 450 km, hay vasos con forma de cactus con residuos lipídicos compatibles con mescalina degradada, y una tableta de rapé de madera de la zona del monte Sajama, en Bolivia, data del 250 al 550 d.C. La lectura de Rick es que los líderes rituales usaron el acceso controlado a los estados alterados para construir autoridad, un modelo que Tiahuanaco y Wari emplearon después para expandirse por ideología más que por conquista, hasta que los incas pasaron al poder estatal coercitivo.
+***** Take
+La afirmación fuerte no es que los antiguos consumieran drogas, sino que el acceso estaba restringido. Cámaras pequeñas y privadas, un puñado de tubos y espejos para controlar lo que ve el iniciado: eso es un monopolio ritual temprano, y explica la autoridad duradera mejor que la mayoría de teorías basadas en excedentes de grano.
+***** Comments
+- Muchos de nuestros espacios subterráneos actuales también están cubiertos de arte y llenos de parafernalia. ¿De verdad podemos decir que eso fue clave en el auge de la civilización?
+- El artículo atribuye el cambio a la investigación reciente con psicodélicos. Como dice un arqueólogo, durante mucho tiempo se creyó que las drogas te enfermaban y te volvían adicto, y hoy hay una nueva apertura.
+- Se cree que muchos de los diseños geométricos de la cerámica y la arquitectura indígenas vienen directamente de plantas alucinógenas como la datura.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Psychoaktive Drogen spielten eine Schlüsselrolle beim Aufstieg der Andenzivilisation
+***** TLDR
+Grabungen in Chavín de Huántar in Peru unter Leitung von John Rick (Stanford) förderten 21 Knochenröhrchen mit Rückständen von Tabak und Vilca-Samen zutage, die Bufotenin, DMT und 5-MEO-DMT enthalten, dazu polierte Graphitspiegel und eine 4,5 Meter hohe Granitstele. Die Stätte bestand von etwa 1200 bis 550 v. Chr. In Atalla, 450 Kilometer entfernt, tragen kaktusförmige Becher Lipidrückstände, die zu abgebautem Meskalin passen, und ein hölzernes Schnupftablett aus der Region des Sajama in Bolivien datiert auf 250 bis 550 n. Chr. Rick liest das so, dass rituelle Anführer über kontrollierten Zugang zu Bewusstseinszuständen Autorität aufbauten. Tiwanaku und Wari nutzten dieses Muster später, um sich über Ideologie statt Eroberung auszudehnen, bis die Inka zu staatlichem Zwang übergingen.
+***** Take
+Die starke These ist nicht, dass Menschen damals Drogen nahmen, sondern dass der Zugang beschränkt war. Kleine abgeschlossene Kammern, eine Handvoll Röhrchen und Spiegel, die steuern, was der Eingeweihte sieht: das ist ein frühes rituelles Monopol und erklärt dauerhafte Autorität besser als die meisten Theorien über Getreideüberschüsse.
+***** Comments
+- Viele unserer heutigen unterirdischen Räume sind ebenfalls mit Kunst bedeckt und voller Drogenutensilien. Kann man wirklich sagen, das sei zentral für den Aufstieg einer Zivilisation gewesen?
+- Der Artikel führt den Wandel auf die neuere Psychedelika-Forschung zurück. Ein Archäologe sagt, lange galt, dass Drogen krank und abhängig machen, heute gebe es eine neue Offenheit.
+- Viele geometrische Muster in indigener Keramik und Architektur gehen vermutlich direkt auf halluzinogene Pflanzen wie Stechapfel zurück.
