@@ -1,0 +1,546 @@
+#+TITLE: HN Digest 2026-09-12 10:22 UTC
+#+DATE: 2026-09-12T10:22:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Apple's Neural Engine gets an autopsy, IKEA ships a real Skyrim mod, and a sturgeon may be older than Canada
+
+* Highlights
+- M1 Neural Engine mapped in full: 2,048 MAC lanes built for CNNs, folded into the GPU by the M5
+- Bodily Oddities: 143 strange things bodies do, each with a prevalence number
+- IKEA Ireland shipped an official Skyrim companion whose job is carrying your loot
+- Lake sturgeon may reach 400 years, which makes century-long recovery plans too short
+- Usenet-Rewind indexes 1981 onward, signatures with home addresses included
+
+* Stories
+
+** Retrospectively Reverse-Engineering Apple's Neural Engine :hardware:apple:reverse-engineering:ml:
+:PROPERTIES:
+:ID:       49670032
+:URL:      https://eiln.github.io/posts/ane.html
+:HN_URL:   https://news.ycombinator.com/item?id=49670032
+:POINTS:   84
+:COMMENTS: 10
+:BY:       zdw
+:END:
+
+*** TLDR
+Eileen Yoon went back to a reverse-engineering project she abandoned three years ago and mapped the M1's Neural Engine in full. The block has 16 compute cores with 128 FP16 MAC lanes each, 2,048 in total, 64 KiB of kernel memory per core, 2 MiB of shared L2 tile memory, and three DMA engines that run serially rather than in parallel (KernelDMA at 37.99 GB/s, TileDMA source at 59.08 GB/s). The driver never sends the ANE an opcode like CONV or MATMUL. It sends pre-compiled task descriptors that are essentially register-file dumps. The design assumes convolutional workloads with heavy weight reuse. Transformer decoding streams the entire model per token, so the M1's 11 TFLOPS would need 162 operations per byte to stay clear of its 68 GB/s memory ceiling. Apple folded the ANE cores into the GPU in the M5.
+
+*** Take
+The finding is not that the ANE is bad at transformers, it is that you can read Apple's 2017 bet directly off the silicon. They committed to fixed dataflow and dense weight reuse in the A11, then shipped that block for eight years while macOS used it mainly to generate Finder preview thumbnails. Merging it into the GPU is Apple settling the bet.
+
+*** Comments
+
+**** CraigJPerry
+:PROPERTIES:
+:COMMENT_ID: 49670378
+:END:
+This isn't AI slop, it's fascinating and well written. But I learned something basic: I didn't know the ANE and its data pipeline were designed for CNNs rather than transformers. It closes an open loop about why the ANE was less impactful than I understood it should be.
+
+**** zozbot234
+:PROPERTIES:
+:COMMENT_ID: 49670508
+:END:
+How does this relate to the more recent work on the M4 ANE? Also, the introduction seems to conflate the ANE with the Neural Accelerators found in the M5+ GPUs.
+
+**** LoganDark
+:PROPERTIES:
+:COMMENT_ID: 49670265
+:END:
+"what workloads it was designed for and accels at" - excels!
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+回溯逆向工程苹果神经引擎
+***** TLDR
+Eileen Yoon 重启了三年前放弃的逆向工程项目，完整绘制出 M1 神经引擎的架构。该模块有 16 个计算核心，每核 128 条 FP16 MAC 通道，共 2,048 条，每核 64 KiB 内核内存，2 MiB 共享 L2 tile 内存，以及三个串行而非并行运行的 DMA 引擎（KernelDMA 37.99 GB/s，TileDMA 源端 59.08 GB/s）。驱动从不向 ANE 发送 CONV 或 MATMUL 这类操作码，而是发送预编译的任务描述符，本质上是寄存器文件转储。该设计假定卷积负载具有大量权重复用。而 Transformer 解码每生成一个 token 就要流式读取整个模型，因此 M1 的 11 TFLOPS 需要每字节 162 次运算才能避开 68 GB/s 的内存上限。苹果在 M5 中把 ANE 核心并入了 GPU。
+***** Take
+关键不在于 ANE 跑不好 Transformer，而在于你能直接从硅片上读出苹果 2017 年的押注。他们在 A11 中押定了固定数据流和密集权重复用，然后把这个模块卖了八年，而 macOS 主要用它来生成访达的预览缩略图。把它并入 GPU，就是苹果在结算这笔押注。
+***** Comments
+- 这不是 AI 垃圾内容，写得很精彩。但我学到一个基础知识：我不知道 ANE 及其数据管线是为 CNN 而非 Transformer 设计的。这解释了为什么 ANE 的影响力一直低于我的预期。
+- 这和近期关于 M4 ANE 的研究有什么关系？另外，引言似乎把 ANE 和 M5+ GPU 中的神经加速器混为一谈了。
+- "what workloads it was designed for and accels at" 应该是 excels！
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+遡ってAppleのNeural Engineをリバースエンジニアリングする
+***** TLDR
+Eileen Yoonが3年前に中断したリバースエンジニアリングを再開し、M1のNeural Engineの構造を完全に解明した。16個の計算コアがそれぞれ128本のFP16 MACレーンを持ち合計2,048本、コアあたり64 KiBのカーネルメモリ、2 MiBの共有L2タイルメモリ、そして並列ではなく直列に動く3つのDMAエンジン（KernelDMA 37.99 GB/s、TileDMAソース59.08 GB/s）を備える。ドライバはCONVやMATMULといったオペコードをANEに送らず、レジスタファイルのダンプに相当するコンパイル済みタスク記述子を送る。この設計は重みの再利用が多い畳み込み処理を前提にしている。トランスフォーマーのデコードはトークンごとにモデル全体を読み出すため、M1の11 TFLOPSが68 GB/sのメモリ上限を回避するには1バイトあたり162演算が必要になる。AppleはM5でANEコアをGPUに統合した。
+***** Take
+重要なのはANEがトランスフォーマーに弱いことではなく、Appleの2017年の賭けをシリコンから直接読み取れることだ。A11で固定データフローと密な重み再利用に賭け、その後8年間このブロックを出荷し続けたが、macOSでの主な用途はFinderのプレビュー画像生成だった。GPUへの統合は、その賭けの精算である。
+***** Comments
+- これはAIの生成物ではなく、非常に読み応えがある。ただ基本的なことを学んだ。ANEとそのデータパイプラインがトランスフォーマーではなくCNN向けに設計されていたとは知らなかった。ANEが期待ほど影響力を持たなかった理由が腑に落ちた。
+- 最近のM4 ANEの研究との関係はどうなっているのか。また導入部はANEとM5+のGPUにあるNeural Acceleratorを混同しているように見える。
+- 「what workloads it was designed for and accels at」は excels の誤りでは。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+뒤늦게 애플 뉴럴 엔진을 리버스 엔지니어링하다
+***** TLDR
+Eileen Yoon이 3년 전 중단했던 리버스 엔지니어링 작업을 재개해 M1 뉴럴 엔진의 구조를 완전히 밝혀냈다. 16개의 연산 코어가 각각 128개의 FP16 MAC 레인을 갖춰 총 2,048개, 코어당 64 KiB 커널 메모리, 2 MiB 공유 L2 타일 메모리, 그리고 병렬이 아니라 직렬로 동작하는 DMA 엔진 3개(KernelDMA 37.99 GB/s, TileDMA 소스 59.08 GB/s)를 갖고 있다. 드라이버는 CONV나 MATMUL 같은 명령어를 ANE에 보내지 않고, 사실상 레지스터 파일 덤프인 사전 컴파일된 태스크 디스크립터를 보낸다. 이 설계는 가중치 재사용이 많은 합성곱 연산을 전제로 한다. 트랜스포머 디코딩은 토큰마다 모델 전체를 읽어야 해서, M1의 11 TFLOPS가 68 GB/s 메모리 한계를 피하려면 바이트당 162회 연산이 필요하다. 애플은 M5에서 ANE 코어를 GPU 안으로 통합했다.
+***** Take
+핵심은 ANE가 트랜스포머에 약하다는 점이 아니라, 애플이 2017년에 건 판돈을 실리콘에서 그대로 읽어낼 수 있다는 점이다. A11에서 고정 데이터플로와 밀집 가중치 재사용에 베팅했고, 이후 8년간 그 블록을 출하했지만 macOS는 주로 파인더 미리보기 썸네일 생성에 썼다. GPU로의 통합은 애플이 그 베팅을 정산하는 행위다.
+***** Comments
+- 이건 AI가 찍어낸 글이 아니라 훌륭하게 쓰인 글이다. 기본적인 걸 하나 배웠는데, ANE와 그 데이터 파이프라인이 트랜스포머가 아니라 CNN용으로 설계됐다는 사실을 몰랐다. ANE가 기대만큼 영향력이 없었던 이유가 풀렸다.
+- 최근 M4 ANE 연구와는 어떤 관계인가? 그리고 서론이 ANE와 M5+ GPU의 뉴럴 액셀러레이터를 혼동하는 것 같다.
+- "what workloads it was designed for and accels at"는 excels 오타다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Ingeniería inversa retrospectiva del Neural Engine de Apple
+***** TLDR
+Eileen Yoon retomó un proyecto de ingeniería inversa que había abandonado hace tres años y mapeó por completo el Neural Engine del M1. El bloque tiene 16 núcleos de cómputo con 128 carriles MAC FP16 cada uno, 2.048 en total, 64 KiB de memoria de kernel por núcleo, 2 MiB de memoria de tile L2 compartida y tres motores DMA que funcionan en serie y no en paralelo (KernelDMA a 37,99 GB/s, TileDMA de origen a 59,08 GB/s). El driver nunca le envía al ANE un opcode como CONV o MATMUL: le envía descriptores de tarea precompilados que son, en esencia, volcados del banco de registros. El diseño asume cargas convolucionales con mucha reutilización de pesos. La decodificación de transformers transmite el modelo entero por cada token, así que los 11 TFLOPS del M1 necesitarían 162 operaciones por byte para no chocar con su techo de memoria de 68 GB/s. Apple integró los núcleos del ANE dentro de la GPU en el M5.
+***** Take
+Lo relevante no es que el ANE sea malo con transformers, sino que se puede leer la apuesta que hizo Apple en 2017 directamente en el silicio. Se comprometieron con un flujo de datos fijo y reutilización densa de pesos en el A11, y luego vendieron ese bloque durante ocho años mientras macOS lo usaba sobre todo para generar miniaturas de previsualización en el Finder. Integrarlo en la GPU es Apple liquidando la apuesta.
+***** Comments
+- Esto no es basura generada por IA, está fascinante y bien escrito. Pero aprendí algo básico: no sabía que el ANE y su pipeline de datos se diseñaron para CNN y no para transformers. Cierra una duda que tenía sobre por qué el ANE tuvo menos impacto del que esperaba.
+- ¿Cómo se relaciona esto con el trabajo más reciente sobre el ANE del M4? Además, la introducción parece confundir el ANE con los Neural Accelerators de las GPU del M5 en adelante.
+- "what workloads it was designed for and accels at": ¡excels!
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Apples Neural Engine im Nachhinein reverse-engineered
+***** TLDR
+Eileen Yoon nahm ein vor drei Jahren aufgegebenes Reverse-Engineering-Projekt wieder auf und kartierte die Neural Engine des M1 vollständig. Der Block hat 16 Recheneinheiten mit je 128 FP16-MAC-Lanes, insgesamt 2.048, dazu 64 KiB Kernel-Speicher pro Kern, 2 MiB gemeinsamen L2-Tile-Speicher und drei DMA-Engines, die seriell statt parallel laufen (KernelDMA mit 37,99 GB/s, TileDMA-Quelle mit 59,08 GB/s). Der Treiber schickt der ANE nie einen Opcode wie CONV oder MATMUL, sondern vorkompilierte Task-Deskriptoren, die im Kern Register-Dumps sind. Das Design setzt Faltungslasten mit starker Gewichtswiederverwendung voraus. Transformer-Dekodierung streamt pro Token das gesamte Modell, weshalb die 11 TFLOPS des M1 162 Operationen pro Byte bräuchten, um nicht an die Speichergrenze von 68 GB/s zu stoßen. Apple hat die ANE-Kerne im M5 in die GPU verlegt.
+***** Take
+Bemerkenswert ist nicht, dass die ANE bei Transformern schwach ist, sondern dass sich Apples Wette von 2017 direkt am Silizium ablesen lässt. Im A11 legten sie sich auf festen Datenfluss und dichte Gewichtswiederverwendung fest und lieferten diesen Block dann acht Jahre lang aus, während macOS ihn vor allem für Vorschaubilder im Finder nutzte. Die Verlagerung in die GPU ist die Abrechnung dieser Wette.
+***** Comments
+- Das ist kein KI-Müll, sondern faszinierend und gut geschrieben. Ich habe aber etwas Grundlegendes gelernt: Mir war nicht klar, dass die ANE und ihre Datenpipeline für CNNs und nicht für Transformer ausgelegt sind. Das erklärt, warum die ANE weniger bewirkt hat, als ich erwartet hätte.
+- Wie verhält sich das zu den neueren Arbeiten zur M4-ANE? Außerdem scheint die Einleitung die ANE mit den Neural Accelerators in den GPUs ab dem M5 zu verwechseln.
+- "what workloads it was designed for and accels at" - excels!
+** Show HN: Bodily Oddities :health:show-hn:neuroscience:web:
+:PROPERTIES:
+:ID:       49649789
+:URL:      https://vester.si/bodily-oddities/
+:HN_URL:   https://news.ycombinator.com/item?id=49649789
+:POINTS:   252
+:COMMENTS: 169
+:BY:       vesterde
+:END:
+
+*** TLDR
+Demjan Vester built a catalog of 143 strange things human bodies do, started after a childhood episode of stabbing chest pain he only learned years later was precordial catch syndrome. Entries are browsable by body region (brain, nerves, eyes, ears, skin, muscle, bones, heart), by type (trick, involuntary, perception, sound, reflex, rare ability) and by tags including "It felt scary but it's normal" and "Things you can try right now". Most entries carry a prevalence figure: ear rumbling in up to half of people, call of the void in 43 to 60 percent, benign muscle fasciculations in about 70 percent of clinicians in one survey, prosopagnosia in 1 to 2.5 percent, aphantasia in 1 to 4 percent.
+
+*** Take
+The prevalence numbers are the entire product. A symptom list tells you what could be wrong; "roughly half of everyone can do this" tells you nothing is. The comment thread proved the point faster than the site could, filling up with geometric nightmares during fevers, phantom doorbells on waking, and the fact that fighter pilot candidates get screened for the photic sneeze reflex so they do not sneeze while scanning the sky. The one fair complaint is the AI-generated illustrations, which is a bad look on a site with this many close-ups of hands.
+
+*** Comments
+
+**** WA
+:PROPERTIES:
+:COMMENT_ID: 49670326
+:END:
+Monday is light brownish, Tuesday black, Wednesday blue, Thursday ochre, Friday dark blue, Saturday white/silver, Sunday black. January blue, February brownish, March black and white, April green. Thanks for coming to my synesthesia TED talk.
+
+**** alexpotato
+:PROPERTIES:
+:COMMENT_ID: 49651911
+:END:
+The photic sneeze reflex is one of the things fighter pilots are screened for. They can't have a pilot look down at dark ground, look up to scan for enemy fighters, and start sneezing. Some people with the reflex sneeze multiple times in a row.
+
+**** lpghatguy
+:PROPERTIES:
+:COMMENT_ID: 49664830
+:END:
+The artifacts from some of the AI-generated images are a significant detraction. For a site with so many pictures of hands, so many of them malformed or with the wrong number of fingers is really off-putting.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Show HN：身体怪癖大全
+***** TLDR
+Demjan Vester 整理了一份收录 143 种人体怪异现象的目录。起因是他童年一次剧烈胸痛，多年后才知道那叫心前区刺痛综合征。条目可按身体部位（大脑、神经、眼、耳、皮肤、肌肉、骨骼、心脏）、按类型（把戏、不自主、感知、声音、反射、罕见能力）以及按标签浏览，标签包括"当时很吓人但其实正常"和"现在就能试试"。多数条目附有发生率：耳鸣鼓音高达半数人可做到，深渊召唤为 43% 至 60%，某项调查中约 70% 的临床医生有良性肌束颤动，面孔失认症为 1% 至 2.5%，心盲症为 1% 至 4%。
+***** Take
+发生率数字就是这个产品的全部价值。症状清单告诉你可能哪里出了问题，而"大约一半人都会这样"告诉你什么问题都没有。评论区比网站本身更快地印证了这一点：发烧时的几何噩梦、醒来时听见的幻觉门铃，还有战斗机飞行员候选人要接受光反射性喷嚏筛查，以免在扫视天空时打喷嚏。唯一站得住的批评是 AI 生成的插图，对一个满是手部特写的网站来说这实在不妙。
+***** Comments
+- 星期一是浅棕色，星期二是黑色，星期三是蓝色，星期四是赭色，星期五是深蓝，星期六是白/银色，星期日是黑色。一月蓝色，二月棕色，三月黑白，四月绿色。感谢收听我的联觉 TED 演讲。
+- 光反射性喷嚏是战斗机飞行员的筛查项目之一。不能让飞行员低头看深色地面、再抬头扫视敌机时开始打喷嚏。有这种反射的人还可能连打好几个。
+- 部分 AI 生成图片的瑕疵严重拉低了体验。一个放了这么多手部特写的网站，很多手却畸形或手指数量不对，实在让人难受。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Show HN: Bodily Oddities（体の奇妙な現象集）
+***** TLDR
+Demjan Vesterが、人体に起きる奇妙な現象143件をまとめたカタログを公開した。きっかけは子どもの頃の激しい胸の痛みで、それが前胸部痛症候群だと知ったのは何年も後だった。項目は身体部位（脳、神経、目、耳、皮膚、筋肉、骨、心臓）、種類（芸当、不随意、知覚、音、反射、まれな能力）、そして「怖かったけど正常」「今すぐ試せること」といったタグから辿れる。多くの項目に発生率が添えられている。耳鳴らしは最大で半数の人が可能、高所での飛び降り衝動は43〜60%、ある調査では臨床医の約70%に良性線維束攣縮、相貌失認は1〜2.5%、アファンタジアは1〜4%。
+***** Take
+発生率の数字こそがこのサイトの本質だ。症状リストは何が異常かを示すが、「だいたい半数の人がそうだ」は何も異常でないことを示す。コメント欄はサイト本体より早くそれを証明し、発熱時の幾何学的悪夢、目覚めぎわの幻のドアベル、戦闘機パイロット候補が空をスキャンする際にくしゃみをしないよう光くしゃみ反射の検査を受ける話で埋まった。妥当な批判はAI生成イラストの件で、手のクローズアップがこれだけ多いサイトでは痛い。
+***** Comments
+- 月曜は薄い茶色、火曜は黒、水曜は青、木曜は黄土色、金曜は濃い青、土曜は白か銀、日曜は黒。1月は青、2月は茶色、3月は白黒、4月は緑。私の共感覚TEDトークにお付き合いいただき感謝します。
+- 光くしゃみ反射は戦闘機パイロットの選抜検査項目のひとつだ。暗い地面を見下ろしてから敵機を探して空を見上げた瞬間にくしゃみが始まっては困る。この反射を持つ人は連続してくしゃみが出ることもある。
+- 一部のAI生成画像のアーティファクトがかなり足を引っ張っている。手の写真がこれほど多いサイトで、その多くが崩れていたり指の数が違ったりするのは興醒めだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Show HN: 신체의 기이한 현상들
+***** TLDR
+Demjan Vester가 인체에서 일어나는 기이한 현상 143가지를 정리한 목록을 공개했다. 어린 시절 찌르는 듯한 흉통을 겪었고 몇 년 뒤에야 그것이 전흉부 통증 증후군이라는 걸 알게 된 게 계기였다. 항목은 신체 부위(뇌, 신경, 눈, 귀, 피부, 근육, 뼈, 심장), 유형(재주, 불수의, 지각, 소리, 반사, 희귀 능력), 그리고 "무서웠지만 정상입니다", "지금 바로 해볼 수 있는 것" 같은 태그로 찾아볼 수 있다. 대부분의 항목에는 발생률이 붙어 있다. 귀 울리기는 최대 절반, 허공의 부름은 43~60%, 한 조사에서 임상의의 약 70%가 겪는 양성 근섬유다발수축, 안면인식장애 1~2.5%, 아판타시아 1~4%.
+***** Take
+발생률 숫자가 이 사이트의 전부다. 증상 목록은 무엇이 잘못됐을 수 있는지 알려주지만, "대략 절반이 그렇다"는 아무 문제도 없다는 걸 알려준다. 댓글창은 사이트보다 빠르게 그걸 증명했다. 고열 때의 기하학적 악몽, 깰 때 들리는 환청 초인종, 그리고 전투기 조종사 지원자가 하늘을 살피다 재채기하지 않도록 광반사 재채기를 검사받는다는 이야기로 채워졌다. 타당한 비판은 AI 생성 삽화인데, 손 클로즈업이 이렇게 많은 사이트에서는 치명적이다.
+***** Comments
+- 월요일은 옅은 갈색, 화요일은 검정, 수요일은 파랑, 목요일은 황토색, 금요일은 짙은 파랑, 토요일은 흰색이나 은색, 일요일은 검정이다. 1월은 파랑, 2월은 갈색, 3월은 흑백, 4월은 초록. 제 공감각 TED 강연을 들어주셔서 감사합니다.
+- 광반사 재채기는 전투기 조종사 선발에서 검사하는 항목 중 하나다. 어두운 지면을 내려다보다 적기를 찾아 하늘을 올려다본 순간 재채기를 시작하면 곤란하기 때문이다. 이 반사가 있는 사람은 연달아 재채기가 나오기도 한다.
+- 일부 AI 생성 이미지의 아티팩트가 크게 거슬린다. 손 사진이 이렇게 많은 사이트에서 상당수가 기형이거나 손가락 개수가 틀린 건 몰입을 깨뜨린다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Show HN: Rarezas corporales
+***** TLDR
+Demjan Vester armó un catálogo de 143 cosas extrañas que hace el cuerpo humano, tras un episodio de dolor punzante en el pecho durante su infancia que años después supo que se llamaba síndrome de pinchazo precordial. Las entradas se navegan por región del cuerpo (cerebro, nervios, ojos, oídos, piel, músculo, huesos, corazón), por tipo (truco, involuntario, percepción, sonido, reflejo, habilidad rara) y por etiquetas como "Daba miedo pero es normal" y "Cosas que puedes probar ahora mismo". La mayoría incluye una cifra de prevalencia: el retumbo de oídos en hasta la mitad de la gente, la llamada del vacío entre el 43 y el 60 por ciento, las fasciculaciones benignas en cerca del 70 por ciento de los clínicos según una encuesta, la prosopagnosia entre el 1 y el 2,5 por ciento, y la afantasía entre el 1 y el 4 por ciento.
+***** Take
+Las cifras de prevalencia son todo el producto. Una lista de síntomas te dice qué podría estar mal; "más o menos la mitad de la gente hace esto" te dice que no hay nada mal. El hilo de comentarios lo demostró más rápido que la propia web, llenándose de pesadillas geométricas durante la fiebre, timbres fantasma al despertar, y el dato de que a los candidatos a piloto de caza se les examina el reflejo de estornudo fótico para que no estornuden mientras escanean el cielo. La queja justa son las ilustraciones generadas por IA, algo feo en un sitio con tantos primeros planos de manos.
+***** Comments
+- El lunes es marrón claro, el martes negro, el miércoles azul, el jueves ocre, el viernes azul oscuro, el sábado blanco o plateado, el domingo negro. Enero azul, febrero marrón, marzo blanco y negro, abril verde. Gracias por venir a mi charla TED sobre sinestesia.
+- El reflejo de estornudo fótico es una de las cosas que se examinan en los pilotos de caza. No pueden permitirse que un piloto mire hacia el suelo oscuro, levante la vista para buscar cazas enemigos y se ponga a estornudar. Algunas personas con el reflejo estornudan varias veces seguidas.
+- Los artefactos de algunas imágenes generadas por IA restan bastante. En un sitio con tantas fotos de manos, que muchas estén deformes o con el número de dedos equivocado resulta muy chocante.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Show HN: Körperliche Kuriositäten
+***** TLDR
+Demjan Vester hat einen Katalog mit 143 merkwürdigen Dingen angelegt, die menschliche Körper tun. Auslöser war ein stechender Brustschmerz in seiner Kindheit, von dem er erst Jahre später erfuhr, dass er Präkordiales Stechen heißt. Die Einträge lassen sich nach Körperregion (Gehirn, Nerven, Augen, Ohren, Haut, Muskeln, Knochen, Herz), nach Typ (Trick, unwillkürlich, Wahrnehmung, Geräusch, Reflex, seltene Fähigkeit) und nach Schlagworten wie "Fühlte sich beängstigend an, ist aber normal" und "Dinge, die du sofort ausprobieren kannst" durchstöbern. Die meisten Einträge nennen eine Häufigkeit: Ohrenrumpeln bei bis zu der Hälfte aller Menschen, der Ruf der Leere bei 43 bis 60 Prozent, gutartige Faszikulationen bei rund 70 Prozent der Kliniker in einer Umfrage, Prosopagnosie bei 1 bis 2,5 Prozent, Aphantasie bei 1 bis 4 Prozent.
+***** Take
+Die Häufigkeitsangaben sind das ganze Produkt. Eine Symptomliste sagt dir, was nicht stimmen könnte; "etwa die Hälfte aller Menschen kann das" sagt dir, dass alles stimmt. Der Kommentarstrang belegte das schneller als die Seite selbst und füllte sich mit geometrischen Albträumen bei Fieber, Phantomtürklingeln beim Aufwachen und dem Hinweis, dass Kampfpilotenanwärter auf den photischen Niesreflex untersucht werden, damit sie beim Absuchen des Himmels nicht niesen. Der berechtigte Einwand betrifft die KI-generierten Illustrationen, was auf einer Seite mit so vielen Handnahaufnahmen unangenehm auffällt.
+***** Comments
+- Montag ist hellbraun, Dienstag schwarz, Mittwoch blau, Donnerstag ocker, Freitag dunkelblau, Samstag weiß oder silbern, Sonntag schwarz. Januar blau, Februar bräunlich, März schwarz-weiß, April grün. Danke, dass ihr zu meinem Synästhesie-TED-Talk gekommen seid.
+- Der photische Niesreflex gehört zu den Dingen, auf die Kampfpiloten untersucht werden. Man kann nicht gebrauchen, dass ein Pilot auf dunklen Boden blickt, dann zum Himmel schaut, um nach Feindflugzeugen zu suchen, und zu niesen anfängt. Manche mit diesem Reflex niesen mehrmals hintereinander.
+- Die Artefakte mancher KI-generierten Bilder stören erheblich. Auf einer Seite mit so vielen Handbildern sind viele davon missgebildet oder haben die falsche Fingerzahl, das schreckt ab.
+** IKEA made a mod for Skyrim ［video］ :games:marketing:modding:skyrim:
+:PROPERTIES:
+:ID:       49639647
+:URL:      https://www.youtube.com/watch?v=iZODN0QUgjI
+:HN_URL:   https://news.ycombinator.com/item?id=49639647
+:POINTS:   124
+:COMMENTS: 17
+:BY:       kegenaar
+:END:
+
+*** TLDR
+IKEA Ireland released KALLAX STORAGEBORN, a free official creation for The Elder Scrolls V: Skyrim distributed through Bethesda's in-game Creations menu. It adds a fully voiced companion named KALLAX who carries your items, a weapon called the Allenblade, and new quests and dungeons built around defeating clutter. The announcement video has passed 1.1 million views since 9 September 2026. IKEA's own FAQ answers the question "Is this real?" with "Yes."
+
+*** Take
+This is an ad that solves the actual problem of the game it is advertising inside. Skyrim's late game is inventory management, and IKEA shipped a follower whose entire job is carrying your stuff. The detail commenters caught is the cost: Bethesda patched Skyrim a few weeks ago for the first time in two years, and on PC any patch breaks every mod that hooks DLLs. Somebody decided a furniture ad was worth burning the modding community's week on.
+
+*** Comments
+
+**** ludicrousdispla
+:PROPERTIES:
+:COMMENT_ID: 49670441
+:END:
+Play a game long enough and the main challenge becomes inventory management. I look forward to the IVAR update.
+
+**** jml7c5
+:PROPERTIES:
+:COMMENT_ID: 49670375
+:END:
+I was wondering what compelled Bethesda to update the game a few weeks ago, the first time in two years. On PC, any update breaks mods that rely on DLL modification, so you'd expect them to be wary of doing it for no reason. Maybe improving support for this was the impetus.
+
+**** kalleboo
+:PROPERTIES:
+:COMMENT_ID: 49670466
+:END:
+I watched part of a playthrough and was impressed by how much content there actually is for a one-off bit. I assumed they'd make just enough for a funny ad, but there's a lot of scripted storyline and voice acting.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+宜家给《上古卷轴5：天际》做了个模组［视频］
+***** TLDR
+宜家爱尔兰发布了 KALLAX STORAGEBORN，这是一个通过 Bethesda 游戏内 Creations 菜单免费分发的官方《上古卷轴5：天际》创意内容。它加入了一位配有完整语音、负责帮你背东西的同伴 KALLAX，一把名为 Allenblade（内六角剑）的武器，以及围绕"击败杂物"展开的新任务和地下城。宣传视频自 2026 年 9 月 9 日发布以来播放量已超过 110 万。宜家自己的 FAQ 对"这是真的吗？"的回答是"是的"。
+***** Take
+这是一则真正解决了它所投放游戏之痛点的广告。《天际》的后期玩法就是背包管理，而宜家送来了一个唯一职责就是帮你搬东西的跟班。评论区揪出的细节是代价：Bethesda 几周前给《天际》打了两年来第一个补丁，而在 PC 上任何补丁都会让所有依赖 DLL 注入的模组失效。有人认为一则家具广告值得让模组社区搭上一周。
+***** Comments
+- 一款游戏玩得够久，主要挑战就变成了背包管理。我很期待 IVAR 更新。
+- 我一直纳闷 Bethesda 几周前为什么要更新游戏，那是两年来的第一次。在 PC 上任何更新都会破坏依赖 DLL 修改的模组，按理说他们不会无缘无故这么做。也许就是为了支持这个。
+- 我看了一部分实况，没想到这种一次性玩梗居然做了这么多内容。我以为他们只会做到够拍个搞笑广告的程度，结果有大量剧本化剧情和配音。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+IKEAがSkyrimのMODを作った［動画］
+***** TLDR
+IKEAアイルランドが、Bethesdaのゲーム内Creationsメニューから無料配布される公式Skyrim向けクリエーション「KALLAX STORAGEBORN」を公開した。フルボイスで荷物を運ぶ仲間KALLAX、Allenblade（六角レンチの剣）という武器、そして「散らかり」を倒すことをテーマにした新クエストとダンジョンが追加される。告知動画は2026年9月9日の公開以来110万回以上再生されている。IKEA自身のFAQは「これは本物ですか」に「はい」と答えている。
+***** Take
+自分が出稿した先のゲームが抱える実際の問題を解決している広告だ。Skyrimの終盤はインベントリ管理そのもので、IKEAは荷物持ちだけが仕事の仲間を投入した。コメント欄が拾った代償が興味深い。Bethesdaは数週間前、2年ぶりにSkyrimへパッチを当てたが、PCではどんなパッチもDLLフックに依存する全MODを壊す。家具の広告のためにMODコミュニティの一週間を犠牲にする価値があると誰かが判断したわけだ。
+***** Comments
+- ゲームを長く遊ぶと、主な難関はインベントリ管理になる。IVARのアップデートが楽しみだ。
+- なぜBethesdaが数週間前に、2年ぶりにゲームを更新したのか不思議だった。PCでは更新のたびにDLL改変に依存するMODが壊れるので、理由もなくやるとは思えない。これへの対応が動機だったのかもしれない。
+- プレイ動画を少し見たが、一発ネタにしてはコンテンツ量が多くて驚いた。面白い広告に足りるだけ作ると思っていたが、作り込まれたストーリーとボイスがかなりある。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+이케아가 스카이림 모드를 만들었다 ［영상］
+***** TLDR
+이케아 아일랜드가 베데스다의 게임 내 Creations 메뉴를 통해 무료 배포되는 공식 스카이림 창작물 KALLAX STORAGEBORN을 공개했다. 전체 음성이 들어간 짐꾼 동료 KALLAX, Allenblade라는 무기, 그리고 '잡동사니'를 물리치는 것을 주제로 한 새 퀘스트와 던전이 추가된다. 공개 영상은 2026년 9월 9일 이후 조회수 110만 회를 넘겼다. 이케아의 FAQ는 "이거 진짜인가요?"라는 질문에 "네"라고 답한다.
+***** Take
+자기가 광고를 실은 게임의 실제 문제를 해결하는 광고다. 스카이림의 후반부는 사실상 인벤토리 관리이고, 이케아는 짐 나르기만 담당하는 동료를 내놨다. 댓글에서 짚어낸 대가가 흥미롭다. 베데스다는 몇 주 전 2년 만에 처음으로 스카이림에 패치를 넣었는데, PC에서는 어떤 패치든 DLL을 후킹하는 모든 모드를 망가뜨린다. 가구 광고를 위해 모딩 커뮤니티의 한 주를 태울 만하다고 누군가 판단한 셈이다.
+***** Comments
+- 게임을 오래 하다 보면 주된 난관은 인벤토리 관리가 된다. IVAR 업데이트가 기다려진다.
+- 베데스다가 왜 몇 주 전에, 2년 만에 게임을 업데이트했는지 궁금했다. PC에서는 업데이트가 DLL 수정에 의존하는 모드를 전부 망가뜨리니 이유 없이 하지는 않을 텐데, 이걸 지원하려던 게 계기였을 수도 있겠다.
+- 플레이 영상을 조금 봤는데 일회성 장난치고는 콘텐츠가 정말 많아서 놀랐다. 웃긴 광고에 필요한 만큼만 만들 줄 알았는데 각본이 짜인 스토리와 성우 연기가 상당하다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+IKEA hizo un mod para Skyrim ［vídeo］
+***** TLDR
+IKEA Irlanda lanzó KALLAX STORAGEBORN, una creación oficial y gratuita para The Elder Scrolls V: Skyrim distribuida a través del menú Creations dentro del juego de Bethesda. Añade un compañero con voz completa llamado KALLAX que carga tus objetos, un arma llamada Allenblade y nuevas misiones y mazmorras centradas en derrotar al desorden. El vídeo del anuncio supera 1,1 millones de reproducciones desde el 9 de septiembre de 2026. Las propias preguntas frecuentes de IKEA responden a "¿Esto es real?" con "Sí".
+***** Take
+Es un anuncio que resuelve el problema real del juego dentro del cual se anuncia. El final de Skyrim es gestión de inventario, e IKEA lanzó un seguidor cuyo único trabajo es llevarte las cosas. El detalle que pillaron los comentarios es el coste: Bethesda parcheó Skyrim hace unas semanas, la primera vez en dos años, y en PC cualquier parche rompe todos los mods que enganchan DLL. Alguien decidió que un anuncio de muebles valía la semana perdida de la comunidad de modding.
+***** Comments
+- Juega lo suficiente y el desafío principal pasa a ser la gestión del inventario. Espero con ganas la actualización IVAR.
+- Me preguntaba qué llevó a Bethesda a actualizar el juego hace unas semanas, la primera vez en dos años. En PC, cualquier actualización rompe los mods que dependen de modificar DLL, así que uno esperaría que fueran cautos sin motivo. Quizá el impulso fue dar mejor soporte a esto.
+- Vi parte de una partida y me impresionó cuánto contenido hay para ser una broma puntual. Daba por hecho que harían lo justo para un anuncio gracioso, pero hay bastante guion y doblaje.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+IKEA hat eine Mod für Skyrim gemacht ［Video］
+***** TLDR
+IKEA Irland hat KALLAX STORAGEBORN veröffentlicht, eine kostenlose offizielle Creation für The Elder Scrolls V: Skyrim, die über Bethesdas Creations-Menü im Spiel verteilt wird. Sie fügt einen vollständig vertonten Begleiter namens KALLAX hinzu, der Gegenstände trägt, eine Waffe namens Allenblade sowie neue Quests und Dungeons rund um den Kampf gegen Unordnung. Das Ankündigungsvideo hat seit dem 9. September 2026 mehr als 1,1 Millionen Aufrufe. IKEAs eigene FAQ beantwortet die Frage "Ist das echt?" mit "Ja".
+***** Take
+Eine Werbung, die das tatsächliche Problem des Spiels löst, in dem sie geschaltet wird. Skyrims Endgame ist Inventarverwaltung, und IKEA liefert einen Begleiter, dessen einzige Aufgabe das Tragen ist. Den Preis haben die Kommentare bemerkt: Bethesda hat Skyrim vor einigen Wochen zum ersten Mal seit zwei Jahren gepatcht, und auf dem PC zerschießt jeder Patch sämtliche Mods, die sich in DLLs einklinken. Jemand hielt eine Möbelwerbung für wichtig genug, der Modding-Community eine Woche zu kosten.
+***** Comments
+- Spiel lange genug, und die eigentliche Herausforderung wird Inventarverwaltung. Ich freue mich auf das IVAR-Update.
+- Ich habe mich gefragt, warum Bethesda das Spiel vor ein paar Wochen aktualisiert hat, zum ersten Mal seit zwei Jahren. Auf dem PC zerstört jedes Update Mods, die auf DLL-Modifikation setzen, also würde man Zurückhaltung erwarten. Vielleicht war die Unterstützung dafür der Anlass.
+- Ich habe einen Teil eines Playthroughs gesehen und war beeindruckt, wie viel Inhalt für einen einmaligen Gag tatsächlich da ist. Ich hätte erwartet, dass sie nur so viel bauen, wie ein witziger Werbespot braucht, aber es gibt viel geskriptete Handlung und Sprachausgabe.
+** Great Lakes sturgeon may be 400 years old: Scientists rethinking how to save them :science:biology:conservation:fish:
+:PROPERTIES:
+:ID:       49624456
+:URL:      https://www.cbc.ca/news/canada/ontario-great-lakes-sturgeon-lifespan-study-9.7329250
+:HN_URL:   https://news.ycombinator.com/item?id=49624456
+:POINTS:   70
+:COMMENTS: 7
+:BY:       bookofjoe
+:END:
+
+*** TLDR
+Ed Baker of the Michigan Department of Natural Resources dropped the standard method of aging lake sturgeon, counting rings on fin rays, which stops being readable in old fish. Instead he used 44 years of capture-recapture records, measured how much individual fish grew between catches, and modeled how long it would take to reach the sizes being landed. One male recaptured in 2024 had grown 7 centimetres since 1990. The conclusion is that Great Lakes lake sturgeon may reach 400 years, against a previous ceiling of roughly 150. Commercial fishing and habitat destruction removed about 99 percent of the historic population and the species is listed as endangered. University of Windsor biologist Trevor Pitcher says restoration plans written on a century-long horizon may now be too short.
+
+*** Take
+The number was never just trivia, it was setting the policy clock. At 150 years, a century of protected spawning habitat reads as a full recovery plan. At 400, the fish currently in the water were hatched before the commercial fishery that wiped them out existed, and a hundred-year plan covers a quarter of one generation. The methodology is the better story anyway: the fin ray counts were not wrong, they just stopped producing readable rings, and everyone kept treating the last legible number as the ceiling.
+
+*** Comments
+
+**** aschla
+:PROPERTIES:
+:COMMENT_ID: 49668561
+:END:
+Kayak fished the St. Croix river last year on the Minnesota-Wisconsin border. Crystal clear water. Floated over several huge sturgeon, 4 to 6 feet long. The way they look, it feels like coming across a dinosaur. Thankfully they're bottom feeders.
+
+**** bell-cot
+:PROPERTIES:
+:COMMENT_ID: 49670688
+:END:
+Note the recent reclassification from Acipenser to Huso. And from the descriptions there, the article's estimate of 99 percent reduction from historic population levels is a severe underestimate.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+五大湖鲟鱼可能有 400 岁：科学家重新思考如何拯救它们
+***** TLDR
+密歇根州自然资源部的 Ed Baker 放弃了给湖鲟测龄的常规方法，即数鳍条上的年轮，因为老鱼的年轮已无法辨读。他改用 44 年的标记重捕记录，测量个体鱼两次捕获之间的生长量，再推算长到目前捕获尺寸需要多久。一条 2024 年重捕的雄鱼自 1990 年以来只长了 7 厘米。结论是五大湖湖鲟可能活到 400 岁，而此前的上限约为 150 岁。商业捕捞和栖息地破坏已消灭约 99% 的历史种群，该物种被列为濒危。温莎大学生物学家 Trevor Pitcher 表示，按百年尺度制定的恢复计划现在可能太短了。
+***** Take
+这个数字从来不只是冷知识，它决定了政策的时钟。按 150 年算，一个世纪的产卵栖息地保护看起来是一份完整的恢复计划。按 400 年算，现在水里的鱼在那场把它们捕光的商业渔业出现之前就已孵化，而百年计划只覆盖一代鱼寿命的四分之一。方法本身才是更好的故事：鳍条计数并非错误，只是老到读不出年轮了，而所有人一直把最后一个可读数字当成上限。
+***** Comments
+- 去年在明尼苏达和威斯康星交界的圣克罗伊河上划皮划艇钓鱼，水清澈见底。好几条 1.2 到 1.8 米的大鲟鱼从下面游过。它们的样子就像撞见了恐龙。还好它们是底层觅食的。
+- 注意它们最近已从 Acipenser 属重新划归 Huso 属。而且从相关描述看，文章所说相对历史种群下降 99% 的估计还严重偏低了。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+五大湖のチョウザメは400歳かもしれない 保護のあり方を科学者が再考
+***** TLDR
+ミシガン州天然資源局のEd Bakerは、レイクスタージョンの年齢推定の定番手法である鰭条の年輪計数をやめた。高齢の個体では年輪が読めなくなるためだ。代わりに44年分の標識再捕記録を使い、個体ごとの捕獲間の成長量を測って、現在捕れている体長に達するまでの年数を推定した。2024年に再捕された雄は1990年以降わずか7センチしか成長していなかった。結論は、五大湖のレイクスタージョンは400歳に達しうるというもので、従来の上限はおよそ150歳だった。商業漁業と生息地の破壊により歴史的個体数の約99%が失われ、本種は絶滅危惧種に指定されている。ウィンザー大学の生物学者Trevor Pitcherは、100年規模で書かれた再生計画は今や短すぎるかもしれないと述べている。
+***** Take
+この数字は雑学ではなく、政策の時計そのものだった。150年なら、一世紀にわたる産卵場の保護は完結した回復計画に見える。400年なら、いま水中にいる個体は自分たちを絶やした商業漁業が始まる前に生まれており、100年計画は一世代の四分の一しかカバーしない。手法の話のほうが本題だ。鰭条の計数は誤りだったのではなく、年輪が読めなくなっただけで、最後に読めた数字を誰もが上限として扱い続けてきた。
+***** Comments
+- 去年、ミネソタとウィスコンシンの州境にあるセントクロイ川をカヤックで釣り歩いた。水は透き通っていて、1.2〜1.8メートルの巨大なチョウザメの上を何度も流れた。その姿は恐竜に出くわしたようだ。底生食性でよかった。
+- 最近AcipenserからHusoへ再分類された点に注意。そこの記述からすると、記事の「歴史的個体数から99%減」という推計はかなり控えめだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+오대호 철갑상어는 400살일 수 있다: 보호 방식을 다시 생각하는 과학자들
+***** TLDR
+미시간주 천연자원국의 Ed Baker는 호수철갑상어 연령 측정의 표준 방법인 지느러미 줄기의 나이테 세기를 포기했다. 나이 든 개체에서는 나이테를 읽을 수 없기 때문이다. 대신 44년치 표지 재포획 기록을 써서 개체별 포획 간 성장량을 재고, 현재 잡히는 크기에 도달하는 데 걸리는 기간을 모델링했다. 2024년에 재포획된 수컷 한 마리는 1990년 이후 7센티미터밖에 자라지 않았다. 결론은 오대호 호수철갑상어가 400살에 이를 수 있다는 것으로, 기존 상한은 약 150살이었다. 상업 어업과 서식지 파괴로 역사적 개체군의 약 99%가 사라졌고 이 종은 멸종위기종으로 지정돼 있다. 윈저대학교 생물학자 Trevor Pitcher는 100년 단위로 쓰인 복원 계획이 이제는 너무 짧을 수 있다고 말한다.
+***** Take
+이 숫자는 잡학이 아니라 정책의 시계를 맞추는 기준이었다. 150년이라면 한 세기에 걸친 산란지 보호는 완결된 복원 계획처럼 읽힌다. 400년이라면 지금 물속에 있는 개체들은 자기들을 쓸어간 상업 어업이 생기기도 전에 부화했고, 100년 계획은 한 세대 수명의 4분의 1만 덮는다. 더 흥미로운 건 방법론이다. 지느러미 나이테 계수가 틀렸던 게 아니라 더는 읽히지 않았을 뿐인데, 모두가 마지막으로 읽힌 숫자를 상한으로 취급해 왔다.
+***** Comments
+- 작년에 미네소타와 위스콘신 경계의 세인트크로이강에서 카약 낚시를 했다. 물이 아주 맑았고 1.2~1.8미터짜리 거대한 철갑상어 여러 마리 위를 떠다녔다. 생김새가 공룡을 마주친 기분이다. 다행히 바닥에서 먹이를 먹는 종이다.
+- 최근 Acipenser에서 Huso로 재분류된 점을 참고하라. 거기 설명을 보면 역사적 개체군 대비 99% 감소라는 기사 추정치는 심하게 과소평가된 것이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+El esturión de los Grandes Lagos podría tener 400 años: los científicos replantean cómo salvarlo
+***** TLDR
+Ed Baker, del Departamento de Recursos Naturales de Michigan, descartó el método habitual para estimar la edad del esturión lacustre, contar anillos en los radios de las aletas, que deja de ser legible en ejemplares viejos. En su lugar usó 44 años de registros de captura y recaptura, midió cuánto crecía cada pez entre capturas y modeló cuánto tardaría en alcanzar las tallas que se están pescando. Un macho recapturado en 2024 había crecido 7 centímetros desde 1990. La conclusión es que el esturión lacustre de los Grandes Lagos puede llegar a los 400 años, frente al techo anterior de unos 150. La pesca comercial y la destrucción del hábitat eliminaron cerca del 99 por ciento de la población histórica y la especie figura como en peligro. El biólogo Trevor Pitcher, de la Universidad de Windsor, dice que los planes de restauración escritos a un horizonte de un siglo pueden quedarse cortos.
+***** Take
+La cifra nunca fue un dato curioso: marcaba el reloj de las políticas. Con 150 años, un siglo de hábitat de desove protegido parece un plan de recuperación completo. Con 400, los peces que hoy están en el agua nacieron antes de que existiera la pesquería comercial que los diezmó, y un plan de cien años cubre un cuarto de una generación. La metodología es la mejor historia: los conteos de anillos no estaban equivocados, simplemente dejaron de producir anillos legibles, y todos siguieron tratando el último número legible como el techo.
+***** Comments
+- El año pasado pesqué en kayak en el río St. Croix, en la frontera entre Minnesota y Wisconsin. Agua cristalina. Pasé flotando sobre varios esturiones enormes, de 1,2 a 1,8 metros. Por su aspecto, parece que te topas con un dinosaurio. Menos mal que se alimentan en el fondo.
+- Ojo con la reciente reclasificación de Acipenser a Huso. Y por las descripciones que hay ahí, la estimación del artículo de un 99 por ciento de reducción respecto a los niveles históricos se queda muy corta.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Stör aus den Großen Seen könnte 400 Jahre alt sein: Forscher überdenken den Schutz
+***** TLDR
+Ed Baker vom Michigan Department of Natural Resources verwarf die übliche Methode zur Altersbestimmung des Seestörs, das Zählen der Ringe in den Flossenstrahlen, das bei alten Tieren nicht mehr lesbar ist. Stattdessen nutzte er 44 Jahre an Fang-Wiederfang-Daten, maß das Wachstum einzelner Fische zwischen den Fängen und modellierte, wie lange sie bis zu den heute gefangenen Größen brauchen. Ein 2024 wiedergefangenes Männchen war seit 1990 nur 7 Zentimeter gewachsen. Das Ergebnis: Seestöre in den Großen Seen können 400 Jahre erreichen, statt der bisherigen Obergrenze von rund 150. Kommerzieller Fischfang und Lebensraumzerstörung haben etwa 99 Prozent des historischen Bestands beseitigt, die Art gilt als gefährdet. Der Biologe Trevor Pitcher von der University of Windsor sagt, auf ein Jahrhundert angelegte Wiederherstellungspläne könnten nun zu kurz greifen.
+***** Take
+Die Zahl war nie bloß Trivia, sie stellte die politische Uhr. Bei 150 Jahren wirkt ein Jahrhundert geschützter Laichhabitate wie ein vollständiger Erholungsplan. Bei 400 Jahren schlüpften die Fische, die heute im Wasser sind, bevor es die Fischerei gab, die sie fast ausgelöscht hat, und ein Hundertjahresplan deckt ein Viertel einer Generation ab. Die Methodik ist ohnehin die bessere Geschichte: Die Flossenstrahlzählung war nicht falsch, sie lieferte nur keine lesbaren Ringe mehr, und alle behandelten die letzte lesbare Zahl als Obergrenze.
+***** Comments
+- Bin letztes Jahr im Kajak auf dem St. Croix an der Grenze zwischen Minnesota und Wisconsin fischen gewesen. Glasklares Wasser. Bin über mehrere riesige Störe getrieben, 1,2 bis 1,8 Meter lang. So wie die aussehen, fühlt es sich an, als träfe man einen Dinosaurier. Zum Glück sind es Bodenfresser.
+- Man beachte die jüngste Umklassifizierung von Acipenser zu Huso. Und nach den dortigen Beschreibungen ist die im Artikel genannte Reduktion um 99 Prozent gegenüber historischen Beständen deutlich zu niedrig angesetzt.
+** Usenet rewind archive search engine :internet-history:search:privacy:usenet:
+:PROPERTIES:
+:ID:       49668777
+:URL:      https://www.usenet-rewind.com/
+:HN_URL:   https://news.ycombinator.com/item?id=49668777
+:POINTS:   65
+:COMMENTS: 14
+:BY:       cstadler1869
+:END:
+
+*** TLDR
+Usenet-Rewind is a free, read-only search engine over archived Usenet posts, run by Erie Data Systems, an independent company in Erie, Pennsylvania. The site says its index reaches from the earliest Usenet in the 1980s to the present, claims coverage on the order of a billion messages, and notes it is still being populated. Its stated reason for existing is that Google shut down Google Groups' Usenet service on 22 February 2024. Searches run across newsgroups, with browsing by decade, topic and notable figures.
+
+*** Take
+The thread split cleanly and both halves are right. One side is relieved, because Google Groups had degraded into rate-limit errors on four out of five clicks before it was switched off entirely. The other side points out what a working index of 1981 Usenet actually republishes: real names, home addresses and phone numbers that people typed into their signatures back when the whole network was a few thousand people who could plausibly all be trusted. Searchability is simultaneously the entire value and the entire problem, and nobody in the thread has a fix.
+
+*** Comments
+
+**** rfarley04
+:PROPERTIES:
+:COMMENT_ID: 49668881
+:END:
+This is a lifesaver. Last week I was using Google Groups to search for old Usenet posts about the Commodore 64 and getting "too many requests" errors 4 out of 5 times clicking a result. Searched Rewind and immediately found what I wanted, plus posts I'd never seen.
+
+**** matherial
+:PROPERTIES:
+:COMMENT_ID: 49669511
+:END:
+Selfishly, I hate these things. No one in the 1980s expected the internet to become what it did. I discovered it as a dumb teenager and posted frankly idiotic stuff. I also put my real address and phone number in the signature, because that's how you rolled back then.
+
+**** sparrowidle
+:PROPERTIES:
+:COMMENT_ID: 49670740
+:END:
+Grabbed the UTZOO tapes off archive.org a while back, about 2GB compressed for 1981-1991, and recoll indexed the whole thing in an afternoon.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Usenet Rewind：Usenet 存档搜索引擎
+***** TLDR
+Usenet-Rewind 是一个免费的只读 Usenet 存档搜索引擎，由位于宾夕法尼亚州伊利市的独立公司 Erie Data Systems 运营。站点称其索引覆盖从 1980 年代最早的 Usenet 到今天，规模约十亿条消息，并且仍在持续录入。它给出的存在理由是谷歌于 2024 年 2 月 22 日关闭了 Google Groups 的 Usenet 服务。搜索可跨新闻组进行，还能按年代、主题和知名人物浏览。
+***** Take
+评论区一分为二，而且两边都没说错。一边如释重负，因为 Google Groups 在被彻底关停前，每点五个结果就有四个返回限流错误。另一边指出，一个能用的 1981 年 Usenet 索引实际上重新公开了什么：真实姓名、家庭住址和电话号码，那是人们在签名档里随手写下的，当时整个网络只有几千人，看起来都值得信任。可搜索性同时是全部价值和全部问题，帖子里没人给得出解法。
+***** Comments
+- 这东西救命。上周我用 Google Groups 搜关于 Commodore 64 的老 Usenet 帖子，点五个结果有四个报"请求过多"。在 Rewind 里一搜就找到了我要的，还有一些我从没见过的帖子。
+- 说句自私的，我讨厌这类东西。1980 年代没人预料到互联网会变成今天这样。我当时是个傻小子，发过不少蠢话，还把真实住址和电话写进了签名档，因为那时候大家都这么干。
+- 我之前从 archive.org 上拿了 UTZOO 磁带，1981 到 1991 年压缩后约 2GB，用 recoll 一个下午就把整批索引完了。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Usenet Rewind: Usenetアーカイブの検索エンジン
+***** TLDR
+Usenet-Rewindは、ペンシルベニア州エリーの独立系企業Erie Data Systemsが運営する、無料で読み取り専用のUsenetアーカイブ検索エンジンだ。索引は1980年代の最初期のUsenetから現在までを網羅すると謳い、規模は10億件規模のメッセージとされ、いまも収集を継続中だという。存在理由として挙げているのは、Googleが2024年2月22日にGoogle GroupsのUsenetサービスを終了したことだ。検索はニュースグループ横断で行え、年代・トピック・著名人からの閲覧もできる。
+***** Take
+スレッドはきれいに二分され、どちらの言い分も正しい。一方は安堵している。Google Groupsは停止される前から、結果をクリックするたび5回に4回はレート制限エラーを返す状態だった。もう一方は、1981年のUsenetを実際に検索可能にすると何が再公開されるかを指摘する。本名、自宅住所、電話番号。ネットワーク全体が数千人で、互いに信頼できるように見えた時代に署名欄へ書き込まれたものだ。検索可能性は価値のすべてであり、同時に問題のすべてでもある。スレッドの誰も解決策は持っていない。
+***** Comments
+- これは助かる。先週Google GroupsでCommodore 64に関する古いUsenetの投稿を探していたが、結果をクリックすると5回に4回は「リクエストが多すぎます」と出た。Rewindで検索したらすぐに目当ての投稿が見つかり、見たことのない投稿まで出てきた。
+- 身勝手な話だが、この手のものは好きになれない。1980年代にインターネットが今の姿になると思っていた人はいない。私は愚かな十代のころにこれを知り、率直に言って馬鹿げた投稿をした。署名欄には本名の住所と電話番号も書いていた。当時はそれが普通だったからだ。
+- 以前archive.orgからUTZOOのテープを取ってきた。1981〜1991年分で圧縮して約2GB、recollで午後いっぱいかけて全部索引できた。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Usenet Rewind: 유즈넷 아카이브 검색 엔진
+***** TLDR
+Usenet-Rewind는 펜실베이니아주 이리에 있는 독립 회사 Erie Data Systems가 운영하는 무료 읽기 전용 유즈넷 아카이브 검색 엔진이다. 색인이 1980년대 초기 유즈넷부터 현재까지를 아우른다고 밝히며, 규모는 10억 건 수준의 메시지로 소개되고 지금도 계속 채워지는 중이다. 존재 이유로는 구글이 2024년 2월 22일 Google Groups의 유즈넷 서비스를 종료한 점을 든다. 검색은 뉴스그룹 전체를 대상으로 하며, 연대별, 주제별, 인물별 탐색도 가능하다.
+***** Take
+스레드는 깔끔하게 둘로 갈렸고 양쪽 다 맞다. 한쪽은 안도한다. Google Groups는 완전히 닫히기 전부터 결과를 다섯 번 클릭하면 네 번은 요청 초과 오류를 냈다. 다른 쪽은 1981년 유즈넷을 실제로 검색 가능하게 만들면 무엇이 다시 공개되는지 짚는다. 실명, 집 주소, 전화번호다. 네트워크 전체가 수천 명뿐이라 서로 믿을 만해 보이던 시절에 서명란에 적어 넣은 것들이다. 검색 가능성은 가치의 전부이자 문제의 전부이며, 스레드의 누구도 해법을 내놓지 못했다.
+***** Comments
+- 정말 고맙다. 지난주에 Google Groups로 커모도어 64 관련 옛날 유즈넷 글을 찾는데 결과를 클릭할 때마다 다섯 번 중 네 번은 "요청이 너무 많습니다" 오류가 났다. Rewind에서 검색하니 찾던 글이 바로 나왔고, 본 적 없던 글까지 나왔다.
+- 이기적인 말이지만 나는 이런 게 싫다. 1980년대에 인터넷이 지금처럼 될 거라고 예상한 사람은 없었다. 나는 철없는 십대 때 이걸 알게 됐고 솔직히 한심한 글들을 올렸다. 서명란에 실제 주소와 전화번호도 적었다. 그때는 다들 그렇게 했으니까.
+- 얼마 전 archive.org에서 UTZOO 테이프를 받았다. 1981~1991년치가 압축해서 약 2GB였고, recoll로 오후 한나절 만에 전부 색인했다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Usenet Rewind: buscador de archivos de Usenet
+***** TLDR
+Usenet-Rewind es un buscador gratuito y de solo lectura sobre publicaciones archivadas de Usenet, operado por Erie Data Systems, una empresa independiente de Erie, Pensilvania. El sitio dice que su índice abarca desde los primeros días de Usenet en los años ochenta hasta hoy, menciona un volumen del orden de mil millones de mensajes y aclara que sigue completándose. Su razón de ser declarada es que Google cerró el servicio de Usenet de Google Groups el 22 de febrero de 2024. Las búsquedas cubren todos los grupos, con navegación por década, tema y figuras destacadas.
+***** Take
+El hilo se partió en dos y ambas mitades tienen razón. Un lado está aliviado, porque Google Groups había degenerado en errores de límite de peticiones en cuatro de cada cinco clics antes de apagarse del todo. El otro lado señala qué republica en la práctica un índice funcional de la Usenet de 1981: nombres reales, direcciones y teléfonos que la gente escribía en su firma cuando toda la red eran unos pocos miles de personas en las que parecía razonable confiar. La capacidad de búsqueda es a la vez todo el valor y todo el problema, y nadie en el hilo tiene una solución.
+***** Comments
+- Esto salva vidas. La semana pasada usaba Google Groups para buscar posts antiguos de Usenet sobre el Commodore 64 y recibía errores de "demasiadas solicitudes" en 4 de cada 5 clics. Busqué en Rewind y encontré al instante lo que quería, además de posts que nunca había visto.
+- Egoístamente, odio estas cosas. En los ochenta nadie esperaba que internet se convirtiera en lo que es. Lo descubrí siendo un adolescente tonto y publiqué cosas francamente idiotas. También puse mi dirección real y mi teléfono en la firma, porque así se hacía entonces.
+- Hace un tiempo bajé las cintas UTZOO de archive.org, unos 2GB comprimidos para 1981-1991, y recoll indexó todo en una tarde.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Usenet Rewind: Suchmaschine für Usenet-Archive
+***** TLDR
+Usenet-Rewind ist eine kostenlose, rein lesende Suchmaschine über archivierte Usenet-Beiträge, betrieben von Erie Data Systems, einem unabhängigen Unternehmen aus Erie, Pennsylvania. Die Seite gibt an, ihr Index reiche von den frühesten Usenet-Tagen der 1980er bis heute, nennt eine Größenordnung von einer Milliarde Nachrichten und weist darauf hin, dass er weiter befüllt wird. Als Grund für ihre Existenz nennt sie, dass Google den Usenet-Dienst von Google Groups am 22. Februar 2024 eingestellt hat. Gesucht wird über alle Newsgroups hinweg, dazu gibt es Stöbern nach Jahrzehnt, Thema und bekannten Personen.
+***** Take
+Der Thread teilte sich sauber, und beide Hälften haben recht. Die eine Seite ist erleichtert, weil Google Groups schon vor der Abschaltung bei vier von fünf Klicks Rate-Limit-Fehler lieferte. Die andere Seite weist darauf hin, was ein funktionierender Index des Usenet von 1981 tatsächlich neu veröffentlicht: Klarnamen, Wohnadressen und Telefonnummern, die Leute in ihre Signatur schrieben, als das gesamte Netz aus ein paar tausend Menschen bestand, denen man plausibel vertrauen konnte. Durchsuchbarkeit ist zugleich der ganze Wert und das ganze Problem, und niemand im Thread hat eine Lösung.
+***** Comments
+- Das ist eine Rettung. Letzte Woche habe ich über Google Groups nach alten Usenet-Beiträgen zum Commodore 64 gesucht und bei 4 von 5 Klicks "zu viele Anfragen" bekommen. In Rewind gesucht und sofort gefunden, was ich wollte, dazu Beiträge, die ich nie gesehen hatte.
+- Eigennützig gesagt: Ich hasse solche Dienste. In den 1980ern hat niemand erwartet, dass aus dem Internet das wird, was es ist. Ich bin als dummer Teenager darauf gestoßen und habe ziemlich idiotisches Zeug gepostet. Ich habe auch meine echte Adresse und Telefonnummer in die Signatur geschrieben, weil man das damals so machte.
+- Ich habe vor einiger Zeit die UTZOO-Bänder von archive.org geholt, rund 2 GB komprimiert für 1981-1991, und recoll hat das Ganze an einem Nachmittag indexiert.
