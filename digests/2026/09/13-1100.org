@@ -1,0 +1,504 @@
+#+TITLE: HN Digest 2026-09-13 11:00 UTC
+#+DATE: 2026-09-13T11:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Homebrew ships 7.0.0, JetKVM shrinks to matchbox size, and a 12th-century succession fight gets a rerun
+
+* Highlights
+- Homebrew 7.0.0: brew vulns, Landlock sandboxing, Intel Macs to Tier 3
+- JetKVM Mini: $39 KVM on an ESP32-P4X, no Linux underneath
+- A 10 EUR ESP32 on the CN105 port beats every AC vendor cloud app
+- AgentsDock puts Claude Code, Codex and Cursor in one remote IDE
+- Stephen vs Matilda: 19 years of war ended by barons refusing to fight
+
+* Stories
+
+** JetKVM Mini :hardware:kvm:esp32:homelab:
+:PROPERTIES:
+:ID:       49681152
+:URL:      https://jetkvm.com/blog/introducing-jetkvm-mini
+:HN_URL:   https://news.ycombinator.com/item?id=49681152
+:POINTS:   140
+:COMMENTS: 69
+:BY:       taubek
+:END:
+
+*** TLDR
+JetKVM announced a smaller KVM-over-IP device: 42 x 42 x 23 mm aluminium case, $39 with Ethernet or $42 wireless, dropping to $33 and $36 in three-packs, shipping October 26, 2026. It runs on an ESP32-P4X with a hardware H.264 encoder instead of the original's Linux system, so the separate DRAM and eMMC are gone. Video is 1080p30 or 720p60 over WebRTC, up to 4K with JetKVM OS Services. The wireless Mini W adds an ESP32-C5 for dual-band Wi-Fi and is set up over Bluetooth from a phone. It keeps the same web interface, cloud, extensions, MQTT and Home Assistant support, OIDC login and secure boot.
+
+*** Take
+Dropping Linux for a microcontroller is what makes $39 possible, and it should also make the device more reliable, since there is much less to go wrong. That matters here: the top comment is from someone whose three JetKVMs failed in three different ways. A cheaper box from a vendor with a field-failure problem is only a good deal if the rebuild fixed the failures, and the post does not claim it did.
+
+*** Comments
+
+**** Shank
+I own 3 JetKVMs, of which two stopped working, one that doesn't boot at all and another that never connects to network. The third I took out of service because the keyboard wouldn't send input after a couple months. I'm very unhappy with my JetKVMs.
+
+**** teruakohatu
+I am amazed that there is an ESP that can handle this, and with just 32MB of RAM.
+
+**** theanonymousone
+It may be worth noting that this is not that KVM, but the KVM switch.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+JetKVM Mini
+***** TLDR
+JetKVM 发布了更小的 KVM over IP 设备：42 x 42 x 23 毫米铝制外壳，以太网版 39 美元，无线版 42 美元，三件装分别降至 33 和 36 美元，2026 年 10 月 26 日发货。它使用带硬件 H.264 编码器的 ESP32-P4X，取代了原版的 Linux 系统，因此取消了独立的 DRAM 和 eMMC。视频通过 WebRTC 传输，为 1080p30 或 720p60，使用 JetKVM OS Services 最高可达 4K。无线版 Mini W 增加了 ESP32-C5 以支持双频 Wi-Fi，并通过手机蓝牙完成设置。它保留了相同的网页界面、云服务、扩展、MQTT 和 Home Assistant 支持、OIDC 登录和安全启动。
+***** Take
+放弃 Linux 改用微控制器正是 39 美元价格的前提，这也应当让设备更可靠，因为可出错的地方少了很多。这一点在此很关键：最高票评论来自一位三台 JetKVM 以三种不同方式损坏的用户。来自一家存在现场故障问题的厂商的更便宜产品，只有在重新设计真正修复了这些故障时才算划算，而这篇文章并未如此声称。
+***** Comments
+- 我有 3 台 JetKVM，其中两台已经坏了，一台完全无法启动，另一台始终连不上网络。第三台我也停用了，因为连接几个月后键盘就不再传输输入。我对我的 JetKVM 非常不满。
+- 我很惊讶居然有 ESP 能处理这个，而且只用 32MB 内存。
+- 值得注意的是，这不是那个 KVM，而是 KVM 切换器。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+JetKVM Mini
+***** TLDR
+JetKVMがより小型のKVM over IP機器を発表した。42 x 42 x 23 mmのアルミ筐体で、イーサネット版が39ドル、ワイヤレス版が42ドル、3個パックではそれぞれ33ドルと36ドルになる。出荷は2026年10月26日。従来のLinuxシステムに代えてハードウェアH.264エンコーダ搭載のESP32-P4Xを採用し、独立したDRAMとeMMCは廃止された。映像はWebRTC経由で1080p30または720p60、JetKVM OS Services利用時は最大4K。ワイヤレス版Mini WはESP32-C5を追加してデュアルバンドWi-Fiに対応し、設定はスマートフォンからBluetoothで行う。同じWebインターフェース、クラウド、拡張機能、MQTTとHome Assistant対応、OIDCログイン、セキュアブートはそのまま維持されている。
+***** Take
+Linuxを捨ててマイクロコントローラにしたことが39ドルを可能にしており、壊れうる箇所が大幅に減るため信頼性も上がるはずだ。ここではそれが重要になる。最上位のコメントは、3台のJetKVMが3通りの異なる壊れ方をしたユーザーからのものだ。現場故障を抱えるベンダーの安価な製品は、設計をやり直したことでその故障が実際に直った場合にのみ買い得になるが、この記事はそう主張してはいない。
+***** Comments
+- JetKVMを3台持っているが、2台は動かなくなった。1台は起動すらせず、もう1台はネットワークに一度もつながらない。3台目も数カ月つないだ後にキーボード入力が送られなくなったので使用をやめた。自分のJetKVMには非常に不満だ。
+- これを処理できるESPが、しかもわずか32MBのRAMで存在することに驚いている。
+- 念のため書いておくと、これはあのKVMではなくKVMスイッチの方だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+JetKVM Mini
+***** TLDR
+JetKVM이 더 작은 KVM over IP 장치를 발표했다. 42 x 42 x 23 mm 알루미늄 케이스에 이더넷 모델 39달러, 무선 모델 42달러이며 3개 묶음에서는 각각 33달러와 36달러로 내려간다. 출시는 2026년 10월 26일이다. 기존의 리눅스 시스템 대신 하드웨어 H.264 인코더를 갖춘 ESP32-P4X를 사용해 별도의 DRAM과 eMMC가 사라졌다. 영상은 WebRTC로 1080p30 또는 720p60이며 JetKVM OS Services를 쓰면 최대 4K까지 가능하다. 무선 모델 Mini W는 ESP32-C5를 추가해 듀얼 밴드 와이파이를 지원하고 설정은 휴대폰에서 블루투스로 진행한다. 동일한 웹 인터페이스, 클라우드, 확장 기능, MQTT와 Home Assistant 지원, OIDC 로그인, 시큐어 부트는 그대로 유지된다.
+***** Take
+리눅스를 버리고 마이크로컨트롤러로 간 것이 39달러를 가능하게 했고, 잘못될 수 있는 부분이 훨씬 줄어드니 신뢰성도 올라가야 한다. 여기서는 그 점이 중요하다. 최상위 댓글은 JetKVM 세 대가 각기 다른 방식으로 고장 난 사용자의 글이다. 현장 고장 문제를 가진 업체의 더 싼 제품은 재설계가 그 고장을 실제로 고쳤을 때만 좋은 거래인데, 이 글은 그렇다고 주장하지 않는다.
+***** Comments
+- JetKVM을 세 대 갖고 있는데 두 대가 고장 났다. 하나는 부팅조차 안 되고 다른 하나는 네트워크에 전혀 연결되지 않는다. 세 번째도 몇 달 연결해 두니 키보드 입력이 전달되지 않아 사용을 중단했다. 내 JetKVM에 매우 불만이다.
+- 이걸 처리할 수 있는 ESP가, 그것도 32MB RAM만으로 존재한다는 게 놀랍다.
+- 참고로 이건 그 KVM이 아니라 KVM 스위치 쪽이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+JetKVM Mini
+***** TLDR
+JetKVM anunció un dispositivo KVM sobre IP más pequeño: carcasa de aluminio de 42 x 42 x 23 mm, 39 dólares con Ethernet o 42 inalámbrico, bajando a 33 y 36 en packs de tres, con envío el 26 de octubre de 2026. Funciona con un ESP32-P4X con codificador H.264 por hardware en lugar del sistema Linux del modelo original, por lo que desaparecen la DRAM y la eMMC separadas. El vídeo es 1080p30 o 720p60 por WebRTC, hasta 4K con JetKVM OS Services. El modelo inalámbrico Mini W añade un ESP32-C5 para Wi-Fi de doble banda y se configura por Bluetooth desde el teléfono. Mantiene la misma interfaz web, la nube, las extensiones, el soporte de MQTT y Home Assistant, el inicio de sesión OIDC y el arranque seguro.
+***** Take
+Abandonar Linux por un microcontrolador es lo que hace posible el precio de 39 dólares, y también debería hacer el aparato más fiable, porque hay mucho menos que pueda fallar. Eso importa aquí: el comentario más votado es de alguien cuyos tres JetKVM fallaron de tres maneras distintas. Una caja más barata de un fabricante con un problema de averías en campo solo es buena compra si el rediseño corrigió esas averías, y el anuncio no afirma que lo haya hecho.
+***** Comments
+- Tengo 3 JetKVM, dos dejaron de funcionar: uno no arranca y el otro nunca se conecta a la red. El tercero lo retiré porque el teclado dejaba de enviar entradas tras un par de meses conectado. Estoy muy descontento con mis JetKVM.
+- Me sorprende que exista un ESP capaz de manejar esto, y con solo 32MB de RAM.
+- Conviene señalar que este no es ese KVM, sino el conmutador KVM.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+JetKVM Mini
+***** TLDR
+JetKVM hat ein kleineres KVM-over-IP-Gerät angekündigt: Aluminiumgehäuse mit 42 x 42 x 23 mm, 39 Dollar mit Ethernet oder 42 Dollar drahtlos, im Dreierpack 33 beziehungsweise 36 Dollar, Auslieferung am 26. Oktober 2026. Statt des Linux-Systems des Originals arbeitet ein ESP32-P4X mit Hardware-H.264-Encoder, separater DRAM und eMMC entfallen damit. Das Video läuft über WebRTC mit 1080p30 oder 720p60, mit JetKVM OS Services bis zu 4K. Das drahtlose Mini W ergänzt einen ESP32-C5 für Dualband-WLAN und wird per Bluetooth vom Telefon aus eingerichtet. Weboberfläche, Cloud, Erweiterungen, MQTT- und Home-Assistant-Unterstützung, OIDC-Login und Secure Boot bleiben unverändert.
+***** Take
+Der Verzicht auf Linux zugunsten eines Mikrocontrollers macht die 39 Dollar erst möglich, und er sollte das Gerät auch zuverlässiger machen, weil deutlich weniger kaputtgehen kann. Das zählt hier: Der meistbewertete Kommentar stammt von jemandem, dessen drei JetKVMs auf drei verschiedene Arten ausgefallen sind. Eine billigere Box von einem Hersteller mit Ausfallproblemen im Feld lohnt sich nur, wenn der Neubau diese Ausfälle behoben hat, und das behauptet der Beitrag nicht.
+***** Comments
+- Ich besitze 3 JetKVMs, zwei davon funktionieren nicht mehr: eines bootet gar nicht, das andere verbindet sich nie mit dem Netzwerk. Das dritte habe ich stillgelegt, weil die Tastatur nach ein paar Monaten keine Eingaben mehr sendete. Ich bin sehr unzufrieden mit meinen JetKVMs.
+- Ich bin erstaunt, dass es einen ESP gibt, der das schafft, und das mit nur 32MB RAM.
+- Anzumerken ist, dass dies nicht jenes KVM ist, sondern der KVM-Switch.
+** Homebrew 7.0.0 :macos:packaging:homebrew:security:
+:PROPERTIES:
+:ID:       49681545
+:URL:      https://brew.sh/2026/09/13/homebrew-7.0.0/
+:HN_URL:   https://news.ycombinator.com/item?id=49681545
+:POINTS:   37
+:COMMENTS: 6
+:BY:       mikemcquaid
+:END:
+
+*** TLDR
+Homebrew 7.0.0 shipped today. Installs and upgrades are faster because package preparation now overlaps with downloads instead of running after them. Security gets an official advisory database with a new `brew vulns` command, signature verification for third-party tap bottles, and tighter macOS sandboxing that restricts launching applications and opening sockets. On Linux, bubblewrap sandboxing is replaced by Landlock, which removes the external dependency and the Docker permission requirements. BrewUI, a native macOS app that browses and searches packages while showing the underlying terminal commands, is now fully released. Breaking changes: macOS 10.15 support ends now, Intel Macs drop to Tier 3 with no new bottles after September 2027, formula `post_install` blocks are deprecated in favour of declared `⁎_steps` until December 11, 2027, and the Ubuntu 22.04 container image is gone.
+
+*** Take
+`brew vulns` is the part worth noticing. Homebrew has been the unmanaged half of most Mac developer machines for years, invisible to whatever scanner the security team runs against the repo, and a first-party advisory database is the cheapest fix for that. The Intel Tier 3 line is the real news for anyone still on a 2019 MacBook: you have until September 2027 before every install starts compiling from source.
+
+*** Comments
+
+**** mikemcquaid
+The most significant changes since 6.0.0 are faster installations and upgrades, stronger sandboxing, a native macOS app, built-in vulnerability checks and an advisory database, the end of macOS 10.15 support and Intel Macs moving to Tier 3.
+
+**** roger_
+Does installation still require root and a dedicated user account on Linux? That really put me off.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Homebrew 7.0.0
+***** TLDR
+Homebrew 7.0.0 今日发布。安装和升级更快了，因为软件包准备工作现在与下载并行进行，而不是在下载之后。安全方面新增了官方公告数据库和 `brew vulns` 命令、第三方 tap bottle 的签名验证，以及更严格的 macOS 沙箱，限制启动应用程序和打开套接字。在 Linux 上，bubblewrap 沙箱被 Landlock 取代，从而移除了外部依赖和 Docker 权限要求。BrewUI 现已正式发布，这是一款原生 macOS 应用，可浏览和搜索软件包，同时显示底层终端命令。破坏性变更包括：即刻结束对 macOS 10.15 的支持；Intel Mac 降至第三级，2027 年 9 月后不再提供新的 bottle；formula 的 `post_install` 块被弃用，改用声明式 `⁎_steps`，期限为 2027 年 12 月 11 日；Ubuntu 22.04 容器镜像被移除。
+***** Take
+`brew vulns` 是值得关注的部分。多年来 Homebrew 一直是大多数 Mac 开发机上无人管理的那一半，对安全团队针对代码库运行的扫描器完全不可见，而官方公告数据库是解决这一问题最省力的办法。对仍在使用 2019 款 MacBook 的人来说，Intel 降至第三级才是真正的消息：到 2027 年 9 月之后，每次安装都将从源码编译。
+***** Comments
+- 自 6.0.0 以来最重要的变化是更快的安装和升级、更强的沙箱、原生 macOS 应用、内置漏洞检查和公告数据库、结束对 macOS 10.15 的支持，以及 Intel Mac 降至第三级。
+- 在 Linux 上安装是否仍需要 root 权限和一个专用用户账户？这一点让我很反感。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Homebrew 7.0.0
+***** TLDR
+Homebrew 7.0.0が本日リリースされた。パッケージの準備がダウンロード後ではなく並行して行われるようになり、インストールとアップグレードが高速化した。セキュリティ面では公式のアドバイザリデータベースと新しい`brew vulns`コマンド、サードパーティtapのbottleに対する署名検証、アプリの起動やソケットの開設を制限するより厳格なmacOSサンドボックスが加わった。Linuxではbubblewrapサンドボックスに代わってLandlockが使われ、外部依存とDockerの権限要件がなくなった。ターミナルコマンドを表示しながらパッケージの閲覧と検索ができるネイティブmacOSアプリBrewUIも正式リリースとなった。破壊的変更として、macOS 10.15のサポートは即時終了、Intel MacはTier 3に降格して2027年9月以降は新しいbottleが提供されず、formulaの`post_install`ブロックは2027年12月11日を期限に宣言的な`⁎_steps`へ移行、Ubuntu 22.04のコンテナイメージは削除された。
+***** Take
+注目すべきは`brew vulns`だ。Homebrewは長年、多くのMac開発機で管理されていない側の半分であり、セキュリティチームがリポジトリに対して走らせるスキャナからは見えない存在だった。一次提供のアドバイザリデータベースはその最も安上がりな解決策だ。2019年のMacBookをまだ使っている人にとっての本当のニュースはIntelのTier 3化で、2027年9月以降はすべてのインストールがソースからのコンパイルになる。
+***** Comments
+- 6.0.0以降の最も大きな変更は、インストールとアップグレードの高速化、サンドボックスの強化、ネイティブmacOSアプリ、組み込みの脆弱性チェックとアドバイザリデータベース、macOS 10.15サポートの終了、そしてIntel MacのTier 3への移行だ。
+- Linuxでのインストールは今もrootと専用のユーザーアカウントを必要とするのか。そこが引っかかっていた。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Homebrew 7.0.0
+***** TLDR
+Homebrew 7.0.0이 오늘 출시됐다. 패키지 준비 작업이 다운로드 이후가 아니라 다운로드와 겹쳐 진행되면서 설치와 업그레이드가 빨라졌다. 보안 쪽으로는 공식 권고 데이터베이스와 새 `brew vulns` 명령, 서드파티 tap bottle에 대한 서명 검증, 애플리케이션 실행과 소켓 개방을 제한하는 더 강한 macOS 샌드박스가 추가됐다. 리눅스에서는 bubblewrap 샌드박스가 Landlock으로 대체되어 외부 의존성과 도커 권한 요구가 사라졌다. 터미널 명령을 함께 보여주며 패키지를 탐색하고 검색하는 네이티브 macOS 앱 BrewUI도 정식 출시됐다. 호환성이 깨지는 변경으로는 macOS 10.15 지원 즉시 종료, Intel Mac의 Tier 3 강등과 2027년 9월 이후 신규 bottle 중단, formula의 `post_install` 블록을 2027년 12월 11일까지 선언형 `⁎_steps`로 대체, Ubuntu 22.04 컨테이너 이미지 제거가 있다.
+***** Take
+눈여겨볼 것은 `brew vulns`다. Homebrew는 수년간 대부분의 맥 개발 장비에서 관리되지 않는 절반이었고, 보안팀이 저장소에 돌리는 스캐너에는 전혀 보이지 않았다. 자체 권고 데이터베이스는 그 문제에 대한 가장 값싼 해법이다. 2019년형 맥북을 아직 쓰는 사람에게 진짜 소식은 Intel의 Tier 3 강등이다. 2027년 9월 이후에는 모든 설치가 소스 컴파일로 바뀐다.
+***** Comments
+- 6.0.0 이후 가장 큰 변화는 더 빠른 설치와 업그레이드, 강화된 샌드박스, 네이티브 macOS 앱, 내장 취약점 검사와 권고 데이터베이스, macOS 10.15 지원 종료, 그리고 Intel Mac의 Tier 3 이동이다.
+- 리눅스에서 설치할 때 여전히 root와 전용 사용자 계정이 필요한가? 그 점이 마음에 걸렸다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Homebrew 7.0.0
+***** TLDR
+Homebrew 7.0.0 salió hoy. Las instalaciones y actualizaciones son más rápidas porque la preparación de paquetes ahora se solapa con las descargas en lugar de ejecutarse después. En seguridad llega una base de datos oficial de avisos con el nuevo comando `brew vulns`, verificación de firmas para los bottles de taps de terceros y un sandbox de macOS más estricto que restringe lanzar aplicaciones y abrir sockets. En Linux, el sandbox de bubblewrap se sustituye por Landlock, lo que elimina la dependencia externa y los requisitos de permisos de Docker. BrewUI, una app nativa de macOS que navega y busca paquetes mostrando los comandos de terminal subyacentes, queda totalmente publicada. Cambios que rompen compatibilidad: termina ya el soporte de macOS 10.15, los Mac con Intel bajan a Tier 3 sin nuevos bottles después de septiembre de 2027, los bloques `post_install` de las formulae quedan obsoletos en favor de `⁎_steps` declarados hasta el 11 de diciembre de 2027, y desaparece la imagen de contenedor de Ubuntu 22.04.
+***** Take
+`brew vulns` es lo que merece atención. Homebrew ha sido durante años la mitad no gestionada de casi cualquier Mac de desarrollo, invisible para el escáner que el equipo de seguridad pasa sobre el repositorio, y una base de datos de avisos propia es la solución más barata para eso. La línea del Tier 3 de Intel es la noticia real para quien siga con un MacBook de 2019: tiene hasta septiembre de 2027 antes de que cada instalación pase a compilarse desde el código fuente.
+***** Comments
+- Los cambios más importantes desde la 6.0.0 son instalaciones y actualizaciones más rápidas, un sandbox más fuerte, una app nativa de macOS, comprobaciones de vulnerabilidades integradas y una base de datos de avisos, el fin del soporte de macOS 10.15 y el paso de los Mac con Intel a Tier 3.
+- ¿La instalación sigue requiriendo root y una cuenta de usuario dedicada en Linux? Eso me echó bastante para atrás.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Homebrew 7.0.0
+***** TLDR
+Homebrew 7.0.0 ist heute erschienen. Installationen und Upgrades laufen schneller, weil die Paketvorbereitung jetzt parallel zu den Downloads stattfindet statt danach. Bei der Sicherheit kommen eine offizielle Advisory-Datenbank mit dem neuen Befehl `brew vulns`, Signaturprüfung für Bottles aus fremden Taps und eine strengere macOS-Sandbox hinzu, die das Starten von Anwendungen und das Öffnen von Sockets einschränkt. Unter Linux ersetzt Landlock die bubblewrap-Sandbox, wodurch die externe Abhängigkeit und die Docker-Rechteanforderungen entfallen. BrewUI, eine native macOS-App zum Durchsuchen von Paketen, die dabei die zugrunde liegenden Terminalbefehle anzeigt, ist nun vollständig veröffentlicht. Brechende Änderungen: Die Unterstützung für macOS 10.15 endet sofort, Intel-Macs fallen auf Tier 3 und erhalten nach September 2027 keine neuen Bottles mehr, `post_install`-Blöcke in Formulae sind zugunsten deklarierter `⁎_steps` bis zum 11. Dezember 2027 abgekündigt, und das Ubuntu-22.04-Container-Image ist entfallen.
+***** Take
+`brew vulns` ist der bemerkenswerte Teil. Homebrew war jahrelang die unverwaltete Hälfte fast jeder Mac-Entwicklermaschine, unsichtbar für jeden Scanner, den das Sicherheitsteam über das Repository laufen lässt, und eine eigene Advisory-Datenbank ist die billigste Abhilfe dafür. Die Tier-3-Einstufung von Intel ist die eigentliche Nachricht für alle, die noch ein MacBook von 2019 nutzen: Bis September 2027 bleibt Zeit, danach wird jede Installation aus dem Quelltext kompiliert.
+***** Comments
+- Die wichtigsten Änderungen seit 6.0.0 sind schnellere Installationen und Upgrades, eine stärkere Sandbox, eine native macOS-App, eingebaute Schwachstellenprüfungen und eine Advisory-Datenbank, das Ende der Unterstützung für macOS 10.15 und der Wechsel der Intel-Macs auf Tier 3.
+- Benötigt die Installation unter Linux immer noch root und ein eigenes Benutzerkonto? Das hat mich abgeschreckt.
+** I Added a Non-Wi-Fi Mitsubishi AC to Home Assistant :homeassistant:esp32:hvac:diy:
+:PROPERTIES:
+:ID:       49640913
+:URL:      https://medium.com/@ivangomezarnedo/how-i-added-a-non-wi-fi-mitsubishi-ac-to-home-assistant-22770661dd77
+:HN_URL:   https://news.ycombinator.com/item?id=49640913
+:POINTS:   87
+:COMMENTS: 44
+:BY:       ichacas
+:END:
+
+*** TLDR
+Ivan Gomez Arnedo has a 2022 Mitsubishi SEZ-M60DA2 ducted unit with a wired wall thermostat and no Wi-Fi. He wired an ESP32 to the unit's CN105 service port and ran an ESPHome component built on the reverse-engineered Mitsubishi protocol, which puts the AC into Home Assistant with no vendor cloud involved. Total parts cost was under 10 EUR: the ESP32 board, a JST PA connector and a USB cable. He gets remote power control, heat, cool, dry and fan modes, and room temperature, plus automations tied to temperature or occupancy; an external component adds outdoor temperature, kWh consumption and error codes. Two gotchas: the ESP32 has to sit outside the metal control box, which acts as a Faraday cage, and it needs configuring over USB before it will join Wi-Fi.
+
+*** Take
+The CN105 port has been on Mitsubishi units for years and the protocol was reverse-engineered long ago, so the interesting fact is that a 10 EUR board buys features Mitsubishi charges for and ties to an app. Energy reporting in kWh and error codes are exactly what a vendor would put behind a subscription. The skeptic in the thread is not wrong that a thermostat should be set and forget, but this build does not break that: the wall unit keeps working, the ESP32 only adds a second way in.
+
+*** Comments
+
+**** userbinator
+My idea of HVAC is that it should be set and forget, so smart is the polar opposite of what I want. The round Honeywell on the wall has been doing its job for decades and will likely last many more.
+
+**** akifbayram
+I've been working on a similar setup with the M5Stack NanoC6 and AtomS3 Lite, with a parts list and wiring guide, plus a web flasher so you can install from the browser without configuring anything.
+
+**** nemosaltat
+I did a similar thing, heavily aided by Claude, after seeing the protart modules posted here last year. Having some documentation on a working system is better than the none I was publishing before.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+我把一台没有 Wi-Fi 的三菱空调接入了 Home Assistant
+***** TLDR
+Ivan Gomez Arnedo 有一台 2022 年的三菱 SEZ-M60DA2 风管机，配有线控温控器且没有 Wi-Fi。他将一块 ESP32 接到机器的 CN105 维修端口，运行基于逆向工程所得三菱协议的 ESPHome 组件，从而把空调接入 Home Assistant，完全不经过厂商云。零件总成本不到 10 欧元：ESP32 板、一个 JST PA 连接器和一根 USB 线。他获得了远程开关、制热、制冷、除湿和送风模式以及室温读数，还有基于温度或人员在场的自动化；使用外部组件还能获取室外温度、千瓦时能耗和故障代码。有两个坑：ESP32 必须放在金属控制盒外面，因为盒子相当于法拉第笼；而且要先通过 USB 配置，它才能连上 Wi-Fi。
+***** Take
+CN105 端口在三菱设备上已存在多年，协议也早已被逆向，所以真正有意思的是一块 10 欧元的板子买到了三菱要收费并绑定在自家 App 里的功能。千瓦时能耗报告和故障代码，正是厂商会放在订阅制背后的东西。评论区的怀疑者说温控器应该设好就不用再管，这话没错，但这套方案并没有破坏这一点：墙上的控制器照常工作，ESP32 只是多加了一条控制通道。
+***** Comments
+- 我心目中的暖通空调应该是设好就不用管，所以智能化正好是我不想要的。墙上那个圆形霍尼韦尔已经工作了几十年，很可能还能再撑很多年。
+- 我一直在用 M5Stack NanoC6 和 AtomS3 Lite 做类似的方案，整理了零件清单和接线指南，还做了网页烧录工具，可以直接从浏览器安装，无需任何配置。
+- 去年在这里看到 protart 模块后，我在 Claude 的大量帮助下做了类似的事情。对一套能用的系统留下一些文档，总比我以前几乎什么都不写要好。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Wi-Fi非対応の三菱エアコンをHome Assistantに接続した
+***** TLDR
+Ivan Gomez Arnedoは、有線の壁面サーモスタットを備えWi-Fiのない2022年製の三菱SEZ-M60DA2ダクト型エアコンを使っている。彼はESP32を本体のCN105サービスポートに配線し、リバースエンジニアリングされた三菱プロトコルに基づくESPHomeコンポーネントを動かすことで、ベンダーのクラウドを一切介さずにエアコンをHome Assistantに取り込んだ。部品代の合計は10ユーロ未満で、ESP32ボード、JST PAコネクタ、USBケーブルだけだ。遠隔での電源操作、暖房、冷房、除湿、送風の各モード、室温の取得に加え、温度や在室状況に連動した自動化が可能になった。外部コンポーネントを使えば外気温、kWh単位の消費電力、エラーコードも得られる。注意点が2つあり、金属製の制御ボックスがファラデーケージとして働くためESP32は箱の外に置く必要があること、そしてWi-Fiに接続する前にUSB経由での設定が必要なことだ。
+***** Take
+CN105ポートは三菱の機種に長年搭載されており、プロトコルもとうに解析済みだ。だから興味深いのは、10ユーロのボードで三菱が有料化し自社アプリに縛り付けている機能が手に入るという点だ。kWh単位のエネルギー表示やエラーコードは、まさにメーカーがサブスクの向こうに置きたがるものである。スレッドの懐疑派が言う「サーモスタットは設定したら放っておくものだ」は間違いではないが、この構成はそれを壊さない。壁のコントローラはそのまま動き続け、ESP32は操作経路をもう一つ足すだけだ。
+***** Comments
+- 自分にとって空調とは設定したら放っておくものなので、スマート化は求めているものの正反対だ。壁の丸いハネウェルは何十年も働いてきたし、まだ何十年ももつだろう。
+- M5Stack NanoC6とAtomS3 Liteで似た構成に取り組んでいて、部品リストと配線ガイドをまとめ、ブラウザから設定なしでインストールできるWebフラッシャーも作った。
+- 昨年ここで紹介されたprotartモジュールを見て、Claudeに大きく助けられながら似たことをやった。動くシステムについて多少でも文書が残っているのは、以前ほとんど何も書いていなかったよりましだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+와이파이 없는 미쓰비시 에어컨을 Home Assistant에 붙였다
+***** TLDR
+Ivan Gomez Arnedo는 유선 벽면 온도조절기가 달리고 와이파이가 없는 2022년형 미쓰비시 SEZ-M60DA2 덕트형 유닛을 쓴다. 그는 ESP32를 본체의 CN105 서비스 포트에 연결하고 역공학으로 밝혀진 미쓰비시 프로토콜 기반의 ESPHome 컴포넌트를 돌려, 제조사 클라우드를 전혀 거치지 않고 에어컨을 Home Assistant에 넣었다. 부품값은 총 10유로 미만으로 ESP32 보드, JST PA 커넥터, USB 케이블이 전부다. 원격 전원 제어, 난방, 냉방, 제습, 송풍 모드와 실내 온도를 얻었고 온도나 재실 여부에 연동한 자동화도 가능해졌다. 외부 컴포넌트를 쓰면 외기 온도, kWh 소비량, 오류 코드까지 나온다. 주의할 점은 두 가지로, 금속 제어 박스가 패러데이 상자처럼 작용하므로 ESP32는 박스 밖에 두어야 하고, 와이파이에 붙기 전에 USB로 먼저 설정해야 한다.
+***** Take
+CN105 포트는 미쓰비시 기기에 오래전부터 있었고 프로토콜도 진작 해석됐다. 그래서 흥미로운 지점은 10유로짜리 보드가 미쓰비시는 돈을 받고 자사 앱에 묶어 파는 기능을 그냥 준다는 것이다. kWh 단위 에너지 표시와 오류 코드야말로 제조사가 구독 뒤에 숨겨둘 만한 항목이다. 스레드의 회의론자가 말하는 대로 온도조절기는 설정해 두고 잊는 물건이 맞지만, 이 작업은 그것을 깨지 않는다. 벽면 컨트롤러는 그대로 동작하고 ESP32는 접근 경로를 하나 더할 뿐이다.
+***** Comments
+- 내게 냉난방이란 설정해 두고 잊는 것이라, 스마트화는 내가 원하는 것의 정반대다. 벽에 붙은 둥근 허니웰은 수십 년째 제 일을 해왔고 앞으로도 한참 갈 것이다.
+- M5Stack NanoC6와 AtomS3 Lite로 비슷한 구성을 만들고 있고, 부품 목록과 배선 가이드를 정리했으며 브라우저에서 설정 없이 바로 설치할 수 있는 웹 플래셔도 만들었다.
+- 작년에 여기 올라온 protart 모듈을 보고 Claude의 도움을 많이 받아 비슷한 작업을 했다. 돌아가는 시스템에 대한 문서가 조금이라도 있는 편이, 예전처럼 거의 아무것도 남기지 않던 것보다 낫다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Cómo añadí un aire acondicionado Mitsubishi sin Wi-Fi a Home Assistant
+***** TLDR
+Iván Gómez Arnedo tiene una unidad por conductos Mitsubishi SEZ-M60DA2 de 2022 con termostato de pared cableado y sin Wi-Fi. Conectó un ESP32 al puerto de servicio CN105 de la unidad y ejecutó un componente de ESPHome basado en el protocolo Mitsubishi obtenido por ingeniería inversa, lo que mete el aire acondicionado en Home Assistant sin pasar por la nube del fabricante. El coste total de las piezas fue de menos de 10 euros: la placa ESP32, un conector JST PA y un cable USB. Obtiene encendido remoto, modos de calor, frío, deshumidificación y ventilador, y la temperatura ambiente, además de automatizaciones según temperatura u ocupación; un componente externo añade temperatura exterior, consumo en kWh y códigos de error. Dos escollos: el ESP32 tiene que quedar fuera de la caja metálica de control, que actúa como jaula de Faraday, y hay que configurarlo por USB antes de que se conecte al Wi-Fi.
+***** Take
+El puerto CN105 lleva años en los equipos Mitsubishi y el protocolo se descifró hace mucho, así que lo interesante es que una placa de 10 euros da funciones por las que Mitsubishi cobra y que ata a su aplicación. El consumo en kWh y los códigos de error son justo lo que un fabricante pondría tras una suscripción. El escéptico del hilo no se equivoca al decir que un termostato debería configurarse y olvidarse, pero este montaje no rompe eso: el control de pared sigue funcionando y el ESP32 solo añade una segunda vía de acceso.
+***** Comments
+- Para mí la climatización debería configurarse y olvidarse, así que lo inteligente es justo lo contrario de lo que quiero. El Honeywell redondo de la pared lleva décadas haciendo su trabajo y probablemente durará muchas más.
+- He estado trabajando en un montaje parecido con la M5Stack NanoC6 y la AtomS3 Lite, con lista de piezas y guía de cableado, además de un flasher web para instalar desde el navegador sin configurar nada.
+- Hice algo parecido, con mucha ayuda de Claude, tras ver los módulos protart publicados aquí el año pasado. Tener algo de documentación de un sistema que funciona es mejor que la nada que publicaba antes.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Wie ich eine Mitsubishi-Klimaanlage ohne WLAN in Home Assistant eingebunden habe
+***** TLDR
+Ivan Gomez Arnedo besitzt ein Mitsubishi-Kanalgerät SEZ-M60DA2 von 2022 mit kabelgebundenem Wandthermostat und ohne WLAN. Er verband einen ESP32 mit dem CN105-Serviceport des Geräts und betreibt darauf eine ESPHome-Komponente, die auf dem per Reverse Engineering erschlossenen Mitsubishi-Protokoll aufsetzt. Damit landet die Klimaanlage in Home Assistant, ganz ohne Hersteller-Cloud. Die Bauteile kosteten zusammen unter 10 Euro: ESP32-Platine, ein JST-PA-Stecker und ein USB-Kabel. Er hat nun Fernsteuerung der Ein- und Ausschaltung, die Betriebsarten Heizen, Kühlen, Entfeuchten und Lüften sowie die Raumtemperatur, dazu Automationen nach Temperatur oder Anwesenheit; eine externe Komponente liefert zusätzlich Außentemperatur, Verbrauch in kWh und Fehlercodes. Zwei Fallstricke: Der ESP32 muss außerhalb des metallenen Steuerkastens sitzen, der als faradayscher Käfig wirkt, und er muss per USB konfiguriert werden, bevor er sich ins WLAN einbucht.
+***** Take
+Den CN105-Port gibt es seit Jahren an Mitsubishi-Geräten, und das Protokoll wurde längst entschlüsselt. Interessant ist deshalb, dass eine Platine für 10 Euro Funktionen liefert, für die Mitsubishi Geld verlangt und die an eine App gebunden sind. Verbrauchsanzeige in kWh und Fehlercodes sind genau das, was ein Hersteller hinter ein Abo stellen würde. Der Skeptiker im Thread hat recht, dass ein Thermostat einmal eingestellt und dann vergessen werden sollte, aber dieser Aufbau verletzt das nicht: Die Wandsteuerung funktioniert weiter, der ESP32 fügt nur einen zweiten Zugang hinzu.
+***** Comments
+- Für mich soll eine Klimaanlage einmal eingestellt und dann vergessen werden, smart ist damit das genaue Gegenteil dessen, was ich will. Der runde Honeywell an der Wand tut seit Jahrzehnten seinen Dienst und wird das wohl noch lange tun.
+- Ich arbeite an einem ähnlichen Aufbau mit M5Stack NanoC6 und AtomS3 Lite, mit Teileliste und Verdrahtungsanleitung sowie einem Web-Flasher, mit dem man direkt aus dem Browser ohne Konfiguration installieren kann.
+- Ich habe nach den hier letztes Jahr geposteten protart-Modulen etwas Ähnliches gebaut, mit viel Hilfe von Claude. Etwas Dokumentation zu einem funktionierenden System ist besser als das Nichts, das ich vorher veröffentlicht habe.
+** AgentsDock: An IDE designed for agentic AI research :ai:tooling:ide:agents:
+:PROPERTIES:
+:ID:       49678435
+:URL:      https://agentsdock.net/
+:HN_URL:   https://news.ycombinator.com/item?id=49678435
+:POINTS:   63
+:COMMENTS: 29
+:BY:       ZihuiGeorgia
+:END:
+
+*** TLDR
+AgentsDock is an open-source IDE, currently in beta, that puts Claude Code, Codex and Cursor in one workspace reachable from desktop and mobile. The server component installs from GitHub and can be connected to several machines at once, with switching between them. It gives terminal access through persistent tmux sessions, lets you view and edit files on the remote box, and renders agent output including videos, images and plots inline. The pitch is aimed at AI researchers monitoring training runs and experiments from wherever they are. The site names researchers at Carnegie Mellon, UC Berkeley and Nvidia as users.
+
+*** Take
+The useful idea here is the persistent tmux session and phone access, which is a real gap: a training run that needs a decision at 2am does not care that your laptop is closed. But a commenter points out the project is two days old, and the field already has Mjolnir and several other harness multiplexers doing the same consolidation. The trusted-by logos on a two-day-old beta are doing more work than the feature list is.
+
+*** Comments
+
+**** kristopolous
+It's a 2 day old project.
+
+**** jbellis
+If you're more of a SWE than a data scientist, check out Mjolnir: built-in containerization and EC2 support, allows moving sessions across harnesses, profiles and machines.
+
+**** aniceperson
+I don't care about the codex or cc harness, but I do miss a proper terminal in the web UI. The definitive solution would be using VS Code stripped for web, what GitHub Codespaces uses.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+AgentsDock：为智能体 AI 研究设计的 IDE
+***** TLDR
+AgentsDock 是一个目前处于测试阶段的开源 IDE，把 Claude Code、Codex 和 Cursor 放进同一个工作区，可从桌面和手机访问。服务端组件从 GitHub 安装，可同时连接多台机器并在它们之间切换。它通过常驻的 tmux 会话提供终端访问，支持查看和编辑远程机器上的文件，并在界面内直接渲染智能体输出，包括视频、图像和图表。其定位面向需要随时随地监控训练任务和实验的 AI 研究人员。网站列出卡内基梅隆大学、加州大学伯克利分校和英伟达的研究人员为用户。
+***** Take
+这里真正有用的想法是常驻 tmux 会话加手机访问，这确实是个空白：凌晨两点需要人做决定的训练任务，可不会在意你的笔记本已经合上了。但有评论指出这个项目才两天大，而这个领域已经有 Mjolnir 和其他几个做同样整合的工具。挂在一个两天大的测试版上的「客户」名单，比功能列表本身承担了更多说服工作。
+***** Comments
+- 这是个两天大的项目。
+- 如果你更偏软件工程而不是数据科学，可以看看 Mjolnir：内置容器化和 EC2 支持，允许在不同 harness、配置和机器之间迁移会话。
+- 我不在乎 codex 或 cc 这些 harness，但我确实希望网页端有个像样的终端。真正彻底的方案应该是用精简为网页版的 VS Code，也就是 GitHub Codespaces 用的那套。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+AgentsDock: エージェント型AI研究のためのIDE
+***** TLDR
+AgentsDockは現在ベータ版のオープンソースIDEで、Claude Code、Codex、Cursorを一つのワークスペースにまとめ、デスクトップからもモバイルからも利用できる。サーバーコンポーネントはGitHubからインストールでき、複数のマシンに同時に接続して切り替えられる。永続的なtmuxセッションによるターミナルアクセスを提供し、リモートマシン上のファイルの閲覧と編集ができ、動画や画像、プロットを含むエージェントの出力をその場で表示する。訴求対象は、場所を問わず学習ジョブや実験を監視したいAI研究者だ。サイトにはカーネギーメロン大学、カリフォルニア大学バークレー校、Nvidiaの研究者が利用者として挙げられている。
+***** Take
+ここで有用なのは永続tmuxセッションとスマートフォンからのアクセスで、これは実際に空いている穴だ。午前2時に判断を求める学習ジョブは、こちらのノートPCが閉じていることなど考慮してくれない。ただ、あるコメントはこのプロジェクトがまだ2日前のものだと指摘しており、この分野にはすでにMjolnirをはじめ同じ統合を行うツールが複数ある。2日前のベータに並ぶ導入実績のロゴは、機能一覧よりも多くの仕事をしている。
+***** Comments
+- 2日前に始まったプロジェクトだ。
+- データサイエンティストよりソフトウェアエンジニア寄りなら、Mjolnirを見てほしい。コンテナ化とEC2対応が組み込まれており、ハーネスやプロファイル、マシンをまたいでセッションを移動できる。
+- codexやccといったハーネスにはこだわらないが、ウェブUIにまともなターミナルがないのは惜しい。決定版はGitHub Codespacesが使っているような、ウェブ向けに削ぎ落としたVS Codeを使うことだろう。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+AgentsDock: 에이전트 AI 연구를 위한 IDE
+***** TLDR
+AgentsDock은 현재 베타인 오픈소스 IDE로, Claude Code와 Codex, Cursor를 한 작업 공간에 모아 데스크톱과 모바일에서 모두 접근할 수 있게 한다. 서버 구성 요소는 깃허브에서 설치하며 여러 대의 머신에 동시에 연결하고 그 사이를 전환할 수 있다. 지속되는 tmux 세션으로 터미널 접근을 제공하고, 원격 머신의 파일을 보고 편집할 수 있으며, 동영상과 이미지, 플롯을 포함한 에이전트 출력을 화면 안에서 바로 보여준다. 어디서든 학습 실행과 실험을 지켜봐야 하는 AI 연구자를 겨냥한 제품이다. 사이트는 카네기멜런대, UC 버클리, 엔비디아의 연구자들을 사용자로 내세운다.
+***** Take
+여기서 쓸모 있는 발상은 지속 tmux 세션과 휴대폰 접근이고, 이건 실제로 비어 있는 자리다. 새벽 2시에 판단을 요구하는 학습 작업은 내 노트북이 닫혀 있는지 신경 쓰지 않는다. 다만 한 댓글이 이 프로젝트가 이틀밖에 안 됐다고 지적하고, 이 분야에는 이미 Mjolnir를 비롯해 같은 통합을 하는 도구가 여럿 있다. 이틀 된 베타에 붙은 사용 기관 로고가 기능 목록보다 더 많은 일을 하고 있다.
+***** Comments
+- 이틀 된 프로젝트다.
+- 데이터 과학자보다 소프트웨어 엔지니어에 가깝다면 Mjolnir를 보라. 컨테이너화와 EC2 지원이 내장돼 있고 하네스와 프로파일, 머신을 넘나들며 세션을 옮길 수 있다.
+- codex나 cc 같은 하네스에는 관심 없지만, 웹 UI에 제대로 된 터미널이 없는 건 아쉽다. 결정적인 해법은 깃허브 코드스페이스가 쓰는, 웹용으로 덜어낸 VS Code를 쓰는 것이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+AgentsDock: un IDE diseñado para la investigación en IA agéntica
+***** TLDR
+AgentsDock es un IDE de código abierto, hoy en beta, que reúne Claude Code, Codex y Cursor en un mismo espacio de trabajo accesible desde escritorio y móvil. El componente servidor se instala desde GitHub y puede conectarse a varias máquinas a la vez, con conmutación entre ellas. Da acceso a terminal mediante sesiones tmux persistentes, permite ver y editar archivos en la máquina remota y muestra en línea la salida de los agentes, incluidos vídeos, imágenes y gráficas. El enfoque apunta a investigadores de IA que vigilan entrenamientos y experimentos desde donde estén. La web menciona a investigadores de Carnegie Mellon, UC Berkeley y Nvidia como usuarios.
+***** Take
+La idea útil aquí es la sesión tmux persistente y el acceso desde el móvil, que cubre un hueco real: un entrenamiento que exige una decisión a las dos de la madrugada no atiende a que tu portátil esté cerrado. Pero un comentarista señala que el proyecto tiene dos días, y el campo ya cuenta con Mjolnir y varios multiplexores de harness que hacen la misma consolidación. Los logos de quienes lo usan pesan más en una beta de dos días que la propia lista de funciones.
+***** Comments
+- Es un proyecto de dos días.
+- Si eres más ingeniero de software que científico de datos, mira Mjolnir: trae contenedores y soporte de EC2 integrados y permite mover sesiones entre harnesses, perfiles y máquinas.
+- No me importan los harnesses de codex o cc, pero echo de menos un terminal decente en la interfaz web. La solución definitiva sería usar VS Code recortado para web, el que usa GitHub Codespaces.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+AgentsDock: eine IDE für die Forschung an KI-Agenten
+***** TLDR
+AgentsDock ist eine quelloffene IDE, derzeit im Betastadium, die Claude Code, Codex und Cursor in einem Arbeitsbereich zusammenführt, der vom Desktop und vom Mobilgerät aus erreichbar ist. Die Serverkomponente wird von GitHub installiert und lässt sich mit mehreren Rechnern gleichzeitig verbinden, zwischen denen man wechseln kann. Sie bietet Terminalzugriff über dauerhafte tmux-Sitzungen, erlaubt das Ansehen und Bearbeiten von Dateien auf dem entfernten Rechner und stellt Agentenausgaben samt Videos, Bildern und Diagrammen direkt dar. Angesprochen werden KI-Forschende, die Trainingsläufe und Experimente von unterwegs verfolgen. Die Website nennt Forschende von Carnegie Mellon, UC Berkeley und Nvidia als Nutzer.
+***** Take
+Nützlich ist hier die dauerhafte tmux-Sitzung zusammen mit dem Zugriff per Telefon, denn das schließt eine echte Lücke: Ein Trainingslauf, der um zwei Uhr nachts eine Entscheidung braucht, kümmert sich nicht darum, dass der Laptop zugeklappt ist. Ein Kommentar weist allerdings darauf hin, dass das Projekt zwei Tage alt ist, und im Feld gibt es mit Mjolnir und anderen bereits mehrere Werkzeuge, die dieselbe Bündelung leisten. Die Logos der angeblichen Nutzer leisten bei einer zwei Tage alten Beta mehr Überzeugungsarbeit als die Funktionsliste.
+***** Comments
+- Das Projekt ist zwei Tage alt.
+- Wer eher Softwareentwickler als Data Scientist ist, sollte sich Mjolnir ansehen: eingebaute Containerisierung und EC2-Unterstützung, und Sitzungen lassen sich zwischen Harnesses, Profilen und Rechnern verschieben.
+- Die Harnesses codex oder cc sind mir egal, aber mir fehlt ein ordentliches Terminal in der Weboberfläche. Die eigentliche Lösung wäre ein für das Web abgespecktes VS Code, so wie GitHub Codespaces es einsetzt.
+** A succession crisis that tore England apart (2023) :history:england:politics:
+:PROPERTIES:
+:ID:       49679647
+:URL:      https://www.historytoday.com/archive/feature/succession-crisis-tore-england-apart
+:HN_URL:   https://news.ycombinator.com/item?id=49679647
+:POINTS:   35
+:COMMENTS: 27
+:BY:       pepys
+:END:
+
+*** TLDR
+History Today revisits the Anarchy, the 19-year civil war that followed Henry I's death in December 1135. Henry had named his daughter Matilda heir and made his nobles swear allegiance to her, but his cousin Stephen crossed to England and seized the throne anyway. Matilda, backed by her half-brother Robert of Gloucester, gained ground after 1138 and beat and captured Stephen at Lincoln in 1141, yet was never crowned, blocked by hostility to a female ruler that the chroniclers recorded in openly sexist terms. Stephen's wife, Matilda of Boulogne, kept his cause alive. By the 1150s the barons had shifted to Matilda's son Henry, who was male and carried Henry I's direct line. The war ended in exhaustion rather than victory: at Wallingford in 1153 the barons refused to fight, and Stephen agreed to keep the crown but name young Henry his heir instead of his own son Eustace. Stephen died in October 1154 and Henry II was crowned unopposed. Revenues collapsed and a chronicler wrote that there had never been more wretchedness in the land.
+
+*** Take
+The part that survives translation to any century is Wallingford: a war ends because the people who have to fight it decline to. Both claimants were still in the field and still had claims, and it stopped anyway. The article's other claim is the sharper one, that dynastic succession won rather than either claimant: the barons did not settle who should rule, they settled who would rule next, and that was enough to put the weapons down.
+
+*** Comments
+
+**** mattmcal
+Clearly prejudice and lack of precedent materially hampered Matilda's attempt at the throne, but the speculative counterfactual about a 33-year-old son is doing a lot of work.
+
+**** GeoAtreides
+Designating a woman as successor was so unprecedented that Henry compelled his nobles to swear allegiance to Matilda. All did, some more reluctantly than others. Then Stephen rushed to England and seized the treasury.
+
+**** hdgvhicv
+How refreshing to read something on my phone which is actually prose and accompanying images, rather than thousands of adverts.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+一场撕裂英格兰的王位继承危机（2023）
+***** TLDR
+《History Today》重新审视了「无政府时期」，即 1135 年 12 月亨利一世去世后长达 19 年的内战。亨利指定女儿玛蒂尔达为继承人，并让贵族们宣誓效忠于她，但他的表亲斯蒂芬仍渡海前往英格兰夺取了王位。玛蒂尔达在同母异父兄长格洛斯特伯爵罗伯特支持下于 1138 年后逐渐占据上风，1141 年在林肯战役中击败并俘虏了斯蒂芬，却始终未能加冕，原因是对女性统治者的敌意，编年史家用露骨的性别歧视语言记录了这一点。斯蒂芬的妻子布洛涅的玛蒂尔达维系了他的事业。到 1150 年代，贵族们转而支持玛蒂尔达之子亨利，因为他是男性且承袭亨利一世的直系血脉。这场战争不是以胜利而是以耗尽收场：1153 年在沃灵福德，贵族们拒绝再战，斯蒂芬同意保留王位，但指定小亨利而非自己的儿子尤斯塔斯为继承人。斯蒂芬于 1154 年 10 月去世，亨利二世在无人反对的情况下加冕。财政收入崩溃，一位编年史家写道，这片土地上从未有过更深重的苦难。
+***** Take
+能够跨越任何世纪的部分是沃灵福德：一场战争结束，是因为必须去打的那些人拒绝再打。两位王位声索者都还在场上，主张也都还在，但战争还是停了。文章另一个论断更为锋利：胜出的是王朝继承本身，而非任何一位声索者。贵族们没有解决谁该统治，他们解决的是下一个由谁统治，而这已足以让人们放下武器。
+***** Comments
+- 偏见和缺乏先例显然实质性地阻碍了玛蒂尔达对王位的争夺，但关于「一个 33 岁儿子」的假设性推演承担了过多论证任务。
+- 指定女性为继承人是如此前所未有，以至于亨利不得不强迫贵族们宣誓效忠玛蒂尔达。所有人都照做了，只是有人比别人更不情愿。随后斯蒂芬赶往英格兰，夺取了国库。
+- 能在手机上读到真正的散文配上插图，而不是成千上万条广告，真让人耳目一新。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+イングランドを引き裂いた王位継承の危機（2023）
+***** TLDR
+History Today誌が、1135年12月のヘンリー1世の死後に続いた19年の内乱「アナーキー」を取り上げている。ヘンリーは娘マティルダを後継者に指名し、貴族たちに彼女への忠誠を誓わせたが、いとこのスティーヴンはイングランドに渡って王位を奪った。異父兄グロスター伯ロバートの支援を受けたマティルダは1138年以降に勢力を伸ばし、1141年のリンカーンの戦いでスティーヴンを破って捕らえたが、ついに戴冠はできなかった。女性の統治者への敵意が阻んだのであり、年代記作者たちはそれを露骨に性差別的な言葉で書き残している。スティーヴンの妻ブローニュのマティルダが彼の側を支え続けた。1150年代までに貴族たちはマティルダの息子ヘンリーへと傾いた。男性であり、ヘンリー1世の直系を継いでいたからだ。戦争は勝利ではなく消耗によって終わった。1153年のウォリングフォードで貴族たちが戦うことを拒み、スティーヴンは王位にとどまる代わりに、自分の息子ユースタスではなく若きヘンリーを後継者に指名することに同意した。スティーヴンは1154年10月に死去し、ヘンリー2世は反対なく戴冠した。歳入は崩壊し、ある年代記作者はこの地にこれほどの悲惨はかつてなかったと記している。
+***** Take
+どの世紀にも通じるのはウォリングフォードの場面だ。戦わねばならない当人たちが拒んだから戦争が終わる。二人の王位請求者はまだ現場にいて、主張も残っていたのに、それでも止まった。記事のもう一つの指摘のほうが鋭い。勝ったのはどちらの請求者でもなく王朝継承そのものだった、というものだ。貴族たちは誰が統治すべきかを決めたのではなく、次に誰が統治するかを決めた。武器を置かせるにはそれで足りた。
+***** Comments
+- 偏見と前例のなさがマティルダの王位獲得を実質的に妨げたのは明らかだが、33歳の息子がいたらという反事実の仮定に頼りすぎている。
+- 女性を後継者に指名することは前例がなさすぎて、ヘンリーは貴族たちにマティルダへの忠誠を誓わせざるを得なかった。全員が誓ったが、渋々の者もいた。そしてスティーヴンがイングランドに急行し、国庫を押さえた。
+- 何千もの広告ではなく、本物の文章と挿絵を携帯で読めるのは新鮮だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+잉글랜드를 갈라놓은 왕위 계승 위기 (2023)
+***** TLDR
+History Today가 1135년 12월 헨리 1세의 사망 이후 19년간 이어진 내전 '무정부 시대'를 다시 다뤘다. 헨리는 딸 마틸다를 후계자로 지명하고 귀족들에게 그녀에 대한 충성 서약을 시켰지만, 사촌 스티븐은 잉글랜드로 건너가 왕위를 차지했다. 이복 오빠인 글로스터 백작 로버트의 지원을 받은 마틸다는 1138년 이후 세력을 넓혔고 1141년 링컨에서 스티븐을 꺾고 사로잡았지만 끝내 대관하지 못했다. 여성 통치자에 대한 적대감이 막았고, 연대기 작가들은 이를 노골적으로 성차별적인 표현으로 기록했다. 스티븐의 아내인 불로뉴의 마틸다가 그의 대의를 지탱했다. 1150년대에 이르러 귀족들은 마틸다의 아들 헨리 쪽으로 옮겨갔다. 남성이고 헨리 1세의 직계를 잇고 있었기 때문이다. 전쟁은 승리가 아니라 소진으로 끝났다. 1153년 월링퍼드에서 귀족들이 싸우기를 거부했고, 스티븐은 왕위를 유지하되 자기 아들 유스터스가 아니라 어린 헨리를 후계자로 지명하는 데 동의했다. 스티븐은 1154년 10월에 죽었고 헨리 2세는 반대 없이 대관했다. 세입은 무너졌고 한 연대기 작가는 이 땅에 그보다 더한 참상은 없었다고 적었다.
+***** Take
+어느 세기로 옮겨도 남는 대목은 월링퍼드다. 싸워야 하는 사람들이 싸우기를 거부해서 전쟁이 끝난다. 두 왕위 주장자 모두 여전히 현장에 있었고 주장도 살아 있었지만, 그래도 멈췄다. 기사의 다른 주장이 더 날카롭다. 이긴 것은 어느 쪽 주장자도 아닌 왕조 계승 그 자체였다는 것이다. 귀족들은 누가 통치해야 하는지를 정한 게 아니라 다음에 누가 통치할지를 정했고, 무기를 내려놓게 하기에는 그것으로 충분했다.
+***** Comments
+- 편견과 선례의 부재가 마틸다의 왕위 도전을 실질적으로 가로막은 것은 분명하지만, 서른세 살 아들이 있었다면이라는 가정이 논증의 부담을 너무 많이 지고 있다.
+- 여성을 후계자로 지명하는 것은 전례가 없어서 헨리는 귀족들에게 마틸다에 대한 충성을 맹세하도록 강제해야 했다. 모두 맹세했지만 마지못해 한 이들도 있었다. 그리고 스티븐이 잉글랜드로 달려가 국고를 장악했다.
+- 수천 개의 광고가 아니라 진짜 산문과 그에 딸린 그림을 휴대폰에서 읽는 건 신선하다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+La crisis sucesoria que partió Inglaterra en dos (2023)
+***** TLDR
+History Today vuelve sobre la Anarquía, la guerra civil de 19 años que siguió a la muerte de Enrique I en diciembre de 1135. Enrique había nombrado heredera a su hija Matilde y había hecho jurar lealtad a sus nobles, pero su primo Esteban cruzó a Inglaterra y tomó el trono de todos modos. Matilde, apoyada por su hermanastro Roberto de Gloucester, ganó terreno tras 1138 y venció y capturó a Esteban en Lincoln en 1141, pero nunca fue coronada, frenada por una hostilidad hacia las gobernantes que los cronistas dejaron por escrito en términos abiertamente machistas. La esposa de Esteban, Matilde de Boulogne, mantuvo viva su causa. Hacia 1150 los barones se habían inclinado por Enrique, hijo de Matilde, varón y heredero de la línea directa de Enrique I. La guerra terminó por agotamiento y no por victoria: en Wallingford, en 1153, los barones se negaron a combatir y Esteban aceptó conservar la corona pero nombrar heredero al joven Enrique en lugar de a su propio hijo Eustaquio. Esteban murió en octubre de 1154 y Enrique II fue coronado sin oposición. Los ingresos se hundieron y un cronista escribió que nunca había habido mayor miseria en aquella tierra.
+***** Take
+Lo que sobrevive al traslado a cualquier siglo es Wallingford: una guerra acaba porque quienes tienen que pelearla se niegan. Ambos aspirantes seguían en campaña y ambos mantenían sus derechos, y aun así se detuvo. La otra tesis del artículo es la más afilada: lo que ganó fue la sucesión dinástica y no ninguno de los dos aspirantes. Los barones no resolvieron quién debía gobernar, resolvieron quién gobernaría después, y con eso bastó para dejar las armas.
+***** Comments
+- Está claro que el prejuicio y la falta de precedentes dificultaron materialmente el intento de Matilde, pero el contrafactual especulativo del hijo de 33 años carga con demasiado peso.
+- Designar heredera a una mujer era tan inaudito que Enrique tuvo que obligar a sus nobles a jurar lealtad a Matilde. Todos lo hicieron, algunos de peor gana. Luego Esteban corrió a Inglaterra y se apoderó del tesoro.
+- Qué alivio leer en el móvil algo que es prosa de verdad con sus imágenes, en lugar de miles de anuncios.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Eine Nachfolgekrise, die England zerriss (2023)
+***** TLDR
+History Today greift die Anarchie auf, den 19 Jahre währenden Bürgerkrieg nach dem Tod Heinrichs I. im Dezember 1135. Heinrich hatte seine Tochter Matilda zur Erbin bestimmt und seine Barone auf sie vereidigt, doch sein Vetter Stephan setzte nach England über und griff dennoch nach der Krone. Matilda, gestützt auf ihren Halbbruder Robert von Gloucester, gewann nach 1138 an Boden und schlug und fing Stephan 1141 bei Lincoln, wurde aber nie gekrönt: Die Feindseligkeit gegenüber einer Herrscherin, die die Chronisten in offen frauenfeindlichen Worten festhielten, stand dagegen. Stephans Frau, Matilda von Boulogne, hielt seine Sache am Leben. In den 1150er Jahren schwenkten die Barone zu Matildas Sohn Heinrich, der männlich war und die direkte Linie Heinrichs I. fortsetzte. Der Krieg endete durch Erschöpfung, nicht durch Sieg: 1153 verweigerten die Barone bei Wallingford den Kampf, und Stephan willigte ein, König zu bleiben, aber den jungen Heinrich statt seines eigenen Sohnes Eustach zum Erben zu bestimmen. Stephan starb im Oktober 1154, Heinrich II. wurde ohne Widerstand gekrönt. Die Einkünfte brachen ein, und ein Chronist schrieb, es habe nie mehr Elend im Land gegeben.
+***** Take
+Was sich in jedes Jahrhundert übertragen lässt, ist Wallingford: Ein Krieg endet, weil die, die ihn führen müssen, sich weigern. Beide Anwärter standen noch im Feld und hielten an ihren Ansprüchen fest, und er hörte trotzdem auf. Die zweite These des Artikels ist die schärfere: Gewonnen hat die dynastische Erbfolge, nicht einer der beiden Anwärter. Die Barone entschieden nicht, wer herrschen sollte, sondern wer als Nächster herrschen würde, und das genügte, um die Waffen niederzulegen.
+***** Comments
+- Vorurteil und fehlende Präzedenz haben Matildas Griff nach der Krone offenkundig erheblich erschwert, aber das spekulative Gedankenspiel vom 33-jährigen Sohn trägt sehr viel Last.
+- Eine Frau als Nachfolgerin zu bestimmen war so beispiellos, dass Heinrich seine Barone zum Treueid auf Matilda zwingen musste. Alle leisteten ihn, manche widerwilliger als andere. Dann eilte Stephan nach England und sicherte sich den Schatz.
+- Wie wohltuend, auf dem Telefon etwas zu lesen, das wirklich Prosa mit passenden Bildern ist, statt tausender Werbeanzeigen.
