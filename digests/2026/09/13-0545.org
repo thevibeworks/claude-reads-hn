@@ -1,0 +1,512 @@
+#+TITLE: HN Digest 2026-09-13 05:45 UTC
+#+DATE: 2026-09-13T05:45:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Frontier models fail 6 out of 10 real enterprise tasks, Rust finally ships the never type, and a 14-bit counter was costing the Neural Engine half its bandwidth
+
+* Highlights
+- Real-SWE: the best model resolves 38.8% of tasks from private production codebases
+- Rust 1.99 stabilizes `!` after breaking 7 crates out of 3,300 affected
+- A 1 MiB transfer size triggered an M3 prefetch bug worth 2.4x on Llama inference
+- Carmack tells programmers not to be the kung fu master who loses to an MMA amateur
+- The iPod engraving preview was ImageMagick and a stack of JPEGs
+
+* Stories
+
+** Real-SWE: Benchmarking AI models on private, real-world, enterprise codebases :ai:benchmarks:swe:llm:
+:PROPERTIES:
+:ID:       49676820
+:URL:      https://withspecific.com/benchmarks/real-swe
+:HN_URL:   https://news.ycombinator.com/item?id=49676820
+:POINTS:   188
+:COMMENTS: 99
+:BY:       theanonymousone
+:END:
+
+*** TLDR
+Specific Labs licensed private production codebases from real companies and built 10 tasks from work their engineers actually did: billing logic, customer migrations, tax calculations. Solutions touch a median of 11 files. Eight model-harness pairs got 8 rollouts each. Fable 5.1 in Claude Code led at 38.8% pass@1, then GPT-6 Astra at 33.8%, Gemini 3.8 Flash at 31.2%, down to GPT-5.6 Sol at 16.2%. Six of the ten tasks came in under 15% across all models and one scored zero. The most common failure was missed requirements, then unverified assumptions, then integration errors, and the mix differs per model: 67.2% of Grok 4.6's failures were missed requirements, while 49.1% of Gemini's were integration errors. Cost does not track accuracy. Fable costs $6.96 per rollout, Gemini $2.50. Runs under 10 minutes failed 71% of the time, longer runs 73%.
+
+*** Take
+Ten tasks and eight rollouts is a small sample, and the comments are right that private does not mean uncontaminated. But the failure breakdown is the useful part and it does not depend on the headline number: models lose most often by not doing what was asked, not by writing broken code. That is a specification and verification problem, and no amount of extra runtime fixes it, which is exactly what the flat 71%-vs-73% result shows.
+
+*** Comments
+
+**** prometheus1992
+Does this mean they ended up sharing those private codebases with OAI, Anthropic etc? The ~30% number tracks with my experience. I thought I was going insane for expecting too much from the models.
+
+**** lmeyerov
+My intuition is that many of the better and bigger 'private' code bases are not in fact private at this point. One lesson of running botsbench.com is to measure for model contamination every time.
+
+**** glub
+I run Fable as my main model with Sol as advisor that watches every turn. Fable likes to throw around assumptions that it didn't check that are simply false, and Sol goes to actually verify them.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Real-SWE：在私有的真实企业代码库上评测 AI 模型
+***** TLDR
+Specific Labs 从真实公司获得私有生产代码库授权，用其工程师实际处理过的工作构建了 10 个任务：计费逻辑、客户迁移、税务计算。解决方案平均修改 11 个文件。八种模型与工具组合各跑 8 轮。Claude Code 中的 Fable 5.1 以 38.8% 的 pass@1 领先，其次是 GPT-6 Astra 的 33.8%、Gemini 3.8 Flash 的 31.2%，最低的 GPT-5.6 Sol 为 16.2%。十个任务中有六个在所有模型上都低于 15%，一个为零分。最常见的失败是遗漏需求，其次是未经核实的假设和集成错误，且各模型分布不同：Grok 4.6 的失败中 67.2% 是遗漏需求，而 Gemini 的失败中 49.1% 是集成错误。成本与准确率不相关：Fable 每轮 6.96 美元，Gemini 为 2.50 美元。10 分钟以内的运行失败率为 71%，更长的运行为 73%。
+***** Take
+十个任务、八轮采样样本量很小，评论区也没说错：私有不等于未被污染。但真正有用的是失败类型分布，它并不依赖于榜首数字：模型最常见的失败是没做要求的事，而不是写出坏掉的代码。这是一个需求描述和验证的问题，再多的运行时间也解决不了，71% 对 73% 这个持平结果正好说明了这一点。
+***** Comments
+- 这是不是意味着他们最终把这些私有代码库分享给了 OpenAI、Anthropic 等公司？大约 30% 这个数字和我的体验一致。我一度以为是自己对模型期望过高了。
+- 我的直觉是，很多更好、更大的所谓「私有」代码库现在其实已经不私有了。运营 botsbench.com 的一个教训是：每次都要检测模型污染。
+- 我把 Fable 作为主力模型，用 Sol 作为顾问监督每一步。Fable 喜欢抛出它没有核实过、而且根本不成立的假设，Sol 则会去实际验证。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Real-SWE：非公開の実企業コードベースでAIモデルをベンチマークする
+***** TLDR
+Specific Labsは実在企業から非公開の本番コードベースをライセンスし、そのエンジニアが実際に取り組んだ課金ロジック、顧客移行、税計算といった作業から10のタスクを構築した。解決策は中央値で11ファイルを変更する。8つのモデルとハーネスの組み合わせをそれぞれ8回実行。Claude Code上のFable 5.1がpass@1で38.8%と首位、次いでGPT-6 Astraが33.8%、Gemini 3.8 Flashが31.2%、最下位のGPT-5.6 Solは16.2%だった。10タスクのうち6つは全モデルで15%未満、1つはゼロ。最も多い失敗は要件の見落とし、次に未検証の仮定、統合エラーと続くが、内訳はモデルごとに異なる。Grok 4.6の失敗の67.2%は要件の見落とし、Geminiの49.1%は統合エラーだった。コストと精度は連動しない。Fableは1回6.96ドル、Geminiは2.50ドル。10分未満の実行は71%が失敗し、より長い実行は73%だった。
+***** Take
+10タスク8ロールアウトはサンプルが小さく、非公開が汚染されていないことを意味しないというコメントも正しい。しかし有用なのは失敗の内訳で、そこは首位の数字に依存しない。モデルが最も多く失敗するのは、壊れたコードを書くからではなく、頼まれたことをやらないからだ。これは仕様記述と検証の問題であり、実行時間を増やしても解決しない。71%対73%という横ばいの結果がまさにそれを示している。
+***** Comments
+- つまり彼らは結局その非公開コードベースをOpenAIやAnthropicなどに渡したということ？約30%という数字は自分の実感と一致する。モデルに期待しすぎて頭がおかしくなったのかと思っていた。
+- 私の直感では、優れた大規模な「非公開」コードベースの多くは、今やもう非公開ではない。botsbench.comを運営して学んだのは、毎回モデルの汚染を測定すべきだということだ。
+- Fableをメインモデルにして、Solをすべてのターンを監視するアドバイザーとして走らせている。Fableは検証していない、実際には誤った仮定を平気で持ち出すが、Solは実際に確認しに行く。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Real-SWE: 비공개 실제 기업 코드베이스로 AI 모델 벤치마킹하기
+***** TLDR
+Specific Labs는 실제 기업들로부터 비공개 프로덕션 코드베이스를 라이선스해, 그 회사 엔지니어들이 실제로 수행한 과금 로직, 고객 마이그레이션, 세금 계산 같은 작업에서 10개 과제를 만들었다. 해결책은 중앙값 기준 11개 파일을 수정한다. 8개의 모델·하네스 조합을 각각 8회씩 실행했다. Claude Code의 Fable 5.1이 pass@1 38.8%로 1위, GPT-6 Astra 33.8%, Gemini 3.8 Flash 31.2%, 최하위 GPT-5.6 Sol은 16.2%였다. 10개 과제 중 6개는 모든 모델에서 15% 미만이었고 하나는 0%였다. 가장 흔한 실패는 요구사항 누락, 그다음이 검증되지 않은 가정과 통합 오류였으며 모델별 분포가 달랐다. Grok 4.6 실패의 67.2%는 요구사항 누락, Gemini의 49.1%는 통합 오류였다. 비용은 정확도와 무관하다. Fable은 실행당 6.96달러, Gemini는 2.50달러다. 10분 미만 실행은 71%가 실패했고, 더 긴 실행은 73%였다.
+***** Take
+10개 과제에 8회 실행은 표본이 작고, 비공개가 곧 미오염을 뜻하지는 않는다는 댓글도 옳다. 하지만 정작 유용한 것은 실패 유형 분포이고, 이는 1위 숫자와 무관하다. 모델이 가장 자주 실패하는 이유는 망가진 코드를 써서가 아니라 요청받은 일을 하지 않아서다. 이는 명세와 검증의 문제이며 실행 시간을 늘려도 해결되지 않는다. 71% 대 73%라는 평평한 결과가 바로 그 증거다.
+***** Comments
+- 그러면 결국 그 비공개 코드베이스를 OpenAI, Anthropic 등에 넘겼다는 뜻인가? 약 30%라는 수치는 내 경험과 일치한다. 내가 모델에 너무 큰 기대를 하는 줄 알았다.
+- 내 직관으로는 더 낫고 더 큰 이른바 '비공개' 코드베이스 상당수가 이제는 사실 비공개가 아니다. botsbench.com을 운영하며 배운 교훈은 매번 모델 오염을 측정해야 한다는 것이다.
+- 나는 Fable을 메인 모델로 쓰고 Sol을 매 턴을 감시하는 자문으로 돌린다. Fable은 확인하지도 않은, 실제로 틀린 가정을 아무렇지 않게 던지고 Sol은 그것을 직접 검증하러 간다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Real-SWE: evaluando modelos de IA en bases de código empresariales privadas y reales
+***** TLDR
+Specific Labs licenció bases de código de producción privadas de empresas reales y construyó 10 tareas a partir de trabajo que sus ingenieros hicieron de verdad: lógica de facturación, migraciones de clientes, cálculo de impuestos. Las soluciones tocan una mediana de 11 archivos. Se probaron ocho combinaciones de modelo y herramienta con 8 ejecuciones cada una. Fable 5.1 en Claude Code lideró con 38,8% de pass@1, seguido de GPT-6 Astra con 33,8%, Gemini 3.8 Flash con 31,2%, y GPT-5.6 Sol al final con 16,2%. Seis de las diez tareas quedaron por debajo del 15% en todos los modelos y una sacó cero. El fallo más común fue omitir requisitos, luego suposiciones sin verificar y errores de integración, con mezclas distintas por modelo: el 67,2% de los fallos de Grok 4.6 fueron requisitos omitidos, mientras que el 49,1% de los de Gemini fueron errores de integración. El costo no predice la precisión: Fable cuesta 6,96 dólares por ejecución y Gemini 2,50. Las ejecuciones de menos de 10 minutos fallaron el 71% de las veces, y las más largas el 73%.
+***** Take
+Diez tareas y ocho ejecuciones es una muestra pequeña, y los comentarios tienen razón en que privado no significa libre de contaminación. Pero lo útil es el desglose de fallos, y eso no depende de la cifra principal: los modelos fallan sobre todo por no hacer lo que se les pidió, no por escribir código roto. Es un problema de especificación y verificación, y más tiempo de ejecución no lo arregla, que es justo lo que muestra el empate entre 71% y 73%.
+***** Comments
+- ¿Esto significa que terminaron compartiendo esas bases de código privadas con OpenAI, Anthropic y demás? El número de ~30% coincide con mi experiencia. Pensaba que me estaba volviendo loco por esperar demasiado de los modelos.
+- Mi intuición es que muchas de las bases de código 'privadas' grandes y buenas ya no son privadas a estas alturas. Una lección de gestionar botsbench.com es medir la contaminación del modelo cada vez.
+- Uso Fable como modelo principal y Sol como asesor que vigila cada turno. Fable suelta suposiciones que no verificó y que son simplemente falsas, y Sol va a comprobarlas de verdad.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Real-SWE: KI-Modelle an privaten, realen Unternehmens-Codebasen messen
+***** TLDR
+Specific Labs hat private Produktions-Codebasen von echten Unternehmen lizenziert und daraus 10 Aufgaben gebaut, an denen deren Entwickler tatsächlich gearbeitet haben: Abrechnungslogik, Kundenmigrationen, Steuerberechnung. Die Lösungen ändern im Median 11 Dateien. Acht Kombinationen aus Modell und Harness liefen je 8 Durchgänge. Fable 5.1 in Claude Code führte mit 38,8% pass@1, danach GPT-6 Astra mit 33,8%, Gemini 3.8 Flash mit 31,2%, am Ende GPT-5.6 Sol mit 16,2%. Sechs der zehn Aufgaben lagen bei allen Modellen unter 15%, eine bei null. Häufigster Fehler waren übersehene Anforderungen, danach ungeprüfte Annahmen und Integrationsfehler, wobei sich die Verteilung je Modell unterscheidet: 67,2% der Fehler von Grok 4.6 waren übersehene Anforderungen, 49,1% der Fehler von Gemini waren Integrationsfehler. Kosten sagen nichts über Genauigkeit: Fable kostet 6,96 Dollar pro Durchgang, Gemini 2,50. Läufe unter 10 Minuten scheiterten zu 71%, längere zu 73%.
+***** Take
+Zehn Aufgaben und acht Durchgänge sind eine kleine Stichprobe, und die Kommentare haben recht: privat heißt nicht unkontaminiert. Nützlich ist aber die Aufschlüsselung der Fehler, und die hängt nicht an der Spitzenzahl. Modelle scheitern am häufigsten daran, dass sie nicht tun, worum gebeten wurde, nicht daran, kaputten Code zu schreiben. Das ist ein Spezifikations- und Prüfproblem, und mehr Laufzeit löst es nicht, genau das zeigt der Gleichstand von 71% zu 73%.
+***** Comments
+- Heißt das, sie haben diese privaten Codebasen am Ende mit OpenAI, Anthropic und anderen geteilt? Die ungefähr 30% decken sich mit meiner Erfahrung. Ich dachte schon, ich erwarte einfach zu viel von den Modellen.
+- Mein Gefühl ist, dass viele der besseren und größeren 'privaten' Codebasen inzwischen gar nicht mehr privat sind. Eine Lehre aus dem Betrieb von botsbench.com: Modellkontamination jedes Mal messen.
+- Ich nutze Fable als Hauptmodell und Sol als Berater, der jeden Zug beobachtet. Fable wirft ungeprüfte Annahmen in den Raum, die schlicht falsch sind, und Sol geht sie tatsächlich verifizieren.
+** Stabilizing Rust's Never Type :rust:programming-languages:compilers:
+:PROPERTIES:
+:ID:       49625056
+:URL:      https://lwn.net/SubscriberLink/1091015/d9e48318ed242b41/
+:HN_URL:   https://news.ycombinator.com/item?id=49625056
+:POINTS:   162
+:COMMENTS: 43
+:BY:       cjd8
+:END:
+
+*** TLDR
+LWN covers the long road to stabilizing `!`, the type of expressions that never produce a value: infinite loops, panics, process exit. It lets the compiler skip dead code and drop a layer of enum tags in infallible generic code. The blocker was fallback: when inference cannot pin a type down it used to default to `()`, and the 2024 edition changes that default to `!`. Testing found roughly 3,300 crates affected but only 7 that fully broke. The classic case is `foo()?` where `foo<T: Default>() -> Result<T, Error>`, because `T` now infers to `!`, which does not implement `Default`. Maintainers backported patches that fixed 1,553 of the failing crates. As of Rust 1.99 the never type is stable and `Infallible` becomes an alias for `!`. If it breaks your build you can stay on 1.98, update dependencies, or annotate the type.
+
+*** Take
+This is the boring part of language design that nobody writes conference talks about: the feature was designed years ago and the entire remaining cost was inference fallback in code no one had thought about. Fixing 1,553 crates by backport before flipping the switch is the right way to ship a breaking change, and it is why the actual breakage count was 7.
+
+*** Comments
+
+**** cipherjim
+My favourite never type ability is when you need to conform to a trait that returns Result but your implementation can never produce an error. Return Result<T, !> and the compiler knows callers never have to check the error case.
+
+**** xg15
+If ! can coerce to every type, why not treat it as if it implemented every trait too?
+
+**** Georgelemental
+Code using Infallible was technically correct but suboptimal, such as having an extra layer of tags in an enumeration or emitting dead code, because the optimizer couldn't see through it.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+稳定化 Rust 的 never 类型
+***** TLDR
+LWN 梳理了 `!` 类型走向稳定的漫长过程。`!` 表示永不产生值的表达式：无限循环、panic、进程退出。它让编译器跳过死代码，并在不会失败的泛型代码中省去一层枚举标签。障碍在于类型回退：当推导无法确定类型时，过去默认回退到 `()`，而 2024 版次将默认改为 `!`。测试发现约 3300 个 crate 受影响，但完全构建失败的只有 7 个。典型情况是 `foo<T: Default>() -> Result<T, Error>` 中的 `foo()?`，因为 `T` 现在被推导为 `!`，而 `!` 没有实现 `Default`。维护者回移补丁修复了其中 1553 个失败的 crate。从 Rust 1.99 起 never 类型正式稳定，`Infallible` 成为 `!` 的别名。如果构建被破坏，可以停留在 1.98、升级依赖，或显式标注类型。
+***** Take
+这是语言设计中无人拿去做大会演讲的枯燥部分：功能本身多年前就设计好了，剩下的全部成本都在没人想到过的代码里的推导回退上。在切换开关之前通过回移补丁修好 1553 个 crate，是发布破坏性变更的正确做法，也正是实际只崩了 7 个的原因。
+***** Comments
+- 我最喜欢 never 类型的一点是：当你必须实现一个返回 Result 的 trait，但你的实现根本不可能出错时，返回 Result<T, !>，编译器就知道调用方永远不需要检查错误分支。
+- 既然 ! 可以强制转换成任何类型，为什么不干脆把它当作实现了所有 trait 呢？
+- 使用 Infallible 的代码技术上正确但并不理想，比如枚举里多出一层标签或生成死代码，因为优化器看不穿它。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Rustのnever型の安定化
+***** TLDR
+LWNが`!`型の安定化までの長い道のりを取り上げている。`!`は値を決して返さない式の型で、無限ループ、パニック、プロセス終了などが該当する。コンパイラはデッドコードを省略でき、失敗しないジェネリックコードでは列挙型のタグ層を1つ削れる。障害はフォールバックだった。推論で型が決まらないとき従来は`()`に落ちていたが、2024エディションでその既定を`!`に変更する。テストでは約3,300クレートが影響を受けたが、完全に壊れたのは7つだけだった。典型例は`foo<T: Default>() -> Result<T, Error>`に対する`foo()?`で、`T`が`!`に推論され、`!`は`Default`を実装していないため失敗する。メンテナがパッチをバックポートし、失敗していたうち1,553クレートを修正した。Rust 1.99からnever型は安定化され、`Infallible`は`!`のエイリアスになる。ビルドが壊れる場合は1.98に留まるか、依存を更新するか、型を明示すればよい。
+***** Take
+これは誰もカンファレンスで発表しない、言語設計の地味な部分だ。機能自体は何年も前に設計され、残っていたコストはすべて、誰も想定していなかったコードにおける推論のフォールバックだった。切り替える前にバックポートで1,553クレートを直したのは破壊的変更の正しい出し方であり、実際の破損が7件で済んだ理由でもある。
+***** Comments
+- never型で一番好きなのは、Resultを返すトレイトに準拠する必要があるのに自分の実装では絶対にエラーが起きない場合だ。Result<T, !>を返せば、呼び出し側がエラーを確認する必要がないとコンパイラが理解する。
+- !があらゆる型に型強制できるなら、あらゆるトレイトを実装しているものとして扱ってもよいのでは？
+- Infallibleを使ったコードは技術的には正しいが最適ではなかった。列挙型に余分なタグ層が入ったりデッドコードが出たりする。オプティマイザがそれを見通せないからだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Rust의 never 타입 안정화
+***** TLDR
+LWN이 `!` 타입의 안정화까지 이어진 긴 과정을 다룬다. `!`는 값을 결코 만들어내지 않는 표현식의 타입으로 무한 루프, 패닉, 프로세스 종료가 여기에 해당한다. 컴파일러가 죽은 코드를 건너뛰고, 실패할 수 없는 제네릭 코드에서 열거형 태그 한 겹을 없앨 수 있다. 걸림돌은 폴백이었다. 추론이 타입을 확정하지 못하면 예전에는 `()`로 기본 처리했는데, 2024 에디션은 그 기본값을 `!`로 바꾼다. 테스트 결과 약 3,300개 크레이트가 영향을 받았지만 완전히 깨진 것은 7개뿐이었다. 대표 사례는 `foo<T: Default>() -> Result<T, Error>`에 대한 `foo()?`로, `T`가 이제 `!`로 추론되는데 `!`는 `Default`를 구현하지 않기 때문이다. 메인테이너들이 패치를 백포트해 실패하던 크레이트 중 1,553개를 고쳤다. Rust 1.99부터 never 타입은 안정화되고 `Infallible`은 `!`의 별칭이 된다. 빌드가 깨지면 1.98에 머무르거나, 의존성을 갱신하거나, 타입을 명시하면 된다.
+***** Take
+아무도 콘퍼런스 발표로 만들지 않는 언어 설계의 지루한 부분이다. 기능 자체는 몇 년 전에 설계가 끝났고, 남은 비용은 전부 아무도 생각하지 못한 코드에서의 추론 폴백이었다. 스위치를 켜기 전에 백포트로 1,553개 크레이트를 고친 것은 파괴적 변경을 출시하는 올바른 방식이며, 실제 파손이 7개에 그친 이유이기도 하다.
+***** Comments
+- never 타입에서 가장 마음에 드는 점은 Result를 반환하는 트레이트를 구현해야 하지만 내 구현에서는 절대 오류가 날 수 없을 때다. Result<T, !>를 반환하면 호출자가 오류 경우를 확인할 필요가 없다는 것을 컴파일러가 안다.
+- !가 모든 타입으로 강제 변환될 수 있다면, 모든 트레이트를 구현한 것처럼 취급하면 안 되나?
+- Infallible을 쓰는 코드는 기술적으로는 맞지만 최적은 아니었다. 열거형에 태그가 한 겹 더 생기거나 죽은 코드가 나오는데, 옵티마이저가 그것을 꿰뚫어 보지 못하기 때문이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Estabilizando el tipo never de Rust
+***** TLDR
+LWN repasa el largo camino hasta estabilizar `!`, el tipo de las expresiones que nunca producen un valor: bucles infinitos, panics, salida del proceso. Permite al compilador saltarse código muerto y eliminar una capa de etiquetas de enum en código genérico infalible. El obstáculo era el fallback: cuando la inferencia no lograba fijar un tipo, antes se usaba `()` por defecto, y la edición 2024 cambia ese valor por defecto a `!`. Las pruebas encontraron unos 3.300 crates afectados, pero solo 7 se rompieron por completo. El caso clásico es `foo()?` donde `foo<T: Default>() -> Result<T, Error>`, porque ahora `T` se infiere como `!`, que no implementa `Default`. Los mantenedores retroportaron parches que arreglaron 1.553 de los crates que fallaban. Desde Rust 1.99 el tipo never es estable e `Infallible` pasa a ser un alias de `!`. Si te rompe la compilación, puedes quedarte en 1.98, actualizar dependencias o anotar el tipo.
+***** Take
+Esta es la parte aburrida del diseño de lenguajes de la que nadie hace charlas: la funcionalidad se diseñó hace años y todo el costo restante estaba en el fallback de inferencia dentro de código en el que nadie había pensado. Arreglar 1.553 crates por retroportación antes de activar el cambio es la forma correcta de publicar una ruptura, y por eso el número real de roturas fue 7.
+***** Comments
+- Mi capacidad favorita del tipo never es cuando debes cumplir un trait que devuelve Result pero tu implementación nunca puede fallar. Devuelves Result<T, !> y el compilador sabe que quien llama nunca tiene que comprobar el caso de error.
+- Si ! puede convertirse a cualquier tipo, ¿por qué no tratarlo como si implementara también todos los traits?
+- El código que usaba Infallible era técnicamente correcto pero subóptimo, con una capa extra de etiquetas en un enum o código muerto emitido, porque el optimizador no podía ver a través de él.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Rusts Never-Typ wird stabilisiert
+***** TLDR
+LWN beschreibt den langen Weg zur Stabilisierung von `!`, dem Typ für Ausdrücke, die nie einen Wert liefern: Endlosschleifen, Panics, Prozessende. Der Compiler kann damit toten Code überspringen und in unfehlbarem generischem Code eine Ebene von Enum-Tags einsparen. Der Blocker war das Fallback: Wenn die Inferenz keinen Typ festlegen konnte, wurde bisher `()` angenommen, in der Edition 2024 ist es `!`. Tests zeigten rund 3.300 betroffene Crates, aber nur 7 gingen vollständig kaputt. Der klassische Fall ist `foo()?` bei `foo<T: Default>() -> Result<T, Error>`, weil `T` nun zu `!` inferiert wird und `!` kein `Default` implementiert. Maintainer haben Patches zurückportiert und damit 1.553 der fehlschlagenden Crates repariert. Ab Rust 1.99 ist der Never-Typ stabil und `Infallible` wird ein Alias für `!`. Wenn der Build bricht, kann man auf 1.98 bleiben, Abhängigkeiten aktualisieren oder den Typ annotieren.
+***** Take
+Das ist der langweilige Teil des Sprachdesigns, über den niemand Konferenzvorträge hält: Das Feature war vor Jahren entworfen, und die gesamten Restkosten steckten im Inferenz-Fallback in Code, an den niemand gedacht hatte. Vor dem Umlegen des Schalters 1.553 Crates per Backport zu reparieren, ist der richtige Weg für eine brechende Änderung, und genau deshalb lag die tatsächliche Zahl bei 7.
+***** Comments
+- Meine liebste Fähigkeit des Never-Typs: Man muss einen Trait erfüllen, der Result zurückgibt, aber die eigene Implementierung kann gar keinen Fehler erzeugen. Man gibt Result<T, !> zurück und der Compiler weiß, dass Aufrufer den Fehlerfall nie prüfen müssen.
+- Wenn ! sich in jeden Typ umwandeln lässt, warum behandelt man es nicht auch so, als implementiere es jeden Trait?
+- Code mit Infallible war technisch korrekt, aber suboptimal, etwa mit einer zusätzlichen Tag-Ebene im Enum oder totem Code, weil der Optimierer nicht hindurchsehen konnte.
+** Getting 50 GB/s Back from the Apple Neural Engine :apple:hardware:performance:reverse-engineering:
+:PROPERTIES:
+:ID:       49636479
+:URL:      https://eiln.github.io/posts/ane-dma.html
+:HN_URL:   https://news.ycombinator.com/item?id=49636479
+:POINTS:   111
+:COMMENTS: 24
+:BY:       eiln
+:END:
+
+*** TLDR
+On the M3 Neural Engine, DRAM weight streaming collapsed from a nominal 45 to 60 GB/s down to 17 to 19 GB/s whenever kernel weights came to exactly 1 MiB per core. The cause is in the kernel DMA engine's speculative prefetch ring: it tracks transfer position with 14-bit arithmetic, which wraps at 0x4000 lines, exactly one full 1 MiB cycle. A transfer that lands on that boundary makes the prefetcher read one full lap remaining as empty, so it turns lookahead off and the transfer serializes. The workaround is to never request a 1 MiB kernel transfer, splitting it into two 512 KiB tasks in the compiler instead, which changes no arithmetic. Llama 3.2 1B went from 10.0 to 24.3 tokens/s, Qwen3-8B from 1.36 to 2.97 tokens/s, and raw throughput on affected transfers from 17.3 to over 43.5 GB/s.
+
+*** Take
+A 2.4x speedup from changing a buffer size is the kind of result that only comes from someone instrumenting undocumented silicon until the numbers stop making sense. The detail worth keeping is that the bad case is exactly 1 MiB, the number any sane engineer would pick as the tidy default, so the hardware punishes precisely the code that looks most careful.
+
+*** Comments
+
+**** bee_rider
+It is always surprising to me when a nice round number like 1MiB results in the bad performance configuration, although it happens. Are you sure erratum is the right word here? I usually see it used for the notice that a document has an error.
+
+**** eiln
+RTL performance erratum in the M3 Neural Engine throttles DRAM weight streaming down to 17-19 GB/s from the nominal 45-60. Avoiding the problematic path in the DMA engine's speculative prefetch ring increased Llama 3.2 1B throughput from 10.0 to 24.3 tokens/s.
+
+**** VladVladikoff
+This website hijacked my back button during a simple page load. You should fix that, it's not an acceptable way to behave.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+从 Apple 神经引擎里拿回 50 GB/s
+***** TLDR
+在 M3 神经引擎上，只要每核的 kernel 权重恰好为 1 MiB，DRAM 权重流的吞吐就会从标称的 45 到 60 GB/s 崩到 17 到 19 GB/s。原因出在 kernel DMA 引擎的推测预取环上：它用 14 位算术跟踪传输位置，会在 0x4000 行处回绕，而这恰好是一个完整的 1 MiB 周期。落在这个边界上的传输会让预取器把「还剩整整一圈」误读为「空」，于是关闭预读，传输被串行化。绕开办法是永远不要请求 1 MiB 的 kernel 传输，而在编译器里把它拆成两个 512 KiB 的任务，计算本身完全不变。Llama 3.2 1B 从每秒 10.0 个 token 提升到 24.3，Qwen3-8B 从 1.36 提升到 2.97，受影响传输的原始吞吐从 17.3 GB/s 提升到 43.5 GB/s 以上。
+***** Take
+仅仅改一个缓冲区大小就换来 2.4 倍加速，这种结果只可能来自有人不断给没有文档的芯片打点测量，直到数字变得说不通为止。真正值得记住的细节是：出问题的恰好是 1 MiB，也就是任何头脑清醒的工程师都会选的整齐默认值，于是硬件专门惩罚了看起来最规矩的代码。
+***** Comments
+- 像 1MiB 这样漂亮的整数居然对应最差性能配置，这总是让我意外，不过确实会发生。你确定这里用 erratum 这个词合适吗？我通常见到它指文档勘误。
+- M3 神经引擎的 RTL 性能勘误使 DRAM 权重流从标称的 45-60 GB/s 被压到 17-19 GB/s。绕开 DMA 引擎推测预取环里那条有问题的路径后，Llama 3.2 1B 的吞吐从每秒 10.0 个 token 提升到 24.3。
+- 这个网站在普通加载过程中劫持了我的后退按钮。你应该修一下，这种行为不可接受。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Apple Neural Engineから50 GB/sを取り戻す
+***** TLDR
+M3のNeural Engineでは、カーネル重みがコアあたりちょうど1 MiBになるとDRAMの重みストリーミングが公称45〜60 GB/sから17〜19 GB/sまで落ち込む。原因はカーネルDMAエンジンの投機的プリフェッチリングにある。転送位置を14ビット演算で追跡しているため0x4000ラインで折り返し、これがちょうど1 MiB一周ぶんにあたる。その境界に乗った転送では、プリフェッチャが「まるまる一周ぶん残っている」状態を「空」と読み違え、先読みを止めて転送が直列化する。回避策は1 MiBのカーネル転送を要求しないことで、コンパイラ側で512 KiBの2タスクに分割する。演算内容は一切変わらない。Llama 3.2 1Bは毎秒10.0トークンから24.3トークンへ、Qwen3-8Bは1.36から2.97へ、該当転送の生スループットは17.3 GB/sから43.5 GB/s超へ改善した。
+***** Take
+バッファサイズを変えるだけで2.4倍という結果は、誰かが文書化されていないシリコンを計測し続け、数字の辻褄が合わなくなるまで追い込んで初めて出てくる。覚えておく価値があるのは、問題になるのがちょうど1 MiB、つまりまともな技術者ならきれいな既定値として選ぶ数だという点だ。ハードウェアは最も丁寧に見えるコードをこそ罰する。
+***** Comments
+- 1MiBのようなきりの良い数字が最悪の性能構成になるのは、起こるとはいえいつも驚く。ここでerratumという語は適切だろうか。文書に誤りがあるという告知の意味で使われるのをよく見る。
+- M3 Neural EngineのRTL性能エラッタにより、DRAM重みストリーミングが公称45〜60 GB/sから17〜19 GB/sに絞られる。DMAエンジンの投機的プリフェッチリングの問題経路を避けたところ、Llama 3.2 1Bのスループットが毎秒10.0トークンから24.3トークンに向上した。
+- このサイトは普通のページ読み込み中に戻るボタンを乗っ取った。直すべきだ。許容できる挙動ではない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+애플 뉴럴 엔진에서 50 GB/s 되찾기
+***** TLDR
+M3 뉴럴 엔진에서 커널 가중치가 코어당 정확히 1 MiB가 되면 DRAM 가중치 스트리밍이 공칭 45~60 GB/s에서 17~19 GB/s로 무너진다. 원인은 커널 DMA 엔진의 투기적 프리페치 링에 있다. 전송 위치를 14비트 연산으로 추적하는데 0x4000 라인에서 되감기고, 이것이 정확히 1 MiB 한 바퀴에 해당한다. 그 경계에 걸린 전송에서는 프리페처가 '한 바퀴가 통째로 남았다'를 '비었다'로 잘못 읽어 선행 읽기를 끄고, 전송이 직렬화된다. 우회책은 1 MiB 커널 전송을 아예 요청하지 않고 컴파일러에서 512 KiB 두 작업으로 쪼개는 것이며, 연산 자체는 전혀 바뀌지 않는다. Llama 3.2 1B는 초당 10.0 토큰에서 24.3 토큰으로, Qwen3-8B는 1.36에서 2.97로, 해당 전송의 원시 처리량은 17.3 GB/s에서 43.5 GB/s 이상으로 올랐다.
+***** Take
+버퍼 크기 하나 바꿔서 2.4배가 나오는 결과는, 누군가 문서화되지 않은 실리콘을 계측하며 숫자가 말이 안 될 때까지 파고들어야만 나온다. 기억할 만한 대목은 문제가 되는 값이 정확히 1 MiB, 즉 제정신인 엔지니어라면 깔끔한 기본값으로 고를 그 숫자라는 점이다. 하드웨어가 가장 단정해 보이는 코드를 골라 벌하는 셈이다.
+***** Comments
+- 1MiB 같은 딱 떨어지는 숫자가 최악의 성능 구성이 되는 건 일어나긴 해도 늘 놀랍다. 여기서 erratum이라는 단어가 맞나? 보통은 문서에 오류가 있다는 공지에 쓰이는 걸 본다.
+- M3 뉴럴 엔진의 RTL 성능 에라타가 DRAM 가중치 스트리밍을 공칭 45~60 GB/s에서 17~19 GB/s로 제한한다. DMA 엔진의 투기적 프리페치 링에서 문제 경로를 피하자 Llama 3.2 1B 처리량이 초당 10.0 토큰에서 24.3 토큰으로 올랐다.
+- 이 사이트는 평범한 페이지 로딩 중에 내 뒤로 가기 버튼을 가로챘다. 고쳐야 한다. 용납할 수 있는 동작이 아니다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Recuperando 50 GB/s del Neural Engine de Apple
+***** TLDR
+En el Neural Engine del M3, el streaming de pesos desde DRAM se desplomaba de los 45 a 60 GB/s nominales a 17 o 19 GB/s siempre que los pesos del kernel sumaban exactamente 1 MiB por núcleo. La causa está en el anillo de prefetch especulativo del motor DMA: rastrea la posición de la transferencia con aritmética de 14 bits, que da la vuelta a las 0x4000 líneas, justo un ciclo completo de 1 MiB. Una transferencia que cae en ese límite hace que el prefetcher lea 'queda una vuelta entera' como 'vacío', así que apaga la anticipación y la transferencia se serializa. La solución es no pedir nunca una transferencia de kernel de 1 MiB y dividirla en dos tareas de 512 KiB desde el compilador, sin cambiar ningún cálculo. Llama 3.2 1B pasó de 10,0 a 24,3 tokens/s, Qwen3-8B de 1,36 a 2,97, y el rendimiento bruto en las transferencias afectadas de 17,3 a más de 43,5 GB/s.
+***** Take
+Un 2,4x por cambiar un tamaño de búfer es el tipo de resultado que solo aparece cuando alguien instrumenta silicio sin documentar hasta que los números dejan de cuadrar. El detalle que vale la pena guardar es que el caso malo es exactamente 1 MiB, el número que cualquier ingeniero sensato elegiría como valor por defecto ordenado, así que el hardware castiga justamente al código que parece más cuidadoso.
+***** Comments
+- Siempre me sorprende que un número redondo como 1MiB acabe siendo la configuración de mal rendimiento, aunque pasa. ¿Seguro que erratum es la palabra correcta aquí? Suelo verla para el aviso de que un documento tiene un error.
+- Una erratum de rendimiento en el RTL del Neural Engine del M3 limita el streaming de pesos desde DRAM a 17-19 GB/s frente a los 45-60 nominales. Evitar la ruta problemática en el anillo de prefetch especulativo del DMA subió Llama 3.2 1B de 10,0 a 24,3 tokens/s.
+- Esta web secuestró mi botón de retroceso durante una carga de página normal. Deberías arreglarlo, no es una forma aceptable de comportarse.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+50 GB/s von Apples Neural Engine zurückholen
+***** TLDR
+Auf der Neural Engine des M3 brach das Streaming der Gewichte aus dem DRAM von nominal 45 bis 60 GB/s auf 17 bis 19 GB/s ein, sobald die Kernel-Gewichte exakt 1 MiB pro Kern ergaben. Die Ursache liegt im spekulativen Prefetch-Ring der Kernel-DMA-Einheit: Sie verfolgt die Transferposition mit 14-Bit-Arithmetik, die bei 0x4000 Zeilen überläuft, also genau nach einem vollen 1-MiB-Zyklus. Ein Transfer auf dieser Grenze lässt den Prefetcher 'eine volle Runde verbleibend' als 'leer' lesen, er schaltet die Vorausschau ab und der Transfer serialisiert. Der Workaround: nie einen 1-MiB-Kernel-Transfer anfordern, sondern ihn im Compiler in zwei 512-KiB-Aufgaben teilen, was an der Arithmetik nichts ändert. Llama 3.2 1B stieg von 10,0 auf 24,3 Token/s, Qwen3-8B von 1,36 auf 2,97, der reine Durchsatz betroffener Transfers von 17,3 auf über 43,5 GB/s.
+***** Take
+Ein Faktor 2,4 durch eine geänderte Puffergröße entsteht nur, wenn jemand undokumentiertes Silizium so lange vermisst, bis die Zahlen keinen Sinn mehr ergeben. Bemerkenswert ist, dass der schlechte Fall exakt 1 MiB ist, also die Zahl, die jeder vernünftige Entwickler als saubere Voreinstellung wählen würde. Die Hardware bestraft damit ausgerechnet den Code, der am sorgfältigsten aussieht.
+***** Comments
+- Es überrascht mich immer wieder, wenn eine runde Zahl wie 1MiB die schlechte Performance-Konfiguration ist, auch wenn es vorkommt. Ist erratum hier das richtige Wort? Ich kenne es eher als Hinweis, dass ein Dokument einen Fehler enthält.
+- Ein RTL-Performance-Erratum in der Neural Engine des M3 drosselt das DRAM-Gewichtsstreaming von nominal 45-60 GB/s auf 17-19 GB/s. Das Umgehen des problematischen Pfads im spekulativen Prefetch-Ring der DMA-Einheit hob den Durchsatz von Llama 3.2 1B von 10,0 auf 24,3 Token/s.
+- Diese Website hat bei einem einfachen Seitenaufruf meinen Zurück-Button gekapert. Das solltest du beheben, so verhält man sich nicht.
+** Don't be the out of touch Kung Fu master :ai:programming:careers:carmack:
+:PROPERTIES:
+:ID:       49677577
+:URL:      https://twitter.com/ID_AA_Carmack/status/2098443262214230095
+:HN_URL:   https://news.ycombinator.com/item?id=49677577
+:POINTS:   83
+:COMMENTS: 52
+:BY:       dsubburam
+:END:
+
+*** TLDR
+John Carmack argues that hand-writing code is moving from necessity to hobby the way assembly programming did, and the way martial arts moved from combat skill to practice. His warning: don't be the out of touch kung fu master, heir to lifetimes of tradition, who gets mauled by an amateur MMA fighter. The advice is to adopt AI tooling rather than defend older methods on principle. HN split hard. One side reports finishing large rewrites with AI and enjoying the shift from typing out syntax to working on architecture. The other side says the analogy undercuts itself, since martial arts kept their value through discipline and understanding rather than output, and several commenters point at Carmack's own investments in AI.
+
+*** Take
+The analogy is doing more work than it can support. MMA beat traditional kung fu in a setting with a scoreboard and a referee, and Carmack is applying it to a field where the equivalent measurement barely exists: see the Real-SWE numbers in this same digest. The advice to try the tools is fine. The claim that refusing to is a public losing bet needs the scoreboard first.
+
+*** Comments
+
+**** glimshe
+We are going from the era of manual, line-by-line mental model transcription to one where engineers can focus on data structures, architecture and algorithms. I love bringing out the program already running in my head without the grind of typing it in.
+
+**** tkel
+Ironically, this post comes off as out of touch. The purpose of martial arts isn't just to win a life-or-death brawl. Similarly, the point of programming isn't just to generate as much code as possible.
+
+**** mycocola
+His analogy might be accidentally appropriate given MMA fighters' propensity to develop CTE.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+别做那个脱节的功夫大师
+***** TLDR
+John Carmack 认为，手写代码正像当年的汇编编程一样，从必需品变成爱好，就像武术从实战技能变成修习。他的警告是：别做那个继承了几代传统、却被业余 MMA 选手打倒的脱节功夫大师。建议是采用 AI 工具，而不是出于原则去捍卫旧方法。HN 上分歧明显。一派表示自己借助 AI 完成了大规模重写，并享受从敲语法转向做架构的变化。另一派认为这个类比自相矛盾，因为武术的价值来自纪律和理解而非产出量，还有几位评论者指出 Carmack 本人在 AI 领域有投资。
+***** Take
+这个类比承担了它撑不起的论证。MMA 击败传统功夫，是在有记分牌和裁判的场合，而 Carmack 把它套用到一个几乎不存在对应度量的领域：看看本期同一份摘要里的 Real-SWE 数据。建议大家试试工具没有问题，但「拒绝使用就是公开押注失败」这个论断，得先有记分牌。
+***** Comments
+- 我们正从逐行手工转录心智模型的时代，走向工程师可以专注于数据结构、架构和算法的时代。我很享受把脑子里已经跑起来的程序直接拿出来，而不必忍受敲代码的苦工。
+- 讽刺的是，这篇帖子本身就显得脱节。武术的目的不只是在生死搏斗中取胜。同样，编程的意义也不只是尽可能多地产出代码。
+- 考虑到 MMA 选手容易罹患慢性创伤性脑病，他这个类比也许意外地贴切。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+時代遅れのカンフーの達人になるな
+***** TLDR
+ジョン・カーマックは、手書きのコーディングがかつてのアセンブリ言語と同じく必需品から趣味へ移りつつあり、それは武術が実戦技術から稽古へ移ったのと同じだと論じる。その警告はこうだ。何代もの伝統を受け継ぎながら、アマチュアのMMAファイターに叩きのめされる時代遅れのカンフーの達人になるな。助言はAIツールを取り入れることであり、原則論で旧来の手法を守ることではない。HNの反応は真っ二つだ。一方はAIで大規模な書き換えをやり切り、構文を打ち込む作業から設計へ重心が移ったことを歓迎する。他方は、武術の価値は生産量ではなく規律と理解にあったのだから類比が成立していないと言い、カーマック自身のAI投資を指摘する声もある。
+***** Take
+この類比は支えきれない重さを背負わされている。MMAが伝統的カンフーを破ったのはスコアボードとレフェリーがある場でのことで、カーマックはそれを、対応する測定手段がほとんど存在しない分野に当てはめている。同じ号のReal-SWEの数字を見ればいい。ツールを試せという助言は妥当だ。だが拒むことが公然の負け賭けだという主張には、まずスコアボードが要る。
+***** Comments
+- 1行ずつ頭の中のモデルを手で書き写す時代から、エンジニアがデータ構造やアーキテクチャ、アルゴリズムに集中できる時代へ移りつつある。頭の中ですでに動いているプログラムを、打ち込む苦役なしに取り出せるのが気に入っている。
+- 皮肉なことに、この投稿自体が時代遅れに見える。武術の目的は生死をかけた乱闘に勝つことだけではない。同様に、プログラミングの目的もできるだけ多くのコードを生み出すことだけではない。
+- MMAファイターがCTEを発症しやすいことを考えると、彼の類比は意図せず的確かもしれない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+시대에 뒤처진 쿵후 사범이 되지 마라
+***** TLDR
+존 카맥은 손으로 코드를 쓰는 일이 과거의 어셈블리 프로그래밍처럼 필수에서 취미로 옮겨가고 있으며, 이는 무술이 실전 기술에서 수련으로 옮겨간 것과 같다고 주장한다. 그의 경고는 이렇다. 여러 세대의 전통을 물려받고도 아마추어 MMA 선수에게 무너지는, 시대에 뒤처진 쿵후 사범이 되지 마라. 조언은 원칙을 내세워 옛 방식을 방어하지 말고 AI 도구를 받아들이라는 것이다. HN은 크게 갈렸다. 한쪽은 AI로 대규모 재작성을 끝냈다고 전하며 문법을 타이핑하는 일에서 설계로 무게중심이 옮겨간 것을 반긴다. 다른 쪽은 무술의 가치가 산출량이 아니라 규율과 이해에서 나왔으므로 비유가 스스로를 무너뜨린다고 말하고, 몇몇은 카맥 본인의 AI 투자 이력을 지적한다.
+***** Take
+이 비유는 감당할 수 없는 무게를 지고 있다. MMA가 전통 쿵후를 이긴 것은 점수판과 심판이 있는 자리에서였고, 카맥은 그것을 대응하는 측정 수단이 거의 없는 분야에 적용한다. 같은 호의 Real-SWE 수치를 보라. 도구를 써보라는 조언은 타당하다. 다만 쓰지 않는 것이 공개적으로 지는 베팅이라는 주장에는 점수판이 먼저 필요하다.
+***** Comments
+- 머릿속 모델을 한 줄씩 손으로 옮겨 적던 시대에서, 엔지니어가 자료구조와 아키텍처, 알고리즘에 집중할 수 있는 시대로 가고 있다. 머릿속에서 이미 돌아가는 프로그램을 타이핑 노역 없이 꺼낼 수 있다는 점이 좋다.
+- 역설적으로 이 글 자체가 시대에 뒤처져 보인다. 무술의 목적은 생사를 건 싸움에서 이기는 것만이 아니다. 마찬가지로 프로그래밍의 목적도 최대한 많은 코드를 뽑아내는 것만이 아니다.
+- MMA 선수들이 CTE에 걸리기 쉽다는 점을 생각하면 그의 비유는 의도치 않게 적절할지도 모른다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+No seas el maestro de kung fu desconectado
+***** TLDR
+John Carmack sostiene que escribir código a mano está pasando de necesidad a afición, igual que ocurrió con el ensamblador y con las artes marciales al pasar de habilidad de combate a práctica. Su advertencia: no seas el maestro de kung fu desconectado, heredero de generaciones de tradición, al que destroza un peleador aficionado de MMA. El consejo es adoptar las herramientas de IA en lugar de defender los métodos antiguos por principio. HN se dividió con fuerza. Un lado cuenta haber terminado reescrituras enormes con IA y disfruta el cambio de teclear sintaxis a trabajar en arquitectura. El otro dice que la analogía se desmonta sola, porque las artes marciales conservaron su valor por la disciplina y la comprensión, no por la producción, y varios comentaristas señalan las propias inversiones de Carmack en IA.
+***** Take
+La analogía carga con más de lo que puede sostener. El MMA venció al kung fu tradicional en un escenario con marcador y árbitro, y Carmack lo aplica a un campo donde esa medición apenas existe: véanse las cifras de Real-SWE en este mismo boletín. El consejo de probar las herramientas está bien. La afirmación de que negarse es una apuesta perdida en público necesita primero el marcador.
+***** Comments
+- Pasamos de la era de transcribir a mano, línea a línea, el modelo mental, a otra donde los ingenieros pueden centrarse en estructuras de datos, arquitectura y algoritmos. Me encanta sacar el programa que ya corre en mi cabeza sin la faena de teclearlo.
+- Irónicamente, este post suena desconectado. El propósito de las artes marciales no es solo ganar una pelea a vida o muerte. Del mismo modo, el propósito de programar no es solo generar tanto código como sea posible.
+- Su analogía puede ser accidentalmente apropiada, dada la propensión de los peleadores de MMA a desarrollar CTE.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Sei nicht der abgehängte Kung-Fu-Meister
+***** TLDR
+John Carmack argumentiert, dass handgeschriebener Code sich von der Notwendigkeit zum Hobby entwickelt, so wie einst die Assemblerprogrammierung und so wie Kampfkunst von der Kampffähigkeit zur Übung wurde. Seine Warnung: Sei nicht der abgehängte Kung-Fu-Meister, Erbe von Generationen an Tradition, den ein Amateur-MMA-Kämpfer zerlegt. Der Rat lautet, KI-Werkzeuge zu übernehmen, statt alte Methoden aus Prinzip zu verteidigen. HN ist deutlich gespalten. Die eine Seite berichtet von großen Rewrites mit KI und begrüßt die Verschiebung vom Tippen der Syntax hin zur Architektur. Die andere hält die Analogie für selbstwidersprüchlich, weil Kampfkünste ihren Wert über Disziplin und Verständnis behielten und nicht über Ausstoß, und mehrere Kommentatoren verweisen auf Carmacks eigene KI-Investitionen.
+***** Take
+Die Analogie trägt mehr, als sie kann. MMA schlug traditionelles Kung Fu in einem Rahmen mit Anzeigetafel und Schiedsrichter, und Carmack überträgt das auf ein Feld, in dem es die entsprechende Messung kaum gibt: siehe die Real-SWE-Zahlen in derselben Ausgabe. Der Rat, die Werkzeuge auszuprobieren, ist in Ordnung. Die Behauptung, eine Weigerung sei eine öffentlich verlorene Wette, braucht erst die Anzeigetafel.
+***** Comments
+- Wir bewegen uns von der Ära, in der man sein mentales Modell Zeile für Zeile abschreibt, hin zu einer, in der Entwickler sich auf Datenstrukturen, Architektur und Algorithmen konzentrieren. Ich hole das Programm, das in meinem Kopf schon läuft, gern heraus, ohne es mühsam eintippen zu müssen.
+- Ironischerweise wirkt dieser Beitrag selbst abgehängt. Der Sinn von Kampfkünsten ist nicht nur, eine Prügelei auf Leben und Tod zu gewinnen. Genauso ist der Sinn des Programmierens nicht nur, möglichst viel Code zu erzeugen.
+- Seine Analogie ist vielleicht unbeabsichtigt treffend, wenn man bedenkt, wie häufig MMA-Kämpfer CTE entwickeln.
+** Apple iPod Engraver (2019) :apple:web:design:history:
+:PROPERTIES:
+:ID:       49619848
+:URL:      https://dunstanorchard.com/apple-ipod-engraver/
+:HN_URL:   https://news.ycombinator.com/item?id=49619848
+:POINTS:   176
+:COMMENTS: 40
+:BY:       NaOH
+:END:
+
+*** TLDR
+Dunstan Orchard, a UI engineer at Apple between 2004 and 2006, writes up the iPod engraving feature on the online store. The original page was a plain form. He added three things: an iPod you could rotate by cycling through a series of JPEGs in JavaScript, a live preview that sent your text to ImageMagick server-side and composited the engraving onto the back of the iPod, and a shipping-time estimate that swapped a CSS class to do a yellow fade highlight when it changed. A working demo is still on the site. The author is in the HN thread answering questions.
+
+*** Take
+Every part of this is a server round trip and a pile of pre-rendered frames because that was the only way to do it in 2005, and the result still reads as more considered than most product configurators shipping today. The commenter who noticed the real story is right: the notable thing is that Apple paid someone to go find small interactions worth adding, rather than only budgeting for them during a redesign.
+
+*** Comments
+
+**** georgecalm
+I really appreciate that someone's job was to prototype concepts that would add some interactive sparkle to the site. On a larger team we generally add this kind of interaction at the start of a project or during redesign, rarely is someone designated to go find small ways.
+
+**** dmcrespo
+Since this is about old iPod technology: I've been working on getting the real Apple iPod Classic 6G firmware running in QEMU. It emulates two clickwheel iPods, including the display, click wheel input and music player.
+
+**** dunstanorchard
+That's my site. I'd be happy to answer any questions you might have about it.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+苹果 iPod 激光刻字工具（2019）
+***** TLDR
+Dunstan Orchard 在 2004 至 2006 年间任苹果 UI 工程师，他记录了在线商店上的 iPod 刻字功能。最初那个页面只是一个普通表单。他加了三样东西：一个可以旋转的 iPod，用 JavaScript 轮播一系列 JPEG 实现；一个实时预览，把你输入的文字发到服务端交给 ImageMagick，再把刻字合成到 iPod 背面；以及一个发货时间提示，在变化时切换 CSS class 做出黄色渐隐高亮。站点上至今还留着一个可用的演示。作者本人也在 HN 帖子里回答提问。
+***** Take
+这里的每一步都是服务端往返加一堆预渲染帧，因为 2005 年只能这么做，而成品读起来仍比今天大多数产品配置器更用心。那位看出真正重点的评论者说得对：值得注意的是苹果专门付钱让人去寻找值得添加的小交互，而不是只在改版时才给这类工作留预算。
+***** Comments
+- 我很欣赏有人的工作就是做原型，为网站增加一点交互上的火花。在更大的团队里，我们通常只在项目启动或改版时加这类交互，很少有人被专门指派去寻找这些小机会。
+- 既然聊的是老 iPod 技术：我一直在让真正的 Apple iPod Classic 6G 固件跑在 QEMU 上。它现在能模拟两款点按转盘 iPod，包括屏幕显示、转盘输入和音乐播放。
+- 那是我的网站。很乐意回答你们的任何问题。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+AppleのiPod刻印ツール（2019）
+***** TLDR
+2004年から2006年までAppleでUIエンジニアを務めたダンスタン・オーチャードが、オンラインストアのiPod刻印機能について書いている。元のページは素っ気ないフォームだった。彼は3つを加えた。JavaScriptで一連のJPEGを切り替えて回転させられるiPod、入力したテキストをサーバー側のImageMagickに送り刻印をiPod背面に合成するライブプレビュー、そして変化したときにCSSクラスを切り替えて黄色いフェードで強調する配送予定表示だ。動くデモは今もサイトに残っている。著者本人がHNのスレッドで質問に答えている。
+***** Take
+どの部分もサーバー往復と大量の事前レンダリング画像で成り立っている。2005年にはそれしか手がなかったからだ。それでも出来上がりは、今日出荷されている多くの製品コンフィギュレータより考え抜かれて見える。本質を突いたコメントは正しい。注目すべきは、Appleが改装時にだけ予算を付けるのではなく、加える価値のある小さなインタラクションを探す仕事に人を割いていたことだ。
+***** Comments
+- サイトにインタラクティブな輝きを足す構想を試作するのが誰かの仕事だったというのは、本当にいいと思う。大きなチームでは、この種のインタラクションはプロジェクト開始時か改装時に入れるもので、小さな工夫を探す担当が置かれることはめったにない。
+- 古いiPodの話なので。実機のApple iPod Classic 6GのファームウェアをQEMUで動かす作業を続けている。今はクリックホイール搭載の2機種を、画面表示、ホイール入力、音楽再生まで含めてエミュレートできる。
+- それは私のサイトです。何か質問があれば喜んでお答えします。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+애플 아이팟 각인 도구 (2019)
+***** TLDR
+2004년부터 2006년까지 애플에서 UI 엔지니어로 일한 던스턴 오처드가 온라인 스토어의 아이팟 각인 기능을 정리했다. 원래 페이지는 밋밋한 폼이었다. 그는 세 가지를 더했다. 자바스크립트로 여러 장의 JPEG를 순환시켜 돌려볼 수 있는 아이팟, 입력한 문구를 서버의 ImageMagick으로 보내 각인을 아이팟 뒷면에 합성하는 실시간 미리보기, 그리고 값이 바뀔 때 CSS 클래스를 교체해 노란 페이드로 강조하는 배송 예정 표시다. 작동하는 데모가 지금도 사이트에 남아 있다. 저자는 HN 스레드에서 직접 질문에 답하고 있다.
+***** Take
+여기 모든 요소가 서버 왕복과 미리 렌더링한 프레임 더미로 이뤄져 있다. 2005년에는 그 방법뿐이었기 때문이다. 그런데도 결과물은 오늘날 출시되는 대부분의 제품 구성기보다 더 공들여 보인다. 핵심을 짚은 댓글이 옳다. 주목할 점은 애플이 리디자인 때만 예산을 붙인 게 아니라, 더할 만한 작은 인터랙션을 찾아다니는 일에 사람을 붙였다는 것이다.
+***** Comments
+- 사이트에 인터랙티브한 반짝임을 더할 아이디어를 프로토타이핑하는 게 누군가의 업무였다는 점이 정말 좋다. 큰 팀에서는 보통 이런 인터랙션을 프로젝트 초기나 리디자인 때 넣고, 작은 기회를 찾아다니도록 따로 지정되는 사람은 드물다.
+- 옛 아이팟 기술 이야기라서 덧붙이면, 실제 애플 아이팟 클래식 6G 펌웨어를 QEMU에서 돌리는 작업을 해왔다. 지금은 클릭휠 아이팟 두 종을 화면 표시, 휠 입력, 음악 재생까지 에뮬레이트한다.
+- 제 사이트입니다. 궁금한 점 있으면 기꺼이 답하겠습니다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+El grabador de iPod de Apple (2019)
+***** TLDR
+Dunstan Orchard, ingeniero de interfaz en Apple entre 2004 y 2006, cuenta cómo se hizo la función de grabado de iPods en la tienda online. La página original era un formulario simple. Él añadió tres cosas: un iPod que podías rotar recorriendo una serie de JPEG con JavaScript, una vista previa en vivo que enviaba tu texto a ImageMagick en el servidor y componía el grabado sobre la parte trasera del iPod, y una estimación de tiempo de envío que cambiaba de clase CSS para hacer un destello amarillo al actualizarse. La demo sigue funcionando en el sitio. El autor está respondiendo preguntas en el hilo de HN.
+***** Take
+Cada pieza de esto es una ida y vuelta al servidor y un montón de fotogramas pre-renderizados, porque en 2005 era la única forma, y el resultado todavía se percibe más cuidado que la mayoría de configuradores de producto que se publican hoy. El comentarista que vio lo importante tiene razón: lo llamativo es que Apple pagara a alguien para buscar pequeñas interacciones que valiera la pena añadir, en lugar de presupuestarlas solo durante un rediseño.
+***** Comments
+- Me parece genial que el trabajo de alguien fuera prototipar conceptos que añadieran algo de chispa interactiva al sitio. En equipos grandes solemos añadir este tipo de interacción al inicio de un proyecto o en un rediseño, rara vez hay alguien designado para buscar detalles pequeños.
+- Ya que va de tecnología antigua de iPod: llevo tiempo trabajando en ejecutar el firmware real del iPod Classic 6G en QEMU. Emula dos iPods con rueda táctil, incluida la pantalla, la entrada de la rueda y el reproductor de música.
+- Ese es mi sitio. Estaré encantado de responder cualquier pregunta que tengáis.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Apples iPod-Gravierer (2019)
+***** TLDR
+Dunstan Orchard, von 2004 bis 2006 UI-Entwickler bei Apple, beschreibt die Gravurfunktion für iPods im Onlinestore. Die ursprüngliche Seite war ein schlichtes Formular. Er ergänzte drei Dinge: einen iPod, den man durch Durchblättern einer JPEG-Serie per JavaScript drehen konnte, eine Live-Vorschau, die den Text serverseitig an ImageMagick schickte und die Gravur auf die Rückseite des iPods montierte, und eine Lieferzeitangabe, die per CSS-Klassenwechsel bei Änderungen gelb aufblitzte. Eine funktionierende Demo steht bis heute auf der Seite. Der Autor beantwortet im HN-Thread selbst Fragen.
+***** Take
+Jeder Teil davon ist ein Server-Roundtrip und ein Stapel vorgerenderter Einzelbilder, weil es 2005 nicht anders ging, und das Ergebnis wirkt immer noch durchdachter als die meisten Produktkonfiguratoren, die heute ausgeliefert werden. Der Kommentator, der den eigentlichen Punkt erkannt hat, liegt richtig: Bemerkenswert ist, dass Apple jemanden dafür bezahlte, kleine lohnende Interaktionen aufzuspüren, statt sie nur im Rahmen eines Redesigns einzuplanen.
+***** Comments
+- Ich finde es großartig, dass es jemandes Aufgabe war, Konzepte zu prototypen, die der Seite etwas interaktiven Glanz geben. In größeren Teams fügt man solche Interaktionen meist zu Projektbeginn oder beim Redesign ein, selten ist jemand dafür abgestellt, kleine Möglichkeiten zu suchen.
+- Da es um alte iPod-Technik geht: Ich arbeite daran, die echte Firmware des iPod Classic 6G in QEMU laufen zu lassen. Aktuell werden zwei Clickwheel-iPods emuliert, inklusive Display, Clickwheel-Eingabe und Musikplayer.
+- Das ist meine Seite. Ich beantworte gern alle Fragen dazu.
