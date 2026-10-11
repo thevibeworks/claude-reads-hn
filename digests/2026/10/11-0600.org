@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-10-11 06:00 UTC
+#+DATE: 2026-10-11T06:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+A paywall bypass starts an ethics fight, unikernels get an AI makeover, and a 2002 CD check falls to one patched byte
+
+* Highlights
+- WallHop: a closed-source fork of GPL-3 ladder, and 90 comments on whether reading HTML is theft
+- Unikernels: nothing changed except the cost of writing the missing libraries
+- Rewind VM: Nix derivations hand a record/replay debugger its symbols for free
+- Qwen3-1.7B as a decision model, and the calibration section nobody else writes
+- Three layers of 2002 copy protection, defeated by one jmpifz operand
+
+* Stories
+
+** WallHop – 12ft.io is gone, so I built a replacement :web:paywall:licensing:ethics:
+:PROPERTIES:
+:ID:       50038634
+:URL:      https://wallhop.io/
+:HN_URL:   https://news.ycombinator.com/item?id=50038634
+:POINTS:   208
+:COMMENTS: 90
+:BY:       TheWaffleHax
+:END:
+
+*** TLDR
+WallHop is a free paywall bypass: paste an article URL, or prefix any URL with wallhop.io/, and it chains several bypass methods to return the text without the paywall overlay, ads or signup. There is an iPhone shortcut, a bookmarklet, and /raw/ and /api/ endpoints. It is a modified fork of everywall/ladder, which is GPL-3.0, and the fork is not public yet. The site itself says paywalls pay for journalism and tells you to subscribe to publications you read regularly.
+
+*** Take
+The code is the least interesting part. What the thread actually exposes is that the author shipped a closed modification of GPL-3 software while telling readers to go subscribe, and that the paywalls being defeated are the kind that ship the full article to your browser and then hide it. Both complaints in the thread are correct, which is why nobody in 90 comments convinced anybody.
+
+*** Comments
+
+**** sergiotapia
+:PROPERTIES:
+:COMMENT_ID: 50038788
+:END:
+If newspapers make money literally by writing this content and asking people to pay for it, how is this website not just stealing their content wholesale?
+
+**** walrus01
+:PROPERTIES:
+:COMMENT_ID: 50039612
+:END:
+If I ask a public httpd for the content of a URL and it sends it to me, it's my choice to render it how I want. If somebody really wants to implement a fully effective paywall they're welcome to put their content behind a system that requires a unique username/password.
+
+**** armchairhacker
+:PROPERTIES:
+:COMMENT_ID: 50038702
+:END:
+Why not open source? You modified GPL-3 ladder; I don't know whether it's legally required, but I feel it's morally expected and important in practice (since yours may get taken down).
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+WallHop——12ft.io 没了，所以我做了个替代品
+***** TLDR
+WallHop 是一个免费的付费墙绕过工具：粘贴文章链接，或在任意网址前加上 wallhop.io/，它会串联多种绕过方式，返回去掉付费墙弹窗、广告和注册要求的正文。它提供 iPhone 快捷指令、书签脚本以及 /raw/ 和 /api/ 接口。它是 GPL-3.0 项目 everywall/ladder 的修改版分支，但分支代码尚未公开。网站本身写着付费墙养活新闻业，并建议你订阅常读的刊物。
+***** Take
+代码本身是最无趣的部分。这个讨论真正暴露的是：作者一边闭源发布了对 GPL-3 软件的修改，一边劝读者去订阅；而被破解的那些付费墙，恰恰是把全文发到浏览器再用样式藏起来的那一类。帖子里两边的指责都站得住，所以 90 条评论谁也没说服谁。
+***** Comments
+- 报社就是靠写这些内容并收费来赚钱的，这个网站凭什么不算是整批盗用他们的内容？
+- 如果我向一个公开的 httpd 请求某个网址的内容，而它把内容发给了我，那怎么渲染是我的事。真想做一个彻底有效的付费墙，就把内容放到需要独立账号密码的系统后面。
+- 为什么不开源？你修改了 GPL-3 的 ladder；我不确定法律上是否强制，但我觉得这在道义上是应该的，实际上也很重要（因为你这个服务可能会被下架）。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+WallHop – 12ft.ioが消えたので代替を作った
+***** TLDR
+WallHopは無料のペイウォール回避サービス。記事のURLを貼るか、任意のURLの前にwallhop.io/を付けると、複数の回避手法を連結してペイウォールのポップアップや広告、登録要求のない本文を返す。iPhoneショートカット、ブックマークレット、/raw/と/api/のエンドポイントがある。GPL-3.0のeverywall/ladderを改変したフォークだが、フォークはまだ非公開。サイト自身に「ペイウォールはジャーナリズムを支えている」と書かれ、よく読む媒体は購読するよう勧めている。
+***** Take
+コードは一番どうでもいい部分だ。このスレッドが露わにしたのは、作者がGPL-3ソフトの改変版を非公開のまま公開サービスにしつつ、読者には購読を勧めているという点と、破られているペイウォールが全文をブラウザに送ってから隠すタイプだという点だ。双方の指摘はどちらも正しいので、90件のコメントで誰も誰かを説得できていない。
+***** Comments
+- 新聞社はまさにこの内容を書いて課金することで稼いでいる。このサイトが丸ごと盗用でないと言える根拠は何だ？
+- 公開httpdにURLの内容を要求して、向こうが送ってきたのなら、どう描画するかは私の自由だ。本当に完全なペイウォールを実装したいなら、個別のユーザー名とパスワードを要求する仕組みの後ろに置けばいい。
+- なぜオープンソースにしない？GPL-3のladderを改変しているのだから。法的に必須かは分からないが、道義的には期待されることで、実務上も重要だ（あなたのものが削除される可能性があるので）。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+WallHop – 12ft.io가 사라져서 대체 서비스를 만들었다
+***** TLDR
+WallHop은 무료 페이월 우회 서비스다. 기사 URL을 붙여넣거나 아무 URL 앞에 wallhop.io/를 붙이면 여러 우회 기법을 연달아 적용해 페이월 팝업과 광고, 가입 요구가 없는 본문을 돌려준다. iPhone 단축어, 북마클릿, /raw/ 및 /api/ 엔드포인트를 제공한다. GPL-3.0인 everywall/ladder를 수정한 포크지만 포크 코드는 아직 공개되지 않았다. 사이트 자체에 페이월이 저널리즘을 지탱한다고 적혀 있고, 자주 읽는 매체는 구독하라고 권한다.
+***** Take
+코드는 가장 시시한 부분이다. 이 스레드가 실제로 드러낸 것은 두 가지다. 작성자가 GPL-3 소프트웨어의 수정본을 공개하지 않은 채 서비스로 띄우면서 독자에게는 구독을 권한다는 점, 그리고 뚫리는 페이월이 전문을 브라우저로 보내놓고 가려두는 종류라는 점이다. 양쪽 지적이 모두 맞기 때문에 90개의 댓글로도 아무도 설득되지 않았다.
+***** Comments
+- 신문사는 말 그대로 이 콘텐츠를 쓰고 돈을 받아 수익을 낸다. 그런데 이 사이트가 콘텐츠를 통째로 훔치는 게 아니라고 할 수 있나?
+- 공개된 httpd에 URL의 내용을 요청했고 서버가 내게 보내줬다면, 그걸 어떻게 렌더링할지는 내 선택이다. 완전히 효과적인 페이월을 원한다면 고유한 사용자명과 비밀번호를 요구하는 시스템 뒤에 콘텐츠를 두면 된다.
+- 왜 오픈소스로 하지 않나? GPL-3인 ladder를 수정했으니 말이다. 법적으로 의무인지는 모르겠지만 도덕적으로는 기대되는 일이고, 실질적으로도 중요하다(당신 것이 내려갈 수도 있으니).
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+WallHop: 12ft.io ya no existe, así que construí un reemplazo
+***** TLDR
+WallHop es un servicio gratuito para saltar muros de pago: pegas la URL de un artículo, o le pones wallhop.io/ delante a cualquier URL, y encadena varios métodos de evasión para devolverte el texto sin el muro de pago, los anuncios ni el registro. Incluye un atajo para iPhone, un bookmarklet y endpoints /raw/ y /api/. Es un fork modificado de everywall/ladder, que es GPL-3.0, y el fork todavía no es público. El propio sitio dice que los muros de pago financian el periodismo y recomienda suscribirse a las publicaciones que lees con frecuencia.
+***** Take
+El código es la parte menos interesante. Lo que el hilo deja al descubierto es que el autor publicó una modificación cerrada de software GPL-3 mientras recomienda a los lectores suscribirse, y que los muros de pago que derrota son los que mandan el artículo completo al navegador y luego lo esconden. Las dos quejas del hilo son correctas, y por eso en 90 comentarios nadie convenció a nadie.
+***** Comments
+- Si los periódicos ganan dinero literalmente escribiendo este contenido y pidiendo que la gente pague por él, ¿cómo es que esta web no les está robando el contenido al por mayor?
+- Si le pido a un httpd público el contenido de una URL y me lo envía, cómo lo renderizo es mi decisión. Si alguien quiere un muro de pago realmente efectivo, puede poner el contenido detrás de un sistema que exija usuario y contraseña propios.
+- ¿Por qué no es código abierto? Modificaste ladder, que es GPL-3; no sé si es legalmente obligatorio, pero me parece moralmente esperable e importante en la práctica (porque el tuyo puede acabar cerrado).
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+WallHop – 12ft.io ist weg, also habe ich einen Ersatz gebaut
+***** TLDR
+WallHop ist ein kostenloser Paywall-Umgeher: Man fügt eine Artikel-URL ein oder stellt wallhop.io/ vor eine beliebige URL, und der Dienst kombiniert mehrere Umgehungsmethoden und liefert den Text ohne Paywall-Overlay, Werbung und Anmeldung. Es gibt eine iPhone-Kurzbefehl, ein Bookmarklet sowie /raw/- und /api/-Endpunkte. Es ist ein veränderter Fork von everywall/ladder, der unter GPL-3.0 steht, und der Fork ist noch nicht öffentlich. Auf der Seite selbst steht, dass Paywalls den Journalismus finanzieren, mit der Bitte, Publikationen zu abonnieren, die man regelmäßig liest.
+***** Take
+Der Code ist der uninteressanteste Teil. Der Thread legt zwei Dinge offen: Der Autor hat eine geschlossene Änderung von GPL-3-Software ausgeliefert und empfiehlt den Lesern gleichzeitig ein Abo, und die umgangenen Paywalls sind genau die Sorte, die den vollen Artikel an den Browser schickt und ihn dann versteckt. Beide Vorwürfe im Thread treffen zu, weshalb in 90 Kommentaren niemand jemanden überzeugt hat.
+***** Comments
+- Wenn Zeitungen buchstäblich damit Geld verdienen, diese Inhalte zu schreiben und Leute dafür zahlen zu lassen, wieso stiehlt diese Website die Inhalte dann nicht einfach komplett?
+- Wenn ich einen öffentlichen httpd um den Inhalt einer URL bitte und er sendet ihn mir, dann ist es meine Entscheidung, wie ich ihn darstelle. Wer wirklich eine wirksame Paywall will, kann die Inhalte hinter ein System mit eigenem Benutzernamen und Passwort stellen.
+- Warum nicht Open Source? Du hast GPL-3-ladder verändert; ob es rechtlich nötig ist, weiß ich nicht, aber moralisch wird es erwartet und praktisch ist es wichtig (weil dein Dienst abgeschaltet werden könnte).
+** Unikernels were hard. key word: were :unikernels:ocaml:ai:infrastructure:
+:PROPERTIES:
+:ID:       50033357
+:URL:      https://ghuntley.com/unikernels/
+:HN_URL:   https://news.ycombinator.com/item?id=50033357
+:POINTS:   129
+:COMMENTS: 55
+:BY:       ghuntley
+:END:
+
+*** TLDR
+Geoffrey Huntley argues that unikernels, where the application is compiled as its own operating system with no separate userland, were hard for reasons that coding agents now remove: missing libraries, unfamiliar tooling, and the dogma that Nix, Bazel and MirageOS are too much work to learn. Instead of writing a Stripe client for OCaml, you run an agent in a loop to port the Go one. He cites roughly $6,000 of Claude usage over three months to build his toy language Cursed, and a million-line Rust S3 clone built with four agents compiling at once. Named platforms: MirageOS, seL4, Unikraft.
+
+*** Take
+The post is honest about what actually changed: nothing in unikernel technology, only the price of writing the missing pieces. That is a real shift, and it is also the weakest possible case for running one in production, which is why the sharpest reply is an SRE noting that the observability surface shrinks along with the attack surface. You lose strace, eBPF, lsof and ss, and the post never prices that in.
+
+*** Comments
+
+**** scottlamb
+:PROPERTIES:
+:COMMENT_ID: 50039674
+:END:
+This is the second unikernel article this week I think, and the second that really undersells the benefits of having a full OS. With a unikernel, the observability surface is much smaller. Tools such as strace, eBPF, lsof, ss, etc. have tremendous value. The article mentions some nice things for observability but so much gets thrown away.
+
+**** laidoffamazon
+:PROPERTIES:
+:COMMENT_ID: 50038328
+:END:
+> think porting "traditional" software - say Nginx - to it will be agonising. I think this is basically a solved problem with enough agents and enough compute now
+
+**** za_creature
+:PROPERTIES:
+:COMMENT_ID: 50038938
+:END:
+The only time you didn't lie was when mentioning seL4. You're Linus arguing against Tanenbaum. Even if you win, you still lose.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Unikernel 曾经很难——重点是「曾经」
+***** TLDR
+Geoffrey Huntley 认为，unikernel（把应用本身编译成操作系统，没有独立的用户空间）之所以难，原因恰好是编程 agent 现在能消除的：缺库、工具链陌生，以及「Nix、Bazel、MirageOS 学习成本太高」这种成见。你不必为 OCaml 手写一个 Stripe 客户端，而是让 agent 循环把 Go 版本移植过来。他提到自己三个月花了约 6000 美元的 Claude 额度做出玩具语言 Cursed，还提到一个用四个 agent 同时编译写出的百万行 Rust 版 S3 克隆。文中点名的平台有 MirageOS、seL4 和 Unikraft。
+***** Take
+这篇文章对真正变了什么很诚实：unikernel 技术本身毫无变化，变的只是补齐缺失部分的成本。这确实是实质性的转变，但也是最站不住脚的上生产理由——所以最到点的回复来自一位 SRE：攻击面缩小的同时，可观测面也一起缩小了。你会失去 strace、eBPF、lsof 和 ss，而文章完全没有把这笔账算进去。
+***** Comments
+- 我记得这是本周第二篇讲 unikernel 的文章，也是第二篇严重低估完整操作系统价值的文章。用 unikernel，可观测面会小得多。strace、eBPF、lsof、ss 这些工具价值极大。文章提到了一些不错的可观测性手段，但被丢掉的东西太多了。
+- > 以为把 Nginx 这类「传统」软件移植过去会很痛苦。我觉得在有足够多 agent 和算力的今天，这基本已经是个解决了的问题。
+- 你唯一没撒谎的地方就是提到 seL4。你现在是在扮演跟 Tanenbaum 争论的 Linus。就算你赢了，你还是输了。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+ユニカーネルは難しかった。重要なのは「かった」
+***** TLDR
+Geoffrey Huntleyは、アプリケーション自体をOSとしてコンパイルし独立したユーザーランドを持たないユニカーネルが難しかった理由は、まさにコーディングエージェントが解消しつつあるもの、すなわちライブラリの不足、馴染みのないツール、そしてNixやBazel、MirageOSは習得コストが高すぎるという思い込みだと論じる。OCaml用のStripeクライアントを自分で書くのではなく、エージェントをループで回してGo版を移植させればよい。3か月でClaude利用に約6,000ドルを使って自作言語Cursedを作った話と、4つのエージェントを同時にコンパイルさせて書いた100万行規模のRust製S3クローンに言及している。名前が挙がったプラットフォームはMirageOS、seL4、Unikraft。
+***** Take
+この記事は何が変わったのかについて正直だ。ユニカーネル技術そのものは何も変わっておらず、変わったのは足りない部分を書くコストだけだ。それは本物の変化であり、同時に本番投入の根拠としては最も弱い。だから一番鋭い反応は、攻撃面と一緒に可観測性の面も縮むと指摘したSREのものだ。strace、eBPF、lsof、ssを失うのに、記事はその代償を一切計算していない。
+***** Comments
+- 今週2本目のユニカーネル記事だと思うが、完全なOSの利点を大きく見落としている点でも2本目だ。ユニカーネルでは可観測性の面がはるかに小さくなる。strace、eBPF、lsof、ssといったツールの価値は絶大だ。記事は可観測性について良い点にも触れているが、捨てているものが多すぎる。
+- > Nginxのような「従来型」ソフトの移植は苦行になるだろう。十分な数のエージェントと計算資源があれば、今これはほぼ解決済みの問題だと思う。
+- 嘘をついていなかったのはseL4に触れた部分だけだ。あなたはTanenbaumに反論するLinusの立場にいる。勝ったとしても負けだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+유니커널은 어려웠다. 핵심은 '었다'
+***** TLDR
+Geoffrey Huntley는 애플리케이션 자체를 OS로 컴파일해 별도의 유저랜드가 없는 유니커널이 어려웠던 이유가 바로 코딩 에이전트가 지금 없애주는 것들, 즉 라이브러리 부재, 낯선 도구, 그리고 Nix와 Bazel, MirageOS는 배우기에 품이 너무 많이 든다는 통념이라고 주장한다. OCaml용 Stripe 클라이언트를 직접 쓰지 말고 에이전트를 루프로 돌려 Go 버전을 이식하면 된다는 것이다. 자신의 장난감 언어 Cursed를 만들며 3개월간 Claude에 약 6,000달러를 썼다는 이야기와, 에이전트 4개를 동시에 컴파일시켜 만든 100만 줄 규모의 Rust S3 클론을 언급한다. 거론된 플랫폼은 MirageOS, seL4, Unikraft다.
+***** Take
+이 글은 실제로 무엇이 바뀌었는지에 대해 정직하다. 유니커널 기술 자체는 아무것도 바뀌지 않았고, 바뀐 것은 빠진 조각을 작성하는 비용뿐이다. 그건 진짜 변화이면서 동시에 운영 환경 투입 근거로는 가장 약한 논리다. 그래서 가장 날카로운 답글은 공격면이 줄어드는 동시에 관측면도 함께 줄어든다고 지적한 SRE의 것이다. strace, eBPF, lsof, ss를 잃게 되는데 글은 그 대가를 전혀 계산하지 않는다.
+***** Comments
+- 이번 주 두 번째 유니커널 글인 것 같은데, 완전한 OS의 이점을 크게 과소평가한다는 점에서도 두 번째다. 유니커널에서는 관측면이 훨씬 작아진다. strace, eBPF, lsof, ss 같은 도구는 가치가 엄청나다. 글이 관측성에 대해 좋은 점을 몇 가지 언급하긴 하지만 버려지는 게 너무 많다.
+- > Nginx 같은 '전통적인' 소프트웨어를 이식하는 건 고통스러울 거라고 생각한다. 에이전트와 연산 자원이 충분한 지금은 사실상 해결된 문제라고 본다.
+- 거짓말을 하지 않은 건 seL4를 언급한 대목뿐이다. 당신은 Tanenbaum에게 반박하는 Linus의 자리에 서 있다. 이겨도 지는 싸움이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Los unikernels eran difíciles. Palabra clave: eran
+***** TLDR
+Geoffrey Huntley sostiene que los unikernels, donde la aplicación se compila como su propio sistema operativo sin un espacio de usuario aparte, eran difíciles justo por lo que los agentes de código ahora eliminan: librerías que faltan, herramientas poco familiares y el dogma de que Nix, Bazel y MirageOS cuestan demasiado esfuerzo de aprender. En lugar de escribir un cliente de Stripe para OCaml, pones un agente en bucle a portar el de Go. Menciona unos 6.000 dólares de uso de Claude en tres meses para construir su lenguaje de juguete Cursed, y un clon de S3 en Rust de un millón de líneas hecho con cuatro agentes compilando a la vez. Plataformas citadas: MirageOS, seL4 y Unikraft.
+***** Take
+El artículo es honesto sobre lo que de verdad cambió: nada en la tecnología de unikernels, solo el precio de escribir las piezas que faltan. Es un cambio real y, a la vez, el argumento más débil posible para llevar uno a producción, y por eso la respuesta más afilada es la de un SRE que señala que la superficie de observabilidad se encoge junto con la de ataque. Pierdes strace, eBPF, lsof y ss, y el artículo nunca contabiliza ese coste.
+***** Comments
+- Creo que es el segundo artículo sobre unikernels de esta semana, y el segundo que infravalora de verdad las ventajas de tener un SO completo. Con un unikernel, la superficie de observabilidad es mucho menor. Herramientas como strace, eBPF, lsof o ss tienen un valor enorme. El artículo menciona cosas buenas de observabilidad, pero se tira muchísimo por la borda.
+- > pensar que portar software "tradicional", digamos Nginx, va a ser una agonía. Creo que hoy, con suficientes agentes y suficiente cómputo, es básicamente un problema resuelto
+- Lo único en lo que no mentiste fue al mencionar seL4. Eres Linus discutiendo contra Tanenbaum. Incluso si ganas, pierdes.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Unikernels waren schwer. Schlüsselwort: waren
+***** TLDR
+Geoffrey Huntley argumentiert, Unikernels, bei denen die Anwendung als eigenes Betriebssystem ohne separaten Userland kompiliert wird, seien genau aus den Gründen schwer gewesen, die Coding-Agenten jetzt beseitigen: fehlende Bibliotheken, unvertraute Werkzeuge und das Dogma, Nix, Bazel und MirageOS seien zu aufwendig zu lernen. Statt selbst einen Stripe-Client für OCaml zu schreiben, lässt man einen Agenten in einer Schleife den Go-Client portieren. Er nennt rund 6.000 Dollar Claude-Nutzung über drei Monate für seine Spielzeugsprache Cursed und einen S3-Klon in Rust mit einer Million Zeilen, gebaut mit vier gleichzeitig kompilierenden Agenten. Genannte Plattformen: MirageOS, seL4, Unikraft.
+***** Take
+Der Text ist ehrlich darüber, was sich wirklich geändert hat: nichts an der Unikernel-Technik, nur der Preis für das Schreiben der fehlenden Teile. Das ist eine echte Verschiebung und gleichzeitig das schwächste denkbare Argument für den Produktivbetrieb. Deshalb kommt die schärfste Antwort von einem SRE: Mit der Angriffsfläche schrumpft auch die Beobachtbarkeit. Man verliert strace, eBPF, lsof und ss, und der Text rechnet das nirgends ein.
+***** Comments
+- Ich glaube, das ist der zweite Unikernel-Artikel diese Woche, und der zweite, der die Vorteile eines vollständigen Betriebssystems deutlich unterschätzt. Mit einem Unikernel ist die Beobachtbarkeitsfläche viel kleiner. Werkzeuge wie strace, eBPF, lsof und ss haben enormen Wert. Der Artikel nennt ein paar gute Dinge zur Observability, aber es wird sehr viel weggeworfen.
+- > zu glauben, das Portieren "traditioneller" Software, etwa Nginx, werde eine Qual. Ich halte das mit genügend Agenten und genügend Rechenleistung inzwischen für im Grunde gelöst
+- Das Einzige, wobei du nicht gelogen hast, war die Erwähnung von seL4. Du bist Linus, der gegen Tanenbaum argumentiert. Selbst wenn du gewinnst, verlierst du.
+** Nix wrote half of my debugger :nix:debugging:kvm:tooling:
+:PROPERTIES:
+:ID:       50017247
+:URL:      https://fzakaria.com/2026/10/07/nix-wrote-half-of-my-debugger
+:HN_URL:   https://news.ycombinator.com/item?id=50017247
+:POINTS:   167
+:COMMENTS: 34
+:BY:       ingve
+:END:
+
+*** TLDR
+Farid Zakaria built Rewind VM, a record/replay debugger for race conditions in Nix builds. The build runs on a single vCPU under KVM so the thread schedule is deterministic and every run is a pure function of its inputs; you can then step backwards, fork the recording into GDB without disturbing it, and diff a passing run against a failing one to find the divergence point. The Nix half is that a derivation already pins the source, compiler, libraries, kernel and VM config, and debuginfod on cache.nixos.org serves debug symbols and sources by build ID, so the debugger gets real source for any binary including the kernel. `rewind check` reruns the build under perturbed thread schedules to shake out intermittent failures.
+
+*** Take
+The commenters who say the record/replay part is rr's idea are right, and it does not weaken the post. What Nix contributes is the unglamorous half, knowing exactly which source and which symbols correspond to the bytes you are stepping through, which is the half every other debugger setup gets wrong. Worth noting that the thread's enthusiasm for Nix is mostly people admitting an agent now writes their config for them.
+
+*** Comments
+
+**** saagarjha
+:PROPERTIES:
+:COMMENT_ID: 50038209
+:END:
+I kind of confused what nix has to do with this considering it seems to basically be reimplementing rr?
+
+**** tecoholic
+:PROPERTIES:
+:COMMENT_ID: 50037771
+:END:
+Seeing Nix these days is such a whiplash experience. We have fully deterministic systems and then we have LLMs. God ;)
+
+**** pmarreck
+:PROPERTIES:
+:COMMENT_ID: 50037914
+:END:
+There is likely a mass of devs, 10x the number of Nix devs from over a year ago, who know exactly what Nix offers and why it is cool, but couldn't be bothered to master it until AI came along and basically "solved the problem". So I'd expect AI to rapidly accelerate Nix adoption.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Nix 帮我写了半个调试器
+***** TLDR
+Farid Zakaria 做了 Rewind VM，一个用于调试 Nix 构建中竞态条件的录制／回放调试器。构建在 KVM 下的单个 vCPU 上运行，因此线程调度是确定的，每次运行都是输入的纯函数；之后你可以反向单步、把录制 fork 进 GDB 而不影响原录制，还能把一次成功的运行和一次失败的运行逐步对比，找出分叉点。Nix 承担的那一半是：derivation 本来就固定了源码、编译器、库、内核和虚拟机配置，而 cache.nixos.org 上的 debuginfod 按 build ID 提供调试符号和源码，所以调试器对任何二进制（包括内核）都能拿到真实源码。`rewind check` 会在扰动过的线程调度下重跑构建，把间歇性失败逼出来。
+***** Take
+说录制／回放这部分是 rr 的想法的评论者没说错，但这并不削弱这篇文章。Nix 贡献的是不起眼的那一半：准确知道你正在单步执行的那些字节对应哪份源码、哪些符号——而这恰恰是其他调试器配置最常搞错的一半。顺带一提，帖子里对 Nix 的热情，大多来自那些承认现在是 agent 在替自己写配置的人。
+***** Comments
+- 我有点不明白这事跟 nix 有什么关系，它看起来基本上就是在重新实现 rr？
+- 现在看到 Nix 总有种精神分裂的体验。我们一边有完全确定性的系统，一边又有大模型。天啊 ;)
+- 很可能有一大批开发者——大概是一年多前 Nix 开发者数量的十倍——完全清楚 Nix 提供了什么、为什么它很棒，但在 AI 出现并基本「解决了这个问题」之前懒得去掌握它。所以我预计 AI 会大幅加速 Nix 的普及。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Nixが私のデバッガの半分を書いた
+***** TLDR
+Farid ZakariaがRewind VMを作った。Nixビルドの競合状態を調べるための記録・再生型デバッガだ。ビルドはKVM上の単一vCPUで走るためスレッドスケジュールが決定的になり、各実行は入力の純関数になる。そのうえで逆方向のステップ実行、記録を壊さずGDBへフォーク、成功した実行と失敗した実行を一歩ずつ比較して分岐点を特定できる。Nixが担う半分はこうだ。derivationがソース、コンパイラ、ライブラリ、カーネル、VM設定をすでに固定しており、cache.nixos.orgのdebuginfodがbuild IDでデバッグシンボルとソースを配信するため、カーネルを含むあらゆるバイナリの本物のソースが手に入る。`rewind check`はスレッドスケジュールを揺らしてビルドを再実行し、間欠的な失敗をあぶり出す。
+***** Take
+記録・再生の部分はrrのアイデアだというコメントは正しいが、それで記事の価値は下がらない。Nixが提供するのは地味な半分、つまりいま追っているバイトがどのソースとどのシンボルに対応するのかを正確に知ることで、他のデバッガ環境がことごとく間違えるのはまさにその半分だ。なお、スレッドにあるNix称賛の多くは、設定を書くのはもうエージェントだと認める声である。
+***** Comments
+- これがnixと何の関係があるのかよく分からない。基本的にrrを再実装しているように見えるが？
+- 最近Nixを見ると首が痛くなるような体験だ。完全に決定的なシステムがある一方で、LLMがある。やれやれ ;)
+- 1年ちょっと前のNix開発者数の10倍くらいの開発者が、Nixが何を提供し、なぜ優れているかを正確に理解しつつ、AIが登場して事実上「問題を解決」するまで習得する気になれなかったのだと思う。だからAIはNixの普及を急速に加速させると見ている。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Nix가 내 디버거의 절반을 써줬다
+***** TLDR
+Farid Zakaria가 Nix 빌드의 경쟁 상태를 추적하는 기록·재생 디버거 Rewind VM을 만들었다. 빌드는 KVM 위 단일 vCPU에서 돌아가므로 스레드 스케줄이 결정적이고, 모든 실행이 입력의 순수 함수가 된다. 그 위에서 역방향 스텝 실행, 기록을 건드리지 않고 GDB로 포크하기, 성공한 실행과 실패한 실행을 단계별로 비교해 분기 지점을 찾는 작업이 가능하다. Nix가 담당하는 절반은 이렇다. derivation이 이미 소스, 컴파일러, 라이브러리, 커널, VM 설정을 고정하고 있고 cache.nixos.org의 debuginfod가 build ID로 디버그 심볼과 소스를 제공하므로, 커널을 포함한 어떤 바이너리에 대해서도 실제 소스를 얻는다. `rewind check`는 스레드 스케줄을 흔들어 빌드를 다시 돌려 간헐적 실패를 끌어낸다.
+***** Take
+기록·재생 부분이 rr의 아이디어라는 댓글은 맞고, 그것이 글의 가치를 깎지도 않는다. Nix가 기여하는 쪽은 눈에 띄지 않는 절반, 즉 지금 밟고 있는 바이트가 어떤 소스와 어떤 심볼에 대응하는지 정확히 아는 일이고, 다른 디버거 설정이 번번이 틀리는 지점이 바로 그 절반이다. 덧붙이면 스레드의 Nix 찬사는 대부분 이제 에이전트가 자기 설정을 써준다고 인정하는 사람들의 것이다.
+***** Comments
+- 이게 nix와 무슨 상관인지 잘 모르겠다. 사실상 rr을 다시 구현한 것처럼 보이는데?
+- 요즘 Nix를 보면 머리가 어지럽다. 완전히 결정적인 시스템이 있는데 동시에 LLM이 있다. 참 ;)
+- 1년 조금 전 Nix 개발자 수의 10배쯤 되는 개발자들이 Nix가 무엇을 주고 왜 멋진지 정확히 알면서도, AI가 나타나 사실상 '문제를 해결'해주기 전까지는 익힐 마음이 없었을 것이다. 그래서 AI가 Nix 채택을 빠르게 가속할 거라고 본다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Nix escribió la mitad de mi depurador
+***** TLDR
+Farid Zakaria construyó Rewind VM, un depurador de grabación y reproducción para condiciones de carrera en builds de Nix. El build corre en una sola vCPU bajo KVM, así que la planificación de hilos es determinista y cada ejecución es una función pura de sus entradas; luego puedes retroceder paso a paso, bifurcar la grabación hacia GDB sin alterarla y comparar una ejecución correcta con una fallida para hallar el punto de divergencia. La mitad que aporta Nix es que una derivación ya fija el código fuente, el compilador, las librerías, el kernel y la configuración de la VM, y debuginfod en cache.nixos.org sirve símbolos y fuentes por build ID, de modo que el depurador obtiene fuente real de cualquier binario, incluido el kernel. `rewind check` repite el build con planificaciones de hilos perturbadas para sacar a la luz fallos intermitentes.
+***** Take
+Quienes comentan que la parte de grabación y reproducción es la idea de rr tienen razón, y eso no debilita el artículo. Lo que aporta Nix es la mitad sin glamur: saber exactamente qué fuente y qué símbolos corresponden a los bytes que estás recorriendo, que es justo la mitad que el resto de configuraciones de depurador hace mal. Vale notar que el entusiasmo por Nix en el hilo viene en su mayoría de gente que admite que ahora un agente les escribe la configuración.
+***** Comments
+- Me confunde un poco qué tiene que ver nix con esto, dado que parece que básicamente está reimplementando rr.
+- Ver Nix estos días es una experiencia de latigazo. Tenemos sistemas totalmente deterministas y, por otro lado, tenemos LLMs. Dios ;)
+- Probablemente hay una masa de desarrolladores, unas 10 veces el número de desarrolladores de Nix de hace poco más de un año, que saben exactamente qué ofrece Nix y por qué es genial, pero no se molestaban en dominarlo hasta que llegó la IA y básicamente "resolvió el problema". Así que espero que la IA acelere rápidamente la adopción de Nix.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Nix hat die Hälfte meines Debuggers geschrieben
+***** TLDR
+Farid Zakaria hat Rewind VM gebaut, einen Record-and-Replay-Debugger für Race Conditions in Nix-Builds. Der Build läuft auf einer einzigen vCPU unter KVM, damit das Thread-Scheduling deterministisch ist und jeder Lauf eine reine Funktion seiner Eingaben; danach kann man rückwärts steppen, die Aufzeichnung unverändert nach GDB forken und einen erfolgreichen gegen einen fehlgeschlagenen Lauf Schritt für Schritt vergleichen, um den Divergenzpunkt zu finden. Die Nix-Hälfte: Eine Derivation fixiert Quellcode, Compiler, Bibliotheken, Kernel und VM-Konfiguration bereits, und debuginfod auf cache.nixos.org liefert Debug-Symbole und Quellen per Build-ID, sodass der Debugger für jedes Binary echten Quellcode bekommt, auch für den Kernel. `rewind check` wiederholt den Build mit gestörten Thread-Schedules, um sporadische Fehler hervorzutreiben.
+***** Take
+Die Kommentare, der Record-and-Replay-Teil sei rrs Idee, haben recht, und das schwächt den Beitrag nicht. Nix liefert die unglamouröse Hälfte: genau zu wissen, welcher Quellcode und welche Symbole zu den Bytes gehören, durch die man steppt. Genau diese Hälfte macht jedes andere Debugger-Setup falsch. Bemerkenswert ist, dass die Nix-Begeisterung im Thread überwiegend von Leuten kommt, die zugeben, dass inzwischen ein Agent ihre Konfiguration schreibt.
+***** Comments
+- Mir ist nicht ganz klar, was nix damit zu tun hat, denn es scheint im Grunde rr neu zu implementieren?
+- Nix heutzutage zu sehen ist wie ein Schleudertrauma. Wir haben vollständig deterministische Systeme und daneben haben wir LLMs. Mein Gott ;)
+- Es gibt wahrscheinlich eine Masse von Entwicklern, etwa zehnmal so viele wie die Nix-Entwickler von vor einem Jahr, die genau wissen, was Nix bietet und warum es cool ist, sich aber nicht die Mühe gemacht haben, es zu meistern, bis KI kam und das Problem im Grunde "gelöst" hat. Ich erwarte also, dass KI die Nix-Verbreitung stark beschleunigt.
+** Build your own decision model :ml:llm:calibration:classification:
+:PROPERTIES:
+:ID:       50037949
+:URL:      https://nishtahir.com/build-your-own-decision-model/
+:HN_URL:   https://news.ycombinator.com/item?id=50037949
+:POINTS:   203
+:COMMENTS: 43
+:BY:       softwaredoug
+:END:
+
+*** TLDR
+Nish Tahir turns Qwen3-1.7B into a decision model by masking the vocabulary down to the allowed answer tokens and reading the probabilities off a single forward pass, so you get calibrated odds over every permitted answer instead of generated text. On CommonsenseQA it scores 59.38% accuracy and 0.5844 macro F1 out of the box, and 62.41% with 0.6234 after fine-tuning on the same dataset. The more useful section is calibration: predictions the model rated between 0.90 and 1.00 were right only about 70% of the time, and temperature scaling at T=3.80 brought stated confidence back in line with measured accuracy. Scripts for dataset building, eval, fine-tuning and calibration are on GitHub.
+
+*** Take
+Read it for the calibration section, which is the part of the Jev-style decision model wave that almost nobody writes up. The skeptics in the thread are right that this is a masked classifier with better marketing, and also missing why it caught on: the appeal is the API shape, an if-statement that takes English, not new math. The one objection worth taking seriously is that fitting the temperature to the benchmark you then report on is uncomfortably close to tuning on your test set.
+
+*** Comments
+
+**** howunfortunate
+:PROPERTIES:
+:COMMENT_ID: 50038233
+:END:
+As an MLE who has been failing to get anyone interested in classifiers for many years, the hype around Jev makes me scream internally. Plain LLMs have been perfectly cheap and serviceable as zero-shot classifiers for quite some time now, so again I'm back to my internal screaming.
+
+**** demibabs
+:PROPERTIES:
+:COMMENT_ID: 50038450
+:END:
+Is simply changing the temperature so that the model appears calibrated over a particular benchmark after the fact "allowed"? Feels p-hacking esque.
+
+**** make3
+:PROPERTIES:
+:COMMENT_ID: 50040121
+:END:
+Laya is just ModernBert fine-tuned. It's still a language model (just a bidirectional one). Let's call it what it is instead of this weird Decision Model mysticism.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+自己动手做一个决策模型
+***** TLDR
+Nish Tahir 把 Qwen3-1.7B 改造成决策模型：把词表屏蔽到只剩允许的答案 token，然后从一次前向传播里直接读概率，于是你得到的是所有允许答案上的校准概率，而不是生成的文本。在 CommonsenseQA 上，开箱即用是 59.38% 准确率、0.5844 宏 F1；在同一数据集上微调后是 62.41% 和 0.6234。更有用的是校准那一节：模型自评 0.90 到 1.00 的预测，实际只有大约 70% 正确，用 T=3.80 的温度缩放后，自称的置信度才与实测准确率重新对上。数据集构建、评测、微调和校准的脚本都在 GitHub 上。
+***** Take
+值得读的是校准那一节——在这波 Jev 式决策模型热潮里，几乎没人写这部分。帖子里的质疑者说得对，这就是一个包装更好的带掩码分类器；但他们也没看懂它为什么火：吸引力在 API 形态，一个接受自然语言的 if 语句，而不是什么新数学。唯一值得认真对待的反驳是：在你随后要报告的那个基准上去拟合温度，和在测试集上调参已经相当接近了。
+***** Comments
+- 作为一个多年来一直没能让别人对分类器产生兴趣的机器学习工程师，Jev 的热度让我内心在尖叫。普通的大模型做零样本分类器已经既便宜又够用很久了，所以我又回到了内心尖叫的状态。
+- 事后只是调一下温度、让模型在某个特定基准上看起来校准良好，这算「允许」吗？感觉有点像 p-hacking。
+- Laya 就是微调过的 ModernBert。它仍然是语言模型（只是双向的）。别搞这种奇怪的「决策模型」玄学，就叫它本来的名字。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+自分で決定モデルを作る
+***** TLDR
+Nish TahirはQwen3-1.7Bを決定モデルに変える。語彙を許可された回答トークンだけにマスクし、1回のフォワードパスから確率を直接読み取るので、生成テキストではなく許可された全回答についての校正済み確率が得られる。CommonsenseQAでは素の状態で正解率59.38%、マクロF1が0.5844、同じデータセットでファインチューニング後は62.41%と0.6234。より有用なのは校正の節だ。モデルが0.90から1.00と自己評価した予測は実際には約70%しか正しくなく、T=3.80の温度スケーリングで申告された確信度が実測精度と一致するようになった。データセット構築、評価、ファインチューニング、校正のスクリプトはGitHubにある。
+***** Take
+読む価値があるのは校正の節で、Jev系の決定モデルの流行の中でほとんど誰も書かない部分だ。スレッドの懐疑派は、これがマーケティングの上手いマスク付き分類器だという点では正しいが、なぜ流行ったかを見落としている。魅力は新しい数学ではなくAPIの形、つまり自然言語を取るif文だ。真剣に取るべき反論は一つ、後で報告するベンチマークに合わせて温度を調整するのはテストセットでのチューニングに近すぎるという点である。
+***** Comments
+- 何年も分類器に誰の関心も引けなかったMLEとして、Jevを巡る熱狂には内心叫んでいる。普通のLLMはずっと前からゼロショット分類器として十分安く実用的だったので、やはり内心で叫ぶことに戻る。
+- 事後に温度だけ変えて、特定のベンチマーク上で校正されているように見せるのは「あり」なのか？p-hacking的に感じる。
+- Layaはファインチューニングされた ModernBert にすぎない。依然として言語モデル（ただし双方向）だ。この奇妙な「決定モデル」神秘主義はやめて、あるがままに呼ぼう。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+직접 만드는 결정 모델
+***** TLDR
+Nish Tahir는 Qwen3-1.7B를 결정 모델로 바꾼다. 어휘를 허용된 답변 토큰만 남기고 마스킹한 뒤 단 한 번의 순전파에서 확률을 읽어내므로, 생성된 텍스트가 아니라 허용된 모든 답변에 대한 보정된 확률을 얻는다. CommonsenseQA에서 기본 상태로 정확도 59.38%, 매크로 F1 0.5844였고, 같은 데이터셋으로 파인튜닝한 뒤에는 62.41%와 0.6234였다. 더 쓸모 있는 부분은 보정 절이다. 모델이 0.90에서 1.00으로 평가한 예측은 실제로는 약 70%만 맞았고, T=3.80의 온도 스케일링을 적용한 뒤에야 자체 신뢰도가 실측 정확도와 맞아떨어졌다. 데이터셋 구축, 평가, 파인튜닝, 보정 스크립트는 GitHub에 있다.
+***** Take
+읽을 가치가 있는 건 보정 절이고, 이것이 Jev류 결정 모델 유행에서 거의 아무도 쓰지 않는 부분이다. 스레드의 회의론자들은 이게 마케팅이 더 나은 마스킹 분류기라는 점에서는 맞지만, 왜 인기를 끌었는지는 놓치고 있다. 매력은 새로운 수학이 아니라 API 형태, 즉 자연어를 받는 if 문이다. 진지하게 받아들일 반론은 하나다. 나중에 보고할 바로 그 벤치마크에 맞춰 온도를 고르는 것은 테스트셋에서 튜닝하는 것과 불편할 정도로 가깝다.
+***** Comments
+- 여러 해 동안 아무에게도 분류기에 대한 관심을 끌지 못한 MLE로서, Jev를 둘러싼 과열에 속으로 비명을 지른다. 평범한 LLM도 꽤 오래전부터 제로샷 분류기로 충분히 싸고 쓸 만했으니, 다시 속으로 비명을 지르는 상태로 돌아간다.
+- 사후에 온도만 바꿔서 특정 벤치마크에서 모델이 잘 보정된 것처럼 보이게 하는 게 '허용'되는 일인가? p-해킹 같은 느낌이다.
+- Laya는 파인튜닝한 ModernBert일 뿐이다. 여전히 언어 모델이고, 다만 양방향이다. 이상한 '결정 모델' 신비주의 말고 있는 그대로 부르자.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Construye tu propio modelo de decisión
+***** TLDR
+Nish Tahir convierte Qwen3-1.7B en un modelo de decisión enmascarando el vocabulario para dejar solo los tokens de respuesta permitidos y leyendo las probabilidades de una única pasada hacia adelante, de modo que obtienes probabilidades calibradas sobre cada respuesta permitida en lugar de texto generado. En CommonsenseQA logra 59,38% de precisión y 0,5844 de F1 macro sin ajustes, y 62,41% con 0,6234 tras hacer fine-tuning en el mismo conjunto. La sección más útil es la de calibración: las predicciones que el modelo puntuaba entre 0,90 y 1,00 acertaban solo cerca del 70% de las veces, y un escalado de temperatura con T=3,80 volvió a alinear la confianza declarada con la precisión medida. Los scripts de construcción del dataset, evaluación, fine-tuning y calibración están en GitHub.
+***** Take
+Léelo por la sección de calibración, la parte de la ola de modelos de decisión estilo Jev que casi nadie documenta. Los escépticos del hilo aciertan en que esto es un clasificador enmascarado con mejor marketing, y también se les escapa por qué cuajó: el atractivo es la forma de la API, un if que acepta lenguaje natural, no matemáticas nuevas. La única objeción que merece tomarse en serio es que ajustar la temperatura al mismo benchmark sobre el que luego informas se parece demasiado a afinar sobre el conjunto de prueba.
+***** Comments
+- Como ingeniero de ML que lleva años fracasando en interesar a alguien por los clasificadores, el bombo alrededor de Jev me hace gritar por dentro. Los LLM normales llevan bastante tiempo siendo baratos y perfectamente útiles como clasificadores zero-shot, así que vuelvo a mi grito interno.
+- ¿Está "permitido" cambiar simplemente la temperatura a posteriori para que el modelo parezca calibrado en un benchmark concreto? Se parece al p-hacking.
+- Laya es solo ModernBert con fine-tuning. Sigue siendo un modelo de lenguaje (bidireccional, eso sí). Llamémoslo por lo que es en vez de este misticismo raro del Modelo de Decisión.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Baue dein eigenes Entscheidungsmodell
+***** TLDR
+Nish Tahir macht aus Qwen3-1.7B ein Entscheidungsmodell, indem er das Vokabular auf die erlaubten Antwort-Token maskiert und die Wahrscheinlichkeiten aus einem einzigen Forward-Pass abliest. Man erhält also kalibrierte Wahrscheinlichkeiten über jede erlaubte Antwort statt generierten Text. Auf CommonsenseQA erreicht es ohne Anpassung 59,38% Genauigkeit und 0,5844 Macro-F1, nach Fine-Tuning auf demselben Datensatz 62,41% und 0,6234. Der nützlichere Abschnitt ist die Kalibrierung: Vorhersagen, die das Modell zwischen 0,90 und 1,00 bewertete, waren nur etwa 70% der Zeit richtig, und Temperature Scaling mit T=3,80 brachte die angegebene Zuversicht wieder mit der gemessenen Genauigkeit in Einklang. Skripte für Datensatzbau, Evaluation, Fine-Tuning und Kalibrierung liegen auf GitHub.
+***** Take
+Lesenswert ist der Kalibrierungsabschnitt, also genau der Teil der Jev-artigen Entscheidungsmodell-Welle, den fast niemand aufschreibt. Die Skeptiker im Thread haben recht, dass das ein maskierter Klassifikator mit besserem Marketing ist, und übersehen zugleich, warum er einschlug: Der Reiz liegt in der API-Form, einem if, das natürliche Sprache nimmt, nicht in neuer Mathematik. Der eine ernst zu nehmende Einwand: Die Temperatur auf denselben Benchmark zu fitten, über den man dann berichtet, kommt dem Tuning auf dem Testset unangenehm nahe.
+***** Comments
+- Als ML-Engineer, der seit Jahren niemanden für Klassifikatoren interessieren kann, lässt mich der Hype um Jev innerlich schreien. Normale LLMs sind schon lange günstig und völlig brauchbar als Zero-Shot-Klassifikatoren, also bin ich wieder beim inneren Schreien.
+- Ist es "erlaubt", einfach nachträglich die Temperatur zu ändern, damit das Modell auf einem bestimmten Benchmark kalibriert aussieht? Fühlt sich nach p-Hacking an.
+- Laya ist nur ein feingetuntes ModernBert. Es bleibt ein Sprachmodell (nur eben ein bidirektionales). Nennen wir es, was es ist, statt dieser seltsamen Entscheidungsmodell-Mystik.
+** Getting old Macromedia Director games to run on modern hardware :reverse-engineering:retro:gaming:preservation:
+:PROPERTIES:
+:ID:       50020901
+:URL:      https://werwolv.net/posts/macromedia_copy_protection/
+:HN_URL:   https://news.ycombinator.com/item?id=50020901
+:POINTS:   62
+:COMMENTS: 10
+:BY:       speckx
+:END:
+
+*** TLDR
+WerWolv documents stripping three layers of copy protection off "Findus bei den Mucklas," a German point-and-click game from the early 2000s, so it runs without the CD. The disc holds duplicate directory entries where one copy is 0 or 256 bytes of garbage to confuse extraction tools, worked around with ccd2iso plus manual file picking. The executable turns out to be a Macromedia Director projector with a .dxr appended at offset 0x002222F0, disassembled with ProjectorRays after the author contributed an --offset flag; the recovered Lingo bytecode scans drives D through Z for a "p3media" folder and calls quit() if it is absent, defeated by changing one jmpifz operand from 95 00 60 to 95 00 03. The third layer, OPTGRAPH.DLL, queries the physical disc with low-level CD commands expecting the value 26079537, patched in Ghidra to MOV EAX, 26079537; RET. The whole sequence is scripted in Python with SHA-256 checks before each patch.
+
+*** Take
+This is what archival work looks like when someone does it properly: three unrelated protection schemes, three different techniques, and a Python script with hash checks so the next person can reproduce it instead of trusting a forum attachment. The Lingo layer came down to one operand byte, which is a fair measure of how much of 2002's anti-piracy engineering survives contact with a disassembler.
+
+*** Comments
+
+**** KellyCriterion
+:PROPERTIES:
+:COMMENT_ID: 50025544
+:END:
+Are todays LLM not capable of translating that stuff into modern JS&Co?
+
+**** schrijver
+:PROPERTIES:
+:COMMENT_ID: 50026163
+:END:
+If the LLM can't run the original code, it can't compare to verify the translation is accurate
+
+**** shellwizard
+:PROPERTIES:
+:COMMENT_ID: 50027154
+:END:
+The scummvm project has been working on porting most of the director games onto it. You can track its current status on the ScummVM wiki.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+让老的 Macromedia Director 游戏在现代硬件上跑起来
+***** TLDR
+WerWolv 记录了如何剥掉《Findus bei den Mucklas》（一款 2000 年代初的德国点击式冒险游戏）的三层拷贝保护，让它不插光盘也能运行。光盘里放了重复的目录项，其中一份是 0 字节或 256 字节的垃圾数据，用来迷惑提取工具；作者用 ccd2iso 加手工挑选文件绕过。可执行文件其实是一个 Macromedia Director 播放器，在偏移 0x002222F0 处附加了一个 .dxr；作者给 ProjectorRays 贡献了 --offset 参数后用它反汇编。还原出的 Lingo 字节码会扫描 D 到 Z 盘寻找名为 p3media 的文件夹，找不到就调用 quit()，把一个 jmpifz 的操作数从 95 00 60 改成 95 00 03 即可绕过。第三层是 OPTGRAPH.DLL，它用底层 CD 指令查询物理光盘，期望得到数值 26079537；作者在 Ghidra 里把它改成 MOV EAX, 26079537; RET。整套流程用 Python 脚本串起来，每次打补丁前都校验 SHA-256。
+***** Take
+这就是认真做数字保存该有的样子：三套互不相关的保护机制，三种不同手法，再加一个带哈希校验的 Python 脚本，让后来者能自己复现，而不是去相信论坛里的某个附件。Lingo 那一层最后只落在一个操作数字节上，这也挺能说明 2002 年的防盗版工程在反汇编器面前还剩下多少。
+***** Comments
+- 现在的大模型难道没法把那些东西翻译成现代 JS 之类的吗？
+- 如果大模型跑不了原始代码，它就没法对照验证翻译是否准确。
+- scummvm 项目一直在把大部分 director 游戏移植进去。你可以在 ScummVM 的维基上查看当前进度。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+古いMacromedia Directorのゲームを現代のハードで動かす
+***** TLDR
+WerWolvが、2000年代初頭のドイツ製ポイント＆クリックゲーム「Findus bei den Mucklas」から3層のコピープロテクトを剥がし、CDなしで動かすまでを記録している。ディスクには重複したディレクトリエントリがあり、片方は0バイトか256バイトのゴミで抽出ツールを混乱させる。これはccd2isoと手作業でのファイル選別で回避した。実行ファイルは実はMacromedia Directorのプロジェクターで、オフセット0x002222F0に.dxrが追加されていた。著者はProjectorRaysに--offsetフラグを提供した上で逆アセンブルした。取り出したLingoバイトコードはドライブDからZまでを走査して「p3media」フォルダを探し、なければquit()を呼ぶ。jmpifzのオペランドを95 00 60から95 00 03に変えるだけで無効化できた。3層目のOPTGRAPH.DLLは低レベルのCDコマンドで物理ディスクに問い合わせ、値26079537を期待する。これはGhidraでMOV EAX, 26079537; RETに書き換えた。全工程はPythonスクリプト化され、パッチ前に毎回SHA-256を検証する。
+***** Take
+きちんとやったアーカイブ作業はこうなる。無関係な3つの保護方式に3つの異なる手法、そしてハッシュ検証付きのPythonスクリプト。次の人はフォーラムの添付ファイルを信じる必要がなく、自分で再現できる。Lingoの層は最終的にオペランド1バイトに帰着した。2002年の海賊版対策が逆アセンブラの前にどれだけ残るかの、なかなか公正な目安である。
+***** Comments
+- 今のLLMなら、ああいうものを現代のJSなどに翻訳できないのか？
+- LLMが元のコードを実行できないなら、翻訳が正確かを比較して検証することもできない。
+- scummvmプロジェクトがdirectorのゲームの大半を移植する作業を続けている。現状はScummVMのwikiで追える。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+오래된 Macromedia Director 게임을 현대 하드웨어에서 돌리기
+***** TLDR
+WerWolv가 2000년대 초 독일 포인트앤클릭 게임 "Findus bei den Mucklas"에서 세 겹의 복사 방지를 벗겨내 CD 없이 돌아가게 만든 과정을 기록했다. 디스크에는 중복 디렉터리 항목이 있고 그중 하나는 0바이트 또는 256바이트의 쓰레기 데이터로 추출 도구를 혼란시킨다. ccd2iso와 수동 파일 선별로 우회했다. 실행 파일은 사실 Macromedia Director 프로젝터였고 오프셋 0x002222F0에 .dxr이 덧붙어 있었다. 저자는 ProjectorRays에 --offset 플래그를 기여한 뒤 그것으로 역어셈블했다. 복원된 Lingo 바이트코드는 D부터 Z 드라이브까지 훑어 "p3media" 폴더를 찾고 없으면 quit()을 호출하는데, jmpifz 오퍼랜드를 95 00 60에서 95 00 03으로 바꿔 무력화했다. 세 번째 층인 OPTGRAPH.DLL은 저수준 CD 명령으로 물리 디스크에 질의해 값 26079537을 기대하며, Ghidra에서 MOV EAX, 26079537; RET으로 패치했다. 전체 과정은 Python 스크립트로 묶여 있고 패치마다 SHA-256을 검증한다.
+***** Take
+제대로 된 보존 작업은 이렇게 생겼다. 서로 무관한 세 가지 보호 방식에 세 가지 다른 기법, 그리고 해시 검증이 들어간 Python 스크립트. 다음 사람은 게시판 첨부 파일을 믿는 대신 직접 재현할 수 있다. Lingo 층은 결국 오퍼랜드 한 바이트로 끝났고, 이는 2002년의 불법복제 방지 공학이 역어셈블러 앞에서 얼마나 버티는지 꽤 공정하게 보여주는 수치다.
+***** Comments
+- 요즘 LLM이면 그런 걸 현대 JS 같은 것으로 번역할 수 있지 않나?
+- LLM이 원본 코드를 실행할 수 없다면, 번역이 정확한지 비교해 검증할 수도 없다.
+- scummvm 프로젝트가 대부분의 director 게임을 이식하는 작업을 계속해 왔다. 현재 상태는 ScummVM 위키에서 확인할 수 있다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Hacer que los viejos juegos de Macromedia Director corran en hardware moderno
+***** TLDR
+WerWolv documenta cómo quitó tres capas de protección anticopia a "Findus bei den Mucklas", un juego alemán de point-and-click de principios de los 2000, para que funcione sin el CD. El disco contiene entradas de directorio duplicadas, una de ellas de 0 o 256 bytes de basura para confundir a las herramientas de extracción, algo que resolvió con ccd2iso y eligiendo los archivos a mano. El ejecutable resulta ser un proyector de Macromedia Director con un .dxr añadido en el offset 0x002222F0, desensamblado con ProjectorRays después de que el autor contribuyera una opción --offset. El bytecode Lingo recuperado recorre las unidades D a Z buscando una carpeta "p3media" y llama a quit() si no está, lo que se neutralizó cambiando un operando de jmpifz de 95 00 60 a 95 00 03. La tercera capa, OPTGRAPH.DLL, consulta el disco físico con comandos CD de bajo nivel esperando el valor 26079537, parcheado en Ghidra como MOV EAX, 26079537; RET. Todo el proceso está automatizado en Python con comprobaciones SHA-256 antes de cada parche.
+***** Take
+Así se ve el trabajo de preservación cuando se hace bien: tres esquemas de protección sin relación entre sí, tres técnicas distintas y un script de Python con verificación de hashes para que el siguiente pueda reproducirlo en lugar de fiarse de un adjunto de foro. La capa de Lingo se redujo a un byte de operando, que es una medida bastante justa de cuánto de la ingeniería antipiratería de 2002 sobrevive al contacto con un desensamblador.
+***** Comments
+- ¿Los LLM de hoy no son capaces de traducir todo eso a JS moderno y compañía?
+- Si el LLM no puede ejecutar el código original, no puede comparar para verificar que la traducción es correcta.
+- El proyecto scummvm ha estado portando la mayoría de los juegos de director. Puedes seguir el estado actual en la wiki de ScummVM.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Alte Macromedia-Director-Spiele auf moderner Hardware zum Laufen bringen
+***** TLDR
+WerWolv dokumentiert, wie er drei Schichten Kopierschutz von "Findus bei den Mucklas", einem deutschen Point-and-Click-Spiel der frühen 2000er, entfernt, damit es ohne CD läuft. Die Disc enthält doppelte Verzeichniseinträge, wobei eine Kopie 0 oder 256 Byte Müll ist, um Extraktionswerkzeuge zu verwirren; gelöst mit ccd2iso und manueller Dateiauswahl. Die ausführbare Datei entpuppt sich als Macromedia-Director-Projector mit einer angehängten .dxr bei Offset 0x002222F0, disassembliert mit ProjectorRays, nachdem der Autor dort ein --offset-Flag beigetragen hatte. Der geborgene Lingo-Bytecode durchsucht die Laufwerke D bis Z nach einem Ordner "p3media" und ruft quit() auf, wenn er fehlt, ausgehebelt durch Ändern eines jmpifz-Operanden von 95 00 60 auf 95 00 03. Die dritte Schicht, OPTGRAPH.DLL, fragt die physische Disc mit Low-Level-CD-Kommandos ab und erwartet den Wert 26079537; in Ghidra zu MOV EAX, 26079537; RET gepatcht. Der gesamte Ablauf ist in Python skriptet, mit SHA-256-Prüfungen vor jedem Patch.
+***** Take
+So sieht Archivarbeit aus, wenn sie richtig gemacht wird: drei voneinander unabhängige Schutzmechanismen, drei verschiedene Techniken und ein Python-Skript mit Hash-Prüfungen, damit die nächste Person es reproduzieren kann statt einem Forum-Anhang zu vertrauen. Die Lingo-Schicht lief auf ein einzelnes Operanden-Byte hinaus, was ein ziemlich fairer Maßstab dafür ist, wie viel von der Kopierschutztechnik des Jahres 2002 den Kontakt mit einem Disassembler übersteht.
+***** Comments
+- Können heutige LLMs so etwas nicht in modernes JS und Co. übersetzen?
+- Wenn das LLM den Originalcode nicht ausführen kann, kann es auch nicht vergleichen und prüfen, ob die Übersetzung korrekt ist.
+- Das scummvm-Projekt arbeitet daran, die meisten Director-Spiele dorthin zu portieren. Den aktuellen Stand kann man im ScummVM-Wiki verfolgen.
