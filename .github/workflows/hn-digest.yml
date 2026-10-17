@@ -234,8 +234,13 @@ jobs:
           # first upstream run logged 13 denials and every later one hit the
           # timeout. This is the permission set the pipeline was actually
           # built against, stated instead of inherited from a bug.
+          #
+          # Effort is explicit because Claude Code starts Opus 5.5 at `medium`,
+          # one level below the `high` Opus 5 ran this job at. The model needs
+          # Claude Code >= 2.1.280; @v1 ships 2.1.285.
           claude_args: |
-            --model claude-opus-5
+            --model claude-opus-5-5
+            --effort high
             --allowedTools Bash,Read,Write,Edit,WebFetch,mcp__barkme__notify
             --mcp-config '{
               "mcpServers": {
