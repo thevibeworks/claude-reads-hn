@@ -38,9 +38,17 @@ jobs:
           app-id: ${{ secrets.CLAUDE_YOLO_APP_ID }}
           private-key: ${{ secrets.CLAUDE_YOLO_APP_PRIVATE_KEY }}
 
+      # `ref` is what makes the slot check below see the truth. Without it,
+      # checkout pins the commit that existed when the run was *triggered*, and
+      # a run that waited in the concurrency queue behind another publish
+      # checks a tree that predates it. Since 2026-10-06 the Worker dispatches
+      # twice per slot, a minute apart; the second run queued for ~10 min, found
+      # "0/4 published today", and shipped a second edition 10 min after the
+      # first -- 21 times in 11 days.
       - uses: actions/checkout@v4
         with:
           token: ${{ steps.app-token.outputs.token }}
+          ref: ${{ github.ref }}
 
       # One step decides the edition's identity: which contracted slot this run
       # serves, or whether the slot is already filled and there is nothing to do.
