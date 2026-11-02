@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-11-02 11:00 UTC
+#+DATE: 2026-11-02T11:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Trigger.dev leaks env vars and calls it resolved, China licenses its own frontier models, and squeezed mouse tibias buy nine human years
+
+* Highlights
+- Trigger.dev: customer environment variables exposed, incident marked resolved with no root cause
+- Mofcom No. 48: China puts 10^26 FLOPs and top-10 models on an export licence
+- AFL++ tips: shrink your buffers, copy the fuzzer's input, use persistent mode
+- Nibnib: 4bpp delta-palette images decoded in about 6 cycles per pixel
+- Bone loading: 2.5 minutes of tibia compression twice a week added ~3 months of mouse life
+
+* Stories
+
+** Trigger.dev customer environment variables exposed :security:incident:saas:secrets:
+:PROPERTIES:
+:ID:       50331784
+:URL:      https://trigger.dev/blog/security-incident-nov-2026
+:HN_URL:   https://news.ycombinator.com/item?id=50331784
+:POINTS:   96
+:COMMENTS: 39
+:BY:       anurag
+:END:
+
+*** TLDR
+Trigger.dev disclosed that on November 1, 2026 an attacker gained unauthorized access to environment variables belonging to a subset of its organizations. The post is three paragraphs: they say they blocked the exploit used, emailed affected account owners steps to mitigate, and pointed everyone at the status page. No vulnerability description, no entry vector, no count of affected orgs, no timeline for how long access lasted. The status page incident is marked resolved.
+
+*** Take
+Env vars on a background-job platform are database URLs, API keys and signing secrets, so the blast radius lives in the customers' infrastructure, not Trigger.dev's. Marking the incident resolved before publishing how the attacker got in tells every affected customer to start rotation with no idea what else the attacker could reach.
+
+*** Comments
+
+**** Traubenfuchs
+:PROPERTIES:
+:COMMENT_ID: 50334201
+:END:
+They are no longer exposing anything, so they no longer have an incident. Their customers now have an incident that will be resolved once their secrets are rotated.
+
+**** weird-eye-issue
+:PROPERTIES:
+:COMMENT_ID: 50333515
+:END:
+The founder has already emailed you with details, support is around for follow-ups, and the exploit is fixed. At that point are you really going to leave because the status page says resolved?
+
+**** whilenot-dev
+:PROPERTIES:
+:COMMENT_ID: 50333853
+:END:
+What makes you think it's fixed? They just state that they blocked the exploit. Did they take the affected API offline, disable the attacker's account, or actually fix it?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Trigger.dev 客户环境变量泄露
+***** TLDR
+Trigger.dev 披露，2026 年 11 月 1 日有攻击者未经授权访问了部分组织的环境变量。通告只有三段：称已封堵所用漏洞、已向受影响账户所有者邮件告知缓解步骤、并指向状态页。没有漏洞说明、没有入侵路径、没有受影响组织数量、也没有访问持续时间。状态页上该事件已标记为「已解决」。
+***** Take
+后台任务平台上的环境变量就是数据库连接串、API 密钥和签名密钥，所以爆炸半径落在客户的基础设施里，而不是 Trigger.dev 自己。在公布攻击者如何进来之前就标记「已解决」，等于让每个受影响的客户在不知道攻击者还能碰到什么的情况下开始轮换密钥。
+***** Comments
+- 他们已经不再泄露任何东西了，所以他们没有事件了。现在是客户有了事件，要等密钥轮换完才算解决。
+- 创始人已经发邮件给你了，支持团队随时回答追问，漏洞也修好了。到这一步你真会因为状态页写着「已解决」而走人？
+- 你凭什么认为修好了？他们只说封堵了漏洞。是把受影响的 API 下线了、禁用了攻击者账号，还是真的修了？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Trigger.devの顧客の環境変数が流出
+***** TLDR
+Trigger.devは2026年11月1日、攻撃者が一部組織の環境変数に不正アクセスしたと公表した。告知は三段落のみで、使われたエクスプロイトは遮断した、影響を受けたアカウント所有者に緩和手順をメールした、ステータスページを見てほしい、という内容だ。脆弱性の説明、侵入経路、影響組織数、アクセス継続時間はいずれも書かれていない。ステータスページ上のインシデントは解決済みになっている。
+***** Take
+バックグラウンドジョブ基盤の環境変数とはDB接続文字列、APIキー、署名用シークレットであり、被害範囲はTrigger.devではなく顧客側のインフラに広がる。侵入経路を公表する前に解決済みと記すのは、攻撃者が他に何に触れられたか分からないまま顧客にローテーションを始めさせることだ。
+***** Comments
+- もう何も漏らしていないのだから、彼らにインシデントはない。今あるのは顧客のインシデントで、シークレットをローテーションし終えて初めて解決する。
+- 創業者が詳細をメールし、サポートも質問に応じ、エクスプロイトも直っている。それでもステータスページが解決済みだからという理由で離れるのか？
+- 直ったと言える根拠は何だ。エクスプロイトを遮断したとしか書いていない。該当APIを止めたのか、攻撃者のアカウントを消したのか、本当に修正したのか。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Trigger.dev 고객 환경 변수 유출
+***** TLDR
+Trigger.dev는 2026년 11월 1일 공격자가 일부 조직의 환경 변수에 무단 접근했다고 공개했다. 공지는 세 단락뿐으로, 사용된 취약점을 차단했고 영향받은 계정 소유자에게 완화 절차를 메일로 보냈으며 상태 페이지를 보라는 내용이다. 취약점 설명, 침입 경로, 영향받은 조직 수, 접근 지속 시간은 모두 없다. 상태 페이지의 인시던트는 해결됨으로 표시되어 있다.
+***** Take
+백그라운드 작업 플랫폼의 환경 변수는 DB 접속 문자열, API 키, 서명 비밀값이므로 피해 범위는 Trigger.dev가 아니라 고객 인프라에 남는다. 침입 경로를 공개하기 전에 해결됨으로 표시하는 것은, 공격자가 또 무엇에 닿을 수 있었는지 모르는 상태로 고객에게 키 교체를 시작하라는 말이다.
+***** Comments
+- 이제 아무것도 노출하지 않으니 그들에게는 인시던트가 없다. 지금 인시던트를 가진 쪽은 고객이고, 비밀값을 모두 교체해야 끝난다.
+- 창업자가 이미 상세 내용을 메일로 보냈고 지원팀도 질문을 받고 있고 취약점도 고쳐졌다. 그런데 상태 페이지가 해결됨이라서 떠나겠다는 건가?
+- 고쳐졌다고 보는 근거가 뭔가. 취약점을 차단했다고만 썼다. 해당 API를 내린 건지, 공격자 계정을 막은 건지, 실제로 고친 건지 모른다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Variables de entorno de clientes de Trigger.dev quedaron expuestas
+***** TLDR
+Trigger.dev informó que el 1 de noviembre de 2026 un atacante accedió sin autorización a las variables de entorno de un subconjunto de sus organizaciones. El aviso tiene tres párrafos: dicen que bloquearon el exploit usado, que enviaron por correo pasos de mitigación a los titulares afectados y que consulten la página de estado. No hay descripción de la vulnerabilidad, ni vector de entrada, ni número de organizaciones afectadas, ni cuánto duró el acceso. El incidente figura como resuelto.
+***** Take
+Las variables de entorno de una plataforma de trabajos en segundo plano son cadenas de conexión, claves de API y secretos de firma, así que el radio del daño queda en la infraestructura de los clientes, no en la de Trigger.dev. Marcarlo como resuelto antes de publicar cómo entró el atacante obliga a cada cliente afectado a rotar credenciales sin saber a qué más se pudo acceder.
+***** Comments
+- Ya no están exponiendo nada, así que ya no tienen un incidente. Ahora el incidente es de sus clientes y se resolverá cuando roten sus secretos.
+- El fundador ya te escribió con detalles, soporte está disponible para preguntas y el exploit está corregido. ¿De verdad te irías porque la página de estado dice resuelto?
+- ¿Por qué crees que está arreglado? Solo dicen que bloquearon el exploit. ¿Apagaron la API afectada, desactivaron la cuenta del atacante o lo corrigieron de verdad?
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Umgebungsvariablen von Trigger.dev-Kunden offengelegt
+***** TLDR
+Trigger.dev teilte mit, dass am 1. November 2026 ein Angreifer unbefugt auf die Umgebungsvariablen eines Teils der Organisationen zugegriffen hat. Der Beitrag umfasst drei Absätze: Der genutzte Exploit sei blockiert, betroffene Kontoinhaber hätten per E-Mail Schritte zur Eindämmung erhalten, und man solle die Statusseite verfolgen. Es fehlen Beschreibung der Lücke, Einstiegsweg, Anzahl der betroffenen Organisationen und Dauer des Zugriffs. Der Vorfall gilt als behoben.
+***** Take
+Umgebungsvariablen einer Plattform für Hintergrundjobs sind Datenbank-URLs, API-Schlüssel und Signaturgeheimnisse, der Schaden liegt also in der Infrastruktur der Kunden, nicht bei Trigger.dev. Den Vorfall als behoben zu markieren, bevor der Einstiegsweg veröffentlicht ist, schickt jeden betroffenen Kunden in die Rotation, ohne zu wissen, worauf der Angreifer sonst zugreifen konnte.
+***** Comments
+- Sie legen nichts mehr offen, also haben sie keinen Vorfall mehr. Den Vorfall haben jetzt die Kunden, und er endet erst mit der Rotation ihrer Geheimnisse.
+- Der Gründer hat dir längst Details gemailt, der Support beantwortet Rückfragen, und der Exploit ist behoben. Gehst du wirklich, weil auf der Statusseite behoben steht?
+- Woher weißt du, dass es behoben ist? Sie schreiben nur, sie hätten den Exploit blockiert. Haben sie die API abgeschaltet, das Angreiferkonto gesperrt oder die Lücke wirklich geschlossen?
+** China's First Frontier AI Export Controls: Mofcom Announcement No. 48 :ai:policy:china:export-controls:open-source:
+:PROPERTIES:
+:ID:       50334038
+:URL:      https://labs.cloudsecurityalliance.org/research/csa-research-note-china-ai-export-controls-announcement-48-2/
+:HN_URL:   https://news.ycombinator.com/item?id=50334038
+:POINTS:   48
+:COMMENTS: 30
+:BY:       jonnybgood
+:END:
+
+*** TLDR
+Mofcom issued two instruments on October 16, 2026: a draft catalogue adding 23 AI technologies to the restricted or prohibited export list, open for comment until November 15, and an interim rule, effective immediately, requiring exporters to register on a Mofcom platform first. A large model is restricted if it hits any one of three thresholds: 10^26 training FLOPs, 2 trillion parameters, or a global top-10 placing on public evaluations or call volume at the time of export. Agents are controlled by capability, with planning chains of 20+ steps, 60+ concurrent agents or 200+ integrated tools; agents for critical infrastructure and defense are prohibited outright. Key carve-out: API access, SaaS and lightweight on-device deployment are not exports, but shipping weights for local deployment abroad needs a licence. Open-source and published work is exempt, though newly open-sourced restricted models still require reporting and get automatic licensing.
+
+*** Take
+Mirror image of the US regime: Washington controls who can access frontier capability, Beijing controls who can hold the weights. The top-10 ranking test is the awkward part, because a model's legal status can change after it ships depending on how it places on a leaderboard it does not control.
+
+*** Comments
+
+**** _fw
+:PROPERTIES:
+:COMMENT_ID: 50334216
+:END:
+The only reason Chinese models got popular is that they are open. Restricting anything in the global top 10 makes them hard to advocate for and hard to adopt.
+
+**** bilbo0s
+:PROPERTIES:
+:COMMENT_ID: 50334487
+:END:
+It's actually extremely smart. The latest and greatest stays for the domestic market, everyone else gets the more limited models. Basically the US strategy, except China still allows on-prem for the lesser ones.
+
+**** yorwba
+:PROPERTIES:
+:COMMENT_ID: 50335102
+:END:
+The encouragement of open source only applies where export is restricted, not prohibited, and companies still have to report intent in advance, which gives the government room to deny a licence.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+中国首个前沿 AI 出口管制：商务部第 48 号公告
+***** TLDR
+商务部 2026 年 10 月 16 日发布两份文件：一份目录修订草案，拟将 23 项 AI 技术列入限制或禁止出口清单，征求意见至 11 月 15 日；另一份临时规则立即生效，要求出口方先在商务部平台登记。大模型只要满足三条门槛之一即受限制：10^26 训练算力、2 万亿参数，或出口时在公开评测或调用量上位列全球前十。智能体按能力管控，包括 20 步以上的规划链、60 个以上并发体、200 个以上集成工具；面向关键基础设施和国防的高性能智能体直接禁止出口。关键豁免：API 访问、SaaS 和轻量端侧部署不算出口，但把权重交付到境外本地部署需要许可。已开源或已发表的内容豁免，但新开源的受限模型仍需报告，并适用自动许可。
+***** Take
+这是美国制度的镜像：华盛顿管谁能用上前沿能力，北京管谁能持有权重。前十名这条测试最尴尬，因为一个模型的法律地位会在交付之后、随着它在自己无法控制的排行榜上的位次而变化。
+***** Comments
+- 中国模型能流行起来，唯一的原因就是它们是开放的。把全球前十的都限制住，会让它们很难被推荐、也很难被采用。
+- 这其实非常聪明。最强的留给国内市场，其他人拿到能力受限的版本。基本就是美国的策略，区别是中国还允许较弱的模型本地部署。
+- 鼓励开源只适用于「限制出口」而非「禁止出口」的情形，而且企业仍要事先报告，这就给了政府拒发许可的空间。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+中国初のフロンティアAI輸出規制：商務部公告第48号
+***** TLDR
+商務部は2026年10月16日に二つの文書を出した。23のAI技術を制限・禁止輸出リストに加える目録改訂案（意見募集は11月15日まで）と、即日施行の暫定規則で、輸出者は商務部のプラットフォームでの事前登録を義務づけられる。大規模モデルは三つの基準のいずれかに該当すれば制限対象になる。学習計算量10^26 FLOPs、2兆パラメータ、または輸出時点で公開評価や呼び出し量が世界トップ10に入ること。エージェントは能力別の規制で、20ステップ以上の計画連鎖、60以上の同時実行、200以上のツール統合が対象。重要インフラや防衛向けの高性能エージェントは輸出禁止だ。重要な除外として、APIアクセス、SaaS、軽量なオンデバイス展開は輸出に当たらないが、海外でのローカル展開のための重みの提供には許可が必要となる。オープンソースや公表済みのものは対象外だが、新たにオープンソース化された制限対象モデルは報告が必要で、自動許可が適用される。
+***** Take
+米国の制度の鏡像だ。ワシントンはフロンティア能力に誰がアクセスできるかを管理し、北京は誰が重みを保持できるかを管理する。厄介なのはトップ10判定で、モデルの法的地位が出荷後に、自分では制御できないランキングの順位次第で変わってしまう。
+***** Comments
+- 中国のモデルが広まった唯一の理由はオープンだったことだ。世界トップ10を制限すれば、推奨も採用もしにくくなる。
+- むしろ極めて賢い。最高性能は国内市場向けに残し、他は能力を抑えたモデルを受け取る。基本的に米国の戦略と同じで、違いは弱いモデルのオンプレ運用を中国が認めている点だ。
+- オープンソースの奨励は禁止ではなく制限の場合にしか及ばない。しかも企業は事前に輸出の意図を報告する必要があり、政府が許可を却下する余地が残る。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+중국의 첫 프런티어 AI 수출 통제: 상무부 공고 제48호
+***** TLDR
+상무부는 2026년 10월 16일 두 가지 문서를 냈다. AI 기술 23종을 제한 또는 금지 수출 목록에 추가하는 목록 개정안(의견 수렴은 11월 15일까지), 그리고 즉시 발효되어 수출자가 상무부 플랫폼에 먼저 등록하도록 하는 잠정 규칙이다. 대형 모델은 세 기준 중 하나만 충족해도 제한 대상이 된다. 학습 연산 10^26 FLOPs, 파라미터 2조 개, 또는 수출 시점에 공개 평가나 호출량 기준 세계 10위 안에 드는 경우다. 에이전트는 능력별로 통제되며 20단계 이상의 계획 체인, 60개 이상 동시 실행, 200개 이상 도구 연동이 기준이다. 핵심 인프라와 국방용 고성능 에이전트는 수출이 전면 금지된다. 중요한 예외로 API 접근, SaaS, 경량 온디바이스 배포는 수출로 보지 않지만, 해외 현지 배포를 위한 가중치 제공에는 허가가 필요하다. 오픈소스나 이미 공개된 내용은 제외되지만, 새로 오픈소스화된 제한 대상 모델은 보고 의무가 있고 자동 허가가 적용된다.
+***** Take
+미국 제도의 거울상이다. 워싱턴은 누가 프런티어 역량에 접근하는지를 통제하고, 베이징은 누가 가중치를 보유하는지를 통제한다. 까다로운 부분은 10위 기준인데, 모델이 스스로 통제할 수 없는 순위표의 등수에 따라 출하 이후에 법적 지위가 바뀔 수 있다.
+***** Comments
+- 중국 모델이 인기를 얻은 유일한 이유는 공개되어 있다는 점이다. 세계 10위권을 제한하면 추천도 채택도 어려워진다.
+- 사실 매우 영리하다. 최상급은 국내 시장용으로 남기고 나머지는 성능이 제한된 모델을 받는다. 기본적으로 미국 전략과 같고, 다만 중국은 하위 모델의 온프레미스 운영을 허용한다.
+- 오픈소스 장려는 금지가 아니라 제한인 경우에만 적용되고, 기업은 여전히 수출 의사를 사전 보고해야 해서 정부가 허가를 거부할 여지가 남는다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Los primeros controles de exportación de IA de frontera de China: Anuncio 48 del Mofcom
+***** TLDR
+El Mofcom publicó dos instrumentos el 16 de octubre de 2026: un borrador de catálogo que añade 23 tecnologías de IA a la lista de exportación restringida o prohibida, abierto a comentarios hasta el 15 de noviembre, y una norma provisional de vigencia inmediata que obliga a los exportadores a registrarse antes en una plataforma del Mofcom. Un modelo grande queda restringido si cumple cualquiera de tres umbrales: 10^26 FLOPs de entrenamiento, 2 billones de parámetros, o estar entre los diez primeros del mundo en evaluaciones públicas o volumen de llamadas en el momento de exportar. Los agentes se controlan por capacidad: cadenas de planificación de 20 pasos o más, 60 o más agentes concurrentes, 200 o más herramientas integradas; los agentes de alto rendimiento para infraestructura crítica y defensa están prohibidos. Exención clave: el acceso por API, el SaaS y el despliegue ligero en dispositivo no cuentan como exportación, pero entregar pesos para despliegue local en el extranjero requiere licencia. Lo abierto o ya publicado queda exento, aunque los modelos restringidos que se liberen después deben reportarse y reciben licencia automática.
+***** Take
+Es la imagen espejo del régimen estadounidense: Washington controla quién puede acceder a la capacidad de frontera, Pekín controla quién puede custodiar los pesos. Lo incómodo es la prueba del top 10, porque la situación legal de un modelo puede cambiar después de su entrega según su puesto en una clasificación que no controla.
+***** Comments
+- La única razón por la que los modelos chinos se hicieron populares es que son abiertos. Restringir cualquiera del top 10 mundial los vuelve difíciles de recomendar y de adoptar.
+- En realidad es muy inteligente. Lo mejor queda para el mercado interno y los demás reciben modelos más limitados. Es la estrategia de EE. UU., salvo que China sí permite on-premise para los menores.
+- El fomento del código abierto solo aplica donde la exportación está restringida, no prohibida, y las empresas igual deben declarar su intención por adelantado, lo que da margen al gobierno para negar la licencia.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Chinas erste Exportkontrollen für Frontier-KI: Mofcom-Bekanntmachung Nr. 48
+***** TLDR
+Das Mofcom veröffentlichte am 16. Oktober 2026 zwei Instrumente: einen Katalogentwurf, der 23 KI-Technologien auf die Liste beschränkter oder verbotener Exporte setzt, mit Kommentarfrist bis zum 15. November, sowie eine sofort wirksame Übergangsregel, nach der Exporteure sich zuvor auf einer Mofcom-Plattform registrieren müssen. Ein großes Modell ist beschränkt, wenn es eine von drei Schwellen erreicht: 10^26 FLOPs Trainingsrechenleistung, 2 Billionen Parameter oder eine Platzierung unter den globalen Top 10 bei öffentlichen Evaluierungen oder Aufrufvolumen zum Exportzeitpunkt. Agenten werden nach Fähigkeiten kontrolliert: Planungsketten ab 20 Schritten, ab 60 parallele Agenten, ab 200 integrierte Werkzeuge; Hochleistungsagenten für kritische Infrastruktur und Verteidigung sind ganz verboten. Zentrale Ausnahme: API-Zugang, SaaS und leichte Deployments auf dem Gerät gelten nicht als Export, die Herausgabe von Gewichten für lokale Deployments im Ausland braucht dagegen eine Lizenz. Offene oder veröffentlichte Arbeiten sind ausgenommen, neu quelloffen gestellte beschränkte Modelle bleiben aber meldepflichtig und erhalten eine automatische Lizenz.
+***** Take
+Das Spiegelbild des US-Regimes: Washington steuert, wer Zugang zu Frontier-Fähigkeiten bekommt, Peking steuert, wer die Gewichte halten darf. Unangenehm ist der Top-10-Test, denn der rechtliche Status eines Modells kann sich nach der Lieferung ändern, je nach Platz in einer Rangliste, die es nicht kontrolliert.
+***** Comments
+- Chinesische Modelle wurden nur deshalb populär, weil sie offen sind. Alles aus den globalen Top 10 zu beschränken macht sie schwer empfehlbar und schwer einsetzbar.
+- Eigentlich sehr clever. Das Beste bleibt im Inland, alle anderen bekommen die begrenzten Modelle. Im Grunde die US-Strategie, nur erlaubt China für die schwächeren weiterhin On-Premise.
+- Die Förderung von Open Source gilt nur, wo der Export beschränkt und nicht verboten ist, und Unternehmen müssen die Absicht vorab melden, was der Regierung Raum lässt, eine Lizenz zu verweigern.
+** Tips for more effective fuzz testing with AFL++ :fuzzing:security:c:testing:tooling:
+:PROPERTIES:
+:ID:       50271106
+:URL:      https://nullprogram.com/blog/2025/02/05/
+:HN_URL:   https://news.ycombinator.com/item?id=50271106
+:POINTS:   123
+:COMMENTS: 24
+:BY:       luu
+:END:
+
+*** TLDR
+Chris Wellons collects the AFL++ habits that actually change bug yield. Run with ASan and UBSan configured, not just enabled: detect_stack_use_after_return=1 and a much larger malloc fill size catch what defaults miss. Prefer persistent mode, roughly an order of magnitude faster than fork-per-input despite the extra setup. Include the source files directly in the fuzz target instead of linking a build, which reaches static functions and globals and skips build configuration entirely. Reset globals and zero memory between iterations so runs do not contaminate each other. Never hand AFL++'s own buffer to the target; copy it to an exactly sized allocation so ASan can see read overflows. Skip cleanup in the loop and let AFL++ reset the process. Use memfd_create when the code demands a real path, avoiding disk churn and collisions between parallel fuzzers. And shrink fixed buffer sizes deliberately, so edge cases arrive sooner.
+
+*** Take
+The copy-the-input tip is the one worth stealing today: pass AFL++'s oversized buffer straight through and every read overflow lands in slack the sanitizer considers legal, so you fuzz for a week and conclude the parser is clean. Most of this list is about making bugs observable, not about finding more paths.
+
+*** Comments
+
+**** jonhohle
+:PROPERTIES:
+:COMMENT_ID: 50330106
+:END:
+I used to think writing safe C/C++ was a matter of skill. After finding issues with AFL at a FAANG in code written by engineers with the highest engineering title, I changed my mind.
+
+**** tikhonj
+:PROPERTIES:
+:COMMENT_ID: 50331821
+:END:
+Writing safer C is a matter of skill. Writing safe C is a matter of a radically slower process or better tooling or both. Skill is not sufficient.
+
+**** r0ze-at-hn
+:PROPERTIES:
+:COMMENT_ID: 50333155
+:END:
+Never once have I improved a codebase so it could be fuzzed and didn't get a payoff of it finding bugs. It still surprises me how many engineers have never used one.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+用 AFL++ 做更有效模糊测试的若干建议
+***** TLDR
+Chris Wellons 汇总了真正能提高 AFL++ 产出的习惯。ASan 和 UBSan 不只要开启，还要配置好：detect_stack_use_after_return=1 加上更大的 malloc 填充值，能抓到默认配置漏掉的问题。优先用 persistent 模式，虽然要多做些准备，但比每个输入 fork 一次快约一个数量级。直接在模糊测试目标里 include 源文件，而不是链接构建产物，这样能触及静态函数和全局变量，也完全绕开构建配置。每次迭代之间重置全局状态并清零内存，避免互相污染。永远不要把 AFL++ 自己的缓冲区直接交给被测代码；复制到大小精确的分配上，ASan 才能看到读越界。循环里不要做清理，让 AFL++ 重置进程。代码需要真实路径时用 memfd_create，省去磁盘损耗和并行实例之间的冲突。并且刻意缩小固定缓冲区尺寸，让边界情况更早出现。
+***** Take
+最值得今天就用上的是「复制输入」那条：把 AFL++ 的超大缓冲区直接传下去，所有读越界都落在 sanitizer 认为合法的余量里，于是你跑了一周，得出解析器很干净的结论。这份清单大半讲的是让缺陷可被观测，而不是找到更多路径。
+***** Comments
+- 我以前以为写安全的 C/C++ 是技术水平问题。在某家 FAANG 用 AFL 在最高职级工程师写的代码里找出几个问题之后，我改主意了。
+- 写「更安全」的 C 是水平问题。写「安全」的 C 要么靠慢得多的流程，要么靠更好的工具，或者两者都要。水平不够用。
+- 我从来没有为了能做模糊测试去改造一个代码库，而最后没有换来它找出缺陷。到现在还有这么多工程师没用过模糊测试，让我意外。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+AFL++でより効果的にファズテストするためのヒント
+***** TLDR
+Chris Wellonsが、AFL++のバグ収穫量を実際に変える習慣をまとめている。ASanとUBSanは有効化するだけでなく設定すること。detect_stack_use_after_return=1とmallocの充填サイズの大幅な引き上げで、既定値では見逃すものが取れる。persistentモードを優先する。準備は増えるが、入力ごとにforkする方式より約一桁速い。ビルドをリンクするのではなく、ソースファイルをファズ対象に直接includeする。静的関数やグローバル変数に届き、ビルド設定も丸ごと省ける。反復のあいだにグローバル状態をリセットしメモリをゼロ化して、実行が互いを汚さないようにする。AFL++自身のバッファを対象にそのまま渡してはいけない。ちょうどの大きさに確保してコピーすれば、ASanが読み出しのオーバーフローを検出できる。ループ内では解放処理をせず、プロセスのリセットはAFL++に任せる。実在のパスを要求するコードにはmemfd_createを使い、ディスクの摩耗と並列実行時の衝突を避ける。そして固定バッファのサイズをあえて小さくし、エッジケースを早く引き出す。
+***** Take
+今すぐ盗む価値があるのは入力をコピーせよという項目だ。AFL++の大きめのバッファをそのまま渡すと、読み出しのオーバーフローはすべてサニタイザが合法と見なす余白に収まる。結果、一週間回してパーサは問題なしという結論に至る。このリストの大半は経路を増やす話ではなく、バグを観測可能にする話だ。
+***** Comments
+- 安全なC/C++を書けるかは技量の問題だと思っていた。あるFAANGで最高位の肩書を持つ技術者のコードからAFLで複数の問題を見つけて、考えを改めた。
+- より安全なCを書くのは技量の問題だ。安全なCを書くには、はるかに遅い工程か、より良い道具か、その両方が必要だ。技量だけでは足りない。
+- ファズできるようにコードベースを整えて、見返りにバグが出てこなかったことは一度もない。ファザを使ったことのない技術者がいまだに多いのは驚きだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+AFL++로 더 효과적으로 퍼즈 테스트하는 요령
+***** TLDR
+Chris Wellons가 AFL++의 버그 수확량을 실제로 바꾸는 습관을 정리했다. ASan과 UBSan은 켜는 것만으로 부족하고 설정해야 한다. detect_stack_use_after_return=1과 훨씬 큰 malloc 채움 크기로 기본값이 놓치는 문제를 잡는다. persistent 모드를 우선하라. 준비가 더 들지만 입력마다 fork하는 방식보다 약 한 자릿수 빠르다. 빌드를 링크하지 말고 소스 파일을 퍼즈 대상에 직접 include하라. 정적 함수와 전역 변수에 닿고 빌드 설정도 건너뛴다. 반복 사이에 전역 상태를 초기화하고 메모리를 0으로 채워 실행끼리 오염되지 않게 하라. AFL++의 버퍼를 대상에 그대로 넘기면 안 된다. 정확한 크기로 할당해 복사해야 ASan이 읽기 오버플로를 볼 수 있다. 루프 안에서 해제는 생략하고 프로세스 초기화는 AFL++에 맡겨라. 실제 경로가 필요한 코드에는 memfd_create를 써서 디스크 소모와 병렬 퍼저 간 충돌을 피하라. 그리고 고정 버퍼 크기를 의도적으로 줄여 경계 사례를 더 빨리 끌어내라.
+***** Take
+오늘 바로 가져갈 가치가 있는 건 입력을 복사하라는 항목이다. AFL++의 넉넉한 버퍼를 그대로 넘기면 모든 읽기 오버플로가 새니타이저가 합법으로 보는 여유 공간에 떨어진다. 그래서 일주일을 돌리고 파서가 깨끗하다는 결론을 낸다. 이 목록의 대부분은 경로를 더 찾는 이야기가 아니라 버그를 관측 가능하게 만드는 이야기다.
+***** Comments
+- 안전한 C/C++를 쓰는 건 실력 문제라고 생각했다. 어느 FAANG에서 최고 직급 엔지니어가 쓴 코드에서 AFL로 문제를 몇 개 찾은 뒤 생각이 바뀌었다.
+- 더 안전한 C를 쓰는 건 실력 문제다. 안전한 C를 쓰려면 훨씬 느린 프로세스나 더 나은 도구, 또는 둘 다가 필요하다. 실력만으로는 부족하다.
+- 퍼즈가 가능하도록 코드베이스를 손봤는데 버그를 찾아내지 못한 적은 한 번도 없다. 퍼저를 써본 적 없는 엔지니어가 아직도 많다는 게 놀랍다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Consejos para hacer fuzzing más efectivo con AFL++
+***** TLDR
+Chris Wellons reúne los hábitos de AFL++ que de verdad cambian la cosecha de bugs. Ejecuta con ASan y UBSan configurados, no solo activados: detect_stack_use_after_return=1 y un relleno de malloc mucho mayor atrapan lo que los valores por defecto dejan pasar. Prefiere el modo persistente, unas diez veces más rápido que hacer fork por entrada pese al trabajo extra de preparación. Incluye los archivos fuente directamente en el objetivo de fuzzing en vez de enlazar una compilación: así alcanzas funciones estáticas y variables globales y te ahorras la configuración de build. Reinicia las globales y pon la memoria a cero entre iteraciones para que las ejecuciones no se contaminen. Nunca entregues el propio búfer de AFL++ al objetivo; cópialo a una asignación del tamaño exacto para que ASan vea los desbordamientos de lectura. Omite la limpieza dentro del bucle y deja que AFL++ reinicie el proceso. Usa memfd_create cuando el código exija una ruta real, evitando desgaste de disco y colisiones entre fuzzers paralelos. Y reduce a propósito los búferes de tamaño fijo para que los casos límite lleguen antes.
+***** Take
+El consejo de copiar la entrada es el que conviene robar hoy: si pasas tal cual el búfer sobredimensionado de AFL++, cada desbordamiento de lectura cae en un margen que el sanitizador considera legal, así que fuzzeas una semana y concluyes que el parser está limpio. Casi toda la lista trata de hacer visibles los bugs, no de encontrar más caminos.
+***** Comments
+- Creía que escribir C/C++ seguro era cuestión de habilidad. Tras encontrar varios fallos con AFL en una FAANG, en código escrito por ingenieros del máximo nivel, cambié de opinión.
+- Escribir C más seguro es cuestión de habilidad. Escribir C seguro requiere un proceso mucho más lento, mejores herramientas o ambas cosas. La habilidad no basta.
+- Nunca he preparado un código base para poder fuzzearlo sin que eso se tradujera en bugs encontrados. Me sigue sorprendiendo cuántos ingenieros nunca han usado un fuzzer.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Tipps für effektiveres Fuzz-Testing mit AFL++
+***** TLDR
+Chris Wellons sammelt die AFL++-Gewohnheiten, die den Bug-Ertrag wirklich verändern. ASan und UBSan nicht nur aktivieren, sondern konfigurieren: detect_stack_use_after_return=1 und eine deutlich größere malloc-Füllgröße finden, was die Standardwerte übersehen. Dem Persistent-Mode den Vorzug geben, trotz Mehraufwand rund eine Größenordnung schneller als ein Fork pro Eingabe. Quelldateien direkt in das Fuzz-Target einbinden statt einen Build zu linken: so erreicht man statische Funktionen und Globals und umgeht die Build-Konfiguration komplett. Globale Zustände zurücksetzen und Speicher zwischen den Durchläufen nullen, damit sich Läufe nicht gegenseitig verunreinigen. Den Puffer von AFL++ niemals direkt an das Target geben, sondern in eine exakt passende Allokation kopieren, damit ASan Lese-Overflows sieht. Aufräumen in der Schleife weglassen und AFL++ den Prozess zurücksetzen lassen. memfd_create nutzen, wenn der Code einen echten Pfad verlangt, das vermeidet Plattenverschleiß und Kollisionen zwischen parallelen Fuzzern. Und feste Puffergrößen bewusst verkleinern, damit Randfälle früher auftreten.
+***** Take
+Den Tipp, die Eingabe zu kopieren, lohnt es sich heute zu übernehmen: gibt man den übergroßen AFL++-Puffer direkt weiter, landet jeder Lese-Overflow in Reserve, die der Sanitizer für legal hält, und nach einer Woche Fuzzing heißt es, der Parser sei sauber. Der Großteil der Liste dreht sich darum, Fehler beobachtbar zu machen, nicht darum, mehr Pfade zu finden.
+***** Comments
+- Ich hielt sicheres C/C++ für eine Frage des Könnens. Nachdem ich mit AFL bei einem FAANG mehrere Fehler in Code von Ingenieuren mit dem höchsten Titel gefunden habe, habe ich meine Meinung geändert.
+- Sichereres C zu schreiben ist eine Frage des Könnens. Sicheres C zu schreiben erfordert einen radikal langsameren Prozess, bessere Werkzeuge oder beides. Können allein genügt nicht.
+- Ich habe noch nie eine Codebasis fuzzbar gemacht, ohne dass sich das in gefundenen Fehlern ausgezahlt hätte. Es überrascht mich immer noch, wie viele Entwickler nie einen Fuzzer benutzt haben.
+** Nibnib: Image compression with extreme decompression speed :graphics:compression:embedded:rust:microcontrollers:
+:PROPERTIES:
+:ID:       50299811
+:URL:      https://github.com/raphlinus/nibnib
+:HN_URL:   https://news.ycombinator.com/item?id=50299811
+:POINTS:   150
+:COMMENTS: 25
+:BY:       raphlinus
+:END:
+
+*** TLDR
+Raph Levien built an image format for DVI output on an RP2350 microcontroller, where the whole pixel budget is about 6 cycles. Nibnib is 4 bits per pixel: one input byte indexes a 256-entry palette, the looked-up 32-bit value is added to the doubled previous pixel, and out come two RGB565 pixels. Because the palette holds deltas rather than absolute colors, soft gradients look far better than ordinary palette images. The inner loop is one load, one add, two stores. Encoding is the opposite: it is a search over palettes and codewords with Floyd-Steinberg error diffusion, orders of magnitude slower than decoding, and the palette is not yet adapted per image. Levien notes the palette needs a cube of small deltas alongside random Gaussian entries, or you get bad artifacts. The on-device decoder lives in the vic-2350 demo, written in symbolasm, a low-level language he is also developing.
+
+*** Take
+The asymmetry is the whole design, and it only makes sense because the decoder is a display scanout loop that has to hit every line on time. Judging it against JPEG misses that: on an RP2350 the comparison is not quality per byte, it is whether you decode at HDMI line rate at all.
+
+*** Comments
+
+**** zahlman
+:PROPERTIES:
+:COMMENT_ID: 50329909
+:END:
+This seems like straining the definition of compression. A delta-coding filter and then palettization, that's it? I'll admit I find it surprising but cool that it works so well.
+
+**** augment_me
+:PROPERTIES:
+:COMMENT_ID: 50330083
+:END:
+Pointless to emphasize extreme decompression speed without showing numbers against JPEG. And BCx does the same codebooking more efficiently by interpolating between two palette entries.
+
+**** orangeboats
+:PROPERTIES:
+:COMMENT_ID: 50332358
+:END:
+Why though? I thought it was pretty clear that you're not gonna decode JPEG pixels in 6 instructions.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Nibnib：追求极致解码速度的图像压缩
+***** TLDR
+Raph Levien 为 RP2350 微控制器的 DVI 输出做了一种图像格式，那里每个像素的预算只有约 6 个周期。Nibnib 是每像素 4 位：一个输入字节索引 256 项调色板，查到的 32 位值加到翻倍后的前一个像素上，直接得到两个 RGB565 像素。由于调色板存的是差值而不是绝对颜色，平滑渐变的表现远好于普通调色板图像。内循环就是一次载入、一次加法、两次存储。编码则相反：它是在调色板和码字空间里做搜索，配合 Floyd-Steinberg 误差扩散，比解码慢几个数量级，而且调色板目前还没有按图像自适应。Levien 指出调色板里除了随机高斯项，还需要一组小差值构成的立方体，否则会出现明显瑕疵。设备上的解码器在 vic-2350 演示里，用他同时在开发的低层语言 symbolasm 写成。
+***** Take
+这种不对称就是整个设计的要点，而它成立的前提是解码器其实是显示扫描输出循环，必须按时填满每一行。拿它和 JPEG 比就跑偏了：在 RP2350 上要比的不是每字节画质，而是你究竟能不能按 HDMI 行速率解出来。
+***** Comments
+- 这有点在挑战「压缩」的定义了。一个差值编码滤波器加上调色板化，就这样？不过我得承认，它效果这么好确实让我意外又觉得酷。
+- 强调极致解压速度却连和 JPEG 的对比数字都不给，没什么意义。而且 BCx 做的是同样的码本／调色思路，但允许在两个调色板项之间插值，效率更高。
+- 为什么要比？我以为很清楚了，你不可能用 6 条指令解出 JPEG 像素。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Nibnib: 極端な展開速度を狙った画像圧縮
+***** TLDR
+Raph LevienがRP2350マイコンのDVI出力向けに作った画像フォーマットで、1ピクセルの予算はおよそ6サイクルしかない。Nibnibは1ピクセル4ビットで、入力1バイトが256項のパレットを指し、引いた32ビット値を2倍にした直前のピクセルに加算すると、RGB565のピクセルが2つ出てくる。パレットが絶対色ではなく差分を保持するため、なだらかなグラデーションは通常のパレット画像よりはるかに良く見える。内側のループはロード1回、加算1回、ストア2回だ。符号化は逆で、パレットと符号語の空間をFloyd-Steinberg誤差拡散付きで探索するため復号より数桁遅く、パレットはまだ画像ごとに適応していない。Levienは、ランダムなガウス分布の項に加えて小さな差分の立方体がパレットに必要で、ないとひどいアーティファクトが出ると述べている。デバイス上のデコーダはvic-2350のデモにあり、彼が並行して開発している低レベル言語symbolasmで書かれている。
+***** Take
+この非対称性こそが設計の核心で、成立するのはデコーダが表示のスキャンアウトループであり、各ラインを時間内に埋めなければならないからだ。JPEGと比べるのは筋がずれている。RP2350で問うべきはバイトあたりの画質ではなく、HDMIのライン速度で復号できるかどうかだ。
+***** Comments
+- これは圧縮の定義を引き伸ばしている気がする。差分符号化フィルタとパレット化だけ？とはいえ、これでここまでうまくいくのは意外だし面白い。
+- 極端な展開速度を強調するのに、JPEGとの数字すら出さないのは意味がない。それにBCxは同じコードブック方式を、2つのパレット項の補間を許すことでより効率よくやっている。
+- なぜ比べる？6命令でJPEGのピクセルを復号できないのは明らかだと思っていた。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Nibnib: 극단적인 압축 해제 속도를 노린 이미지 압축
+***** TLDR
+Raph Levien이 RP2350 마이크로컨트롤러의 DVI 출력을 위해 만든 이미지 포맷으로, 픽셀당 예산이 약 6사이클뿐이다. Nibnib은 픽셀당 4비트다. 입력 1바이트가 256개 항목의 팔레트를 가리키고, 조회한 32비트 값을 두 배로 늘린 직전 픽셀에 더하면 RGB565 픽셀 두 개가 나온다. 팔레트가 절대 색이 아니라 차이값을 담기 때문에 부드러운 그러데이션이 보통 팔레트 이미지보다 훨씬 좋다. 내부 루프는 로드 한 번, 덧셈 한 번, 저장 두 번이다. 인코딩은 반대로 팔레트와 코드워드 공간을 Floyd-Steinberg 오차 확산과 함께 탐색하므로 디코딩보다 몇 자릿수 느리고, 팔레트는 아직 이미지별로 적응하지 않는다. Levien은 무작위 가우시안 항목과 함께 작은 차이값의 정육면체가 팔레트에 필요하며, 없으면 심한 아티팩트가 생긴다고 설명한다. 기기용 디코더는 vic-2350 데모에 있고, 그가 함께 개발 중인 저수준 언어 symbolasm으로 작성됐다.
+***** Take
+이 비대칭이 설계의 전부이고, 디코더가 각 라인을 제때 채워야 하는 디스플레이 스캔아웃 루프이기 때문에 성립한다. JPEG와 견주는 건 핀트가 어긋난다. RP2350에서 따질 것은 바이트당 화질이 아니라 HDMI 라인 속도로 디코딩이 되는지다.
+***** Comments
+- 압축의 정의를 늘려 쓰는 느낌이다. 델타 코딩 필터에 팔레트화, 그게 전부인가? 그래도 이렇게 잘 작동하는 건 의외이고 멋지다.
+- 극단적 압축 해제 속도를 강조하면서 JPEG와의 수치도 보여주지 않는 건 의미가 없다. 게다가 BCx는 같은 코드북 방식을 두 팔레트 항목 사이 보간으로 더 효율적으로 한다.
+- 왜 비교하나? 6개 명령어로 JPEG 픽셀을 디코딩할 수 없다는 건 분명하다고 생각했다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Nibnib: compresión de imágenes con velocidad de descompresión extrema
+***** TLDR
+Raph Levien construyó un formato de imagen para la salida DVI de un microcontrolador RP2350, donde el presupuesto por píxel es de unos 6 ciclos. Nibnib usa 4 bits por píxel: un byte de entrada indexa una paleta de 256 entradas, el valor de 32 bits obtenido se suma al píxel anterior duplicado y salen dos píxeles RGB565. Como la paleta guarda deltas en lugar de colores absolutos, los degradados suaves se ven mucho mejor que en una imagen paletizada normal. El bucle interno es una carga, una suma y dos escrituras. La codificación es lo contrario: una búsqueda sobre paletas y palabras de código con difusión de error de Floyd-Steinberg, órdenes de magnitud más lenta que la decodificación, y la paleta todavía no se adapta a cada imagen. Levien señala que la paleta necesita un cubo de deltas pequeños junto a entradas gaussianas aleatorias, o aparecen artefactos serios. El decodificador en dispositivo está en la demo vic-2350, escrito en symbolasm, un lenguaje de bajo nivel que él mismo está desarrollando.
+***** Take
+La asimetría es todo el diseño, y solo tiene sentido porque el decodificador es un bucle de barrido de pantalla que debe llegar a tiempo a cada línea. Compararlo con JPEG se desvía: en un RP2350 lo que se discute no es calidad por byte, sino si decodificas a la velocidad de línea de HDMI.
+***** Comments
+- Esto estira la definición de compresión. ¿Un filtro de codificación delta y paletización, y eso es todo? Reconozco que me sorprende, pero está muy bien que funcione así.
+- No tiene sentido enfatizar una descompresión extrema sin dar números frente a JPEG. Y BCx hace el mismo libro de códigos de forma más eficiente al interpolar entre dos entradas de la paleta.
+- ¿Para qué? Creía que estaba claro que no vas a decodificar píxeles JPEG en 6 instrucciones.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Nibnib: Bildkompression mit extremer Dekompressionsgeschwindigkeit
+***** TLDR
+Raph Levien hat ein Bildformat für die DVI-Ausgabe eines RP2350-Mikrocontrollers gebaut, wo pro Pixel nur etwa 6 Zyklen Budget bleiben. Nibnib nutzt 4 Bit pro Pixel: Ein Eingabebyte indexiert eine Palette mit 256 Einträgen, der ausgelesene 32-Bit-Wert wird auf das verdoppelte Vorgängerpixel addiert, und heraus kommen zwei RGB565-Pixel. Weil die Palette Deltas statt absoluter Farben enthält, sehen sanfte Verläufe deutlich besser aus als bei gewöhnlichen Palettenbildern. Die innere Schleife besteht aus einem Load, einer Addition und zwei Stores. Das Kodieren ist das Gegenteil: eine Suche über Paletten und Codewörter mit Floyd-Steinberg-Fehlerdiffusion, um Größenordnungen langsamer als das Dekodieren, und die Palette passt sich noch nicht pro Bild an. Levien merkt an, dass die Palette neben zufälligen Gauß-Einträgen einen Würfel kleiner Deltas braucht, sonst entstehen starke Artefakte. Der Decoder für das Gerät steckt in der vic-2350-Demo und ist in symbolasm geschrieben, einer Low-Level-Sprache, die er parallel entwickelt.
+***** Take
+Die Asymmetrie ist der ganze Entwurf, und sie trägt nur, weil der Decoder eine Scanout-Schleife des Displays ist, die jede Zeile rechtzeitig füllen muss. Der Vergleich mit JPEG geht daran vorbei: Auf einem RP2350 geht es nicht um Qualität pro Byte, sondern darum, ob man überhaupt mit HDMI-Zeilentakt dekodiert.
+***** Comments
+- Das dehnt den Begriff Kompression. Ein Delta-Coding-Filter und dann Palettisierung, das ist alles? Zugegeben, es überrascht mich, dass es so gut funktioniert, aber cool ist es.
+- Es ist sinnlos, extreme Dekompressionsgeschwindigkeit zu betonen und nicht einmal Zahlen gegen JPEG zu zeigen. Und BCx macht dasselbe Codebook effizienter, indem es zwischen zwei Paletteneinträgen interpoliert.
+- Wozu denn? Ich dachte, es sei klar, dass man JPEG-Pixel nicht in 6 Instruktionen dekodiert.
+** Bones may release proteins that slow aging and extend life span :science:aging:biology:longevity:
+:PROPERTIES:
+:ID:       50331957
+:URL:      https://www.science.org/content/article/bones-may-release-proteins-slow-aging-and-extend-life-span
+:HN_URL:   https://news.ycombinator.com/item?id=50331957
+:POINTS:   107
+:COMMENTS: 24
+:BY:       EA-3167
+:END:
+
+*** TLDR
+［Article behind a Cloudflare challenge, details from the thread quoting it and the paper］ Researchers report that osteocytes, the cells embedded in bone, release proteins under mechanical load that act systemically against aging. The protocol was dynamic tibial axial loading: 2 newtons at 2 Hz for 300 cycles, twice a week for three months, applied to anesthetized mice's tibias with a materials-testing ram. That is 2.5 minutes of compression per session at roughly the force of a 200-gram weight. Science quotes the team extending mouse lives by nearly three months, which the article converts to about nine human years. The article names ordinary exercise as a sufficient source of the same loading; the ram exists to isolate bone loading from everything else exercise does.
+
+*** Take
+The interesting claim is not the lifespan number, it is that bone is doing endocrine signalling and the signal is mechanical. If that holds up, loading dose becomes a measurable variable rather than a vague prescription to exercise more. One mouse study and no human data, so treat the nine-years figure as the headline it is.
+
+*** Comments
+
+**** waterheater
+:PROPERTIES:
+:COMMENT_ID: 50334190
+:END:
+Their loading protocol was 2 N at 2 Hz for 300 cycles, twice a week for three months, applied axially to the tibia with an ElectroForce ram while the mice were anesthetized. That's 2.5 minutes a session at about the force of a 200g object.
+
+**** Frieren
+:PROPERTIES:
+:COMMENT_ID: 50334458
+:END:
+If this mechanism appeared under evolutionary pressure, what would that be? In which situations does a normal mammal find its bones squished but not crushed? Or is it a side effect of something else?
+
+**** hansvm
+:PROPERTIES:
+:COMMENT_ID: 50334654
+:END:
+The article explicitly calls out exercise as something that generates those compounds. Exercise has many other effects, so to isolate osteocytes as the causal factor you want an experiment that avoids those other systems.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+骨骼可能释放延缓衰老、延长寿命的蛋白
+***** TLDR
+［原文被 Cloudflare 拦截，细节来自讨论区对文章和论文的引用］研究者报告，嵌在骨组织中的骨细胞在机械负荷下会释放具有全身抗衰老作用的蛋白。实验方案是动态胫骨轴向加载：2 牛顿、2 赫兹、300 个循环，每周两次，持续三个月，在麻醉状态下用材料试验机的压头施加于小鼠胫骨。也就是每次压缩 2.5 分钟，力量大致相当于一个 200 克物体的重量。Science 引述该团队将小鼠寿命延长了近三个月，文章换算为约九个人类年。文章指出，普通运动就足以产生同样的负荷；用压头是为了把骨负荷与运动的其他效应区分开。
+***** Take
+值得注意的不是那个寿命数字，而是骨骼在做内分泌信号传递，而且信号是机械性的。如果结论站得住，负荷剂量就成了可测量的变量，而不再是「多运动」这种含糊处方。目前只有一项小鼠研究、没有人体数据，所以那个九年就当标题看。
+***** Comments
+- 他们的加载方案是 2 牛顿、2 赫兹、300 个循环，每周两次，持续三个月，小鼠麻醉状态下用 ElectroForce 压头沿胫骨轴向施加。也就是每次 2.5 分钟，力量约等于一个 200 克物体的重量。
+- 如果这个机制是在某种进化压力下出现的，那压力是什么？正常哺乳动物在什么情况下骨头会被压扁但没被压碎？还是说这只是别的过程的副作用？
+- 文章明确说了普通运动就能产生这些化合物。运动还有很多其他影响，所以要把骨细胞单独确认为因果因素，就需要一个尽量避开那些系统的实验。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+骨は老化を遅らせ寿命を延ばすタンパク質を放出している可能性
+***** TLDR
+［記事はCloudflareの認証で読めず、詳細はスレッドでの記事と論文の引用による］研究者らは、骨に埋まった細胞である骨細胞が、機械的な負荷を受けると全身的に老化に対抗するタンパク質を放出すると報告している。手法は動的な脛骨軸圧負荷で、2ニュートン、2ヘルツ、300サイクルを週2回、3カ月にわたり、麻酔下のマウスの脛骨に材料試験機のラムで加えた。1回あたり2.5分の圧縮で、力は200グラムの物体にかかる重力ほどだ。Scienceは研究チームがマウスの寿命を3カ月近く延ばしたと伝え、記事はそれを人間の約9年に換算している。記事は同じ負荷の源として通常の運動を挙げており、ラムを使うのは運動の他の作用から骨への負荷だけを切り分けるためだ。
+***** Take
+興味深いのは寿命の数字ではなく、骨が内分泌的なシグナルを出しており、そのシグナルが機械的だという点だ。これが持ちこたえれば、負荷の量はもっと運動しろという曖昧な処方ではなく、測れる変数になる。マウス1件、ヒトのデータなしなので、9年という数字は見出しとして扱うべきだ。
+***** Comments
+- 負荷のプロトコルは2N、2Hz、300サイクルを週2回、3カ月。麻酔下のマウスの脛骨にElectroForceのラムで軸方向に加えた。1回2.5分、力は200gの物体ぶんほどだ。
+- この仕組みが進化の圧力の下で現れたのなら、その圧力は何だろう。通常の哺乳類が骨を潰されずに押しつぶされる状況とは？それとも別の何かの副作用か。
+- 記事は通常の運動がそれらの化合物を生むと明記している。運動には他の影響も多いので、骨細胞を原因として切り出すには、そうした系をできるだけ避けた実験が要る。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+뼈가 노화를 늦추고 수명을 늘리는 단백질을 분비할 수 있다
+***** TLDR
+［기사는 Cloudflare 차단으로 접근 불가, 세부 내용은 스레드에서 기사와 논문을 인용한 부분에 근거］연구진은 뼈에 박혀 있는 세포인 골세포가 기계적 하중을 받으면 전신적으로 노화에 맞서는 단백질을 분비한다고 보고했다. 방법은 동적 경골 축하중으로, 2뉴턴, 2헤르츠, 300사이클을 주 2회, 3개월간 마취된 쥐의 경골에 재료시험기 램으로 가했다. 한 회에 2.5분의 압축이고, 힘은 200그램 물체가 누르는 정도다. Science는 연구팀이 쥐의 수명을 3개월 가까이 늘렸다고 전하고, 기사는 이를 사람의 약 9년으로 환산한다. 기사는 같은 하중의 원천으로 평범한 운동을 지목하며, 램을 쓴 이유는 운동의 다른 효과에서 뼈 하중만 분리하기 위해서다.
+***** Take
+흥미로운 주장은 수명 숫자가 아니라, 뼈가 내분비 신호를 보내고 그 신호가 기계적이라는 점이다. 이것이 버티면 하중의 양은 운동을 더 하라는 모호한 처방이 아니라 측정 가능한 변수가 된다. 쥐 연구 하나뿐이고 사람 데이터는 없으니, 9년이라는 수치는 제목 수준으로 받아들이는 게 맞다.
+***** Comments
+- 하중 프로토콜은 2N, 2Hz, 300사이클을 주 2회, 3개월간이고, 마취된 쥐의 경골에 ElectroForce 램으로 축 방향으로 가했다. 한 번에 2.5분이고 힘은 200g 물체 정도다.
+- 이 기제가 진화적 압력 아래 생겼다면 그 압력은 무엇일까? 평범한 포유류가 뼈가 짓눌리되 부서지지 않는 상황은 언제인가? 아니면 다른 무엇의 부수 효과인가?
+- 기사는 평범한 운동이 그 화합물을 만든다고 분명히 쓴다. 운동에는 다른 영향도 많으니 골세포를 원인으로 분리하려면 그 계통들을 최대한 피하는 실험이 필요하다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Los huesos podrían liberar proteínas que frenan el envejecimiento y alargan la vida
+***** TLDR
+［Artículo tras un desafío de Cloudflare, detalles tomados del hilo que lo cita junto con el paper］ Los investigadores informan que los osteocitos, las células incrustadas en el hueso, liberan bajo carga mecánica proteínas que actúan contra el envejecimiento en todo el organismo. El protocolo fue carga axial dinámica de tibia: 2 newtons a 2 Hz durante 300 ciclos, dos veces por semana durante tres meses, aplicada con un pistón de ensayo de materiales a las tibias de ratones anestesiados. Son 2,5 minutos de compresión por sesión, con una fuerza equivalente a unos 200 gramos. Science cita que el equipo alargó la vida de los ratones casi tres meses, que el artículo traduce a unos nueve años humanos. El propio artículo señala el ejercicio común como fuente suficiente de esa carga; el pistón existe para aislar la carga del hueso de todo lo demás que hace el ejercicio.
+***** Take
+Lo interesante no es la cifra de longevidad, sino que el hueso esté haciendo señalización endocrina y que la señal sea mecánica. Si se sostiene, la dosis de carga pasa a ser una variable medible en lugar de una receta vaga de hacer más ejercicio. Un solo estudio en ratones y sin datos humanos, así que los nueve años son titular.
+***** Comments
+- El protocolo fue 2 N a 2 Hz durante 300 ciclos, dos veces por semana durante tres meses, aplicado axialmente a la tibia con un pistón ElectroForce mientras los ratones estaban anestesiados. Eso son 2,5 minutos por sesión con la fuerza de un objeto de 200 g.
+- Si este mecanismo surgió por presión evolutiva, ¿cuál sería? ¿En qué situaciones un mamífero normal encuentra sus huesos comprimidos pero no aplastados? ¿O es un efecto secundario de otra cosa?
+- El artículo menciona explícitamente el ejercicio como generador de esos compuestos. El ejercicio tiene muchos otros efectos, así que para aislar los osteocitos como factor causal conviene un experimento que evite esos otros sistemas.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Knochen setzen möglicherweise Proteine frei, die das Altern bremsen und das Leben verlängern
+***** TLDR
+［Artikel hinter einer Cloudflare-Prüfung, Details aus dem Thread, der ihn und das Paper zitiert］ Forschende berichten, dass Osteozyten, die im Knochen eingebetteten Zellen, unter mechanischer Last Proteine freisetzen, die systemisch gegen das Altern wirken. Das Protokoll war dynamische axiale Tibiabelastung: 2 Newton bei 2 Hz über 300 Zyklen, zweimal pro Woche für drei Monate, mit einem Materialprüf-Stempel auf die Tibia narkotisierter Mäuse aufgebracht. Das sind 2,5 Minuten Kompression pro Sitzung bei etwa der Kraft eines 200-Gramm-Gewichts. Science zitiert das Team mit einer Lebensverlängerung von knapp drei Monaten, was der Artikel in rund neun Menschenjahre umrechnet. Der Artikel nennt gewöhnliche Bewegung als ausreichende Quelle derselben Belastung; der Stempel dient dazu, die Knochenlast von allem anderen zu trennen, was Bewegung bewirkt.
+***** Take
+Interessant ist nicht die Lebensdauerzahl, sondern dass der Knochen endokrine Signale sendet und das Signal mechanisch ist. Hält das, wird die Lastdosis eine messbare Größe statt der vagen Empfehlung, mehr Sport zu treiben. Eine Mausstudie, keine Humandaten, die neun Jahre bleiben also eine Schlagzeile.
+***** Comments
+- Das Belastungsprotokoll war 2 N bei 2 Hz über 300 Zyklen, zweimal pro Woche für drei Monate, axial auf die Tibia narkotisierter Mäuse mit einem ElectroForce-Stempel. Also 2,5 Minuten pro Sitzung mit der Kraft eines 200-g-Objekts.
+- Wenn dieser Mechanismus unter Evolutionsdruck entstanden ist, welcher wäre das? In welchen Situationen werden die Knochen eines normalen Säugetiers gequetscht, aber nicht zerdrückt? Oder ist es ein Nebeneffekt von etwas anderem?
+- Der Artikel nennt Bewegung ausdrücklich als Quelle dieser Stoffe. Bewegung hat viele weitere Wirkungen, für den kausalen Nachweis der Osteozyten braucht man also ein Experiment, das diese anderen Systeme meidet.
