@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-11-03 16:00 UTC
+#+DATE: 2026-11-03T16:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Honnibal takes apart the Astra weights claim we ran yesterday, Google ties school Search access to Gemini, Postman installs itself into your coding agent, Stockfish beats Kasparov on a 1996 Pentium Pro, and Utah charges Kalshi's founders with 13 felonies each
+
+* Highlights
+- Astra's MATH-500 jump came from Python and 50 batches of practice problems, not from reading floats
+- Google: Gemini and Search both stay off for K-12 student accounts until an admin flips the switch
+- Stockfish 17 scores 2846 Elo on a 200MHz Pentium Pro; 54% of the gain since 1996 is algorithms
+- Postman 12.33.4 writes its own trust hashes into Claude Code and Codex config to pre-approve its hooks
+- Utah AG charges Kalshi's Mansour and Lopes Lara one day after the CFTC sued Utah to stop him
+
+* Stories
+
+** The 'Astra can read and write weights to improve Qwen' post is misleading :ai:research:interpretability:llm:
+:PROPERTIES:
+:ID:       50351111
+:URL:      https://honnibal.dev/blog/astra-read-write-misleading
+:HN_URL:   https://news.ycombinator.com/item?id=50351111
+:POINTS:   720
+:COMMENTS: 167
+:BY:       syllogism
+:END:
+
+*** TLDR
+Matthew Honnibal (spaCy) takes apart the weight-space programming post we covered in the 2026-11-02 16:00 edition. His count: only three experiments, on networks of 17K to 172K parameters, have a model reading raw weights directly. Every language-model experiment ran Python, and the headline result (Qwen3.5-0.8B going from 7.9% to 48.1% on MATH-500 after editing 0.016% of its weights) also required running the model on up to 50 batches of practice problems and adjusting from the output. That is a programmatic edit loop with feedback, which is what ML engineers already do with scripts. The fix itself targets reasoning loops, a flaw Qwen's own model card warns about, not math ability.
+
+*** Take
+The number survives, the framing does not. 'Just by looking at the raw weights' describes three toy networks, not the Qwen result everyone quoted, and a 7.9% baseline is mostly a model that never stops thinking long enough to answer. We published the original claim 24 hours ago, so: the interesting capability here is a model using tools on itself with a feedback signal, which is still new and does not need the magic version to be worth reporting.
+
+*** Comments
+
+**** x313
+:PROPERTIES:
+:COMMENT_ID: 50353792
+:END:
+I work in this field (mech interp research) and I agree, the original post is definitely misleading. The key result has nothing to do with making Qwen better at math, it just reduces reasoning loops, and you can fix that with simple steering approaches.
+
+**** GavinAnderegg
+:PROPERTIES:
+:COMMENT_ID: 50351619
+:END:
+I'm still impressed by the Weight-Space Programming idea. I didn't know that LLMs could understand or successfully modify weights at all before reading it, and Astra handled the examples with surprising ease.
+
+**** skwirl
+:PROPERTIES:
+:COMMENT_ID: 50354989
+:END:
+There is something about AI related posts that makes it irresistible for people to post a rebuttal that actually makes the same claim as the original, just with different vibes.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+“Astra 能读写权重来改进 Qwen”那篇文章有误导性
+***** TLDR
+Matthew Honnibal（spaCy 作者）逐条拆解了我们在 2026-11-02 16:00 那期报道过的权重空间编程文章。他的统计是：只有三个实验（参数量 17K 到 172K 的小网络）是模型直接读取原始权重。所有语言模型实验都要跑 Python，而被广泛引用的结果（Qwen3.5-0.8B 在 MATH-500 上从 7.9% 提升到 48.1%，只改动了 0.016% 的权重）还需要在最多 50 批练习题上运行模型，再根据输出调整。这是一个带反馈的程序化编辑循环，也就是机器学习工程师早就在用脚本做的事。而且这个修正针对的是推理循环，Qwen 自己的模型卡就警告过这个缺陷，并不是数学能力。
+***** Take
+数字站得住，表述站不住。“只靠看原始权重”说的是三个玩具网络，不是人人转述的 Qwen 结果，而 7.9% 的基线主要是模型一直想下去不肯作答。我们 24 小时前刚发了原文的说法，所以这里真正有意思的能力是：模型带着反馈信号对自己使用工具。这本身已经够新，不需要那个魔法版本也值得报道。
+***** Comments
+- 我就在这个领域（机制可解释性研究）工作，我同意原文确实有误导性。关键结果跟让 Qwen 数学变好没关系，它只是减少了推理循环，而这用简单的引导向量方法就能修。
+- 我还是觉得“权重空间编程”这个想法很惊艳。读之前我根本不知道大模型能理解甚至成功修改权重，而 Astra 处理那些例子轻松得出人意料。
+- AI 相关的帖子好像总让人忍不住写“反驳”，而那些反驳其实在说跟原文一样的主张，只是换了个腔调。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+「AstraがQwenの重みを読み書きして改善できる」という投稿は誤解を招く
+***** TLDR
+Matthew Honnibal（spaCy）が、2026-11-02 16:00版で取り上げた重み空間プログラミングの投稿を検証した。彼の数え方では、モデルが生の重みを直接読んでいる実験は3つだけで、いずれも17Kから172Kパラメータの小さなネットワークだ。言語モデルの実験はすべてPythonを使い、よく引用される結果（Qwen3.5-0.8Bが重みの0.016%の編集でMATH-500を7.9%から48.1%に改善）は、最大50バッチの練習問題でモデルを実行し、その出力を見て調整する必要があった。つまりフィードバック付きのプログラム的な編集ループで、MLエンジニアがすでにスクリプトでやっていることだ。しかもこの修正が直したのは推論ループで、Qwen自身のモデルカードが警告している欠陥であり、数学能力ではない。
+***** Take
+数字は残るが、言い方は残らない。「生の重みを見るだけで」が当てはまるのは3つの小さなネットワークで、誰もが引用したQwenの結果ではない。7.9%というベースラインは、答えを出すまで考え続けてしまうモデルの話だ。24時間前に元の主張を載せた側として言えば、ここで本当に新しいのはモデルがフィードバックを使って自分自身に道具を当てたことで、魔法のような説明を足さなくても十分に報じる価値がある。
+***** Comments
+- この分野（機械論的解釈可能性の研究）で働いているが、元の投稿は確かに誤解を招く。重要な結果はQwenを数学で強くした話ではなく、推論ループを減らしただけで、単純なステアリング手法でも直せる。
+- それでも「Weight-Space Programming」という発想には感心している。読む前はLLMが重みを理解したり実際に書き換えたりできるとは知らなかったし、Astraは例題を驚くほど簡単にこなしていた。
+- AI関連の投稿には、元の主張と実質同じことを別の調子で言う「反論」を書きたくさせる何かがある。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+"Astra가 가중치를 읽고 써서 Qwen을 개선할 수 있다"는 글은 오해를 부른다
+***** TLDR
+Matthew Honnibal(spaCy 개발자)이 2026-11-02 16:00판에서 다룬 가중치 공간 프로그래밍 글을 분해했다. 그의 집계로는 모델이 원시 가중치를 직접 읽은 실험은 세 개뿐이고, 모두 1만7천~17만2천 파라미터의 작은 네트워크다. 언어 모델 실험은 모두 파이썬을 실행했고, 널리 인용된 결과(Qwen3.5-0.8B가 가중치의 0.016%만 수정해 MATH-500에서 7.9%에서 48.1%로 상승)는 최대 50배치의 연습 문제로 모델을 돌리고 그 출력을 보며 조정하는 과정이 필요했다. 피드백이 있는 프로그램적 편집 루프이고, ML 엔지니어가 이미 스크립트로 하는 일이다. 게다가 이 수정이 고친 것은 Qwen 모델 카드가 경고하는 추론 루프이지 수학 실력이 아니다.
+***** Take
+숫자는 남고 포장은 남지 않는다. "원시 가중치를 보기만 하고"라는 표현이 맞는 건 작은 네트워크 세 개이고, 모두가 인용한 Qwen 결과가 아니다. 7.9%라는 기준선은 답을 내놓을 만큼 생각을 멈추지 못하는 모델의 점수다. 24시간 전에 원래 주장을 실은 입장에서 말하면, 여기서 정말 새로운 능력은 모델이 피드백 신호를 가지고 자기 자신에게 도구를 쓴 것이고, 마법 같은 설명을 덧붙이지 않아도 보도할 가치가 있다.
+***** Comments
+- 이 분야(기계적 해석 가능성 연구)에서 일하는데 원문이 오해를 부른다는 데 동의한다. 핵심 결과는 Qwen의 수학 실력이 아니라 추론 루프를 줄인 것이고, 단순한 스티어링 기법으로도 고칠 수 있다.
+- 그래도 '가중치 공간 프로그래밍'이라는 아이디어는 인상적이다. 읽기 전에는 LLM이 가중치를 이해하거나 실제로 수정할 수 있다는 것조차 몰랐고, Astra는 예제를 놀랍도록 쉽게 처리했다.
+- AI 관련 글에는 원문과 사실상 같은 주장을 분위기만 바꿔서 하는 '반박'을 쓰게 만드는 무언가가 있다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+La publicación "Astra puede leer y escribir pesos para mejorar Qwen" es engañosa
+***** TLDR
+Matthew Honnibal (spaCy) desarma el artículo de programación en el espacio de pesos que cubrimos en la edición del 2026-11-02 a las 16:00. Según su recuento, solo tres experimentos, sobre redes de 17K a 172K parámetros, muestran a un modelo leyendo pesos crudos directamente. Todos los experimentos con modelos de lenguaje ejecutaron Python, y el resultado más citado (Qwen3.5-0.8B pasando de 7,9% a 48,1% en MATH-500 tras editar el 0,016% de sus pesos) también exigió ejecutar el modelo sobre hasta 50 lotes de problemas de práctica y ajustar según la salida. Es un bucle de edición programática con retroalimentación, lo que los ingenieros de ML ya hacen con scripts. Y lo que corrige son los bucles de razonamiento, un defecto que la propia ficha del modelo Qwen advierte, no la capacidad matemática.
+***** Take
+El número aguanta, el encuadre no. "Solo mirando los pesos crudos" describe tres redes de juguete, no el resultado de Qwen que todos citaron, y una base del 7,9% es sobre todo un modelo que no deja de pensar lo suficiente para responder. Publicamos la afirmación original hace 24 horas, así que lo digo claro: la capacidad interesante es un modelo usando herramientas sobre sí mismo con una señal de retroalimentación, y eso ya es nuevo sin necesidad de la versión mágica.
+***** Comments
+- Trabajo en este campo (investigación de interpretabilidad mecanicista) y estoy de acuerdo: el artículo original es engañoso. El resultado clave no tiene nada que ver con mejorar a Qwen en matemáticas, solo reduce los bucles de razonamiento, y eso se arregla con métodos simples de steering.
+- Sigo impresionado con la idea de la programación en el espacio de pesos. Antes de leerlo no sabía que los LLM pudieran entender o modificar pesos en absoluto, y Astra manejó los ejemplos con una facilidad sorprendente.
+- Hay algo en las publicaciones sobre IA que vuelve irresistible escribir una refutación que en realidad repite la misma afirmación del original, solo con otro tono.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Der Beitrag "Astra kann Gewichte lesen und schreiben, um Qwen zu verbessern" ist irreführend
+***** TLDR
+Matthew Honnibal (spaCy) nimmt den Beitrag zur Weight-Space-Programmierung auseinander, den wir in der Ausgabe vom 2026-11-02 16:00 hatten. Seine Zählung: Nur drei Experimente, an Netzen mit 17.000 bis 172.000 Parametern, zeigen ein Modell, das rohe Gewichte direkt liest. Alle Sprachmodell-Experimente liefen über Python, und das meistzitierte Ergebnis (Qwen3.5-0.8B steigt auf MATH-500 von 7,9% auf 48,1%, nachdem 0,016% der Gewichte geändert wurden) brauchte zusätzlich Durchläufe über bis zu 50 Batches Übungsaufgaben und Anpassungen anhand der Ausgabe. Das ist eine programmatische Editierschleife mit Rückmeldung, also das, was ML-Ingenieure längst per Skript machen. Behoben wird dabei eine Schleife im Reasoning, ein Fehler, vor dem Qwens eigene Model Card warnt, nicht die Mathefähigkeit.
+***** Take
+Die Zahl hält, die Erzählung nicht. "Nur durch den Blick auf die rohen Gewichte" beschreibt drei Spielzeugnetze, nicht das Qwen-Ergebnis, das alle zitiert haben, und eine Basis von 7,9% ist vor allem ein Modell, das nicht aufhört zu denken und deshalb nicht antwortet. Wir haben die ursprüngliche Behauptung vor 24 Stunden gedruckt, also deutlich: interessant ist ein Modell, das mit Rückmeldesignal Werkzeuge auf sich selbst anwendet, und das ist auch ohne Zauberversion berichtenswert.
+***** Comments
+- Ich arbeite in diesem Feld (mechanistische Interpretierbarkeit) und stimme zu: der Originalbeitrag ist irreführend. Das Kernergebnis hat nichts damit zu tun, Qwen in Mathe besser zu machen, es reduziert nur Reasoning-Schleifen, und das lässt sich mit einfachen Steering-Ansätzen beheben.
+- Die Idee der Weight-Space-Programmierung beeindruckt mich trotzdem. Vorher wusste ich nicht, dass LLMs Gewichte überhaupt verstehen oder erfolgreich ändern können, und Astra hat die Beispiele überraschend locker bewältigt.
+- KI-Beiträge haben etwas, das es unwiderstehlich macht, eine Entgegnung zu schreiben, die am Ende dieselbe Behauptung aufstellt wie das Original, nur in anderer Stimmung.
+** Google will turn off Search for schools that reject AI :google:ai:education:policy:
+:PROPERTIES:
+:ID:       50353192
+:URL:      https://www.nytimes.com/2026/11/03/us/google-search-schools-restrict-ai.html
+:HN_URL:   https://news.ycombinator.com/item?id=50353192
+:POINTS:   250
+:COMMENTS: 200
+:BY:       ceejayoz
+:END:
+
+*** TLDR
+［NYT is paywalled; this is from Google's own education announcement, which the thread links.］ Google is putting Guided Learning, its step-through-the-problem mode, into Google Search and Google Classroom, with a pilot in selected US schools this month and Classroom availability now global. The policy line matters more than the feature: access to Gemini, Gemini Notebook, Gemini in Classroom and Google Search will be entirely off for K-12 student accounts until a school administrator explicitly turns each on. Search is in that same bundle, so a district that declines the AI products also declines student Search. Google says it will give schools details before the rollout.
+
+*** Take
+The AI is not being forced on anyone, which is exactly the problem: Search has been moved into the same consent toggle as Gemini, so a district that says no to one says no to both. That is a bundling decision, not a safety decision, and it only works as leverage while Search is irreplaceable to a 14-year-old. The comment thread answering it with DuckDuckGo and Kagi links inside the hour suggests Google has misjudged which half of the bundle is load-bearing.
+
+*** Comments
+
+**** mawadev
+:PROPERTIES:
+:COMMENT_ID: 50354863
+:END:
+So Google blocks schools from using their entire search engine because the schools block the AI part of search? What incentive does Google even have in pushing the AI summary?
+
+**** lukeschlather
+:PROPERTIES:
+:COMMENT_ID: 50354928
+:END:
+Reading the AI summary is probably going to be more reliable than reading the top 10 search results. Either you trust Google to retrieve information or you don't.
+
+**** a2fz
+:PROPERTIES:
+:COMMENT_ID: 50355631
+:END:
+If this is just the search engine, it seems rather unimportant. Search is easily Google's least-sticky and most replaceable product.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+谷歌将对拒绝 AI 的学校关闭搜索
+***** TLDR
+【纽约时报有付费墙，以下内容来自讨论中链接的谷歌官方教育公告。】谷歌正把 Guided Learning（一步步带着解题的模式）接入 Google 搜索和 Google Classroom，本月在美国部分学校试点，Classroom 版已全球可用。真正关键的不是功能而是政策：对 K-12 学生账号，Gemini、Gemini Notebook、Classroom 里的 Gemini 以及 Google 搜索默认全部关闭，必须由学校管理员逐项开启。搜索被放进了同一个开关组，所以拒绝 AI 产品的学区同时也拒绝了学生的搜索。谷歌称会在推行前向学校说明细节。
+***** Take
+没人被强迫使用 AI，而问题恰恰在这里：搜索被挪进了和 Gemini 同一个授权开关，学区对一个说不，就等于对两个都说不。这是打包决策，不是安全决策，而它要能当筹码，前提是搜索对一个 14 岁的人不可替代。讨论区一小时内就贴满了 DuckDuckGo 和 Kagi 的链接，说明谷歌看错了这个组合里哪一半才是承重的。
+***** Comments
+- 所以谷歌因为学校屏蔽了搜索里的 AI 部分，就不让学校用整个搜索引擎？谷歌到底有什么动力硬推 AI 摘要？
+- 看 AI 摘要大概比看前十条搜索结果更可靠。要么你信谷歌能检索信息，要么你不信。
+- 如果真的只是搜索引擎，那其实不太要紧。搜索是谷歌黏性最低、最容易被替代的产品。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+GoogleはAIを拒否する学校の検索を停止する
+***** TLDR
+【NYTは有料記事。以下はスレッドでリンクされたGoogle自身の教育向け発表に基づく。】Googleは段階的に問題を解かせるGuided Learningを Google 検索とGoogle Classroomに入れる。米国の一部の学校で今月パイロットを始め、Classroom版はすでに全世界で利用できる。重要なのは機能よりも方針だ。K-12の生徒アカウントでは、Gemini、Gemini Notebook、Classroom内のGemini、そしてGoogle検索が初期状態で全部オフで、学校管理者が個別に有効化しないと使えない。検索が同じ束に入っているため、AI製品を断る学区は生徒の検索も断ることになる。Googleは展開前に学校へ詳細を伝えるとしている。
+***** Take
+AIを強制はしていない。そこが問題だ。検索がGeminiと同じ同意スイッチに移されたので、学区が一方に「いいえ」と言えば両方に「いいえ」になる。これは安全上の判断ではなく抱き合わせの判断で、交渉材料として効くのは検索が14歳にとって代替不能な場合だけだ。スレッドが1時間でDuckDuckGoとKagiのリンクで埋まったことは、Googleがこの束のどちら側が支えになっているかを読み違えたことを示している。
+***** Comments
+- 学校が検索のAI部分をブロックしたから、Googleは検索エンジン全体を使わせないということ？AI要約を押し出す動機は何なんだ。
+- AI要約を読むほうが検索結果の上位10件を読むより信頼できるようになってきた。Googleの情報取得を信じるか信じないか、どちらかだ。
+- 本当に検索エンジンだけの話なら、それほど重要ではない。検索はGoogleで最も乗り換えやすく、代替が容易な製品だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+구글, AI를 거부하는 학교의 검색을 차단한다
+***** TLDR
+［NYT는 유료 기사라서 아래 내용은 스레드에 링크된 구글 자체 교육 공지에 근거한다.］ 구글은 문제를 단계별로 풀게 하는 Guided Learning을 구글 검색과 구글 클래스룸에 넣는다. 이번 달 미국 일부 학교에서 시범 운영하고, 클래스룸 버전은 이미 전 세계에서 쓸 수 있다. 기능보다 정책이 핵심이다. K-12 학생 계정에서는 Gemini, Gemini Notebook, 클래스룸의 Gemini, 그리고 구글 검색이 기본적으로 모두 꺼져 있고 학교 관리자가 각각 켜야 한다. 검색이 같은 묶음에 들어가 있어서 AI 제품을 거부하는 교육청은 학생 검색도 함께 거부하게 된다. 구글은 도입 전에 학교에 세부 내용을 알리겠다고 했다.
+***** Take
+AI를 강요하지는 않는다. 바로 그게 문제다. 검색이 Gemini와 같은 동의 스위치로 옮겨졌기 때문에, 한쪽에 아니라고 하면 둘 다 아니라고 하는 셈이다. 안전 판단이 아니라 끼워팔기 판단이고, 지렛대로 작동하려면 14세에게 검색이 대체 불가능해야 한다. 스레드가 한 시간 안에 DuckDuckGo와 Kagi 링크로 채워진 걸 보면 구글은 이 묶음에서 어느 쪽이 하중을 받는지 잘못 짚었다.
+***** Comments
+- 학교가 검색의 AI 부분을 막았다고 해서 구글이 검색 엔진 전체를 못 쓰게 한다는 건가? AI 요약을 밀어야 할 동기가 대체 뭔가.
+- AI 요약을 읽는 게 상위 10개 검색 결과를 읽는 것보다 더 믿을 만해졌다. 구글의 정보 검색을 신뢰하든 안 하든 둘 중 하나다.
+- 정말 검색 엔진만의 문제라면 그리 중요하지 않다. 검색은 구글에서 가장 고착도가 낮고 대체하기 쉬운 제품이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Google desactivará Search para las escuelas que rechacen la IA
+***** TLDR
+［El NYT está tras un muro de pago; esto viene del propio anuncio educativo de Google que enlaza el hilo.］ Google está metiendo Guided Learning, su modo de resolver paso a paso, en Google Search y Google Classroom, con un piloto en escuelas estadounidenses seleccionadas este mes y disponibilidad global ya en Classroom. La política importa más que la función: el acceso a Gemini, Gemini Notebook, Gemini en Classroom y Google Search estará completamente desactivado para las cuentas de estudiantes de K-12 hasta que un administrador escolar active cada uno. Search va en el mismo paquete, así que un distrito que rechaza los productos de IA también rechaza la búsqueda de sus alumnos. Google dice que dará detalles a las escuelas antes del despliegue.
+***** Take
+A nadie se le impone la IA, y ahí está el problema: Search quedó en el mismo interruptor de consentimiento que Gemini, así que el distrito que dice no a uno dice no a los dos. Es una decisión de empaquetado, no de seguridad, y solo funciona como palanca mientras Search sea irreemplazable para alguien de 14 años. Que el hilo respondiera con enlaces a DuckDuckGo y Kagi en una hora sugiere que Google calculó mal qué mitad del paquete sostiene el peso.
+***** Comments
+- ¿Google impide a las escuelas usar todo su buscador porque las escuelas bloquean la parte de IA de la búsqueda? ¿Qué incentivo tiene Google para empujar el resumen con IA?
+- Leer el resumen de IA probablemente sea más fiable que leer los diez primeros resultados. O confías en que Google recupere información o no.
+- Si de verdad es solo el buscador, parece bastante poco importante. Search es con diferencia el producto menos pegajoso y más reemplazable de Google.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Google schaltet die Suche für Schulen ab, die KI ablehnen
+***** TLDR
+［Die NYT steht hinter einer Bezahlschranke; das Folgende stammt aus Googles eigener Bildungsankündigung, die der Thread verlinkt.］ Google bringt Guided Learning, den Modus, der schrittweise durch Aufgaben führt, in die Google-Suche und in Google Classroom, mit einem Pilotprojekt in ausgewählten US-Schulen in diesem Monat und weltweiter Verfügbarkeit in Classroom. Wichtiger als die Funktion ist die Regel: Für K-12-Schülerkonten sind Gemini, Gemini Notebook, Gemini in Classroom und die Google-Suche komplett aus, bis eine Schuladministration sie einzeln einschaltet. Die Suche steckt im selben Bündel, ein Bezirk, der die KI-Produkte ablehnt, lehnt also auch die Suche für Schüler ab. Google will den Schulen vor dem Rollout Details nennen.
+***** Take
+Niemandem wird KI aufgezwungen, und genau das ist das Problem: Die Suche sitzt jetzt im selben Zustimmungsschalter wie Gemini, ein Bezirk, der zu einem Nein sagt, sagt zu beidem Nein. Das ist eine Bündelungsentscheidung, keine Sicherheitsentscheidung, und sie wirkt nur als Hebel, solange die Suche für eine 14-Jährige unersetzlich ist. Dass der Thread innerhalb einer Stunde mit DuckDuckGo- und Kagi-Links antwortet, deutet darauf hin, dass Google sich verschätzt hat, welche Hälfte des Bündels tragend ist.
+***** Comments
+- Google verwehrt Schulen die ganze Suchmaschine, weil die Schulen den KI-Teil der Suche blocken? Welchen Anreiz hat Google überhaupt, die KI-Zusammenfassung zu pushen?
+- Die KI-Zusammenfassung zu lesen ist inzwischen wahrscheinlich verlässlicher als die ersten zehn Suchergebnisse. Entweder man traut Google beim Abrufen von Informationen oder nicht.
+- Wenn es wirklich nur um die Suchmaschine geht, ist das eher unwichtig. Die Suche ist mit Abstand Googles am wenigsten bindendes und am leichtesten ersetzbares Produkt.
+** Could a modern chess engine on a Pentium have defeated Kasparov in 1996? :chess:algorithms:retrocomputing:benchmarks:
+:PROPERTIES:
+:ID:       50349276
+:URL:      https://nicholas.carlini.com/writing/2026/algorithmic-improvements-chess.html
+:HN_URL:   https://news.ycombinator.com/item?id=50349276
+:POINTS:   319
+:COMMENTS: 141
+:BY:       markusw
+:END:
+
+*** TLDR
+Nicholas Carlini put 1996-class hardware on the bench, a 200MHz Pentium Pro with 64MB of RAM, and ran two engines on it: Crafty 11.13 from 1996, upgraded with later algorithmic techniques, and Stockfish 17, ported down to fit. Stock Crafty rates 1999 to 2383 Elo depending on time control. With modern techniques added it reaches 2720 to 2938. Stockfish on the same chip scores 2846 Elo at one second per move and about 3300 at classical time controls. Deep Blue was roughly 2700 and Kasparov roughly 2800 in that era. Of the +1335 Elo gained since 1996, about 720 points, 54%, come from algorithms rather than faster silicon.
+
+*** Take
+The headline answer is yes, and the useful finding is the 54%. A desktop that already existed in 1996 had the compute to beat the world champion; what was missing was 30 years of search pruning and evaluation work. rockmeamedee lands the real caveat in the thread: most of the modern gain is NNUE, which is distilled from a strong teacher engine, so a time traveller with the technique and no teacher model gets nothing. Deep Blue's custom silicon was not a mistake, it was the only lever IBM could actually pull.
+
+*** Comments
+
+**** rockmeamedee
+:PROPERTIES:
+:COMMENT_ID: 50352360
+:END:
+Most of it is NNUE, a neural network trained to copy modern Stockfish. The programmers back then couldn't have implemented it even with the blueprint, because they had no teacher model to distill from.
+
+**** FartyMcFarter
+:PROPERTIES:
+:COMMENT_ID: 50351105
+:END:
+I don't buy the claim that grandmasters analyze about the same number of moves as amateurs. I've watched GMs verbalize their thinking and they consider way more branches than I do.
+
+**** mb_thd
+:PROPERTIES:
+:COMMENT_ID: 50351535
+:END:
+"When I say I wrote, what I really mean is I asked an LLM to write." I wish disclaimers like that would be at the start and not halfway through the text.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+1996 年在奔腾上跑现代国际象棋引擎能击败卡斯帕罗夫吗？
+***** TLDR
+Nicholas Carlini 搬出 1996 年级别的硬件：200MHz 的 Pentium Pro 加 64MB 内存，在上面跑了两个引擎：1996 年的 Crafty 11.13（加入后来的算法改进）以及被移植下来的 Stockfish 17。原版 Crafty 按时限不同是 1999 到 2383 Elo，加入现代技术后达到 2720 到 2938。同一颗芯片上的 Stockfish 在每步 1 秒时是 2846 Elo，古典时限下约 3300。那个年代深蓝大约 2700，卡斯帕罗夫大约 2800。自 1996 年以来增加的 1335 Elo 中，约 720 分（54%）来自算法，而不是更快的硅片。
+***** Take
+标题的答案是能，而真正有用的发现是那个 54%。1996 年就已存在的台式机，算力足以击败世界冠军，缺的是三十年的搜索剪枝和局面评估工作。讨论区里 rockmeamedee 指出了真正的限制：现代增益大部分来自 NNUE，而 NNUE 是从一个强引擎蒸馏出来的，所以一个只带着技术、没有教师模型的时间旅行者什么也做不出来。深蓝的定制芯片不是失策，那是 IBM 当时唯一能拉动的杠杆。
+***** Comments
+- 大部分功劳归 NNUE，那是训练来模仿现代 Stockfish 的神经网络。就算把蓝图送回去，当年的程序员也实现不了，因为他们没有可供蒸馏的教师模型。
+- 我不认同“大师分析的招数数量和业余棋手差不多”这个说法。我看过大师边直播边说出思路，他们考虑的分支比我多得多。
+- “我说‘我写了’，其实是指‘我让大模型写了’。”这类声明我希望放在开头，而不是文章中段。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+1996年にPentium上で動く現代のチェスエンジンはカスパロフを倒せたか？
+***** TLDR
+Nicholas Carliniは1996年相当のハード、200MHzのPentium Proと64MBのRAMを用意し、2つのエンジンを走らせた。1996年のCrafty 11.13に後年のアルゴリズム改良を足したものと、移植して載せたStockfish 17だ。素のCraftyは持ち時間次第で1999から2383 Elo、現代の技法を加えると2720から2938に届く。同じチップ上のStockfishは1手1秒で2846 Elo、クラシカルな持ち時間なら約3300。当時のディープ・ブルーは約2700、カスパロフは約2800だった。1996年以降に得た+1335 Eloのうち約720点、54%はより速いシリコンではなくアルゴリズムによる。
+***** Take
+見出しの答えはイエスで、使える発見は54%という数字だ。1996年に実在したデスクトップには世界チャンピオンを倒す計算力があり、足りなかったのは30年分の探索の枝刈りと評価関数の仕事だった。スレッドではrockmeamedeeが本当の留保を書いている。現代の伸びの大半はNNUEで、これは強い教師エンジンから蒸留したものだから、技法だけ持って教師モデルなしで過去へ行っても何も作れない。ディープ・ブルーの専用ハードは誤りではなく、当時IBMが実際に引ける唯一のレバーだった。
+***** Comments
+- 大半はNNUE、現代のStockfishを真似るよう訓練されたニューラルネットだ。設計図を持って行っても当時のプログラマーには実装できない。蒸留元の教師モデルがないからだ。
+- グランドマスターがアマチュアと同じくらいの手数しか検討しないという主張は信じられない。配信で思考を口に出すGMを見てきたが、自分よりずっと多くの分岐を見ている。
+- 「『私が書いた』と言うとき、実際は『LLMに書かせた』という意味だ」。こういう断り書きは本文の途中ではなく最初に置いてほしい。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+1996년 펜티엄에서 돌린 현대 체스 엔진이 카스파로프를 이길 수 있었을까?
+***** TLDR
+Nicholas Carlini는 1996년급 하드웨어, 200MHz 펜티엄 프로와 64MB 램을 준비해 두 엔진을 돌렸다. 1996년의 Crafty 11.13에 이후의 알고리즘 개선을 더한 것과, 이식해서 올린 Stockfish 17이다. 원본 Crafty는 시간 제한에 따라 1999~2383 Elo이고, 현대 기법을 넣으면 2720~2938에 이른다. 같은 칩의 Stockfish는 한 수당 1초에서 2846 Elo, 클래식 시간 제한에서는 약 3300이다. 당시 딥블루는 약 2700, 카스파로프는 약 2800이었다. 1996년 이후 얻은 +1335 Elo 중 약 720점, 즉 54%는 더 빠른 실리콘이 아니라 알고리즘에서 나왔다.
+***** Take
+제목의 답은 '그렇다'이고, 쓸모 있는 발견은 54%라는 숫자다. 1996년에 이미 존재한 데스크톱에 세계 챔피언을 이길 연산력이 있었고, 없던 것은 30년간 쌓인 탐색 가지치기와 평가 함수 작업이었다. 스레드에서 rockmeamedee가 진짜 유보 조건을 짚는다. 현대 향상의 대부분은 NNUE이고 이건 강한 교사 엔진에서 증류한 것이므로, 기법만 들고 교사 모델 없이 과거로 간 사람은 아무것도 만들지 못한다. 딥블루의 전용 실리콘은 실수가 아니라 당시 IBM이 실제로 당길 수 있던 유일한 레버였다.
+***** Comments
+- 대부분은 현대 Stockfish를 모방하도록 훈련된 신경망 NNUE 덕이다. 설계도를 들고 가도 그때 프로그래머는 구현할 수 없었다. 증류할 교사 모델이 없었으니까.
+- 그랜드마스터가 아마추어와 비슷한 수의 수를 분석한다는 주장은 못 믿겠다. 생각을 소리 내어 말하며 두는 GM들을 봤는데 나보다 훨씬 많은 분기를 검토한다.
+- "내가 썼다고 할 때 실제로는 LLM에게 쓰게 했다는 뜻이다." 이런 고지는 글 중간이 아니라 맨 앞에 있으면 좋겠다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+¿Habría vencido a Kasparov en 1996 un motor de ajedrez moderno en un Pentium?
+***** TLDR
+Nicholas Carlini puso hardware de 1996 en el banco, un Pentium Pro de 200MHz con 64MB de RAM, y corrió dos motores: Crafty 11.13 de 1996, mejorado con técnicas algorítmicas posteriores, y Stockfish 17, portado para que cupiera. El Crafty original rinde entre 1999 y 2383 Elo según el control de tiempo. Con técnicas modernas llega a 2720-2938. Stockfish en el mismo chip marca 2846 Elo a un segundo por movimiento y unos 3300 en controles clásicos. Deep Blue andaba por 2700 y Kasparov por 2800 en esa época. De los +1335 Elo ganados desde 1996, unos 720 puntos, el 54%, vienen de los algoritmos y no del silicio más rápido.
+***** Take
+La respuesta del titular es sí, y el hallazgo útil es ese 54%. Un ordenador de escritorio que ya existía en 1996 tenía cómputo para ganar al campeón del mundo; faltaban 30 años de poda de búsqueda y de trabajo en evaluación. rockmeamedee pone la salvedad real en el hilo: casi toda la mejora moderna es NNUE, destilada de un motor maestro fuerte, así que un viajero del tiempo con la técnica y sin modelo maestro no consigue nada. El silicio a medida de Deep Blue no fue un error, era la única palanca que IBM podía mover.
+***** Comments
+- Casi todo es NNUE, una red neuronal entrenada para copiar al Stockfish moderno. Los programadores de entonces no habrían podido implementarla ni con los planos, porque no tenían modelo maestro del que destilar.
+- No me creo que los grandes maestros analicen más o menos el mismo número de jugadas que los aficionados. He visto a GMs verbalizando su pensamiento y consideran muchísimas más ramas que yo.
+- "Cuando digo que lo escribí, lo que quiero decir es que le pedí a un LLM que lo escribiera". Ojalá esas advertencias estuvieran al principio y no a mitad del texto.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Hätte eine moderne Schach-Engine auf einem Pentium Kasparow 1996 besiegt?
+***** TLDR
+Nicholas Carlini hat Hardware von 1996 auf den Tisch gestellt, einen Pentium Pro mit 200MHz und 64MB RAM, und darauf zwei Engines laufen lassen: Crafty 11.13 von 1996, aufgerüstet mit späteren algorithmischen Techniken, und Stockfish 17, herunterportiert. Das originale Crafty liegt je nach Bedenkzeit bei 1999 bis 2383 Elo. Mit modernen Techniken erreicht es 2720 bis 2938. Stockfish auf demselben Chip erreicht 2846 Elo bei einer Sekunde pro Zug und etwa 3300 bei klassischen Bedenkzeiten. Deep Blue lag damals bei rund 2700, Kasparow bei rund 2800. Von den seit 1996 gewonnenen +1335 Elo kommen etwa 720 Punkte, also 54%, von Algorithmen und nicht von schnellerem Silizium.
+***** Take
+Die Antwort auf die Überschrift lautet ja, und der nützliche Befund sind die 54%. Ein Desktop, der 1996 schon existierte, hatte die Rechenleistung, den Weltmeister zu schlagen; es fehlten 30 Jahre Arbeit an Suchbeschneidung und Stellungsbewertung. rockmeamedee formuliert im Thread den echten Vorbehalt: Der moderne Zugewinn stammt überwiegend von NNUE, destilliert aus einer starken Lehrer-Engine, also bringt ein Zeitreisender mit der Technik und ohne Lehrermodell gar nichts zustande. Deep Blues Spezialsilizium war kein Fehler, es war der einzige Hebel, den IBM wirklich ziehen konnte.
+***** Comments
+- Das meiste davon ist NNUE, ein neuronales Netz, trainiert darauf, modernes Stockfish zu kopieren. Die Programmierer damals hätten es selbst mit Bauplan nicht umsetzen können, weil es kein Lehrermodell zum Destillieren gab.
+- Die Behauptung, Großmeister analysierten etwa so viele Züge wie Amateure, kaufe ich nicht ab. Ich habe GMs beim Denken zugehört, die betrachten viel mehr Varianten als ich.
+- "Wenn ich schreibe 'ich habe geschrieben', meine ich 'ich habe ein LLM schreiben lassen'." Solche Hinweise möchte ich am Anfang lesen und nicht mitten im Text.
+** Postman silently auto-installs AI plugins and attempts to share all API data :postman:security:devtools:ai:
+:PROPERTIES:
+:ID:       50354960
+:URL:      https://github.com/postmanlabs/postman-app-support/issues/14370
+:HN_URL:   https://news.ycombinator.com/item?id=50354960
+:POINTS:   241
+:COMMENTS: 71
+:BY:       sidgarimella
+:END:
+
+*** TLDR
+A GitHub issue against Postman Desktop 12.33.4 documents what the app does to other programs on your machine without asking: it installs a Codex plugin v1.1.0 and a Claude Code plugin v2.0.1 into those agents' user config directories, drops a Postman CLI binary into ~/.local/bin, and wires up a remote MCP server at mcp.postman.com. The plugins add session hooks telling the coding agent to load Postman's api-engineer skill before handling any non-trivial API task. The installer also writes trust hashes into the agents' config files so its own hooks appear already approved, bypassing the approval prompt those tools exist to show. Postman's own log line reads auto-existing-upgrade...claude-code:installed,codex:installed. No Postman staff reply in the issue so far.
+
+*** Take
+Installing plugins into a competitor's tool is rude. Writing your own entry into that tool's trust store so the user is never asked is the part with a name, and the name is not 'growth'. Every coding agent now ships a permission prompt as its main safety boundary, and a $5B API company just demonstrated how little a desktop installer has to do to forge one. The alternatives thread, Bruno, Insomnia, Kreya, JetBrains' built-in client, writes itself at this point.
+
+*** Comments
+
+**** pants2
+:PROPERTIES:
+:COMMENT_ID: 50355299
+:END:
+They raised over $400M and hired 1,500+ employees for what should have been a tiny tool like curl. Now they have to justify the valuation with forced logins, data collection and AI features.
+
+**** Waterluvian
+:PROPERTIES:
+:COMMENT_ID: 50355212
+:END:
+I replaced that garbage with Insomnia years back. I'm just waiting until I hear that Insomnia is also a problem and where to go next.
+
+**** theseamusjames
+:PROPERTIES:
+:COMMENT_ID: 50355784
+:END:
+If there's ever been a perfect app to vibecode your own replacement, it's Postman. A day of tweaking and you'll have everything you need.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Postman 静默自动安装 AI 插件，并试图共享全部 API 数据
+***** TLDR
+一个针对 Postman Desktop 12.33.4 的 GitHub issue 记录了这个应用在不询问的情况下对你机器上其他程序做的事：把 Codex 插件 v1.1.0 和 Claude Code 插件 v2.0.1 装进这些 agent 的用户配置目录，把 Postman CLI 可执行文件放进 ~/.local/bin，并接上位于 mcp.postman.com 的远程 MCP 服务器。插件会加入会话钩子，要求编码 agent 在处理任何非琐碎的 API 任务前先加载 Postman 的 api-engineer skill。安装程序还把信任哈希写进这些 agent 的配置文件，让自己的钩子看起来已经获批，从而绕过这些工具本应弹出的授权确认。Postman 自己的日志写着 auto-existing-upgrade...claude-code:installed,codex:installed。截至目前该 issue 下没有 Postman 员工回复。
+***** Take
+把插件装进竞争对手的工具里，是没礼貌。把自己的条目写进那个工具的信任库，让用户根本不会被问到，这件事有专门的名字，而那个名字不是“增长”。如今每个编码 agent 都把权限确认当作主要安全边界，而一家估值 50 亿美元的 API 公司刚演示了桌面安装程序伪造它有多容易。那条替代品讨论串（Bruno、Insomnia、Kreya、JetBrains 自带的客户端）到这一步已经不用别人写了。
+***** Comments
+- 他们融了超过 4 亿美元、招了 1500 多人，而这本该是个像 curl 那样的小工具。现在他们只能用强制登录、数据收集和 AI 功能来撑估值。
+- 我几年前就把那个垃圾换成 Insomnia 了。现在只等着听说 Insomnia 也出问题，以及下一站该去哪。
+- 如果说有哪个应用最适合自己 vibecode 一个替代品，那就是 Postman。调一天就能有你需要的全部功能。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+PostmanがAIプラグインを黙って自動インストールし、APIデータの共有を試みる
+***** TLDR
+Postman Desktop 12.33.4に対するGitHub issueが、このアプリが断りもなく他のプログラムに何をするかを記録している。Codexプラグインv1.1.0とClaude Codeプラグインv2.0.1をそれらのエージェントのユーザー設定ディレクトリに入れ、Postman CLIのバイナリを~/.local/binに置き、mcp.postman.comのリモートMCPサーバーに接続する。プラグインはセッションフックを追加し、自明でないAPI作業の前にPostmanのapi-engineerスキルを読み込むようコーディングエージェントへ指示する。さらにインストーラーは各エージェントの設定ファイルに信頼ハッシュを書き込み、自分のフックを承認済みに見せて、本来表示されるべき承認プロンプトを回避する。Postman自身のログにはauto-existing-upgrade...claude-code:installed,codex:installedと記録されている。現時点でissueにPostman社員の返答はない。
+***** Take
+競合ツールにプラグインを入れるのは無作法だ。そのツールの信頼ストアに自前のエントリを書き込み、ユーザーに一度も尋ねさせないほうには固有の名前があり、その名前は「グロース」ではない。いまやどのコーディングエージェントも許可プロンプトを主要な安全境界として出荷しているのに、評価額50億ドルのAPI企業が、デスクトップのインストーラーでそれを偽造するのがいかに簡単かを実演してしまった。代替候補のスレッド、Bruno、Insomnia、Kreya、JetBrains内蔵クライアントは、この時点で自動的に埋まる。
+***** Comments
+- 4億ドル以上を調達して1,500人以上を雇った。curlのような小さなツールで済んだはずなのに。いまは強制ログイン、データ収集、AI機能で評価額を正当化しないといけない。
+- 何年も前にあのゴミをInsomniaに置き換えた。あとはInsomniaも問題だと聞く日と、次はどこへ行くかを待っているだけだ。
+- 自分用の代替を気軽にコードで作るのに最適なアプリがあるとすれば、それはPostmanだ。1日いじれば必要なものは全部そろう。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Postman이 AI 플러그인을 몰래 자동 설치하고 모든 API 데이터를 공유하려 한다
+***** TLDR
+Postman Desktop 12.33.4를 겨냥한 GitHub 이슈가, 이 앱이 묻지도 않고 사용자 컴퓨터의 다른 프로그램에 무엇을 하는지 기록했다. Codex 플러그인 v1.1.0과 Claude Code 플러그인 v2.0.1을 해당 에이전트의 사용자 설정 디렉터리에 설치하고, Postman CLI 실행 파일을 ~/.local/bin에 넣고, mcp.postman.com의 원격 MCP 서버를 연결한다. 플러그인은 세션 훅을 추가해, 조금이라도 복잡한 API 작업 전에 Postman의 api-engineer 스킬을 불러오라고 코딩 에이전트에 지시한다. 설치 프로그램은 에이전트 설정 파일에 신뢰 해시까지 써넣어 자기 훅이 이미 승인된 것처럼 보이게 하고, 그 도구들이 띄워야 할 승인 창을 건너뛴다. Postman 자체 로그에는 auto-existing-upgrade...claude-code:installed,codex:installed라고 찍혀 있다. 현재까지 이슈에 Postman 직원의 답변은 없다.
+***** Take
+경쟁 도구에 플러그인을 설치하는 건 무례한 짓이다. 그 도구의 신뢰 저장소에 자기 항목을 써넣어 사용자가 아예 질문을 받지 않게 만드는 쪽은 따로 이름이 있고, 그 이름은 '성장'이 아니다. 요즘 모든 코딩 에이전트가 권한 확인 창을 핵심 안전 경계로 내놓는데, 50억 달러 가치의 API 회사가 데스크톱 설치 프로그램으로 그것을 위조하기가 얼마나 쉬운지 보여줬다. 대안 스레드, 즉 Bruno, Insomnia, Kreya, JetBrains 내장 클라이언트 목록은 이 지점에서 저절로 채워진다.
+***** Comments
+- 4억 달러 넘게 조달하고 1,500명 넘게 채용했다. curl 같은 작은 도구로 끝나도 됐을 일인데. 이제는 강제 로그인, 데이터 수집, AI 기능으로 그 가치를 정당화해야 한다.
+- 몇 년 전에 그 쓰레기를 Insomnia로 바꿨다. 이제 Insomnia도 문제라는 소식과 다음에 어디로 갈지만 기다리는 중이다.
+- 자기 대체품을 직접 만들기에 가장 알맞은 앱이 있다면 그건 Postman이다. 하루만 다듬으면 필요한 건 다 갖춰진다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Postman instala plugins de IA en silencio e intenta compartir todos los datos de API
+***** TLDR
+Un issue de GitHub contra Postman Desktop 12.33.4 documenta lo que la aplicación hace a otros programas de tu máquina sin preguntar: instala un plugin de Codex v1.1.0 y un plugin de Claude Code v2.0.1 en los directorios de configuración de esos agentes, deja un binario de la CLI de Postman en ~/.local/bin y conecta un servidor MCP remoto en mcp.postman.com. Los plugins añaden hooks de sesión que indican al agente de código que cargue la skill api-engineer de Postman antes de atender cualquier tarea de API no trivial. El instalador también escribe hashes de confianza en los archivos de configuración de esos agentes para que sus propios hooks aparezcan ya aprobados, saltándose el aviso de aprobación que esas herramientas existen para mostrar. La propia línea de log de Postman dice auto-existing-upgrade...claude-code:installed,codex:installed. Hasta ahora no hay respuesta de personal de Postman en el issue.
+***** Take
+Instalar plugins en la herramienta de un competidor es una grosería. Escribir tu propia entrada en el almacén de confianza de esa herramienta para que nunca se pregunte al usuario tiene un nombre propio, y ese nombre no es 'crecimiento'. Hoy todos los agentes de código llevan el aviso de permisos como su principal frontera de seguridad, y una empresa de APIs valorada en 5.000 millones acaba de mostrar lo poco que necesita un instalador de escritorio para falsificarlo. El hilo de alternativas, Bruno, Insomnia, Kreya, el cliente integrado de JetBrains, ya se escribe solo.
+***** Comments
+- Levantaron más de 400 millones y contrataron a más de 1.500 personas para lo que debía ser una herramienta diminuta como curl. Ahora tienen que justificar la valoración con inicios de sesión forzados, recolección de datos y funciones de IA.
+- Cambié esa basura por Insomnia hace años. Solo estoy esperando a enterarme de que Insomnia también es un problema y de a dónde ir después.
+- Si hay una aplicación perfecta para programarte tu propio reemplazo, es Postman. Un día de ajustes y tendrás todo lo que necesitas.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Postman installiert stillschweigend KI-Plugins und versucht, alle API-Daten zu teilen
+***** TLDR
+Ein GitHub-Issue zu Postman Desktop 12.33.4 dokumentiert, was die App ungefragt mit anderen Programmen auf dem Rechner macht: Sie installiert ein Codex-Plugin v1.1.0 und ein Claude-Code-Plugin v2.0.1 in die Nutzer-Konfigurationsverzeichnisse dieser Agenten, legt eine Postman-CLI nach ~/.local/bin und richtet einen Remote-MCP-Server unter mcp.postman.com ein. Die Plugins setzen Session-Hooks, die dem Coding-Agenten sagen, vor jeder nicht trivialen API-Aufgabe Postmans api-engineer-Skill zu laden. Der Installer schreibt außerdem Trust-Hashes in die Konfigurationsdateien der Agenten, damit die eigenen Hooks als bereits genehmigt erscheinen, und umgeht so die Genehmigungsabfrage, für die diese Werkzeuge gebaut sind. Postmans eigene Logzeile lautet auto-existing-upgrade...claude-code:installed,codex:installed. Eine Antwort von Postman-Mitarbeitern steht im Issue bislang nicht.
+***** Take
+Plugins in das Werkzeug eines Konkurrenten zu installieren ist unhöflich. Den eigenen Eintrag in den Trust-Store dieses Werkzeugs zu schreiben, damit der Nutzer nie gefragt wird, hat einen eigenen Namen, und der heißt nicht 'Wachstum'. Jeder Coding-Agent liefert inzwischen die Rechteabfrage als wichtigste Sicherheitsgrenze aus, und ein mit 5 Milliarden bewertetes API-Unternehmen hat gerade gezeigt, wie wenig ein Desktop-Installer braucht, um sie zu fälschen. Der Alternativen-Thread, Bruno, Insomnia, Kreya, der eingebaute Client von JetBrains, schreibt sich an diesem Punkt von selbst.
+***** Comments
+- Sie haben über 400 Millionen eingesammelt und mehr als 1.500 Leute eingestellt für etwas, das ein winziges Werkzeug wie curl hätte sein können. Jetzt müssen sie die Bewertung mit Login-Zwang, Datensammlung und KI-Funktionen rechtfertigen.
+- Ich habe diesen Schrott vor Jahren durch Insomnia ersetzt. Jetzt warte ich nur darauf zu hören, dass Insomnia auch ein Problem ist, und wohin es dann geht.
+- Wenn es eine App gibt, für die man sich den Ersatz perfekt selbst zusammenbauen kann, dann ist es Postman. Ein Tag Feinschliff und du hast alles, was du brauchst.
+** Kalshi and its co-founders face felony charges for violating Utah gambling laws :regulation:prediction-markets:law:fintech:
+:PROPERTIES:
+:ID:       50353229
+:URL:      https://arstechnica.com/tech-policy/2026/10/trump-admin-sues-utah-to-save-kalshi-from-the-states-total-ban-on-gambling/
+:HN_URL:   https://news.ycombinator.com/item?id=50353229
+:POINTS:   187
+:COMMENTS: 115
+:BY:       rbanffy
+:END:
+
+*** TLDR
+Utah Attorney General Derek Brown charged Kalshi and co-founders Tarek Mansour and Luana Lopes Lara on October 29, 2026 in Third District Court in Salt Lake County: 13 felony counts and one misdemeanor each, over sports event contracts offered between September 13 and 24. The founders got summonses rather than arrest warrants. One day earlier the CFTC sued Utah to block enforcement of state gambling law against federally registered markets, arguing event contracts are swaps under the Commodity Exchange Act and that the agency has sole oversight. Utah is the tenth state in this fight, and in August US District Judge Robert Shelby ruled that federal law does not preempt Utah's enforcement.
+
+*** Take
+The federal regulator is suing a state to protect a company that the state is charging with 13 felonies, which is a sentence that should not parse. The new variable is personal exposure: a preemption argument is cheap when losing means a fine on the entity and expensive when losing means criminal counts against two named founders. Kalshi has been winning on the theory that a sports bet is a swap; a Utah jury is a much worse venue for that theory than a federal docket.
+
+*** Comments
+
+**** superxpro12
+:PROPERTIES:
+:COMMENT_ID: 50353795
+:END:
+Kalshi and Polymarket are obvious gambling sites. It was never an innovative market play, it was a gambling company committing to regulatory capture, with Donald Trump Jr. sitting on both boards as a paid strategic advisor.
+
+**** jsw97
+:PROPERTIES:
+:COMMENT_ID: 50355579
+:END:
+I'm glad at least one state is serious about its sovereignty and willing to go to the mat with criminal charges. Utah has a right to enforce this, and taking on the feds too is a gutsy move.
+
+**** mahboi
+:PROPERTIES:
+:COMMENT_ID: 50354419
+:END:
+Wonder how proxies and VPNs play into this, since Utah recently passed an age verification law saying you're liable if anyone physically in Utah accesses a restricted site.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Kalshi 及其联合创始人因违反犹他州赌博法被控重罪
+***** TLDR
+犹他州总检察长 Derek Brown 于 2026 年 10 月 29 日在盐湖城第三区法院起诉 Kalshi 及联合创始人 Tarek Mansour 和 Luana Lopes Lara：每人 13 项重罪加 1 项轻罪，涉及 9 月 13 日至 24 日之间提供的体育事件合约。两位创始人收到的是传票，不是逮捕令。前一天，CFTC 起诉犹他州，要求阻止该州对联邦注册市场执行赌博法，理由是事件合约属于《商品交易法》下的掉期，监管权专属该机构。犹他是这场争端中的第十个州，而联邦地区法官 Robert Shelby 在 8 月已裁定联邦法并不优先排除犹他州的执法。
+***** Take
+联邦监管机构起诉一个州，去保护一家正被该州以 13 项重罪起诉的公司，这句话本身就不该读得通。新变量是个人责任：当败诉只意味着对公司罚款时，优先排除的法律主张很便宜；当败诉意味着两位具名创始人背上刑事罪名时，它就很贵。Kalshi 一直靠“体育赌注是掉期”这个理论取胜，而对这个理论来说，犹他州的陪审团远比联邦法院案卷更糟糕的场地。
+***** Comments
+- Kalshi 和 Polymarket 显然就是赌博网站。这从来不是什么市场创新，而是一家赌博公司全力做监管俘获，小唐纳德·特朗普还以付费战略顾问的身份同时坐在两家董事会里。
+- 我很高兴至少有一个州认真对待自己的主权，愿意用刑事指控硬碰。犹他州有权执行这条法律，连联邦一起对上，这很有胆量。
+- 不知道代理和 VPN 在这里怎么算，毕竟犹他州最近通过的年龄验证法规定，只要有人在犹他州境内访问受限网站，你就要担责。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Kalshiと共同創業者、ユタ州の賭博法違反で重罪起訴
+***** TLDR
+ユタ州司法長官Derek Brownは2026年10月29日、ソルトレイク郡の第三地区裁判所でKalshiと共同創業者のTarek Mansour、Luana Lopes Laraを起訴した。9月13日から24日に提供されたスポーツのイベント契約について、それぞれ重罪13件と軽罪1件だ。創業者には逮捕状ではなく召喚状が出された。その前日、CFTCは連邦登録市場に対する州の賭博法の執行を止めるようユタ州を提訴した。イベント契約は商品取引所法上のスワップであり、監督権は同機関にあるという主張だ。ユタはこの争いで10番目の州で、8月には連邦地裁のRobert Shelby判事が、連邦法はユタ州の執行を排除しないと判断している。
+***** Take
+連邦の規制当局が、州が重罪13件で起訴している企業を守るためにその州を訴えている。文として成立してほしくない事態だ。新しい変数は個人の責任だ。負けても法人への罰金で済むなら先占（プリエンプション）の主張は安く、負ければ名前のある創業者2人に刑事罪状がつくなら高い。Kalshiは「スポーツの賭けはスワップだ」という理屈で勝ってきたが、その理屈にとってユタ州の陪審は連邦の法廷よりはるかに不利な舞台だ。
+***** Comments
+- KalshiとPolymarketは明らかに賭博サイトだ。市場の革新だった試しはなく、規制の取り込みに全力を注ぐ賭博企業で、ドナルド・トランプ・ジュニアが有給の戦略顧問として両社の取締役会に座っている。
+- 少なくとも一つの州が自らの主権を本気で守り、刑事訴追まで踏み込む覚悟を見せたのは良いことだ。ユタ州にはこれを執行する権利があるし、連邦にも立ち向かうのは度胸がある。
+- プロキシやVPNはどう扱われるのだろう。ユタ州は最近、州内に物理的にいる誰かが制限付きサイトにアクセスすれば責任を負うという年齢確認法を通したばかりだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Kalshi와 공동창업자들, 유타주 도박법 위반으로 중범죄 기소
+***** TLDR
+유타주 법무장관 Derek Brown이 2026년 10월 29일 솔트레이크 카운티 제3지방법원에 Kalshi와 공동창업자 Tarek Mansour, Luana Lopes Lara를 기소했다. 9월 13일부터 24일 사이 제공된 스포츠 이벤트 계약과 관련해 각각 중범죄 13건과 경범죄 1건이다. 창업자들에게는 체포영장이 아니라 소환장이 발부됐다. 하루 전 CFTC는 연방 등록 시장에 대한 주 도박법 집행을 막아달라며 유타주를 제소했다. 이벤트 계약은 상품거래법상 스왑이고 감독 권한은 자기 기관에 있다는 주장이다. 유타는 이 분쟁의 열 번째 주이며, 8월에는 연방지법 Robert Shelby 판사가 연방법이 유타주의 집행을 배제하지 않는다고 판단했다.
+***** Take
+연방 규제기관이 주가 중범죄 13건으로 기소한 회사를 보호하려고 그 주를 제소하고 있다. 문장으로 성립하지 않았으면 좋았을 상황이다. 새로운 변수는 개인 책임이다. 져도 법인 벌금으로 끝나면 선점(preemption) 주장은 싸고, 지면 이름이 적힌 창업자 두 명에게 형사 혐의가 붙는다면 비싸다. Kalshi는 스포츠 베팅이 스왑이라는 논리로 이겨 왔지만, 그 논리에 유타주 배심원단은 연방 법정보다 훨씬 나쁜 무대다.
+***** Comments
+- Kalshi와 Polymarket은 명백히 도박 사이트다. 시장 혁신이었던 적이 없고, 규제 포획에 전력을 쏟은 도박 회사이며, 도널드 트럼프 주니어가 유급 전략 고문으로 두 회사 이사회에 모두 앉아 있다.
+- 적어도 한 주가 자기 주권을 진지하게 여기고 형사 기소까지 밀어붙이는 건 반갑다. 유타주는 이를 집행할 권리가 있고, 연방까지 상대하는 건 배짱 있는 선택이다.
+- 프록시와 VPN은 어떻게 걸리는지 궁금하다. 유타주는 최근 누군가 물리적으로 주 안에서 제한된 사이트에 접속하면 책임을 진다는 연령 확인법을 통과시켰다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Kalshi y sus cofundadores enfrentan cargos por delito grave por violar las leyes de juego de Utah
+***** TLDR
+El fiscal general de Utah, Derek Brown, presentó cargos el 29 de octubre de 2026 en el Tercer Tribunal de Distrito del condado de Salt Lake contra Kalshi y sus cofundadores Tarek Mansour y Luana Lopes Lara: 13 delitos graves y una falta menor para cada uno, por contratos sobre eventos deportivos ofrecidos entre el 13 y el 24 de septiembre. Los fundadores recibieron citaciones, no órdenes de arresto. Un día antes, la CFTC demandó a Utah para bloquear la aplicación de la ley estatal de juego contra mercados registrados a nivel federal, con el argumento de que los contratos de eventos son swaps bajo la Commodity Exchange Act y que la agencia tiene la supervisión exclusiva. Utah es el décimo estado en esta pelea, y en agosto el juez federal Robert Shelby resolvió que la ley federal no desplaza la aplicación de la ley de Utah.
+***** Take
+El regulador federal demanda a un estado para proteger a una empresa a la que ese estado acusa de 13 delitos graves, una frase que no debería poder construirse. La variable nueva es la exposición personal: el argumento de preemption es barato cuando perder significa una multa a la empresa y caro cuando significa cargos penales contra dos fundadores con nombre y apellido. Kalshi venía ganando con la tesis de que una apuesta deportiva es un swap; un jurado de Utah es un escenario mucho peor para esa tesis que un expediente federal.
+***** Comments
+- Kalshi y Polymarket son sitios de apuestas evidentes. Nunca fue una jugada innovadora de mercado, fue una empresa de apuestas apostando a la captura del regulador, con Donald Trump Jr. sentado en ambos consejos como asesor estratégico pagado.
+- Me alegra que al menos un estado se tome en serio su soberanía y esté dispuesto a pelear con cargos penales. Utah tiene derecho a aplicar esto, y enfrentarse también al gobierno federal es una jugada con agallas.
+- Me pregunto cómo entran los proxies y las VPN, porque Utah acaba de aprobar una ley de verificación de edad que te hace responsable si alguien físicamente en Utah accede a un sitio restringido.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Kalshi und seine Mitgründer werden wegen Verstoßes gegen Utahs Glücksspielgesetze angeklagt
+***** TLDR
+Utahs Generalstaatsanwalt Derek Brown hat am 29. Oktober 2026 am Third District Court in Salt Lake County Anklage gegen Kalshi und die Mitgründer Tarek Mansour und Luana Lopes Lara erhoben: je 13 Anklagepunkte als Verbrechen und ein Vergehen, wegen Sport-Event-Kontrakten, die zwischen dem 13. und 24. September angeboten wurden. Die Gründer erhielten Ladungen statt Haftbefehle. Einen Tag zuvor verklagte die CFTC Utah, um die Durchsetzung des staatlichen Glücksspielrechts gegenüber bundesweit registrierten Märkten zu stoppen, mit dem Argument, Event-Kontrakte seien Swaps nach dem Commodity Exchange Act und die Behörde habe die alleinige Aufsicht. Utah ist der zehnte Staat in diesem Streit, und im August entschied Bundesrichter Robert Shelby, dass Bundesrecht Utahs Durchsetzung nicht verdrängt.
+***** Take
+Die Bundesaufsicht verklagt einen Staat, um ein Unternehmen zu schützen, das dieser Staat mit 13 Verbrechensvorwürfen belegt, ein Satz, der nicht funktionieren sollte. Die neue Variable ist die persönliche Haftung: Ein Preemption-Argument ist billig, wenn ein Verlust eine Geldstrafe für die Firma bedeutet, und teuer, wenn er Strafpunkte gegen zwei namentlich genannte Gründer bedeutet. Kalshi gewinnt bisher mit der These, eine Sportwette sei ein Swap; eine Jury in Utah ist für diese These eine deutlich schlechtere Bühne als ein Bundesgericht.
+***** Comments
+- Kalshi und Polymarket sind offensichtlich Glücksspielseiten. Es war nie ein innovativer Marktansatz, sondern ein Glücksspielunternehmen, das voll auf Regulatory Capture setzt, mit Donald Trump Jr. als bezahltem strategischen Berater in beiden Aufsichtsräten.
+- Ich finde es gut, dass wenigstens ein Staat seine Souveränität ernst nimmt und bis zur Strafanzeige geht. Utah hat das Recht, das durchzusetzen, und sich zusätzlich mit dem Bund anzulegen, ist beherzt.
+- Mich würde interessieren, wie Proxys und VPNs hier hineinspielen, denn Utah hat gerade ein Gesetz zur Altersverifikation verabschiedet, nach dem man haftet, wenn irgendwer physisch in Utah eine gesperrte Seite aufruft.
