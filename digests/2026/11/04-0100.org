@@ -1,0 +1,512 @@
+#+TITLE: HN Digest 2026-11-04 01:00 UTC
+#+DATE: 2026-11-04T01:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Postman installs itself into your coding agent, a Renault clock needs a kernel exploit, and Fujifilm bets $63M on tape
+
+* Highlights
+- Postman wrote its own hooks into Claude Code and Codex, then approved them itself
+- Changing a Renault's clock by one hour took a coredump-handler root exploit
+- Fujifilm is 5x-ing LTO tape output because AI archives want air gaps
+- Nikkei counts $3.2T of off-balance-sheet AI obligations, up 90% in six months
+- Stringman: a $795 open-hardware robot that hangs from your ceiling corners
+
+* Stories
+
+** Postman silently auto-installs AI plugins and attempts to share all API data :devtools:api:privacy:ai:
+:PROPERTIES:
+:ID:       50354960
+:URL:      https://github.com/postmanlabs/postman-app-support/issues/14370
+:HN_URL:   https://news.ycombinator.com/item?id=50354960
+:POINTS:   1002
+:COMMENTS: 333
+:BY:       sidgarimella
+:END:
+
+*** TLDR
+Postman Desktop 12.33.4 installed plugins into unrelated coding agents on launch: a Claude Code plugin (2.0.1), a Codex plugin (1.1.0), the Postman CLI into ~/.local/bin, and an MCP server pointing at mcp.postman.com. It also wrote startup hooks instructing those agents to load Postman skills before any non-trivial API work. Postman's own logs show the source as auto-existing-upgrade, and the installer writes hook trust records into ~/.codex/config.toml with hashes matching its own files, approving itself. A Postman rep said the bundling was meant to make setup easier and was disclosed on the download page; the reporter used the Wayback Machine to show the disclosure was not there when users were hit. Postman promised clearer opt-in, not a changed default. Revisit: we covered this at 241 points and 71 comments; it is now 1002 and 333.
+
+*** Take
+Writing your own hook into a user's trust store is not onboarding, it is self-signing. The remedy on offer is clearer language while the install stays automatic, which leaves intact the exact part people objected to.
+
+*** Comments
+
+**** pants2
+It started as an excellent little developer tool for testing APIs, then raised over $400M and hired 1,500+ people for what should have been a small OSS project like curl. Now they have to justify the valuation with logins, data collection and AI features.
+
+**** primitivesuave
+Postman logs every API request including query parameters, so a {{some_secret}} template sends the actual secret to Postman's servers. Block that logging endpoint and the app stops working properly.
+
+**** senfiaj
+Who still uses Postman? It became insanely slow and bloated. Switched to Bruno. Postman is like uTorrent, people install it out of inertia.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Postman 静默自动安装 AI 插件，并试图共享全部 API 数据
+***** TLDR
+Postman 桌面版 12.33.4 在启动时向毫不相关的编程 agent 安装插件：Claude Code 插件（2.0.1）、Codex 插件（1.1.0）、把 Postman CLI 装进 ~/.local/bin，还注册了指向 mcp.postman.com 的 MCP 服务器。它同时写入启动钩子，指示这些 agent 在处理任何非简单的 API 工作之前先加载 Postman 技能。Postman 自己的日志把来源标记为 auto-existing-upgrade，安装程序还往 ~/.codex/config.toml 写入哈希与自家文件匹配的钩子信任记录，等于自己批准自己。Postman 代表称捆绑是为了简化安装，且已在下载页面说明；报告者用 Wayback Machine 证明用户受影响时该说明并不存在。Postman 承诺把选择加入写得更清楚，但没有改默认行为。回访：我们在 241 分、71 条评论时报道过，现在是 1002 分、333 条。
+***** Take
+把自己的钩子写进用户的信任库不是引导安装，而是自签名。目前给出的补救是把说明写清楚，安装仍然自动进行，恰好保留了大家反对的那一部分。
+***** Comments
+- 它起初是个很棒的小型 API 测试工具，后来融了超过 4 亿美元、雇了 1500 多人，而这本该是像 curl 那样的小型开源项目。现在他们只能用强制登录、数据收集和 AI 功能来撑估值。
+- Postman 会记录每一个 API 请求，包括查询参数，所以 {{some_secret}} 模板会把真实的密钥发到 Postman 的服务器。一旦屏蔽那个日志端点，应用就无法正常工作。
+- 现在还有谁用 Postman？它变得极慢且臃肿。我换成了 Bruno。Postman 就像 uTorrent，大家是靠惯性才装的。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+PostmanがAIプラグインを無断で自動インストールし、全API データの共有を試みる
+***** TLDR
+Postman Desktop 12.33.4 は起動時に無関係なコーディングエージェントへプラグインを入れていた。Claude Code プラグイン（2.0.1）、Codex プラグイン（1.1.0）、Postman CLI を ~/.local/bin へ、さらに mcp.postman.com を指す MCP サーバーの登録。加えて、些細でないAPI作業の前に Postman のスキルを読み込むよう指示する起動フックも書き込む。Postman 自身のログはソースを auto-existing-upgrade と記録し、インストーラーは自社ファイルと一致するハッシュのフック信頼レコードを ~/.codex/config.toml に書き込んで自分自身を承認している。Postman の担当者はセットアップを楽にするための同梱でダウンロードページに記載済みと説明したが、報告者は Wayback Machine で当時その記載がなかったことを示した。Postman はオプトインの明確化を約束したが、既定の自動インストールは変えていない。再訪：241ポイント・71コメントの時点で取り上げたが、現在は1002ポイント・333コメント。
+***** Take
+ユーザーの信頼ストアに自分のフックを書き込むのはオンボーディングではなく自己署名だ。提示された対応は文言の明確化だけで、インストールは自動のまま。批判された部分がそのまま残っている。
+***** Comments
+- 最初はAPIテスト用の優れた小さなツールだった。それが4億ドル以上を調達し1,500人以上を雇った。curl のような小規模OSSで済むはずの話だ。今は強制ログインやデータ収集、AI機能で評価額を正当化するしかない。
+- Postman はクエリパラメータを含む全APIリクエストを記録するので、{{some_secret}} テンプレートは実際の秘密情報をPostmanのサーバーへ送る。そのログ送信先を遮断するとアプリが正常に動かなくなる。
+- 今もPostmanを使っている人がいるのか。ひどく重く肥大化した。私はBrunoに移行した。PostmanはuTorrentのようなもので、惰性でインストールされている。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Postman이 AI 플러그인을 몰래 자동 설치하고 모든 API 데이터 공유를 시도
+***** TLDR
+Postman 데스크톱 12.33.4는 실행 시 관련 없는 코딩 에이전트에 플러그인을 설치했다. Claude Code 플러그인(2.0.1), Codex 플러그인(1.1.0), ~/.local/bin에 Postman CLI, 그리고 mcp.postman.com을 가리키는 MCP 서버 등록이다. 또한 사소하지 않은 API 작업을 처리하기 전에 Postman 스킬을 먼저 불러오라고 지시하는 시작 훅도 기록한다. Postman 자체 로그는 출처를 auto-existing-upgrade로 남기며, 설치 프로그램은 자사 파일과 해시가 일치하는 훅 신뢰 레코드를 ~/.codex/config.toml에 써서 스스로를 승인한다. Postman 측은 설치를 쉽게 하려는 번들이며 다운로드 페이지에 안내했다고 했지만, 제보자는 Wayback Machine으로 피해 당시 그 안내가 없었음을 보여줬다. Postman은 옵트인 문구를 더 명확히 하겠다고 했을 뿐 기본값은 그대로다. 재방문: 241점 71개 댓글일 때 다뤘으나 지금은 1002점 333개다.
+***** Take
+사용자의 신뢰 저장소에 자기 훅을 써 넣는 것은 온보딩이 아니라 자기 서명이다. 제시된 해법은 문구를 명확히 하는 것뿐이고 설치는 여전히 자동이어서, 사람들이 문제 삼은 바로 그 부분이 그대로 남는다.
+***** Comments
+- 처음에는 API 테스트용 훌륭한 소도구였다. 그런데 4억 달러 넘게 투자받고 1,500명 이상을 고용했다. curl 같은 작은 오픈소스로 충분한 일이었다. 지금은 강제 로그인, 데이터 수집, AI 기능으로 기업가치를 정당화해야 한다.
+- Postman은 쿼리 파라미터까지 포함해 모든 API 요청을 기록하므로 {{some_secret}} 템플릿은 실제 비밀값을 Postman 서버로 보낸다. 그 로깅 엔드포인트를 막으면 앱이 제대로 동작하지 않는다.
+- 아직도 Postman을 쓰는 사람이 있나? 엄청 느리고 무거워졌다. Bruno로 옮겼다. Postman은 uTorrent 같아서 관성으로 설치된다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Postman instala plugins de IA de forma silenciosa e intenta compartir todos los datos de API
+***** TLDR
+Postman Desktop 12.33.4 instalaba plugins en agentes de código ajenos al arrancar: un plugin de Claude Code (2.0.1), uno de Codex (1.1.0), la CLI de Postman en ~/.local/bin y un servidor MCP apuntando a mcp.postman.com. También escribía hooks de inicio que indican a esos agentes cargar las skills de Postman antes de cualquier trabajo de API no trivial. Los propios registros de Postman marcan el origen como auto-existing-upgrade, y el instalador escribe registros de confianza de hooks en ~/.codex/config.toml con hashes que coinciden con sus propios archivos, aprobándose a sí mismo. Un representante de Postman dijo que el paquete buscaba facilitar la configuración y que estaba avisado en la página de descarga; quien lo reportó usó Wayback Machine para mostrar que ese aviso no existía cuando los usuarios se vieron afectados. Postman prometió aclarar el opt-in, no cambiar el comportamiento por defecto. Revisita: lo cubrimos con 241 puntos y 71 comentarios; ahora va por 1002 y 333.
+***** Take
+Escribir tu propio hook en el almacén de confianza del usuario no es onboarding, es autofirmarse. El remedio ofrecido es un texto más claro mientras la instalación sigue siendo automática, justo la parte que la gente objetó.
+***** Comments
+- Empezó como una pequeña y excelente herramienta para probar APIs, luego levantó más de 400M de dólares y contrató a más de 1.500 personas para lo que debía ser un proyecto open source pequeño como curl. Ahora tienen que justificar la valoración con logins obligatorios, recolección de datos y funciones de IA.
+- Postman registra cada petición de API incluyendo los parámetros de consulta, así que una plantilla {{some_secret}} envía el secreto real a los servidores de Postman. Si bloqueas ese endpoint de registro, la aplicación deja de funcionar bien.
+- ¿Quién sigue usando Postman? Se volvió lentísimo y pesado. Me pasé a Bruno. Postman es como uTorrent: la gente lo instala por inercia.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Postman installiert still KI-Plugins und versucht, alle API-Daten zu teilen
+***** TLDR
+Postman Desktop 12.33.4 hat beim Start Plugins in fremde Coding-Agenten installiert: ein Claude-Code-Plugin (2.0.1), ein Codex-Plugin (1.1.0), die Postman-CLI nach ~/.local/bin und einen MCP-Server, der auf mcp.postman.com zeigt. Zusätzlich schreibt es Start-Hooks, die diesen Agenten vorgeben, vor jeder nicht trivialen API-Arbeit erst Postman-Skills zu laden. Postmans eigene Logs nennen als Quelle auto-existing-upgrade, und der Installer schreibt Hook-Vertrauenseinträge mit Hashes seiner eigenen Dateien in ~/.codex/config.toml, genehmigt sich also selbst. Ein Postman-Vertreter sagte, das Bundle solle die Einrichtung erleichtern und sei auf der Download-Seite erwähnt; der Melder zeigte per Wayback Machine, dass dieser Hinweis zum Zeitpunkt der Betroffenheit fehlte. Postman versprach ein klareres Opt-in, nicht einen geänderten Standard. Wiederaufnahme: Wir hatten die Sache bei 241 Punkten und 71 Kommentaren, jetzt sind es 1002 und 333.
+***** Take
+Den eigenen Hook in den Trust Store des Nutzers zu schreiben ist kein Onboarding, sondern Selbstsignieren. Angeboten wird klarere Formulierung, während die Installation automatisch bleibt, also genau der kritisierte Teil.
+***** Comments
+- Es begann als sehr gutes kleines Werkzeug zum Testen von APIs. Dann wurden über 400 Mio. Dollar eingesammelt und 1.500+ Leute eingestellt, für etwas, das ein kleines Open-Source-Projekt wie curl hätte sein können. Jetzt muss die Bewertung mit Login-Zwang, Datensammlung und KI-Funktionen gerechtfertigt werden.
+- Postman protokolliert jede API-Anfrage samt Query-Parametern, eine {{some_secret}}-Vorlage schickt also das echte Secret an Postmans Server. Blockiert man diesen Logging-Endpunkt, funktioniert die App nicht mehr richtig.
+- Wer nutzt Postman noch? Es ist unglaublich langsam und überladen. Ich bin zu Bruno gewechselt. Postman ist wie uTorrent: Man installiert es aus Gewohnheit.
+** Jailbreaking my car's navigation system just so I can change the time :reverseengineering:automotive:security:linux:
+:PROPERTIES:
+:ID:       50339288
+:URL:      https://blog.nns.ee/2026/11/02/renault-hack/
+:HN_URL:   https://news.ycombinator.com/item?id=50339288
+:POINTS:   595
+:COMMENTS: 238
+:BY:       xx_ns
+:END:
+
+*** TLDR
+A 2014 Renault Latitude with a TomTom Carminat LIVE head unit, a Samsung S5P6440 running TomTom's Linux 2.6.28. The menu that changes the clock is defined on the navigation SD card, which the previous owner threw away, and the unit checks card authenticity against the CID plus a signature so a blank card will not pass. The author pulled the ttsystem ext3 image out of update files, emulated it under QEMU, found a LOG command with path traversal in the master.script parser inside the ttn binary, used it to write a pipe handler to /proc/sys/kernel/core_pattern, crashed /bin/dbus-monitor to trigger a coredump, and got the kernel to run a payload script off the SD card as root. With that, the timezone offset in /mnt/flash/settings.dat went from 180 to 120 minutes.
+
+*** Take
+The exploit chain is clean work, but the fact worth keeping is why it was needed: a setting about the local clock was gated behind a DRM-signed removable card, so losing a piece of plastic permanently removed a function from the dashboard.
+
+*** Comments
+
+**** numpad0
+Some Subaru models have three clocks in the driver's view, all on the CAN bus, none syncing to each other. At least one uses a microcontroller with an RTC but no crystal pin for 32.768kHz.
+
+**** jerlam
+I had a 2001 luxury car where the time could only be set by time zone, and the zone rules had long diverged from its ruleset, so it needed changing four times a year. It also made you pick a country manually despite having GPS.
+
+**** tom1337890
+Good thing you documented it, since in half a year you'll need it again. My takeaway: you should have just gotten the SD card and trusted the previous owner.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+为了改时间，我把车载导航系统越狱了
+***** TLDR
+一辆 2014 款雷诺 Latitude，搭载 TomTom Carminat LIVE 主机，核心是跑 TomTom 定制 Linux 2.6.28 的三星 S5P6440。改时钟的那个菜单定义在导航 SD 卡上，而前任车主把卡丢了；主机会用 CID 加签名校验卡的真实性，空白卡过不了。作者从升级文件里取出 ttsystem 的 ext3 镜像，用 QEMU 模拟，在 ttn 二进制里的 master.script 解析器中发现一个存在路径穿越的 LOG 命令，借此把管道处理器写入 /proc/sys/kernel/core_pattern，再让 /bin/dbus-monitor 崩溃触发 coredump，使内核以 root 身份执行 SD 卡上的脚本。拿到权限后，把 /mnt/flash/settings.dat 里的时区偏移从 180 分钟改成 120 分钟。
+***** Take
+这套利用链做得干净，但更值得记住的是为什么需要它：一个本地时钟设置被锁在带 DRM 签名的可移除卡后面，丢了一块塑料片就等于永久失去了仪表台上的一项功能。
+***** Comments
+- 有些斯巴鲁车型在驾驶员视野里有三个时钟，全都挂在 CAN 总线上，彼此互不同步。其中至少一个用的单片机带 RTC，却没有接 32.768kHz 晶振的引脚。
+- 我有一辆 2001 年的豪华车，时间只能按时区设置，而时区规则早就和它内置的规则不一致了，所以一年要改四次。明明有 GPS，它还非要你手动选国家。
+- 幸好你写下来了，半年后你还会需要它。我的结论是：你应该直接去弄一张 SD 卡，并且相信前任车主的说法。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+時刻を変えたいだけで車のナビをジェイルブレイクした
+***** TLDR
+2014年型ルノー・ラティチュードに搭載された TomTom Carminat LIVE ヘッドユニット。中身はTomTom独自のLinux 2.6.28が動くSamsung S5P6440だ。時計を変更するメニューの定義はナビ用SDカード側にあり、前オーナーがそれを捨てていた。しかもユニットはCIDと署名でカードの正当性を検証するため、空のカードでは通らない。著者はアップデートファイルからttsystemのext3イメージを取り出し、QEMUでエミュレートし、ttnバイナリ内のmaster.scriptパーサーにパストラバーサル可能なLOGコマンドを見つけた。それで /proc/sys/kernel/core_pattern にパイプハンドラを書き込み、/bin/dbus-monitor をクラッシュさせてコアダンプを発生させ、カーネルにSDカード上のスクリプトをrootで実行させた。あとは /mnt/flash/settings.dat のタイムゾーンオフセットを180分から120分に変えた。
+***** Take
+エクスプロイト連鎖は見事だが、覚えておくべきはなぜ必要だったかだ。ローカルな時計の設定がDRM署名付きの取り外し可能カードの背後に置かれていたため、プラスチック片を失うとダッシュボードの機能が永久に消えた。
+***** Comments
+- 一部のスバル車は運転者の視界に時計が3つあり、すべてCANバス上にあるのに互いに同期しない。少なくとも1つはRTC付きだが32.768kHz用の水晶ピンがないマイコンを使っている。
+- 2001年の高級車を持っていたが、時刻はタイムゾーン指定しかできず、ゾーンのルールは内蔵のものから大きくずれていたため年4回変更が必要だった。GPSがあるのに国を手動で選ばせる仕様でもあった。
+- 記録を残したのは正解だ。半年後にまた必要になる。私の教訓は、SDカードを素直に手に入れて前オーナーを信じるべきだったということ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+시간을 바꾸려고 자동차 내비게이션을 탈옥했다
+***** TLDR
+2014년형 르노 라티튜드에 들어간 TomTom Carminat LIVE 헤드유닛으로, TomTom 자체 리눅스 2.6.28이 돌아가는 삼성 S5P6440 기반이다. 시계를 바꾸는 메뉴의 정의가 내비게이션 SD 카드에 있는데 전 주인이 그 카드를 버렸고, 유닛은 CID와 서명으로 카드 진위를 확인하므로 빈 카드는 통하지 않는다. 저자는 업데이트 파일에서 ttsystem의 ext3 이미지를 추출해 QEMU로 에뮬레이션했고, ttn 바이너리 안 master.script 파서에서 경로 탐색이 가능한 LOG 명령을 찾아냈다. 이를 이용해 /proc/sys/kernel/core_pattern에 파이프 핸들러를 쓰고, /bin/dbus-monitor를 크래시시켜 코어덤프를 유발해 커널이 SD 카드의 스크립트를 root로 실행하게 만들었다. 그 권한으로 /mnt/flash/settings.dat의 시간대 오프셋을 180분에서 120분으로 바꿨다.
+***** Take
+익스플로잇 체인은 깔끔한 작업이지만 기억할 사실은 왜 필요했는지다. 로컬 시계 설정이 DRM 서명된 탈착식 카드 뒤에 잠겨 있었기 때문에, 플라스틱 한 조각을 잃자 계기판의 기능이 영구히 사라졌다.
+***** Comments
+- 일부 스바루 모델은 운전자 시야에 시계가 셋이고 모두 CAN 버스에 붙어 있는데 서로 동기화되지 않는다. 적어도 하나는 RTC는 있지만 32.768kHz 크리스털 핀이 없는 마이크로컨트롤러를 쓴다.
+- 2001년 고급차를 몰았는데 시간은 시간대 선택으로만 설정할 수 있었고, 시간대 규칙이 내장 규칙과 한참 달라져서 1년에 네 번 바꿔야 했다. GPS가 있는데도 국가를 수동으로 고르게 했다.
+- 기록으로 남긴 게 잘한 일이다. 반년 뒤에 또 필요할 테니까. 내 결론은 그냥 SD 카드를 구하고 전 주인 말을 믿었어야 했다는 것.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Hackeé el navegador de mi coche solo para poder cambiar la hora
+***** TLDR
+Un Renault Latitude de 2014 con una unidad TomTom Carminat LIVE: un Samsung S5P6440 corriendo el Linux 2.6.28 propio de TomTom. El menú que cambia el reloj está definido en la tarjeta SD de navegación, que el dueño anterior tiró, y la unidad verifica la autenticidad de la tarjeta contra el CID más una firma, así que una tarjeta en blanco no pasa. El autor extrajo la imagen ext3 ttsystem de los archivos de actualización, la emuló con QEMU, encontró un comando LOG con path traversal en el parser de master.script dentro del binario ttn, lo usó para escribir un manejador de tubería en /proc/sys/kernel/core_pattern, hizo caer /bin/dbus-monitor para provocar un coredump y logró que el kernel ejecutara como root un script desde la SD. Con eso, el desplazamiento de zona horaria en /mnt/flash/settings.dat pasó de 180 a 120 minutos.
+***** Take
+La cadena de exploits es un trabajo limpio, pero el dato que importa es por qué hizo falta: un ajuste del reloj local estaba detrás de una tarjeta extraíble firmada con DRM, así que perder un trozo de plástico eliminó para siempre una función del tablero.
+***** Comments
+- Algunos modelos de Subaru tienen tres relojes a la vista del conductor, todos en el bus CAN y ninguno sincronizado con los demás. Al menos uno usa un microcontrolador con RTC pero sin pin de cristal para 32.768kHz.
+- Tuve un coche de lujo de 2001 donde la hora solo se ajustaba por zona horaria, y las reglas de las zonas se habían alejado de su tabla, así que había que cambiarla cuatro veces al año. Además te obligaba a elegir el país a mano aunque tenía GPS.
+- Qué bien que lo documentaste, porque en medio año lo necesitarás otra vez. Mi conclusión: deberías haber conseguido la tarjeta SD y confiar en el dueño anterior.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Ich habe das Navi meines Autos gejailbreakt, nur um die Uhrzeit zu ändern
+***** TLDR
+Ein Renault Latitude von 2014 mit TomTom Carminat LIVE Headunit: ein Samsung S5P6440 mit TomToms eigenem Linux 2.6.28. Das Menü zum Ändern der Uhr ist auf der Navi-SD-Karte definiert, die der Vorbesitzer weggeworfen hatte, und das Gerät prüft die Echtheit der Karte über CID plus Signatur, eine leere Karte kommt also nicht durch. Der Autor zog das ext3-Image ttsystem aus den Update-Dateien, emulierte es unter QEMU, fand im master.script-Parser der ttn-Binary einen LOG-Befehl mit Path Traversal, schrieb damit einen Pipe-Handler in /proc/sys/kernel/core_pattern, brachte /bin/dbus-monitor zum Abstürzen, um einen Coredump auszulösen, und ließ den Kernel ein Payload-Skript von der SD-Karte als root ausführen. Damit wurde der Zeitzonen-Offset in /mnt/flash/settings.dat von 180 auf 120 Minuten geändert.
+***** Take
+Die Exploit-Kette ist saubere Arbeit, aber festzuhalten ist, warum sie nötig war: eine Einstellung zur lokalen Uhrzeit lag hinter einer DRM-signierten Wechselkarte, der Verlust eines Stücks Plastik entfernte also dauerhaft eine Funktion aus dem Armaturenbrett.
+***** Comments
+- Manche Subaru-Modelle haben drei Uhren im Blickfeld des Fahrers, alle am CAN-Bus, keine synchronisiert mit den anderen. Mindestens eine nutzt einen Mikrocontroller mit RTC, aber ohne Pin für einen 32,768-kHz-Quarz.
+- Ich hatte ein Luxusauto von 2001, bei dem die Zeit nur über Zeitzonen einstellbar war, und die Zonenregeln hatten sich längst von seinem Regelsatz entfernt, also musste man sie viermal im Jahr ändern. Es verlangte außerdem die manuelle Länderauswahl, obwohl GPS vorhanden war.
+- Gut, dass du es dokumentiert hast, in einem halben Jahr brauchst du es wieder. Meine Lehre: Du hättest einfach die SD-Karte besorgen und dem Vorbesitzer glauben sollen.
+** Fujifilm to boost tape production 5x as AI fuels archiving demand :storage:hardware:ai:backup:
+:PROPERTIES:
+:ID:       50336918
+:URL:      https://arstechnica.com/gadgets/2026/10/fujifilm-to-boost-tape-production-5x-as-ai-fuels-archiving-demand/
+:HN_URL:   https://news.ycombinator.com/item?id=50336918
+:POINTS:   370
+:COMMENTS: 155
+:BY:       bookofjoe
+:END:
+
+*** TLDR
+Fujifilm is putting about 10 billion yen ($63 million) into its Kanagawa factory in Odawara to take LTO Ultrium 10 output to five times fiscal 2025 levels over fiscal 2026 through 2028. The company calls it its largest investment in dedicated LTO facilities. Gen 10 media uses fine hybrid magnetic particles combining barium ferrite with strontium ferrite. Fujifilm attributes the demand to generative AI driving exponential data growth, and names major cloud and data center operators as the buyers, citing low cost per terabyte, storage density, and the offline security of a cartridge that can be air-gapped against ransomware.
+
+*** Take
+Air-gapped is a physical property, not a configuration, and that is the whole pitch. The thread supplies what the press release leaves out: actually restore from your archive, because the drive reporting a successful write is not evidence that the data comes back.
+
+*** Comments
+
+**** dylan604
+When you create an archive, do not skip reading it back. Not just having the system confirm it is readable, actually restore the data. I've had tapes fail to retrieve data.
+
+**** pmw
+If you want tape's cost per TB without the capex, rustic's cold storage support for S3 Glacier Deep Archive works out to about $1/TB/month as long as you don't plan to restore from it.
+
+**** amelius
+Why can't they make an attractively priced prosumer tape drive solution?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+AI 推高归档需求，富士胶片将磁带产能提升五倍
+***** TLDR
+富士胶片将向位于小田原的神奈川工厂投入约 100 亿日元（6300 万美元），在 2026 至 2028 财年把 LTO Ultrium 10 的产量提升到 2025 财年的五倍。公司称这是其在 LTO 专用产线上最大的一笔投资。第十代介质采用把钡铁氧体与锶铁氧体结合的细微混合磁性颗粒。富士胶片把需求归因于生成式 AI 带来的数据指数级增长，并点明买家是大型云服务和数据中心运营商，理由是每 TB 成本低、存储密度高，以及磁带盒可以物理隔离、抵御勒索软件的离线安全性。
+***** Take
+物理隔离是一种物理属性，不是一项配置，这正是全部卖点。讨论区补上了新闻稿没说的部分：真的去做一次恢复演练，因为驱动器报告写入成功，并不等于数据能取回来。
+***** Comments
+- 做归档时不要跳过回读这一步。不是让系统确认可读就行，而是真的把数据恢复出来。我遇到过磁带取不出数据的情况。
+- 想要磁带的每 TB 成本又不想承担设备投入，可以用 rustic 对 S3 Glacier Deep Archive 的冷存储支持，只要你不打算从那里恢复，大约是每 TB 每月 1 美元。
+- 为什么他们做不出一个价格合适的发烧友级磁带机方案？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+AIがアーカイブ需要を押し上げ、富士フイルムがテープ生産を5倍に
+***** TLDR
+富士フイルムは小田原の神奈川工場に約100億円（6,300万ドル）を投じ、2026年度から2028年度にかけてLTO Ultrium 10の生産能力を2025年度の5倍に引き上げる。同社はLTOテープ専用設備としては過去最大の投資だとしている。第10世代の媒体はバリウムフェライトとストロンチウムフェライトを組み合わせた微細ハイブリッド磁性体を使う。富士フイルムは需要の理由を生成AIによるデータの指数的増加だと説明し、買い手は大手クラウド・データセンター事業者だと名指しした。TBあたりのコストの低さ、記録密度、そしてカートリッジをエアギャップしてランサムウェアから守れるオフラインの安全性が理由だ。
+***** Take
+エアギャップは設定ではなく物理的な性質であり、それが売りのすべてだ。スレッドはプレスリリースが触れない点を補っている。実際にアーカイブからリストアすること。ドライブが書き込み成功と報告しても、データが戻る証拠にはならない。
+***** Comments
+- アーカイブを作ったら読み戻しを省略しないこと。システムが読めると答えるだけでなく、実際にデータを復元する。テープからデータを取り出せなかった経験がある。
+- 設備投資なしでテープのTB単価の安さが欲しいなら、rusticのコールドストレージ対応でS3 Glacier Deep Archiveを使うといい。そこから復元する予定がない限り、1TBあたり月1ドル程度になる。
+- なぜ手頃な価格のハイアマチュア向けテープドライブを作れないのか。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+AI가 아카이브 수요를 밀어올리며 후지필름이 테이프 생산을 5배로 늘린다
+***** TLDR
+후지필름이 오다와라의 가나가와 공장에 약 100억 엔(6,300만 달러)을 투입해 2026~2028 회계연도에 걸쳐 LTO Ultrium 10 생산량을 2025 회계연도의 5배로 올린다. 회사는 LTO 전용 설비에 대한 역대 최대 투자라고 밝혔다. 10세대 매체는 바륨 페라이트와 스트론튬 페라이트를 결합한 미세 하이브리드 자성 입자를 쓴다. 후지필름은 수요 원인을 생성형 AI가 이끄는 데이터의 지수적 증가로 설명하며, 구매자로 대형 클라우드·데이터센터 사업자를 꼽았다. TB당 비용, 저장 밀도, 그리고 카트리지를 에어갭으로 랜섬웨어로부터 지킬 수 있는 오프라인 보안성이 이유다.
+***** Take
+에어갭은 설정이 아니라 물리적 속성이고, 그게 세일즈 포인트의 전부다. 스레드는 보도자료가 빼놓은 부분을 채운다. 아카이브에서 실제로 복원해 보라. 드라이브가 기록 성공을 보고했다는 사실은 데이터가 돌아온다는 증거가 아니다.
+***** Comments
+- 아카이브를 만들면 되읽기 단계를 건너뛰지 마라. 시스템이 읽을 수 있다고 확인하는 수준이 아니라 실제로 데이터를 복원해 봐야 한다. 테이프에서 데이터를 못 꺼낸 적이 있다.
+- 설비 투자 없이 테이프의 TB당 비용을 원한다면 rustic의 콜드 스토리지 지원으로 S3 Glacier Deep Archive를 쓰면 된다. 거기서 복원할 계획이 없다면 TB당 월 1달러 정도로 끝난다.
+- 왜 적당한 가격의 프로슈머용 테이프 드라이브를 못 만드는 걸까?
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Fujifilm quintuplicará la producción de cinta ante la demanda de archivado que trae la IA
+***** TLDR
+Fujifilm destinará unos 10.000 millones de yenes (63 millones de dólares) a su fábrica de Kanagawa en Odawara para llevar la producción de LTO Ultrium 10 a cinco veces los niveles del año fiscal 2025, entre los ejercicios 2026 y 2028. La compañía lo describe como su mayor inversión en instalaciones dedicadas a LTO. La generación 10 usa partículas magnéticas híbridas finas que combinan ferrita de bario con ferrita de estroncio. Fujifilm atribuye la demanda al crecimiento exponencial de datos que impulsa la IA generativa y señala como compradores a los grandes operadores de nube y centros de datos, por el bajo coste por terabyte, la densidad de almacenamiento y la seguridad offline de un cartucho que se puede aislar físicamente frente al ransomware.
+***** Take
+El aislamiento físico es una propiedad del medio, no una configuración, y ahí está todo el argumento. El hilo aporta lo que no dice la nota de prensa: restaura de verdad desde tu archivo, porque que la unidad informe de una escritura correcta no prueba que los datos vuelvan.
+***** Comments
+- Cuando creas un archivo, no te salte el paso de leerlo de vuelta. No basta con que el sistema confirme que es legible: restaura los datos de verdad. He tenido cintas de las que no se pudo recuperar nada.
+- Si quieres el coste por TB de la cinta sin el gasto en equipo, el soporte de almacenamiento en frío de rustic para S3 Glacier Deep Archive sale a unos 1 dólar por TB al mes, siempre que no planees restaurar desde ahí.
+- ¿Por qué no pueden hacer una unidad de cinta prosumer a un precio atractivo?
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Fujifilm verfünffacht die Bandproduktion, weil KI den Archivierungsbedarf treibt
+***** TLDR
+Fujifilm steckt rund 10 Milliarden Yen (63 Millionen Dollar) in sein Werk Kanagawa in Odawara, um die Produktion von LTO Ultrium 10 in den Geschäftsjahren 2026 bis 2028 auf das Fünffache des Niveaus von 2025 zu bringen. Das Unternehmen nennt es seine größte Investition in reine LTO-Fertigung. Die zehnte Generation nutzt feine hybride Magnetpartikel aus Bariumferrit und Strontiumferrit. Fujifilm führt die Nachfrage auf das exponentielle Datenwachstum durch generative KI zurück und nennt große Cloud- und Rechenzentrumsbetreiber als Käufer, wegen niedriger Kosten pro Terabyte, hoher Speicherdichte und der Offline-Sicherheit einer Kassette, die sich per Air Gap gegen Ransomware abschirmen lässt.
+***** Take
+Air Gap ist eine physische Eigenschaft, keine Konfiguration, und genau darin liegt das Verkaufsargument. Der Thread liefert, was die Pressemitteilung auslässt: stellt tatsächlich aus dem Archiv wieder her, denn ein Laufwerk, das erfolgreiches Schreiben meldet, ist kein Beweis, dass die Daten zurückkommen.
+***** Comments
+- Wenn du ein Archiv anlegst, überspringe das Zurücklesen nicht. Nicht nur das System bestätigen lassen, dass es lesbar ist, sondern die Daten wirklich wiederherstellen. Ich hatte Bänder, von denen sich keine Daten holen ließen.
+- Wer die Kosten pro TB von Band ohne die Investition will: rustics Cold-Storage-Unterstützung für S3 Glacier Deep Archive landet bei etwa 1 Dollar pro TB und Monat, solange man nicht vorhat, daraus wiederherzustellen.
+- Warum gibt es kein attraktiv bepreistes Bandlaufwerk für Prosumer?
+** US tech giants' hidden AI debt swells 90% to $3.2T in 6 months :ai:finance:datacenters:economics:
+:PROPERTIES:
+:ID:       50358422
+:URL:      https://asia.nikkei.com/business/technology/artificial-intelligence/us-tech-giants-hidden-ai-debt-swells-90-to-3.2tn-in-6-months
+:HN_URL:   https://news.ycombinator.com/item?id=50358422
+:POINTS:   210
+:COMMENTS: 75
+:BY:       angry_impala
+:END:
+
+*** TLDR
+Nikkei, reporting from Palo Alto under Kohei Yamada's byline, puts off-balance-sheet AI obligations at US tech giants at roughly $3.2 trillion, a 90% rise in six months and around 80% of assets; an earlier Nikkei count had five of these companies at $1.65 trillion. ［Paywalled past the intro, so the instrument-by-instrument breakdown is not readable: the piece names Google and Meta and refers to five US tech giants without the per-company split, and does not state in the visible text which obligations, leases, special purpose vehicles or purchase commitments make up the total.］
+
+*** Take
+The 90% in six months is the number to watch, not the $3.2 trillion. These structures exist precisely so the spending does not appear where investors look, which is why a near doubling shows up between two readings instead of being announced as it happens.
+
+*** Comments
+
+**** ggm
+I hope this and other threads on the financially insane behaviour of the tech sector get more surface. The norms of how business looks at the balance sheet and decides what counts as rational investment matter, and this is a significant proportion of the market.
+
+**** blobbers
+Total US government debt is 40T, for the entire country. And somehow the AI side of the USA has 3.2T in debt? Those agents better get producing.
+
+**** Commenator42
+Huge bet on AGI in play right now. If it happens the winner reaps unimaginable wealth and power. I don't think the technology supports it yet, but we're getting closer.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+美国科技巨头的隐性 AI 债务半年增长 90%，达 3.2 万亿美元
+***** TLDR
+日经新闻由山田康平署名、发自帕洛阿尔托的报道，把美国科技巨头的资产负债表外 AI 债务规模估为约 3.2 万亿美元，半年内增长 90%，相当于资产的约 80%；此前日经的统计中，五家公司合计为 1.65 万亿美元。［正文在引言之后收费，因此看不到逐项拆分：文中提到谷歌和 Meta，并提及五家美国科技巨头，但未给出各公司数字，可见部分也没说明这笔总额由哪些义务、租赁、特殊目的实体或采购承诺构成。］
+***** Take
+值得盯住的数字是半年 90%，而不是 3.2 万亿美元。这类结构的存在目的，恰恰是让支出不出现在投资者会看的地方，所以翻倍是在两次统计之间被发现的，而不是在发生时被公布的。
+***** Comments
+- 我希望这类关于科技行业财务疯狂行为的讨论能被更多人看到。企业如何看资产负债表、如何判定什么算理性投资，这些规范很重要，而且它占市场相当大的比重。
+- 美国政府的总债务是 40 万亿美元，这是整个国家的数字。而美国的 AI 这一摊居然有 3.2 万亿债务？那些 agent 最好赶紧开始产出。
+- 现在是在对 AGI 下重注。如果真成了，赢家将收获难以想象的财富和权力。我认为底层技术还撑不起来，但确实在接近。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+米テック大手の隠れAI債務、半年で90%増の3.2兆ドルに
+***** TLDR
+日経（パロアルト発、山田耕平署名）は、米テック大手のオフバランスのAI関連債務を約3.2兆ドルと算定した。半年で90%増、資産の約80%に相当する。以前の日経の集計では5社合計で1.65兆ドルだった。［導入部より先が有料で、項目別の内訳は読めない。記事はGoogleとMetaに触れ「米テック大手5社」と記すが企業別の数字はなく、どの債務、リース、特別目的会社、購入コミットメントが総額を構成するのかも可読部分には書かれていない。］
+***** Take
+注目すべき数字は3.2兆ドルではなく、半年で90%という伸びだ。こうした仕組みは、支出が投資家の見る場所に現れないようにするためにあり、だからこそ倍増は発生時に公表されず、2回の集計の間に判明する。
+***** Comments
+- テック業界の財務的に正気でない振る舞いについて、このスレッドや類似の議論がもっと表に出てほしい。企業が貸借対照表をどう見て何を合理的投資とみなすか、その規範は重要で、しかも市場のかなりの割合を占めている。
+- 米政府の債務総額は国全体で40兆ドルだ。それなのに米国のAI関連だけで3.2兆ドルの債務？ エージェントたちは早く生産を始めたほうがいい。
+- いまAGIに巨額の賭けが動いている。実現すれば勝者は想像を超える富と力を得る。基盤技術はまだ足りないと思うが、近づいてはいる。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+미국 테크 거인들의 숨은 AI 부채, 6개월 만에 90% 늘어 3.2조 달러
+***** TLDR
+닛케이가 팔로알토에서 고헤이 야마다 기자 이름으로 보도한 내용에 따르면, 미국 테크 거인들의 부외 AI 관련 채무는 약 3조 2천억 달러로 6개월 만에 90% 증가했고 자산의 약 80%에 해당한다. 앞선 닛케이 집계에서는 이들 중 다섯 곳 합계가 1조 6,500억 달러였다. ［도입부 이후가 유료라 항목별 분해는 읽을 수 없다. 기사는 구글과 메타를 언급하며 미국 테크 거인 다섯 곳이라고 표현하지만 기업별 수치는 없고, 어떤 채무와 리스, 특수목적법인, 구매 약정이 총액을 구성하는지도 보이는 부분에는 나와 있지 않다.］
+***** Take
+주목할 숫자는 3.2조 달러가 아니라 6개월 90%다. 이런 구조는 지출이 투자자가 보는 자리에 나타나지 않도록 존재하며, 그래서 두 배 가까운 증가가 발생 시점에 공시되지 않고 두 번의 집계 사이에 드러난다.
+***** Comments
+- 테크 업계의 재무적으로 제정신 아닌 행태를 다루는 이런 스레드가 더 드러나길 바란다. 기업이 대차대조표를 어떻게 보고 무엇을 합리적 투자로 판단하는지, 그 규범은 중요하고 시장에서 비중도 상당하다.
+- 미국 정부 총부채가 나라 전체로 40조 달러다. 그런데 미국의 AI 쪽만 3.2조 달러 부채라고? 그 에이전트들이 생산을 시작해야겠다.
+- 지금 AGI에 거대한 베팅이 걸려 있다. 실현되면 승자는 상상 못 할 부와 권력을 얻는다. 기반 기술이 아직 받쳐주지 못한다고 보지만 가까워지고 있다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+La deuda oculta de IA de las grandes tecnológicas de EE. UU. crece 90% hasta 3,2 billones de dólares en 6 meses
+***** TLDR
+Nikkei, con firma de Kohei Yamada y fechado en Palo Alto, cifra en unos 3,2 billones de dólares las obligaciones de IA fuera de balance de las grandes tecnológicas estadounidenses, un alza del 90% en seis meses y cerca del 80% de los activos; un recuento anterior de Nikkei situaba a cinco de estas empresas en 1,65 billones. ［Con muro de pago tras la entrada, así que no se puede leer el desglose instrumento por instrumento: el texto menciona Google y Meta y habla de cinco gigantes tecnológicos de EE. UU. sin reparto por empresa, y no indica en la parte visible qué obligaciones, arrendamientos, vehículos de propósito especial o compromisos de compra componen el total.］
+***** Take
+El dato a seguir es el 90% en seis meses, no los 3,2 billones. Estas estructuras existen precisamente para que el gasto no aparezca donde mira el inversor, y por eso una casi duplicación se descubre entre dos mediciones en lugar de anunciarse cuando ocurre.
+***** Comments
+- Espero que este hilo y otros sobre el comportamiento financieramente demencial del sector tecnológico tengan más visibilidad. Las normas con que una empresa lee su balance y decide qué es inversión racional importan, y esto es una porción significativa del mercado.
+- La deuda total del gobierno de EE. UU. es de 40 billones, para todo el país. ¿Y el lado de la IA en EE. UU. tiene 3,2 billones de deuda? Esos agentes más vale que se pongan a producir.
+- Hay una apuesta enorme por la AGI en marcha. Si llega, el ganador se lleva una riqueza y un poder inimaginables. Creo que la tecnología todavía no lo sostiene, pero nos estamos acercando.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Versteckte KI-Schulden der US-Tech-Riesen wachsen in sechs Monaten um 90% auf 3,2 Billionen Dollar
+***** TLDR
+Nikkei bemisst in einem aus Palo Alto datierten Bericht von Kohei Yamada die außerbilanziellen KI-Verpflichtungen der US-Tech-Riesen auf rund 3,2 Billionen Dollar, ein Plus von 90% in sechs Monaten und etwa 80% der Vermögenswerte; eine frühere Nikkei-Zählung kam für fünf dieser Konzerne auf 1,65 Billionen. ［Hinter dem Einstieg steht eine Paywall, die Aufschlüsselung nach Instrumenten ist also nicht lesbar: der Text nennt Google und Meta und spricht von fünf US-Tech-Riesen, ohne Zahlen pro Unternehmen, und sagt im sichtbaren Teil nicht, welche Verpflichtungen, Leasingverträge, Zweckgesellschaften oder Abnahmeverpflichtungen die Summe bilden.］
+***** Take
+Die Zahl, auf die es ankommt, sind die 90% in sechs Monaten, nicht die 3,2 Billionen. Solche Strukturen existieren gerade deshalb, damit die Ausgaben nicht dort auftauchen, wo Investoren hinsehen. Deswegen zeigt sich eine Fast-Verdopplung zwischen zwei Messungen, statt bei ihrem Entstehen angekündigt zu werden.
+***** Comments
+- Ich hoffe, dieser und andere Threads zum finanziell wahnsinnigen Verhalten des Tech-Sektors bekommen mehr Aufmerksamkeit. Wie Unternehmen auf die Bilanz schauen und entscheiden, was als rationale Investition gilt, ist wichtig, und es geht um einen erheblichen Teil des Marktes.
+- Die gesamte Staatsverschuldung der USA liegt bei 40 Billionen, für das ganze Land. Und die KI-Seite der USA hat 3,2 Billionen Schulden? Diese Agenten sollten besser anfangen zu produzieren.
+- Es läuft gerade eine riesige Wette auf AGI. Wenn sie aufgeht, erntet der Gewinner unvorstellbaren Reichtum und Macht. Ich glaube, die Technik trägt das noch nicht, aber wir kommen näher.
+** Stringman, an $800 open-source room scale gripper robot :robotics:hardware:openhardware:diy:
+:PROPERTIES:
+:ID:       50354358
+:URL:      https://neufangled.com/
+:HN_URL:   https://news.ycombinator.com/item?id=50354358
+:POINTS:   357
+:COMMENTS: 137
+:BY:       nharada
+:END:
+
+*** TLDR
+Stringman from Neufangled Robotics is a $795 cable robot: four motorized winches anchored in a room's ceiling corners suspend a two-finger gripper with a wrist, plus active swing cancellation to steady it during fast moves. It runs about 0.4 m/s, carries up to 2.2 kg near the floor and 1.9 kg on average, and works in rooms 3 to 10 m across the diagonal and 2.3 to 4 m high. Sensing is two 1920x1080 30fps anchor cameras and a 684x384 60fps gripper camera. Control is local over Wi-Fi with a Python API and an MCP server, it can run fully air-gapped, and it supports imitation learning via LeRobot. OSHWA certified, with mechanical CAD, PCBs and firmware on GitHub. The creator answered questions in the thread, including that a tension limit pays out line rather than pulling hard.
+
+*** Take
+Hanging from the ceiling sidesteps the three hardest problems in home robotics at once: balance, navigation, and an arm strong enough to hold up its own mass. At $795 with published CAD, the interesting question is what people bolt onto the gripper, and the thread already answered with garden weeding.
+
+*** Comments
+
+**** nhnifong
+Creator here. Can it kill you? Probably not, the tension limit kicks in and lets the line out if you pull too hard. In a room with a ceiling fan it's usually fine, you can lower the work area ceiling to exclude the fan.
+
+**** histk_garden
+I made a big one for my garden with two high speed winches, machined aluminum and etch-a-sketch style cable control. I can raise and lower myself about 4 feet to get between the rows.
+
+**** goda90
+I want to try this for garden weeding, with a small spinning blade instead of a grabber. Computer vision identifies weeds and cuts them before they get woody. The challenge would be dodging taller plants and the forces from the blade.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Stringman：一台 800 美元的开源整间房抓取机器人
+***** TLDR
+Neufangled Robotics 的 Stringman 是一台 795 美元的绳索机器人：四台带电机的绞盘固定在房间天花板四角，吊起一只带腕部的两指夹爪，并有主动消摆来在快速移动时保持稳定。速度约 0.4 米/秒，靠近地面时载重最多 2.2 公斤，平均 1.9 公斤，适用于对角线 3 到 10 米、高度 2.3 到 4 米的房间。感知部分是两台 1920x1080 30fps 的锚点相机和一台 684x384 60fps 的夹爪相机。控制通过 Wi-Fi 在本地完成，提供 Python API 和 MCP 服务器，可以完全离网运行，并支持通过 LeRobot 做模仿学习。已获 OSHWA 认证，机械 CAD、PCB 和固件都在 GitHub 上。作者在讨论里回答了提问，包括张力限制会在拉力过大时放线而不是硬拽。
+***** Take
+吊在天花板上一次绕过了家用机器人最难的三个问题：平衡、导航，以及一条要撑住自身重量的机械臂。795 美元加公开 CAD，真正有意思的问题是大家会往夹爪上装什么，而讨论区已经给出了答案：花园除草。
+***** Comments
+- 我是作者。它会不会伤到人？大概不会，拉力过大时张力限制会启动并放线。有吊扇的房间通常也没问题，你可以把工作区的上限调低来排除风扇。
+- 我给我的花园做了个大的，用两台高速绞盘、机加工铝件和类似神奇画板的绳索控制。我能把自己升降大约 1.2 米，钻到垄与垄之间。
+- 我想用这个来做花园除草，把抓手换成一个小旋转刀片。用计算机视觉识别杂草，在它们长硬之前割掉。难点在于避开高一些的植物，以及刀片带来的受力。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Stringman、800ドルのオープンソース部屋スケール把持ロボット
+***** TLDR
+Neufangled Roboticsの Stringman は795ドルのケーブルロボットだ。部屋の天井四隅に固定した4台のモーター付きウインチが、手首付きの2本指グリッパーを吊り下げ、高速移動時に揺れを抑えるアクティブスイングキャンセルを備える。速度は約0.4m/s、床付近で最大2.2kg、平均1.9kgを運び、対角3〜10m、高さ2.3〜4mの部屋で動く。センサーは1920x1080 30fpsのアンカーカメラ2台と、684x384 60fpsのグリッパーカメラ。制御はWi-Fi経由でローカル、Python APIとMCPサーバーを備え、完全なエアギャップ運用も可能で、LeRobotによる模倣学習に対応する。OSHWA認証済みで、機構CAD、基板、ファームウェアはGitHubにある。作者はスレッドで質問に答え、強く引くと張力制限が働いて線を送り出すと説明した。
+***** Take
+天井から吊ることで、家庭用ロボットの最も難しい3つの問題、バランス、ナビゲーション、自重を支えられるアームを一度に回避している。795ドルでCADが公開されているなら、面白い問いはグリッパーに何を付けるかで、スレッドはすでに庭の草取りという答えを出している。
+***** Comments
+- 作者です。人を殺せるか？ おそらく無理で、強く引くと張力制限が働いて線が出ます。シーリングファンのある部屋でもたいてい平気で、作業領域の上限を下げてファンを除外できます。
+- 庭用に大きいものを作った。高速ウインチ2台と機械加工したアルミ、お絵かきボード式のケーブル制御だ。自分を1.2メートルほど上下させて畝の間に入れる。
+- 庭の草取りに試したい。つかむ機構の代わりに小さな回転刃を付ける。コンピュータビジョンで雑草を見つけ、硬くなる前に切る。難しいのは背の高い植物を避けることと、刃からかかる力だろう。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Stringman, 800달러짜리 오픈소스 방 전체 그리퍼 로봇
+***** TLDR
+Neufangled Robotics의 Stringman은 795달러짜리 케이블 로봇이다. 방 천장 네 모서리에 고정한 모터 윈치 네 대가 손목이 달린 2지 그리퍼를 매달고, 빠르게 움직일 때 흔들림을 잡는 능동 스윙 제거 기능이 있다. 속도는 약 0.4 m/s, 바닥 근처에서 최대 2.2 kg, 평균 1.9 kg을 들며, 대각선 3~10 m, 높이 2.3~4 m인 방에서 동작한다. 센서는 1920x1080 30fps 앵커 카메라 두 대와 684x384 60fps 그리퍼 카메라다. 제어는 와이파이로 로컬에서 이뤄지고 파이썬 API와 MCP 서버를 제공하며, 완전 에어갭 운용이 가능하고 LeRobot을 통한 모방 학습을 지원한다. OSHWA 인증을 받았고 기구 CAD, PCB, 펌웨어가 GitHub에 있다. 제작자가 스레드에서 질문에 답했는데, 세게 당기면 장력 제한이 걸려 줄을 풀어준다고 설명했다.
+***** Take
+천장에 매달리는 방식은 가정용 로보틱스의 가장 어려운 세 문제를 한 번에 피해 간다. 균형, 내비게이션, 그리고 자기 무게를 버틸 만큼 튼튼한 팔이다. 795달러에 CAD가 공개됐으니 흥미로운 질문은 사람들이 그리퍼에 무엇을 붙일지이고, 스레드는 이미 정원 제초라고 답했다.
+***** Comments
+- 제작자입니다. 사람을 다치게 할까요? 아마 아닙니다. 세게 당기면 장력 제한이 걸려 줄이 풀립니다. 천장 선풍기가 있는 방도 보통 괜찮고, 작업 영역 상한을 낮춰 선풍기를 제외할 수 있습니다.
+- 정원용으로 큰 걸 만들었다. 고속 윈치 두 대와 가공한 알루미늄, 매직 보드 같은 케이블 제어를 썼다. 나를 1.2미터쯤 올리고 내려서 이랑 사이로 들어간다.
+- 정원 제초에 써보고 싶다. 집게 대신 작은 회전 날을 달고, 컴퓨터 비전으로 잡초를 찾아 억세지기 전에 자르는 것이다. 어려운 점은 키 큰 식물을 피하는 일과 날에서 오는 힘일 것이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Stringman, un robot de pinza a escala de habitación, open source y por 800 dólares
+***** TLDR
+Stringman, de Neufangled Robotics, es un robot de cables de 795 dólares: cuatro cabrestantes motorizados anclados en las esquinas del techo suspenden una pinza de dos dedos con muñeca, más cancelación activa de balanceo para estabilizarla en movimientos rápidos. Va a unos 0,4 m/s, carga hasta 2,2 kg cerca del suelo y 1,9 kg de media, y funciona en habitaciones de 3 a 10 m de diagonal y 2,3 a 4 m de alto. La percepción son dos cámaras de anclaje de 1920x1080 a 30 fps y una cámara en la pinza de 684x384 a 60 fps. El control es local por Wi-Fi con API de Python y servidor MCP, puede funcionar completamente aislado de internet y admite aprendizaje por imitación con LeRobot. Tiene certificación OSHWA, con el CAD mecánico, las PCB y el firmware en GitHub. El creador respondió preguntas en el hilo, entre ellas que un límite de tensión suelta cable en lugar de tirar fuerte.
+***** Take
+Colgar del techo esquiva de golpe los tres problemas más difíciles de la robótica doméstica: equilibrio, navegación y un brazo capaz de sostener su propia masa. Con 795 dólares y el CAD publicado, lo interesante es qué le acoplará la gente a la pinza, y el hilo ya respondió: desherbar el huerto.
+***** Comments
+- Soy el creador. ¿Puede matarte? Probablemente no: el límite de tensión actúa y suelta cable si tiras demasiado. En una habitación con ventilador de techo suele ir bien, puedes bajar el techo del área de trabajo para excluirlo.
+- Hice uno grande para mi huerto con dos cabrestantes rápidos, aluminio mecanizado y un control de cables tipo pizarra magnética. Puedo subirme y bajarme algo más de un metro para meterme entre los surcos.
+- Quiero probar esto para desherbar, con una pequeña cuchilla giratoria en lugar de la pinza. La visión por computador identifica las malas hierbas y las corta antes de que se endurezcan. El reto sería esquivar las plantas más altas y las fuerzas de la cuchilla.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Stringman, ein quelloffener Greifroboter in Raumgröße für 800 Dollar
+***** TLDR
+Stringman von Neufangled Robotics ist ein Kabelroboter für 795 Dollar: vier motorisierte Winden, in den Deckenecken eines Raums verankert, halten einen Zweifingergreifer mit Handgelenk, dazu kommt eine aktive Schwingungsdämpfung für schnelle Fahrten. Er fährt etwa 0,4 m/s, trägt bodennah bis zu 2,2 kg und im Mittel 1,9 kg und arbeitet in Räumen mit 3 bis 10 m Diagonale und 2,3 bis 4 m Höhe. Als Sensorik dienen zwei Ankerkameras mit 1920x1080 bei 30 fps und eine Greiferkamera mit 684x384 bei 60 fps. Die Steuerung läuft lokal über WLAN mit Python-API und MCP-Server, der Betrieb ist vollständig ohne Internet möglich, und Imitationslernen über LeRobot wird unterstützt. OSHWA-zertifiziert, mit mechanischem CAD, Platinen und Firmware auf GitHub. Der Entwickler antwortete im Thread auf Fragen, unter anderem gibt eine Zugkraftgrenze Seil nach, statt stark zu ziehen.
+***** Take
+An der Decke zu hängen umgeht die drei schwersten Probleme der Heimrobotik in einem Schritt: Balance, Navigation und einen Arm, der sein eigenes Gewicht tragen muss. Für 795 Dollar und mit veröffentlichtem CAD ist die interessante Frage, was Leute an den Greifer schrauben, und der Thread hat schon geantwortet: Unkraut im Garten jäten.
+***** Comments
+- Entwickler hier. Kann er dich töten? Wahrscheinlich nicht, die Zugkraftgrenze greift und gibt Seil nach, wenn du zu stark ziehst. In einem Raum mit Deckenventilator geht es meist gut, man kann die Decke des Arbeitsbereichs senken, um den Ventilator auszuschließen.
+- Ich habe eine große Version für meinen Garten gebaut, mit zwei schnellen Winden, gefrästem Aluminium und einer Seilsteuerung wie bei einer Zaubertafel. Ich kann mich etwa 1,2 Meter heben und senken, um zwischen die Reihen zu kommen.
+- Ich würde das gern zum Unkrautjäten versuchen, mit einer kleinen rotierenden Klinge anstelle des Greifers. Bildverarbeitung erkennt Unkraut und schneidet es, bevor es verholzt. Schwierig wären höhere Pflanzen und die Kräfte, die die Klinge erzeugt.
