@@ -1,0 +1,512 @@
+#+TITLE: HN Digest 2026-11-05 11:00 UTC
+#+DATE: 2026-11-05T11:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+HN itemizes its AI bill, OpenAI ships SVG export, and Mbed TLS needs a maintainer before April 2027
+
+* Highlights
+- Ask HN agentic setups: people pay two vendors so one can review the other
+- Images 2.6: SVG export, GIFs, 50% faster, 4 billion images a week
+- Mbed TLS: maintainers walk in April 2027 and security fixes go with them
+- Lemmings: CSS sprites that read your DOM as terrain
+- Zig: mix operator groups and the compiler now demands parentheses
+
+* Stories
+
+** Ask HN: What's your current AI agentic setup? :ai:tooling:askhn:agents:
+:PROPERTIES:
+:ID:       50366117
+:URL:      https://news.ycombinator.com/item?id=50366117
+:HN_URL:   https://news.ycombinator.com/item?id=50366117
+:POINTS:   342
+:COMMENTS: 390
+:BY:       eggbrain
+:END:
+
+*** TLDR
+eggbrain asked five questions: which AI subscriptions you pay for and at which tier, whether you also use pay-as-you-go APIs or local models, which coding harness you run, whether you use orchestration or swarm tools, and whether you use broader agent platforms. 390 replies. The recurring shape: people stack two or three $100-plus subscriptions at once, keep a cheap Cursor seat purely for adversarial review, fall back to OpenRouter or a local Qwen or GLM for cost and offline work, and mostly stay on the default CLIs. Orchestration and swarm tools are the least-adopted item on the list, and subagent delegation goes largely unused. A visible minority answers none to all five.
+
+*** Take
+This thread describes the market better than any vendor deck. People are not paying two labs out of indecision, they are paying two labs so one model can check the other's work, which is a quiet admission that nobody trusts a single one of these to be right. And the orchestration layer the whole industry is busy selling is the part of the stack almost nobody in a 390-comment thread actually runs.
+
+*** Comments
+
+**** gabriel-uribe
+Claude $100, Codex $100, Cursor $20 for adversarial review, OpenCode Go $10. Local Qwen only when I'm offline, which is rare. Just the native orchestration.
+
+**** Animats
+Embarrassingly, I don't have one yet. I'm mostly still writing code one keystroke at a time.
+
+**** tomburgs
+None anymore. They're all turning into increasingly poor value for my money. I need AI on my own schedule and don't want to pay for compute I don't need, then wait for limits to reset when I do.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Ask HN：你现在的 AI agent 配置是什么？
+***** TLDR
+eggbrain 提了五个问题：你自付哪些 AI 订阅、哪一档；是否同时用按量计费 API 或本地模型；用哪个编码 harness；是否用编排或 swarm 工具；是否用更广义的 agent 平台。390 条回复。反复出现的形态是：同时叠加两三个百美元以上的订阅，留一个便宜的 Cursor 席位专门做对抗式评审，为省钱和离线时回落到 OpenRouter 或本地 Qwen、GLM，而且大多仍停留在官方默认 CLI。编排和 swarm 工具是整张清单里采用率最低的一项，子 agent 委派基本没人用。还有相当一部分人五个问题全答“没有”。
+***** Take
+这个帖子比任何厂商的 slide 都更准确地描述了市场。人们同时付两家的钱不是因为选不出来，而是为了让一个模型去检查另一个模型的活儿，这等于低声承认：没人信任其中任何单独一个。而整个行业正在卖力推销的编排层，恰恰是这条 390 评论的帖子里几乎没人真在跑的那一层。
+***** Comments
+- Claude 100 美元，Codex 100 美元，Cursor 20 美元专做对抗式评审，OpenCode Go 10 美元。本地 Qwen 只在离线时用，而这种情况很少。编排只用原生的那套。
+- 有点不好意思，我还没有。基本还是一个键一个键地手写代码。
+- 现在一个都不付了。对我来说它们的性价比越来越差。我需要按自己的节奏用 AI，不想为用不上的算力付钱，然后真要用的时候还得等额度重置。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Ask HN: 今のAIエージェント構成は何を使っている？
+***** TLDR
+eggbrainが5つの質問を投げた。自腹で払っているAIサブスクとそのティア、従量課金APIやローカルモデルも併用しているか、どのコーディングharnessを使っているか、オーケストレーションやswarmツールを使っているか、より広いエージェントプラットフォームを使っているか。回答は390件。繰り返し現れる形は、100ドル超のサブスクを同時に2つか3つ重ね、対抗レビュー専用に安いCursor席を1つ残し、コストとオフライン作業のためにOpenRouterやローカルのQwen・GLMに逃がし、それでも大半は公式のデフォルトCLIのまま、というもの。オーケストレーションとswarmツールはリスト中で最も採用されておらず、サブエージェントへの委譲はほぼ使われていない。5問すべてに「なし」と答える層も目に見える規模でいる。
+***** Take
+このスレッドはどのベンダー資料よりも正確に市場を描いている。2社に払っているのは決めきれないからではなく、一方のモデルに他方の仕事を検証させるためだ。つまり、どれ一つも単独では信用していないという静かな告白である。そして業界全体が売り込んでいるオーケストレーション層こそ、390件のスレッドでほとんど誰も実際には回していない部分だ。
+***** Comments
+- Claude 100ドル、Codex 100ドル、対抗レビュー用にCursor 20ドル、OpenCode Go 10ドル。ローカルのQwenはオフラインのときだけで、それは稀。オーケストレーションはネイティブのものだけ。
+- お恥ずかしいが、まだ何もない。ほぼ今も1キーずつコードを書いている。
+- もう何も払っていない。自分の金額感では年々割に合わなくなっている。AIは自分のタイミングで使いたいし、必要ない計算資源に払って、必要なときに上限リセットを待つのは嫌だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Ask HN: 지금 쓰는 AI 에이전트 구성은?
+***** TLDR
+eggbrain이 다섯 가지를 물었다. 직접 돈을 내는 AI 구독과 그 등급, 종량제 API나 로컬 모델을 함께 쓰는지, 어떤 코딩 harness를 쓰는지, 오케스트레이션이나 swarm 도구를 쓰는지, 더 넓은 에이전트 플랫폼을 쓰는지. 답변은 390개. 반복되는 패턴은 100달러가 넘는 구독을 두세 개 동시에 쌓고, 대립적 리뷰 전용으로 저렴한 Cursor 좌석 하나를 남기고, 비용과 오프라인 작업을 위해 OpenRouter나 로컬 Qwen·GLM으로 내려가면서도 대부분은 기본 CLI에 머문다는 것이다. 오케스트레이션과 swarm 도구는 목록에서 채택률이 가장 낮고, 서브에이전트 위임은 거의 쓰이지 않는다. 다섯 질문 모두에 '없음'이라고 답하는 층도 눈에 띈다.
+***** Take
+이 스레드는 어떤 벤더 자료보다 시장을 정확히 보여준다. 두 곳에 동시에 돈을 내는 이유는 결정을 못 해서가 아니라, 한 모델이 다른 모델의 작업을 검증하게 하려는 것이다. 어느 하나도 단독으로는 믿지 않는다는 조용한 고백이다. 그리고 업계 전체가 파는 오케스트레이션 계층은, 390개 댓글 중 거의 아무도 실제로 돌리지 않는 부분이다.
+***** Comments
+- Claude 100달러, Codex 100달러, 대립 리뷰용 Cursor 20달러, OpenCode Go 10달러. 로컬 Qwen은 오프라인일 때만 쓰는데 그런 일은 드물다. 오케스트레이션은 기본 기능만.
+- 부끄럽지만 아직 없다. 대부분 아직도 한 글자씩 직접 코드를 쓴다.
+- 이제 아무것도 안 낸다. 내 기준에서 가성비가 계속 나빠지고 있다. AI는 내 일정에 맞춰 쓰고 싶고, 필요 없는 컴퓨트에 돈을 내고 정작 필요할 때 한도 초기화를 기다리는 건 싫다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Ask HN: ¿cuál es tu configuración actual de agentes de IA?
+***** TLDR
+eggbrain hizo cinco preguntas: qué suscripciones de IA pagas y en qué nivel, si además usas APIs de pago por uso o modelos locales, qué harness de programación usas, si usas herramientas de orquestación o swarm, y si usas plataformas de agentes más amplias. 390 respuestas. El patrón que se repite: la gente acumula dos o tres suscripciones de más de 100 dólares a la vez, mantiene un asiento barato de Cursor solo para revisión adversarial, recurre a OpenRouter o a un Qwen o GLM local por coste y para trabajo sin conexión, y en su mayoría sigue con los CLI por defecto. Las herramientas de orquestación y swarm son lo menos adoptado de la lista, y la delegación a subagentes apenas se usa. Una minoría visible responde 'ninguna' a las cinco preguntas.
+***** Take
+Este hilo describe el mercado mejor que cualquier presentación de un proveedor. La gente no paga a dos laboratorios por indecisión, les paga para que un modelo revise el trabajo del otro, que es una admisión silenciosa de que nadie confía en ninguno por separado. Y la capa de orquestación que toda la industria está vendiendo es justo la parte que casi nadie en un hilo de 390 comentarios ejecuta de verdad.
+***** Comments
+- Claude 100 dólares, Codex 100 dólares, Cursor 20 para revisión adversarial, OpenCode Go 10. Qwen local solo cuando estoy sin conexión, lo cual es raro. Solo la orquestación nativa.
+- Me da vergüenza, pero todavía no tengo ninguna. Sigo escribiendo código tecla por tecla.
+- Ya ninguna. Cada vez valen menos para mi dinero. Necesito la IA en mi propio horario y no quiero pagar por cómputo que no uso y luego esperar a que se reinicien los límites cuando sí lo necesito.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Ask HN: Wie sieht dein aktuelles KI-Agenten-Setup aus?
+***** TLDR
+eggbrain stellte fünf Fragen: Welche KI-Abos zahlst du selbst und in welcher Stufe, nutzt du zusätzlich nutzungsbasierte APIs oder lokale Modelle, welches Coding-Harness läuft bei dir, verwendest du Orchestrierungs- oder Swarm-Tools, und nutzt du breitere Agenten-Plattformen? 390 Antworten. Das wiederkehrende Muster: Leute stapeln zwei oder drei Abos über 100 Dollar gleichzeitig, behalten einen günstigen Cursor-Platz nur für adversariales Review, weichen aus Kostengründen und für Offline-Arbeit auf OpenRouter oder ein lokales Qwen oder GLM aus und bleiben ansonsten bei den Standard-CLIs. Orchestrierungs- und Swarm-Tools sind der am wenigsten verbreitete Punkt der Liste, und Subagenten-Delegation wird kaum genutzt. Eine sichtbare Minderheit antwortet auf alle fünf Fragen mit 'keine'.
+***** Take
+Dieser Thread beschreibt den Markt besser als jedes Hersteller-Deck. Die Leute zahlen nicht aus Unentschlossenheit an zwei Labore, sie zahlen, damit ein Modell die Arbeit des anderen prüft. Das ist das leise Eingeständnis, dass niemand einem einzelnen davon traut. Und die Orchestrierungsschicht, die die ganze Branche verkauft, ist genau der Teil, den in einem Thread mit 390 Kommentaren fast niemand tatsächlich betreibt.
+***** Comments
+- Claude 100 Dollar, Codex 100 Dollar, Cursor 20 für adversariales Review, OpenCode Go 10. Lokales Qwen nur offline, und das ist selten. Nur die native Orchestrierung.
+- Peinlich, aber ich habe noch keins. Ich schreibe Code immer noch Tastendruck für Tastendruck.
+- Keine mehr. Sie werden für mein Geld immer schlechter. Ich brauche KI nach meinem Zeitplan und will nicht für Rechenleistung zahlen, die ich nicht brauche, um dann auf das Zurücksetzen der Limits zu warten, wenn ich sie brauche.
+** Images 2.6 :ai:openai:imagegen:api:
+:PROPERTIES:
+:ID:       50372945
+:URL:      https://openai.com/index/introducing-images-2-6/
+:HN_URL:   https://news.ycombinator.com/item?id=50372945
+:POINTS:   310
+:COMMENTS: 179
+:BY:       davidbarker
+:END:
+
+*** TLDR
+OpenAI shipped Images 2.6 across ChatGPT, Codex and the API in two variants, GPT-Image-2.6 Flare and GPT-Image-2.6 Sunburst. The claims: generation 50% faster than before, as little as six seconds per image on Flare at low quality, animated GIF output, image markup, SVG export in the API, and a complexity parameter that controls how much the model plans before it draws. Available globally today on every ChatGPT tier. OpenAI says more than 4 billion images a week are now created across its products.
+
+*** Take
+SVG export is the only line here that changes a workflow, because a vector file is something a designer can open and edit and a PNG is something they have to redo. Everything else is latency. The sharpest reply in the thread is preommr arguing image quality peaked around early Midjourney and has drifted since, and the 4-billion-a-week figure quietly agrees: this is a volume business now, not a quality race.
+
+*** Comments
+
+**** minimaxir
+Using the grid trick for animations to generate individual frames has been around for a while and isn't specific to ChatGPT. I'm surprised it took this long for an official provider to make it explicit. Adherence between frames is generally tricky, and even in the examples there's a lot of noise.
+
+**** preommr
+Feels like AI image generation has plateaued. Coding has had massive step-up improvements over time. The same cannot be said for image generation. If anything, I swear it's gone backwards.
+
+**** DanHulton
+That stained glass whale thing makes me especially grumpy. My first thought was 'whoa, what a neat idea' and then immediately 'what a terrible execution.'
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Images 2.6
+***** TLDR
+OpenAI 在 ChatGPT、Codex 和 API 上发布 Images 2.6，分两个版本：GPT-Image-2.6 Flare 和 GPT-Image-2.6 Sunburst。官方说法：生成速度比之前快 50%，Flare 在低质量档下单张最快六秒，支持输出动态 GIF、图像标注，API 中支持 SVG 导出，还有一个 complexity 参数用来控制模型下笔前做多少规划。今天起在 ChatGPT 所有订阅档位全球可用。OpenAI 称其全部产品线现在每周生成超过 40 亿张图。
+***** Take
+这里唯一真正改变工作流的是 SVG 导出，因为矢量文件设计师能直接打开改，而 PNG 只能重做。其余都是延迟优化。帖子里最犀利的回复来自 preommr：图像生成的质量大约在早期 Midjourney 时期就见顶，之后一路漂移。而每周 40 亿张这个数字正好默认了这一点：这已经是个走量的生意，不是质量竞赛。
+***** Comments
+- 用网格技巧逐帧生成动画早就有了，并不是 ChatGPT 特有的。我倒是惊讶官方厂商这么久才把它明说出来。帧与帧之间的一致性一直很难做，就算官方示例里噪点也不少。
+- 感觉 AI 图像生成已经见顶了。写代码方向这些年有过几次台阶式跃升，图像生成说不上。要我说，甚至还退步了。
+- 那个彩色玻璃鲸鱼特别让我不爽。第一反应是“哇这想法不错”，紧接着就是“执行得真糟”。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Images 2.6
+***** TLDR
+OpenAIがImages 2.6をChatGPT、Codex、APIで公開した。変種は2つ、GPT-Image-2.6 FlareとGPT-Image-2.6 Sunburst。主張は、生成が従来より50%高速、Flareの低品質設定なら1枚最短6秒、GIFアニメ出力、画像へのマークアップ、APIでのSVGエクスポート、そして描き始める前にどれだけ計画するかを制御するcomplexityパラメータ。本日からChatGPTの全ティアで世界的に利用可能。OpenAIは自社製品全体で週40億枚以上が生成されているとしている。
+***** Take
+ワークフローを実際に変える行はSVGエクスポートだけだ。ベクターファイルはデザイナーが開いて編集できるが、PNGは作り直すしかない。残りはすべてレイテンシの話である。スレッドで最も鋭いのはpreommrの指摘で、画質は初期Midjourney辺りで頂点を打ち、以後は漂流しているという。週40億枚という数字はそれを静かに裏づけている。これはもう量のビジネスで、品質競争ではない。
+***** Comments
+- グリッドを使って個々のフレームを生成するアニメの手法は以前からあり、ChatGPT特有ではない。公式プロバイダーがこれを明示するまでこれだけかかったのが驚きだ。フレーム間の一貫性は一般に難しく、公式の例でもノイズが多い。
+- AI画像生成は頭打ちになった感がある。コーディング方面は何度も段差のような改善があったが、画像生成はそう言えない。むしろ後退しているとさえ思う。
+- あのステンドグラスのクジラには特に不機嫌になった。最初は「お、いいアイデアだ」と思い、直後に「実行がひどい」と思った。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Images 2.6
+***** TLDR
+OpenAI가 Images 2.6을 ChatGPT, Codex, API에 출시했다. 변종은 두 개로 GPT-Image-2.6 Flare와 GPT-Image-2.6 Sunburst다. 주장은 이전보다 생성이 50% 빠르고, Flare의 저품질 설정에서 한 장에 최소 6초, 애니메이션 GIF 출력, 이미지 마크업, API의 SVG 내보내기, 그리고 그리기 전에 모델이 얼마나 계획할지 조절하는 complexity 파라미터다. 오늘부터 모든 ChatGPT 등급에서 전 세계 사용 가능. OpenAI는 자사 제품 전체에서 주당 40억 장 이상이 만들어진다고 밝혔다.
+***** Take
+여기서 실제로 작업 흐름을 바꾸는 건 SVG 내보내기 한 줄뿐이다. 벡터 파일은 디자이너가 열어 고칠 수 있고, PNG는 다시 만들어야 한다. 나머지는 모두 지연 시간 이야기다. 스레드에서 가장 날카로운 건 preommr의 지적으로, 화질은 초기 Midjourney 무렵에 정점을 찍고 이후로는 떠내려왔다는 것이다. 주당 40억 장이라는 숫자가 그것을 조용히 인정한다. 이제는 물량 사업이고 품질 경쟁이 아니다.
+***** Comments
+- 그리드 기법으로 프레임을 하나씩 만드는 애니메이션 방식은 예전부터 있었고 ChatGPT만의 것이 아니다. 공식 제공자가 이걸 명시하기까지 이렇게 오래 걸린 게 놀랍다. 프레임 간 일관성은 원래 까다롭고, 공식 예시에서도 노이즈가 많다.
+- AI 이미지 생성은 정체된 느낌이다. 코딩 쪽은 몇 번씩 계단식 개선이 있었지만 이미지 생성은 그렇지 않다. 오히려 뒤로 갔다고 본다.
+- 그 스테인드글라스 고래가 특히 짜증났다. 처음엔 '괜찮은 아이디어네' 싶었고, 바로 다음에 '실행이 끔찍하다'였다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Images 2.6
+***** TLDR
+OpenAI lanzó Images 2.6 en ChatGPT, Codex y la API en dos variantes, GPT-Image-2.6 Flare y GPT-Image-2.6 Sunburst. Lo que promete: generación un 50% más rápida que antes, hasta seis segundos por imagen en Flare con calidad baja, salida de GIF animado, marcado sobre imágenes, exportación a SVG en la API y un parámetro de complejidad que controla cuánto planifica el modelo antes de dibujar. Disponible hoy en todo el mundo en todos los niveles de ChatGPT. OpenAI dice que ya se crean más de 4.000 millones de imágenes por semana en sus productos.
+***** Take
+La exportación a SVG es la única línea que cambia un flujo de trabajo, porque un archivo vectorial se puede abrir y editar y un PNG hay que rehacerlo. Todo lo demás es latencia. La respuesta más afilada del hilo es la de preommr: la calidad de imagen tocó techo por los tiempos del primer Midjourney y desde entonces ha ido a la deriva. La cifra de 4.000 millones por semana le da la razón en voz baja: esto ya es un negocio de volumen, no una carrera de calidad.
+***** Comments
+- El truco de la cuadrícula para generar fotogramas sueltos de animación existe desde hace tiempo y no es específico de ChatGPT. Me sorprende que un proveedor oficial haya tardado tanto en hacerlo explícito. La coherencia entre fotogramas es complicada y hasta en los ejemplos hay mucho ruido.
+- Da la sensación de que la generación de imágenes con IA se ha estancado. En programación ha habido saltos enormes con el tiempo. En imágenes no. Hasta juraría que ha ido hacia atrás.
+- La ballena de vidriera me puso especialmente de mal humor. Lo primero que pensé fue 'qué buena idea' y acto seguido 'qué ejecución tan mala'.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Images 2.6
+***** TLDR
+OpenAI hat Images 2.6 in ChatGPT, Codex und der API veröffentlicht, in zwei Varianten: GPT-Image-2.6 Flare und GPT-Image-2.6 Sunburst. Die Angaben: Generierung 50% schneller als bisher, bei Flare in niedriger Qualität bis zu sechs Sekunden pro Bild, animierte GIF-Ausgabe, Markup auf Bildern, SVG-Export in der API und ein Komplexitätsparameter, der steuert, wie viel das Modell vor dem Zeichnen plant. Ab heute weltweit in allen ChatGPT-Stufen verfügbar. OpenAI gibt an, dass über seine Produkte inzwischen mehr als 4 Milliarden Bilder pro Woche entstehen.
+***** Take
+Der SVG-Export ist die einzige Zeile hier, die einen Arbeitsablauf verändert, denn eine Vektordatei kann man öffnen und bearbeiten, ein PNG muss man neu machen. Alles andere ist Latenz. Die schärfste Antwort im Thread kommt von preommr: Die Bildqualität hat um die Zeit des frühen Midjourney ihren Höhepunkt erreicht und treibt seither vor sich hin. Die Zahl von 4 Milliarden pro Woche bestätigt das leise. Das ist jetzt ein Mengengeschäft, kein Qualitätsrennen.
+***** Comments
+- Der Grid-Trick, um einzelne Animationsframes zu erzeugen, gibt es schon länger und ist nicht ChatGPT-spezifisch. Mich überrascht, dass ein offizieller Anbieter so lange gebraucht hat, das explizit anzubieten. Die Konsistenz zwischen Frames ist generell schwierig, selbst in den Beispielen ist viel Rauschen.
+- Es wirkt, als wäre die KI-Bildgenerierung auf einem Plateau. Beim Programmieren gab es über die Zeit massive Sprünge. Bei Bildern nicht. Ich würde fast sagen, es ist rückwärts gegangen.
+- Dieser Buntglas-Wal macht mich besonders mürrisch. Mein erster Gedanke war 'tolle Idee' und unmittelbar danach 'furchtbar umgesetzt'.
+** Future Maintenance of Mbed TLS :security:opensource:embedded:cryptography:
+:PROPERTIES:
+:ID:       50349165
+:URL:      https://lists.trustedfirmware.org/archives/list/mbed-tls@lists.trustedfirmware.org/thread/YPIGCB7WN6GCHOGEGKOJXUYAP7OK527W/
+:HN_URL:   https://news.ycombinator.com/item?id=50349165
+:POINTS:   50
+:COMMENTS: 14
+:BY:       jonesjohnson
+:END:
+
+*** TLDR
+Janos Follath and the Mbed TLS team posted to the TrustedFirmware mailing list that the current maintainers stop developing and maintaining Mbed TLS in April 2027, shifting their effort to TF-PSA-Crypto. Their words: unless new maintainers have joined and ramped up by then, security incident response, security fixes and releases all cease from April 2027. They are asking organisations and individuals to step in with engineering resources, funding or other support, via mbed-tls-owner@lists.trustedfirmware.org.
+
+*** Take
+Mbed TLS is embedded in Zephyr and in a long tail of shipping firmware, so this notice gives the industry roughly 17 months to find someone who can maintain a TLS stack. mbanzi is right that open source was never a free support contract, but the companies with the real exposure here are the ones that have never sent a patch or a cheque, and an abandoned TLS library is not the same kind of problem as an abandoned JSON parser.
+
+*** Comments
+
+**** boricj
+That sucks. It's integrated fairly deeply with the Zephyr ecosystem and I'm working on several products that use it, some freshly migrated to it. I made a PR a while back for authenticated attributes and chain certificates, and there are several open PRs for that feature set.
+
+**** mbanzi
+What surprised me in the comments are people who use the software for their work complaining that they won't get updates for free on an open source project. People used to pay to buy licenses for libraries like this.
+
+**** widdershins
+Damn. We just migrated to Mbed TLS for a native app at my work, only this year. I hope some folks with cryptographic chops will step up.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Mbed TLS 的未来维护
+***** TLDR
+Janos Follath 和 Mbed TLS 团队在 TrustedFirmware 邮件列表上宣布，现有维护者将在 2027 年 4 月停止开发和维护 Mbed TLS，把精力转向 TF-PSA-Crypto。原话是：除非在那之前有新维护者加入并上手，否则从 2027 年 4 月起，安全事件响应、安全修复和发版将全部停止。他们呼吁组织和个人通过 mbed-tls-owner@lists.trustedfirmware.org 提供工程人力、资金或其他支持。
+***** Take
+Mbed TLS 深嵌在 Zephyr 以及一长串已出货的固件里，这份通告给整个行业大约 17 个月去找到一个能维护 TLS 栈的人。mbanzi 说得对，开源从来不是免费的技术支持合同；但真正暴露在风险里的那些公司，恰恰是从没提交过补丁也没出过钱的。而一个被弃养的 TLS 库，和一个被弃养的 JSON 解析器根本不是同一类问题。
+***** Comments
+- 这太糟了。它和 Zephyr 生态结合得相当深，我手上有好几个产品在用，有些还是刚迁移过去的。我之前提过一个支持 authenticated attributes 和证书链的 PR，这一套功能还有好几个 PR 悬着。
+- 评论里让我意外的是，有人拿这软件做商业工作，却抱怨开源项目不免费给他们更新。过去买这类库的授权是要花大钱的。
+- 糟了。我们公司今年才刚把一个原生应用迁到 Mbed TLS。希望有懂密码学的人能接手。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Mbed TLSの今後のメンテナンス
+***** TLDR
+Janos FollathとMbed TLSチームがTrustedFirmwareのメーリングリストで、現行メンテナは2027年4月にMbed TLSの開発と保守から手を引き、TF-PSA-Cryptoへ注力すると発表した。原文の表現では、それまでに新しいメンテナが参加して立ち上がっていない限り、2027年4月以降はセキュリティインシデント対応、セキュリティ修正、リリースのすべてが停止する。チームはmbed-tls-owner@lists.trustedfirmware.org経由で、エンジニアリング資源、資金、その他の支援を申し出る組織や個人を募っている。
+***** Take
+Mbed TLSはZephyrと、出荷済みファームウェアの長い裾野に組み込まれている。この通知は業界に、TLSスタックを保守できる人を見つけるための約17か月を与えたことになる。オープンソースは無償サポート契約ではないというmbanziの指摘は正しいが、ここで実際にリスクを負っている企業はパッチも金も出したことがない側だ。そして見捨てられたTLSライブラリは、見捨てられたJSONパーサーと同種の問題ではない。
+***** Comments
+- これはきつい。Zephyrエコシステムとかなり深く統合されていて、自分が関わる複数の製品が使っている。移行したばかりのものもある。以前authenticated attributesと証明書チェーンのPRを出したが、この機能群には未処理のPRがいくつも残っている。
+- コメントで驚いたのは、仕事でこのソフトを使っている人たちが、オープンソースなのに無料で更新がもらえないと文句を言っていることだ。昔はこの種のライブラリのライセンスに大金を払っていた。
+- まいった。うちの会社はネイティブアプリ向けに今年ようやくMbed TLSへ移行したばかりだ。暗号の腕のある人が名乗り出てくれることを願う。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Mbed TLS의 향후 유지보수
+***** TLDR
+Janos Follath와 Mbed TLS 팀이 TrustedFirmware 메일링 리스트에 올린 내용: 현 메인테이너들은 2027년 4월에 Mbed TLS 개발과 유지보수에서 손을 떼고 TF-PSA-Crypto로 역량을 옮긴다. 원문 표현으로는, 그때까지 새 메인테이너가 합류해 적응하지 않는 한 2027년 4월부터 보안 사고 대응, 보안 수정, 릴리스가 모두 중단된다. 팀은 mbed-tls-owner@lists.trustedfirmware.org를 통해 엔지니어링 인력, 자금, 기타 지원을 제공할 조직과 개인을 찾고 있다.
+***** Take
+Mbed TLS는 Zephyr와 이미 출하된 수많은 펌웨어에 박혀 있다. 이 공지는 업계에 TLS 스택을 유지보수할 사람을 찾을 시간을 약 17개월 준 셈이다. 오픈소스가 무료 지원 계약이 아니라는 mbanzi의 지적은 맞지만, 실제 위험을 안고 있는 회사들은 패치도 돈도 한 번 보낸 적 없는 쪽이다. 그리고 방치된 TLS 라이브러리는 방치된 JSON 파서와 같은 종류의 문제가 아니다.
+***** Comments
+- 이건 심각하다. Zephyr 생태계와 꽤 깊이 통합돼 있고, 내가 작업하는 제품 여러 개가 쓰고 있다. 일부는 막 이전했다. 예전에 authenticated attributes와 인증서 체인 PR을 올렸는데, 그 기능 쪽에 미처리 PR이 여러 개 남아 있다.
+- 댓글에서 놀란 건, 이 소프트웨어로 일하는 사람들이 오픈소스 프로젝트에서 업데이트를 무료로 못 받는다고 불평한다는 점이다. 예전에는 이런 라이브러리 라이선스를 거액에 샀다.
+- 하필. 우리 회사는 올해서야 네이티브 앱을 Mbed TLS로 옮겼다. 암호학 실력 있는 분들이 나서주길 바란다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+El futuro del mantenimiento de Mbed TLS
+***** TLDR
+Janos Follath y el equipo de Mbed TLS escribieron en la lista de correo de TrustedFirmware que los mantenedores actuales dejan de desarrollar y mantener Mbed TLS en abril de 2027 para concentrarse en TF-PSA-Crypto. En sus palabras: si para entonces no se han incorporado y puesto al día nuevos mantenedores, la respuesta a incidentes de seguridad, los parches de seguridad y las releases cesan a partir de abril de 2027. Piden que organizaciones y personas aporten recursos de ingeniería, financiación u otro apoyo escribiendo a mbed-tls-owner@lists.trustedfirmware.org.
+***** Take
+Mbed TLS está dentro de Zephyr y de una larga cola de firmware ya en el mercado, así que este aviso le da a la industria unos 17 meses para encontrar a alguien capaz de mantener una pila TLS. mbanzi tiene razón en que el código abierto nunca fue un contrato de soporte gratuito, pero las empresas realmente expuestas aquí son las que nunca han mandado un parche ni un cheque, y una biblioteca TLS abandonada no es el mismo tipo de problema que un parser de JSON abandonado.
+***** Comments
+- Qué mal. Está integrado bastante a fondo con el ecosistema Zephyr y trabajo en varios productos que lo usan, algunos recién migrados. Hace tiempo mandé un PR para atributos autenticados y cadenas de certificados, y hay varios PR abiertos para ese conjunto de funciones.
+- Lo que me sorprende de los comentarios es la gente que usa el software para su trabajo y se queja de que no va a recibir actualizaciones gratis en un proyecto de código abierto. Antes se pagaba mucho por licenciar bibliotecas así.
+- Vaya. Acabamos de migrar a Mbed TLS para una app nativa en el trabajo, este mismo año. Espero que alguien con buen nivel de criptografía dé el paso.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Die künftige Pflege von Mbed TLS
+***** TLDR
+Janos Follath und das Mbed-TLS-Team haben auf der TrustedFirmware-Mailingliste mitgeteilt, dass die aktuellen Maintainer die Entwicklung und Pflege von Mbed TLS im April 2027 einstellen und sich auf TF-PSA-Crypto konzentrieren. Ihre Formulierung: Sofern bis dahin keine neuen Maintainer eingestiegen und eingearbeitet sind, enden ab April 2027 Reaktion auf Sicherheitsvorfälle, Sicherheitsfixes und Releases. Das Team bittet Organisationen und Einzelpersonen über mbed-tls-owner@lists.trustedfirmware.org um Entwicklungsressourcen, Geld oder andere Unterstützung.
+***** Take
+Mbed TLS steckt in Zephyr und in einer langen Reihe ausgelieferter Firmware. Diese Ankündigung gibt der Branche also rund 17 Monate, um jemanden zu finden, der einen TLS-Stack pflegen kann. mbanzi hat recht, dass Open Source nie ein kostenloser Supportvertrag war, aber die Unternehmen mit dem echten Risiko sind genau die, die nie einen Patch oder einen Scheck geschickt haben. Und eine verwaiste TLS-Bibliothek ist nicht dasselbe Problem wie ein verwaister JSON-Parser.
+***** Comments
+- Das ist bitter. Es ist recht tief mit dem Zephyr-Ökosystem verzahnt, und ich arbeite an mehreren Produkten, die es nutzen, manche sind gerade erst migriert. Ich hatte vor einiger Zeit einen PR für authentifizierte Attribute und Zertifikatsketten gestellt, und für dieses Feature-Set liegen mehrere PRs offen.
+- Was mich in den Kommentaren überrascht, sind Leute, die die Software beruflich nutzen und sich beschweren, dass sie in einem Open-Source-Projekt keine kostenlosen Updates bekommen. Früher hat man viel Geld für Lizenzen solcher Bibliotheken bezahlt.
+- Mist. Wir sind erst dieses Jahr für eine native App auf Mbed TLS umgestiegen. Ich hoffe, es treten Leute mit kryptografischem Können an.
+** Lemmings CSS Animation :css:javascript:webdev:creativecoding:
+:PROPERTIES:
+:ID:       50375354
+:URL:      https://markblah.github.io/lemmings/
+:HN_URL:   https://news.ycombinator.com/item?id=50375354
+:POINTS:   202
+:COMMENTS: 41
+:BY:       MarkBlah
+:END:
+
+*** TLDR
+MarkBlah published walker.min.js, a single dependency-free script that drops pixel walkers onto any web page. The sprites are drawn entirely in CSS with no image files; JavaScript handles the walking and the falling. The walkers read the DOM as terrain: borders, buttons, images and form fields count as solid, and because text lines sit closer together than a walker is tall, prose works as walkable floor instead of a wall. You can drag one, throw it, and resizing the window launches them, since each walker rides whatever surface it is standing on. Each script load adds one walker, more via __walker.add().
+
+*** Take
+The idea worth stealing is using layout geometry as the collision model rather than building a separate physics world, which is why it keeps working on pages the author has never seen. Worth noting the naming: HN calls it Lemmings, the repo calls them walkers, and nothing on either page addresses whose 1991 sprite vocabulary this is.
+
+*** Comments
+
+**** rfarley04
+I played this game for dozens of hours with my dad growing up, and seeing these animations is one of those times when nostalgia is so overwhelming and unexpected that I feel physically dizzy. If it had the sounds of lemmings dying from a fall I might have been hospitalized.
+
+**** Waterluvian
+I did something like that on my site where you click a hexagon and it turns into a robot that SLAM maps the page. Were you surprised by how easy it was to get the exact block size of individual characters and not just whole DOM elements? That's the part I thought would be hardest.
+
+**** tniemi
+See also the C64 demo 'Rodents in the Attic' from 2026, plus the author's explanation video.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+用 CSS 做的旅鼠动画
+***** TLDR
+MarkBlah 发布了 walker.min.js，一个无依赖的单文件脚本，能把像素小人放到任意网页上。精灵图完全用 CSS 画出，没有任何图片文件；行走和坠落由 JavaScript 处理。小人把 DOM 当地形读：边框、按钮、图片和表单控件算实体；而因为文本行距小于小人的身高，正文成了可以走的地板而不是墙。你可以拖起一个、把它扔出去，调整窗口大小会把它们甩飞，因为每个小人都跟着自己脚下那块表面走。脚本每加载一次就多一个小人，也可以用 __walker.add() 再加。
+***** Take
+值得偷的点子是：直接拿布局几何当碰撞模型，而不是另搭一套物理世界，所以它在作者从没见过的页面上照样能跑。顺带说一句命名问题：HN 叫它 Lemmings，仓库里叫 walkers，而两处都没交代这套 1991 年的像素造型是谁的。
+***** Comments
+- 小时候我和我爸玩过这游戏几十个小时，看到这些动画时那种怀旧感来得又猛又突然，我真的有点晕。要是还配上旅鼠摔死的音效，我可能得送医了。
+- 我在自己站上做过类似的东西：点一个六边形，它变成机器人开始给页面做 SLAM 建图。你当时有没有惊讶于取单个字符的精确尺寸（而不只是整个 DOM 元素）其实挺容易？我原以为那是最难的部分。
+- 另见 2026 年的 C64 demo《Rodents in the Attic》，以及作者的讲解视频。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+CSSで作ったレミングのアニメーション
+***** TLDR
+MarkBlahがwalker.min.jsを公開した。依存なしの単一スクリプトで、任意のウェブページにピクセルの歩行者を放てる。スプライトは画像ファイルを一切使わずCSSだけで描かれており、歩行と落下はJavaScriptが担う。歩行者はDOMを地形として読む。ボーダー、ボタン、画像、フォーム要素は固体として扱われ、テキストの行間は歩行者の身長より狭いため、本文は壁ではなく歩ける床になる。つかんで投げられるし、ウィンドウをリサイズすると彼らは飛ばされる。各自が足元の面に乗っているからだ。スクリプトを読み込むごとに1体増え、__walker.add()で追加もできる。
+***** Take
+盗む価値があるのは、別個の物理世界を組むのではなくレイアウトの幾何そのものを衝突モデルとして使う発想だ。だから作者が見たこともないページでも動き続ける。名前についても一言。HNはLemmingsと呼び、リポジトリはwalkersと呼び、どちらのページもこの1991年のスプライト語彙が誰のものかには触れていない。
+***** Comments
+- 子どもの頃に父とこのゲームを何十時間も遊んだ。このアニメを見て、あまりに強く不意に懐かしさが来て、本当にめまいがした。落下死の効果音まで付いていたら入院していたかもしれない。
+- 自分のサイトでも似たことをやった。六角形をクリックするとロボットになってページをSLAMマッピングする。DOM要素全体ではなく個々の文字の正確なブロックサイズを取るのが意外に簡単だったことに驚いた？そこが一番難しいと思っていた。
+- 2026年のC64デモ『Rodents in the Attic』と、作者の解説動画も参照。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+CSS로 만든 레밍즈 애니메이션
+***** TLDR
+MarkBlah가 walker.min.js를 공개했다. 의존성 없는 단일 스크립트로, 아무 웹페이지에나 픽셀 보행자를 떨어뜨린다. 스프라이트는 이미지 파일 없이 전부 CSS로 그렸고, 걷기와 추락은 JavaScript가 담당한다. 보행자는 DOM을 지형으로 읽는다. 테두리, 버튼, 이미지, 폼 요소는 단단한 것으로 취급되고, 텍스트 줄 간격이 보행자 키보다 좁기 때문에 본문은 벽이 아니라 걸을 수 있는 바닥이 된다. 집어서 던질 수 있고, 창 크기를 바꾸면 발밑 표면을 타고 있던 보행자들이 날아간다. 스크립트를 한 번 불러올 때마다 한 명이 늘고, __walker.add()로 더 추가할 수 있다.
+***** Take
+훔칠 만한 아이디어는 별도의 물리 세계를 만드는 대신 레이아웃 기하 자체를 충돌 모델로 쓴 것이다. 그래서 저자가 본 적 없는 페이지에서도 계속 작동한다. 이름 얘기도 하나. HN은 Lemmings라 부르고 저장소는 walkers라 부르는데, 양쪽 어디에도 이 1991년 스프라이트 어휘가 누구 것인지에 대한 언급은 없다.
+***** Comments
+- 어릴 때 아버지와 이 게임을 수십 시간 했다. 이 애니메이션을 보니 향수가 너무 세게, 그리고 예상치 못하게 밀려와서 실제로 어지러웠다. 떨어져 죽는 소리까지 있었으면 입원했을지도.
+- 내 사이트에서도 비슷한 걸 했다. 육각형을 클릭하면 로봇이 되어 페이지를 SLAM 매핑한다. DOM 요소 전체가 아니라 개별 문자의 정확한 블록 크기를 얻는 게 생각보다 쉬워서 놀랐나? 난 그게 가장 어려울 줄 알았다.
+- 2026년 C64 데모 'Rodents in the Attic'과 제작자의 설명 영상도 함께 보라.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Animación de Lemmings en CSS
+***** TLDR
+MarkBlah publicó walker.min.js, un único script sin dependencias que suelta caminantes de píxeles en cualquier página web. Los sprites están dibujados enteramente en CSS, sin archivos de imagen; JavaScript se encarga de caminar y de caer. Los caminantes leen el DOM como terreno: bordes, botones, imágenes y campos de formulario cuentan como sólidos, y como las líneas de texto están más juntas que el alto de un caminante, el texto funciona como suelo transitable y no como pared. Puedes arrastrar uno, lanzarlo, y redimensionar la ventana los catapulta, porque cada uno viaja sobre la superficie en la que está. Cada carga del script añade un caminante, y se pueden añadir más con __walker.add().
+***** Take
+La idea que vale la pena robar es usar la geometría del layout como modelo de colisiones en lugar de montar un mundo físico aparte, y por eso sigue funcionando en páginas que el autor nunca ha visto. Vale notar el nombre: HN lo llama Lemmings, el repositorio los llama walkers, y en ninguna de las dos páginas se dice de quién es este vocabulario de sprites de 1991.
+***** Comments
+- Jugué a este juego docenas de horas con mi padre de niño, y ver estas animaciones es una de esas veces en que la nostalgia es tan abrumadora e inesperada que me marea físicamente. Si tuviera los sonidos de los lemmings muriendo al caer, quizá habría acabado en el hospital.
+- Hice algo parecido en mi web: pulsas un hexágono y se convierte en un robot que mapea la página con SLAM. ¿Te sorprendió lo fácil que es obtener el tamaño exacto de caracteres individuales y no solo de elementos del DOM? Pensaba que esa sería la parte más difícil.
+- Véase también la demo de C64 'Rodents in the Attic' de 2026, además del vídeo explicativo del autor.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Lemmings-Animation in CSS
+***** TLDR
+MarkBlah hat walker.min.js veröffentlicht, ein einzelnes Script ohne Abhängigkeiten, das Pixelläufer auf jede Webseite setzt. Die Sprites sind vollständig in CSS gezeichnet, ohne Bilddateien; JavaScript übernimmt Laufen und Fallen. Die Läufer lesen das DOM als Gelände: Rahmen, Buttons, Bilder und Formularfelder gelten als fest, und weil Textzeilen enger beieinanderliegen als ein Läufer hoch ist, dient Fließtext als begehbarer Boden statt als Wand. Man kann einen aufnehmen und werfen, und ein Fenster-Resize schleudert sie weg, weil jeder auf der Fläche mitfährt, auf der er steht. Jedes Laden des Scripts fügt einen Läufer hinzu, weitere über __walker.add().
+***** Take
+Die Idee, die man klauen sollte: die Layout-Geometrie selbst als Kollisionsmodell nehmen, statt eine eigene Physikwelt zu bauen. Genau deshalb funktioniert es auch auf Seiten, die der Autor nie gesehen hat. Zur Benennung: HN nennt es Lemmings, das Repository nennt sie Läufer, und auf keiner der beiden Seiten steht, wessen Sprite-Vokabular von 1991 das eigentlich ist.
+***** Comments
+- Ich habe dieses Spiel als Kind dutzende Stunden mit meinem Vater gespielt, und diese Animationen zu sehen ist einer dieser Momente, in denen die Nostalgie so überwältigend und unerwartet kommt, dass mir körperlich schwindelig wird. Mit den Sterbegeräuschen beim Sturz wäre ich vielleicht im Krankenhaus gelandet.
+- Ich habe etwas Ähnliches auf meiner Seite gemacht: Man klickt ein Sechseck an, es wird zu einem Roboter und mappt die Seite per SLAM. Hat es dich überrascht, wie leicht man die exakte Blockgröße einzelner Zeichen bekommt und nicht nur ganzer DOM-Elemente? Ich hatte das für den schwierigsten Teil gehalten.
+- Siehe auch die C64-Demo 'Rodents in the Attic' von 2026 sowie das Erklärvideo des Autors.
+** Partial Operator Precedence :zig:programming:languagedesign:compilers:
+:PROPERTIES:
+:ID:       50340195
+:URL:      https://ziglang.org/devlog/2026/#2026-10-24
+:HN_URL:   https://news.ycombinator.com/item?id=50340195
+:POINTS:   53
+:COMMENTS: 29
+:BY:       tosh
+:END:
+
+*** TLDR
+Zig's October devlog removes defined precedence for some operator combinations and makes the compiler require parentheses where precedence no longer exists. Within a group you still write code as before: the multiplicative set ⁎ / ⁎% ⁎| %, the additive set + - +% -% +| -|, the comparisons, and and/or. Mix across groups and you get a compile error, so % next to ⁎ or / now needs explicit grouping, and x orelse y == z no longer compiles. The change needed updates to roughly 353 lines of Zig's own codebase; zig fmt --upgrade inserts the parentheses automatically, with manual review recommended.
+
+*** Take
+Most languages answer precedence confusion with a table in the docs and a lint rule nobody enables. Zig moved it into the compiler, which is the only place a rule like this gets enforced. The cost is more parentheses; the return is never having to remember whether % binds tighter than ⁎. The 353 lines they had to fix in their own tree is the useful detail: they were writing these expressions too.
+
+*** Comments
+
+**** Someone
+I don't find the article clear on how it fixes things, but I guess a op1 b op2 c is now an error if op1 and op2 differ and have the same precedence. Do I see that right? Also each operator will need an associativity to handle a future exponentiation or custom operators.
+
+**** Luke2642
+Saturating vs wrapping operators are so nice. Apparently they compile to 3 or 4 branchless ops on most architectures.
+
+**** v9v
+Something very similar was in Fortress, see section 16.2 of the spec.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+部分运算符优先级
+***** TLDR
+Zig 十月的 devlog 取消了某些运算符组合的既定优先级，并让编译器在优先级不再存在的地方强制要求括号。同组之内写法不变：乘法组 ⁎ / ⁎% ⁎| %，加法组 + - +% -% +| -|，比较运算符，以及 and / or。跨组混用就会报编译错误，所以 % 紧挨 ⁎ 或 / 现在需要显式分组，x orelse y == z 也不再能编译。这项改动需要修改 Zig 自身代码库里大约 353 行；zig fmt --upgrade 可以自动插入括号，但建议人工复核。
+***** Take
+大多数语言对付优先级困惑的办法是文档里放一张表，再加一条没人开启的 lint 规则。Zig 把它搬进了编译器，而那是这类规则唯一真能被执行的地方。代价是括号变多，收益是再也不用记 % 和 ⁎ 谁结合得更紧。真正有用的细节是他们自己代码树里要改的那 353 行：原来他们自己也在写这种表达式。
+***** Comments
+- 我觉得文章没讲清楚这到底怎么解决问题，但我猜现在 a op1 b op2 c 在 op1 与 op2 不同且优先级相同时会报错。我理解对了吗？另外每个运算符还得有结合性，才能处理未来的指数运算或自定义运算符。
+- 饱和运算符和回绕运算符真好用。据说在大多数架构上会编译成三四条无分支指令。
+- Fortress 里有非常相似的东西，见规范 16.2 节。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+部分的な演算子優先順位
+***** TLDR
+Zigの10月のdevlogは、一部の演算子の組み合わせから定義済みの優先順位を取り除き、優先順位が存在しない箇所でコンパイラが括弧を要求するようにした。グループ内の記述は従来どおりで、乗除グループの ⁎ / ⁎% ⁎|、%、加減グループの + - +% -% +| -|、比較演算子、そしてand/orはそのまま使える。グループをまたいで混ぜるとコンパイルエラーになるため、%を⁎や/の隣に置く場合は明示的なグループ化が必要になり、x orelse y == zはもうコンパイルできない。この変更にはZig自身のコードベースで約353行の修正が必要だった。zig fmt --upgradeが括弧を自動挿入するが、手で見直すことが推奨されている。
+***** Take
+多くの言語は優先順位の混乱に、ドキュメントの表と誰も有効にしないlintルールで答える。Zigはそれをコンパイラに移した。この種の規則が実際に強制される唯一の場所だ。代償は括弧が増えること、見返りは%と⁎のどちらが強く結合するかを二度と覚えなくてよくなることだ。有用な細部は自分たちのツリーで直した353行で、つまり彼ら自身もこういう式を書いていた。
+***** Comments
+- 記事がどう問題を解決するのか明確でないと感じるが、op1とop2が異なり優先順位が同じ場合、a op1 b op2 cがエラーになるのだろう。合っているか？また将来の指数演算やカスタム演算子に対応するには、各演算子に結合性が必要になりそうだ。
+- 飽和演算子と折り返し演算子はとても良い。多くのアーキテクチャで3、4個の分岐なし命令にコンパイルされるらしい。
+- 非常に似たものがFortressにあった。仕様の16.2節を参照。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+부분 연산자 우선순위
+***** TLDR
+Zig의 10월 devlog는 일부 연산자 조합에서 정의된 우선순위를 없애고, 우선순위가 사라진 자리에서는 컴파일러가 괄호를 요구하게 했다. 그룹 안에서는 전과 같이 쓴다. 곱셈 계열 ⁎ / ⁎% ⁎| %, 덧셈 계열 + - +% -% +| -|, 비교 연산자, 그리고 and/or. 그룹을 섞으면 컴파일 오류가 나므로 %를 ⁎나 / 옆에 둘 때는 명시적 묶음이 필요하고, x orelse y == z는 더 이상 컴파일되지 않는다. 이 변경으로 Zig 자체 코드베이스에서 약 353줄을 고쳐야 했다. zig fmt --upgrade가 괄호를 자동으로 넣어주지만 수동 검토를 권한다.
+***** Take
+대부분의 언어는 우선순위 혼란에 문서 속 표와 아무도 켜지 않는 lint 규칙으로 답한다. Zig는 그것을 컴파일러로 옮겼고, 그곳이 이런 규칙이 실제로 강제되는 유일한 자리다. 비용은 괄호가 늘어나는 것이고, 대가로 %가 ⁎보다 더 강하게 묶이는지 다시 외울 필요가 없어진다. 쓸모 있는 세부는 자기 트리에서 고쳐야 했던 353줄이다. 그들 자신도 이런 식을 쓰고 있었다는 뜻이다.
+***** Comments
+- 글이 이게 어떻게 문제를 해결하는지 명확하지 않은데, 이제 op1과 op2가 다르고 우선순위가 같으면 a op1 b op2 c가 오류가 되는 것 같다. 맞게 이해했나? 또 앞으로의 거듭제곱이나 사용자 정의 연산자를 다루려면 각 연산자에 결합성이 필요해 보인다.
+- 포화 연산자와 랩어라운드 연산자는 정말 좋다. 대부분 아키텍처에서 분기 없는 명령 3~4개로 컴파일된다고 한다.
+- Fortress에 아주 비슷한 것이 있었다. 명세 16.2절을 보라.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Precedencia parcial de operadores
+***** TLDR
+El devlog de octubre de Zig elimina la precedencia definida para algunas combinaciones de operadores y hace que el compilador exija paréntesis donde ya no hay precedencia. Dentro de un grupo se escribe igual que antes: el conjunto multiplicativo ⁎ / ⁎% ⁎| %, el aditivo + - +% -% +| -|, las comparaciones y and/or. Si mezclas grupos obtienes un error de compilación, así que % junto a ⁎ o / ahora necesita agrupación explícita, y x orelse y == z ya no compila. El cambio obligó a actualizar unas 353 líneas del propio código de Zig; zig fmt --upgrade inserta los paréntesis automáticamente, aunque se recomienda revisarlo a mano.
+***** Take
+La mayoría de los lenguajes responden a la confusión de precedencia con una tabla en la documentación y una regla de lint que nadie activa. Zig lo movió al compilador, que es el único sitio donde una regla así se cumple de verdad. El coste son más paréntesis; la ganancia es no tener que recordar nunca si % liga más fuerte que ⁎. El dato útil son las 353 líneas que tuvieron que arreglar en su propio árbol: ellos también escribían esas expresiones.
+***** Comments
+- El artículo no me queda claro en cómo arregla las cosas, pero supongo que a op1 b op2 c ahora es un error si op1 y op2 son distintos y tienen la misma precedencia. ¿Lo entiendo bien? Además, cada operador necesitará una asociatividad para manejar una futura exponenciación u operadores personalizados.
+- Los operadores con saturación y con envoltura son geniales. Según parece compilan a 3 o 4 operaciones sin ramas en la mayoría de arquitecturas.
+- Algo muy parecido había en Fortress, véase la sección 16.2 de la especificación.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Teilweise Operatorpräzedenz
+***** TLDR
+Zigs Oktober-Devlog entfernt für manche Operatorkombinationen die definierte Präzedenz und lässt den Compiler dort Klammern verlangen, wo keine Präzedenz mehr existiert. Innerhalb einer Gruppe schreibt man wie bisher: die multiplikative Gruppe ⁎ / ⁎% ⁎| %, die additive Gruppe + - +% -% +| -|, die Vergleiche sowie and/or. Mischt man über Gruppen hinweg, gibt es einen Compile-Fehler, also braucht % neben ⁎ oder / jetzt explizite Gruppierung, und x orelse y == z kompiliert nicht mehr. Die Änderung erforderte Anpassungen an rund 353 Zeilen in Zigs eigener Codebasis; zig fmt --upgrade setzt die Klammern automatisch, eine manuelle Prüfung wird empfohlen.
+***** Take
+Die meisten Sprachen beantworten Präzedenzverwirrung mit einer Tabelle in der Doku und einer Lint-Regel, die niemand aktiviert. Zig hat sie in den Compiler verlegt, die einzige Stelle, an der so eine Regel tatsächlich durchgesetzt wird. Der Preis sind mehr Klammern, der Gegenwert ist, sich nie wieder merken zu müssen, ob % stärker bindet als ⁎. Das nützliche Detail sind die 353 Zeilen im eigenen Baum: Sie haben solche Ausdrücke selbst geschrieben.
+***** Comments
+- Mir ist aus dem Artikel nicht klar, wie das die Dinge behebt, aber ich vermute, a op1 b op2 c ist jetzt ein Fehler, wenn op1 und op2 unterschiedlich sind und gleiche Präzedenz haben. Sehe ich das richtig? Außerdem wird jeder Operator eine Assoziativität brauchen, um eine künftige Exponentiation oder eigene Operatoren abzudecken.
+- Saturierende und umlaufende Operatoren sind richtig schön. Angeblich kompilieren sie auf den meisten Architekturen zu 3 oder 4 verzweigungsfreien Operationen.
+- Etwas sehr Ähnliches gab es in Fortress, siehe Abschnitt 16.2 der Spezifikation.
