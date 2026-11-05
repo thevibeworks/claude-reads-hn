@@ -1,0 +1,512 @@
+#+TITLE: HN Digest 2026-11-05 16:00 UTC
+#+DATE: 2026-11-05T16:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+A 257-byte password opens every Alpine box, Motorola ships GrapheneOS for $1,599, and HN argues whether LLMs are killing the small library
+
+* Highlights
+- sshole: musl's crypt() returns "⁎" on error, and "⁎" is also the locked-account marker
+- Motorola Signature 27: first non-Pixel with GrapheneOS support, and no word on bootloader unlocking
+- The Lisp curse arrives wherever generating code beats reading docs
+- MCP Explained: an interactive course for a protocol thinner than the course
+- About 10% of a five-year-old YouTube playlist is already unavailable
+
+* Stories
+
+** sshole :security:openssh:musl:alpine:
+:PROPERTIES:
+:ID:       50378228
+:URL:      https://sshhole.com
+:HN_URL:   https://news.ycombinator.com/item?id=50378228
+:POINTS:   1570
+:COMMENTS: 431
+:BY:       josemrb
+:END:
+
+*** TLDR
+OpenSSH on musl libc (Alpine, OpenWrt, Buildroot, Yocto, a lot of Docker images) will log an attacker into any account whose password field is "⁎" if the password sent is 257 to 1024 bytes long. musl's crypt() returns the string "⁎" as its error value when the key exceeds 256 bytes; sshd compares that return value against the stored field, which is also "⁎", and they match. Three conditions are needed: sshd built without PAM, PasswordAuthentication yes, and at least one other account with a $5$ or $6$ hash, because OpenSSH's 2016 timing-attack fix borrows that account's salt for accounts that have none. The writeup traces the pieces back to 1980 (Bill Joy putting "⁎" in /etc/passwd), August 2012 (musl's "⁎" error return and its 256-byte cap) and July 2016 (the salt borrowing), and credits Ozgun Kultekin with finding it by testing 17,600 odd login combinations across libc implementations. Fixed in OpenSSH 10.6p2.
+
+*** Take
+Nobody wrote a bug here. musl returned "⁎" instead of NULL so sloppy callers would stop crashing, and OpenSSH borrowed a salt so response times would stop leaking which accounts exist. Both are defensible, and together they are root on a default Alpine image for ten years. The failure is that "⁎" was carrying three unrelated meanings across an API boundary (no password, not a hash, hashing failed) and no one owned the contract between them.
+
+*** Comments
+
+**** tonnydourado
+Am I missing something, or is this written up to seem a lot worse than it is? It opens with a bold claim and then keeps adding qualifiers: sshd compiled with musl, not using PAM, password logins enabled, an account with "⁎" as the password.
+
+**** mpyne
+The attacker's goal is to make crypt($pw, $hash) == $hash when sshd calls it. The stored hash doubles as the settings argument to crypt, which is where this falls apart.
+
+**** BoppreH
+In-band signaling strikes again. "⁎" should never have been the special value for both "no password" in /etc/passwd and "error while hashing" in crypt. I'm afraid we'll find many more of these.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+sshole：musl 上的 OpenSSH 密码认证绕过
+***** TLDR
+在使用 musl libc 的系统上（Alpine、OpenWrt、Buildroot、Yocto 以及大量 Docker 镜像），只要发送 257 到 1024 字节长的密码，OpenSSH 就会让攻击者登录任何密码字段为 "⁎" 的账户。当密钥超过 256 字节时，musl 的 crypt() 会返回字符串 "⁎" 作为错误值；sshd 把这个返回值与存储的字段比较，而该字段同样是 "⁎"，于是匹配成功。需要三个条件：sshd 编译时不带 PAM、PasswordAuthentication 为 yes、并且至少有另一个账户使用 $5$ 或 $6$ 哈希，因为 OpenSSH 2016 年的时序攻击修复会借用该账户的盐值给没有盐值的账户。文章把线索追溯到 1980 年（Bill Joy 在 /etc/passwd 里写下 "⁎"）、2012 年 8 月（musl 的 "⁎" 错误返回值和 256 字节上限）以及 2016 年 7 月（盐值借用），并提到 Ozgun Kultekin 通过在各种 libc 实现上测试 17,600 种异常登录组合发现了它。OpenSSH 10.6p2 已修复。
+***** Take
+没有人写出一个 bug。musl 返回 "⁎" 而不是 NULL，是为了让粗心的调用方不再崩溃；OpenSSH 借用盐值，是为了让响应时间不再泄露哪些账户存在。两者各自都站得住脚，合在一起就是默认 Alpine 镜像上长达十年的 root 权限。真正的问题是 "⁎" 跨越 API 边界承载了三种互不相关的含义（没有密码、不是哈希、哈希失败），而没有人负责它们之间的约定。
+***** Comments
+- 我是不是漏了什么？这件事被写得比实际严重得多吧？开头是个大胆的结论，接着限定条件越加越多：sshd 用 musl 编译、不使用 PAM、启用密码登录、有账户的密码字段是 "⁎"。
+- 攻击者的目标是让 sshd 调用的 crypt($pw, $hash) == $hash 成立。存储的哈希同时充当 crypt 的设置参数，问题就出在这里。
+- 带内信令又一次出事。"⁎" 本来就不该同时作为 /etc/passwd 里的"没有密码"和 crypt 里的"哈希出错"的特殊值。恐怕这类问题还会找出很多。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+sshole: musl上のOpenSSHのパスワード認証バイパス
+***** TLDR
+musl libcを使うシステム（Alpine、OpenWrt、Buildroot、Yocto、多数のDockerイメージ）では、257〜1024バイトのパスワードを送るだけで、パスワード欄が "⁎" のアカウントに攻撃者がログインできる。muslのcrypt()は鍵が256バイトを超えるとエラー値として文字列 "⁎" を返し、sshdはその戻り値を保存された欄と比較するが、その欄も "⁎" なので一致してしまう。条件は3つ。sshdがPAMなしでビルドされていること、PasswordAuthenticationがyesであること、そして$5$または$6$ハッシュを持つ別のアカウントが1つ以上あること。OpenSSHの2016年のタイミング攻撃対策が、ソルトを持たないアカウントにそのアカウントのソルトを流用するためだ。記事は1980年（Bill Joyが/etc/passwdに "⁎" を置いた）、2012年8月（muslの "⁎" エラー返却と256バイト上限）、2016年7月（ソルトの流用）まで経緯をたどり、Ozgun Kultekinが各libc実装で17,600通りの異常なログイン組み合わせを試して発見したと記している。OpenSSH 10.6p2で修正済み。
+***** Take
+誰もバグを書いていない。muslが NULL ではなく "⁎" を返したのは、雑な呼び出し側がクラッシュしないようにするため。OpenSSHがソルトを流用したのは、応答時間からアカウントの存在が漏れないようにするため。どちらも筋は通っていて、合わさると既定のAlpineイメージで10年間root権限が取れる状態になる。本当の失敗は、"⁎" がAPI境界をまたいで3つの無関係な意味（パスワードなし、ハッシュではない、ハッシュ失敗）を運んでいて、その取り決めを誰も管理していなかったことだ。
+***** Comments
+- 何か見落としているだろうか。実態よりかなり悪く書かれていないか。大胆な主張で始まるのに、条件が次々追加される。muslでコンパイルされたsshd、PAMを使わない、パスワードログイン有効、パスワード欄が "⁎" のアカウントがある。
+- 攻撃者の狙いは、sshdが呼ぶcrypt($pw, $hash) == $hashを成立させること。保存されたハッシュがcryptの設定引数も兼ねている点が崩壊の起点だ。
+- インバンドシグナリングがまた問題を起こした。"⁎" を/etc/passwdの「パスワードなし」とcryptの「ハッシュ失敗」の両方の特殊値にすべきではなかった。この種のものはもっと見つかると思う。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+sshole: musl 환경 OpenSSH 비밀번호 인증 우회
+***** TLDR
+musl libc를 쓰는 시스템(Alpine, OpenWrt, Buildroot, Yocto, 많은 도커 이미지)에서는 257~1024바이트 길이의 비밀번호만 보내면 비밀번호 필드가 "⁎"인 계정으로 공격자가 로그인할 수 있다. musl의 crypt()는 키가 256바이트를 넘으면 오류 값으로 문자열 "⁎"를 반환하고, sshd는 그 반환값을 저장된 필드와 비교하는데 그 필드도 "⁎"여서 일치한다. 조건은 세 가지다. PAM 없이 빌드된 sshd, PasswordAuthentication yes, 그리고 $5$ 또는 $6$ 해시를 가진 다른 계정이 하나 이상 있을 것. OpenSSH의 2016년 타이밍 공격 수정이 솔트가 없는 계정에 그 계정의 솔트를 빌려 쓰기 때문이다. 글은 1980년(Bill Joy가 /etc/passwd에 "⁎"를 넣은 일), 2012년 8월(musl의 "⁎" 오류 반환과 256바이트 제한), 2016년 7월(솔트 차용)까지 거슬러 올라가고, Ozgun Kultekin이 여러 libc 구현에서 17,600가지 이상한 로그인 조합을 시험해 찾아냈다고 밝힌다. OpenSSH 10.6p2에서 수정되었다.
+***** Take
+아무도 버그를 쓰지 않았다. musl이 NULL 대신 "⁎"를 반환한 것은 부실한 호출자가 죽지 않게 하려는 것이었고, OpenSSH가 솔트를 빌린 것은 응답 시간으로 계정 존재 여부가 새지 않게 하려는 것이었다. 각각은 타당하지만, 합쳐지면 기본 Alpine 이미지에서 10년간 root 권한이 열린다. 진짜 실패는 "⁎"가 API 경계를 넘어 서로 무관한 세 가지 의미(비밀번호 없음, 해시가 아님, 해싱 실패)를 운반했고 그 계약을 아무도 책임지지 않았다는 점이다.
+***** Comments
+- 내가 뭘 놓쳤나, 아니면 실제보다 훨씬 심각하게 쓴 건가? 과감한 주장으로 시작하더니 조건이 계속 붙는다. musl로 컴파일된 sshd, PAM 미사용, 비밀번호 로그인 활성화, 비밀번호 필드가 "⁎"인 계정.
+- 공격자의 목표는 sshd가 호출하는 crypt($pw, $hash) == $hash를 성립시키는 것이다. 저장된 해시가 crypt의 설정 인자 역할도 한다는 점이 붕괴 지점이다.
+- 인밴드 시그널링이 또 문제를 일으켰다. "⁎"를 /etc/passwd의 '비밀번호 없음'과 crypt의 '해싱 오류' 양쪽의 특수값으로 쓰면 안 됐다. 이런 사례가 더 나올 것 같아 걱정된다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+sshole: elusión de la autenticación por contraseña en OpenSSH sobre musl
+***** TLDR
+En sistemas con musl libc (Alpine, OpenWrt, Buildroot, Yocto y muchas imágenes de Docker), OpenSSH deja entrar a un atacante en cualquier cuenta cuyo campo de contraseña sea "⁎" si la contraseña enviada mide entre 257 y 1024 bytes. La función crypt() de musl devuelve la cadena "⁎" como valor de error cuando la clave pasa de 256 bytes; sshd compara ese valor con el campo almacenado, que también es "⁎", y coinciden. Hacen falta tres condiciones: sshd compilado sin PAM, PasswordAuthentication yes y al menos otra cuenta con un hash $5$ o $6$, porque el parche de 2016 de OpenSSH contra ataques de temporización presta esa sal a las cuentas que no tienen ninguna. El texto rastrea las piezas hasta 1980 (Bill Joy poniendo "⁎" en /etc/passwd), agosto de 2012 (el valor de error "⁎" de musl y su límite de 256 bytes) y julio de 2016 (el préstamo de sal), y atribuye el hallazgo a Ozgun Kultekin, que probó 17.600 combinaciones raras de inicio de sesión en distintas implementaciones de libc. Corregido en OpenSSH 10.6p2.
+***** Take
+Nadie escribió un error aquí. musl devolvió "⁎" en vez de NULL para que los llamadores descuidados dejaran de caerse, y OpenSSH prestó una sal para que los tiempos de respuesta dejaran de revelar qué cuentas existen. Ambas decisiones se sostienen, y juntas dan root en una imagen Alpine por defecto durante diez años. El fallo es que "⁎" cargaba tres significados sin relación al cruzar una frontera de API (sin contraseña, no es un hash, el hash falló) y nadie era dueño de ese contrato.
+***** Comments
+- ¿Se me escapa algo o esto está redactado para parecer mucho peor de lo que es? Empieza con una afirmación contundente y luego acumula condiciones: sshd compilado con musl, sin PAM, inicio de sesión por contraseña activado, una cuenta con "⁎" como contraseña.
+- El objetivo del atacante es lograr que crypt($pw, $hash) == $hash cuando lo llama sshd. El hash almacenado hace también de argumento de configuración de crypt, y ahí se rompe todo.
+- La señalización dentro de banda vuelve a golpear. "⁎" nunca debió ser el valor especial tanto para "sin contraseña" en /etc/passwd como para "error al calcular el hash" en crypt. Me temo que encontraremos muchos más casos así.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+sshole: Umgehung der Passwortauthentifizierung in OpenSSH unter musl
+***** TLDR
+Auf Systemen mit musl libc (Alpine, OpenWrt, Buildroot, Yocto und viele Docker-Images) lässt OpenSSH einen Angreifer in jedes Konto, dessen Passwortfeld "⁎" ist, sofern das gesendete Passwort 257 bis 1024 Byte lang ist. musls crypt() gibt die Zeichenkette "⁎" als Fehlerwert zurück, wenn der Schlüssel 256 Byte überschreitet; sshd vergleicht diesen Rückgabewert mit dem gespeicherten Feld, das ebenfalls "⁎" ist, und beide passen. Drei Bedingungen sind nötig: sshd ohne PAM gebaut, PasswordAuthentication yes und mindestens ein weiteres Konto mit einem $5$- oder $6$-Hash, denn der OpenSSH-Fix von 2016 gegen Timing-Angriffe leiht dessen Salt für Konten ohne eigenes. Der Text verfolgt die Teile zurück bis 1980 (Bill Joy setzt "⁎" in /etc/passwd), August 2012 (musls Fehlerwert "⁎" und die 256-Byte-Grenze) und Juli 2016 (das Ausleihen des Salt) und schreibt den Fund Ozgun Kultekin zu, der 17.600 ungewöhnliche Login-Kombinationen über verschiedene libc-Implementierungen getestet hat. Behoben in OpenSSH 10.6p2.
+***** Take
+Niemand hat hier einen Fehler programmiert. musl gab "⁎" statt NULL zurück, damit nachlässige Aufrufer nicht mehr abstürzen, und OpenSSH lieh ein Salt, damit Antwortzeiten nicht mehr verraten, welche Konten existieren. Beides ist vertretbar, zusammen ergibt es zehn Jahre Root-Zugang auf einem Standard-Alpine-Image. Das eigentliche Versäumnis: "⁎" trug über eine API-Grenze hinweg drei zusammenhanglose Bedeutungen (kein Passwort, kein Hash, Hashing fehlgeschlagen), und niemand war für diesen Vertrag verantwortlich.
+***** Comments
+- Übersehe ich etwas, oder ist das schlimmer dargestellt, als es ist? Es beginnt mit einer starken Behauptung und sammelt dann Bedingungen ein: sshd mit musl kompiliert, kein PAM, Passwort-Logins aktiv, ein Konto mit "⁎" als Passwort.
+- Das Ziel des Angreifers ist, crypt($pw, $hash) == $hash wahr zu machen, wenn sshd es aufruft. Der gespeicherte Hash dient gleichzeitig als Einstellungsargument für crypt, und genau da bricht es.
+- In-Band-Signalisierung schlägt wieder zu. "⁎" hätte niemals sowohl der Sonderwert für "kein Passwort" in /etc/passwd als auch für "Fehler beim Hashen" in crypt sein dürfen. Ich befürchte, wir finden noch viele davon.
+** Motorola Signature 27 with GrapheneOS support :grapheneos:android:privacy:hardware:
+:PROPERTIES:
+:ID:       50380810
+:URL:      https://motorolanews.com/motorola-signature-27-2/
+:HN_URL:   https://news.ycombinator.com/item?id=50380810
+:POINTS:   181
+:COMMENTS: 102
+:BY:       monneyboi
+:END:
+
+*** TLDR
+Motorola announced the Signature 27 as its first device to support GrapheneOS, with ARM Memory Tagging Extension named as the hardware piece behind it and further details promised later. The rest is flagship spec sheet: Snapdragon 8 Elite Extreme Gen 6, 7000mAh battery with 90W wired and 50W wireless charging, 50MP main plus 200MP periscope with 100x zoom, an AMOLED panel rated up to 12,000 nits peak, MIL-STD-810H and IP68/IP69, seven years of OS upgrades. Starting MSRP is $1,599, worldwide in the coming months. The announcement says nothing about bootloader unlocking or carrier variants.
+
+*** Take
+GrapheneOS has effectively been a Pixel monoculture, so a second vendor shipping MTE is the most interesting Android security news this year. But the press release leaves out the only two facts that decide whether it works: the bootloader unlocking policy and whether carrier units get it. Motorola (Lenovo) also writes its own bootloader and modem firmware, which is exactly the layer GrapheneOS cannot replace. Worth believing when someone unlocks a retail unit, not before.
+
+*** Comments
+
+**** utopiah
+Starting MSRP of $1,599. I'll stick to the second-hand Pixel 8 I bought for GrapheneOS long-term support at a tenth of that price. No doubt this is a far better device, I just don't see where I'd need it.
+
+**** smithbob
+I don't know if I can trust a Motorola phone with GrapheneOS. It won't be Motorola's OS, but they modify a large part of the BSP (bootloader, modem) with their own additions.
+
+**** mlu
+I got this year's Signature and am pretty much pleased with it. I'd like GrapheneOS for it too, but I guess the hardware (or the marketing) is incompatible.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+摩托罗拉 Signature 27 支持 GrapheneOS
+***** TLDR
+摩托罗拉宣布 Signature 27 是其首款支持 GrapheneOS 的设备，并把 ARM 内存标记扩展（MTE）列为背后的硬件支撑，更多细节稍后公布。其余是旗舰配置：骁龙 8 Elite Extreme Gen 6、7000mAh 电池配 90W 有线和 50W 无线充电、5000 万像素主摄加 2 亿像素潜望长焦（100 倍变焦）、峰值亮度最高 12,000 尼特的 AMOLED 屏、MIL-STD-810H 与 IP68/IP69、七年系统升级。起售价 1,599 美元，未来几个月在全球上市。公告没有提及 Bootloader 解锁或运营商版本。
+***** Take
+GrapheneOS 实际上一直是 Pixel 独家，所以第二家厂商支持 MTE 是今年最值得关注的安卓安全消息。但这份新闻稿恰好漏掉了决定它能否成立的两个事实：Bootloader 解锁政策，以及运营商版本是否支持。摩托罗拉（联想）还自己编写 Bootloader 和基带固件，而这正是 GrapheneOS 无法替换的层。等有人解锁了零售机再信。
+***** Comments
+- 起售价 1,599 美元。我还是用我那台二手 Pixel 8 吧，为了 GrapheneOS 的长期支持买的，价格只有十分之一。这台机器无疑好得多，但我看不出自己哪里需要它。
+- 我不确定能否信任装 GrapheneOS 的摩托罗拉手机。系统不是摩托罗拉的，但他们会用自家的东西改动大部分 BSP（Bootloader、基带）。
+- 我买了今年的 Signature，挺满意的。我也希望它能装 GrapheneOS，但我猜硬件（或者市场策略）不允许。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+モトローラ Signature 27、GrapheneOSに対応
+***** TLDR
+モトローラはSignature 27を同社初のGrapheneOS対応機として発表し、その土台となるハードウェアとしてARM Memory Tagging Extension（MTE）を挙げた。詳細は後日公開予定。残りはフラッグシップの仕様で、Snapdragon 8 Elite Extreme Gen 6、7000mAhバッテリーと90W有線・50Wワイヤレス充電、5000万画素メイン＋2億画素ペリスコープ（100倍ズーム）、ピーク輝度最大12,000ニトのAMOLED、MIL-STD-810HとIP68/IP69、7年間のOSアップグレード。価格は1,599ドルからで、数か月のうちに世界で発売。ブートローダーのアンロックやキャリア版については記載がない。
+***** Take
+GrapheneOSは実質Pixel一色だったので、2社目がMTE搭載機を出すのは今年のAndroidセキュリティで最も重要な話だ。ただ、成否を決める2つの事実だけがプレスリリースに書かれていない。ブートローダーのアンロック方針と、キャリア版が対象になるかどうかだ。モトローラ（レノボ）はブートローダーとモデムのファームウェアも自社で書いていて、そこはGrapheneOSが置き換えられない層でもある。市販機をアンロックした報告が出てから信じればいい。
+***** Comments
+- 価格は1,599ドルから。GrapheneOSの長期サポートのために買った中古のPixel 8で十分だ。10分の1の値段だった。確かにずっと良い端末だろうが、自分に必要な場面が思い浮かばない。
+- GrapheneOSが載ったモトローラ機を信用できるかは分からない。OSはモトローラ製ではないが、BSP（ブートローダー、モデム）の大部分を自社の追加分で改変している。
+- 今年のSignatureを買ってかなり満足している。GrapheneOSも使いたいが、ハードウェア（あるいはマーケティング）が許さないのだろう。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+모토로라 Signature 27, GrapheneOS 지원
+***** TLDR
+모토로라가 Signature 27을 자사 최초의 GrapheneOS 지원 기기로 발표했고, 그 바탕이 되는 하드웨어로 ARM Memory Tagging Extension(MTE)을 언급했다. 세부 내용은 추후 공개 예정이다. 나머지는 플래그십 사양이다. 스냅드래곤 8 Elite Extreme Gen 6, 7000mAh 배터리와 90W 유선·50W 무선 충전, 5000만 화소 메인과 2억 화소 페리스코프(100배 줌), 최대 12,000니트 피크 밝기의 AMOLED, MIL-STD-810H와 IP68/IP69, 7년간 OS 업그레이드. 출고가는 1,599달러부터이고 몇 달 안에 전 세계 출시 예정이다. 부트로더 언락이나 통신사 모델에 대한 언급은 없다.
+***** Take
+GrapheneOS는 사실상 픽셀 전용이었으니, 두 번째 제조사가 MTE 기기를 내놓는 것은 올해 안드로이드 보안에서 가장 중요한 소식이다. 다만 성패를 가르는 두 가지 사실이 보도자료에 빠져 있다. 부트로더 언락 정책과 통신사 모델 포함 여부다. 모토로라(레노버)는 부트로더와 모뎀 펌웨어도 직접 작성하는데, 그곳이 바로 GrapheneOS가 교체할 수 없는 계층이다. 누군가 소매용 기기를 언락한 뒤에 믿으면 된다.
+***** Comments
+- 출고가가 1,599달러다. GrapheneOS 장기 지원 때문에 산 중고 픽셀 8을 계속 쓰겠다. 10분의 1 가격이었다. 훨씬 좋은 기기인 건 분명하지만 내게 필요한 지점이 보이지 않는다.
+- GrapheneOS를 올린 모토로라 폰을 신뢰할 수 있을지 모르겠다. OS는 모토로라 것이 아니지만, 이들은 BSP(부트로더, 모뎀)의 상당 부분을 자체 추가분으로 수정한다.
+- 올해 Signature를 샀고 꽤 만족한다. GrapheneOS도 쓰고 싶지만 하드웨어(또는 마케팅)가 허락하지 않을 것 같다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Motorola Signature 27 con soporte para GrapheneOS
+***** TLDR
+Motorola presentó el Signature 27 como su primer dispositivo con soporte para GrapheneOS, y señala la extensión ARM Memory Tagging (MTE) como la pieza de hardware que lo permite, con más detalles prometidos para después. El resto es ficha técnica de gama alta: Snapdragon 8 Elite Extreme Gen 6, batería de 7000mAh con carga de 90W por cable y 50W inalámbrica, cámara principal de 50MP y periscopio de 200MP con zoom 100x, pantalla AMOLED de hasta 12.000 nits de pico, MIL-STD-810H e IP68/IP69, siete años de actualizaciones de sistema. El precio arranca en 1.599 dólares y llegará a mercados de todo el mundo en los próximos meses. El anuncio no dice nada sobre el desbloqueo del bootloader ni sobre versiones de operadora.
+***** Take
+GrapheneOS ha sido en la práctica un monocultivo de Pixel, así que un segundo fabricante con MTE es la noticia de seguridad más interesante del año en Android. Pero la nota de prensa se deja fuera los dos únicos datos que deciden si funciona: la política de desbloqueo del bootloader y si las unidades de operadora quedan incluidas. Motorola (Lenovo) también escribe su propio bootloader y firmware de módem, justo la capa que GrapheneOS no puede reemplazar. Conviene creerlo cuando alguien desbloquee una unidad de tienda, no antes.
+***** Comments
+- Precio desde 1.599 dólares. Me quedo con el Pixel 8 de segunda mano que compré por el soporte a largo plazo de GrapheneOS, a una décima parte de ese precio. Sin duda es un aparato mucho mejor, pero no veo dónde lo necesitaría.
+- No sé si puedo confiar en un teléfono de Motorola con GrapheneOS. El sistema no será de Motorola, pero ellos modifican gran parte del BSP (bootloader, módem) con sus propios añadidos.
+- Compré el Signature de este año y estoy bastante contento. Me gustaría tener GrapheneOS también, pero supongo que el hardware (o el marketing) no lo permite.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Motorola Signature 27 mit GrapheneOS-Unterstützung
+***** TLDR
+Motorola hat das Signature 27 als sein erstes Gerät mit GrapheneOS-Unterstützung vorgestellt und nennt ARM Memory Tagging Extension (MTE) als die Hardwarebasis dafür; Details sollen folgen. Der Rest ist Flaggschiff-Datenblatt: Snapdragon 8 Elite Extreme Gen 6, 7000-mAh-Akku mit 90 W per Kabel und 50 W kabellos, 50-MP-Hauptkamera plus 200-MP-Periskop mit 100-fachem Zoom, AMOLED mit bis zu 12.000 Nits Spitzenhelligkeit, MIL-STD-810H und IP68/IP69, sieben Jahre OS-Updates. Der Preis startet bei 1.599 US-Dollar, der Verkauf beginnt in den kommenden Monaten weltweit. Zum Entsperren des Bootloaders oder zu Carrier-Varianten sagt die Ankündigung nichts.
+***** Take
+GrapheneOS war praktisch eine Pixel-Monokultur, deshalb ist ein zweiter Hersteller mit MTE die interessanteste Android-Sicherheitsmeldung des Jahres. Die Pressemitteilung lässt aber genau die zwei Angaben weg, die darüber entscheiden, ob es funktioniert: die Regeln zum Entsperren des Bootloaders und ob Carrier-Geräte dabei sind. Motorola (Lenovo) schreibt zudem Bootloader und Modem-Firmware selbst, also genau die Schicht, die GrapheneOS nicht ersetzen kann. Glaubwürdig wird es, wenn jemand ein Ladengerät entsperrt, nicht vorher.
+***** Comments
+- Preis ab 1.599 Dollar. Ich bleibe bei meinem gebrauchten Pixel 8, das ich wegen der langen GrapheneOS-Unterstützung gekauft habe, für ein Zehntel davon. Das neue Gerät ist sicher viel besser, ich sehe nur nicht, wofür ich es bräuchte.
+- Ich weiß nicht, ob ich einem Motorola-Telefon mit GrapheneOS trauen kann. Das System ist nicht von Motorola, aber sie verändern große Teile des BSP (Bootloader, Modem) mit eigenen Ergänzungen.
+- Ich habe das Signature dieses Jahres gekauft und bin recht zufrieden. GrapheneOS hätte ich auch gern, aber ich nehme an, die Hardware (oder das Marketing) lässt es nicht zu.
+** The Lisp curse, now coming to your ecosystem :llm:opensource:programming:lisp:
+:PROPERTIES:
+:ID:       50349667
+:URL:      https://javahippie.net/programming/llm/2026/03/05/the-lisp-curse-coming-to-your-ecosystem.html
+:HN_URL:   https://news.ycombinator.com/item?id=50349667
+:POINTS:   87
+:COMMENTS: 63
+:BY:       marcolinux
+:END:
+
+*** TLDR
+Tim Zöller takes the old "Lisp curse" argument, that a language expressive enough for everyone to roll their own solution ends up with few shared libraries and thin documentation, and applies it to ecosystems like Java now that LLMs make generating code cheaper than evaluating a dependency. He expects two effects to compound: developers stop reading library docs because generating is faster, and fewer people publish or maintain open source at all. His advice is to keep choosing proven libraries with well-defined abstractions, and his prediction is that development becomes a lonelier job.
+
+*** Take
+The commenters find the sharper version of this. What dies is the five-minute utility library, not open source: the bar for a project worth sharing went up by an order of magnitude, and a datetime helper was never much of a collaboration anyway. The actual Lisp problem was never too much expressive power, it was too few maintainers for the hard, boring parts. Generation does not help with those, and the Mbed TLS maintainers could tell you what that shortage costs.
+
+*** Comments
+
+**** i_s
+Maybe the threshold for a viable open-source collaborative project just went up by an order of magnitude or two. Make a cool datetime library today and nobody will care, they can recreate the parts they need in five minutes. Make something much harder to reproduce and maybe they will.
+
+**** vindarel
+The real Common Lisp curse is that once you taste it there's no going back. Other than that the ecosystem is doing well: many SBCL contributors, regular contributions to the important libraries, new editors and plugins, some companies picking Lisp.
+
+**** gavinray
+I wrote this same concern in February: what happens when it's easier to build custom software than to spend one search looking for a mature library?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Lisp 诅咒，正在来到你的生态系统
+***** TLDR
+Tim Zöller 把老旧的"Lisp 诅咒"论点搬到了今天：一门表达力足够强、让每个人都能自己造解决方案的语言，最终共享库很少、文档也很薄。他认为，既然大模型让生成代码比评估一个依赖更便宜，Java 这样的生态也会如此。他预计两种效应会叠加：开发者因为生成更快而不再读库文档，发布和维护开源项目的人也更少。他的建议是继续选择抽象定义清晰的成熟库，他的预测是开发会变成一件更孤独的事。
+***** Take
+评论区给出了更锋利的版本。消失的是五分钟就能写完的工具库，而不是开源：值得分享的项目门槛提高了一个数量级，而一个日期时间辅助库本来也算不上什么协作。Lisp 真正的问题从来不是表达力过剩，而是愿意维护困难、枯燥部分的人太少。生成代码帮不上那部分的忙，Mbed TLS 的维护者可以告诉你这种短缺的代价。
+***** Comments
+- 也许可行的开源协作项目门槛刚刚提高了一两个数量级。今天你写一个不错的日期时间库，没人会在意，他们五分钟就能把需要的部分重写出来。做一个难以复制的东西，他们才可能在意。
+- 真正的 Common Lisp 诅咒是，一旦尝过就回不去了。除此之外生态挺健康：SBCL 有很多贡献者，重要库也有持续提交，还有新编辑器和插件，一些公司在选用 Lisp。
+- 我二月份写过同样的担忧：当自己造软件比花一次搜索去找成熟库更容易时，会发生什么？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Lispの呪い、次はあなたのエコシステムへ
+***** TLDR
+Tim Zöllerは古い「Lispの呪い」、つまり誰でも自前の解法を書けるほど表現力の高い言語では共有ライブラリが少なく文書も薄くなるという議論を、LLMによって依存先を吟味するよりコードを生成する方が安くなった今、Javaのようなエコシステムにも当てはめる。彼が見込む影響は二つ重なる。生成の方が速いので開発者がライブラリの文書を読まなくなること、そしてオープンソースを公開・保守する人がそもそも減ることだ。助言は抽象が明確な実績あるライブラリを選び続けること。予測は、開発がより孤独な仕事になることだ。
+***** Take
+コメント欄の方が切れ味のある形を出している。死ぬのは5分で書ける小さなユーティリティライブラリで、オープンソースそのものではない。共有する価値のあるプロジェクトの基準が一桁上がっただけで、日付処理のヘルパーはもともと協働と呼べるものでもなかった。Lispの本当の問題は表現力の過剰ではなく、難しくて退屈な部分を保守する人が少なすぎることだった。生成はそこを助けない。その不足の代償は、Mbed TLSの保守者が語れる。
+***** Comments
+- 成立するオープンソースの共同プロジェクトの基準が、一桁か二桁上がっただけかもしれない。今どき良い日付ライブラリを作っても誰も気にしない。必要な部分は5分で作り直せる。再現が難しいものを作れば、気にしてもらえるかもしれない。
+- 本当のCommon Lispの呪いは、一度味わうと戻れないことだ。それ以外はエコシステムは元気だ。SBCLの貢献者は多く、重要なライブラリにも継続的な貢献があり、新しいエディタやプラグインもあり、Lispを選ぶ企業もある。
+- 私も2月に同じ懸念を書いた。成熟したライブラリを一回検索するより自作する方が簡単になったら、何が起きるのか。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+리스프의 저주, 이제 당신의 생태계로
+***** TLDR
+Tim Zöller는 오래된 '리스프의 저주' 논지, 즉 누구나 자기 해법을 만들 수 있을 만큼 표현력이 큰 언어는 공유 라이브러리가 적고 문서가 얇아진다는 주장을, LLM 덕분에 의존성을 검토하는 것보다 코드를 생성하는 쪽이 싸진 지금 자바 같은 생태계에 적용한다. 그는 두 효과가 겹칠 것으로 본다. 생성이 더 빠르니 개발자가 라이브러리 문서를 읽지 않게 되고, 오픈소스를 공개하거나 유지하는 사람도 줄어든다는 것이다. 조언은 추상이 잘 정의된 검증된 라이브러리를 계속 고르라는 것이고, 전망은 개발이 더 외로운 일이 된다는 것이다.
+***** Take
+댓글이 더 날카로운 판본을 내놓는다. 사라지는 것은 5분이면 쓰는 유틸리티 라이브러리이고 오픈소스 자체가 아니다. 공유할 가치가 있는 프로젝트의 기준이 한 자릿수 올라갔을 뿐이고, 날짜 처리 헬퍼는 애초에 협업이라 할 것도 아니었다. 리스프의 진짜 문제는 표현력 과잉이 아니라 어렵고 지루한 부분을 맡을 유지보수자가 너무 적다는 것이었다. 생성은 그 부분을 돕지 않는다. 그 부족의 대가는 Mbed TLS 유지보수자들이 말해줄 수 있다.
+***** Comments
+- 성립 가능한 오픈소스 협업 프로젝트의 기준이 한두 자릿수 올라간 것일 수도 있다. 요즘 괜찮은 날짜 라이브러리를 만들어도 아무도 신경 쓰지 않는다. 필요한 부분은 5분이면 다시 만든다. 재현하기 훨씬 어려운 것을 만들면 그때는 다를 수 있다.
+- 진짜 커먼 리스프의 저주는 한번 맛보면 돌아갈 수 없다는 점이다. 그 외에는 생태계가 잘 돌아간다. SBCL 기여자가 많고 주요 라이브러리에 꾸준한 기여가 있으며 새 에디터와 플러그인도 나오고 리스프를 택한 회사들도 있다.
+- 나도 2월에 같은 걱정을 썼다. 성숙한 라이브러리를 한 번 검색하는 것보다 직접 만드는 게 쉬워지면 어떻게 될까?
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+La maldición de Lisp llega ahora a tu ecosistema
+***** TLDR
+Tim Zöller retoma el viejo argumento de la "maldición de Lisp", según el cual un lenguaje lo bastante expresivo para que cada uno escriba su propia solución termina con pocas bibliotecas compartidas y documentación pobre, y lo aplica a ecosistemas como Java ahora que los LLM hacen más barato generar código que evaluar una dependencia. Prevé dos efectos que se suman: los desarrolladores dejan de leer documentación porque generar es más rápido, y cada vez menos gente publica o mantiene software libre. Su consejo es seguir eligiendo bibliotecas probadas con abstracciones bien definidas, y su pronóstico es que programar será un trabajo más solitario.
+***** Take
+Los comentarios dan con la versión más afilada. Lo que muere es la biblioteca de utilidades de cinco minutos, no el software libre: el umbral de un proyecto que vale la pena compartir subió un orden de magnitud, y un ayudante de fechas nunca fue gran colaboración. El problema real de Lisp nunca fue el exceso de expresividad, sino la falta de gente que mantenga las partes difíciles y aburridas. Generar código no ayuda con eso, y los mantenedores de Mbed TLS pueden contar lo que cuesta esa escasez.
+***** Comments
+- Puede que el umbral de un proyecto colaborativo viable de software libre haya subido uno o dos órdenes de magnitud. Hoy haces una buena biblioteca de fechas y a nadie le importa: pueden recrear las partes que necesitan en cinco minutos. Haz algo mucho más difícil de reproducir y quizá sí.
+- La verdadera maldición de Common Lisp es que, una vez lo pruebas, no hay vuelta atrás. Por lo demás el ecosistema va bien: muchos colaboradores en SBCL, aportes regulares a las bibliotecas importantes, editores y extensiones nuevas, y algunas empresas apostando por Lisp.
+- Escribí esta misma preocupación en febrero: ¿qué pasa cuando es más fácil construir software propio que gastar una búsqueda en encontrar una biblioteca madura?
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Der Lisp-Fluch kommt jetzt in dein Ökosystem
+***** TLDR
+Tim Zöller nimmt das alte Argument vom "Lisp-Fluch", wonach eine Sprache, die ausdrucksstark genug ist, dass jeder seine eigene Lösung baut, am Ende wenige gemeinsame Bibliotheken und dünne Dokumentation hat, und überträgt es auf Ökosysteme wie Java, nun da LLMs das Generieren von Code billiger machen als das Prüfen einer Abhängigkeit. Er erwartet zwei sich verstärkende Effekte: Entwickler lesen keine Bibliotheksdokumentation mehr, weil Generieren schneller ist, und es veröffentlichen und pflegen weniger Leute Open Source. Sein Rat: weiterhin bewährte Bibliotheken mit klar definierten Abstraktionen wählen. Seine Prognose: Entwicklung wird einsamer.
+***** Take
+Die Kommentare treffen es schärfer. Was stirbt, ist die Fünf-Minuten-Hilfsbibliothek, nicht Open Source: die Schwelle für ein teilenswertes Projekt ist um eine Größenordnung gestiegen, und ein Datums-Helfer war ohnehin keine echte Zusammenarbeit. Lisps eigentliches Problem war nie zu viel Ausdruckskraft, sondern zu wenige Leute für die schwierigen, langweiligen Teile. Dabei hilft Generieren nicht, und die Mbed-TLS-Maintainer könnten erzählen, was dieser Mangel kostet.
+***** Comments
+- Vielleicht ist die Schwelle für ein tragfähiges gemeinsames Open-Source-Projekt einfach um eine oder zwei Größenordnungen gestiegen. Wer heute eine schicke Datumsbibliothek baut, interessiert niemanden; die benötigten Teile sind in fünf Minuten nachgebaut. Baue etwas, das schwer zu reproduzieren ist, dann vielleicht schon.
+- Der wahre Common-Lisp-Fluch ist, dass es kein Zurück gibt, sobald man es probiert hat. Ansonsten geht es dem Ökosystem gut: viele SBCL-Beitragende, regelmäßige Beiträge zu den wichtigen Bibliotheken, neue Editoren und Plugins, einige Firmen, die Lisp einsetzen.
+- Dieselbe Sorge habe ich im Februar aufgeschrieben: Was passiert, wenn es leichter ist, eigene Software zu bauen, als eine Suche auf eine ausgereifte Bibliothek zu verwenden?
+** MCP Explained :mcp:ai:protocol:documentation:
+:PROPERTIES:
+:ID:       50379249
+:URL:      https://mcp-explained.com/
+:HN_URL:   https://news.ycombinator.com/item?id=50379249
+:POINTS:   165
+:COMMENTS: 85
+:BY:       rwilinski
+:END:
+
+*** TLDR
+An interactive course for the Model Context Protocol, built around annotated message flows you can step through and reset. It covers the roles of host, server and model, the point that MCP is JSON-RPC over stdio or a single HTTP endpoint rather than REST, with JSON-RPC as the envelope and MCP defining the methods, then capability negotiation, transports, tools and auth, with links into the 2025-11-25 spec revision.
+
+*** Take
+Well made, and the top comment is the real story: MCP is close to a REST API with standardized discovery endpoints, so needing an interactive course to explain it says more about the spec than about the reader. The genuinely useful question in the thread is also the unanswered one, whether an MCP call can pipe into another tool or a file. Until it can, a documented HTTP endpoint and curl still cover most of what people want from it.
+
+*** Comments
+
+**** nater5000
+This is too dense. MCP is basically a REST API with standardized endpoints for discovery aimed at agents; a nicely written article with a few diagrams would go a long way. Sometimes less is more.
+
+**** ndriscoll
+Are MCP calls composable in, say, codex yet? Can a model pipe a Jira call into grep or sed, or at least into a file? Last I looked it was a vastly worse version of curl, .netrc and some short text files describing calls.
+
+**** slashtom
+I appreciate it. I just started converting non-ARM Mac apps and it's pretty magical on this 128GB machine. I watched a few videos about a harness and still haven't dived deep, so MCP is my next step.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+MCP 讲解
+***** TLDR
+一个讲解 Model Context Protocol 的互动课程，核心是可以逐步播放和重置的带注释消息流。内容包括 host、server 和 model 各自的角色，强调 MCP 是走 stdio 或单个 HTTP 端点的 JSON-RPC 而不是 REST，其中 JSON-RPC 是信封、MCP 定义方法，然后是能力协商、传输层、工具和认证，并链接到 2025-11-25 版规范。
+***** Take
+做得不错，但热门评论才是重点：MCP 接近于一个带标准化发现端点的 REST API，需要一门互动课程来解释它，说明问题在规范而不在读者。帖子里真正有价值的问题也是没人回答的那个：MCP 调用能不能接到另一个工具或文件上。在那之前，一个有文档的 HTTP 端点加 curl 仍能覆盖大多数人想要的东西。
+***** Comments
+- 太密了。MCP 基本上就是一个面向 agent、带标准化发现端点的 REST API；一篇写得好、配几张图的文章就够用了。有时少即是多。
+- MCP 调用在 codex 这类工具里可以组合了吗？模型能把一次 Jira 调用接到 grep 或 sed，或者至少写到文件里吗？我上次看的时候，它只是 curl、.netrc 加几份描述调用的短文本的糟糕版本。
+- 挺感谢的。我刚开始把非 ARM 的 Mac 应用转过来，在这台 128GB 的机器上效果相当神奇。我看了几个关于 harness 的视频，还没深入研究，MCP 是我的下一步。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+MCP解説
+***** TLDR
+Model Context Protocolを扱う対話型の講座で、注釈付きのメッセージフローを一歩ずつ進めたりリセットしたりできるのが中心。host、server、modelそれぞれの役割、MCPはRESTではなくstdioまたは単一のHTTPエンドポイント上のJSON-RPCであること（JSON-RPCが封筒、MCPがメソッドを定義する）、続いて機能ネゴシエーション、トランスポート、ツール、認証を扱い、2025-11-25版の仕様へのリンクもある。
+***** Take
+よく作られているが、人気コメントが本題だ。MCPは発見用の標準エンドポイントを備えたREST APIに近く、それを説明するのに対話型の講座が必要だという事実は、読者よりも仕様について多くを語る。スレッドで本当に有用な問いは、未回答のあの問いでもある。MCPの呼び出しを別のツールやファイルにつなげられるのか。できるようになるまでは、文書化されたHTTPエンドポイントとcurlで多くの用途は足りる。
+***** Comments
+- 情報が詰まりすぎている。MCPは実質、エージェント向けに発見用エンドポイントを標準化したREST APIだ。図を数枚添えたよく書かれた記事で十分だろう。少ない方が良い場合もある。
+- MCPの呼び出しは、たとえばcodexでもう合成できるのか。モデルはJiraの呼び出しをgrepやsed、せめてファイルにつなげられるのか。前に見たときは、curlと.netrcと呼び出しを説明する短いテキストのはるかに劣る版だった。
+- ありがたい。非ARMのMacアプリの移植を始めたばかりだが、この128GBのマシンではかなり魔法のようだ。harnessについて動画をいくつか見たがまだ深掘りできていないので、次はMCPだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+MCP 설명
+***** TLDR
+Model Context Protocol을 다루는 인터랙티브 강좌로, 한 단계씩 진행하고 초기화할 수 있는 주석 달린 메시지 흐름이 중심이다. host, server, model의 역할, MCP가 REST가 아니라 stdio 또는 단일 HTTP 엔드포인트 위의 JSON-RPC라는 점(JSON-RPC는 봉투이고 MCP가 메서드를 정의한다), 그리고 기능 협상, 전송, 도구, 인증을 다루며 2025-11-25 사양 개정판으로 연결된다.
+***** Take
+잘 만들었지만 인기 댓글이 핵심이다. MCP는 발견용 표준 엔드포인트를 갖춘 REST API에 가깝고, 그것을 설명하는 데 인터랙티브 강좌가 필요하다는 사실은 독자보다 사양에 대해 더 많은 것을 말해준다. 스레드에서 정말 유용한 질문은 답이 없는 그 질문이기도 하다. MCP 호출을 다른 도구나 파일로 넘길 수 있는가. 그게 되기 전까지는 문서화된 HTTP 엔드포인트와 curl이 사람들이 원하는 대부분을 해낸다.
+***** Comments
+- 너무 빽빽하다. MCP는 사실상 에이전트를 위해 발견 엔드포인트를 표준화한 REST API다. 다이어그램 몇 개를 곁들인 잘 쓴 글이면 충분하다. 때로는 적은 게 낫다.
+- MCP 호출이 codex 같은 곳에서 이제 조합이 되나? 모델이 Jira 호출을 grep이나 sed로, 최소한 파일로 넘길 수 있나? 내가 마지막으로 봤을 때는 curl과 .netrc, 호출을 설명하는 짧은 텍스트의 훨씬 나쁜 버전이었다.
+- 고맙게 보고 있다. 비ARM 맥 앱을 옮기기 시작했는데 128GB 머신에서 꽤 마법 같다. harness 관련 영상을 몇 개 봤지만 아직 깊이 파지 못했고, 다음 단계가 MCP다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+MCP explicado
+***** TLDR
+Un curso interactivo sobre el Model Context Protocol, armado alrededor de flujos de mensajes anotados que se pueden recorrer paso a paso y reiniciar. Cubre los papeles de host, servidor y modelo, la idea de que MCP es JSON-RPC sobre stdio o un único endpoint HTTP y no REST (JSON-RPC es el sobre y MCP define los métodos), y luego la negociación de capacidades, los transportes, las herramientas y la autenticación, con enlaces a la revisión de la especificación del 2025-11-25.
+***** Take
+Está bien hecho, y el comentario más votado es la verdadera noticia: MCP se parece a una API REST con endpoints estandarizados de descubrimiento, así que necesitar un curso interactivo para explicarlo dice más de la especificación que del lector. La pregunta realmente útil del hilo también es la que nadie contesta: si una llamada MCP puede encadenarse a otra herramienta o a un archivo. Mientras no pueda, un endpoint HTTP documentado y curl siguen cubriendo casi todo lo que se le pide.
+***** Comments
+- Esto es demasiado denso. MCP es básicamente una API REST con endpoints estandarizados de descubrimiento para agentes; un artículo bien escrito con unos diagramas rendiría mucho más. A veces menos es más.
+- ¿Ya se pueden componer las llamadas MCP en, por ejemplo, codex? ¿Puede un modelo encadenar una llamada a Jira con grep o sed, o al menos volcarla a un archivo? La última vez que lo miré era una versión muy peor de curl, .netrc y unos archivos de texto describiendo las llamadas.
+- Lo agradezco. Acabo de empezar a convertir apps de Mac no ARM y en esta máquina de 128 GB resulta casi mágico. Vi algunos videos sobre un harness y todavía no profundicé, así que MCP es mi siguiente paso.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+MCP erklärt
+***** TLDR
+Ein interaktiver Kurs zum Model Context Protocol, aufgebaut um kommentierte Nachrichtenflüsse, die man Schritt für Schritt durchgehen und zurücksetzen kann. Behandelt werden die Rollen von Host, Server und Modell, der Punkt, dass MCP JSON-RPC über stdio oder einen einzigen HTTP-Endpunkt ist und nicht REST (JSON-RPC ist der Umschlag, MCP definiert die Methoden), dann Capability-Negotiation, Transporte, Tools und Authentifizierung, mit Verweisen auf die Spezifikationsfassung vom 2025-11-25.
+***** Take
+Gut gemacht, und der Top-Kommentar ist die eigentliche Nachricht: MCP liegt nahe an einer REST-API mit standardisierten Discovery-Endpunkten, und dass es dafür einen interaktiven Kurs braucht, sagt mehr über die Spezifikation als über die Leserschaft. Die wirklich nützliche Frage im Thread ist zugleich die unbeantwortete: Lässt sich ein MCP-Aufruf in ein anderes Werkzeug oder in eine Datei weiterleiten? Solange nicht, deckt ein dokumentierter HTTP-Endpunkt plus curl das meiste ab.
+***** Comments
+- Das ist zu dicht. MCP ist im Grunde eine REST-API mit standardisierten Discovery-Endpunkten für Agenten; ein gut geschriebener Artikel mit ein paar Diagrammen würde viel mehr bringen. Manchmal ist weniger mehr.
+- Sind MCP-Aufrufe inzwischen zum Beispiel in codex kombinierbar? Kann ein Modell einen Jira-Aufruf an grep oder sed weitergeben, oder wenigstens in eine Datei? Als ich zuletzt hinsah, war es eine deutlich schlechtere Variante von curl, .netrc und ein paar kurzen Textdateien, die Aufrufe beschreiben.
+- Ich finde es gut. Ich habe gerade angefangen, Nicht-ARM-Mac-Apps zu portieren, und auf dieser 128-GB-Maschine ist das ziemlich magisch. Ich habe ein paar Videos über ein Harness gesehen und bin noch nicht tief eingestiegen, MCP ist mein nächster Schritt.
+** Download your favourite YouTube videos :youtube:archiving:selfhosted:ytdlp:
+:PROPERTIES:
+:ID:       50378571
+:URL:      https://criminallyvulgar.dev/you-should-absolutely-download-your-favourite-youtube-videos/
+:HN_URL:   https://news.ycombinator.com/item?id=50378571
+:POINTS:   158
+:COMMENTS: 69
+:BY:       surprisetalk
+:END:
+
+*** TLDR
+An argument for keeping local copies of the videos you care about, with the setup the author actually runs: yt-dlp (or a GUI wrapper such as Stacher) for grabbing, ytdl-sub with a YAML config to preserve playlist structure, Jellyfin in TV-show library mode for playback, and Tdarr to re-encode to HEVC. The library is about 2TB and re-encoding recovered roughly 700GB. The author calls the rig overkill and says what started it was videos disappearing from their own liked playlists, including a long Let's Play collection they fall asleep to.
+
+*** Take
+Skip the ideology, the number in the comments is the argument: around 10% of a five-year-old playlist is already unavailable. Streaming never promised permanence, and a bookmark is a lease on someone else's business decision. The rest is a tooling question, and jerjerjer is right that plain yt-dlp flags handle playlist structure without adding another service to maintain.
+
+*** Comments
+
+**** chmod775
+Most of my YouTube playlists say something like "15 unavailable videos are hidden", about 10% for a five-year-old playlist. Same ratio for most of my video bookmarks. There are videos from 15 years ago I consider gone for good.
+
+**** jerjerjer
+On keeping playlist structure: you can do it with plain yt-dlp using --embed-metadata and --parse-metadata on playlist_index, no wrapper needed.
+
+**** mulemisterX
+I came to the same conclusion a while back and built a web frontend for yt-dlp with queue support and profiles that switch yt-dlp configs and route videos to different locations, one of them Jellyfin.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+把你喜欢的 YouTube 视频下载下来
+***** TLDR
+一篇主张为在意的视频保留本地副本的文章，并给出作者实际在用的方案：用 yt-dlp（或 Stacher 这类图形界面封装）抓取，用带 YAML 配置的 ytdl-sub 保留播放列表结构，用 Jellyfin 的剧集库模式播放，用 Tdarr 转码成 HEVC。媒体库大约 2TB，转码省回了约 700GB。作者自己说这套配置过头了，起因是视频从他自己的"喜欢"播放列表里消失，其中包括一套他用来入睡的长篇游戏实况。
+***** Take
+别管那些立场，评论里的数字才是论据：五年前建的播放列表里，大约 10% 已经看不了了。流媒体从未承诺永久保存，收藏夹只是租用别人的商业决定。剩下的只是工具选择问题，jerjerjer 说得对：原生 yt-dlp 的参数就能保住播放列表结构，不必再多维护一个服务。
+***** Comments
+- 我大多数 YouTube 播放列表都写着类似"已隐藏 15 个不可用视频"，五年前的列表大约是 10%。我收藏的视频链接比例也差不多。有些 15 年前的视频我认为是彻底没了。
+- 关于保留播放列表结构：直接用 yt-dlp 的 --embed-metadata 和对 playlist_index 的 --parse-metadata 就能做到，不需要封装工具。
+- 我前些年得出了同样的结论，于是给 yt-dlp 做了个带队列的网页前端，还有可切换 yt-dlp 配置、把视频分流到不同位置的"配置档"，其中一个位置是 Jellyfin。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+お気に入りのYouTube動画はダウンロードしておくべき
+***** TLDR
+大事な動画はローカルに控えを持つべきだという主張と、著者が実際に運用している構成。取得はyt-dlp（またはStacherのようなGUIラッパー）、プレイリスト構造の維持はYAML設定のytdl-sub、再生はJellyfinのTV番組ライブラリモード、HEVCへの再エンコードはTdarr。ライブラリは約2TBで、再エンコードで約700GBを回収した。著者自身この構成はやり過ぎだと認めており、きっかけは自分の高評価プレイリストから動画が消えていくこと、特に寝入るときに流している長編の実況シリーズだった。
+***** Take
+理念は置いておく。論拠はコメント欄の数字だ。5年前のプレイリストのおよそ10%がすでに視聴できない。ストリーミングは永続性を約束していないし、ブックマークは他人の経営判断を借りているだけだ。残りは道具の話で、プレイリスト構造は素のyt-dlpのオプションで足りるというjerjerjerの指摘が正しい。保守するサービスを増やす必要はない。
+***** Comments
+- 私のYouTubeプレイリストはだいたい「15本の利用できない動画が非表示」などと出る。5年前のものなら約10%だ。ブックマークした動画も同じ割合だ。15年前の動画で、もう完全に失われたと思っているものもある。
+- プレイリスト構造の維持について。素のyt-dlpで--embed-metadataとplaylist_indexへの--parse-metadataを使えばできる。ラッパーは要らない。
+- 数年前に同じ結論に至り、yt-dlp用のWebフロントエンドをキュー付きで作った。yt-dlpの設定を切り替えて保存先を振り分ける「プロファイル」もあり、その一つがJellyfinだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+좋아하는 유튜브 영상은 내려받아 두자
+***** TLDR
+아끼는 영상은 로컬 사본을 두라는 주장과 함께, 저자가 실제로 운영하는 구성을 소개한다. 받기는 yt-dlp(또는 Stacher 같은 GUI 래퍼), 재생목록 구조 유지는 YAML 설정의 ytdl-sub, 재생은 Jellyfin의 TV 프로그램 라이브러리 모드, HEVC 재인코딩은 Tdarr. 라이브러리는 약 2TB이고 재인코딩으로 약 700GB를 되찾았다. 저자는 이 장비가 과하다고 인정하며, 계기는 자신의 좋아요 재생목록에서 영상이 사라진 일, 특히 잠들 때 틀어두는 긴 게임 플레이 시리즈였다고 말한다.
+***** Take
+이념은 제쳐두자. 논거는 댓글의 숫자다. 5년 된 재생목록의 약 10%가 이미 재생되지 않는다. 스트리밍은 영속성을 약속한 적이 없고, 북마크는 남의 사업 판단을 빌린 것이다. 나머지는 도구 문제이고, 재생목록 구조는 순수 yt-dlp 옵션으로 된다는 jerjerjer의 지적이 맞다. 유지할 서비스를 하나 더 늘릴 필요는 없다.
+***** Comments
+- 내 유튜브 재생목록은 대부분 '사용할 수 없는 영상 15개가 숨겨짐' 같은 문구를 띄운다. 5년 된 목록이면 약 10% 정도다. 북마크한 영상도 비슷한 비율이다. 15년 전 영상 중에는 완전히 사라졌다고 보는 것도 있다.
+- 재생목록 구조 유지 얘기인데, 순수 yt-dlp에서 --embed-metadata와 playlist_index에 대한 --parse-metadata로 할 수 있다. 래퍼는 필요 없다.
+- 몇 년 전 같은 결론에 도달해서 yt-dlp용 웹 프런트엔드를 큐 기능과 함께 만들었다. yt-dlp 설정을 바꿔 저장 위치를 나누는 프로필도 있고, 그중 하나가 Jellyfin이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Descarga tus videos favoritos de YouTube
+***** TLDR
+Una defensa de guardar copias locales de los videos que te importan, con el montaje que el autor usa de verdad: yt-dlp (o un envoltorio gráfico como Stacher) para descargar, ytdl-sub con un archivo YAML para conservar la estructura de las listas, Jellyfin en modo biblioteca de series para reproducir y Tdarr para recodificar a HEVC. La biblioteca ronda los 2TB y la recodificación recuperó unos 700GB. El autor admite que su equipo es excesivo y cuenta que todo empezó al ver desaparecer videos de su propia lista de "me gusta", incluida una larga colección de partidas comentadas con la que se duerme.
+***** Take
+Dejemos la ideología: el argumento es el dato de los comentarios, cerca del 10% de una lista de cinco años ya no se puede ver. El streaming nunca prometió permanencia y un marcador es un alquiler sobre la decisión comercial de otro. El resto es una cuestión de herramientas, y jerjerjer tiene razón: las propias opciones de yt-dlp mantienen la estructura de las listas sin añadir otro servicio que mantener.
+***** Comments
+- Casi todas mis listas de YouTube dicen algo como "15 videos no disponibles están ocultos", alrededor del 10% en una lista de cinco años. La misma proporción en mis marcadores de videos. Hay videos de hace 15 años que considero perdidos para siempre.
+- Sobre conservar la estructura de las listas: se puede con yt-dlp a secas, usando --embed-metadata y --parse-metadata sobre playlist_index, sin ningún envoltorio.
+- Llegué a la misma conclusión hace tiempo y construí un frontend web para yt-dlp con cola y "perfiles" que cambian la configuración de yt-dlp y envían los videos a distintas ubicaciones, una de ellas Jellyfin.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Lade deine Lieblingsvideos von YouTube herunter
+***** TLDR
+Ein Plädoyer dafür, lokale Kopien der Videos zu behalten, die einem wichtig sind, samt dem Aufbau, den der Autor tatsächlich betreibt: yt-dlp (oder ein GUI-Aufsatz wie Stacher) zum Herunterladen, ytdl-sub mit YAML-Konfiguration für die Playlist-Struktur, Jellyfin im Serien-Bibliotheksmodus zum Abspielen und Tdarr zum Umkodieren nach HEVC. Die Sammlung umfasst etwa 2 TB, das Umkodieren brachte rund 700 GB zurück. Der Autor nennt das Setup selbst überdimensioniert; Anlass war, dass Videos aus seiner eigenen Liste mit Daumen hoch verschwanden, darunter eine lange Let's-Play-Sammlung, bei der er einschläft.
+***** Take
+Die Ideologie kann man überspringen, das Argument ist die Zahl aus den Kommentaren: rund 10 Prozent einer fünf Jahre alten Playlist sind schon nicht mehr verfügbar. Streaming hat Dauerhaftigkeit nie versprochen, und ein Bookmark ist nur ein Mietvertrag auf die Geschäftsentscheidung eines anderen. Der Rest ist eine Werkzeugfrage, und jerjerjer hat recht: die Playlist-Struktur bekommt man mit den Optionen von yt-dlp selbst, ohne einen weiteren Dienst zu betreiben.
+***** Comments
+- Bei den meisten meiner YouTube-Playlists steht etwas wie "15 nicht verfügbare Videos sind ausgeblendet", bei einer fünf Jahre alten Liste etwa 10 Prozent. Dasselbe Verhältnis gilt für meine Video-Lesezeichen. Manche Videos von vor 15 Jahren halte ich für endgültig verloren.
+- Zur Playlist-Struktur: Das geht mit reinem yt-dlp über --embed-metadata und --parse-metadata auf playlist_index, ganz ohne Aufsatz.
+- Ich bin vor einiger Zeit zum gleichen Schluss gekommen und habe ein Web-Frontend für yt-dlp mit Warteschlange gebaut, dazu Profile, die yt-dlp-Konfigurationen umschalten und Videos an verschiedene Orte leiten, eines davon Jellyfin.
