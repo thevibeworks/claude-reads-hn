@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-11-06 11:00 UTC
+#+DATE: 2026-11-06T11:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Britain makes job ads say the number, Blender's UI escapes Blender, and a Dutch green bank picks Google Play Integrity over its own customers
+
+* Highlights
+- UK will legally require salaries in job adverts; 94% of consultation respondents were in favour
+- BUI ports Blender's widget code to a C library with Python, Rust and React bindings, and benchmarks 5x faster first frames than gpui
+- ASN Bank breaks iDEAL/Wero payments on GrapheneOS by enforcing Play Integrity's ctsProfile check
+- Rivet: open-source Durable Objects alternative, 72 KB per actor, SQLite backed by S3
+- MIT Press on peer production: Linux and Wikipedia as the exception, not the template
+
+* Stories
+
+** Britain to make salary disclosure in job ads mandatory :policy:hiring:uk:labor:
+:PROPERTIES:
+:ID:       50389222
+:URL:      https://www.reuters.com/business/world-at-work/britain-make-salary-disclosure-job-ads-mandatory-2026-11-05/
+:HN_URL:   https://news.ycombinator.com/item?id=50389222
+:POINTS:   207
+:COMMENTS: 201
+:BY:       1659447091
+:END:
+
+*** TLDR
+The UK government announced on 5 November that it will legally require employers to publish pay in job adverts, branded 'say what you pay'. The scope is not settled: the announcement does not say whether a range or a specific figure is required, which employers are covered, or when it starts, only that legislation comes 'as soon as possible' and that businesses should comply voluntarily until then. Government figures cite CIPD 2024 data that 41% of employers currently publish ranges and 18% publish exact salaries, and that 94% of consultation respondents backed the requirement, including 93% of businesses. It arrived in a youth-employment package that also promises 200,000 extra work placements for 14 to 16 year olds. Nothing in the release bans asking candidates for salary history.
+
+*** Take
+The number everyone skipped is 93% of businesses already supporting this, which tells you employers were not the obstacle; the practice just needed someone to go first. The design detail that decides whether this works is the one the announcement omits: if 'disclose pay' means a range with no width limit, every advert becomes £25k-£95k and the law has only moved the information asymmetry one step down. Leaving salary history questions legal makes that worse, because an employer can quote the wide band and then price you off your last payslip.
+
+*** Comments
+
+**** ellen364
+:PROPERTIES:
+:COMMENT_ID: 50389555
+:END:
+Cautiously pleased about this. Some companies in UK pay senior devs £30-35k. And some companies won't discuss that until v late in the process, while importing US-style multiround interviews. It's pretty silly when people get 3 rounds in, take time off work for the interviews, then find out their expectations are so far apart.
+
+**** Xenoamorphous
+:PROPERTIES:
+:COMMENT_ID: 50389414
+:END:
+Do they say something about the min and max in the range being no more than X% apart? To prevent scenarios like "between £20,000 and £100,000".
+
+**** poisonborz
+:PROPERTIES:
+:COMMENT_ID: 50389444
+:END:
+Such laws do not really help in practice. Does a 60-90k range in EU, commonly given to engineering roles, offer any real guidance? A better system would be publishing the average salary for a similar role, but that would be a privacy problem for a low headcount team.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+英国将强制要求招聘广告披露薪资
+***** TLDR
+英国政府于 11 月 5 日宣布，将立法要求雇主在招聘广告中公布薪酬，口号是「说出你付多少」。细节尚未确定：公告没有说明要求区间还是具体数字、覆盖哪些雇主、何时生效，只说立法会「尽快」推进，在此之前希望企业自愿遵守。政府引用 CIPD 2024 年数据：目前 41% 的雇主公布薪资区间，18% 公布确切薪资，而 94% 的咨询受访者支持这项要求，其中包括 93% 的企业。该政策出自一揽子青年就业计划，其中还承诺为 14 至 16 岁青少年增加 20 万个工作实习岗位。公告中没有禁止雇主询问求职者的薪资历史。
+***** Take
+所有人都忽略的数字是 93% 的企业已经支持这项规定，这说明雇主并不是障碍，这个做法只是需要有人先迈出一步。决定这项法律是否有效的设计细节恰恰是公告省略的那条：如果「披露薪酬」意味着一个没有宽度限制的区间，那么每则广告都会写成 2.5 万到 9.5 万英镑，法律只是把信息不对称往下挪了一级。继续允许询问薪资历史会让情况更糟，因为雇主可以先报出那个宽区间，再按你上一份工资单来定价。
+***** Comments
+- 我对此持谨慎乐观态度。英国有些公司给资深开发者只付 3 万到 3.5 万英镑，而且在流程后期才肯谈这个数字，同时还照搬美式的多轮面试。等到候选人已经面了三轮、为面试请了假，才发现双方期望差得太远，这很荒唐。
+- 有没有规定区间的上下限相差不能超过百分之多少？以防出现「2 万到 10 万英镑」这种情况。
+- 这类法律在实践中帮助不大。欧洲工程岗位常见的 6 万到 9 万区间，真的能提供什么有效信息吗？更好的做法是公布同类岗位的平均薪资，但对于人数很少的团队来说这会带来隐私问题。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+英国、求人広告での給与開示を義務化へ
+***** TLDR
+英国政府は11月5日、雇用主に求人広告での給与公開を法的に義務づけると発表した。「say what you pay（払う額を言え）」という名称だ。範囲は未確定で、給与レンジか具体額か、どの雇用主が対象か、いつ始まるかは示されず、立法は「可能な限り早く」行い、それまでは自主的な遵守を求めるとしている。政府はCIPDの2024年データとして、現在レンジを公開している雇用主は41%、具体額は18%、意見公募では94%が賛成し、そのうち企業も93%が賛成したと挙げている。これは14歳から16歳向けに20万件の職場体験を追加する若年雇用パッケージの一部として発表された。発表文には応募者への給与履歴の質問を禁じる内容はない。
+***** Take
+誰も触れていない数字は、企業の93%がすでに賛成しているという点だ。つまり雇用主は障害ではなく、誰かが最初に動く必要があっただけだ。この法律が機能するかを決める設計上の要点は、まさに発表が省略した部分にある。「給与開示」が幅の制限のないレンジでよいなら、どの広告も2.5万から9.5万ポンドになり、情報の非対称性を一段下にずらしただけで終わる。給与履歴の質問を合法のままにすると事態は悪化する。雇用主は広いレンジを示した上で、前職の給与明細を基準に値付けできるからだ。
+***** Comments
+- 慎重に歓迎したい。英国にはシニア開発者に3万から3.5万ポンドしか払わない会社があり、しかもその数字をプロセスの終盤まで話そうとせず、同時に米国式の多段面接を持ち込んでいる。3次面接まで進み、面接のために休暇を取った後で期待値が大きく違うと分かるのは馬鹿げている。
+- レンジの下限と上限の差がX%以内、といった規定はあるのだろうか。「2万から10万ポンド」のような事態を防ぐために。
+- こうした法律は実際にはあまり役に立たない。欧州のエンジニア職によくある6万から9万のレンジが、本当に何かの指針になるだろうか。同種の職の平均給与を公表する方が良いが、少人数チームではプライバシーの問題になる。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+영국, 구인 광고에 급여 공개 의무화
+***** TLDR
+영국 정부는 11월 5일 고용주가 구인 광고에 급여를 공개하도록 법으로 의무화한다고 발표했다. 명칭은 '지급액을 말하라(say what you pay)'다. 범위는 아직 정해지지 않았다. 급여 구간인지 구체적 금액인지, 어떤 고용주가 대상인지, 언제 시행되는지는 밝히지 않았고 입법은 '가능한 한 빨리' 하겠다며 그전까지는 자발적 준수를 요청했다. 정부는 CIPD 2024년 자료를 인용해 현재 41%의 고용주가 급여 구간을, 18%가 정확한 금액을 공개한다고 밝혔고, 의견 수렴에서 94%가 찬성했으며 그중 기업도 93%가 찬성했다고 했다. 이는 14~16세 청소년에게 20만 건의 직장 체험 기회를 추가로 약속한 청년 고용 패키지의 일부로 나왔다. 발표문에는 지원자에게 급여 이력을 묻는 것을 금지하는 내용이 없다.
+***** Take
+모두가 지나친 숫자는 기업의 93%가 이미 찬성한다는 점이다. 고용주가 걸림돌이 아니었고, 누군가 먼저 움직이기만 하면 됐다는 뜻이다. 이 법이 작동할지 결정하는 설계 지점은 바로 발표가 빠뜨린 부분이다. '급여 공개'가 폭 제한 없는 구간을 뜻한다면 모든 광고가 2만 5천에서 9만 5천 파운드가 되고, 법은 정보 비대칭을 한 단계 아래로 옮긴 데 그친다. 급여 이력 질문을 계속 허용하면 상황은 더 나빠진다. 고용주가 넓은 구간을 제시한 뒤 지난 급여 명세서를 기준으로 가격을 매길 수 있기 때문이다.
+***** Comments
+- 조심스럽게 환영한다. 영국에는 시니어 개발자에게 3만~3만 5천 파운드만 주는 회사가 있고, 그 숫자를 절차 후반까지 이야기하지 않으면서 미국식 다단계 면접을 들여온다. 3차까지 진행하고 면접 때문에 휴가까지 낸 뒤에 서로 기대치가 크게 다르다는 걸 알게 되는 건 어이없다.
+- 구간의 하한과 상한 차이가 X% 이내라는 규정이 있을까? '2만~10만 파운드' 같은 상황을 막기 위해서다.
+- 이런 법은 실제로는 별 도움이 안 된다. 유럽 엔지니어 직무에 흔한 6만~9만 구간이 정말 어떤 지침이 되는가? 비슷한 직무의 평균 급여를 공개하는 게 더 낫지만, 인원이 적은 팀에서는 프라이버시 문제가 된다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Reino Unido hará obligatorio publicar el salario en las ofertas de empleo
+***** TLDR
+El gobierno británico anunció el 5 de noviembre que exigirá por ley a los empleadores publicar la retribución en las ofertas de empleo, bajo el lema 'say what you pay'. El alcance no está definido: el anuncio no dice si se exige un rango o una cifra concreta, qué empleadores quedan cubiertos ni cuándo entra en vigor, solo que legislará 'lo antes posible' y que hasta entonces pide cumplimiento voluntario. El gobierno cita datos del CIPD de 2024 según los cuales el 41% de los empleadores publica rangos y el 18% salarios exactos, y que el 94% de quienes respondieron a la consulta apoyó la medida, incluido el 93% de las empresas. Llegó dentro de un paquete de empleo juvenil que además promete 200.000 prácticas adicionales para jóvenes de 14 a 16 años. Nada en el comunicado prohíbe preguntar por el historial salarial.
+***** Take
+La cifra que todos pasaron por alto es que el 93% de las empresas ya apoyaba esto, lo que indica que los empleadores no eran el obstáculo: la práctica solo necesitaba que alguien diera el primer paso. El detalle de diseño que decide si esto funciona es justo el que el anuncio omite: si 'publicar la retribución' admite un rango sin límite de amplitud, cada oferta pasa a decir 25.000-95.000 libras y la ley solo ha movido la asimetría de información un escalón más abajo. Dejar legales las preguntas sobre historial salarial lo empeora, porque el empleador puede citar la banda amplia y luego fijar tu precio según tu última nómina.
+***** Comments
+- Moderadamente satisfecho con esto. Algunas empresas en Reino Unido pagan 30.000-35.000 libras a desarrolladores senior, y no quieren hablar de esa cifra hasta muy avanzado el proceso, mientras importan entrevistas de varias rondas al estilo estadounidense. Es absurdo que alguien llegue a la tercera ronda, pida días libres para las entrevistas y entonces descubra que las expectativas están lejísimas.
+- ¿Dicen algo sobre que el mínimo y el máximo del rango no se separen más de un X%? Para evitar casos como 'entre 20.000 y 100.000 libras'.
+- Estas leyes no ayudan mucho en la práctica. ¿Un rango de 60.000-90.000, habitual en puestos de ingeniería en la UE, ofrece alguna orientación real? Un sistema mejor sería publicar el salario medio de un puesto similar, pero eso sería un problema de privacidad en un equipo de pocas personas.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Großbritannien macht Gehaltsangaben in Stellenanzeigen zur Pflicht
+***** TLDR
+Die britische Regierung kündigte am 5. November an, Arbeitgeber gesetzlich zur Angabe der Bezahlung in Stellenanzeigen zu verpflichten, unter dem Slogan 'say what you pay'. Der Umfang ist offen: Die Ankündigung sagt nicht, ob eine Spanne oder ein konkreter Betrag verlangt wird, welche Arbeitgeber betroffen sind oder wann es beginnt, nur dass 'so schnell wie möglich' ein Gesetz kommt und bis dahin freiwillige Befolgung erwartet wird. Die Regierung verweist auf CIPD-Daten von 2024: 41% der Arbeitgeber veröffentlichen derzeit Spannen, 18% exakte Gehälter, und 94% der Konsultationsteilnehmer unterstützten die Pflicht, darunter 93% der Unternehmen. Die Maßnahme steckt in einem Jugendbeschäftigungspaket, das zusätzlich 200.000 weitere Praktikumsplätze für 14- bis 16-Jährige verspricht. Ein Verbot, Bewerber nach dem früheren Gehalt zu fragen, steht nicht in der Mitteilung.
+***** Take
+Die Zahl, die alle übersprungen haben: 93% der Unternehmen waren schon dafür. Arbeitgeber waren also nicht das Hindernis, es musste nur jemand den ersten Schritt machen. Der Konstruktionsdetail, das über den Erfolg entscheidet, ist genau das ausgelassene: Wenn 'Bezahlung angeben' eine Spanne ohne Breitenbegrenzung erlaubt, steht in jeder Anzeige 25.000-95.000 Pfund, und das Gesetz hat die Informationsasymmetrie nur eine Stufe nach unten verschoben. Fragen nach dem früheren Gehalt weiter zu erlauben verschlimmert das, denn der Arbeitgeber kann die breite Spanne nennen und dich dann anhand deiner letzten Abrechnung einpreisen.
+***** Comments
+- Vorsichtig erfreut. Manche Firmen in Großbritannien zahlen Senior-Entwicklern 30.000-35.000 Pfund und wollen über diese Zahl erst sehr spät im Prozess sprechen, während sie US-typische Mehrrunden-Interviews importieren. Es ist absurd, wenn Leute in der dritten Runde sind, sich für Interviews freinehmen und dann merken, dass die Erwartungen weit auseinanderliegen.
+- Steht irgendwo, dass Minimum und Maximum der Spanne nicht mehr als X% auseinanderliegen dürfen? Um Fälle wie 'zwischen 20.000 und 100.000 Pfund' zu verhindern.
+- Solche Gesetze helfen in der Praxis kaum. Gibt eine Spanne von 60.000-90.000, wie in der EU bei Engineering-Rollen üblich, irgendeine echte Orientierung? Besser wäre, das Durchschnittsgehalt einer vergleichbaren Rolle zu veröffentlichen, aber in einem kleinen Team wäre das ein Datenschutzproblem.
+** Blender's UI and Runtime: Much Faster Than GPUI :ui:blender:rust:performance:gui:
+:PROPERTIES:
+:ID:       50389333
+:URL:      https://github.com/ppmpreetham/BUI
+:HN_URL:   https://news.ycombinator.com/item?id=50389333
+:POINTS:   206
+:COMMENTS: 82
+:BY:       ppmpreetham
+:END:
+
+*** TLDR
+BUI takes Blender's widget drawing and interaction code, ports it to a standalone C runtime called the kit, and wraps it in bindings for Python, Rust, JavaScript/React, C, C++ and Dear ImGui. The drawing is a port of Blender's interface_widgets.cc, so you get the number-field drag that hides the cursor, expressions like 2⁎pi in a field, and fuzzy menu search. It does not need Blender installed, and it is not a browser: the Rust and JS sides use HTML and CSS as a layout language with no webview. It ships a tkinter-compatible API so an unmodified tkinter program runs on it, plus a Qt-style API and a gpui-style builder API. The benchmarks compile one gpui-syntax file against BUI, Zed's gpui and gpui-fast: 40 ms to first frame versus 231 and 226 ms, 27 ms of CPU to start versus 226 and 217, and on 3000 animated cells 59.9 fps at 11.6 ms per frame against 19.9 and 31.5 fps. Idle CPU is zero because it redraws only damaged regions. Licensed GPL-2.0-or-later, Windows/Linux/macOS, benchmarks run on one Windows laptop before the newest features landed.
+
+*** Take
+The benchmark is honest about being one laptop, and the first-frame gap is still too large to be noise: 5 ms versus 200 ms is the difference between a retained-mode C widget tree and a framework that rebuilds and re-uploads a scene every frame. The real risk to adoption is not performance, it is the GPL-2.0-or-later license next to gpui's Apache-2.0, as antman pointed out in the thread. The five compatibility APIs are also a strange bet: shipping tkinter, Qt and gpui shims means five surfaces to keep working and none of them gets Blender's actual interaction model, which is the only thing here you cannot get elsewhere.
+
+*** Comments
+
+**** cultofmetatron
+:PROPERTIES:
+:COMMENT_ID: 50389615
+:END:
+Ive been thinking this would be amazing to do for ages. happy someone finally did it. its the perfect system for interfaces where speed matters. hope to see more 3d modellers, video editors, daws and simulation systems built on this.
+
+**** dev0p
+:PROPERTIES:
+:COMMENT_ID: 50389624
+:END:
+I love the general idea behind Blender's UI. And I do appreciate the effort that goes into it, especially in the latest versions as it got much better. But I really really really REALLY don't want that UI in anything else other than Blender. Please don't.
+
+**** antman
+:PROPERTIES:
+:COMMENT_ID: 50389778
+:END:
+License of GPUI is Apache and BlenderUI is GPL, which is limiting for adoption.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Blender 的 UI 和运行时：比 GPUI 快得多
+***** TLDR
+BUI 把 Blender 的控件绘制和交互代码移植成一个名为 kit 的独立 C 运行时，再为 Python、Rust、JavaScript/React、C、C++ 和 Dear ImGui 提供绑定。绘制代码直接移植自 Blender 的 interface_widgets.cc，因此保留了拖动数值字段时隐藏光标的手感、在字段中输入 2⁎pi 这类表达式、以及模糊菜单搜索。它不需要安装 Blender，也不是浏览器：Rust 和 JS 侧用 HTML 和 CSS 作为布局语言，但没有 webview。它还提供兼容 tkinter 的 API，未修改的 tkinter 程序可以直接跑在上面，另有 Qt 风格 API 和 gpui 风格的构建器 API。基准测试把同一份 gpui 语法源文件分别编译到 BUI、Zed 的 gpui 和 gpui-fast：首帧 40 毫秒对 231 和 226 毫秒，启动消耗 27 毫秒 CPU 对 226 和 217 毫秒，3000 个动画单元格下 59.9 fps、每帧 11.6 毫秒，对手是 19.9 和 31.5 fps。空闲时 CPU 占用为零，因为它只重绘受影响区域。许可证为 GPL-2.0 或更新版本，支持 Windows/Linux/macOS，基准测试在一台 Windows 笔记本上、在最新功能合入之前完成。
+***** Take
+这份基准测试坦率承认只跑了一台笔记本，但首帧差距大到不可能是噪声：5 毫秒对 200 毫秒，正是「保留模式的 C 控件树」和「每帧重建并重新上传整个场景的框架」之间的差别。真正阻碍采用的不是性能，而是 GPL-2.0 许可证对上 gpui 的 Apache-2.0，讨论中 antman 已经指出这一点。五套兼容 API 也是个奇怪的赌注：同时提供 tkinter、Qt 和 gpui 的外壳意味着要维护五个接口，而且没有一个能带来 Blender 真正的交互模型，而那恰恰是这个项目唯一别处拿不到的东西。
+***** Comments
+- 我想了好多年这事该有人做，很高兴终于有人做了。对速度要求高的界面来说这是完美的方案，希望能看到更多三维建模器、视频编辑器、DAW 和仿真系统基于它构建。
+- 我很喜欢 Blender UI 背后的整体思路，也很欣赏投入其中的努力，尤其是最近几个版本改进很大。但我真的真的真的非常不希望在除 Blender 以外的任何软件里看到那套 UI。求你别这么干。
+- GPUI 用的是 Apache 许可证，而 BlenderUI 是 GPL，这会限制采用。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+BlenderのUIとランタイム: GPUIよりはるかに速い
+***** TLDR
+BUIはBlenderのウィジェット描画と操作のコードを、kitと呼ぶ独立したCランタイムに移植し、Python、Rust、JavaScript/React、C、C++、Dear ImGui向けのバインディングで包んだものだ。描画はBlenderのinterface_widgets.ccからの移植なので、数値フィールドをドラッグするとカーソルが消える挙動、フィールドに2⁎piと打てる式入力、あいまい検索メニューがそのまま使える。Blenderのインストールは不要で、ブラウザでもない。RustとJS側はHTMLとCSSをレイアウト言語として使うが、webviewはない。tkinter互換APIも備え、未改変のtkinterプログラムがそのまま動く。Qt風APIとgpui風のビルダーAPIもある。ベンチマークは同一のgpui構文のソースをBUI、Zedのgpui、gpui-fastに対してコンパイルしたもので、初フレームまで40ミリ秒に対し231と226ミリ秒、起動に使うCPUは27ミリ秒に対し226と217ミリ秒、3000セルのアニメーションでは59.9fps・1フレーム11.6ミリ秒に対し19.9fpsと31.5fpsだった。変更された領域だけを再描画するためアイドル時のCPUはゼロ。ライセンスはGPL-2.0-or-later、Windows/Linux/macOS対応、ベンチマークは最新機能が入る前のWindowsノート1台で計測されている。
+***** Take
+ベンチマークがノート1台だと正直に書いている点は良いが、初フレームの差はノイズでは説明できない大きさだ。5ミリ秒対200ミリ秒は、保持モードのCウィジェットツリーと、毎フレームシーンを作り直して再アップロードするフレームワークの差そのものだ。採用の本当の障壁は性能ではなく、gpuiのApache-2.0に対するGPL-2.0-or-laterのライセンスで、スレッド内でantmanが指摘している。5種類の互換APIも奇妙な賭けだ。tkinter、Qt、gpuiのシムを並べれば維持すべき面が5つになり、しかもどれもBlenderの本来の操作モデルを与えてくれない。ここで他では得られないものは、まさにそれだけなのに。
+***** Comments
+- これは誰かがやるべきだとずっと思っていた。ついに実現してうれしい。速度が重要なインターフェースにとって完璧な仕組みだ。これを土台にした3Dモデラー、動画編集、DAW、シミュレーションがもっと出てくるといい。
+- BlenderのUIの基本的な考え方は好きだし、特に最近のバージョンでかなり良くなった努力も評価している。でもBlender以外のソフトでそのUIを見たいとは本当に本当に思わない。やめてほしい。
+- GPUIのライセンスはApacheで、BlenderUIはGPL。これは採用の制約になる。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Blender의 UI와 런타임: GPUI보다 훨씬 빠르다
+***** TLDR
+BUI는 Blender의 위젯 렌더링과 상호작용 코드를 kit이라는 독립 C 런타임으로 옮기고, Python, Rust, JavaScript/React, C, C++, Dear ImGui용 바인딩으로 감쌌다. 렌더링은 Blender의 interface_widgets.cc를 포팅한 것이어서 숫자 필드를 드래그하면 커서가 사라지는 동작, 필드에 2⁎pi 같은 수식 입력, 퍼지 메뉴 검색이 그대로 작동한다. Blender를 설치할 필요가 없고 브라우저도 아니다. Rust와 JS 쪽은 HTML과 CSS를 레이아웃 언어로 쓰지만 webview는 없다. tkinter 호환 API도 있어 수정하지 않은 tkinter 프로그램이 그대로 돌아가며, Qt 스타일 API와 gpui 스타일 빌더 API도 제공한다. 벤치마크는 동일한 gpui 문법 소스를 BUI, Zed의 gpui, gpui-fast에 각각 컴파일한 결과로, 첫 프레임까지 40ms 대 231ms와 226ms, 시작에 쓰는 CPU는 27ms 대 226ms와 217ms, 3000개 애니메이션 셀에서는 59.9fps에 프레임당 11.6ms 대 19.9fps와 31.5fps였다. 변경된 영역만 다시 그리기 때문에 유휴 CPU는 0이다. 라이선스는 GPL-2.0-or-later, Windows/Linux/macOS를 지원하며 벤치마크는 최신 기능이 들어가기 전 Windows 노트북 한 대에서 측정됐다.
+***** Take
+벤치마크가 노트북 한 대라고 솔직히 밝힌 점은 좋지만, 첫 프레임 격차는 잡음으로 설명할 수 없을 만큼 크다. 5ms 대 200ms는 유지 모드 C 위젯 트리와 매 프레임 장면을 다시 만들어 업로드하는 프레임워크의 차이 그 자체다. 채택의 진짜 장벽은 성능이 아니라 gpui의 Apache-2.0 대비 GPL-2.0-or-later 라이선스이고, 스레드에서 antman이 이를 지적했다. 다섯 가지 호환 API도 이상한 선택이다. tkinter, Qt, gpui 껍데기를 동시에 제공하면 유지할 표면이 다섯 개가 되고, 그중 어느 것도 Blender의 실제 상호작용 모델을 주지 못한다. 여기서 다른 곳에서 얻을 수 없는 건 바로 그것뿐인데도.
+***** Comments
+- 오래전부터 누군가 이걸 하면 좋겠다고 생각했는데 드디어 나왔다. 속도가 중요한 인터페이스에 완벽한 구조다. 이걸 기반으로 한 3D 모델러, 영상 편집기, DAW, 시뮬레이션이 더 나오면 좋겠다.
+- Blender UI의 기본 발상은 좋아하고, 특히 최근 버전에서 많이 개선된 노력도 인정한다. 하지만 Blender 외의 소프트웨어에서 그 UI를 보고 싶지는 정말 정말 않다. 제발 하지 말아달라.
+- GPUI는 Apache 라이선스이고 BlenderUI는 GPL이다. 채택에 제약이 된다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+La UI y el runtime de Blender: mucho más rápidos que GPUI
+***** TLDR
+BUI toma el código de dibujo de widgets e interacción de Blender, lo porta a un runtime en C independiente llamado kit y lo envuelve en bindings para Python, Rust, JavaScript/React, C, C++ y Dear ImGui. El dibujo es un port de interface_widgets.cc de Blender, así que conservas el arrastre de campos numéricos que oculta el cursor, expresiones como 2⁎pi dentro de un campo y la búsqueda difusa en menús. No necesita Blender instalado y no es un navegador: los lados de Rust y JS usan HTML y CSS como lenguaje de maquetación, sin webview. Incluye una API compatible con tkinter, de modo que un programa tkinter sin modificar corre encima, además de una API estilo Qt y otra de builders estilo gpui. Los benchmarks compilan un mismo archivo con sintaxis gpui contra BUI, el gpui de Zed y gpui-fast: 40 ms hasta el primer frame frente a 231 y 226 ms, 27 ms de CPU para arrancar frente a 226 y 217, y con 3000 celdas animadas 59,9 fps a 11,6 ms por frame frente a 19,9 y 31,5 fps. El uso de CPU en reposo es cero porque solo redibuja las regiones afectadas. Licencia GPL-2.0-or-later, Windows/Linux/macOS, y los benchmarks se corrieron en un solo portátil con Windows antes de que entraran las funciones más recientes.
+***** Take
+El benchmark admite con honestidad que es un único portátil, y la diferencia en el primer frame sigue siendo demasiado grande para ser ruido: 5 ms frente a 200 ms es la diferencia entre un árbol de widgets en C en modo retenido y un framework que reconstruye y vuelve a subir la escena en cada frame. El riesgo real para la adopción no es el rendimiento, es la licencia GPL-2.0-or-later junto al Apache-2.0 de gpui, como señaló antman en el hilo. Las cinco APIs de compatibilidad también son una apuesta extraña: ofrecer shims de tkinter, Qt y gpui significa cinco superficies que mantener y ninguna de ellas entrega el modelo de interacción real de Blender, que es lo único aquí que no puedes conseguir en otro sitio.
+***** Comments
+- Llevaba años pensando que esto sería magnífico. Me alegra que alguien por fin lo haya hecho. Es el sistema perfecto para interfaces donde importa la velocidad. Espero ver más modeladores 3D, editores de vídeo, DAWs y sistemas de simulación construidos sobre esto.
+- Me encanta la idea general detrás de la UI de Blender, y agradezco el esfuerzo que lleva, sobre todo en las últimas versiones donde mejoró mucho. Pero de verdad que no quiero esa UI en nada que no sea Blender. Por favor, no.
+- La licencia de GPUI es Apache y la de BlenderUI es GPL, lo cual limita la adopción.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Blenders UI und Runtime: viel schneller als GPUI
+***** TLDR
+BUI nimmt Blenders Widget-Zeichencode und Interaktionslogik, portiert sie in eine eigenständige C-Runtime namens kit und umhüllt sie mit Bindings für Python, Rust, JavaScript/React, C, C++ und Dear ImGui. Das Zeichnen ist ein Port von Blenders interface_widgets.cc, also bleiben das Ziehen am Zahlenfeld mit verschwindendem Cursor, Ausdrücke wie 2⁎pi im Feld und die unscharfe Menüsuche erhalten. Blender muss nicht installiert sein, und ein Browser ist es auch nicht: Die Rust- und JS-Seite nutzt HTML und CSS als Layout-Sprache, ohne Webview. Es liefert eine tkinter-kompatible API, sodass ein unverändertes tkinter-Programm darauf läuft, plus eine Qt-artige API und eine gpui-artige Builder-API. Die Benchmarks kompilieren dieselbe Datei in gpui-Syntax gegen BUI, Zeds gpui und gpui-fast: 40 ms bis zum ersten Frame gegenüber 231 und 226 ms, 27 ms CPU zum Starten gegenüber 226 und 217, und bei 3000 animierten Zellen 59,9 fps bei 11,6 ms pro Frame gegenüber 19,9 und 31,5 fps. Die Leerlauf-CPU liegt bei null, weil nur beschädigte Regionen neu gezeichnet werden. Lizenz GPL-2.0-or-later, Windows/Linux/macOS, und die Benchmarks liefen auf einem einzigen Windows-Laptop, bevor die neuesten Funktionen dazukamen.
+***** Take
+Der Benchmark gibt ehrlich zu, dass es ein einzelner Laptop ist, und der Abstand beim ersten Frame bleibt zu groß für Rauschen: 5 ms gegen 200 ms ist der Unterschied zwischen einem Retained-Mode-Widgetbaum in C und einem Framework, das die Szene jeden Frame neu baut und hochlädt. Das echte Adoptionsrisiko ist nicht die Leistung, sondern die GPL-2.0-or-later-Lizenz neben gpuis Apache-2.0, worauf antman im Thread hinwies. Die fünf Kompatibilitäts-APIs sind ebenfalls eine seltsame Wette: tkinter-, Qt- und gpui-Shims auszuliefern heißt fünf Oberflächen zu pflegen, und keine davon liefert Blenders eigentliches Interaktionsmodell, das einzige hier, was man nirgends sonst bekommt.
+***** Comments
+- Ich habe seit Jahren gedacht, dass das großartig wäre. Schön, dass es endlich jemand gemacht hat. Für Oberflächen, bei denen Geschwindigkeit zählt, ist das das perfekte System. Ich hoffe auf mehr 3D-Modeller, Videoeditoren, DAWs und Simulationssysteme darauf.
+- Ich mag die grundsätzliche Idee hinter Blenders UI und schätze die Arbeit darin, besonders in den letzten Versionen, in denen sie deutlich besser wurde. Aber ich will diese UI wirklich, wirklich in nichts außer Blender. Bitte nicht.
+- GPUI steht unter Apache, BlenderUI unter GPL. Das begrenzt die Verbreitung.
+** Dutch 'idealist' bank ASN blocks non-Google Android, including GrapheneOS :privacy:android:grapheneos:banking:attestation:
+:PROPERTIES:
+:ID:       50390124
+:URL:      https://github.com/PrivSec-dev/banking-apps-compat-report/issues/105
+:HN_URL:   https://news.ycombinator.com/item?id=50390124
+:POINTS:   42
+:COMMENTS: 24
+:BY:       microtonal
+:END:
+
+*** TLDR
+Since ASN Bank app version 1.36.3 on Android, activating the new iDEAL | Wero payment flow calls Google's Play Integrity API and fails on GrapheneOS, so customers on de-Googled Pixels can no longer pay. The check demands ctsProfileMatch, which only Google-certified builds can pass, rather than the weaker basicIntegrity that GrapheneOS does satisfy. A commenter traced the call to nl.devolksbank.mobile.banking.security.data.wero.IntegrityRepository#requestIntegrityToken, suggesting it is ASN's own code rather than a Wero SDK, and found the integrity token posted to ASN's own servers. EPI, the operator behind Wero, replied in the thread that it 'currently focus［es］ on supporting the most widely used mobile banking platforms and devices'. ASN is sending complainants an identical templated reply citing strict European rules on privacy, security and fraud prevention. N26 reportedly enforces the same check. ASN is owned by the Dutch state and markets itself as a sustainable, idealist bank.
+
+*** Take
+Play Integrity's ctsProfileMatch does not measure whether a device is secure, it measures whether Google blessed the build; GrapheneOS is harder to compromise than most certified stock ROMs and still fails. The detail that undercuts ASN's fraud-prevention defence is that the integrity token goes to ASN's own servers from ASN's own class, so this is a policy ASN chose and can revisit, not a Wero requirement it inherited. Commenter Aozora7 landed the sharpest point elsewhere in the thread: their bank's app crashes on launch when memory tagging is enabled, which means the app has memory bugs that a hardened OS catches. The app failing the secure device is the one with the actual vulnerability.
+
+*** Comments
+
+**** ACCount39
+:PROPERTIES:
+:COMMENT_ID: 50390624
+:END:
+SafetyNet was a mistake in general. But banks specifically are among the most obnoxious shitters when it comes to "you aren't allowed to do things except the way we want it". Over and over again you have to contend with bullshit like 120MB APKs full of obfuscated code, root detection, custom firmware detection, "non-mainstream device" detection, VPN detection.
+
+**** Aozora7
+:PROPERTIES:
+:COMMENT_ID: 50390672
+:END:
+My bank app works on GrapheneOS but checks play integrity and disables biometrics and lowers limits. Thankfully I'm not forced to use it since I can log into the bank and authorize transactions with the government digital signature app, which uses hardware attestation and considers GOS fully secure. Funnily enough, the bank's app crashes on launch with memory tagging enabled which means they have memory bugs.
+
+**** isoprophlex
+:PROPERTIES:
+:COMMENT_ID: 50390622
+:END:
+Dont take the fact that Wero still works for Bunq as an indicator that ASN or any other bank are doing something especially untowards. Given Bunq's abysmal security track record it probably means they just forgot to enforce some policy that Wero requires on mobile devices.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+荷兰「理想主义」银行 ASN 封锁非谷歌版 Android，包括 GrapheneOS
+***** TLDR
+从 ASN Bank 安卓应用 1.36.3 版开始，激活新的 iDEAL | Wero 支付流程会调用谷歌的 Play Integrity API，在 GrapheneOS 上失败，使用去谷歌化 Pixel 的客户因此无法付款。该检查要求 ctsProfileMatch，只有经谷歌认证的系统版本才能通过，而不是 GrapheneOS 能够满足的较弱的 basicIntegrity。一位评论者把调用定位到 nl.devolksbank.mobile.banking.security.data.wero.IntegrityRepository#requestIntegrityToken，说明这是 ASN 自己的代码而非 Wero 的 SDK，并且发现完整性令牌被发送到 ASN 自己的服务器。Wero 背后的运营方 EPI 在讨论中回应称，他们「目前专注于支持使用最广泛的移动银行平台和设备」。ASN 向投诉者发送的是同一份模板回复，援引欧洲关于隐私、安全和反欺诈的严格规定。据称 N26 也执行同样的检查。ASN 由荷兰政府持有，并以可持续、理想主义银行自我定位。
+***** Take
+Play Integrity 的 ctsProfileMatch 衡量的不是设备是否安全，而是谷歌是否为该系统版本背书；GrapheneOS 比大多数已认证的原厂系统更难被攻破，却照样通不过。削弱 ASN「反欺诈」辩护的关键细节是：完整性令牌从 ASN 自己的类发往 ASN 自己的服务器，所以这是 ASN 自己选择、也可以自己改回的策略，不是从 Wero 继承来的要求。评论者 Aozora7 在讨论中给出了最锋利的一点：他们的银行应用在启用内存标记后启动即崩溃，这说明应用本身有内存错误，而加固系统正好抓到了。拒绝安全设备的那个应用，才是真正带着漏洞的那一个。
+***** Comments
+- SafetyNet 本身就是个错误。但银行在「只能按我们规定的方式来」这件事上尤其讨人厌。你一次又一次要应付 120MB 塞满混淆代码的 APK、root 检测、第三方固件检测、「非主流设备」检测、VPN 检测这些破事。
+- 我的银行应用在 GrapheneOS 上能用，但它检查 play integrity，然后禁用生物识别并降低额度。好在我不是非用它不可，我可以登录银行网站并用政府的数字签名应用授权交易，那个应用使用硬件认证，并认为 GOS 完全安全。有意思的是，开启内存标记后这个银行应用一启动就崩溃，说明他们有内存错误。
+- 不要因为 Wero 在 Bunq 上还能用，就认定 ASN 或其他银行做了什么特别出格的事。考虑到 Bunq 糟糕的安全记录，这大概只是说明他们忘了执行 Wero 对移动设备要求的某项策略。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+オランダの「理想主義」銀行ASN、GrapheneOSを含む非Google Androidを遮断
+***** TLDR
+ASN BankのAndroidアプリ1.36.3以降、新しいiDEAL | Wero決済の有効化時にGoogleのPlay Integrity APIが呼ばれ、GrapheneOSでは失敗するため、脱GoogleしたPixelの利用者は支払いができなくなった。このチェックが求めるのはctsProfileMatchで、Google認証済みのビルドしか通らない。GrapheneOSが満たせる、より緩いbasicIntegrityではない。あるコメント投稿者が呼び出し元をnl.devolksbank.mobile.banking.security.data.wero.IntegrityRepository#requestIntegrityTokenまで特定し、WeroのSDKではなくASN自身のコードであること、そしてインテグリティトークンがASN自身のサーバーに送られていることを突き止めた。Weroを運営するEPIはスレッド内で「現時点では最も広く使われているモバイルバンキングのプラットフォームと端末のサポートに注力している」と回答した。ASNは苦情を出した顧客に同一のテンプレート回答を送り、プライバシー、セキュリティ、不正防止に関する厳格な欧州規則を根拠としている。N26も同じチェックを行っているとの報告がある。ASNはオランダ政府が保有し、持続可能で理想主義的な銀行を自称している。
+***** Take
+Play IntegrityのctsProfileMatchが測るのは端末が安全かどうかではなく、Googleがそのビルドを認めたかどうかだ。GrapheneOSは認証済みの純正ROMの多くより侵害が難しいが、それでも通らない。ASNの不正防止という言い分を崩すのは、インテグリティトークンがASN自身のクラスからASN自身のサーバーに送られているという点だ。つまりこれはWeroから引き継いだ要件ではなく、ASNが選び、見直せる方針だ。スレッドの別の箇所でAozora7が最も鋭い指摘をしている。自分の銀行アプリはメモリタグ付けを有効にすると起動時に落ちる。つまりアプリ側にメモリバグがあり、堅牢なOSがそれを捕まえている。安全な端末を弾いているアプリの方が、実際に脆弱性を抱えているのだ。
+***** Comments
+- SafetyNetはそもそも間違いだった。だが銀行は特に「我々の決めた方法以外は許さない」という点で最悪だ。120MBの難読化されたAPK、root検知、カスタムファーム検知、「非主流端末」検知、VPN検知といった馬鹿げたものに何度も付き合わされる。
+- 私の銀行アプリはGrapheneOSで動くが、play integrityをチェックして生体認証を無効にし、限度額を下げる。幸い使わなくても済む。銀行にログインして政府の電子署名アプリで取引を承認できるからだ。そのアプリはハードウェア認証を使い、GOSを完全に安全だと判定する。面白いのは、メモリタグ付けを有効にすると銀行アプリが起動時に落ちることで、つまりメモリバグがあるということだ。
+- WeroがBunqでまだ動くからといって、ASNや他の銀行が特に不当なことをしていると決めつけないほうがいい。Bunqのひどいセキュリティ実績を考えると、Weroがモバイル端末に求める何らかのポリシーを適用し忘れているだけという可能性が高い。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+네덜란드 '이상주의' 은행 ASN, GrapheneOS를 포함한 비구글 안드로이드 차단
+***** TLDR
+ASN Bank 안드로이드 앱 1.36.3 버전부터 새 iDEAL | Wero 결제 흐름을 활성화할 때 구글의 Play Integrity API를 호출하는데, GrapheneOS에서는 실패해 구글을 제거한 Pixel 사용자는 결제를 할 수 없게 됐다. 이 검사는 구글 인증 빌드만 통과할 수 있는 ctsProfileMatch를 요구하며, GrapheneOS가 충족하는 더 약한 basicIntegrity가 아니다. 한 댓글 작성자가 호출 지점을 nl.devolksbank.mobile.banking.security.data.wero.IntegrityRepository#requestIntegrityToken으로 짚어내며 Wero의 SDK가 아니라 ASN 자체 코드임을 시사했고, 무결성 토큰이 ASN 자체 서버로 전송되는 것도 확인했다. Wero를 운영하는 EPI는 스레드에서 '현재는 가장 널리 쓰이는 모바일 뱅킹 플랫폼과 기기를 지원하는 데 집중하고 있다'고 답했다. ASN은 민원인에게 프라이버시, 보안, 사기 방지에 관한 엄격한 유럽 규정을 근거로 든 동일한 템플릿 답변을 보내고 있다. N26도 같은 검사를 적용한다는 보고가 있다. ASN은 네덜란드 정부 소유이며 지속가능하고 이상주의적인 은행이라고 스스로를 홍보한다.
+***** Take
+Play Integrity의 ctsProfileMatch가 측정하는 것은 기기가 안전한지가 아니라 구글이 그 빌드를 승인했는지다. GrapheneOS는 인증된 순정 ROM 대부분보다 침해하기 어렵지만 그래도 통과하지 못한다. ASN의 사기 방지 논리를 무너뜨리는 세부 사항은 무결성 토큰이 ASN 자체 클래스에서 ASN 자체 서버로 간다는 점이다. 즉 이것은 Wero에서 물려받은 요구가 아니라 ASN이 선택했고 되돌릴 수 있는 정책이다. 스레드의 다른 곳에서 Aozora7이 가장 날카로운 지적을 했다. 자기 은행 앱은 메모리 태깅을 켜면 실행 즉시 죽는데, 이는 앱에 메모리 버그가 있고 강화된 OS가 그것을 잡아낸다는 뜻이다. 안전한 기기를 거부하는 그 앱이야말로 실제로 취약점을 가진 쪽이다.
+***** Comments
+- SafetyNet은 애초에 잘못된 발상이었다. 그런데 은행은 '우리가 정한 방식 외에는 안 된다'는 점에서 특히 지독하다. 난독화 코드로 가득한 120MB APK, 루팅 탐지, 커스텀 펌웨어 탐지, '비주류 기기' 탐지, VPN 탐지 같은 헛소리를 계속 감당해야 한다.
+- 내 은행 앱은 GrapheneOS에서 동작하지만 play integrity를 확인한 뒤 생체 인증을 끄고 한도를 낮춘다. 다행히 쓰지 않아도 된다. 은행에 로그인해 정부 전자서명 앱으로 거래를 승인할 수 있고, 그 앱은 하드웨어 어테스테이션을 쓰며 GOS를 완전히 안전하다고 본다. 재미있는 건 메모리 태깅을 켜면 은행 앱이 실행 즉시 죽는다는 것으로, 메모리 버그가 있다는 뜻이다.
+- Wero가 Bunq에서 아직 작동한다는 사실만으로 ASN이나 다른 은행이 특별히 부당한 일을 한다고 단정하지 말라. Bunq의 형편없는 보안 기록을 보면, Wero가 모바일 기기에 요구하는 어떤 정책을 적용하는 걸 잊은 것일 가능성이 높다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+El banco 'idealista' neerlandés ASN bloquea Android sin Google, incluido GrapheneOS
+***** TLDR
+Desde la versión 1.36.3 de la app de ASN Bank en Android, activar el nuevo flujo de pago iDEAL | Wero llama a la API Play Integrity de Google y falla en GrapheneOS, así que los clientes con Pixel sin Google ya no pueden pagar. La comprobación exige ctsProfileMatch, que solo pasan las compilaciones certificadas por Google, en lugar del basicIntegrity más débil que GrapheneOS sí cumple. Un comentarista rastreó la llamada hasta nl.devolksbank.mobile.banking.security.data.wero.IntegrityRepository#requestIntegrityToken, lo que indica que es código propio de ASN y no un SDK de Wero, y descubrió que el token de integridad se envía a los servidores de ASN. EPI, el operador detrás de Wero, respondió en el hilo que 'actualmente se centra en dar soporte a las plataformas y dispositivos de banca móvil más usados'. ASN envía a quienes reclaman una respuesta idéntica de plantilla citando estrictas normas europeas sobre privacidad, seguridad y prevención del fraude. Se informa de que N26 aplica la misma comprobación. ASN es propiedad del Estado neerlandés y se promociona como un banco sostenible e idealista.
+***** Take
+El ctsProfileMatch de Play Integrity no mide si un dispositivo es seguro, mide si Google bendijo esa compilación; GrapheneOS es más difícil de comprometer que la mayoría de las ROMs de fábrica certificadas y aun así no pasa. El detalle que desmonta la defensa antifraude de ASN es que el token de integridad va a los servidores de ASN desde una clase de ASN, así que es una política que ASN eligió y puede revisar, no un requisito heredado de Wero. El comentarista Aozora7 puso el dedo en la llaga en otra parte del hilo: la app de su banco se cierra al arrancar si está activado el etiquetado de memoria, lo que significa que la app tiene errores de memoria que un sistema endurecido detecta. La app que rechaza el dispositivo seguro es la que tiene la vulnerabilidad real.
+***** Comments
+- SafetyNet fue un error en general. Pero los bancos son especialmente insufribles con el 'no se te permite hacer las cosas salvo como queremos nosotros'. Una y otra vez te toca lidiar con tonterías como APKs de 120MB llenos de código obfuscado, detección de root, detección de firmware personalizado, detección de 'dispositivo no mayoritario' y detección de VPN.
+- La app de mi banco funciona en GrapheneOS, pero comprueba play integrity y desactiva la biometría y baja los límites. Por suerte no estoy obligado a usarla: puedo entrar al banco y autorizar transacciones con la app estatal de firma digital, que usa atestación por hardware y considera GOS totalmente segura. Lo curioso es que la app del banco se cierra al arrancar con el etiquetado de memoria activado, lo que significa que tiene errores de memoria.
+- Que Wero siga funcionando en Bunq no indica que ASN ni ningún otro banco esté haciendo algo especialmente indebido. Dado el pésimo historial de seguridad de Bunq, probablemente solo signifique que se olvidaron de aplicar alguna política que Wero exige en los dispositivos móviles.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Niederländische 'idealistische' Bank ASN sperrt Android ohne Google, auch GrapheneOS
+***** TLDR
+Seit Version 1.36.3 der ASN-Bank-App für Android ruft die Aktivierung des neuen Zahlwegs iDEAL | Wero Googles Play Integrity API auf und scheitert auf GrapheneOS, sodass Kunden mit entgoogelten Pixeln nicht mehr bezahlen können. Die Prüfung verlangt ctsProfileMatch, was nur Google-zertifizierte Builds erfüllen, statt des schwächeren basicIntegrity, das GrapheneOS besteht. Ein Kommentator verfolgte den Aufruf bis nl.devolksbank.mobile.banking.security.data.wero.IntegrityRepository#requestIntegrityToken, was auf ASNs eigenen Code und nicht auf ein Wero-SDK hindeutet, und stellte fest, dass das Integrity-Token an ASNs eigene Server geht. EPI, der Betreiber hinter Wero, antwortete im Thread, man 'konzentriere sich derzeit auf die Unterstützung der verbreitetsten Mobile-Banking-Plattformen und Geräte'. ASN schickt Beschwerdeführern eine identische Standardantwort mit Verweis auf strenge europäische Vorgaben zu Datenschutz, Sicherheit und Betrugsprävention. N26 soll dieselbe Prüfung durchsetzen. ASN gehört dem niederländischen Staat und bewirbt sich selbst als nachhaltige, idealistische Bank.
+***** Take
+Play Integritys ctsProfileMatch misst nicht, ob ein Gerät sicher ist, sondern ob Google den Build gesegnet hat; GrapheneOS ist schwerer zu kompromittieren als die meisten zertifizierten Werks-ROMs und fällt trotzdem durch. Das Detail, das ASNs Betrugsargument untergräbt: Das Integrity-Token geht von ASNs eigener Klasse an ASNs eigene Server, es ist also eine von ASN gewählte und revidierbare Richtlinie, keine von Wero geerbte Vorgabe. Kommentator Aozora7 traf den Punkt an anderer Stelle im Thread am genauesten: Die App seiner Bank stürzt beim Start ab, wenn Memory Tagging aktiv ist, was heißt, dass die App Speicherfehler hat, die ein gehärtetes OS auffängt. Die App, die das sichere Gerät abweist, ist die mit der tatsächlichen Schwachstelle.
+***** Comments
+- SafetyNet war grundsätzlich ein Fehler. Aber Banken sind beim Thema 'du darfst Dinge nur so machen, wie wir es wollen' besonders unerträglich. Immer wieder muss man sich mit Unsinn wie 120-MB-APKs voller obfuskiertem Code, Root-Erkennung, Custom-Firmware-Erkennung, Erkennung 'nicht verbreiteter Geräte' und VPN-Erkennung herumschlagen.
+- Meine Bank-App läuft auf GrapheneOS, prüft aber Play Integrity, deaktiviert dann Biometrie und senkt Limits. Zum Glück muss ich sie nicht nutzen: Ich kann mich bei der Bank anmelden und Transaktionen mit der staatlichen Signatur-App freigeben, die Hardware-Attestierung nutzt und GOS als vollständig sicher einstuft. Komisch nur, dass die Bank-App mit aktivem Memory Tagging beim Start abstürzt, was bedeutet, dass sie Speicherfehler hat.
+- Dass Wero bei Bunq noch funktioniert, ist kein Hinweis darauf, dass ASN oder eine andere Bank etwas besonders Verwerfliches tut. Angesichts von Bunqs miserabler Sicherheitsbilanz heißt es wohl nur, dass sie vergessen haben, irgendeine von Wero geforderte Geräterichtlinie zu erzwingen.
+** Launch HN: Rivet (YC W23) – Scale and Orchestrate Agents on S3 :infrastructure:actors:s3:agents:opensource:
+:PROPERTIES:
+:ID:       50381687
+:URL:      https://github.com/rivet-dev/rivet
+:HN_URL:   https://news.ycombinator.com/item?id=50381687
+:POINTS:   99
+:COMMENTS: 52
+:BY:       NathanFlurry
+:END:
+
+*** TLDR
+Rivet gives each agent, user, session or tenant a long-lived actor instead of a sandbox: in-memory state, its own SQLite database, a WebSocket server and scheduling. The pitch is density and durability. Actors share a Node or Bun process rather than booting a VM, so the README claims 72 KB of RAM per actor, 4.99 ms p99 cold starts, 1.07 ms p99 durable writes and 1.36 ms reads. Writes are acknowledged once SSDs in two of three availability zones have them, then batched to S3 in the background, which keeps S3 off the write path; the team puts storage cost at roughly 10.4x less than three replicated EBS gp3 copies. Idle actors hibernate and wake on the next request. It is Apache 2.0, self-hostable with an object store as the only dependency (S3, GCS, Azure Blob, MinIO, R2), with managed cloud and BYOC options. The team previously built game server orchestration for Diep and Krunker. They position it as an open alternative to Cloudflare Durable Objects without the 128 MB memory cap, the 10 GB SQLite limit, or random eviction.
+
+*** Take
+The actor-per-agent framing is the weakest part of the pitch and commenter esafak said why: agent latency is dominated by waiting on the model, so a 5 ms cold start saves nothing a user would notice. The durability story is the real product. Per-tenant SQLite that survives restarts, hibernates for free and does not cap at 10 GB solves a problem Durable Objects users have complained about for years, and Apache 2.0 with a bucket as the only dependency means you can actually leave. Lead with the storage architecture, not the agents. One open question went unanswered in the thread: how fencing works when an actor partitions while a batched write is still draining to S3.
+
+*** Comments
+
+**** esafak
+:PROPERTIES:
+:COMMENT_ID: 50382786
+:END:
+My first reaction: this is weird; agentic workloads have many problems but orchestration speed ain't one of them. You spend most of the time waiting for the model! Is this for small models? I would have lead with the durability aspect.
+
+**** fastball
+:PROPERTIES:
+:COMMENT_ID: 50381808
+:END:
+Rivet is very cool. Switched a Cloudflare Durable Object piece of our infrastructure that lived in its own little fairy tale land to our own infra within the rest of our VPC. Was a very pleasant experience.
+
+**** minraws
+:PROPERTIES:
+:COMMENT_ID: 50382233
+:END:
+Interesting idea, horrible ux atm though, my codex/claude whatever is just as confused as me what and how are we supposed to use it exactly and all the edge cases.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Launch HN：Rivet（YC W23）——在 S3 上扩展和编排智能体
+***** TLDR
+Rivet 为每个智能体、用户、会话或租户分配一个长期存活的 actor，而不是一个沙箱：内存状态、自己的 SQLite 数据库、一个 WebSocket 服务器和调度能力。它主打密度和持久性。Actor 共享同一个 Node 或 Bun 进程，不需要启动虚拟机，因此 README 声称每个 actor 占用 72 KB 内存、冷启动 p99 为 4.99 毫秒、持久化写入 p99 为 1.07 毫秒、读取为 1.36 毫秒。写入在三个可用区中有两个的 SSD 落盘后即确认，随后在后台批量推送到 S3，这样 S3 就不在写入路径上；团队称存储成本大约是三份 EBS gp3 副本的十分之一（10.4 倍更便宜）。空闲的 actor 会休眠，并在下一个请求时唤醒。项目采用 Apache 2.0 许可，可自托管，唯一依赖是对象存储（S3、GCS、Azure Blob、MinIO、R2），同时提供托管云和 BYOC 方案。团队此前为 Diep 和 Krunker 构建过游戏服务器编排。他们把它定位为 Cloudflare Durable Objects 的开源替代，没有 128 MB 内存上限、10 GB SQLite 限制，也不会随机驱逐。
+***** Take
+「每个智能体一个 actor」是这套说法中最弱的部分，评论者 esafak 说清了原因：智能体的延迟主要由等待模型消耗，所以 5 毫秒的冷启动省下的时间用户根本感知不到。真正的产品在持久性上。按租户划分的 SQLite 能在重启后存活、休眠不花钱、也不卡在 10 GB，这解决了 Durable Objects 用户抱怨多年的问题，而 Apache 2.0 加上「只依赖一个存储桶」意味着你随时可以走。该主打存储架构，而不是智能体。讨论中有一个问题没人回答：当 actor 发生网络分区、而批量写入还在排空到 S3 时，隔离（fencing）是怎么处理的。
+***** Comments
+- 我的第一反应是：这有点怪。智能体工作负载问题很多，但编排速度不是其中之一。大部分时间都花在等模型上！这是给小模型用的吗？我会把持久性作为主打卖点。
+- Rivet 很棒。我们把一块原本活在自己小童话世界里的 Cloudflare Durable Object 基础设施迁到了自己 VPC 内的基础设施上，体验非常愉快。
+- 想法有意思，但目前体验很糟。我的 codex 或 claude 之类的工具和我一样搞不清到底该怎么用它、各种边界情况怎么处理。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Launch HN: Rivet (YC W23) – S3上でエージェントをスケール・オーケストレーション
+***** TLDR
+Rivetはエージェント、ユーザー、セッション、テナントごとにサンドボックスではなく長命のアクターを割り当てる。インメモリの状態、専用のSQLiteデータベース、WebSocketサーバー、スケジューリングが付く。売りは密度と耐久性だ。アクターはVMを起動せずNodeまたはBunのプロセスを共有するため、READMEはアクターあたり72KBのRAM、コールドスタートのp99が4.99ミリ秒、永続書き込みのp99が1.07ミリ秒、読み取りが1.36ミリ秒だとしている。書き込みは3つのアベイラビリティゾーンのうち2つのSSDに載った時点で確認され、その後バックグラウンドでS3へまとめて送られるので、S3は書き込み経路に入らない。チームはストレージ費用をEBS gp3の3重複製より約10.4分の1だとしている。アイドル状態のアクターは休止し、次のリクエストで復帰する。ライセンスはApache 2.0、セルフホスト可能で依存はオブジェクトストレージ(S3、GCS、Azure Blob、MinIO、R2)だけ。マネージドクラウドとBYOCの選択肢もある。チームは以前DiepやKrunker向けのゲームサーバー基盤を作っていた。彼らはこれをCloudflare Durable Objectsのオープンな代替と位置づけ、128MBのメモリ上限、10GBのSQLite制限、ランダムな退避がないとしている。
+***** Take
+エージェントごとにアクターという枠組みはこの提案で最も弱い部分で、理由はコメント投稿者esafakが述べている。エージェントの遅延はモデル待ちが支配しているので、5ミリ秒のコールドスタートはユーザーが気づく差を生まない。本当の製品価値は耐久性の側にある。再起動を越えて残り、休止中は費用がかからず、10GBで止まらないテナント単位のSQLiteは、Durable Objectsの利用者が長年不満を述べてきた問題を解く。Apache 2.0でバケット以外に依存がないということは、実際に離脱できるということだ。エージェントではなくストレージ設計を前面に出すべきだ。スレッドで未回答だった論点が一つある。バッチ書き込みがS3へ排出中にアクターがネットワーク分断した場合、フェンシングはどう動くのか。
+***** Comments
+- 最初の反応はこうだ。これは変だ。エージェント型のワークロードには問題が多いが、オーケストレーション速度はその一つではない。時間の大半はモデル待ちだ。小さいモデル向けなのか。自分なら耐久性を前面に出した。
+- Rivetはとても良い。自分たちのインフラの外で小さなおとぎ話の世界に住んでいたCloudflare Durable Objectsの一部を、VPC内の自前インフラに移した。とても快適な体験だった。
+- 発想は面白いが現状のUXはひどい。codexやclaudeなども自分と同じくらい、何をどう使うのか、各エッジケースをどう扱うのか分かっていない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Launch HN: Rivet (YC W23) – S3에서 에이전트를 확장하고 오케스트레이션하기
+***** TLDR
+Rivet은 에이전트, 사용자, 세션, 테넌트마다 샌드박스가 아닌 장수 액터를 하나씩 준다. 인메모리 상태, 전용 SQLite 데이터베이스, WebSocket 서버, 스케줄링이 함께 온다. 핵심 주장은 밀도와 내구성이다. 액터는 VM을 띄우지 않고 Node나 Bun 프로세스를 공유하므로, README는 액터당 72KB RAM, p99 콜드 스타트 4.99ms, p99 지속 쓰기 1.07ms, 읽기 1.36ms를 제시한다. 쓰기는 가용 영역 세 곳 중 두 곳의 SSD에 기록되면 확인되고, 이후 백그라운드에서 S3로 묶어 보내므로 S3는 쓰기 경로에 들어가지 않는다. 팀은 저장 비용이 EBS gp3 3중 복제보다 약 10.4배 저렴하다고 말한다. 유휴 액터는 동면하고 다음 요청에 깨어난다. 라이선스는 Apache 2.0, 셀프 호스팅이 가능하며 의존성은 객체 저장소(S3, GCS, Azure Blob, MinIO, R2) 하나뿐이고 관리형 클라우드와 BYOC 옵션도 있다. 팀은 이전에 Diep와 Krunker용 게임 서버 오케스트레이션을 만들었다. 이들은 이것을 Cloudflare Durable Objects의 오픈 대안으로 내세우며, 128MB 메모리 한도, 10GB SQLite 제한, 무작위 축출이 없다고 말한다.
+***** Take
+에이전트마다 액터라는 틀은 이 제안에서 가장 약한 부분이고, 이유는 댓글 작성자 esafak이 말했다. 에이전트 지연은 모델을 기다리는 시간이 지배하므로 5ms 콜드 스타트는 사용자가 알아차릴 차이를 만들지 못한다. 진짜 제품은 내구성 쪽이다. 재시작을 넘겨 살아남고, 동면 중에는 비용이 들지 않고, 10GB에서 막히지 않는 테넌트별 SQLite는 Durable Objects 사용자들이 수년간 불만을 제기한 문제를 해결한다. Apache 2.0에 버킷 하나만 의존한다는 건 실제로 떠날 수 있다는 뜻이다. 에이전트가 아니라 저장 아키텍처를 앞세워야 한다. 스레드에서 답을 받지 못한 질문이 하나 있다. 배치 쓰기가 S3로 빠져나가는 중에 액터가 네트워크 분단되면 펜싱은 어떻게 동작하는가.
+***** Comments
+- 첫 반응은 이렇다. 이상하다. 에이전트 워크로드에는 문제가 많지만 오케스트레이션 속도는 그중 하나가 아니다. 시간의 대부분은 모델을 기다리는 데 쓴다. 작은 모델용인가? 나라면 내구성을 앞세웠을 것이다.
+- Rivet 아주 좋다. 우리 인프라 밖 작은 동화 나라에 살던 Cloudflare Durable Object 부분을 VPC 안 자체 인프라로 옮겼다. 매우 즐거운 경험이었다.
+- 발상은 흥미롭지만 지금 UX는 형편없다. 내 codex나 claude 같은 도구도 나만큼이나 정확히 무엇을 어떻게 써야 하는지, 각종 엣지 케이스는 어떻게 되는지 헷갈려한다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Launch HN: Rivet (YC W23) – Escalar y orquestar agentes sobre S3
+***** TLDR
+Rivet da a cada agente, usuario, sesión o inquilino un actor de vida larga en lugar de un sandbox: estado en memoria, su propia base de datos SQLite, un servidor WebSocket y planificación. La propuesta es densidad y durabilidad. Los actores comparten un proceso de Node o Bun en vez de arrancar una VM, así que el README afirma 72 KB de RAM por actor, arranques en frío de 4,99 ms en p99, escrituras durables de 1,07 ms y lecturas de 1,36 ms. Las escrituras se confirman cuando los SSD de dos de tres zonas de disponibilidad las tienen, y después se envían a S3 por lotes en segundo plano, lo que mantiene S3 fuera de la ruta de escritura; el equipo cifra el coste de almacenamiento en unas 10,4 veces menos que tres copias replicadas de EBS gp3. Los actores inactivos hibernan y despiertan con la siguiente petición. Es Apache 2.0, autoalojable con un almacén de objetos como única dependencia (S3, GCS, Azure Blob, MinIO, R2), con opciones de nube gestionada y BYOC. El equipo construyó antes orquestación de servidores de juego para Diep y Krunker. Lo posicionan como alternativa abierta a Cloudflare Durable Objects, sin el tope de 128 MB de memoria, sin el límite de 10 GB de SQLite y sin desalojos aleatorios.
+***** Take
+El marco de un actor por agente es la parte más débil del discurso, y el comentarista esafak explicó por qué: la latencia de un agente la domina la espera al modelo, así que un arranque en frío de 5 ms no ahorra nada que el usuario note. La durabilidad es el producto real. Un SQLite por inquilino que sobrevive a los reinicios, hiberna gratis y no se topa con 10 GB resuelve un problema del que los usuarios de Durable Objects llevan años quejándose, y Apache 2.0 con un bucket como única dependencia significa que de verdad puedes marcharte. Habría que liderar con la arquitectura de almacenamiento, no con los agentes. Una pregunta quedó sin respuesta en el hilo: cómo funciona el fencing cuando un actor se parte de la red mientras una escritura por lotes aún se está vaciando hacia S3.
+***** Comments
+- Mi primera reacción: esto es raro; las cargas agénticas tienen muchos problemas, pero la velocidad de orquestación no es uno de ellos. ¡La mayor parte del tiempo se pasa esperando al modelo! ¿Esto es para modelos pequeños? Yo habría empezado por el aspecto de durabilidad.
+- Rivet es muy bueno. Pasamos una pieza de nuestra infraestructura basada en Cloudflare Durable Objects, que vivía en su propio mundo de cuento, a nuestra propia infraestructura dentro de la VPC. Fue una experiencia muy agradable.
+- Idea interesante, pero la experiencia de uso ahora mismo es horrible: mi codex o claude está tan perdido como yo sobre qué y cómo se supone que hay que usarlo y todos los casos límite.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Launch HN: Rivet (YC W23) – Agenten auf S3 skalieren und orchestrieren
+***** TLDR
+Rivet gibt jedem Agenten, Nutzer, jeder Session oder jedem Mandanten einen langlebigen Actor statt einer Sandbox: In-Memory-Zustand, eine eigene SQLite-Datenbank, einen WebSocket-Server und Scheduling. Verkauft wird Dichte und Dauerhaftigkeit. Actors teilen einen Node- oder Bun-Prozess, statt eine VM zu booten, daher nennt die README 72 KB RAM pro Actor, 4,99 ms Cold Start im p99, 1,07 ms dauerhafte Schreibvorgänge und 1,36 ms Lesevorgänge. Schreibvorgänge gelten als bestätigt, sobald SSDs in zwei von drei Availability Zones sie haben, und werden dann im Hintergrund gebündelt an S3 geschickt, womit S3 nicht im Schreibpfad liegt; das Team setzt die Speicherkosten bei etwa 10,4-mal weniger als drei replizierte EBS-gp3-Kopien an. Untätige Actors schlafen ein und wachen bei der nächsten Anfrage auf. Lizenz ist Apache 2.0, selbst hostbar mit einem Objektspeicher als einziger Abhängigkeit (S3, GCS, Azure Blob, MinIO, R2), dazu Managed Cloud und BYOC. Das Team baute früher Gameserver-Orchestrierung für Diep und Krunker. Sie positionieren es als offene Alternative zu Cloudflare Durable Objects, ohne 128-MB-Speichergrenze, ohne 10-GB-SQLite-Limit und ohne zufällige Verdrängung.
+***** Take
+Der Rahmen 'ein Actor pro Agent' ist der schwächste Teil der Erzählung, und Kommentator esafak sagte warum: Die Latenz eines Agenten wird vom Warten auf das Modell dominiert, ein 5-ms-Cold-Start spart also nichts, was ein Nutzer merkt. Die Dauerhaftigkeit ist das eigentliche Produkt. Ein SQLite pro Mandant, das Neustarts übersteht, kostenlos schläft und nicht bei 10 GB endet, löst ein Problem, über das Durable-Objects-Nutzer seit Jahren klagen, und Apache 2.0 mit einem Bucket als einziger Abhängigkeit heißt, dass man tatsächlich gehen kann. Man sollte mit der Speicherarchitektur führen, nicht mit den Agenten. Eine Frage blieb im Thread unbeantwortet: wie Fencing funktioniert, wenn ein Actor netzwerkseitig abgetrennt wird, während ein gebündelter Schreibvorgang noch nach S3 abfließt.
+***** Comments
+- Meine erste Reaktion: Das ist seltsam; agentische Workloads haben viele Probleme, aber Orchestrierungsgeschwindigkeit gehört nicht dazu. Die meiste Zeit wartet man auf das Modell! Ist das für kleine Modelle? Ich hätte mit dem Dauerhaftigkeitsaspekt begonnen.
+- Rivet ist sehr cool. Wir haben ein Stück unserer Infrastruktur, das als Cloudflare Durable Object in seiner eigenen kleinen Märchenwelt lebte, in unsere eigene Infrastruktur innerhalb der VPC geholt. Eine sehr angenehme Erfahrung.
+- Interessante Idee, aber die UX ist derzeit furchtbar; mein Codex oder Claude ist genauso ratlos wie ich, was man wie benutzen soll und wie all die Randfälle aussehen.
+** From Linux to Wikipedia: How Volunteers Build the Internet :opensource:wikipedia:linux:culture:economics:
+:PROPERTIES:
+:ID:       50388122
+:URL:      https://thereader.mitpress.mit.edu/from-linux-to-wikipedia-how-volunteers-build-the-internet/
+:HN_URL:   https://news.ycombinator.com/item?id=50388122
+:POINTS:   96
+:COMMENTS: 37
+:BY:       jonbaer
+:END:
+
+*** TLDR
+An excerpt from Peer Production by Benjamin Mako Hill, Christian Pentzold and Aaron Shaw (MIT Press). The authors define peer production by four properties: mostly non-monetary incentives, decentralised self-governance, decentralised task assignment, and output held as a commons. Their cases are Linux, which started as Torvalds's 1991 hobby and now runs billions of devices, Wikipedia with over a billion edits, and the 2011 GuttenPlag Wiki, where volunteers documented plagiarism in a German politician's dissertation and he resigned within weeks. The argument is that this contradicts the standard economic assumption that pay and hierarchy are required to produce valuable goods. The excerpt is also explicit about the limits: successful peer-produced communities are rare, the model has advanced fastest in the Global North and skews wealthy and credentialed, projects accumulate internal hierarchy and bureaucracy as they scale, and newcomers hit barriers including sexism and harassment. It does not discuss funding or burnout.
+
+*** Take
+The honest finding in this excerpt is the one HN skipped: these communities are rare, and the paper does not claim a repeatable method. Linux and Wikipedia are survivors from a period when being able to contribute meant having a compiler and spare evenings, which selected for exactly the wealthy, credentialed Global North population the authors flag. Commenter elvisgodevelop named the gap the framework leaves open better than the excerpt does: the four properties say nothing about who owns the result, which is why Reddit could run on the same volunteer labour and still end up the cautionary tale. Build the commons rights before the valuation arrives, not after.
+
+*** Comments
+
+**** elvisgodevelop
+:PROPERTIES:
+:COMMENT_ID: 50389079
+:END:
+Peer production didn't vanish, it got layered. Linux/Wikipedia are the wins; Reddit is the cautionary tale: decentralized volunteer work, centralized ownership. Today a lot of "community" is free upstream labor for platforms and models, without fork/leaver rights. Saving the spirit probably means designing commons before the IPO moment.
+
+**** niemandhier
+:PROPERTIES:
+:COMMENT_ID: 50389049
+:END:
+Things were build by passionate people, who had the skills and the means to do it. I feel that modern tech first took away the passion, by making everything a product, than took away the means by making everything cloud, and now kills the skills by eutrophizing our brains with AI. There is no cabal of evil tech that pushes this, but the results are the same.
+
+**** komali2
+:PROPERTIES:
+:COMMENT_ID: 50389140
+:END:
+I'm reminded of the meme, a caveman honing a spear, with the tag "How is he innovating without financial incentive?" I feel like the "conventional" understanding of human behavior is the odd one here.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+从 Linux 到维基百科：志愿者如何建造互联网
+***** TLDR
+本文摘自 Benjamin Mako Hill、Christian Pentzold 和 Aaron Shaw 合著的《Peer Production》（MIT 出版社）。作者用四个特征定义同侪生产：激励以非货币为主、去中心化的自治、去中心化的任务分配，以及成果作为公共资源持有。书中案例包括 Linux——始于 Torvalds 1991 年的业余项目，如今运行在数十亿台设备上；维基百科——累计超过十亿次编辑；以及 2011 年的 GuttenPlag Wiki，志愿者在其中记录了一位德国政治人物博士论文中的抄袭，他在数周内辞职。论点是这些案例与「必须有报酬和层级才能生产有价值的东西」这一主流经济学假设相矛盾。这段摘录也明确指出了局限：成功的同侪生产社区很少见，这种模式在全球北方推进最快，参与者偏向富裕且受过高等教育的人群，项目随规模增长会积累内部层级和官僚化，新人还会遇到包括性别歧视和骚扰在内的障碍。文章没有讨论资金和倦怠问题。
+***** Take
+这段摘录里最诚实的发现正是 HN 跳过的那条：这类社区很少见，而且论文并没有声称存在可复制的方法。Linux 和维基百科是一个特定时期的幸存者，当时能参与就意味着你有一台编译器和空闲的夜晚，这恰好筛选出作者所指出的那类富裕、受过高等教育的全球北方人群。评论者 elvisgodevelop 比摘录本身更准确地指出了这套框架留下的缺口：那四个特征完全没有涉及成果归谁所有，这正是 Reddit 能靠同样的志愿劳动运转、最终却成为反面教材的原因。该在估值到来之前就设计好公共资源的权利，而不是在之后。
+***** Comments
+- 同侪生产没有消失，它变成了分层结构。Linux 和维基百科是成功案例，Reddit 是警示故事：去中心化的志愿劳动，中心化的所有权。今天很多所谓「社区」都是平台和模型的免费上游劳动力，而且没有分叉权和退出权。要留住这种精神，大概意味着在 IPO 时刻到来之前就设计好公共资源。
+- 这些东西是由有热情的人建造的，他们既有技能也有条件。我觉得现代科技先是把一切变成产品，拿走了热情；然后把一切搬上云端，拿走了条件；现在又用 AI 让我们的大脑富营养化，正在抹掉技能。并没有什么邪恶科技集团在推动这一切，但结果是一样的。
+- 这让我想起那个梗图：一个原始人在磨矛，配文是「他没有经济激励怎么还在创新？」我觉得在这件事上，所谓「传统的」人类行为理解才是奇怪的那一方。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+LinuxからWikipediaへ: ボランティアはいかにインターネットを築いたか
+***** TLDR
+Benjamin Mako Hill、Christian Pentzold、Aaron Shawによる『Peer Production』(MIT Press)からの抜粋。著者らはピアプロダクションを4つの性質で定義する。動機が主に非金銭的であること、分散的な自己統治、分散的な作業割り当て、そして成果をコモンズとして保持することだ。事例はLinux(Torvaldsの1991年の趣味から始まり、今や数十億台で動いている)、10億件を超える編集を持つWikipedia、そして2011年のGuttenPlag Wiki(ボランティアがドイツの政治家の博士論文の盗用を記録し、数週間で本人が辞任した)。主張は、これが報酬と階層なしには価値ある財は生まれないという経済学の標準的前提に反するというものだ。この抜粋は限界についても明快だ。成功したピアプロダクションの共同体はまれで、このモデルはグローバルノースで最も速く進み、富裕で学歴の高い層に偏り、規模が大きくなると内部に階層と官僚制が積み上がり、新規参加者は性差別やハラスメントを含む障壁に当たる。資金や燃え尽きについては触れていない。
+***** Take
+この抜粋で最も正直な発見は、HNが飛ばした部分だ。こうした共同体はまれであり、論文は再現可能な手法を主張していない。LinuxとWikipediaは、貢献できることがコンパイラと空いた夜を持つことを意味した時代の生き残りで、それはまさに著者らが指摘する富裕で学歴の高いグローバルノースの層を選別する条件だった。コメント投稿者elvisgodevelopは、この枠組みが残した穴を抜粋よりうまく言い当てている。4つの性質は成果を誰が所有するかについて何も言っていない。だからRedditは同じボランティア労働の上で動きながら、教訓的な失敗例になり得たのだ。評価額が来る前にコモンズの権利を設計すべきで、後からでは遅い。
+***** Comments
+- ピアプロダクションは消えたのではなく、層になった。LinuxとWikipediaは勝ち筋、Redditは教訓だ。分散したボランティア労働に、中央集権的な所有権。今日の「コミュニティ」の多くは、プラットフォームやモデルへの無償の上流労働で、フォークや離脱の権利がない。その精神を救うには、おそらくIPOの瞬間より前にコモンズを設計することだ。
+- 物を作ったのは、技能と手段を持った情熱ある人々だった。現代のテックはまずすべてを製品にして情熱を奪い、次にすべてをクラウドにして手段を奪い、今はAIで脳を富栄養化して技能を殺していると感じる。これを推し進める邪悪なテックの秘密結社があるわけではないが、結果は同じだ。
+- 槍を研ぐ原始人に「金銭的動機なしにどうやって革新しているんだ?」と添えたミームを思い出す。この件では、いわゆる「従来の」人間行動理解のほうが奇妙に見える。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+리눅스에서 위키백과까지: 자원봉사자들은 어떻게 인터넷을 만들었나
+***** TLDR
+Benjamin Mako Hill, Christian Pentzold, Aaron Shaw가 쓴 『Peer Production』(MIT Press)의 발췌문이다. 저자들은 피어 프로덕션을 네 가지 속성으로 정의한다. 주로 비화폐적 동기, 분산된 자치, 분산된 과업 배분, 그리고 결과물을 공유재로 보유하는 것이다. 사례는 1991년 Torvalds의 취미에서 시작해 수십억 대의 기기에서 돌아가는 리눅스, 10억 건이 넘는 편집이 쌓인 위키백과, 그리고 자원봉사자들이 독일 정치인의 박사 논문 표절을 기록해 몇 주 만에 사퇴로 이어진 2011년 GuttenPlag Wiki다. 핵심 주장은 이것이 보수와 위계 없이는 가치 있는 재화를 만들 수 없다는 경제학의 표준 가정과 모순된다는 것이다. 발췌문은 한계도 분명히 밝힌다. 성공한 피어 프로덕션 공동체는 드물고, 이 모델은 글로벌 노스에서 가장 빠르게 발전했으며 부유하고 학력이 높은 층에 치우쳐 있고, 프로젝트는 규모가 커지면서 내부 위계와 관료제를 쌓고, 신규 참여자는 성차별과 괴롭힘을 포함한 장벽에 부딪힌다. 자금과 번아웃은 다루지 않는다.
+***** Take
+이 발췌문에서 가장 솔직한 발견은 HN이 건너뛴 부분이다. 이런 공동체는 드물고, 논문은 재현 가능한 방법을 주장하지 않는다. 리눅스와 위키백과는 기여할 수 있다는 것이 컴파일러와 여유 있는 저녁을 가졌다는 뜻이던 시기의 생존자이며, 그 조건이 바로 저자들이 지적한 부유하고 학력 높은 글로벌 노스 인구를 선별했다. 댓글 작성자 elvisgodevelop은 이 틀이 남긴 빈칸을 발췌문보다 정확히 짚었다. 네 속성은 결과물을 누가 소유하는지에 대해 아무 말도 하지 않으며, 그래서 Reddit은 같은 자원봉사 노동 위에서 돌아가면서도 결국 경고 사례가 될 수 있었다. 평가액이 도착하기 전에 공유재의 권리를 설계해야 한다.
+***** Comments
+- 피어 프로덕션은 사라진 게 아니라 층이 생겼다. 리눅스와 위키백과는 성공이고 Reddit은 경고다. 분산된 자원봉사 노동에 중앙집중된 소유권. 오늘날 상당수의 '커뮤니티'는 플랫폼과 모델을 위한 무상의 상류 노동이고, 포크나 이탈 권리가 없다. 그 정신을 지키려면 아마 IPO 순간 전에 공유재를 설계해야 한다.
+- 그것들을 만든 사람은 기술과 수단을 가진 열정적인 사람들이었다. 현대 기술은 먼저 모든 것을 제품으로 만들어 열정을 빼앗고, 다음엔 모든 것을 클라우드로 옮겨 수단을 빼앗고, 지금은 AI로 우리 뇌를 부영양화해 기술을 죽이고 있다고 느낀다. 이걸 밀어붙이는 악한 기술 집단이 있는 건 아니지만 결과는 같다.
+- 창을 다듬는 원시인에게 '금전적 인센티브도 없이 어떻게 혁신하고 있지?'라고 붙인 밈이 떠오른다. 이 문제에서는 이른바 '전통적인' 인간 행동 이해가 오히려 이상한 쪽인 것 같다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+De Linux a Wikipedia: cómo los voluntarios construyen internet
+***** TLDR
+Un extracto de Peer Production, de Benjamin Mako Hill, Christian Pentzold y Aaron Shaw (MIT Press). Los autores definen la producción entre pares por cuatro propiedades: incentivos mayoritariamente no monetarios, autogobierno descentralizado, asignación descentralizada de tareas y resultados mantenidos como procomún. Sus casos son Linux, que empezó como afición de Torvalds en 1991 y hoy corre en miles de millones de dispositivos, Wikipedia con más de mil millones de ediciones, y el GuttenPlag Wiki de 2011, donde voluntarios documentaron el plagio en la tesis doctoral de un político alemán y este dimitió en semanas. El argumento es que esto contradice el supuesto económico estándar de que hacen falta paga y jerarquía para producir bienes valiosos. El extracto también es explícito sobre los límites: las comunidades de producción entre pares que triunfan son raras, el modelo ha avanzado más rápido en el Norte Global y se inclina hacia personas ricas y con credenciales, los proyectos acumulan jerarquía interna y burocracia al crecer, y los recién llegados encuentran barreras que incluyen sexismo y acoso. No habla de financiación ni de desgaste.
+***** Take
+El hallazgo honesto de este extracto es el que HN se saltó: estas comunidades son raras y el libro no afirma tener un método repetible. Linux y Wikipedia son supervivientes de una época en la que poder contribuir significaba tener un compilador y tardes libres, lo que seleccionaba exactamente a esa población rica y titulada del Norte Global que los autores señalan. El comentarista elvisgodevelop nombró el hueco que deja el marco mejor que el propio extracto: las cuatro propiedades no dicen nada sobre quién posee el resultado, y por eso Reddit pudo funcionar con el mismo trabajo voluntario y acabar siendo el caso de advertencia. Hay que diseñar los derechos del procomún antes de que llegue la valoración, no después.
+***** Comments
+- La producción entre pares no desapareció, se estratificó. Linux y Wikipedia son las victorias; Reddit es la advertencia: trabajo voluntario descentralizado, propiedad centralizada. Hoy mucha "comunidad" es trabajo gratuito aguas arriba para plataformas y modelos, sin derecho a bifurcar ni a irse. Salvar ese espíritu pasa probablemente por diseñar los procomunes antes del momento de la salida a bolsa.
+- Las cosas las construyeron personas apasionadas que tenían las habilidades y los medios. Siento que la tecnología moderna primero quitó la pasión, convirtiendo todo en producto; después quitó los medios, llevando todo a la nube; y ahora mata las habilidades eutrofizando nuestros cerebros con IA. No hay una camarilla tecnológica maligna que lo empuje, pero el resultado es el mismo.
+- Me acuerdo del meme de un cavernícola afilando una lanza con el texto "¿cómo está innovando sin incentivo económico?". Me parece que aquí lo raro es la comprensión "convencional" del comportamiento humano.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Von Linux zu Wikipedia: Wie Freiwillige das Internet bauen
+***** TLDR
+Ein Auszug aus Peer Production von Benjamin Mako Hill, Christian Pentzold und Aaron Shaw (MIT Press). Die Autoren definieren Peer Production über vier Eigenschaften: überwiegend nicht monetäre Anreize, dezentrale Selbstverwaltung, dezentrale Aufgabenverteilung und Ergebnisse, die als Gemeingut gehalten werden. Ihre Fälle sind Linux, das 1991 als Torvalds' Hobby begann und heute auf Milliarden Geräten läuft, Wikipedia mit über einer Milliarde Bearbeitungen, und das GuttenPlag Wiki von 2011, in dem Freiwillige Plagiate in der Dissertation eines deutschen Politikers dokumentierten, der binnen Wochen zurücktrat. Das Argument: Dies widerspricht der ökonomischen Standardannahme, dass Bezahlung und Hierarchie nötig sind, um wertvolle Güter herzustellen. Der Auszug benennt die Grenzen ausdrücklich: Erfolgreiche Peer-Production-Gemeinschaften sind selten, das Modell ist im Globalen Norden am weitesten gekommen und neigt zu wohlhabenden, formal gebildeten Beteiligten, Projekte bauen beim Wachsen interne Hierarchie und Bürokratie auf, und Neuankömmlinge stoßen auf Hürden wie Sexismus und Belästigung. Über Finanzierung und Erschöpfung spricht er nicht.
+***** Take
+Der ehrlichste Befund dieses Auszugs ist der, den HN übersprungen hat: Diese Gemeinschaften sind selten, und das Buch behauptet keine wiederholbare Methode. Linux und Wikipedia sind Überlebende einer Zeit, in der Beitragen zu können hieß, einen Compiler und freie Abende zu haben, was genau die wohlhabende, formal gebildete Bevölkerung des Globalen Nordens auswählte, auf die die Autoren hinweisen. Kommentator elvisgodevelop benannte die Lücke des Rahmens besser als der Auszug selbst: Die vier Eigenschaften sagen nichts darüber, wem das Ergebnis gehört, und darum konnte Reddit auf derselben freiwilligen Arbeit laufen und trotzdem zum Mahnbeispiel werden. Die Rechte am Gemeingut müssen vor der Bewertung entworfen werden, nicht danach.
+***** Comments
+- Peer Production ist nicht verschwunden, sie hat sich geschichtet. Linux und Wikipedia sind die Erfolge, Reddit ist das Mahnbeispiel: dezentrale freiwillige Arbeit, zentralisiertes Eigentum. Heute ist viel "Community" unbezahlte Vorleistung für Plattformen und Modelle, ohne Fork- oder Austrittsrechte. Den Geist zu retten heißt wohl, die Gemeingüter vor dem Börsengang zu entwerfen.
+- Gebaut wurde das von begeisterten Menschen, die die Fähigkeiten und die Mittel dazu hatten. Mein Gefühl: Die moderne Technik nahm erst die Begeisterung, indem sie alles zum Produkt machte, dann die Mittel, indem sie alles in die Cloud verlegte, und tötet jetzt die Fähigkeiten, indem sie unsere Gehirne mit KI überdüngt. Es gibt keine böse Tech-Clique, die das vorantreibt, aber das Ergebnis ist dasselbe.
+- Ich denke an das Meme mit dem Höhlenmenschen, der einen Speer schärft, mit dem Text "Wie innoviert er ohne finanziellen Anreiz?". Mir kommt hier das "konventionelle" Verständnis menschlichen Verhaltens als das Seltsame vor.
