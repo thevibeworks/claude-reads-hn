@@ -1,0 +1,512 @@
+#+TITLE: HN Digest 2026-11-07 01:00 UTC
+#+DATE: 2026-11-07T01:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+A Firecracker microVM escape with the jailer turned off, sodium-ion still $29/kWh short of parity, and METR says Anthropic's own research got twice as fast
+
+* Highlights
+- Firecracker escape: hijack the vCPU thread's saved registers, get root on the host
+- METR: Anthropic capability progress doubled, 80% credited to automation, most evidence redacted
+- Sodium-ion at $229/kWh vs LFP's $200, with 70 GWh under supply agreements
+- UEFI bare metal: EFI_STATUS is 64-bit, chars are 2 bytes, and there is no gdb
+- Cheap model plus Opus escalation: 95.3% accuracy for $2.94 per 1,000 identities
+
+* Stories
+
+** Firecracker VM Escape: PwnEscape Part 2 :security:virtualization:firecracker:exploit:
+:PROPERTIES:
+:ID:       50397219
+:URL:      https://pwn.ai/blog/firecracker-escape
+:HN_URL:   https://news.ycombinator.com/item?id=50397219
+:POINTS:   158
+:COMMENTS: 71
+:BY:       SerCe
+:END:
+
+*** TLDR
+Part 2 of the PwnEscape series turns the host memory read/write primitive from Part 1 into full guest-to-host code execution on Firecracker. The guest writes to a serial port to force a KVM exit, which makes the host kernel save the vCPU thread's registers into a pt_regs structure. The attacker plants a recognizable nonce in guest memory, reverse-maps it through the host page tables to find the Firecracker process, defeats ASLR by matching known code signatures in the binary, then overwrites the saved instruction pointer, stack pointer and arguments in that register frame. The proof of concept makes Firecracker call its own write(2) and print a marker to stderr, with the VM still running and SSH still responsive afterwards. The authors state plainly that their test configuration ran with no jailer, so Firecracker's production privilege dropping, namespaces and seccomp filters were absent.
+
+*** Take
+The research is solid and the writeup is honest about its own limits, which is more than most escape posts manage. But the configuration had no jailer, and the jailer is the one component every real Firecracker deployment turns on. What this actually proves is that the VMM process alone is not a security boundary, which is what AWS has been saying in its own documentation all along. The interesting work is the assessment nobody has published yet: what is still reachable after you own a jailed, seccomp-filtered Firecracker.
+
+*** Comments
+
+**** scoodah
+I really wish they would have expanded on the paragraph about the configuration having no jailer. Production containment drops privileges and restricts the process through namespaces and seccomp.
+
+**** lrvick
+I am more convinced by the day that the Nova Microhypervisor approach is correct. Do virtualization with a tiny formally verified microkernel and have complex kernels like Linux run underneath.
+
+**** zX41ZdbW
+I have a demo service that entirely relies on Firecracker VMs: the ClickBench playground. It hosts hundreds of database engines, many with vulnerabilities. We can PoC the escape on that service.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Firecracker 虚拟机逃逸：PwnEscape 第二部分
+***** TLDR
+PwnEscape 系列第二部分把第一部分得到的宿主机内存读写能力变成了完整的从客户机到宿主机的代码执行。客户机写串口触发 KVM 退出，宿主机内核把 vCPU 线程的寄存器保存到 pt_regs 结构中。攻击者在客户机内存里放入可识别的随机标记，通过宿主机页表反向映射找到 Firecracker 进程，再用已知代码特征匹配绕过 ASLR，最后改写保存下来的指令指针、栈指针和参数。概念验证让 Firecracker 调用自己的 write(2) 向 stderr 打印了一个标记，虚拟机依旧运行、SSH 依旧响应。作者明确说明测试环境没有启用 jailer，因此 Firecracker 生产环境的权限降级、命名空间和 seccomp 过滤都不存在。
+***** Take
+研究本身扎实，而且作者坦承了自己的局限，这比大多数逃逸文章做得好。但测试配置没有 jailer，而 jailer 恰恰是所有真实 Firecracker 部署都会开启的组件。这实际证明的是 VMM 进程本身不是安全边界，而这正是 AWS 自己文档里一直在讲的事。真正有意思的工作还没人发表：当你拿下一个带 jailer、有 seccomp 过滤的 Firecracker 之后，还能碰到什么。
+***** Comments
+- 我真希望他们能把那段关于测试配置没有 jailer 的话展开讲讲。生产环境的隔离会降权，并用命名空间和 seccomp 限制进程。
+- 我越来越相信 Nova 微管理程序的路线是对的。用一个经过形式化验证的小微内核做虚拟化，让 Linux 这类复杂内核跑在它下面。
+- 我有个演示服务完全跑在 Firecracker 虚拟机上：ClickBench playground。它托管了上百个数据库引擎，很多都有漏洞。我们可以在那个服务上复现这个逃逸。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Firecracker VM脱出：PwnEscape パート2
+***** TLDR
+PwnEscapeシリーズのパート2は、パート1で得たホストメモリの読み書きプリミティブを、ゲストからホストへの完全なコード実行に変えた。ゲストがシリアルポートに書き込んでKVM exitを起こすと、ホストカーネルはvCPUスレッドのレジスタをpt_regs構造体に保存する。攻撃者はゲストメモリに識別可能なnonceを置き、ホストのページテーブルを逆引きしてFirecrackerプロセスを特定し、既知のコード署名との照合でASLRを突破し、保存されたインストラクションポインタ、スタックポインタ、引数を書き換える。PoCではFirecracker自身のwrite(2)を呼ばせてstderrにマーカーを出力させ、その後もVMは稼働しSSHも応答していた。著者はテスト構成にjailerがなかったと明記しており、本番の権限降格、名前空間、seccompフィルタは使われていない。
+***** Take
+研究は堅実で、しかも自分の限界を正直に書いている。脱出系の記事としては珍しいことだ。ただし構成にjailerがなく、jailerは実運用のFirecrackerなら必ず有効にする部品だ。これが示しているのはVMMプロセス単体がセキュリティ境界ではないという話で、それはAWSが自社ドキュメントでずっと言ってきたことだ。面白い検証はまだ誰も出していない。jailerとseccompで固めたFirecrackerを奪ったあと、何に手が届くのかだ。
+***** Comments
+- テスト構成にjailerがなかったという段落をもっと展開してほしかった。本番の封じ込めは権限を落とし、名前空間とseccompでプロセスを制限する。
+- Nova Microhypervisorの方向が正しいという確信が日々強まっている。形式検証済みの小さなマイクロカーネルで仮想化し、Linuxのような複雑なカーネルはその下で動かす。
+- Firecracker VMに完全に依存したデモサービスがある。ClickBench playgroundだ。数百のデータベースエンジンをホストしていて、多くに脆弱性がある。あのサービスで脱出をPoCできる。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Firecracker VM 탈출: PwnEscape 2부
+***** TLDR
+PwnEscape 시리즈 2부는 1부에서 확보한 호스트 메모리 읽기/쓰기 프리미티브를 게스트에서 호스트로의 완전한 코드 실행으로 바꿔놓았다. 게스트가 시리얼 포트에 써서 KVM exit를 유발하면 호스트 커널이 vCPU 스레드의 레지스터를 pt_regs 구조체에 저장한다. 공격자는 게스트 메모리에 식별 가능한 논스를 심고 호스트 페이지 테이블을 역추적해 Firecracker 프로세스를 찾아낸 뒤, 알려진 코드 서명과 대조해 ASLR을 우회하고 저장된 명령 포인터, 스택 포인터, 인수를 덮어쓴다. PoC는 Firecracker가 자기 write(2)를 호출해 stderr에 마커를 출력하게 만들었고, 그 뒤에도 VM은 살아 있고 SSH도 응답했다. 저자들은 테스트 환경에 jailer가 없었다고 명시했으므로, 프로덕션의 권한 축소, 네임스페이스, seccomp 필터는 빠져 있었다.
+***** Take
+연구는 탄탄하고 저자들이 자기 한계를 솔직히 밝힌 점은 보통의 탈출 글보다 낫다. 그러나 구성에 jailer가 없었고, jailer는 실제 Firecracker 배포라면 모두 켜는 구성 요소다. 이 글이 실제로 증명한 건 VMM 프로세스 자체가 보안 경계가 아니라는 것인데, 그건 AWS가 자사 문서에서 줄곧 말해온 내용이다. 정작 궁금한 작업은 아직 아무도 공개하지 않았다. jailer와 seccomp로 묶인 Firecracker를 장악한 다음 무엇에 손이 닿는지다.
+***** Comments
+- 테스트 구성에 jailer가 없었다는 문단을 더 풀어줬으면 좋았다. 프로덕션 격리는 권한을 낮추고 네임스페이스와 seccomp로 프로세스를 제한한다.
+- Nova 마이크로하이퍼바이저 방식이 맞다는 확신이 날마다 커진다. 형식 검증된 작은 마이크로커널로 가상화하고 Linux 같은 복잡한 커널은 그 아래서 돌리는 것이다.
+- Firecracker VM에 전적으로 의존하는 데모 서비스를 운영한다. ClickBench 플레이그라운드다. 수백 개의 데이터베이스 엔진을 올려두었고 다수가 취약점을 갖고 있다. 그 서비스에서 탈출을 PoC할 수 있다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Escape de VM en Firecracker: PwnEscape parte 2
+***** TLDR
+La segunda parte de la serie PwnEscape convierte la primitiva de lectura y escritura de memoria del host obtenida en la parte 1 en ejecución completa de código del invitado al host. El invitado escribe en un puerto serie para forzar una salida de KVM, lo que hace que el núcleo del host guarde los registros del hilo vCPU en una estructura pt_regs. El atacante coloca un nonce reconocible en la memoria del invitado, lo rastrea hacia atrás por las tablas de páginas del host para localizar el proceso de Firecracker, vence ASLR comparando firmas de código conocidas y sobrescribe el puntero de instrucción, el puntero de pila y los argumentos guardados. La prueba de concepto hace que Firecracker llame a su propio write(2) e imprima un marcador en stderr, con la VM todavía en marcha y SSH respondiendo. Los autores indican que su configuración de prueba no tenía jailer, así que faltaban la reducción de privilegios, los namespaces y los filtros seccomp de producción.
+***** Take
+La investigación es sólida y es honesta sobre sus propios límites, algo poco común en este tipo de artículos. Pero la configuración no tenía jailer, y el jailer es el componente que toda instalación real de Firecracker activa. Lo que esto demuestra es que el proceso VMM por sí solo no es una frontera de seguridad, que es justo lo que AWS lleva diciendo en su propia documentación. El trabajo interesante es el que nadie ha publicado: qué sigue siendo alcanzable después de tomar un Firecracker enjaulado y filtrado con seccomp.
+***** Comments
+- Ojalá hubieran ampliado el párrafo sobre que la configuración no tenía jailer. La contención de producción baja privilegios y restringe el proceso con namespaces y seccomp.
+- Cada día estoy más convencido de que el enfoque del microhipervisor Nova es el correcto. Virtualizar con un micronúcleo pequeño y verificado formalmente, y dejar que núcleos complejos como Linux corran por debajo.
+- Tengo un servicio de demostración que depende por completo de VMs de Firecracker: el playground de ClickBench. Aloja cientos de motores de bases de datos, muchos con vulnerabilidades. Podemos hacer el PoC del escape en ese servicio.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Firecracker-VM-Escape: PwnEscape Teil 2
+***** TLDR
+Teil 2 der PwnEscape-Reihe verwandelt das in Teil 1 gewonnene Lese- und Schreibprimitiv auf Host-Speicher in vollständige Codeausführung vom Gast auf den Host. Der Gast schreibt auf einen seriellen Port und erzwingt damit einen KVM-Exit, worauf der Host-Kernel die Register des vCPU-Threads in einer pt_regs-Struktur ablegt. Der Angreifer platziert eine erkennbare Nonce im Gastspeicher, verfolgt sie über die Seitentabellen des Hosts zurück zum Firecracker-Prozess, umgeht ASLR durch Abgleich bekannter Codesignaturen und überschreibt den gespeicherten Instruction Pointer, Stack Pointer und die Argumente. Der Proof of Concept lässt Firecracker den eigenen write(2) aufrufen und eine Markierung auf stderr ausgeben, wobei die VM weiterläuft und SSH antwortet. Die Autoren schreiben klar, dass ihre Testkonfiguration keinen Jailer hatte, die Privilegienabgabe, Namespaces und seccomp-Filter aus dem Produktivbetrieb also fehlten.
+***** Take
+Die Arbeit ist gut und sie benennt ihre eigenen Grenzen, was bei Escape-Artikeln selten vorkommt. Aber die Konfiguration hatte keinen Jailer, und der Jailer ist genau das Bauteil, das jeder echte Firecracker-Betrieb einschaltet. Belegt wird damit, dass der VMM-Prozess allein keine Sicherheitsgrenze ist, und genau das steht seit Langem in der Dokumentation von AWS. Die interessante Untersuchung hat noch niemand veröffentlicht: was nach der Übernahme eines eingesperrten, seccomp-gefilterten Firecracker noch erreichbar ist.
+***** Comments
+- Ich hätte mir gewünscht, dass sie den Absatz darüber ausführen, dass die Konfiguration keinen Jailer hatte. Die Produktionsabschottung senkt Privilegien und beschränkt den Prozess über Namespaces und seccomp.
+- Ich bin täglich mehr überzeugt, dass der Ansatz des Nova-Microhypervisors richtig ist. Virtualisierung mit einem kleinen, formal verifizierten Mikrokernel, und komplexe Kernel wie Linux laufen darunter.
+- Ich betreibe einen Demodienst, der vollständig auf Firecracker-VMs beruht: den ClickBench-Playground. Dort laufen hunderte Datenbank-Engines, viele mit Schwachstellen. Wir können den Escape auf diesem Dienst als PoC zeigen.
+** AI is dramatically accelerating AI research :ai:research:metr:anthropic:
+:PROPERTIES:
+:ID:       50397994
+:URL:      https://www.planned-obsolescence.org/p/ai-is-dramatically-accelerating-ai
+:HN_URL:   https://news.ycombinator.com/item?id=50397994
+:POINTS:   184
+:COMMENTS: 141
+:BY:       yurivish
+:END:
+
+*** TLDR
+Ajeya Cotra writes up a METR report on AI R&D acceleration inside Anthropic, noting she neither worked on the project nor saw the unredacted version. The core measurement: between October 2025 and October 2026, capability progress at Anthropic ran about twice as fast as over the preceding twelve months, measured with an internal variant of the Epoch Capabilities Index called AECI. METR attributes roughly 80% of that speedup to AI automation. Anthropic staff self-report around 12x labor uplift from internal models, while Cotra's own Cobb-Douglas arithmetic says a 2x capability acceleration needs only 4x to 9x labor speedup at first, rising toward 10x as the effect compounds. The report found no clear bottleneck that would stop the compounding, and Cotra's framing is that a month of work becoming a week becomes a day. She concedes most supporting evidence is redacted and that the report's authors were themselves very uncertain about diminishing returns.
+
+*** Take
+The number everyone will repeat is 2x. The number that decides whether to believe it is the 80% attributed to automation, and that one rests on evidence the public cannot see. Self-reported 12x uplift from the staff whose work is being measured is the weakest link in the chain, and chr15m's objection in the thread is the one the post never addresses: each dot on those curves is a bundle of benchmarks, and benchmarks are exactly the thing a well-funded lab can train against. An acceleration you can only observe through your own index, with the inputs redacted, is a claim about measurement before it is a claim about capability.
+
+*** Comments
+
+**** chr15m
+Every dot in these graphs is multiple benchmarks smooshed together. Benchmarks are by definition a curated set of things that can be measured, and things that can be measured can be expensively trained on.
+
+**** nsilvestri
+AI is accelerating my work, work which only exists because of AI. Without AI I would be slower at my individual tasks, but stepping back, I'm not changing the world any faster than before.
+
+**** cronin101
+I wonder how much of this is vertical scaling of model intelligence in the weights versus the sheer amount of capital being thrown at training and horizontal scaling of agent swarms.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+AI 正在大幅加速 AI 研究
+***** TLDR
+Ajeya Cotra 介绍了 METR 关于 Anthropic 内部 AI 研发加速的报告，并说明自己既没参与该项目，也没看过未删节版本。核心测量结果是：从 2025 年 10 月到 2026 年 10 月，Anthropic 的能力进展速度大约是前十二个月的两倍，使用的是 Epoch 能力指数的内部变体 AECI。METR 把其中约 80% 的加速归因于 AI 自动化。Anthropic 员工自述内部模型带来约 12 倍的劳动提升，而 Cotra 自己用柯布-道格拉斯模型算出，两倍的能力加速起初只需 4 到 9 倍的劳动加速，随着效应叠加会升到约 10 倍。报告没有发现明显的瓶颈能阻止这种叠加，Cotra 的说法是：一个月的工作量变成一周，再变成一天。她承认大部分支撑证据被删节，报告作者本身对收益递减问题也非常不确定。
+***** Take
+所有人都会转述的数字是两倍。真正决定该不该相信的数字，是归因于自动化的那 80%，而它依赖的是公众看不到的证据。被测量的员工自己报告 12 倍提升，这是整条链条里最薄弱的一环。讨论里 chr15m 的反驳正是文章从未回应的：那些曲线上的每个点都是一堆基准测试的合并，而基准测试恰恰是一个资金充裕的实验室可以专门训练的东西。只能通过自家指数观察、输入又被删节的加速，首先是一个关于测量的主张，其次才是关于能力的主张。
+***** Comments
+- 这些图里每个点都是多个基准测试揉在一起。基准测试本质上就是一组被挑选出来、可以被衡量的东西，而可以被衡量的东西就可以被昂贵地训练。
+- AI 在加速我的工作，而这份工作本身只因为 AI 才存在。没有 AI 我做每项具体任务会更慢，但往后退一步看，我改变世界的速度并没有比以前快。
+- 我想知道这里有多少来自权重中模型智能的纵向提升，有多少来自砸进训练的巨量资本和智能体集群的横向扩张。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+AIがAI研究を大幅に加速させている
+***** TLDR
+Ajeya CotraがAnthropic内部のAI研究開発の加速についてのMETRレポートを紹介している。本人はプロジェクトに関わっておらず、未編集版も見ていないと明記している。中心的な計測結果は、2025年10月から2026年10月のあいだ、Anthropicの能力進展が直前の12か月のおよそ2倍の速さで進んだというもので、Epoch Capabilities Indexの内部版AECIで測られている。METRはその加速の約80%をAIによる自動化に帰している。Anthropicの社員は内部モデルによる労働の底上げを約12倍と自己申告しているが、Cotra自身のコブ=ダグラス計算では、2倍の能力加速には当初4倍から9倍の労働加速で足り、効果が積み重なるにつれ約10倍に上がるという。レポートは積み重なりを止める明確なボトルネックを見つけておらず、Cotraは1か月分の仕事が1週間になり、やがて1日になると表現する。彼女は裏付け証拠の大半が編集削除されており、報告の著者自身も収穫逓減についてきわめて不確かだったと認めている。
+***** Take
+誰もが繰り返す数字は2倍だ。信じるかどうかを決める数字は自動化に帰された80%で、それは公開されていない証拠に依存している。測られている当の社員が自己申告する12倍は、この連鎖のいちばん弱い環だ。スレッドでのchr15mの反論こそ記事が答えていない点である。曲線上の各点は複数のベンチマークの束で、ベンチマークは資金の潤沢な研究所がまさに狙って訓練できる対象だ。自前の指標でしか観測できず、入力が伏せられた加速は、能力の主張である前に計測の主張だ。
+***** Comments
+- このグラフの点はどれも複数のベンチマークを混ぜたものだ。ベンチマークとは定義上、測定可能なものを選んだ集合であり、測定できるものは金をかけて訓練できる。
+- AIは私の仕事を加速している。その仕事はAIがあるからこそ存在する。AIなしなら個々の作業は遅くなるが、一歩引けば以前より速く世界を変えてはいない。
+- これがどれだけ重みの中のモデル知能の垂直的向上によるもので、どれだけが訓練に注がれた莫大な資本とエージェント群の水平的拡張によるものなのか気になる。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+AI가 AI 연구를 크게 가속하고 있다
+***** TLDR
+Ajeya Cotra가 Anthropic 내부의 AI 연구개발 가속에 관한 METR 보고서를 정리했다. 본인은 해당 프로젝트에 참여하지 않았고 비공개 원본도 보지 못했다고 밝혔다. 핵심 측정값은 2025년 10월부터 2026년 10월 사이 Anthropic의 역량 진전이 직전 12개월의 약 두 배 속도로 진행됐다는 것이며, Epoch Capabilities Index의 내부 변형인 AECI로 측정했다. METR은 그 가속의 약 80%를 AI 자동화에 돌린다. Anthropic 직원들은 내부 모델에서 약 12배의 노동 향상을 체감한다고 자체 보고했지만, Cotra 자신의 콥-더글러스 계산으로는 2배의 역량 가속에 처음에는 4~9배의 노동 가속만 필요하고, 효과가 누적되면서 약 10배로 올라간다. 보고서는 누적을 막을 뚜렷한 병목을 찾지 못했고, Cotra는 한 달치 작업이 한 주가 되고 다시 하루가 된다고 표현한다. 그는 뒷받침 증거 대부분이 비공개 처리됐고 보고서 저자들 역시 수확 체감 문제에 매우 불확실했다고 인정한다.
+***** Take
+모두가 옮길 숫자는 2배다. 믿을지를 결정하는 숫자는 자동화에 귀속된 80%이고, 그것은 대중이 볼 수 없는 증거에 기대고 있다. 측정 대상인 직원들이 스스로 보고한 12배가 이 연쇄의 가장 약한 고리다. 스레드에서 chr15m이 제기한 반론이 바로 글이 답하지 않은 지점이다. 그 곡선의 각 점은 여러 벤치마크를 묶은 것이고, 벤치마크는 자금이 넉넉한 연구소가 겨냥해 학습시킬 수 있는 바로 그 대상이다. 자기 지표로만 관측되고 입력은 가려진 가속은 역량에 관한 주장이기 전에 측정에 관한 주장이다.
+***** Comments
+- 이 그래프의 모든 점은 여러 벤치마크를 뭉쳐놓은 것이다. 벤치마크는 정의상 측정 가능한 것들을 골라 모은 집합이고, 측정 가능한 것은 비싸게 학습시킬 수 있다.
+- AI가 내 일을 가속하고 있는데, 그 일은 AI 때문에 생긴 일이다. AI 없이는 개별 작업이 더 느리겠지만 한 걸음 물러나 보면 전보다 세상을 더 빨리 바꾸고 있지는 않다.
+- 이게 가중치 속 모델 지능의 수직적 향상에서 얼마나 오고, 학습에 쏟아부은 막대한 자본과 에이전트 군집의 수평적 확장에서 얼마나 오는지 궁금하다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+La IA está acelerando drásticamente la investigación en IA
+***** TLDR
+Ajeya Cotra resume un informe de METR sobre la aceleración del I+D de IA dentro de Anthropic, aclarando que no participó en el proyecto ni vio la versión sin censurar. La medición central: entre octubre de 2025 y octubre de 2026, el progreso en capacidades de Anthropic avanzó unas dos veces más rápido que en los doce meses anteriores, medido con una variante interna del Epoch Capabilities Index llamada AECI. METR atribuye alrededor del 80% de esa aceleración a la automatización por IA. El personal de Anthropic declara por su cuenta un aumento de productividad de unas 12 veces con los modelos internos, mientras que la aritmética Cobb-Douglas de Cotra indica que una aceleración de capacidades de 2x solo necesita al principio de 4x a 9x de aceleración laboral, subiendo hacia 10x a medida que el efecto se acumula. El informe no encontró un cuello de botella claro que detenga esa acumulación, y Cotra lo describe así: un mes de trabajo pasa a ser una semana y luego un día. Reconoce que la mayor parte de la evidencia está censurada y que los propios autores tenían mucha incertidumbre sobre los rendimientos decrecientes.
+***** Take
+El número que todos repetirán es 2x. El número que decide si creerlo es el 80% atribuido a la automatización, y ese se apoya en evidencia que el público no puede ver. Un aumento de 12x declarado por el mismo personal cuyo trabajo se está midiendo es el eslabón más débil de la cadena, y la objeción de chr15m en el hilo es la que el artículo nunca responde: cada punto de esas curvas es un paquete de benchmarks, y los benchmarks son justo lo que un laboratorio con dinero puede entrenar a propósito. Una aceleración que solo se observa con tu propio índice, con las entradas censuradas, es primero una afirmación sobre medición y solo después sobre capacidad.
+***** Comments
+- Cada punto de estas gráficas son varios benchmarks mezclados. Un benchmark es por definición un conjunto curado de cosas medibles, y lo medible se puede entrenar con mucho dinero.
+- La IA acelera mi trabajo, un trabajo que solo existe por la IA. Sin IA sería más lento en mis tareas, pero si doy un paso atrás, no estoy cambiando el mundo más rápido que antes.
+- Me pregunto cuánto de esto viene del escalado vertical de la inteligencia del modelo en los pesos y cuánto del enorme capital volcado en entrenamiento y del escalado horizontal de enjambres de agentes.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+KI beschleunigt die KI-Forschung drastisch
+***** TLDR
+Ajeya Cotra fasst einen METR-Bericht zur Beschleunigung der KI-Forschung bei Anthropic zusammen und stellt klar, dass sie nicht am Projekt mitgearbeitet und die unredigierte Fassung nicht gesehen hat. Die zentrale Messung: Zwischen Oktober 2025 und Oktober 2026 lief der Fähigkeitsfortschritt bei Anthropic etwa doppelt so schnell wie in den zwölf Monaten davor, gemessen mit einer internen Variante des Epoch Capabilities Index namens AECI. METR schreibt rund 80 Prozent dieser Beschleunigung der KI-Automatisierung zu. Anthropic-Beschäftigte berichten selbst von etwa zwölffacher Arbeitsverstärkung durch interne Modelle, während Cotras eigene Cobb-Douglas-Rechnung ergibt, dass eine Verdopplung der Fähigkeitsbeschleunigung zunächst nur das Vier- bis Neunfache an Arbeitsbeschleunigung braucht und mit zunehmender Kumulation auf etwa das Zehnfache steigt. Der Bericht fand keinen klaren Engpass, der die Kumulation stoppen würde, und Cotra beschreibt es so: Ein Monat Arbeit wird zu einer Woche und dann zu einem Tag. Sie räumt ein, dass der Großteil der Belege geschwärzt ist und die Autoren selbst sehr unsicher über abnehmende Erträge waren.
+***** Take
+Die Zahl, die alle weitergeben, ist 2x. Die Zahl, an der sich entscheidet, ob man es glaubt, sind die 80 Prozent, die der Automatisierung zugeschrieben werden, und die stützen sich auf Belege, die die Öffentlichkeit nicht sehen kann. Eine selbst berichtete zwölffache Steigerung von genau den Beschäftigten, deren Arbeit gemessen wird, ist das schwächste Glied der Kette. Der Einwand von chr15m im Thread ist derjenige, den der Beitrag nie beantwortet: Jeder Punkt dieser Kurven ist ein Bündel von Benchmarks, und Benchmarks sind genau das, worauf ein gut finanziertes Labor trainieren kann. Eine Beschleunigung, die man nur über den eigenen Index beobachtet und deren Eingaben geschwärzt sind, ist zuerst eine Aussage über Messung und erst danach über Fähigkeit.
+***** Comments
+- Jeder Punkt in diesen Diagrammen besteht aus mehreren zusammengeworfenen Benchmarks. Ein Benchmark ist per Definition eine ausgewählte Menge messbarer Dinge, und Messbares lässt sich teuer antrainieren.
+- KI beschleunigt meine Arbeit, eine Arbeit, die nur wegen KI existiert. Ohne KI wäre ich bei den einzelnen Aufgaben langsamer, aber einen Schritt zurück betrachtet verändere ich die Welt nicht schneller als vorher.
+- Ich frage mich, wie viel davon aus vertikaler Skalierung der Modellintelligenz in den Gewichten kommt und wie viel aus dem schieren Kapital im Training und der horizontalen Skalierung von Agentenschwärmen.
+** Sodium-ion batteries approach cost parity with LFP :energy:batteries:sodium-ion:manufacturing:
+:PROPERTIES:
+:ID:       50399657
+:URL:      https://www.pv-magazine.com/2026/11/06/sodium-ion-batteries-approach-cost-parity-with-lfp-with-70-gwh-covered-by-supply-agreements/
+:HN_URL:   https://news.ycombinator.com/item?id=50399657
+:POINTS:   108
+:COMMENTS: 45
+:BY:       doener
+:END:
+
+*** TLDR
+Wood Mackenzie puts global sodium-ion cells at $229/kWh against about $200/kWh for LFP, with more than 70 GWh now covered by supply agreements worldwide. BYD is targeting 30 GWh of capacity and CATL expects to ship more than 1 GWh by the end of 2026. The analysis expects cell-level cost parity with LFP in late 2026 but puts module and system-level parity after 2030, with a learning rate of 18% to 20% in China through 2035 and the 2030 to 2035 window as the decisive period. The case for sodium rests less on price than on raw material security, longer service life and better cold-weather performance. The report covers China, the United States, Germany and India.
+
+*** Take
+$229 against $200 is not parity, and the article's own timeline puts system-level parity somewhere past 2030. The pitch that actually holds up is the one buried in the middle: sodium does not need lithium or cobalt, it keeps working when it is cold, and it lasts longer. Those are reasons a grid operator in Inner Mongolia or a homeowner in Minnesota buys it at a premium. Framing every new chemistry as a race to undercut LFP on $/kWh trains everyone to wait for a number that may never arrive.
+
+*** Comments
+
+**** syntaxing
+I'm so desperate for a home battery using sodium. Safer and works at lower temperature. Low energy density, but I don't care for a home battery.
+
+**** hbarka
+I switched the 12V lead-acid on my EV to 12V lithium from OHMMU, best upgrade I've done. They now offer 12V sodium and the warranty went from 1 year to 3.
+
+**** KellyCriterion
+Imagine all the money that flowed into fossil fuels over the last 50 or 60 years, including implicit funding, lobbying and counter-campaigns, spent on batteries instead.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+钠离子电池成本逼近磷酸铁锂
+***** TLDR
+Wood Mackenzie 给出的全球钠离子电芯成本为每千瓦时 229 美元，而磷酸铁锂约为 200 美元，目前全球已有超过 70 GWh 被供货协议覆盖。比亚迪的产能目标是 30 GWh，宁德时代预计到 2026 年底出货超过 1 GWh。该分析预计电芯层面在 2026 年底与磷酸铁锂达到成本平价，但模组和系统层面要到 2030 年之后，中国到 2035 年的学习率为 18% 到 20%，2030 到 2035 年是决定性窗口。钠电池的理由不在价格，而在原材料安全、更长的使用寿命和更好的低温表现。报告覆盖中国、美国、德国和印度。
+***** Take
+229 对 200 不是平价，而文章自己的时间表把系统层面的平价放在 2030 年以后。真正站得住的卖点被埋在中间：钠不需要锂和钴，天冷时照样工作，寿命更长。这些才是内蒙古的电网运营商或明尼苏达的住户愿意溢价买它的原因。把每一种新化学体系都包装成在每千瓦时成本上压低磷酸铁锂的竞赛，只会让所有人等一个可能永远不会到来的数字。
+***** Comments
+- 我太想要一套用钠电池的家庭储能了。更安全，低温也能工作。能量密度低，但家庭储能我不在乎这个。
+- 我把电动车上的 12V 铅酸换成了 OHMMU 的 12V 锂电，是我做过最值的升级。他们现在出 12V 钠电，保修从 1 年提到了 3 年。
+- 想象一下过去五六十年流进化石燃料的所有钱，包括隐性补贴、游说和各种反向宣传，如果全花在电池上会怎样。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+ナトリウムイオン電池がLFPとのコスト同等に近づく
+***** TLDR
+Wood Mackenzieは世界のナトリウムイオンセルを1kWhあたり229ドル、LFPを約200ドルとし、供給契約で押さえられた容量は世界で70GWhを超えたとしている。BYDは30GWhの能力を目標とし、CATLは2026年末までに1GWh超の出荷を見込む。分析はセル段階でのLFPとのコスト同等を2026年末、モジュールおよびシステム段階での同等は2030年以降と見ており、中国での2035年までの学習率は18%から20%、2030年から2035年が決定的な時期とされる。ナトリウムの論拠は価格よりも、原材料の確保、長い寿命、低温での性能にある。報告は中国、米国、ドイツ、インドを対象としている。
+***** Take
+229対200は同等ではなく、記事自身の見通しもシステム段階の同等を2030年より後に置いている。実際に通る売り込みは中盤に埋もれている。ナトリウムはリチウムもコバルトも要らず、寒くても動き、寿命が長い。内モンゴルの系統運用者やミネソタの住宅所有者が割高でも買う理由はそこだ。新しい化学をすべてLFPの1kWh単価を下回る競争として語ると、来ないかもしれない数字を全員が待つようになる。
+***** Comments
+- ナトリウムを使う家庭用蓄電池がほしくてたまらない。安全で低温でも動く。エネルギー密度は低いが、家庭用なら気にしない。
+- EVの12V鉛蓄電池をOHMMUの12Vリチウムに替えたが、やって一番よかった改造だ。いまは12Vナトリウムも出していて、保証が1年から3年になった。
+- この50年か60年のあいだ化石燃料に流れ込んだ金のすべて、暗黙の支援やロビー活動、対抗キャンペーンまで含めて、それが代わりに電池に使われていたらと想像してみてほしい。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+나트륨이온 배터리가 LFP와 비용 동등에 접근
+***** TLDR
+Wood Mackenzie는 전 세계 나트륨이온 셀을 kWh당 229달러, LFP는 약 200달러로 제시했고, 현재 전 세계에서 70GWh 이상이 공급 계약으로 묶여 있다. BYD는 30GWh 생산능력을 목표로 하고 CATL은 2026년 말까지 1GWh 이상 출하를 예상한다. 분석은 셀 수준의 LFP 비용 동등을 2026년 말로, 모듈과 시스템 수준 동등은 2030년 이후로 본다. 2035년까지 중국의 학습률은 18~20%이고 2030~2035년이 결정적 구간이다. 나트륨의 근거는 가격보다 원자재 확보, 더 긴 수명, 더 나은 저온 성능에 있다. 보고서는 중국, 미국, 독일, 인도를 다룬다.
+***** Take
+229 대 200은 동등이 아니고, 기사 자신의 일정표도 시스템 수준 동등을 2030년 이후로 놓는다. 실제로 설득력 있는 논거는 중간에 묻혀 있다. 나트륨은 리튬도 코발트도 필요 없고, 추울 때도 작동하며, 더 오래 간다. 내몽골의 계통 운영자나 미네소타의 주택 소유자가 웃돈을 주고 사는 이유가 그것이다. 모든 신규 화학을 LFP의 kWh 단가를 깎아내리는 경쟁으로 포장하면, 오지 않을 수도 있는 숫자를 모두가 기다리게 된다.
+***** Comments
+- 나트륨을 쓰는 가정용 배터리가 너무 간절하다. 더 안전하고 낮은 온도에서도 작동한다. 에너지 밀도는 낮지만 가정용이면 상관없다.
+- 전기차의 12V 납축전지를 OHMMU의 12V 리튬으로 바꿨는데 가장 잘한 업그레이드였다. 지금은 12V 나트륨도 내놓았고 보증이 1년에서 3년으로 늘었다.
+- 지난 50~60년간 화석연료로 흘러간 모든 돈, 암묵적 지원과 로비, 반대 캠페인까지 포함해서 그게 대신 배터리에 쓰였다면 어땠을지 상상해보라.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Las baterías de sodio se acercan a la paridad de costes con LFP
+***** TLDR
+Wood Mackenzie sitúa las celdas de sodio a escala global en 229 dólares por kWh frente a unos 200 dólares del LFP, con más de 70 GWh ya cubiertos por acuerdos de suministro en todo el mundo. BYD apunta a 30 GWh de capacidad y CATL espera enviar más de 1 GWh para finales de 2026. El análisis espera paridad de coste a nivel de celda a finales de 2026, pero la paridad a nivel de módulo y sistema la coloca después de 2030, con una tasa de aprendizaje del 18% al 20% en China hasta 2035 y el periodo 2030-2035 como decisivo. El argumento del sodio se basa menos en el precio que en la seguridad de materias primas, una vida útil más larga y mejor comportamiento en frío. El informe cubre China, Estados Unidos, Alemania e India.
+***** Take
+229 frente a 200 no es paridad, y el propio calendario del artículo pone la paridad a nivel de sistema más allá de 2030. El argumento que de verdad aguanta está enterrado en el medio: el sodio no necesita litio ni cobalto, sigue funcionando con frío y dura más. Esas son razones por las que un operador de red en Mongolia Interior o un propietario en Minnesota lo compra con sobreprecio. Presentar cada química nueva como una carrera por bajar el coste por kWh del LFP entrena a todos para esperar un número que puede no llegar nunca.
+***** Comments
+- Estoy desesperado por una batería doméstica de sodio. Más segura y funciona a temperaturas más bajas. Poca densidad energética, pero para uso doméstico no me importa.
+- Cambié la batería de 12V de plomo de mi coche eléctrico por una de litio de 12V de OHMMU, la mejor mejora que he hecho. Ahora ofrecen sodio de 12V y la garantía pasó de 1 a 3 años.
+- Imagina todo el dinero que fluyó hacia los combustibles fósiles en los últimos 50 o 60 años, incluidas las ayudas implícitas, el lobby y las contracampañas, gastado en baterías.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Natrium-Ionen-Batterien nähern sich der Kostenparität mit LFP
+***** TLDR
+Wood Mackenzie beziffert Natrium-Ionen-Zellen weltweit mit 229 Dollar pro kWh gegenüber rund 200 Dollar bei LFP, wobei weltweit inzwischen über 70 GWh durch Lieferverträge abgedeckt sind. BYD strebt 30 GWh Kapazität an, CATL erwartet bis Ende 2026 Lieferungen von mehr als 1 GWh. Die Analyse erwartet Kostenparität auf Zellebene Ende 2026, Parität auf Modul- und Systemebene aber erst nach 2030, mit einer Lernrate von 18 bis 20 Prozent in China bis 2035 und dem Zeitraum 2030 bis 2035 als entscheidender Phase. Das Argument für Natrium liegt weniger im Preis als in der Rohstoffsicherheit, der längeren Lebensdauer und dem besseren Verhalten bei Kälte. Der Bericht behandelt China, die USA, Deutschland und Indien.
+***** Take
+229 gegen 200 ist keine Parität, und der eigene Zeitplan des Artikels legt die Parität auf Systemebene nach 2030. Das Argument, das wirklich trägt, steckt in der Mitte: Natrium braucht kein Lithium und kein Kobalt, es arbeitet auch bei Kälte und hält länger. Das sind Gründe, aus denen ein Netzbetreiber in der Inneren Mongolei oder ein Hausbesitzer in Minnesota einen Aufpreis zahlt. Jede neue Chemie als Wettlauf um den Unterbietungspreis gegenüber LFP zu rahmen, erzieht alle dazu, auf eine Zahl zu warten, die vielleicht nie kommt.
+***** Comments
+- Ich warte verzweifelt auf einen Hausspeicher mit Natrium. Sicherer und bei niedrigeren Temperaturen betriebsfähig. Geringe Energiedichte, aber bei einem Hausspeicher ist mir das egal.
+- Ich habe die 12-V-Bleibatterie in meinem E-Auto gegen eine 12-V-Lithiumbatterie von OHMMU getauscht, das beste Upgrade bisher. Inzwischen bieten sie 12 V in Natrium an, und die Garantie ging von einem auf drei Jahre.
+- Man stelle sich all das Geld vor, das in den letzten 50 oder 60 Jahren in fossile Energien geflossen ist, inklusive impliziter Förderung, Lobbyarbeit und Gegenkampagnen, stattdessen in Batterien gesteckt.
+** First steps in bare-metal programming using UEFI :uefi:firmware:c:systems:
+:PROPERTIES:
+:ID:       50394855
+:URL:      https://kevinboone.me/efitest_index.html
+:HN_URL:   https://news.ycombinator.com/item?id=50394855
+:POINTS:   178
+:COMMENTS: 31
+:BY:       LaSombra
+:END:
+
+*** TLDR
+Kevin Boone's five-part series walks a Linux developer from compiling and linking an EFI binary, through the EFI system partition and bootable DVD/USB media, to reading and writing files with the Simple File Protocol. It assumes no prior UEFI knowledge and is meant to be read in order. The concrete lessons are the ones that cost the author time: EFI characters are two bytes wide, so iterating a string until the first zero byte breaks; printf and fopen do not exist, because EFI is a poor fit for the C standard library; EFI_STATUS is a 64-bit value, and assuming it fits in an int cost him many hours of debugging; the linker silently marks calls to nonexistent functions as external and the program crashes at runtime; gdb and valgrind do not work; there is no memory reallocation or file append mode; filesystem support is limited to VFAT; and the EFI console is not a terminal, so ANSI escape codes do nothing.
+
+*** Take
+The value here is not the UEFI reference material, which the spec already covers at crushing length. It is the list of things that went wrong first: hours lost to a 64-bit EFI_STATUS crammed into an int, a linker that cheerfully accepts calls to functions that do not exist, strings full of embedded nulls. kevin_thibedeau's comment in the thread is worth as much as the series itself, since `nm -D --undefined-only` in a build script turns the worst of those failures from a runtime crash into a build error. Firmware docs tell you what the API is. This tells you which assumption from your Linux habits is about to cost you an evening.
+
+*** Comments
+
+**** the_panopticon
+For the lack of a C standard library there's always tianocore/edk2-libc. And on the Windows-ness of EFI, the resemblance to Windows coding style is no accident.
+
+**** kevin_thibedeau
+You can verify no external symbols remain after linkage with nm -D --undefined-only. This can be incorporated into a build script.
+
+**** edoceo
+This guide is fantastic for getting rolling in UEFI. I used it as a reference when building a bootloader with Zig. Especially that 16-bit character situation.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+用 UEFI 入门裸机编程
+***** TLDR
+Kevin Boone 的五篇系列文章带 Linux 开发者从编译和链接 EFI 二进制开始，经过 EFI 系统分区和可启动 DVD/USB 介质，一路做到用 Simple File Protocol 读写文件。它不要求任何 UEFI 基础，但要按顺序读。真正有用的教训都是作者踩过的坑：EFI 字符宽两个字节，所以按第一个零字节结束来遍历字符串会出错；printf 和 fopen 不存在，因为 EFI 和 C 标准库格格不入；EFI_STATUS 是 64 位值，作者当初以为能塞进 int，为此调了好几个小时；链接器会把调用不存在的函数悄悄标记为外部符号，程序到运行时才崩；gdb 和 valgrind 都用不了；没有内存重新分配，也没有文件追加模式；文件系统只支持 VFAT；EFI 控制台不是终端，ANSI 转义序列毫无作用。
+***** Take
+这里的价值不在 UEFI 参考资料，规范本身已经写到让人窒息的长度。价值在那份最先出错的清单：把 64 位的 EFI_STATUS 塞进 int 丢掉的几个小时，一个乐于接受调用不存在函数的链接器，还有满是内嵌空字节的字符串。讨论里 kevin_thibedeau 的那条评论和整个系列一样有价值，因为在构建脚本里加一句 nm -D --undefined-only，就能把其中最糟的那类故障从运行时崩溃变成构建错误。固件文档告诉你 API 是什么，这个系列告诉你 Linux 习惯里的哪条假设正要让你赔上一个晚上。
+***** Comments
+- 关于没有 C 标准库这件事，还有 tianocore/edk2-libc 可用。至于 EFI 的那股 Windows 味，代码风格像 Windows 并不是巧合。
+- 链接之后可以用 nm -D --undefined-only 确认没有残留的外部符号，这条可以写进构建脚本。
+- 这份指南对上手 UEFI 非常好。我用 Zig 写引导程序时把它当参考，尤其是那个 16 位字符的问题。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+UEFIで始めるベアメタルプログラミング
+***** TLDR
+Kevin Booneの5部構成の連載は、EFIバイナリのコンパイルとリンクから始め、EFIシステムパーティションと起動可能なDVD/USBメディアを経て、Simple File Protocolでのファイル読み書きまでLinux開発者を案内する。UEFIの前提知識は不要だが、順に読む前提だ。具体的な教訓は著者が時間を失った箇所そのものだ。EFIの文字は2バイト幅なので、最初のゼロバイトで文字列の走査を止めると壊れる。printfやfopenは存在せず、EFIはC標準ライブラリと噛み合わない。EFI_STATUSは64ビット値で、intに収まると思い込んだために何時間ものデバッグを費やした。リンカは存在しない関数の呼び出しを黙って外部シンボルとして扱い、実行時に落ちる。gdbもvalgrindも使えない。メモリの再割り当てもファイルの追記モードもない。ファイルシステムはVFATのみ。EFIコンソールは端末ではないのでANSIエスケープは効かない。
+***** Take
+価値はUEFIのリファレンス部分ではない。仕様書がすでに息苦しいほど詳しく書いている。価値は最初に失敗した項目の一覧にある。64ビットのEFI_STATUSをintに詰めて失った数時間、存在しない関数の呼び出しを平然と受け入れるリンカ、ヌルが埋まった文字列だ。スレッドのkevin_thibedeauのコメントは連載そのものと同じくらい価値がある。ビルドスクリプトにnm -D --undefined-onlyを入れるだけで、その手の最悪の失敗が実行時クラッシュからビルドエラーに変わるからだ。ファームウェアの文書はAPIが何かを教える。この連載はLinuxの習慣のどの前提が今夜を奪うかを教える。
+***** Comments
+- C標準ライブラリがない件については、tianocore/edk2-libcという手がある。EFIのWindows臭さについて言えば、Windows風のコーディングスタイルに似ているのは偶然ではない。
+- リンク後に外部シンボルが残っていないことはnm -D --undefined-onlyで確認できる。ビルドスクリプトに組み込める。
+- このガイドはUEFIを始めるのに素晴らしい。Zigでブートローダを書くときの参考にした。とくにあの16ビット文字の件だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+UEFI로 시작하는 베어메탈 프로그래밍
+***** TLDR
+Kevin Boone의 5부 연재는 Linux 개발자를 EFI 바이너리 컴파일과 링크에서 출발해 EFI 시스템 파티션과 부팅 가능한 DVD/USB 매체를 거쳐 Simple File Protocol로 파일을 읽고 쓰는 단계까지 데려간다. UEFI 사전 지식은 필요 없지만 순서대로 읽어야 한다. 구체적인 교훈은 저자가 시간을 잃은 지점들이다. EFI 문자는 2바이트 폭이라 첫 0바이트에서 문자열 순회를 끝내면 깨진다. printf와 fopen은 없고, EFI는 C 표준 라이브러리와 맞지 않는다. EFI_STATUS는 64비트 값인데 int에 들어간다고 가정해 여러 시간을 디버깅에 날렸다. 링커는 존재하지 않는 함수 호출을 조용히 외부 심볼로 표시하고 프로그램은 실행 중에 죽는다. gdb와 valgrind는 작동하지 않는다. 메모리 재할당도 파일 추가 모드도 없다. 파일시스템은 VFAT만 지원한다. EFI 콘솔은 터미널이 아니라서 ANSI 이스케이프는 먹히지 않는다.
+***** Take
+여기서의 가치는 UEFI 참조 자료가 아니다. 그건 명세서가 이미 숨 막히는 분량으로 다룬다. 가치는 가장 먼저 어긋난 것들의 목록에 있다. 64비트 EFI_STATUS를 int에 밀어넣어 날린 몇 시간, 존재하지 않는 함수 호출을 태연히 받아주는 링커, 널이 박힌 문자열이다. 스레드의 kevin_thibedeau 댓글은 연재 자체만큼 값지다. 빌드 스크립트에 nm -D --undefined-only를 넣으면 그 부류의 최악의 실패가 실행 중 크래시에서 빌드 오류로 바뀌기 때문이다. 펌웨어 문서는 API가 무엇인지 알려준다. 이 연재는 Linux 습관 중 어느 가정이 오늘 저녁을 가져갈지 알려준다.
+***** Comments
+- C 표준 라이브러리가 없는 문제라면 tianocore/edk2-libc가 있다. EFI의 Windows 느낌에 대해서는, Windows 코딩 스타일과 닮은 게 우연이 아니다.
+- 링크 후에 외부 심볼이 남지 않았는지는 nm -D --undefined-only로 확인할 수 있다. 빌드 스크립트에 넣을 수 있다.
+- 이 가이드는 UEFI를 시작하는 데 훌륭하다. Zig로 부트로더를 만들 때 참고 자료로 썼다. 특히 그 16비트 문자 문제가 그랬다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Primeros pasos en programación bare-metal con UEFI
+***** TLDR
+La serie de cinco partes de Kevin Boone lleva a un desarrollador de Linux desde compilar y enlazar un binario EFI, pasando por la partición de sistema EFI y los medios arrancables en DVD o USB, hasta leer y escribir archivos con el Simple File Protocol. No da por supuesto ningún conocimiento previo de UEFI y está pensada para leerse en orden. Las lecciones concretas son las que le costaron tiempo al autor: los caracteres EFI ocupan dos bytes, así que recorrer una cadena hasta el primer byte cero falla; printf y fopen no existen, porque EFI encaja mal con la biblioteca estándar de C; EFI_STATUS es un valor de 64 bits, y suponer que cabía en un int le costó muchas horas de depuración; el enlazador marca en silencio como externas las llamadas a funciones inexistentes y el programa se cae en ejecución; gdb y valgrind no funcionan; no hay realocación de memoria ni modo de añadir a un archivo; el soporte de sistemas de archivos se limita a VFAT; y la consola EFI no es un terminal, así que los códigos de escape ANSI no hacen nada.
+***** Take
+El valor no está en el material de referencia de UEFI, que la especificación ya cubre con una extensión agobiante. Está en la lista de lo que falló primero: horas perdidas con un EFI_STATUS de 64 bits metido en un int, un enlazador que acepta sin queja llamadas a funciones que no existen, cadenas llenas de nulos incrustados. El comentario de kevin_thibedeau en el hilo vale tanto como la serie, porque poner nm -D --undefined-only en el script de compilación convierte el peor de esos fallos de una caída en ejecución en un error de compilación. La documentación del firmware te dice cuál es la API. Esto te dice qué suposición de tus hábitos de Linux está a punto de costarte la tarde.
+***** Comments
+- Para la falta de biblioteca estándar de C siempre está tianocore/edk2-libc. Y sobre lo windowsero de EFI, el parecido con el estilo de código de Windows no es casualidad.
+- Puedes verificar que no quedan símbolos externos tras el enlazado con nm -D --undefined-only. Se puede incorporar a un script de compilación.
+- Esta guía es fantástica para arrancar en UEFI. La usé como referencia al construir un cargador de arranque con Zig. Sobre todo el asunto de los caracteres de 16 bits.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Erste Schritte in der Bare-Metal-Programmierung mit UEFI
+***** TLDR
+Kevin Boones fünfteilige Reihe führt Linux-Entwickler vom Kompilieren und Linken einer EFI-Binärdatei über die EFI-Systempartition und bootfähige DVD- oder USB-Medien bis zum Lesen und Schreiben von Dateien mit dem Simple File Protocol. Sie setzt kein UEFI-Vorwissen voraus und ist zum Lesen in Reihenfolge gedacht. Die konkreten Lehren sind die, die den Autor Zeit gekostet haben: EFI-Zeichen sind zwei Byte breit, deshalb bricht das Durchlaufen eines Strings bis zum ersten Nullbyte; printf und fopen gibt es nicht, weil EFI schlecht zur C-Standardbibliothek passt; EFI_STATUS ist ein 64-Bit-Wert, und die Annahme, er passe in ein int, kostete ihn viele Stunden Fehlersuche; der Linker markiert Aufrufe nicht existierender Funktionen stillschweigend als extern, und das Programm stürzt zur Laufzeit ab; gdb und valgrind funktionieren nicht; es gibt keine Speicher-Neuzuweisung und keinen Anfügemodus für Dateien; die Dateisystemunterstützung beschränkt sich auf VFAT; und die EFI-Konsole ist kein Terminal, ANSI-Escape-Codes bewirken also nichts.
+***** Take
+Der Wert liegt nicht im UEFI-Referenzmaterial, das die Spezifikation schon in erdrückender Länge abdeckt. Er liegt in der Liste dessen, was zuerst schiefging: Stunden für einen 64-Bit-EFI_STATUS, der in ein int gepresst wurde, ein Linker, der Aufrufe nicht existierender Funktionen bereitwillig durchlässt, Strings voller eingebetteter Nullen. Der Kommentar von kevin_thibedeau im Thread ist so viel wert wie die Reihe selbst, denn nm -D --undefined-only im Build-Skript verwandelt den schlimmsten dieser Fehler von einem Laufzeitabsturz in einen Build-Fehler. Firmware-Dokumentation sagt, wie die API aussieht. Dieser Text sagt, welche Annahme aus deinen Linux-Gewohnheiten dich gleich einen Abend kostet.
+***** Comments
+- Für die fehlende C-Standardbibliothek gibt es immer noch tianocore/edk2-libc. Und zur Windows-Anmutung von EFI: Die Ähnlichkeit zum Windows-Codestil ist kein Zufall.
+- Dass nach dem Linken keine externen Symbole übrig sind, lässt sich mit nm -D --undefined-only prüfen. Das kann man in ein Build-Skript einbauen.
+- Diese Anleitung ist hervorragend für den Einstieg in UEFI. Ich habe sie als Referenz beim Bau eines Bootloaders mit Zig genutzt. Besonders diese Sache mit den 16-Bit-Zeichen.
+** A Jev that can ask Opus for help gives Opus accuracy at 4x lower cost :ai:llm:evaluation:cost:
+:PROPERTIES:
+:ID:       50397429
+:URL:      https://hightouch.com/blog/llm-judges-identity-resolution
+:HN_URL:   https://news.ycombinator.com/item?id=50397429
+:POINTS:   308
+:COMMENTS: 68
+:BY:       theanomaly
+:END:
+
+*** TLDR
+Hightouch benchmarked LLM judges on one narrow task: catching over-merging in identity resolution, where several real people get collapsed into one profile. Work a human does at about 50 identities per hour. Using 1,000 synthetic identities from pseudopeople, half valid and half over-merged, across an easier set and a harder set loaded with typos, twins and junior/senior name collisions. Claude Opus 5.5 led both: 99.0% easy, 95.1% hard, at $3.86 to $5.39 per 1,000 identities. The cheap decision models were 90x cheaper and 10x faster but less accurate: Jev at 95.7% and 89.1%, GPT-6 Luna at 97.3% and 88.8%, for $0.05 and $0.10 per 1,000. The finding that matters is calibration. Jev's wrong answers mostly carried confidence near 50%, while Luna often stated 90% to 100% confidence while being wrong. Routing only the 30% to 90% confidence cases to Opus got hybrid Jev to 98.8% easy and 95.3% hard at $0.88 and $2.94 per 1,000. Hybrid Luna, escalating a wider 10% to 90% band, still landed at only 91.6% on the hard set.
+
+*** Take
+The headline oversells and the table undercuts it: Opus still wins outright on both datasets, and the hybrid buys you a cheaper near-match, not equal accuracy. The real result is the one in the middle of the post. Jev was less accurate than Luna standalone and beat it in the hybrid anyway, because Jev's confidence scores were honest about when it was lost. A model that knows it is unsure is routable. A model that is confidently wrong sends its worst answers straight through to your output, and no amount of escalation budget fixes that. If you are picking a cheap first tier, measure calibration before you measure accuracy. Also worth keeping nico's caveat attached: this is identity resolution, not a general claim about coding agents.
+
+*** Comments
+
+**** nico
+This is very cool. But it's also a result for a very specific task: identity resolution. Despite the title, the article is not demonstrating general usage improvements or general coding agent improvements.
+
+**** Fordec
+This sort of stuff has me believing that decision-model-controlled context is the future of context management beyond the raw AGENTS.md file. Why give all the context to an agent when it can be curated automatically per problem?
+
+**** xlayn
+If you use a smaller model to orchestrate and do shallow research, then have it ask Claude, you'll notice it can get answers out of Haiku, Sonnet and Opus almost as good as asking directly.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+能向 Opus 求助的 Jev，以四分之一的成本达到 Opus 的准确率
+***** TLDR
+Hightouch 在一个很窄的任务上测试了 LLM 评审：检出身份归并中的过度合并，也就是把几个真实的人压进同一个档案。人工做这件事大约每小时 50 个身份。他们用 pseudopeople 生成 1000 个合成身份，一半正常一半过度合并，分成较易的一组和塞满拼写错误、双胞胎、父子同名冲突的较难一组。Claude Opus 5.5 在两组都领先：较易 99.0%，较难 95.1%，每千个身份成本 3.86 到 5.39 美元。便宜的决策模型便宜 90 倍、快 10 倍，但准确率更低：Jev 为 95.7% 和 89.1%，GPT-6 Luna 为 97.3% 和 88.8%，每千个身份分别是 0.05 和 0.10 美元。真正重要的发现是置信度校准。Jev 答错时置信度大多在 50% 左右，而 Luna 常常在答错时给出 90% 到 100% 的置信度。只把置信度 30% 到 90% 的样本转交 Opus，混合版 Jev 在较易组达到 98.8%，较难组 95.3%，成本分别为 0.88 和 2.94 美元。混合版 Luna 把升级区间放宽到 10% 到 90%，较难组也只有 91.6%。
+***** Take
+标题夸大了，而文中表格削弱了它：Opus 在两组数据上仍然完胜，混合方案买到的是更便宜的接近，不是同等准确率。真正的结果在文章中段。Jev 单独使用不如 Luna，混合时却赢了，因为 Jev 的置信度诚实地反映了它什么时候拿不准。知道自己不确定的模型是可以路由的。自信地答错的模型会把最差的答案直接送进你的输出，再多的升级预算也救不了。如果要挑一个便宜的第一层，先量校准，再量准确率。另外要把 nico 的提醒一起带上：这是身份归并，不是关于编码智能体的普适结论。
+***** Comments
+- 这很酷。但这也是一个非常具体任务的结果：身份归并。尽管标题那么写，文章并没有证明通用能力或通用编码智能体的提升。
+- 这类东西让我相信，由决策模型控制的上下文是超越 AGENTS.md 文件的上下文管理未来。为什么要把全部上下文都塞给智能体，而不是针对每个问题自动筛选？
+- 如果用一个更小的模型来编排和做浅层调研，再让它去问 Claude，你会发现它从 Haiku、Sonnet 和 Opus 拿到的答案几乎和直接问一样好。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Opusに助けを求められるJevは、4分の1のコストでOpus並みの精度を出す
+***** TLDR
+HightouchはLLMジャッジを一つの狭い課題で評価した。アイデンティティ解決における過剰統合、つまり複数の実在する人物が一つのプロファイルに潰される事象の検出だ。人間が手でやると1時間あたり約50アイデンティティの作業である。pseudopeopleで1,000件の合成アイデンティティを生成し、半分を正常、半分を過剰統合とし、易しい組と、誤字や双子、親子同名の衝突を詰め込んだ難しい組を用意した。Claude Opus 5.5が両方で首位で、易しい組99.0%、難しい組95.1%、コストは1,000件あたり3.86〜5.39ドル。安価な決定モデルは90倍安く10倍速いが精度は落ちる。Jevは95.7%と89.1%、GPT-6 Lunaは97.3%と88.8%で、1,000件あたり0.05ドルと0.10ドルだった。重要な発見は確信度の校正だ。Jevの誤答はほぼ確信度50%前後だったが、Lunaは誤答でも90〜100%の確信度を示すことが多かった。確信度30〜90%の案件だけOpusに回すと、ハイブリッドJevは易しい組98.8%、難しい組95.3%で、コストは0.88ドルと2.94ドルになった。エスカレーション幅を10〜90%に広げたハイブリッドLunaは、難しい組でも91.6%にとどまった。
+***** Take
+見出しは誇張で、表がそれを打ち消している。Opusは両方のデータセットで依然として単独首位であり、ハイブリッドが買えるのは安い近似であって同等の精度ではない。本当の成果は記事の中盤にある。Jevは単独ではLunaに劣ったのに、ハイブリッドでは勝った。Jevの確信度が、自分が迷っているときを正直に示していたからだ。自分の不確かさを知っているモデルはルーティングできる。自信を持って間違うモデルは、最悪の答えをそのまま出力に通してしまい、エスカレーション予算をいくら積んでも直らない。安価な一次層を選ぶなら、精度より先に校正を測ることだ。nicoの留保も添えておきたい。これはアイデンティティ解決であって、コーディングエージェント一般についての主張ではない。
+***** Comments
+- とても面白い。ただこれは極めて具体的な課題、アイデンティティ解決についての結果だ。タイトルに反して、一般的な利用や一般的なコーディングエージェントの改善を示してはいない。
+- こういう話を見ると、決定モデルが制御するコンテキストが、素のAGENTS.mdを超えるコンテキスト管理の未来だと思えてくる。問題ごとに自動で取捨選択できるのに、なぜ全部をエージェントに渡すのか。
+- 小さめのモデルにオーケストレーションと浅い調査をさせ、それからClaudeに尋ねさせると、Haiku、Sonnet、Opusから直接聞くのとほぼ同じ答えを引き出せることに気づく。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Opus에 도움을 청할 수 있는 Jev는 4분의 1 비용으로 Opus급 정확도를 낸다
+***** TLDR
+Hightouch는 LLM 심판을 아주 좁은 과제에서 측정했다. 신원 해석에서의 과잉 병합, 즉 실제 여러 사람이 하나의 프로필로 뭉개지는 사례를 잡아내는 일이다. 사람이 하면 시간당 약 50개 신원 정도의 작업이다. pseudopeople로 합성 신원 1,000건을 만들어 절반은 정상, 절반은 과잉 병합으로 두고, 쉬운 집합과 오타, 쌍둥이, 부자 동명 충돌을 넣은 어려운 집합을 준비했다. Claude Opus 5.5가 둘 다 선두로 쉬운 집합 99.0%, 어려운 집합 95.1%였고 비용은 1,000건당 3.86~5.39달러였다. 값싼 결정 모델은 90배 싸고 10배 빨랐지만 정확도가 낮았다. Jev는 95.7%와 89.1%, GPT-6 Luna는 97.3%와 88.8%였고 1,000건당 각각 0.05달러와 0.10달러였다. 중요한 발견은 확신도 보정이다. Jev의 오답은 대부분 확신도가 50% 내외였지만, Luna는 틀리면서도 90~100% 확신을 내보이는 일이 많았다. 확신도 30~90% 구간만 Opus로 넘기자 하이브리드 Jev는 쉬운 집합 98.8%, 어려운 집합 95.3%를 1,000건당 0.88달러와 2.94달러로 달성했다. 상향 구간을 10~90%로 넓힌 하이브리드 Luna는 어려운 집합에서 91.6%에 머물렀다.
+***** Take
+제목은 과장이고 표가 그것을 깎는다. Opus는 두 데이터셋에서 여전히 단독 우승이고, 하이브리드가 사는 것은 더 싼 근사치이지 동등한 정확도가 아니다. 진짜 결과는 글 중간에 있다. Jev는 단독으로는 Luna에 밀렸지만 하이브리드에서는 이겼다. Jev의 확신도가 자신이 헤매는 순간을 정직하게 드러냈기 때문이다. 자기가 불확실한 걸 아는 모델은 라우팅할 수 있다. 자신 있게 틀리는 모델은 최악의 답을 그대로 출력에 흘려보내고, 상향 예산을 얼마를 써도 고쳐지지 않는다. 값싼 1차 계층을 고른다면 정확도보다 보정을 먼저 재야 한다. nico의 유보도 같이 붙여두자. 이것은 신원 해석이고, 코딩 에이전트 일반에 대한 주장이 아니다.
+***** Comments
+- 아주 흥미롭다. 다만 이건 매우 구체적인 과제, 신원 해석에 대한 결과다. 제목과 달리 글은 일반적인 사용이나 일반 코딩 에이전트의 개선을 보여주지 않는다.
+- 이런 걸 보면 결정 모델이 통제하는 컨텍스트가 날것의 AGENTS.md를 넘어선 컨텍스트 관리의 미래라는 생각이 든다. 문제마다 자동으로 골라줄 수 있는데 왜 전부를 에이전트에 넘기나.
+- 더 작은 모델로 오케스트레이션과 얕은 조사를 하게 하고 그다음 Claude에 묻게 하면, Haiku, Sonnet, Opus에서 직접 물을 때와 거의 같은 수준의 답을 끌어낼 수 있다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Un Jev que puede pedir ayuda a Opus da la precisión de Opus a un cuarto del coste
+***** TLDR
+Hightouch midió jueces LLM en una tarea muy concreta: detectar sobrefusión en resolución de identidades, cuando varias personas reales quedan colapsadas en un mismo perfil. Un humano hace esto a unas 50 identidades por hora. Usaron 1.000 identidades sintéticas de pseudopeople, la mitad válidas y la mitad sobrefusionadas, en un conjunto fácil y otro difícil cargado de erratas, gemelos y colisiones de nombres padre/hijo. Claude Opus 5.5 lideró en ambos: 99,0% en el fácil y 95,1% en el difícil, a entre 3,86 y 5,39 dólares por 1.000 identidades. Los modelos de decisión baratos fueron 90 veces más baratos y 10 veces más rápidos, pero menos precisos: Jev con 95,7% y 89,1%, GPT-6 Luna con 97,3% y 88,8%, a 0,05 y 0,10 dólares por 1.000. El hallazgo que importa es la calibración. Los errores de Jev llevaban en general una confianza cercana al 50%, mientras Luna a menudo declaraba entre 90% y 100% de confianza estando equivocada. Enviando a Opus solo los casos con confianza entre 30% y 90%, el Jev híbrido alcanzó 98,8% en el fácil y 95,3% en el difícil, a 0,88 y 2,94 dólares por 1.000. El Luna híbrido, escalando una banda más amplia del 10% al 90%, se quedó en 91,6% en el conjunto difícil.
+***** Take
+El titular exagera y la tabla lo desmiente: Opus sigue ganando en ambos conjuntos, y el híbrido compra una aproximación más barata, no la misma precisión. El resultado de verdad está en mitad del artículo. Jev era menos preciso que Luna por separado y aun así le ganó en el híbrido, porque sus puntuaciones de confianza eran honestas sobre cuándo estaba perdido. Un modelo que sabe que no está seguro se puede enrutar. Un modelo que se equivoca con aplomo manda sus peores respuestas directas a tu salida, y ningún presupuesto de escalado arregla eso. Si eliges una primera capa barata, mide la calibración antes que la precisión. Y conviene mantener la advertencia de nico: esto es resolución de identidades, no una afirmación general sobre agentes de programación.
+***** Comments
+- Está muy bien. Pero también es un resultado para una tarea muy específica: resolución de identidades. Pese al titular, el artículo no demuestra mejoras de uso general ni de agentes de programación en general.
+- Cosas así me hacen creer que el contexto controlado por un modelo de decisión es el futuro de la gestión de contexto más allá del AGENTS.md en crudo. ¿Por qué darle todo el contexto a un agente cuando se puede seleccionar automáticamente para cada problema?
+- Si usas un modelo más pequeño para orquestar y hacer investigación superficial, y luego le haces preguntar a Claude, verás que saca respuestas de Haiku, Sonnet y Opus casi igual de buenas que preguntando directamente.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Ein Jev, der Opus um Hilfe bitten kann, liefert Opus-Genauigkeit zu einem Viertel der Kosten
+***** TLDR
+Hightouch hat LLM-Juroren an einer sehr engen Aufgabe gemessen: dem Erkennen von Übermischung bei der Identitätsauflösung, wenn mehrere reale Personen in ein Profil zusammenfallen. Ein Mensch schafft das mit etwa 50 Identitäten pro Stunde. Verwendet wurden 1.000 synthetische Identitäten aus pseudopeople, die Hälfte gültig, die Hälfte übermischt, in einem leichteren Satz und einem schwierigeren voller Tippfehler, Zwillinge und Namenskollisionen zwischen Vater und Sohn. Claude Opus 5.5 führte in beiden: 99,0 Prozent leicht, 95,1 Prozent schwer, bei 3,86 bis 5,39 Dollar pro 1.000 Identitäten. Die günstigen Entscheidungsmodelle waren 90-mal billiger und 10-mal schneller, aber weniger genau: Jev mit 95,7 und 89,1 Prozent, GPT-6 Luna mit 97,3 und 88,8 Prozent, für 0,05 und 0,10 Dollar pro 1.000. Der entscheidende Befund ist die Kalibrierung. Jevs Fehler trugen überwiegend eine Konfidenz um 50 Prozent, während Luna oft 90 bis 100 Prozent Konfidenz angab und dabei falsch lag. Leitet man nur die Fälle mit 30 bis 90 Prozent Konfidenz an Opus weiter, erreicht das hybride Jev 98,8 Prozent leicht und 95,3 Prozent schwer, bei 0,88 und 2,94 Dollar pro 1.000. Das hybride Luna mit dem breiteren Band von 10 bis 90 Prozent kam im schwierigen Satz nur auf 91,6 Prozent.
+***** Take
+Die Überschrift verspricht zu viel, und die Tabelle widerlegt sie: Opus gewinnt in beiden Datensätzen weiterhin allein, und der Hybrid kauft eine billigere Annäherung, nicht gleiche Genauigkeit. Das eigentliche Ergebnis steht in der Mitte des Beitrags. Jev war allein weniger genau als Luna und schlug es im Hybrid trotzdem, weil seine Konfidenzwerte ehrlich anzeigten, wann es nicht weiterwusste. Ein Modell, das seine Unsicherheit kennt, lässt sich routen. Ein Modell, das selbstbewusst falsch liegt, schickt seine schlechtesten Antworten direkt in die Ausgabe, und kein Eskalationsbudget behebt das. Wer eine günstige erste Stufe wählt, sollte Kalibrierung messen, bevor er Genauigkeit misst. Dazu gehört auch der Vorbehalt von nico: Es geht um Identitätsauflösung, nicht um eine allgemeine Aussage über Coding-Agenten.
+***** Comments
+- Sehr interessant. Aber es ist auch ein Ergebnis für eine sehr spezielle Aufgabe: Identitätsauflösung. Trotz des Titels zeigt der Artikel keine allgemeinen Verbesserungen bei der Nutzung oder bei Coding-Agenten.
+- Solche Ergebnisse lassen mich glauben, dass von Entscheidungsmodellen gesteuerter Kontext die Zukunft des Kontextmanagements jenseits der rohen AGENTS.md ist. Warum einem Agenten den ganzen Kontext geben, wenn er pro Problem automatisch kuratiert werden kann?
+- Wenn man ein kleineres Modell orchestrieren und oberflächlich recherchieren lässt und es dann Claude fragen lässt, merkt man, dass es aus Haiku, Sonnet und Opus fast so gute Antworten holt wie eine direkte Anfrage.
