@@ -1,0 +1,512 @@
+#+TITLE: HN Digest 2026-11-07 06:00 UTC
+#+DATE: 2026-11-07T06:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+libghostty hits 1.0, GitHub rebuilds Git storage for agents, RealPage renters get $360M, and a Unitree factory tour picks a fight
+
+* Highlights
+- libghostty-vt 1.0: stable C ABI, and JetBrains' 12.5M users already run it
+- GitHub's Project Rubicon: objects in blob storage, refs in a CAS log, 7,200 pushes/sec
+- RealPage settlements reach $360M, with no admission of fault and the old data retained
+- Unitree assembles robots by hand because labor is 8% of cost, and HN disputes the conclusion
+- Kalshi vs Nate Silver on the midterms: no edge where it counted
+
+* Stories
+
+** Libghostty 1.0 :terminal:zig:opensource:abi:
+:PROPERTIES:
+:ID:       50399933
+:URL:      https://mitchellh.com/writing/libghostty-1-0
+:HN_URL:   https://news.ycombinator.com/item?id=50399933
+:POINTS:   443
+:COMMENTS: 71
+:BY:       mfiguiere
+:END:
+
+*** TLDR
+libghostty-vt 1.0 ships with a stable API and a stable C ABI. The terminal emulation core extracted from Ghostty now powers the terminal in every JetBrains IDE, which JetBrains puts at over 12.5 million active users; Neovim has an approved pull request swapping libvterm for it, closing a ten-year-old reflow bug; KDE is prototyping a Konsole replacement on top of it; Turborepo, devenv and OrbStack ship it today. Stability is enforced in CI with libabigail on Linux and golden ABI manifests on macOS and WebAssembly, plus versioned ELF symbols so a mismatch fails loudly. Community bindings cover Rust, Go, JavaScript, Swift, Python, .NET, Elixir, Dart and Java. Significant new terminal protocols beyond stabilization work are explicitly out of scope.
+
+*** Take
+The release matters less than the distribution trick behind it. Everyone who would have written a worse emulator now ships Mitchell Hashimoto's, so Ghostty's protocol decisions become the default that other terminals have to match, without Ghostty needing to win on install base.
+
+*** Comments
+
+**** jdorfman
+He lists herdr and cmux as terminals built on it, and could easily have snuck his own competing product Rex in there. He resisted. Respect.
+
+**** spudlyo
+Where Ghostty shines is fancy TUI programs. Inline images via the Kitty graphics protocol is a huge improvement: a model calls read on an image file and I see the result in my terminal.
+
+**** JuniperMesos
+I was experimenting with libghostty in an Android project a few months ago and plan to get back to it. I benefit from this directly.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Libghostty 1.0
+***** TLDR
+libghostty-vt 1.0 发布，API 和 C ABI 均已稳定。这个从 Ghostty 中剥离出来的终端模拟核心，现在驱动着所有 JetBrains IDE 的终端，JetBrains 称其活跃用户超过 1250 万；Neovim 已合并批准用它替换 libvterm 的 PR，解决了一个十年之久的回流缺陷；KDE 正在用它原型开发 Konsole 的替代品；Turborepo、devenv 和 OrbStack 已在生产中使用。稳定性由 CI 保障：Linux 上用 libabigail 检查，macOS 和 WebAssembly 上用基准 ABI 清单，并使用带版本的 ELF 符号，使不匹配立刻报错。社区绑定覆盖 Rust、Go、JavaScript、Swift、Python、.NET、Elixir、Dart 和 Java。除稳定化工作之外的重要新终端协议明确不在范围内。
+***** Take
+比发布本身更重要的是背后的分发策略。所有本来会自己写个更差的模拟器的人，现在都改用 Mitchell Hashimoto 的，于是 Ghostty 的协议决定成了其他终端必须对齐的默认标准，而 Ghostty 本身不必在装机量上取胜。
+***** Comments
+- 他列出了基于它构建的 herdr 和 cmux，本来完全可以顺手塞进自己的竞品 Rex，但他没有。佩服。
+- Ghostty 的强项是复杂的 TUI 程序。通过 Kitty 图形协议内联显示图片是巨大改进：模型对图片文件调用 read，我在终端里就能看到结果。
+- 几个月前我在一个 Android 项目里试用过 libghostty，打算回头继续做。我是直接受益者。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Libghostty 1.0
+***** TLDR
+libghostty-vt 1.0 がリリースされ、API と C ABI の両方が安定版になった。Ghostty のコアから切り出された端末エミュレーションは、現在すべての JetBrains IDE の端末を動かしており、JetBrains によればアクティブユーザーは1250万人超。Neovim では libvterm を置き換えるプルリクエストが承認され、10年来のリフロー不具合が解消する。KDE は Konsole 代替の試作に使っており、Turborepo、devenv、OrbStack は既に採用済み。安定性は CI で担保される。Linux では libabigail、macOS と WebAssembly ではゴールデン ABI マニフェスト、さらにバージョン付き ELF シンボルで不一致を即座に失敗させる。コミュニティのバインディングは Rust、Go、JavaScript、Swift、Python、.NET、Elixir、Dart、Java をカバー。安定化作業を超える大きな新プロトコルは明確に対象外とされている。
+***** Take
+リリース自体より、その背後にある配布の仕掛けが重要だ。自前で劣った実装を書いていたはずの開発者がみな Mitchell Hashimoto のものを使うようになり、Ghostty のプロトコル上の判断が他の端末が追随せざるを得ない既定になる。Ghostty がインストール数で勝つ必要はない。
+***** Comments
+- これを基盤にした herdr と cmux を挙げつつ、自分の競合製品 Rex を紛れ込ませることも簡単にできたのにしなかった。立派だ。
+- Ghostty が光るのは凝った TUI プログラムだ。Kitty グラフィックスプロトコルによる画像のインライン表示は大きな改善で、モデルが画像ファイルに read を呼ぶと結果が端末に出る。
+- 数か月前に Android プロジェクトで libghostty を試していて、また戻るつもりだ。直接恩恵を受けている。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Libghostty 1.0
+***** TLDR
+libghostty-vt 1.0이 API와 C ABI 모두 안정화된 상태로 출시됐다. Ghostty 코어에서 떼어낸 터미널 에뮬레이션 계층은 현재 모든 JetBrains IDE의 터미널을 구동하며, JetBrains는 활성 사용자가 1,250만 명을 넘는다고 밝혔다. Neovim은 libvterm을 이것으로 교체하는 PR을 승인해 10년 묵은 리플로 버그를 해결하게 됐고, KDE는 Konsole 대체품을 시험 제작 중이며 Turborepo, devenv, OrbStack은 이미 사용 중이다. 안정성은 CI로 강제한다. 리눅스에서는 libabigail, macOS와 WebAssembly에서는 골든 ABI 매니페스트를 쓰고, 버전이 붙은 ELF 심볼로 불일치 시 즉시 실패하게 한다. 커뮤니티 바인딩은 Rust, Go, JavaScript, Swift, Python, .NET, Elixir, Dart, Java를 아우른다. 안정화 작업을 넘는 주요 신규 터미널 프로토콜은 범위에서 명시적으로 제외했다.
+***** Take
+출시보다 그 뒤의 유통 전략이 중요하다. 각자 더 나쁜 에뮬레이터를 만들었을 사람들이 이제 Mitchell Hashimoto의 것을 쓰게 되면서, Ghostty의 프로토콜 결정이 다른 터미널이 따라가야 하는 기본값이 된다. Ghostty가 설치 수로 이길 필요가 없어진 것이다.
+***** Comments
+- 이걸 기반으로 만든 herdr와 cmux를 언급하면서, 자기 경쟁 제품 Rex를 끼워 넣기도 쉬웠는데 하지 않았다. 존중한다.
+- Ghostty가 빛나는 건 복잡한 TUI 프로그램이다. Kitty 그래픽스 프로토콜로 이미지를 인라인 표시하는 건 큰 개선인데, 모델이 이미지 파일에 read를 호출하면 결과가 터미널에 보인다.
+- 몇 달 전 안드로이드 프로젝트에서 libghostty를 실험했고 다시 돌아갈 계획이다. 직접적인 수혜자다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Libghostty 1.0
+***** TLDR
+libghostty-vt 1.0 llega con API y ABI de C estables. El núcleo de emulación de terminal extraído de Ghostty ya impulsa la terminal de todos los IDE de JetBrains, que cifra en más de 12,5 millones sus usuarios activos; Neovim aprobó un pull request que sustituye libvterm por esta biblioteca y cierra un error de reflujo de diez años; KDE prototipa un reemplazo de Konsole sobre ella; Turborepo, devenv y OrbStack ya la usan. La estabilidad se verifica en CI con libabigail en Linux y manifiestos ABI de referencia en macOS y WebAssembly, además de símbolos ELF versionados para que cualquier desajuste falle de forma visible. Hay enlaces comunitarios para Rust, Go, JavaScript, Swift, Python, .NET, Elixir, Dart y Java. Los protocolos de terminal nuevos de peso quedan explícitamente fuera del alcance.
+***** Take
+Importa menos el lanzamiento que la jugada de distribución que lo sostiene. Todos los que habrían escrito un emulador peor ahora usan el de Mitchell Hashimoto, así que las decisiones de protocolo de Ghostty se convierten en el estándar al que las demás terminales deben ajustarse, sin que Ghostty tenga que ganar en número de instalaciones.
+***** Comments
+- Menciona herdr y cmux, construidos sobre la biblioteca, y podría haber colado su propio producto rival Rex. No lo hizo. Respeto.
+- Donde Ghostty brilla es en programas TUI complejos. Mostrar imágenes en línea con el protocolo gráfico de Kitty es una gran mejora: el modelo llama a read sobre un archivo de imagen y veo el resultado en la terminal.
+- Hace unos meses probé libghostty en un proyecto de Android y pienso retomarlo. Me beneficia directamente.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Libghostty 1.0
+***** TLDR
+libghostty-vt 1.0 ist da, mit stabiler API und stabilem C-ABI. Der aus Ghostty herausgelöste Terminal-Emulationskern treibt inzwischen das Terminal in allen JetBrains-IDEs an, laut JetBrains über 12,5 Millionen aktive Nutzer. Bei Neovim ist ein Pull Request freigegeben, der libvterm ersetzt und einen zehn Jahre alten Reflow-Fehler beseitigt. KDE baut damit einen Konsole-Ersatz als Prototyp, Turborepo, devenv und OrbStack setzen die Bibliothek bereits ein. Die Stabilität wird in der CI erzwungen: libabigail unter Linux, ABI-Referenzmanifeste unter macOS und WebAssembly, dazu versionierte ELF-Symbole, damit Abweichungen sofort auffallen. Community-Bindings gibt es für Rust, Go, JavaScript, Swift, Python, .NET, Elixir, Dart und Java. Größere neue Terminalprotokolle liegen ausdrücklich außerhalb des Umfangs.
+***** Take
+Wichtiger als das Release ist der Verteilungstrick dahinter. Alle, die sonst einen schlechteren Emulator geschrieben hätten, nutzen jetzt den von Mitchell Hashimoto. Damit werden Ghosttys Protokollentscheidungen zum Standard, an dem sich andere Terminals orientieren müssen, ohne dass Ghostty bei den Installationszahlen gewinnen muss.
+***** Comments
+- Er nennt herdr und cmux, die darauf aufbauen, und hätte sein eigenes Konkurrenzprodukt Rex leicht einschmuggeln können. Hat er nicht. Respekt.
+- Ghostty glänzt bei aufwendigen TUI-Programmen. Bilder inline über das Kitty-Grafikprotokoll sind ein großer Fortschritt: Das Modell ruft read auf eine Bilddatei auf, und ich sehe das Ergebnis im Terminal.
+- Ich habe libghostty vor einigen Monaten in einem Android-Projekt ausprobiert und will dort weitermachen. Ich profitiere direkt davon.
+** GitHub's new Git storage architecture :git:github:infrastructure:storage:
+:PROPERTIES:
+:ID:       50397099
+:URL:      https://github.blog/engineering/architecture-optimization/inside-githubs-new-git-storage-architecture/
+:HN_URL:   https://news.ycombinator.com/item?id=50397099
+:POINTS:   104
+:COMMENTS: 20
+:BY:       DAlperin
+:END:
+
+*** TLDR
+GitHub describes Project Rubicon, which splits Git storage from compute. Immutable objects (packs, indexes, read accelerators) go to Azure Blob Storage. Reference updates go through Ref-CAS, a replicated log service that applies compare-and-swap transactions. Serving is handled by disposable virtual replicas whose local caches can be thrown away and rebuilt. Compaction and garbage collection now run on separate nodes instead of competing with the replicas taking traffic. GitHub reports reference transaction throughput moving from the mid-hundreds per second to tens of thousands, 7,200 pushes per second, and 5,000 concurrent agents against a single repository, citing one customer whose repository traffic grew fourfold between March and May 2026.
+
+*** Take
+Note which numbers GitHub chose to lead with: concurrent agents and pushes per second. That tells you whose traffic broke the old design. The top comment makes the fair catch, though, since this is vertical-scale work and does not address the horizontal-scale problem behind the recent outages.
+
+*** Comments
+
+**** yakkomajuri
+If I'm reading this right, this is solid future planning but won't help with the current outages. The horizontal scale techniques carry over from the existing architecture, which is where the problem seems to be.
+
+**** pksunkara
+Most of this is similar to what enroute.sh already did scaling Git.
+
+**** jxramos
+Agent scale is clearly on everyone's mind. I wonder how GitHub would respond to Anthropic's work on redesigning source control from first principles.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+GitHub 的新 Git 存储架构
+***** TLDR
+GitHub 介绍了 Project Rubicon，把 Git 的存储与计算解耦。不可变对象（pack、索引、读加速结构）放进 Azure Blob Storage；引用更新走 Ref-CAS，一个执行比较并交换事务的复制日志服务；对外服务由可丢弃的虚拟副本承担，其本地缓存随时可以丢掉重建。压实和垃圾回收现在跑在独立节点上，不再和承载流量的副本抢资源。GitHub 称引用事务吞吐从每秒几百提升到每秒数万，推送达每秒 7200 次，单个仓库可承受 5000 个并发代理，并举例某客户的仓库流量在 2026 年 3 月到 5 月间增长到四倍。
+***** Take
+注意 GitHub 挑出来打头的数字：并发代理数和每秒推送数。这说明是谁的流量压垮了旧设计。不过热门评论的反驳也成立：这是纵向扩展的工作，并没有解决近期故障背后的横向扩展问题。
+***** Comments
+- 如果我理解正确，这是不错的长远规划，但帮不上当前的故障。横向扩展的手法是从现有架构沿用过来的，而问题似乎恰恰出在那里。
+- 这里大部分内容和 enroute.sh 在扩展 Git 时已经做过的事情类似。
+- 代理规模显然是大家都在想的事。不知道 GitHub 会怎么回应 Anthropic 那份从第一性原理重新设计版本控制的研究。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+GitHubの新しいGitストレージ構成
+***** TLDR
+GitHub が Project Rubicon を公開し、Git のストレージと計算を分離した。不変オブジェクト（パック、インデックス、読み取り高速化データ）は Azure Blob Storage に置き、参照の更新は compare-and-swap トランザクションを処理する複製ログサービス Ref-CAS を通す。配信は使い捨ての仮想レプリカが担い、そのローカルキャッシュはいつでも破棄して再構築できる。コンパクションとガベージコレクションは別ノードで走り、トラフィックを受けるレプリカと競合しなくなった。GitHub によれば参照トランザクションのスループットは毎秒数百台から数万へ、プッシュは毎秒7,200件、単一リポジトリに対して同時5,000エージェント。ある顧客のリポジトリ流量は2026年3月から5月で4倍になったという。
+***** Take
+GitHub が先頭に置いた数字に注目したい。同時エージェント数と毎秒プッシュ数だ。旧設計を壊したのが誰のトラフィックかがそこに出ている。ただし上位コメントの指摘は妥当で、これは垂直方向のスケールの話であり、最近の障害の原因である水平方向の問題には触れていない。
+***** Comments
+- 読み違えていなければ、これは堅実な将来設計だが現在の障害には効かない。水平スケールの手法は既存構成から持ち越しで、問題はそこにあるように見える。
+- 内容の多くは enroute.sh が Git のスケーリングで既にやったことと似ている。
+- エージェント規模は業界の関心事だ。バージョン管理を第一原理から再設計するというAnthropicの研究に、GitHubはどう答えるのだろう。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+GitHub의 새 Git 스토리지 아키텍처
+***** TLDR
+GitHub가 Git의 스토리지와 컴퓨트를 분리한 Project Rubicon을 공개했다. 불변 객체(팩, 인덱스, 읽기 가속 데이터)는 Azure Blob Storage에 두고, 참조 갱신은 compare-and-swap 트랜잭션을 처리하는 복제 로그 서비스 Ref-CAS를 거친다. 서비스는 버려도 되는 가상 레플리카가 담당하며 로컬 캐시는 언제든 폐기하고 재구축할 수 있다. 컴팩션과 가비지 컬렉션은 이제 별도 노드에서 돌아 트래픽을 받는 레플리카와 경쟁하지 않는다. GitHub는 참조 트랜잭션 처리량이 초당 수백 건대에서 수만 건으로 올라갔고, 초당 7,200건의 푸시와 단일 저장소에 대한 5,000개 동시 에이전트를 처리한다고 밝혔다. 어떤 고객의 저장소 트래픽은 2026년 3월에서 5월 사이 4배가 됐다고 한다.
+***** Take
+GitHub가 앞세운 숫자를 보라. 동시 에이전트 수와 초당 푸시 수다. 옛 설계를 무너뜨린 트래픽이 누구 것인지 거기 드러난다. 다만 상위 댓글의 지적도 타당하다. 이건 수직 확장 작업이고, 최근 장애의 원인인 수평 확장 문제는 다루지 않는다.
+***** Comments
+- 제대로 읽었다면 이건 괜찮은 장기 설계지만 현재 장애에는 도움이 안 된다. 수평 확장 기법은 기존 아키텍처에서 그대로 가져온 것이고, 문제는 거기 있어 보인다.
+- 대부분은 enroute.sh가 Git을 확장하며 이미 한 것과 비슷하다.
+- 에이전트 규모는 업계 전체의 관심사다. 버전 관리를 제1원리에서 다시 설계하자는 Anthropic의 연구에 GitHub는 어떻게 답할까.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+La nueva arquitectura de almacenamiento Git de GitHub
+***** TLDR
+GitHub describe Project Rubicon, que separa el almacenamiento de Git del cómputo. Los objetos inmutables (packs, índices, aceleradores de lectura) van a Azure Blob Storage. Las actualizaciones de referencias pasan por Ref-CAS, un servicio de log replicado que aplica transacciones de comparación e intercambio. El servicio lo dan réplicas virtuales desechables cuyas cachés locales se pueden tirar y reconstruir. La compactación y la recolección de basura corren ahora en nodos aparte, sin competir con las réplicas que atienden tráfico. GitHub reporta que el rendimiento de transacciones de referencia pasó de unos cientos por segundo a decenas de miles, 7.200 pushes por segundo y 5.000 agentes concurrentes sobre un mismo repositorio, y cita un cliente cuyo tráfico se cuadruplicó entre marzo y mayo de 2026.
+***** Take
+Fíjese en las cifras que GitHub pone por delante: agentes concurrentes y pushes por segundo. Ahí se ve de quién era el tráfico que rompió el diseño anterior. El comentario más votado hace una objeción justa: esto es trabajo de escalado vertical y no toca el problema horizontal detrás de las caídas recientes.
+***** Comments
+- Si lo entiendo bien, es buena planificación a futuro pero no ayuda con las caídas actuales. Las técnicas de escalado horizontal vienen heredadas de la arquitectura existente, que es donde parece estar el problema.
+- Buena parte de esto se parece a lo que enroute.sh ya hizo al escalar Git.
+- La escala de los agentes está en la cabeza de todos. Me pregunto qué diría GitHub sobre el trabajo de Anthropic para rediseñar el control de versiones desde cero.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+GitHubs neue Git-Speicherarchitektur
+***** TLDR
+GitHub beschreibt Project Rubicon, das Git-Speicher und Rechenleistung trennt. Unveränderliche Objekte (Packs, Indizes, Lesebeschleuniger) liegen in Azure Blob Storage. Referenz-Updates laufen über Ref-CAS, einen replizierten Log-Dienst, der Compare-and-Swap-Transaktionen ausführt. Ausgeliefert wird über wegwerfbare virtuelle Replikas, deren lokale Caches jederzeit verworfen und neu aufgebaut werden können. Compaction und Garbage Collection laufen jetzt auf eigenen Knoten und konkurrieren nicht mehr mit den Replikas im Lastbetrieb. GitHub nennt einen Anstieg des Referenz-Transaktionsdurchsatzes von einigen Hundert pro Sekunde auf Zehntausende, 7.200 Pushes pro Sekunde und 5.000 gleichzeitige Agenten auf einem einzigen Repository; bei einem Kunden vervierfachte sich der Repository-Verkehr zwischen März und Mai 2026.
+***** Take
+Bemerkenswert ist, welche Zahlen GitHub voranstellt: gleichzeitige Agenten und Pushes pro Sekunde. Daran sieht man, wessen Last das alte Design überfordert hat. Der Top-Kommentar hat allerdings recht: Das ist vertikale Skalierung und berührt das horizontale Problem hinter den letzten Ausfällen nicht.
+***** Comments
+- Wenn ich das richtig lese, ist das solide Zukunftsplanung, hilft aber bei den aktuellen Ausfällen nicht. Die horizontalen Skalierungstechniken werden aus der bestehenden Architektur übernommen, und genau dort scheint das Problem zu liegen.
+- Das meiste davon ähnelt dem, was enroute.sh beim Skalieren von Git schon umgesetzt hat.
+- Agenten-Skalierung beschäftigt die ganze Branche. Mich würde interessieren, was GitHub zu Anthropics Arbeit sagt, Versionskontrolle von Grund auf neu zu denken.
+** RealPage rent-pricing case wraps with nearly $360M to renters :antitrust:housing:algorithms:legal:
+:PROPERTIES:
+:ID:       50399991
+:URL:      https://www.multifamilydive.com/news/realpage-rent-pricing-case-360m-renters/873553/
+:HN_URL:   https://news.ycombinator.com/item?id=50399991
+:POINTS:   78
+:COMMENTS: 34
+:BY:       raybb
+:END:
+
+*** TLDR
+Settlements in the private antitrust litigation over RealPage's revenue management software now total close to $360 million for renters: $218 million from 11 landlords in May 2026, on top of $141.8 million from 27 landlords in October 2025, out of roughly 50 apartment owners and operators named alongside RealPage. None of the companies admitted fault or liability. They agreed to stop supplying RealPage with nonpublic data for use in price recommendations and to stop using its system in ways that draw on competitors' nonpublic data. The class covers renters at properties using RealPage's systems from October 18, 2018 through November 21, 2025. The Justice Department settled separately with RealPage in November 2025. Attorneys general for DC, Kentucky, Maryland, New Jersey and Washington opposed the settlements over the effect on their own pending cases.
+
+*** Take
+Spread across seven years of renters in roughly 50 landlords' buildings, $360 million is smaller than the rent the scheme produced. The remedy that could matter is the data ban, and the top comment finds its hole: RealPage keeps the decade of nonpublic pricing history it has already ingested, and nothing in these settlements takes it back.
+
+*** Comments
+
+**** rabidheuristics
+They agreed to stop providing RealPage with nonpublic data as a pricing input. Okay, but RealPage has a decade of real pricing data it already holds.
+
+**** epistasis
+We need a public rental registry anyone can browse and analyze. The information disparity is the problem. That said, it isn't a systematic method for lower prices, it just prevents individual gouging.
+
+**** exabrial
+That's it???
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+RealPage 租金定价案和解，租客共获约 3.6 亿美元
+***** TLDR
+围绕 RealPage 收益管理软件的民事反垄断诉讼，和解金额已接近 3.6 亿美元：2026 年 5 月 11 家房东支付 2.18 亿美元，加上 2025 年 10 月 27 家房东支付的 1.418 亿美元；与 RealPage 一同被列为被告的公寓业主和运营商约有 50 家。没有任何一家承认过错或责任。它们同意停止向 RealPage 提供用于定价建议的非公开数据，并停止以利用竞争对手非公开数据的方式使用该系统。集体诉讼涵盖 2018 年 10 月 18 日至 2025 年 11 月 21 日期间居住在使用 RealPage 系统物业的租客。司法部已于 2025 年 11 月与 RealPage 单独和解。华盛顿特区、肯塔基、马里兰、新泽西和华盛顿州的检察长反对这些和解，理由是会影响各自仍在进行的诉讼。
+***** Take
+摊到七年间约 50 家房东旗下房产的所有租客身上，3.6 亿美元少于这套做法多收的租金。真正可能起作用的补救是数据禁令，而热门评论指出了它的漏洞：RealPage 仍然握着已经吃进去的十年非公开定价数据，这些和解条款并没有要求交还。
+***** Comments
+- 它们同意不再把非公开数据作为定价输入提供给 RealPage。可是 RealPage 手里已经有十年的真实定价数据了。
+- 我们需要一个任何人都能查阅和分析的公共租金登记库，信息不对称才是问题所在。不过这不是系统性压低价格的办法，只能防止个别的哄抬。
+- 就这？？？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+RealPageの家賃価格設定訴訟、借り手へ約3億6000万ドルで決着
+***** TLDR
+RealPage の収益管理ソフトをめぐる民事反トラスト訴訟の和解総額が、借り手向けに約3億6000万ドルに達した。2026年5月に11社の家主が2億1800万ドル、2025年10月に27社の家主が1億4180万ドルで、RealPage とともに名を挙げられたアパート所有・運営業者は約50社。いずれも過失や責任を認めていない。各社は価格推奨の入力として非公開データを RealPage に提供するのをやめ、競合他社の非公開データを用いる形で同システムを使うこともやめると合意した。対象となる集団は2018年10月18日から2025年11月21日までに RealPage のシステムを使う物件に住んだ借り手。司法省は2025年11月に RealPage と個別に和解している。コロンビア特別区、ケンタッキー、メリーランド、ニュージャージー、ワシントン各州の司法長官は、自らの訴訟への影響を理由に和解に反対した。
+***** Take
+約50社の物件に7年分の借り手で割れば、3億6000万ドルはこの仕組みが生んだ家賃より小さい。効き得る救済はデータ禁止の方だが、上位コメントが穴を突いている。RealPage は既に取り込んだ10年分の非公開価格データを保持し、今回の和解はそれを取り戻さない。
+***** Comments
+- 価格設定の入力として非公開データを RealPage に渡すのをやめる、と。だが RealPage は10年分の実価格データをすでに持っている。
+- 誰でも閲覧・分析できる公的な賃料登録簿が必要だ。情報格差が問題なのだ。ただしそれは価格を体系的に下げる手段ではなく、個別の便乗値上げを防ぐだけだ。
+- これだけ？？？
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+RealPage 임대료 가격 담합 소송, 세입자에게 약 3억 6천만 달러로 마무리
+***** TLDR
+RealPage의 수익 관리 소프트웨어를 둘러싼 민사 반독점 소송의 합의금이 세입자 몫으로 약 3억 6천만 달러에 이르렀다. 2026년 5월 집주인 11곳이 2억 1,800만 달러, 2025년 10월 집주인 27곳이 1억 4,180만 달러를 냈고, RealPage와 함께 피고로 지목된 아파트 소유·운영사는 약 50곳이다. 어느 회사도 과실이나 책임을 인정하지 않았다. 이들은 가격 추천의 입력으로 비공개 데이터를 RealPage에 제공하지 않고, 경쟁사의 비공개 데이터를 활용하는 방식으로 해당 시스템을 쓰지 않기로 합의했다. 집단의 범위는 2018년 10월 18일부터 2025년 11월 21일까지 RealPage 시스템을 쓰는 건물에 거주한 세입자다. 법무부는 2025년 11월 RealPage와 별도로 합의했다. 워싱턴DC, 켄터키, 메릴랜드, 뉴저지, 워싱턴주 검찰총장들은 자신들의 진행 중인 소송에 미칠 영향을 이유로 이 합의에 반대했다.
+***** Take
+약 50개 집주인의 건물에 7년간 살았던 세입자들로 나누면 3억 6천만 달러는 이 방식이 거둬간 임대료보다 적다. 실질적 구제가 될 수 있는 건 데이터 금지 조항인데, 상위 댓글이 그 구멍을 짚는다. RealPage는 이미 흡수한 10년치 비공개 가격 데이터를 그대로 갖고 있고, 이번 합의는 그걸 되돌리지 않는다.
+***** Comments
+- 가격 산정 입력으로 비공개 데이터를 RealPage에 주는 걸 중단한다고 한다. 그런데 RealPage는 이미 10년치 실제 가격 데이터를 갖고 있다.
+- 누구나 열람하고 분석할 수 있는 공공 임대료 등록부가 필요하다. 정보 격차가 문제다. 다만 그건 가격을 체계적으로 낮추는 방법이 아니라 개별 폭리를 막는 수준이다.
+- 이게 끝???
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+El caso de precios de alquiler de RealPage termina con casi 360 millones de dólares para inquilinos
+***** TLDR
+Los acuerdos en el litigio antimonopolio privado por el software de gestión de ingresos de RealPage suman ya cerca de 360 millones de dólares para inquilinos: 218 millones de 11 arrendadores en mayo de 2026, sobre los 141,8 millones de 27 arrendadores en octubre de 2025, de unos 50 propietarios y operadores de apartamentos señalados junto a RealPage. Ninguna empresa admitió culpa ni responsabilidad. Acordaron dejar de entregar a RealPage datos no públicos como insumo de recomendaciones de precios y dejar de usar su sistema de formas que empleen datos no públicos de competidores. La clase cubre a inquilinos de propiedades que usaron los sistemas de RealPage entre el 18 de octubre de 2018 y el 21 de noviembre de 2025. El Departamento de Justicia llegó a un acuerdo aparte con RealPage en noviembre de 2025. Los fiscales generales de DC, Kentucky, Maryland, Nueva Jersey y Washington se opusieron por el efecto sobre sus propios casos abiertos.
+***** Take
+Repartidos entre siete años de inquilinos en edificios de unos 50 arrendadores, 360 millones son menos que el alquiler que produjo el esquema. El remedio que podría importar es la prohibición de datos, y el comentario más votado le encuentra el agujero: RealPage conserva la década de historial de precios no públicos que ya ingirió, y estos acuerdos no se la quitan.
+***** Comments
+- Acordaron dejar de dar a RealPage datos no públicos como insumo de precios. Vale, pero RealPage ya tiene una década de datos reales de precios.
+- Necesitamos un registro público de alquileres que cualquiera pueda consultar y analizar. La asimetría de información es el problema. Dicho eso, no es un método sistemático para bajar precios, solo evita abusos puntuales.
+- ¿Eso es todo???
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+RealPage-Verfahren um Mietpreise endet mit knapp 360 Millionen Dollar für Mieter
+***** TLDR
+Die Vergleiche im privaten Antitrust-Verfahren um RealPages Revenue-Management-Software summieren sich für Mieter auf knapp 360 Millionen Dollar: 218 Millionen von 11 Vermietern im Mai 2026, dazu 141,8 Millionen von 27 Vermietern im Oktober 2025, aus einem Kreis von rund 50 Eigentümern und Betreibern, die neben RealPage benannt wurden. Keines der Unternehmen räumte Schuld oder Haftung ein. Sie verpflichteten sich, RealPage keine nicht öffentlichen Daten mehr als Grundlage für Preisempfehlungen zu liefern und das System nicht mehr so zu nutzen, dass nicht öffentliche Daten von Wettbewerbern einfließen. Die Sammelklage umfasst Mieter in Objekten, die zwischen dem 18. Oktober 2018 und dem 21. November 2025 RealPage-Systeme einsetzten. Das Justizministerium hatte sich im November 2025 separat mit RealPage verglichen. Die Generalstaatsanwälte von DC, Kentucky, Maryland, New Jersey und Washington stellten sich gegen die Vergleiche, weil sie ihre eigenen laufenden Verfahren beeinträchtigen.
+***** Take
+Verteilt auf sieben Jahre Mieter in den Häusern von etwa 50 Vermietern sind 360 Millionen weniger als die Miete, die das System eingebracht hat. Das Mittel, auf das es ankäme, ist das Datenverbot, und der Top-Kommentar findet die Lücke: RealPage behält die zehn Jahre nicht öffentlicher Preishistorie, die es schon aufgenommen hat, und keiner dieser Vergleiche holt sie zurück.
+***** Comments
+- Sie verzichten künftig darauf, RealPage nicht öffentliche Daten als Preisgrundlage zu liefern. Nur hat RealPage längst ein Jahrzehnt echter Preisdaten.
+- Wir brauchen ein öffentliches Mietregister, das jeder einsehen und auswerten kann. Das Informationsgefälle ist das Problem. Allerdings senkt das Preise nicht systematisch, es verhindert nur Einzelfälle von Wucher.
+- Das war's???
+** I toured Unitree's factory. I'm more bullish on the West :robotics:manufacturing:china:automation:
+:PROPERTIES:
+:ID:       50400597
+:URL:      https://josef.cn/blog/unitree
+:HN_URL:   https://news.ycombinator.com/item?id=50400597
+:POINTS:   87
+:COMMENTS: 56
+:BY:       josefchen
+:END:
+
+*** TLDR
+Josef Chen toured Unitree's plant and found actuator assembly mostly done by hand: workers at old winding machines putting copper wire on motor cores, with one or two automated lines. He puts labor at 8% of Unitree's 2025 manufacturing cost and the company's entire machinery inventory at $1.7 million for 32,000 robots, roughly $50 of equipment per robot, with a new motor automation line projected to cut 1.7% off one model's cost. At American wages labor would run closer to 40%, so he argues US firms like Figure, Tesla, 1X and Agility have the incentive to build the automation, pointing to California tomatoes going from 0.5% to 99.9% machine-harvested by 1970 after the Bracero program ended. He concedes China leads machine-tool exports, that US robotics depends on imported machinery and parts, and that Chinese hairpin-winding suppliers already undercut Western ones by half. A follow-up visit to BYD found full automation on standard Fanuc and KUKA arms, which he reads as what happens once a design stops changing.
+
+*** Take
+Chen's own evidence undercuts the headline. Unitree builds by hand because its products change every year, and the moment a humanoid design freezes, automating it is available to whoever freezes it first. That is a product decision, not a country. The commenters are right that the argument predicts the West builds more automation equipment, not more robots.
+
+*** Comments
+
+**** tristanj
+The chain is: robots are made by hand, labor is 8% of cost so there's no incentive to automate, US labor costs more, therefore US firms automate more, therefore the West captures robotics. That last step does not follow.
+
+**** YuechenLi
+The premises are reasonable up to a point. Unitree is manual because labor isn't the bottleneck. Using that to conclude the West wins is where it falls apart.
+
+**** lifeisstillgood
+In 1964 half a million Mexican farmworkers were shut out; by 1970, 99.9% of California tomatoes were machine-picked. I had not considered closing legal immigration as a forcing function for automation. Industrial policy as immigration law.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+我参观了宇树工厂，反而更看好西方
+***** TLDR
+Josef Chen 参观宇树（Unitree）工厂后发现，执行器装配基本靠手工：工人用老式绕线机把铜线缠到电机铁芯上，只有一两条自动化产线。他估算人工占宇树 2025 年制造成本的 8%，全公司机器设备总值 170 万美元、对应 32000 台机器人，约合每台 50 美元的设备投入；一条新的电机自动化产线预计只能把某款机型的成本降低 1.7%。按美国工资，人工占比会接近 40%，因此他认为 Figure、Tesla、1X、Agility 这些美国公司有动力去造自动化设备，并援引加州番茄在布拉塞罗计划结束后、到 1970 年机械采收率从 0.5% 升到 99.9% 的例子。他也承认中国在机床出口上领先、美国机器人产业依赖进口机械和零件、中国的扁线绕制供应商价格已比西方低一半。他随后参观比亚迪，看到用标准发那科和库卡机械臂实现的完全自动化，并把这解读为设计定型之后会发生的事。
+***** Take
+Chen 自己的证据削弱了他的标题。宇树手工装配是因为产品一年一换，而一旦人形机器人的设计定型，谁先定型谁就能把它自动化。这是产品决策，不是国别优势。评论者说得对：这套论证推出的结论是西方会造更多自动化设备，而不是造更多机器人。
+***** Comments
+- 推理链是：机器人靠手工做，人工只占 8% 成本所以没有自动化动力，美国人工更贵，所以美国公司会更多自动化，所以西方会拿下机器人产业。最后一步不成立。
+- 前面几步还算合理。宇树手工是因为人工不是瓶颈。但由此推出西方会赢，就讲不通了。
+- 1964 年五十万墨西哥农工被挡在门外，到 1970 年加州番茄 99.9% 由机器采收。我从没想过关闭合法移民会成为自动化的推力。用移民法当产业政策。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+ユニツリーの工場を見てきた。むしろ西側に強気になった
+***** TLDR
+Josef Chen がユニツリー（Unitree）の工場を訪ね、アクチュエータ組立がほぼ手作業であることを確認した。作業者が旧式の巻線機でモーターコアに銅線を巻いており、自動化ラインは1〜2本。彼は人件費をユニツリーの2025年製造コストの8%、全社の機械設備を170万ドル・ロボット32,000台分、つまり1台あたり約50ドル分の設備と見積もる。新しいモーター自動化ラインで下がるのはある機種のコストの1.7%にすぎない。米国の賃金なら人件費は40%近くになるため、Figure、Tesla、1X、Agility といった米企業には自動化設備を作る動機があると論じ、ブラセロ計画終了後にカリフォルニアのトマト機械収穫が0.5%から1970年に99.9%へ跳ねた例を挙げる。一方で中国が工作機械輸出で先行し、米国のロボット産業は機械と部品の輸入に依存し、中国のヘアピン巻線業者が西側より半値で供給している点も認める。続けて訪れたBYDでは標準的なファナックとKUKAのアームによる完全自動化を見て、設計が固まった後に起きることだと解釈している。
+***** Take
+Chen 自身の材料が見出しを弱めている。ユニツリーが手作業なのは製品が毎年変わるからで、人型の設計が固まった瞬間に自動化できるのは最初に固めた者だ。これは国ではなく製品判断の話だ。コメント欄の指摘は正しい。この論法から出るのは、西側が自動化設備をより多く作るという結論であって、ロボットをより多く作るという結論ではない。
+***** Comments
+- 筋立てはこうだ。ロボットは手作業で作られる、人件費は8%だから自動化の動機がない、米国の人件費は高い、ゆえに米企業はより自動化する、ゆえに西側がロボット産業を取る。最後の一歩がつながらない。
+- 途中までは妥当だ。ユニツリーが手作業なのは人件費がボトルネックでないから。だがそこから西側が勝つと結論づけるところで崩れる。
+- 1964年に50万人のメキシコ農業労働者が排除され、1970年にはカリフォルニアのトマトの99.9%が機械収穫になった。合法移民の停止が自動化の強制力になるとは考えていなかった。移民法としての産業政策だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+유니트리 공장을 둘러봤다. 오히려 서방이 더 유리해 보인다
+***** TLDR
+Josef Chen이 유니트리(Unitree) 공장을 방문해 액추에이터 조립이 대부분 수작업임을 확인했다. 작업자들이 구형 권선기로 모터 코어에 구리선을 감고 있었고 자동화 라인은 한두 개뿐이었다. 그는 인건비를 유니트리 2025년 제조원가의 8%로, 회사 전체 기계 설비를 로봇 32,000대에 대해 170만 달러, 즉 대당 약 50달러의 설비로 추산한다. 새 모터 자동화 라인이 줄이는 비용은 한 모델 원가의 1.7%에 불과하다. 미국 임금이면 인건비가 40%에 가까워지므로 Figure, Tesla, 1X, Agility 같은 미국 기업에는 자동화 설비를 만들 동기가 있다고 주장하며, 브라세로 프로그램 종료 후 캘리포니아 토마토 기계 수확 비율이 0.5%에서 1970년 99.9%로 올라간 사례를 든다. 다만 중국이 공작기계 수출을 주도하고, 미국 로봇 산업이 수입 기계와 부품에 의존하며, 중국 헤어핀 권선 업체가 이미 서방보다 절반 가격이라는 점도 인정한다. 이어 방문한 BYD에서는 표준 파낙과 쿠카 로봇 팔로 완전 자동화된 라인을 보고, 설계가 고정된 뒤에 벌어지는 일이라고 해석한다.
+***** Take
+Chen의 근거가 그의 제목을 깎아먹는다. 유니트리가 손으로 조립하는 건 제품이 매년 바뀌기 때문이고, 휴머노이드 설계가 고정되는 순간 자동화는 먼저 고정한 쪽이 할 수 있다. 그건 국가가 아니라 제품 판단의 문제다. 댓글의 지적이 맞다. 이 논리에서 나오는 결론은 서방이 자동화 설비를 더 많이 만든다는 것이지, 로봇을 더 많이 만든다는 것이 아니다.
+***** Comments
+- 논리는 이렇다. 로봇은 손으로 만들어진다, 인건비가 8%라 자동화 동기가 없다, 미국 인건비는 더 비싸다, 따라서 미국 기업이 더 자동화한다, 따라서 서방이 로봇 산업을 가져간다. 마지막 단계가 성립하지 않는다.
+- 중간까지는 합리적이다. 유니트리가 수작업인 건 인건비가 병목이 아니기 때문이다. 거기서 서방이 이긴다는 결론으로 넘어가는 대목이 무너진다.
+- 1964년 50만 명의 멕시코 농업 노동자가 배제되고, 1970년에는 캘리포니아 토마토의 99.9%가 기계 수확이었다. 합법 이민을 닫는 것이 자동화의 강제 요인이 된다고는 생각해 본 적이 없다. 이민법을 산업정책으로 쓴 셈이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Visité la fábrica de Unitree y ahora soy más optimista sobre Occidente
+***** TLDR
+Josef Chen recorrió la planta de Unitree y encontró el montaje de actuadores hecho casi todo a mano: operarios en viejas bobinadoras enrollando cobre sobre núcleos de motor, con una o dos líneas automatizadas. Calcula que la mano de obra fue el 8% del coste de fabricación de Unitree en 2025 y que todo su inventario de maquinaria valía 1,7 millones de dólares para 32.000 robots, unos 50 dólares de equipo por robot, y que una nueva línea de automatización de motores recortaría solo el 1,7% del coste de un modelo. Con salarios estadounidenses la mano de obra rondaría el 40%, así que sostiene que firmas como Figure, Tesla, 1X y Agility tienen el incentivo de construir la automatización, y cita el tomate de California, que pasó del 0,5% al 99,9% de cosecha mecánica en 1970 tras el fin del programa Bracero. Admite que China lidera la exportación de máquina-herramienta, que la robótica estadounidense depende de maquinaria y piezas importadas y que los proveedores chinos de bobinado hairpin ya cobran la mitad que los occidentales. Una visita posterior a BYD mostró automatización total con brazos Fanuc y KUKA estándar, lo que lee como lo que ocurre cuando un diseño deja de cambiar.
+***** Take
+La evidencia de Chen debilita su propio titular. Unitree ensambla a mano porque sus productos cambian cada año, y en el momento en que un diseño de humanoide se congela, automatizarlo está al alcance de quien lo congele primero. Eso es una decisión de producto, no un país. Los comentaristas aciertan: el argumento predice que Occidente fabricará más equipos de automatización, no más robots.
+***** Comments
+- La cadena es: los robots se hacen a mano, la mano de obra es el 8% del coste así que no hay incentivo para automatizar, en EE. UU. cuesta más, por tanto las empresas de allí automatizan más, por tanto Occidente captura la robótica. Ese último paso no se sigue.
+- Las premisas son razonables hasta cierto punto. Unitree es manual porque la mano de obra no es el cuello de botella. Usar eso para concluir que Occidente gana es donde se cae.
+- En 1964 se cerró la puerta a medio millón de jornaleros mexicanos; en 1970, el 99,9% del tomate de California se cosechaba a máquina. No había considerado el cierre de la inmigración legal como forzante de la automatización. Política industrial por vía de la ley migratoria.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Ich war in Unitrees Fabrik und sehe den Westen jetzt optimistischer
+***** TLDR
+Josef Chen besuchte Unitrees Werk und fand die Aktuator-Montage überwiegend in Handarbeit: Beschäftigte an alten Wickelmaschinen legen Kupferdraht auf Motorkerne, dazu eine oder zwei automatisierte Linien. Er setzt die Arbeitskosten bei 8% der Herstellkosten von Unitree für 2025 an und den gesamten Maschinenbestand bei 1,7 Millionen Dollar für 32.000 Roboter, also etwa 50 Dollar Ausrüstung je Roboter; eine neue Motor-Automatisierungslinie würde nur 1,7% der Kosten eines Modells sparen. Bei US-Löhnen lägen die Arbeitskosten näher bei 40%, weshalb er argumentiert, Firmen wie Figure, Tesla, 1X und Agility hätten den Anreiz, die Automatisierung zu bauen. Als Beleg nennt er kalifornische Tomaten, die nach dem Ende des Bracero-Programms von 0,5% auf 99,9% maschinelle Ernte im Jahr 1970 sprangen. Er räumt ein, dass China bei Werkzeugmaschinen-Exporten führt, die US-Robotik auf importierte Maschinen und Teile angewiesen ist und chinesische Hairpin-Wickler schon halb so teuer sind wie westliche. Ein anschließender Besuch bei BYD zeigte volle Automatisierung mit Standardarmen von Fanuc und KUKA, was er als das liest, was passiert, sobald ein Design feststeht.
+***** Take
+Chens eigenes Material schwächt seine Überschrift. Unitree montiert von Hand, weil sich die Produkte jedes Jahr ändern, und sobald ein Humanoid-Design eingefroren ist, kann es automatisieren, wer es zuerst einfriert. Das ist eine Produktentscheidung, kein Land. Die Kommentare haben recht: Das Argument sagt voraus, dass der Westen mehr Automatisierungstechnik baut, nicht mehr Roboter.
+***** Comments
+- Die Kette lautet: Roboter werden von Hand gebaut, Arbeit ist 8% der Kosten, also fehlt der Anreiz zu automatisieren, US-Arbeit ist teurer, also automatisieren US-Firmen mehr, also holt der Westen die Robotik. Der letzte Schritt folgt nicht.
+- Bis zu einem Punkt sind die Prämissen vernünftig. Unitree arbeitet manuell, weil Arbeit nicht der Engpass ist. Daraus zu schließen, der Westen gewinne, bricht zusammen.
+- 1964 wurden eine halbe Million mexikanischer Landarbeiter ausgeschlossen, 1970 waren 99,9% der kalifornischen Tomaten maschinell geerntet. Dass das Schließen legaler Einwanderung Automatisierung erzwingt, hatte ich nicht bedacht. Industriepolitik als Einwanderungsrecht.
+** Show HN: Did prediction markets do any predicting this midterms? :prediction-markets:statistics:politics:showhn:
+:PROPERTIES:
+:ID:       50401451
+:URL:      https://app.artifactbin.dev/@vivek/AQTt2H-did-prediction-markets-predict-the-midterms
+:HN_URL:   https://news.ycombinator.com/item?id=50401451
+:POINTS:   21
+:COMMENTS: 10
+:BY:       nuwandavek
+:END:
+
+*** TLDR
+An interactive scoreboard pits Kalshi's market prices against Nate Silver's FLIPR Deluxe model and his polling average across Senate, governor and House races. Final calls are frozen at 5 AM ET on election morning, November 3, before election-night prices could move; each source gets a Brier score, and races are split into close (polling average within 5 points) and easy (everything else, including unpolled safe seats). The author's answer in his own headline is "sort of": against polls or FLIPR there was no edge, in particular on flipped or close-by-polls races. The per-race numbers are rendered only inside the charts, so the page text alone does not carry them.
+
+*** Take
+The scoring choice is the whole argument. Freeze the call at 5 AM and markets lose the thing they are actually good at, which is updating fast on partial returns; score only the close races and no cycle has enough of them to separate three forecasters. Both halves of that are worth saying out loud, and neither leaves prediction markets with a claim to being a guiding light.
+
+*** Comments
+
+**** Shank
+The real question is their predictions from outside election day. Once a blue tsunami was expected, most markets shot one direction as the night wrapped up. You need a comparison boundary that isn't influenced by election night.
+
+**** shizcakes
+What's with the mouse cursors? I can barely read this on mobile because it's covered in guest pointers.
+
+**** devin
+Neat idea, thanks. Why show the cursors? They're distracting and I'm not sure what purpose they serve.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Show HN：这次中期选举，预测市场真预测到了吗？
+***** TLDR
+一个交互式评分板把 Kalshi 的市场价格与 Nate Silver 的 FLIPR Deluxe 模型及其民调均值放在一起，比较参议院、州长和众议院各场选举。最终判断统一取 11 月 3 日选举日早上美东时间 5 点，在选举夜价格开始变动之前；每个来源计算 Brier 分数，比赛分为「接近」（民调均值差距在 5 个百分点内）和「容易」（其余，包括无人民调的安全席位）。作者在标题里给出的答案是「算是吧」：相对民调或 FLIPR 并没有优势，尤其在翻盘席位和民调胶着的席位上。逐场数据只渲染在图表里，页面文本本身并不包含这些数字。
+***** Take
+评分方式本身就是全部论点。把判断冻结在早上 5 点，就剥掉了预测市场真正擅长的东西：根据部分计票快速修正；而只看胶着席位，任何一个选举周期的样本都不足以区分三种预测方法。这两点都值得说清楚，而无论哪一点都没给预测市场留下「指路明灯」的说法。
+***** Comments
+- 真正该问的是选举日之外的预测。一旦「蓝色浪潮」成为预期，大多数市场在当晚收尾时就一齐朝一个方向冲。你需要一个不受选举夜影响的比较基准。
+- 这些鼠标光标是怎么回事？手机上满屏访客指针，我几乎没法读。
+- 想法不错，谢谢。但为什么要显示光标？很干扰，我也看不出它有什么用。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Show HN: 今回の中間選挙、予測市場は本当に予測できたのか？
+***** TLDR
+対話型のスコアボードが、Kalshi の市場価格を Nate Silver の FLIPR Deluxe モデルおよび彼の世論調査平均と上院・知事・下院の各選挙で比較している。最終判断は投票日11月3日の東部時間午前5時に固定され、選挙当夜の値動きが入る前の時点をとる。各ソースに Brier スコアを付け、接戦（世論調査平均で5ポイント以内）と容易（それ以外、調査のない安全議席も含む）に分けている。著者自身の見出しの答えは「まあ、ある程度」。世論調査や FLIPR に対する優位はなく、特に議席が入れ替わった選挙や世論調査で接近した選挙ではそうだという。個別の数値はグラフ内にしか描かれておらず、ページの文章だけでは読めない。
+***** Take
+採点の設計そのものが議論の中身だ。午前5時で判断を固定すれば、予測市場が本当に得意なこと、つまり途中開票で素早く更新する能力は消える。接戦だけで採点すれば、どの選挙周期も三つの予測手法を分けるには数が足りない。どちらも口に出して言うべき話で、いずれにしても予測市場が「導きの光」だという主張は残らない。
+***** Comments
+- 問うべきは投票日以外の予測だ。「青の大波」が前提になった時点で、当夜の終わりにはほとんどの市場が一方向へ走った。選挙当夜に影響されない比較基準が必要だ。
+- このマウスカーソルは何なのか。モバイルではゲストのポインタで埋まってほとんど読めない。
+- 面白い試みだ、ありがとう。ただカーソルを表示する理由は？気が散るし、何の役に立つのか分からない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Show HN: 이번 중간선거, 예측 시장이 실제로 예측했나?
+***** TLDR
+인터랙티브 점수판이 Kalshi의 시장 가격을 Nate Silver의 FLIPR Deluxe 모델과 그의 여론조사 평균과 함께 상원, 주지사, 하원 선거 전반에 걸쳐 비교한다. 최종 판단은 선거일인 11월 3일 동부시간 오전 5시로 고정해, 개표 당일 밤 가격이 움직이기 전 시점을 쓴다. 각 출처에 Brier 점수를 매기고, 선거는 접전(여론조사 평균 격차 5포인트 이내)과 쉬움(여론조사가 없던 안전 의석을 포함한 나머지)으로 나눈다. 저자가 제목에서 내린 답은 "그럭저럭"이다. 여론조사나 FLIPR 대비 우위가 없었고, 특히 뒤집힌 의석과 여론조사상 접전 의석에서 그랬다. 개별 선거 수치는 차트 안에만 그려져 있어 페이지 텍스트만으로는 읽을 수 없다.
+***** Take
+채점 방식 자체가 논점의 전부다. 오전 5시에 판단을 고정하면 예측 시장이 실제로 잘하는 것, 즉 부분 개표에 맞춰 빠르게 갱신하는 능력이 사라진다. 그리고 접전만 채점하면 어떤 선거 주기도 세 예측 방법을 가려낼 만큼 표본이 많지 않다. 둘 다 분명히 말해둘 가치가 있고, 어느 쪽이든 예측 시장이 길잡이라는 주장은 남지 않는다.
+***** Comments
+- 정말 물어야 할 것은 선거일 이외의 예측이다. '블루 쓰나미'가 기대된 순간부터 대부분의 시장이 그날 밤 마무리 즈음 한 방향으로 쏠렸다. 선거 당일 밤에 영향받지 않는 비교 기준이 필요하다.
+- 이 마우스 커서들은 뭔가? 모바일에서는 게스트 포인터로 덮여서 거의 읽을 수 없다.
+- 괜찮은 아이디어, 고맙다. 그런데 커서는 왜 보여주나? 산만하고 어떤 목적인지 모르겠다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Show HN: ¿predijeron algo los mercados de predicción en estas legislativas?
+***** TLDR
+Un tablero interactivo enfrenta los precios del mercado de Kalshi con el modelo FLIPR Deluxe de Nate Silver y su promedio de encuestas en carreras al Senado, gobernaciones y la Cámara. Las decisiones finales se congelan a las 5 de la mañana ET del día de la elección, el 3 de noviembre, antes de que los precios de la noche electoral pudieran moverse; cada fuente recibe una puntuación de Brier y las carreras se dividen en reñidas (promedio de encuestas dentro de 5 puntos) y fáciles (el resto, incluidos los escaños seguros sin encuestas). La respuesta del autor en su propio titular es "más o menos": frente a las encuestas o a FLIPR no hubo ventaja, sobre todo en escaños que cambiaron de manos o reñidos según las encuestas. Las cifras por carrera solo se dibujan dentro de los gráficos, así que el texto de la página no las contiene.
+***** Take
+La elección del método de puntuación es todo el argumento. Congelar la predicción a las 5 de la mañana le quita a los mercados lo que de verdad hacen bien, actualizarse rápido con resultados parciales; y puntuar solo las carreras reñidas deja a cualquier ciclo sin muestra suficiente para separar tres pronosticadores. Vale la pena decir ambas cosas en voz alta, y ninguna le deja a los mercados de predicción el papel de faro.
+***** Comments
+- La pregunta real son sus predicciones fuera del día de la elección. Cuando ya se esperaba un tsunami azul, la mayoría de los mercados se disparó en una dirección al cerrar la noche. Hace falta un punto de comparación no contaminado por la noche electoral.
+- ¿Qué pasa con los cursores del ratón? En el móvil apenas puedo leer esto porque está cubierto de punteros de invitados.
+- Buena idea, gracias. ¿Por qué mostrar los cursores? Distraen y no veo qué función cumplen.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Show HN: Haben Prognosemärkte bei diesen Zwischenwahlen etwas prognostiziert?
+***** TLDR
+Ein interaktives Scoreboard stellt Kalshis Marktpreise gegen Nate Silvers Modell FLIPR Deluxe und seinen Umfragedurchschnitt, über Senats-, Gouverneurs- und Hausrennen hinweg. Die endgültigen Einschätzungen werden auf 5 Uhr ET am Wahltag, dem 3. November, fixiert, bevor sich die Preise in der Wahlnacht bewegen konnten. Jede Quelle erhält einen Brier-Score, und die Rennen werden in knapp (Umfragedurchschnitt innerhalb von 5 Punkten) und einfach (alles andere, inklusive nicht befragter sicherer Sitze) geteilt. Die Antwort des Autors in seiner eigenen Überschrift lautet "so halb": gegenüber Umfragen oder FLIPR gab es keinen Vorsprung, besonders nicht bei gekippten oder laut Umfragen knappen Rennen. Die Zahlen pro Rennen stecken nur in den Diagrammen, der Seitentext trägt sie nicht.
+***** Take
+Die Wahl der Bewertungsmethode ist das ganze Argument. Fixiert man die Prognose auf 5 Uhr morgens, nimmt man den Märkten genau das, was sie wirklich können: schnelles Nachjustieren bei Teilergebnissen. Und bewertet man nur die knappen Rennen, hat kein Wahlzyklus genug davon, um drei Prognostiker zu unterscheiden. Beides gehört ausgesprochen, und keines lässt den Prognosemärkten die Rolle des Leuchtfeuers.
+***** Comments
+- Entscheidend sind die Prognosen abseits des Wahltags. Sobald ein blauer Tsunami erwartet wurde, schossen die meisten Märkte zum Ende der Nacht in eine Richtung. Man braucht eine Vergleichsgrenze, die von der Wahlnacht unbeeinflusst ist.
+- Was ist mit diesen Mauszeigern? Auf dem Handy kann ich das kaum lesen, weil alles mit Gast-Zeigern bedeckt ist.
+- Schöne Idee, danke. Warum die Zeiger anzeigen? Sie lenken ab, und ich sehe nicht, welchen Zweck sie haben.
