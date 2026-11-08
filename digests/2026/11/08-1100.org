@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-11-08 11:00 UTC
+#+DATE: 2026-11-08T11:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+A Claude Code user defects to Pi, GitHub release downloads 504 while the status page stays green, and Dirac builds any integer from four 2s
+
+* Highlights
+- Goodbye Claude Code: 244 releases in a year, three quarters of them touching the system prompt
+- GitHub release downloads returned 504 for hours while githubstatus.com showed all green
+- Dirac's four-2s formula works and costs one nested radical per unit
+- Agent memory now has nine incompatible formats and three competing specs
+- Consumer EEG makers are training on 50,000 hours of customer brain data
+
+* Stories
+
+** Goodbye Claude, Hello Pi :devtools:ai:agents:claude-code:
+:PROPERTIES:
+:ID:       50410107
+:URL:      https://caleb.software/posts/claude-to-pi.html
+:HN_URL:   https://news.ycombinator.com/item?id=50410107
+:POINTS:   339
+:COMMENTS: 202
+:BY:       karagenit
+:END:
+
+*** TLDR
+Caleb, a Claude Code user since it shipped with Claude Pro, moved his main coding harness to Pi, an open-source alternative. His specific complaints: only one Claude Code session can be connected to the VS Code IDE at a time, so a second tab stops receiving editor text selections (reported December 2025, closed as a duplicate); slash commands in the VS Code extension fail often; there is no custom status line; subagent output interleaves chronologically, which makes parallel runs unreadable; 244 releases in one year, about three quarters of them modifying system prompts or tool descriptions; and token overhead such as a bash tool description near 3,000 tokens explaining git and PR conventions the model already knows. Anthropic shipped AGENTS.md support the day after he decided to leave. He wrote his own Pi IDE extension in 20 minutes.
+
+*** Take
+The release cadence is the complaint that holds up. 244 versions a year with the system prompt rewritten in most of them means the tool you tuned your workflow against is not the tool you get next week, and that beats any missing feature as a reason to leave. Pi fixes it by making the prompt yours, which also makes the maintenance yours. leobuskin's list is the invoice: worse compaction, caching you have to reason about, undocumented headers you do not get, and an OAuth token in a third-party extension.
+
+*** Comments
+
+**** gvkhna
+:PROPERTIES:
+:COMMENT_ID: 50410985
+:END:
+Pi is without contest the best harness. Because it's yours, the total control is the only way to move from driving agents to orchestrating them. It's amazing to see what just a few lines of system prompt really can do.
+
+**** leobuskin
+:PROPERTIES:
+:COMMENT_ID: 50410950
+:END:
+Pi is a good harness, but not with an Anthropic subscription: potential ban for ToS violation, it doesn't follow Anthropic's undocumented headers and flags, compaction is significantly better in CC, and I wouldn't trust my oauth token to a third-party extension.
+
+**** brabel
+:PROPERTIES:
+:COMMENT_ID: 50411377
+:END:
+The author is complaining about Claude Code inside VSCode. The complaints don't apply to the Claude Desktop App, for the most part. You don't need VSCode to review code.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+再见 Claude，你好 Pi
+***** TLDR
+作者 Caleb 从 Claude Pro 时代就开始用 Claude Code，如今把主力编码工具换成了开源的 Pi。他的具体不满：同一时间只有一个 Claude Code 会话能连上 VS Code，第二个标签页收不到编辑器的选中文本（2025 年 12 月报过，被当成重复问题关掉）；VS Code 扩展里的斜杠命令经常失效；没有自定义状态栏；子代理的输出按时间顺序交错在一起，并行任务根本看不清；一年发布 244 个版本，其中约四分之三改动了系统提示或工具描述；还有 token 开销，比如 bash 工具描述接近 3000 token，讲的都是模型本来就懂的 git 和 PR 规范。他决定离开的第二天，Anthropic 就上线了 AGENTS.md 支持。他用 20 分钟给 Pi 写了自己的 IDE 扩展。
+***** Take
+站得住脚的那条抱怨是发布节奏。一年 244 个版本、多数还重写了系统提示，意味着你调好工作流的那个工具，下周已经不是同一个了，这比任何缺失的功能都更像离开的理由。Pi 的解法是把提示交给你，顺带把维护也交给你。leobuskin 那份清单就是账单：压缩更差、缓存要自己琢磨、拿不到那些未公开的 header，还得把 OAuth token 交给第三方扩展。
+***** Comments
+- Pi 毫无争议是最好的 harness。因为它是你自己的，完全掌控是从「驾驶」代理走向「编排」代理的唯一途径。几行系统提示能起到的作用非常惊人。
+- Pi 是个不错的 harness，但别配 Anthropic 订阅用：可能因违反 ToS 被封；它不会自动遵循 Anthropic 那些未公开的 header 和标志；CC 的上下文压缩明显更好；而且我不会把 oauth token 交给任何第三方扩展。
+- 作者抱怨的是 VSCode 里的 Claude Code。这些问题大体上不适用于 Claude 桌面应用。审代码并不需要 VSCode。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+さらばClaude、こんにちはPi
+***** TLDR
+Claude ProでClaude Codeが使えるようになった頃からのユーザーだったCalebが、メインのコーディングハーネスをオープンソースのPiに移行した。具体的な不満は、VS Code IDEに接続できるClaude Codeセッションが同時に1つだけで、2つ目のタブはエディタの選択テキストを受け取れなくなる点（2025年12月に報告されたが重複として閉じられた）、VS Code拡張のスラッシュコマンドが頻繁に失敗する点、カスタムステータスラインがない点、サブエージェントの出力が時系列で混ざり並列実行が読めなくなる点、1年で244回のリリースがありその約4分の3がシステムプロンプトやツール説明を変更している点、そしてbashツールの説明が3,000トークン近くを費やしてモデルが既に知っているgitやPRの作法を説明しているようなトークンの無駄。彼が移行を決めた翌日、AnthropicはAGENTS.mdのサポートを発表した。彼はPi用のIDE拡張を20分で書いた。
+***** Take
+筋が通っている不満はリリース頻度だ。年244バージョンでその多くがシステムプロンプトを書き換えるなら、ワークフローを合わせた道具は来週には別物になっている。これは機能の欠落よりも強い離脱理由になる。Piはプロンプトを自分のものにすることで解決し、同時に保守も自分のものにする。leobuskinのリストがその請求書だ。圧縮の質が落ち、キャッシュを自分で考え、未公開ヘッダは手に入らず、OAuthトークンを第三者の拡張に預けることになる。
+***** Comments
+- Piは議論の余地なく最高のハーネスだ。自分のものだからこそ、完全な制御がエージェントを運転する側から編成する側へ移る唯一の道になる。システムプロンプト数行の効果は驚くほど大きい。
+- Piは良いハーネスだが、Anthropicのサブスクと組み合わせるのはやめたほうがいい。ToS違反でBANされる可能性、Anthropicの非公開ヘッダやフラグに自動では従わない、圧縮はCCのほうが明確に優れている、そしてoauthトークンを第三者の拡張に預ける気にはなれない。
+- 著者が不満を言っているのはVSCode内のClaude Codeだ。その多くはClaudeデスクトップアプリには当てはまらない。コードレビューにVSCodeは必要ない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+안녕 Claude, 반가워 Pi
+***** TLDR
+Claude Pro에서 Claude Code를 쓸 수 있게 된 시절부터 사용해 온 Caleb이 주력 코딩 하니스를 오픈소스 Pi로 옮겼다. 구체적인 불만은 이렇다. VS Code IDE에 연결할 수 있는 Claude Code 세션이 한 번에 하나뿐이라 두 번째 탭은 에디터의 선택 텍스트를 받지 못한다(2025년 12월에 보고했지만 중복으로 닫혔다). VS Code 확장의 슬래시 명령이 자주 실패한다. 커스텀 상태줄이 없다. 서브에이전트 출력이 시간순으로 뒤섞여 병렬 실행을 읽을 수 없다. 1년에 244번 릴리스했고 그중 약 4분의 3이 시스템 프롬프트나 도구 설명을 건드렸다. 그리고 bash 도구 설명이 3,000토큰 가까이를 써서 모델이 이미 아는 git과 PR 관례를 설명하는 식의 토큰 낭비가 있다. 그가 떠나기로 결정한 다음 날 Anthropic은 AGENTS.md 지원을 발표했다. 그는 Pi용 IDE 확장을 20분 만에 직접 만들었다.
+***** Take
+설득력 있는 불만은 릴리스 주기다. 1년에 244개 버전이 나오고 대부분이 시스템 프롬프트를 다시 쓴다면, 워크플로를 맞춰 놓은 그 도구는 다음 주에 다른 도구가 된다. 이것은 빠진 기능보다 떠날 이유가 된다. Pi는 프롬프트를 사용자 것으로 만들어 이를 해결하고, 유지보수도 함께 넘긴다. leobuskin의 목록이 청구서다. 압축 품질 저하, 직접 따져야 하는 캐싱, 얻을 수 없는 비공개 헤더, 그리고 서드파티 확장에 맡기는 OAuth 토큰.
+***** Comments
+- Pi는 논쟁의 여지 없이 최고의 하니스다. 내 것이기 때문이다. 완전한 제어만이 에이전트를 운전하는 단계에서 편성하는 단계로 넘어가는 길이다. 시스템 프롬프트 몇 줄이 만드는 차이가 놀랍다.
+- Pi는 좋은 하니스지만 Anthropic 구독과 함께 쓰지는 말자. ToS 위반으로 차단될 수 있고, Anthropic의 비공개 헤더와 플래그를 그대로 따르지 않으며, 컨텍스트 압축은 CC가 확실히 낫고, 서드파티 확장에 oauth 토큰을 맡길 생각은 없다.
+- 저자가 불만을 말하는 대상은 VSCode 안의 Claude Code다. 그 불만은 대부분 Claude 데스크톱 앱에는 해당되지 않는다. 코드 리뷰에 VSCode가 필요하지도 않다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Adiós Claude, hola Pi
+***** TLDR
+Caleb, usuario de Claude Code desde que llegó a Claude Pro, cambió su herramienta principal de programación a Pi, una alternativa de código abierto. Sus quejas concretas: solo una sesión de Claude Code puede estar conectada al IDE de VS Code a la vez, así que una segunda pestaña deja de recibir el texto seleccionado en el editor (lo reportó en diciembre de 2025 y se cerró como duplicado); los comandos de barra de la extensión de VS Code fallan a menudo; no hay línea de estado personalizable; la salida de los subagentes se intercala por orden cronológico, lo que vuelve ilegibles las ejecuciones en paralelo; 244 lanzamientos en un año, unas tres cuartas partes de ellos modificando prompts de sistema o descripciones de herramientas; y el gasto de tokens, como una descripción de la herramienta bash de casi 3.000 tokens explicando convenciones de git y de PR que el modelo ya conoce. Anthropic lanzó soporte para AGENTS.md el día después de que él decidiera irse. Escribió su propia extensión de IDE para Pi en 20 minutos.
+***** Take
+La queja que se sostiene es la cadencia de lanzamientos. 244 versiones al año, con el prompt de sistema reescrito en la mayoría, significa que la herramienta a la que ajustaste tu flujo de trabajo no es la que tendrás la semana que viene, y eso pesa más que cualquier función ausente. Pi lo resuelve haciendo tuyo el prompt, lo que también hace tuyo el mantenimiento. La lista de leobuskin es la factura: peor compactación, caché que tienes que razonar tú, cabeceras no documentadas que no recibes y un token OAuth en una extensión de terceros.
+***** Comments
+- Pi es sin discusión el mejor harness. Porque es tuyo, y el control total es la única manera de pasar de conducir agentes a orquestarlos. Es asombroso lo que pueden lograr unas pocas líneas de prompt de sistema.
+- Pi es un buen harness, pero no con una suscripción de Anthropic: posible baneo por violar los ToS, no sigue las cabeceras y flags no documentadas de Anthropic, la compactación es bastante mejor en CC, y no confiaría mi token oauth a una extensión de terceros.
+- El autor se queja de Claude Code dentro de VSCode. Esas quejas, en su mayoría, no aplican a la app de escritorio de Claude. No necesitas VSCode para revisar código.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Tschüss Claude, hallo Pi
+***** TLDR
+Caleb, Claude-Code-Nutzer seit dem Start im Claude-Pro-Abo, hat seine Haupt-Coding-Harness auf Pi umgestellt, eine Open-Source-Alternative. Seine konkreten Kritikpunkte: Es kann nur eine Claude-Code-Sitzung gleichzeitig mit der VS-Code-IDE verbunden sein, ein zweiter Tab erhält also keine Textauswahl aus dem Editor mehr (im Dezember 2025 gemeldet, als Duplikat geschlossen); Slash-Befehle in der VS-Code-Erweiterung scheitern häufig; es gibt keine eigene Statuszeile; die Ausgabe von Subagenten mischt sich chronologisch, wodurch parallele Läufe unlesbar werden; 244 Releases in einem Jahr, etwa drei Viertel davon mit Änderungen an System-Prompts oder Tool-Beschreibungen; und Token-Overhead, etwa eine Bash-Tool-Beschreibung von fast 3.000 Token über git- und PR-Konventionen, die das Modell längst kennt. Einen Tag nach seiner Entscheidung lieferte Anthropic Unterstützung für AGENTS.md. Seine eigene Pi-IDE-Erweiterung schrieb er in 20 Minuten.
+***** Take
+Der Kritikpunkt, der trägt, ist die Release-Frequenz. 244 Versionen pro Jahr, in den meisten davon ein neu geschriebener System-Prompt: Das Werkzeug, auf das du deinen Workflow abgestimmt hast, ist nächste Woche ein anderes. Das wiegt schwerer als jede fehlende Funktion. Pi löst das, indem der Prompt dir gehört, und damit auch die Wartung. leobuskins Liste ist die Rechnung: schlechteres Kompaktieren, Caching, über das du selbst nachdenken musst, undokumentierte Header, die du nicht bekommst, und ein OAuth-Token in einer Fremderweiterung.
+***** Comments
+- Pi ist unbestritten die beste Harness. Weil sie dir gehört, und vollständige Kontrolle ist der einzige Weg vom Steuern von Agenten zum Orchestrieren. Es ist beeindruckend, was ein paar Zeilen System-Prompt bewirken.
+- Pi ist eine gute Harness, aber nicht mit einem Anthropic-Abo: mögliche Sperre wegen ToS-Verstoß, sie folgt Anthropics undokumentierten Headern und Flags nicht, das Kompaktieren ist in CC deutlich besser, und mein OAuth-Token würde ich keiner Fremderweiterung geben.
+- Der Autor beschwert sich über Claude Code innerhalb von VSCode. Die Kritik trifft größtenteils nicht auf die Claude-Desktop-App zu. Zum Codereview braucht man VSCode nicht.
+** GitHub Down Again? :github:infrastructure:outage:cdn:
+:PROPERTIES:
+:ID:       50411818
+:URL:      https://github.com/torvalds/linux
+:HN_URL:   https://news.ycombinator.com/item?id=50411818
+:POINTS:   75
+:COMMENTS: 64
+:BY:       ridowk
+:END:
+
+*** TLDR
+Release asset downloads on github.com started returning HTTP 504 at roughly 08:45 UTC on November 8, 2026, reported from Frankfurt, Ireland, Virginia and India, and hitting both GitHub Actions runners and ordinary desktop downloads. Failures took about 11 seconds on the first request and 0.15 seconds on retries. The API asset endpoint kept working and some /raw/ URLs failed too, which points at the CDN edge in the release-download redirect chain rather than a full GitHub outage. githubstatus.com reported all systems operational for most of the window before GitHub opened incident pyynvrm1vskw. The submission itself was just a link to torvalds/linux as a proof of life.
+
+*** Take
+Small outage, maximum blast radius, because /releases/download/ is the one path with no fallback. Distro ISOs, installers and pinned CI dependencies all resolve through it and nothing keeps a second copy. The status page is the part worth being annoyed about: when it shows green during a 504 storm, every user spends the first twenty minutes debugging their own network, which is exactly what mkagenius describes.
+
+*** Comments
+
+**** mat0
+:PROPERTIES:
+:COMMENT_ID: 50412010
+:END:
+It is incredibly frustrating that everything is hosted on GitHub nowadays. I wanted to install Bazzite, a Linux distro, and I cannot download their ISO, I cannot download their recommended partition tool, I cannot even download Rufus. And then you check their status page and get the all good nothing wrong here.
+
+**** mkagenius
+:PROPERTIES:
+:COMMENT_ID: 50411969
+:END:
+Why doesn't githubstatus.com reflect this accurately? I usually check this and then doubt my network might be at fault if they don't show outages.
+
+**** esFran
+:PROPERTIES:
+:COMMENT_ID: 50411965
+:END:
+I'd recommend the free as in freedom Git alternative to everyone: Codeberg. Super lightweight, without that vicious circle of knowing your code is being used to train AI.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+GitHub 又挂了？
+***** TLDR
+2026 年 11 月 8 日约 08:45 UTC 起，github.com 的 release 资源下载开始返回 HTTP 504，法兰克福、爱尔兰、弗吉尼亚和印度都有报告，GitHub Actions runner 和普通桌面下载同样受影响。首次请求大约 11 秒后失败，重试则只需 0.15 秒。API 的资源端点仍然可用，部分 /raw/ 链接也失败，这指向 release 下载跳转链路上的 CDN 边缘节点，而不是 GitHub 整体宕机。在 GitHub 开出 pyynvrm1vskw 事故单之前，githubstatus.com 在大部分时间里都显示一切正常。这条投稿本身只是一个指向 torvalds/linux 的链接，用来证明站点还活着。
+***** Take
+故障不大，影响面却最大，因为 /releases/download/ 是唯一没有备选路径的那条链路。发行版 ISO、安装器、CI 里钉死的依赖全走这里，而没人留第二份副本。真正该让人不爽的是状态页：504 满天飞的时候它还显示绿色，于是每个用户都会先花二十分钟排查自己的网络，这正是 mkagenius 描述的情形。
+***** Comments
+- 现在什么都托管在 GitHub 上，实在让人抓狂。我想装 Bazzite 这个 Linux 发行版，结果下不了它的 ISO，下不了它推荐的分区工具，连 Rufus 都下不了。然后你去看状态页，上面写着一切正常。
+- 为什么 githubstatus.com 不能准确反映这种情况？我通常先去看它，它不报故障时我就会怀疑是自己网络的问题。
+- 我向所有人推荐自由软件意义上的 Git 替代品 Codeberg。非常轻量，也不用陷入那种「我的代码正在被拿去训练 AI」的恶性循环。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+またGitHubが落ちた？
+***** TLDR
+2026年11月8日のおよそ08:45 UTCから、github.comのリリースアセットのダウンロードがHTTP 504を返し始めた。報告はフランクフルト、アイルランド、バージニア、インドから上がり、GitHub Actionsのランナーも通常のデスクトップからのダウンロードも影響を受けた。初回リクエストは約11秒で失敗し、再試行は0.15秒で返る。APIのアセットエンドポイントは動作しており、一部の/raw/ URLも失敗していたことから、GitHub全体の障害ではなくリリースダウンロードのリダイレクト経路上のCDNエッジが原因と見られる。githubstatus.comはGitHubがインシデントpyynvrm1vskwを登録するまで、ほとんどの時間「全システム正常」と表示していた。投稿自体は生存確認としてtorvalds/linuxへのリンクを貼っただけのものだ。
+***** Take
+障害は小さいが影響範囲は最大だ。/releases/download/ は代替経路のない唯一の経路だからだ。ディストロのISO、インストーラ、CIで固定した依存物がすべてここを通るのに、誰も二つ目のコピーを置いていない。腹が立つべき部分はステータスページだ。504が飛び交う最中に緑を表示すれば、利用者は最初の20分を自分のネットワークの調査に使う。mkageniusが書いているのはまさにそれだ。
+***** Comments
+- いまや何でもGitHubにホストされているのが本当に腹立たしい。Bazziteというディストロを入れようとしたのに、ISOも落とせず、推奨のパーティションツールも落とせず、Rufusさえ落とせない。そしてステータスページを見ると「問題なし」と書いてある。
+- なぜgithubstatus.comはこれを正確に反映しないのか。普段はそこを確認して、障害が出ていないと自分のネットワークのせいかと疑ってしまう。
+- 自由ソフトウェアとしてのGit代替、Codebergを全員にすすめたい。とても軽量で、自分のコードがAIの学習に使われていると知る悪循環もない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+GitHub 또 죽었나?
+***** TLDR
+2026년 11월 8일 약 08:45 UTC부터 github.com의 릴리스 자산 다운로드가 HTTP 504를 반환하기 시작했다. 프랑크푸르트, 아일랜드, 버지니아, 인도에서 보고가 올라왔고 GitHub Actions 러너와 일반 데스크톱 다운로드가 모두 영향을 받았다. 첫 요청은 약 11초 뒤 실패하고 재시도는 0.15초에 돌아왔다. API 자산 엔드포인트는 정상이었고 일부 /raw/ URL도 실패했는데, 이는 GitHub 전체 장애가 아니라 릴리스 다운로드 리다이렉트 경로의 CDN 엣지를 가리킨다. githubstatus.com은 GitHub가 인시던트 pyynvrm1vskw를 등록하기 전까지 대부분의 시간 동안 모든 시스템 정상이라고 표시했다. 글 자체는 생존 확인용으로 torvalds/linux 링크를 올린 것이다.
+***** Take
+장애는 작지만 파급 범위는 최대다. /releases/download/ 는 대체 경로가 없는 유일한 경로이기 때문이다. 배포판 ISO, 인스톨러, CI에 고정한 의존성이 모두 이 경로를 지나는데 두 번째 사본을 두는 곳은 없다. 화가 날 만한 부분은 상태 페이지다. 504가 쏟아지는 동안 초록색을 띄우면 사용자는 첫 20분을 자기 네트워크 점검에 쓴다. mkagenius가 쓴 그대로다.
+***** Comments
+- 요즘 모든 것이 GitHub에 호스팅되는 게 정말 짜증난다. Bazzite라는 리눅스 배포판을 설치하려 했는데 ISO도 못 받고, 권장 파티션 도구도 못 받고, Rufus조차 못 받는다. 그리고 상태 페이지에 가 보면 아무 문제 없다고 적혀 있다.
+- 왜 githubstatus.com은 이걸 정확히 반영하지 않을까? 보통 거기를 먼저 확인하고, 장애가 안 뜨면 내 네트워크 문제인가 의심하게 된다.
+- 자유 소프트웨어로서의 Git 대안인 Codeberg를 모두에게 추천한다. 아주 가볍고, 내 코드가 AI 학습에 쓰인다는 악순환도 없다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+¿GitHub caído otra vez?
+***** TLDR
+Las descargas de recursos de releases en github.com empezaron a devolver HTTP 504 alrededor de las 08:45 UTC del 8 de noviembre de 2026, con reportes desde Fráncfort, Irlanda, Virginia e India, y afectando tanto a los runners de GitHub Actions como a descargas normales de escritorio. Los fallos tardaban unos 11 segundos en la primera petición y 0,15 segundos en los reintentos. El endpoint de recursos de la API siguió funcionando y algunas URL /raw/ también fallaban, lo que apunta al borde de la CDN en la cadena de redirecciones de descarga de releases y no a una caída completa de GitHub. githubstatus.com informó de todos los sistemas operativos durante casi toda la ventana antes de que GitHub abriera el incidente pyynvrm1vskw. El envío en sí era solo un enlace a torvalds/linux como prueba de vida.
+***** Take
+Caída pequeña, radio de impacto máximo, porque /releases/download/ es la única ruta sin alternativa. ISOs de distribuciones, instaladores y dependencias fijadas en CI pasan todas por ahí y nadie guarda una segunda copia. Lo que de verdad molesta es la página de estado: si muestra verde durante una tormenta de 504, cada usuario dedica los primeros veinte minutos a depurar su propia red, que es exactamente lo que describe mkagenius.
+***** Comments
+- Es increíblemente frustrante que hoy todo esté alojado en GitHub. Quería instalar Bazzite, una distro de Linux, y no puedo descargar su ISO, ni su herramienta de particionado recomendada, ni siquiera Rufus. Y luego miras su página de estado y dice que todo está bien.
+- ¿Por qué githubstatus.com no refleja esto con precisión? Normalmente lo consulto y, si no muestran caídas, dudo de si el problema es mi red.
+- Recomiendo a todo el mundo la alternativa libre a Git: Codeberg. Muy ligera, sin ese círculo vicioso de saber que tu código se usa para entrenar IA.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+GitHub schon wieder down?
+***** TLDR
+Downloads von Release-Assets auf github.com lieferten ab etwa 08:45 UTC am 8. November 2026 HTTP 504, gemeldet aus Frankfurt, Irland, Virginia und Indien, und betroffen waren sowohl GitHub-Actions-Runner als auch gewöhnliche Downloads vom Rechner. Die erste Anfrage scheiterte nach rund 11 Sekunden, Wiederholungen nach 0,15 Sekunden. Der Asset-Endpunkt der API funktionierte weiter, einige /raw/-URLs scheiterten ebenfalls. Das deutet auf die CDN-Edge in der Redirect-Kette der Release-Downloads hin und nicht auf einen vollständigen GitHub-Ausfall. githubstatus.com meldete über fast das ganze Zeitfenster alle Systeme betriebsbereit, bevor GitHub den Vorfall pyynvrm1vskw eröffnete. Der Beitrag selbst war nur ein Link auf torvalds/linux als Lebenszeichen.
+***** Take
+Kleiner Ausfall, maximale Reichweite, denn /releases/download/ ist der einzige Pfad ohne Alternative. Distro-ISOs, Installer und in CI gepinnte Abhängigkeiten laufen alle darüber, und niemand hält eine zweite Kopie vor. Ärgerlich ist vor allem die Statusseite: Zeigt sie während eines 504-Sturms grün, verbringt jeder Nutzer die ersten zwanzig Minuten mit der Fehlersuche im eigenen Netz. Genau das beschreibt mkagenius.
+***** Comments
+- Es ist unglaublich frustrierend, dass heute alles auf GitHub liegt. Ich wollte Bazzite installieren, eine Linux-Distribution, und kann weder das ISO noch das empfohlene Partitionierungstool noch Rufus herunterladen. Und dann steht auf der Statusseite, alles sei in Ordnung.
+- Warum spiegelt githubstatus.com das nicht korrekt wider? Ich schaue dort zuerst nach und zweifle dann an meinem eigenen Netz, wenn keine Störung angezeigt wird.
+- Ich empfehle allen die freie Git-Alternative Codeberg. Sehr leichtgewichtig, ohne diesen Teufelskreis, zu wissen, dass dein Code zum Training von KI benutzt wird.
+** Making any integer with four 2s (2025) :math:puzzles:recreational:
+:PROPERTIES:
+:ID:       50408713
+:URL:      https://eli.thegreenplace.net/2025/making-any-integer-with-four-2s/
+:HN_URL:   https://news.ycombinator.com/item?id=50408713
+:POINTS:   150
+:COMMENTS: 36
+:BY:       germanrabbit
+:END:
+
+*** TLDR
+Eli Bendersky works through Paul Dirac's trick for writing any positive integer using a fixed number of 2s. Take n nested square roots of 2 and you get 2 raised to 2^(-n). One base-2 logarithm reduces that to 2^(-n), a second gives -n, so n equals minus log2 of log2 of the nested radical, with n radicals. That version spends only three 2s, the two logarithm bases and the radicand, so to meet the four-2s rule Bendersky substitutes one of them with the square root of 2+2. The catch he states plainly: writing the number 100 requires 100 nested radical signs.
+
+*** Take
+The formula is correct and useless, which is the whole appeal. The nested radicals do the counting and the logarithms just read the count back out, so you have smuggled a unary numeral into a notation that looks like algebra. The thread is right that the rules are the actual puzzle: hahajk's point that a radical implies an index you did not pay for, and bajard's that 22 quietly borrows base 10, are both harder to answer than Dirac's construction.
+
+*** Comments
+
+**** hahajk
+:PROPERTIES:
+:COMMENT_ID: 50409769
+:END:
+From my perspective a square root spends a 2. It's not an operator like + or !. There's an implicit 2 since you could also take the cube root or fourth root.
+
+**** bajard
+:PROPERTIES:
+:COMMENT_ID: 50411229
+:END:
+22 is cheating because 22 = 2⁎10+2 is arbitrary in base 10. If you write 22 in some base, you have to write the base, and that's an extra number.
+
+**** adas0693
+:PROPERTIES:
+:COMMENT_ID: 50409188
+:END:
+There is a related problem: find the smallest positive integer that cannot be expressed using a digit K, N times, with +, -, ⁎, / and parentheses. For N=4: 7 is impossible with four 2s, 11 with four 3s, 10 with four 4s.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+用四个 2 造出任意整数（2025）
+***** TLDR
+Eli Bendersky 推演了保罗·狄拉克用固定数量的 2 写出任意正整数的技巧。对 2 取 n 重嵌套平方根，得到 2 的 2^(-n) 次方；取一次以 2 为底的对数得到 2^(-n)，再取一次得到 -n，于是 n 等于负的 log2(log2(嵌套根式))，其中嵌套了 n 层根号。这个版本只用了三个 2：两个对数的底，加上根号里的被开方数。为了满足「四个 2」的规则，Bendersky 把其中一个换成了 √(2+2)。他也直说了代价：要写出 100，就得画 100 层嵌套根号。
+***** Take
+公式正确且毫无用处，这正是它的乐趣所在。嵌套根号在做计数，对数只是把计数读回来，于是你把一套一进制数字偷偷塞进了看起来像代数的记号里。评论区说对了：规则本身才是真正的谜题。hahajk 指出根号隐含了一个你没付账的次数，bajard 指出 22 悄悄借用了十进制，这两点都比狄拉克的构造更难反驳。
+***** Comments
+- 在我看来平方根要花掉一个 2。它不像 + 或 ! 那样是纯运算符。因为你也可以开三次根或四次根，所以里面隐含了一个 2。
+- 22 是作弊，因为 22 = 2⁎10+2 依赖于十进制这个任意选择。如果你用某个进制写 22，就得把进制也写出来，那是多出来的一个数。
+- 有个相关问题：给定数字 K 和使用次数 N，只用 +、-、⁎、/ 和括号，找出无法表示的最小正整数。N=4 时：四个 2 做不出 7，四个 3 做不出 11，四个 4 做不出 10。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+4つの2で任意の整数を作る（2025）
+***** TLDR
+Eli Benderskyが、ポール・ディラックが決まった個数の2で任意の正整数を書く技を追っている。2にn重の入れ子平方根を取ると2の2^(-n)乗になり、底2の対数を一度取ると2^(-n)、もう一度取ると-nになる。したがってnは入れ子の根号の対数の対数にマイナスを付けたもので、根号はn重だ。この形では2を三つしか使わない。対数の底が二つと被開平数が一つだ。そこで「2を四つ」という条件に合わせるため、Benderskyはそのうち一つを√(2+2)に置き換える。代償も明記されている。100を書くには根号を100重に重ねる必要がある。
+***** Take
+式は正しく、そして役に立たない。それが面白さの全部だ。数を数えているのは入れ子の根号で、対数はその個数を読み戻すだけなので、代数に見える記法の中に一進法をこっそり持ち込んだことになる。スレッドの指摘は正しい。本当のパズルはルールのほうだ。根号には支払っていない指数が隠れているというhahajkの指摘と、22は10進法を黙って借りているというbajardの指摘は、ディラックの構成よりも反論が難しい。
+***** Comments
+- 私の見方では平方根は2を1個消費する。+ や ! のような単なる演算子ではない。立方根や4乗根も取れるのだから、暗黙の2が入っている。
+- 22はズルだ。22 = 2⁎10+2は10進法という任意の選択に依存している。ある基数で22と書くなら基数も書かねばならず、それは余分な数だ。
+- 関連する問題がある。数字KをN回、+、-、⁎、/ と括弧だけで使って表せない最小の正整数を求めるものだ。N=4では、2を4つで7、3を4つで11、4を4つで10が作れない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+2를 네 개로 임의의 정수 만들기 (2025)
+***** TLDR
+Eli Bendersky가 폴 디랙이 정해진 개수의 2로 임의의 양의 정수를 쓰는 기법을 짚어 본다. 2에 n중 중첩 제곱근을 취하면 2의 2^(-n)승이 되고, 밑이 2인 로그를 한 번 취하면 2^(-n), 한 번 더 취하면 -n이 된다. 따라서 n은 중첩 근호의 로그의 로그에 마이너스를 붙인 값이며 근호는 n중이다. 이 형태는 2를 셋만 쓴다. 로그의 밑 둘과 근호 안의 수 하나다. 그래서 2를 넷 쓰라는 규칙에 맞추기 위해 Bendersky는 그중 하나를 √(2+2)로 바꾼다. 대가도 분명히 적어 두었다. 100을 쓰려면 근호를 100중으로 겹쳐야 한다.
+***** Take
+식은 맞고 쓸모는 없다. 그게 재미의 전부다. 수를 세는 일은 중첩 근호가 하고 로그는 그 개수를 다시 읽어낼 뿐이어서, 대수처럼 보이는 표기 안에 일진법을 몰래 끼워 넣은 셈이다. 스레드의 지적이 옳다. 진짜 퍼즐은 규칙 쪽이다. 근호에는 지불하지 않은 지수가 숨어 있다는 hahajk의 지적과, 22는 10진법을 조용히 빌려 온다는 bajard의 지적은 디랙의 구성보다 반박하기 어렵다.
+***** Comments
+- 내 관점에서 제곱근은 2를 하나 소비한다. + 나 ! 같은 단순 연산자가 아니다. 세제곱근이나 네제곱근도 쓸 수 있으니 암묵적인 2가 들어 있다.
+- 22는 반칙이다. 22 = 2⁎10+2 는 10진법이라는 임의의 선택에 의존한다. 어떤 진법으로 22를 쓴다면 진법도 적어야 하고, 그건 추가된 숫자다.
+- 관련된 문제가 있다. 숫자 K를 N번, +, -, ⁎, / 와 괄호만으로 써서 표현할 수 없는 가장 작은 양의 정수를 찾는 것이다. N=4일 때 2 넷으로는 7, 3 넷으로는 11, 4 넷으로는 10을 만들 수 없다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Formar cualquier entero con cuatro 2 (2025)
+***** TLDR
+Eli Bendersky desarrolla el truco de Paul Dirac para escribir cualquier entero positivo con un número fijo de 2. Si tomas n raíces cuadradas anidadas de 2 obtienes 2 elevado a 2^(-n). Un logaritmo en base 2 lo reduce a 2^(-n), y un segundo da -n, así que n es menos el log2 del log2 del radical anidado, con n radicales. Esa versión gasta solo tres 2: las dos bases de los logaritmos y el radicando. Para cumplir la regla de los cuatro 2, Bendersky sustituye uno por la raíz cuadrada de 2+2. La trampa la dice sin rodeos: escribir el número 100 exige 100 signos de radical anidados.
+***** Take
+La fórmula es correcta e inútil, y ahí está toda la gracia. Los radicales anidados hacen el conteo y los logaritmos solo lo leen de vuelta, así que has colado un número unario dentro de una notación que parece álgebra. El hilo acierta: las reglas son el verdadero rompecabezas. El argumento de hahajk, que un radical implica un índice que no pagaste, y el de bajard, que 22 toma prestada la base 10 en silencio, son más difíciles de responder que la construcción de Dirac.
+***** Comments
+- Desde mi punto de vista, una raíz cuadrada gasta un 2. No es un operador como + o !. Hay un 2 implícito, ya que también podrías tomar la raíz cúbica o la cuarta.
+- 22 es hacer trampa, porque 22 = 2⁎10+2 depende de la base 10, que es arbitraria. Si escribes 22 en alguna base, tienes que escribir la base, y eso es un número extra.
+- Hay un problema relacionado: encontrar el entero positivo más pequeño que no se puede expresar usando un dígito K, N veces, con +, -, ⁎, / y paréntesis. Para N=4: 7 es imposible con cuatro 2, 11 con cuatro 3, 10 con cuatro 4.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Jede ganze Zahl aus vier Zweien (2025)
+***** TLDR
+Eli Bendersky führt Paul Diracs Trick durch, mit einer festen Anzahl von Zweien jede positive ganze Zahl zu schreiben. Nimmt man n ineinander verschachtelte Quadratwurzeln aus 2, erhält man 2 hoch 2^(-n). Ein Logarithmus zur Basis 2 macht daraus 2^(-n), ein zweiter ergibt -n. Also ist n gleich minus log2 von log2 des verschachtelten Wurzelausdrucks, mit n Wurzeln. Diese Fassung verbraucht nur drei Zweien: die beiden Logarithmusbasen und den Radikanden. Um die Regel mit vier Zweien zu erfüllen, ersetzt Bendersky eine davon durch die Quadratwurzel aus 2+2. Den Preis nennt er offen: Für die Zahl 100 braucht man 100 verschachtelte Wurzelzeichen.
+***** Take
+Die Formel ist korrekt und nutzlos, und genau das macht den Reiz aus. Gezählt wird von den verschachtelten Wurzeln, die Logarithmen lesen die Anzahl nur wieder aus. Damit hat man eine Unärzahl in eine Notation geschmuggelt, die wie Algebra aussieht. Der Thread hat recht: Die Regeln sind das eigentliche Rätsel. hahajks Einwand, dass eine Wurzel einen Index voraussetzt, den man nicht bezahlt hat, und bajards Einwand, dass 22 stillschweigend die Basis 10 ausleiht, sind schwerer zu beantworten als Diracs Konstruktion.
+***** Comments
+- Aus meiner Sicht verbraucht eine Quadratwurzel eine 2. Sie ist kein Operator wie + oder !. Es gibt eine implizite 2, denn man könnte auch die dritte oder vierte Wurzel nehmen.
+- 22 ist geschummelt, denn 22 = 2⁎10+2 hängt von der willkürlichen Basis 10 ab. Schreibt man 22 in irgendeiner Basis, muss man die Basis mitschreiben, und das ist eine zusätzliche Zahl.
+- Es gibt ein verwandtes Problem: die kleinste positive ganze Zahl finden, die man mit einer Ziffer K, N-mal verwendet, und nur +, -, ⁎, / und Klammern nicht darstellen kann. Für N=4: 7 ist mit vier Zweien unmöglich, 11 mit vier Dreien, 10 mit vier Vieren.
+** Agent memory needs its OpenTelemetry moment :ai:agents:standards:memory:
+:PROPERTIES:
+:ID:       50411467
+:URL:      https://www.lorekit.io/blog/open-agent-memory-format
+:HN_URL:   https://news.ycombinator.com/item?id=50411467
+:POINTS:   44
+:COMMENTS: 31
+:BY:       mthines
+:END:
+
+*** TLDR
+Mads Thines of LoreKit counts the shapes agent memory currently takes: AGENTS.md and CLAUDE.md instruction files, Cursor .mdc rules, Anthropic's memory tool writing into a /memories directory, GitHub Copilot's repo facts held server-side, Letta core memory blocks, Mem0 extracted facts, LangGraph's namespaced BaseStore, the MCP reference knowledge-graph server, Graphiti and Zep temporal graphs, and LoreKit's own addressed records. Three proposals already exist: MacPaw Research's Portable Memory .mem bundle with byte-reproducible serialization and deletion tombstones, the April 2026 Open Memory Protocol draft for moving conversations between platforms as a ZIP plus manifest, and Cognee's COGX, which imports from several existing systems. His sketch of a shared record is address, key, id, kind, written_by, lifecycle, attributes and content, with semantic conventions, an MCP contract and conformance tests layered on top. He concedes his own conflict of interest, argues that MCP standardizes the call and not the record, flags prompt injection through shared memory as the open security problem, and cites xkcd 927 against himself.
+
+*** Take
+Counting the formats is the strongest part of the post and imgyuri's reply is the strongest part of the thread. Agents parse arbitrary markdown without complaint, which is exactly why no format has won: the incompatibility costs tool vendors who want portability, not the model doing the reading. OpenTelemetry happened because vendor lock-in was expensive and measurable. Switching memory stores today costs one prompt, and nobody writes a spec to save that.
+
+*** Comments
+
+**** speedping
+:PROPERTIES:
+:COMMENT_ID: 50412017
+:END:
+Entire blog post reeks of LLM. If there was an adequately reliable way of detecting LLM text I'd build a browser extension that would just filter it out altogether.
+
+**** Fordec
+:PROPERTIES:
+:COMMENT_ID: 50411711
+:END:
+On the general premise, I agree. But I don't think we understand the right way to approach context and memory yet, never mind standardizing on an abstraction prematurely that ends up being like SOAP or SGML.
+
+**** imgyuri
+:PROPERTIES:
+:COMMENT_ID: 50411680
+:END:
+The need for a unified format is greatly reduced because agent memory is by definition read by agents, and agents are already instructed to read memory files of different formats. They're extremely good at traversing files to get the context they need.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+智能体记忆需要它的 OpenTelemetry 时刻
+***** TLDR
+LoreKit 的 Mads Thines 清点了当下智能体记忆的各种形态：AGENTS.md 和 CLAUDE.md 指令文件、Cursor 的 .mdc 规则、Anthropic 的 memory 工具写入 /memories 目录、GitHub Copilot 保存在服务端的仓库事实、Letta 的核心记忆块、Mem0 抽取的事实、LangGraph 带命名空间的 BaseStore、MCP 的参考知识图谱服务器、Graphiti 与 Zep 的时序图，以及 LoreKit 自己的带地址记录。已有三份提案：MacPaw Research 的 Portable Memory，一种 .mem 包，带字节级可复现序列化和删除墓碑；2026 年 4 月的 Open Memory Protocol 草案，用 ZIP 加 manifest 在平台间搬运对话；以及 Cognee 的 COGX，可从多个现有系统导入。他勾画的共享记录字段是 address、key、id、kind、written_by、lifecycle、attributes 和 content，上面再叠加语义约定、MCP 契约和一致性测试。他承认自己有利益冲突，主张 MCP 标准化的是调用而不是记录，指出共享记忆带来的提示注入是尚未解决的安全问题，并引用 xkcd 927 自嘲。
+***** Take
+这篇文章最有力的部分是把格式数清楚了，而讨论里最有力的部分是 imgyuri 的回复。智能体读任意 markdown 毫无障碍，这恰恰解释了为什么没有哪种格式胜出：不兼容的代价由想要可移植性的工具厂商承担，而不是由读文件的模型承担。OpenTelemetry 之所以成事，是因为厂商锁定既昂贵又可度量。今天换一个记忆存储的代价只是改一段提示词，没人会为省下这点而去写规范。
+***** Comments
+- 整篇博文都是 LLM 味。如果有足够可靠的方法检测 LLM 文本，我会做个浏览器扩展把它们全过滤掉。
+- 就大前提我同意。但我不认为现在就是那个时刻。我们还没搞清楚该怎么处理上下文和记忆、它们该存多久，更别提过早地把某个抽象标准化，最后变成 SOAP 或 SGML 那样。
+- 统一格式的必要性被大大削弱了，因为智能体记忆本来就是给智能体读的，而智能体已经被要求去读各种格式的记忆文件。即便没有这些指令，它们也非常善于在文件里翻找自己需要的上下文。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+エージェントのメモリにもOpenTelemetryの瞬間が必要だ
+***** TLDR
+LoreKitのMads Thinesが、現在のエージェントメモリの形を数え上げている。AGENTS.mdやCLAUDE.mdの指示ファイル、Cursorの.mdcルール、/memoriesディレクトリに書き込むAnthropicのmemoryツール、サーバ側で保持されるGitHub Copilotのリポジトリ知識、Lettaのコアメモリブロック、Mem0の抽出済みファクト、LangGraphの名前空間付きBaseStore、MCPのリファレンス知識グラフサーバ、GraphitiとZepの時系列グラフ、そしてLoreKit自身のアドレス付きレコードだ。提案も既に三つある。MacPaw ResearchのPortable Memory（バイト単位で再現可能なシリアライズと削除トゥームストーンを備えた.memバンドル）、2026年4月のOpen Memory Protocolドラフト（ZIPとマニフェストで会話をプラットフォーム間に移す）、そして複数の既存システムから取り込めるCogneeのCOGXである。共有レコードの草案フィールドはaddress、key、id、kind、written_by、lifecycle、attributes、contentで、その上にセマンティック規約、MCP契約、適合性テストを重ねる。著者は自らの利害を認め、MCPが標準化しているのは呼び出しであってレコードではないと論じ、共有メモリ経由のプロンプトインジェクションを未解決のセキュリティ問題として挙げ、xkcd 927を自分に向けて引用している。
+***** Take
+記事で最も強いのはフォーマットを数えた部分で、スレッドで最も強いのはimgyuriの返信だ。エージェントは任意のmarkdownを文句なく読む。だからこそどのフォーマットも勝っていない。非互換のコストを払っているのは可搬性を求めるツールベンダーで、読む側のモデルではない。OpenTelemetryが実現したのは、ベンダーロックインが高額で計測可能だったからだ。いまメモリストアを乗り換えるコストはプロンプト一つ分で、そのために仕様を書く者はいない。
+***** Comments
+- ブログ記事全体がLLM臭い。十分に信頼できるLLM文章の検出法があれば、それを丸ごとフィルタするブラウザ拡張を作る。
+- 一般的な前提には同意する。だがその瞬間は今日ではない。コンテキストとメモリへの正しい取り組み方も、どれだけ保持すべきかもまだ分かっていない。SOAPやSGMLのような抽象を時期尚早に標準化するのは論外だ。
+- 統一フォーマットの必要性は大きく下がる。エージェントメモリは定義上エージェントが読むものであり、エージェントは既に異なる形式のメモリファイルを読むよう指示されている。必要な文脈を得るためにファイルを辿るのは非常に得意だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+에이전트 메모리에도 OpenTelemetry의 순간이 필요하다
+***** TLDR
+LoreKit의 Mads Thines가 현재 에이전트 메모리가 취하는 형태를 세어 본다. AGENTS.md와 CLAUDE.md 지시 파일, Cursor의 .mdc 규칙, /memories 디렉터리에 쓰는 Anthropic의 memory 도구, 서버 쪽에 보관되는 GitHub Copilot의 저장소 지식, Letta의 코어 메모리 블록, Mem0의 추출된 사실, LangGraph의 네임스페이스가 있는 BaseStore, MCP 참조 지식 그래프 서버, Graphiti와 Zep의 시간 그래프, 그리고 LoreKit 자신의 주소 지정 레코드다. 제안도 이미 셋 있다. MacPaw Research의 Portable Memory는 바이트 단위로 재현 가능한 직렬화와 삭제 툼스톤을 갖춘 .mem 번들이고, 2026년 4월의 Open Memory Protocol 초안은 ZIP과 매니페스트로 대화를 플랫폼 간에 옮기며, Cognee의 COGX는 여러 기존 시스템에서 가져올 수 있다. 공유 레코드 스케치의 필드는 address, key, id, kind, written_by, lifecycle, attributes, content이고 그 위에 의미 규약, MCP 계약, 적합성 테스트를 올린다. 그는 자신의 이해 상충을 인정하고, MCP가 표준화하는 것은 호출이지 레코드가 아니라고 주장하며, 공유 메모리를 통한 프롬프트 인젝션을 미해결 보안 문제로 지적하고, xkcd 927을 스스로에게 인용한다.
+***** Take
+글에서 가장 강한 부분은 형식을 세어 놓은 대목이고, 스레드에서 가장 강한 부분은 imgyuri의 답글이다. 에이전트는 임의의 마크다운을 불만 없이 읽는다. 바로 그래서 어떤 형식도 승리하지 못했다. 비호환의 비용은 이식성을 원하는 도구 벤더가 치르고, 읽는 모델은 치르지 않는다. OpenTelemetry가 성립한 것은 벤더 종속이 비싸고 측정 가능했기 때문이다. 지금 메모리 저장소를 바꾸는 비용은 프롬프트 하나이고, 그걸 아끼려고 명세를 쓰는 사람은 없다.
+***** Comments
+- 블로그 글 전체에서 LLM 냄새가 난다. LLM 텍스트를 충분히 신뢰성 있게 탐지할 방법이 있다면 그걸 전부 걸러내는 브라우저 확장을 만들겠다.
+- 일반적인 전제에는 동의한다. 하지만 그 순간이 오늘은 아니다. 컨텍스트와 메모리를 어떻게 다뤄야 하는지, 얼마나 오래 유지해야 하는지도 아직 모른다. 성급하게 추상을 표준화해서 SOAP이나 SGML처럼 되는 것은 더 말할 것도 없다.
+- 통일 형식의 필요성은 크게 줄어든다. 에이전트 메모리는 정의상 에이전트가 읽는 것이고, 에이전트는 이미 서로 다른 형식의 메모리 파일을 읽도록 지시받고 있다. 필요한 컨텍스트를 얻으려고 파일을 훑는 일에 매우 능하다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+La memoria de los agentes necesita su momento OpenTelemetry
+***** TLDR
+Mads Thines, de LoreKit, enumera las formas que adopta hoy la memoria de agentes: archivos de instrucciones AGENTS.md y CLAUDE.md, reglas .mdc de Cursor, la herramienta de memoria de Anthropic escribiendo en un directorio /memories, los datos de repositorio que GitHub Copilot guarda en su servidor, los bloques de memoria central de Letta, los hechos extraídos de Mem0, el BaseStore con espacios de nombres de LangGraph, el servidor de grafo de conocimiento de referencia de MCP, los grafos temporales de Graphiti y Zep, y los registros con dirección de LoreKit. Ya existen tres propuestas: Portable Memory de MacPaw Research, un paquete .mem con serialización reproducible byte a byte y lápidas de borrado; el borrador de abril de 2026 del Open Memory Protocol, para mover conversaciones entre plataformas como un ZIP con manifiesto; y COGX de Cognee, que importa desde varios sistemas existentes. Su esbozo de registro compartido incluye address, key, id, kind, written_by, lifecycle, attributes y content, con convenciones semánticas, un contrato MCP y pruebas de conformidad por encima. Admite su conflicto de interés, sostiene que MCP estandariza la llamada y no el registro, señala la inyección de prompts a través de memoria compartida como el problema de seguridad abierto y cita el xkcd 927 contra sí mismo.
+***** Take
+Contar los formatos es lo mejor del artículo, y la respuesta de imgyuri es lo mejor del hilo. Los agentes leen markdown arbitrario sin protestar, y por eso mismo ningún formato ha ganado: la incompatibilidad la pagan los proveedores de herramientas que quieren portabilidad, no el modelo que lee. OpenTelemetry ocurrió porque el bloqueo de proveedor era caro y medible. Hoy cambiar de almacén de memoria cuesta un prompt, y nadie escribe una especificación para ahorrarse eso.
+***** Comments
+- Toda la entrada del blog huele a LLM. Si hubiera una forma suficientemente fiable de detectar texto de LLM, haría una extensión de navegador para filtrarlo por completo.
+- Estoy de acuerdo con la premisa general. Pero no creo que ese momento sea hoy. Todavía no entendemos cuál es la forma correcta de abordar el contexto y la memoria ni cuánto deben durar, y menos aún estandarizar prematuramente una abstracción que acabe siendo como SOAP o SGML.
+- La necesidad de un formato unificado se reduce mucho, porque la memoria de agentes la leen por definición los agentes, y los agentes ya están instruidos para leer archivos de memoria de distintos formatos. Son extremadamente buenos recorriendo archivos para obtener el contexto que necesitan.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Agenten-Memory braucht seinen OpenTelemetry-Moment
+***** TLDR
+Mads Thines von LoreKit zählt auf, welche Formen Agenten-Memory heute annimmt: Anweisungsdateien wie AGENTS.md und CLAUDE.md, .mdc-Regeln von Cursor, Anthropics Memory-Tool, das in ein /memories-Verzeichnis schreibt, serverseitig gehaltene Repository-Fakten von GitHub Copilot, Core-Memory-Blöcke von Letta, extrahierte Fakten von Mem0, LangGraphs BaseStore mit Namensräumen, der Referenz-Knowledge-Graph-Server von MCP, temporale Graphen von Graphiti und Zep sowie LoreKits eigene adressierte Records. Drei Vorschläge gibt es bereits: Portable Memory von MacPaw Research, ein .mem-Bundle mit byteweise reproduzierbarer Serialisierung und Lösch-Tombstones, der Open-Memory-Protocol-Entwurf von April 2026, der Konversationen als ZIP samt Manifest zwischen Plattformen bewegt, und COGX von Cognee, das aus mehreren bestehenden Systemen importiert. Sein Entwurf für einen gemeinsamen Record umfasst address, key, id, kind, written_by, lifecycle, attributes und content, darüber semantische Konventionen, einen MCP-Vertrag und Konformitätstests. Er räumt seinen Interessenkonflikt ein, argumentiert, MCP standardisiere den Aufruf und nicht den Record, benennt Prompt Injection über geteiltes Memory als offenes Sicherheitsproblem und zitiert xkcd 927 gegen sich selbst.
+***** Take
+Das Auszählen der Formate ist der stärkste Teil des Textes, und imgyuris Antwort der stärkste Teil des Threads. Agenten lesen beliebiges Markdown ohne Murren, und genau deshalb hat sich kein Format durchgesetzt: Die Inkompatibilität zahlen Tool-Anbieter, die Portabilität wollen, nicht das lesende Modell. OpenTelemetry entstand, weil Vendor-Lock-in teuer und messbar war. Der Wechsel des Memory-Stores kostet heute einen Prompt, und dafür schreibt niemand eine Spezifikation.
+***** Comments
+- Der ganze Blogbeitrag riecht nach LLM. Gäbe es eine ausreichend zuverlässige Methode, LLM-Text zu erkennen, würde ich eine Browser-Erweiterung bauen, die ihn komplett ausfiltert.
+- Der allgemeinen Prämisse stimme ich zu. Aber dieser Moment ist nicht heute. Wir verstehen noch nicht, wie man Kontext und Memory richtig angeht oder wie lange sie gelten sollen, von einer verfrühten Standardisierung einer Abstraktion, die dann wie SOAP oder SGML endet, ganz zu schweigen.
+- Der Bedarf an einem einheitlichen Format ist deutlich geringer, denn Agenten-Memory wird per Definition von Agenten gelesen, und Agenten sind schon angewiesen, Memory-Dateien verschiedener Formate zu lesen. Sie sind extrem gut darin, Dateien nach dem nötigen Kontext zu durchsuchen.
+** Consumer brain wave headsets threaten privacy :privacy:neurotech:ai:wearables:
+:PROPERTIES:
+:ID:       50409856
+:URL:      https://www.science.org/content/article/wearable-device-makers-are-harvesting-brain-data-train-ai-without-telling-users
+:HN_URL:   https://news.ycombinator.com/item?id=50409856
+:POINTS:   62
+:COMMENTS: 26
+:BY:       maxall4
+:END:
+
+*** TLDR
+［from title + comments, article unreachable: science.org returned 403 to a direct fetch, the Jina proxy and two CORS proxies］ Science reports, under its original headline "The scramble for your brain data", that makers of consumer EEG wearables are using customer brain recordings to train AI models without telling the people wearing them. The number the thread fixes on is 50,000 hours of accumulated training data, and the device named in the discussion is the Muse headband. Commenters add that the research precedent for pulling private information out of consumer BCI signals is over a decade old: Martinovic et al., "On the Feasibility of Side-Channel Attacks with Brain-Computer Interfaces", USENIX Security 2012.
+
+*** Take
+frereubu has the honest read: consumer headsets produce vague data and their marketing over-reads it, so the immediate mind-reading risk is small. What survives that is the consent question, which does not depend on resolution. A dataset gathered under "improve your sleep score" becomes training data for whatever the company tries next, and 50,000 hours is enough that someone will try. peteforde's bricked Neurosity Crown is the other half of the problem: the company holding your EEG archive can simply stop existing, and the archive does not.
+
+*** Comments
+
+**** frereubu
+:PROPERTIES:
+:COMMENT_ID: 50412051
+:END:
+This area of ethics should be considered seriously, but in this specific instance these consumer-level headsets tell you very little about anything. If you've ever studied any kind of neuroscience, you realise quite how vague the data is, and how much over-interpretation goes on in the advertising for these products.
+
+**** gabriel666smith
+:PROPERTIES:
+:COMMENT_ID: 50411565
+:END:
+The company has amassed 50k hours of training data, that's a very large dataset. A side project of mine records audio in proximity to me and transcribes it, grabs EEG data from cheap sensors on my own head, and maps it against the transcription, with a view to training models that might understand what words I am thinking.
+
+**** peteforde
+:PROPERTIES:
+:COMMENT_ID: 50411336
+:END:
+I finally got around to firing up the Neurosity Crown I bought some years ago. Lights are on, but nobody is home: it knows the position of my head, but no actual EEG data is coming into the system. Multiple attempts to contact support have gone unanswered, and according to Reddit the founders appear to have quietly disappeared.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+消费级脑波头戴设备威胁隐私
+***** TLDR
+［基于标题与评论，原文无法获取：science.org 对直接抓取、Jina 代理和两个 CORS 代理都返回 403］ 《科学》的这篇报道原标题是「抢夺你的脑数据」，内容是消费级 EEG 可穿戴设备厂商在未告知佩戴者的情况下，用客户的脑电记录训练 AI 模型。讨论里被反复提到的数字是累积 50000 小时训练数据，被点名的设备是 Muse 头带。有评论指出，从消费级脑机接口信号里提取私人信息的研究先例已有十多年：Martinovic 等人在 USENIX Security 2012 上发表的《论用脑机接口实施侧信道攻击的可行性》。
+***** Take
+frereubu 的判断是诚实的：消费级头戴设备产出的数据很模糊，厂商的宣传过度解读了它，所以眼下「读心」的风险很小。但撇开这一点，知情同意的问题依然成立，而它不取决于信号精度。以「改善你的睡眠评分」为名收集的数据集，会变成公司下一步尝试什么的训练素材，而 50000 小时足够让人想试试。peteforde 那台变砖的 Neurosity Crown 是问题的另一半：持有你脑电档案的公司可以就这么消失，而档案不会。
+***** Comments
+- 这个伦理领域确实该认真对待，但就这个具体案例而言，消费级头戴设备几乎说明不了任何事情。如果你学过一点神经科学，就会明白这些数据有多模糊，以及这类产品的广告里有多少过度解读。
+- 这家公司已经累积了 5 万小时训练数据，这是个很大的数据集。我有个业余项目：录下我周围的音频并转成文字，同时用便宜的传感器从我自己头上采集 EEG 数据，再把两者对应起来，目标是训练出能从脑电信号判断我在想什么词的模型。
+- 我终于把几年前买的 Neurosity Crown 翻出来开机了。灯是亮的，但里面没人：它知道我头的位置，却没有任何真正的 EEG 数据进到系统里。多次联系客服都没有回应，而据 Reddit 上的说法，创始人们好像已经悄悄消失了。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+民生用脳波ヘッドセットがプライバシーを脅かす
+***** TLDR
+［タイトルとコメントに基づく。記事は取得不可：science.orgは直接取得、Jinaプロキシ、CORSプロキシ2種すべてに403を返した］ Science誌の記事は元のタイトルが「あなたの脳データの争奪戦」で、民生用EEGウェアラブルのメーカーが装着者に知らせずに顧客の脳波記録をAIモデルの学習に使っていると報じている。スレッドで注目されている数字は蓄積5万時間の学習データで、議論で名前が挙がっているデバイスはMuseヘッドバンドだ。民生用BCI信号から私的情報を取り出す研究の前例は10年以上前からあるという指摘もある。Martinovicらの「On the Feasibility of Side-Channel Attacks with Brain-Computer Interfaces」（USENIX Security 2012）だ。
+***** Take
+frereubuの読みが誠実だ。民生用ヘッドセットのデータは曖昧で、広告がそれを過大に読んでいる。だから読心の危険は今のところ小さい。それでも残るのは同意の問題で、こちらは解像度に依存しない。「睡眠スコアの改善」という名目で集められたデータセットは、その会社が次に試すことの学習データになる。5万時間あれば誰かが試す。peteforde の動かないNeurosity Crownは問題のもう半分だ。あなたのEEGアーカイブを持つ会社は消えることができるが、アーカイブは消えない。
+***** Comments
+- この倫理の領域は真剣に検討すべきだが、この具体例に関しては民生レベルのヘッドセットは何についてもほとんど何も語らない。神経科学を少しでも学べば、データがどれほど曖昧で、この種の製品の広告にどれほど過剰な解釈が含まれているか分かる。
+- その会社は5万時間の学習データを蓄積している。非常に大きなデータセットだ。私の個人プロジェクトでは、周囲の音声を録音して文字起こしし、安いセンサーで自分の頭からEEGを取得して、両者を対応づけている。最終的には私が思い浮かべている言葉を脳波から理解できるモデルを学習させたい。
+- 何年も前に買ったNeurosity Crownをようやく起動した。ランプは点いているが中身は空だ。頭の位置は分かるのに、実際のEEGデータはシステムに入ってこない。サポートに何度連絡しても返事はなく、Redditによれば創業者たちは静かに姿を消したらしい。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+소비자용 뇌파 헤드셋이 프라이버시를 위협한다
+***** TLDR
+［제목과 댓글 기반, 원문 접근 불가: science.org가 직접 요청과 Jina 프록시, CORS 프록시 둘 모두에 403을 반환했다］ Science의 이 기사는 원래 제목이 "당신의 뇌 데이터 쟁탈전"이며, 소비자용 EEG 웨어러블 제조사들이 착용자에게 알리지 않고 고객의 뇌파 기록을 AI 모델 학습에 쓰고 있다고 보도한다. 스레드가 주목하는 수치는 누적 5만 시간의 학습 데이터이고, 논의에서 지목된 기기는 Muse 헤드밴드다. 소비자용 BCI 신호에서 사적 정보를 끌어내는 연구 선례는 10년 이상 됐다는 지적도 있다. Martinovic 등의 "On the Feasibility of Side-Channel Attacks with Brain-Computer Interfaces", USENIX Security 2012이다.
+***** Take
+frereubu의 해석이 정직하다. 소비자용 헤드셋의 데이터는 모호하고 마케팅이 그것을 과하게 읽는다. 그래서 당장의 독심 위험은 작다. 그럼에도 남는 것은 동의 문제이고, 이건 해상도와 무관하다. "수면 점수를 개선해 준다"는 명목으로 모은 데이터셋은 회사가 다음에 시도하는 무엇의 학습 데이터가 된다. 5만 시간이면 누군가는 시도한다. peteforde의 먹통이 된 Neurosity Crown이 문제의 나머지 절반이다. 당신의 EEG 기록을 보관한 회사는 그냥 사라질 수 있고, 기록은 사라지지 않는다.
+***** Comments
+- 이 윤리 영역은 진지하게 다뤄야 하지만, 이 구체적인 사례에서 소비자급 헤드셋은 무엇에 대해서도 거의 알려 주지 않는다. 신경과학을 조금이라도 공부해 봤다면 그 데이터가 얼마나 모호한지, 이런 제품 광고에 얼마나 많은 과잉 해석이 들어가는지 알게 된다.
+- 그 회사는 5만 시간의 학습 데이터를 모았다. 매우 큰 데이터셋이다. 내 사이드 프로젝트는 주변 오디오를 녹음해 전사하고, 값싼 센서로 내 머리에서 EEG를 받아 전사본과 대응시킨다. 궁극적으로는 내가 어떤 단어를 생각하는지 뇌파로 이해하는 모델을 학습시키려 한다.
+- 몇 년 전에 산 Neurosity Crown을 드디어 켜 봤다. 불은 들어오는데 안에는 아무도 없다. 내 머리 위치는 아는데 실제 EEG 데이터는 시스템에 들어오지 않는다. 지원팀에 여러 번 연락했지만 답이 없고, Reddit에 따르면 창업자들은 조용히 사라진 것 같다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Los cascos de ondas cerebrales de consumo amenazan la privacidad
+***** TLDR
+［a partir del título y los comentarios, artículo inaccesible: science.org devolvió 403 a la descarga directa, al proxy de Jina y a dos proxies CORS］ Science informa, bajo su titular original "La carrera por tus datos cerebrales", de que los fabricantes de wearables EEG de consumo están usando los registros cerebrales de sus clientes para entrenar modelos de IA sin decírselo a quienes los llevan puestos. La cifra en la que se centra el hilo son 50.000 horas de datos de entrenamiento acumulados, y el dispositivo que se nombra en la discusión es la banda Muse. Los comentarios añaden que el precedente de investigación para extraer información privada de señales de BCI de consumo tiene más de una década: Martinovic et al., "On the Feasibility of Side-Channel Attacks with Brain-Computer Interfaces", USENIX Security 2012.
+***** Take
+frereubu hace la lectura honesta: los cascos de consumo producen datos vagos y su publicidad los sobreinterpreta, así que el riesgo inmediato de leer la mente es pequeño. Lo que sobrevive a eso es la cuestión del consentimiento, que no depende de la resolución. Un conjunto de datos recogido bajo la promesa de "mejorar tu puntuación de sueño" se convierte en material de entrenamiento para lo siguiente que intente la empresa, y 50.000 horas bastan para que alguien lo intente. La Neurosity Crown inservible de peteforde es la otra mitad del problema: la empresa que guarda tu archivo de EEG puede dejar de existir, y el archivo no.
+***** Comments
+- Esta área de la ética debería tomarse en serio, pero en este caso concreto estos cascos de nivel consumo dicen muy poco de cualquier cosa. Si has estudiado algo de neurociencia, te das cuenta de lo vagos que son los datos y de cuánta sobreinterpretación hay en la publicidad de estos productos.
+- La empresa ha acumulado 50.000 horas de datos de entrenamiento, es un conjunto muy grande. Un proyecto paralelo mío graba el audio a mi alrededor y lo transcribe, capta datos de EEG con sensores baratos en mi propia cabeza y los mapea contra la transcripción, con la idea de entrenar modelos que puedan entender qué palabras estoy pensando.
+- Por fin encendí la Neurosity Crown que compré hace años. Las luces están puestas, pero no hay nadie en casa: sabe la posición de mi cabeza, pero no llega ningún dato real de EEG al sistema. Varios intentos de contactar con soporte han quedado sin respuesta y, según Reddit, los fundadores parecen haber desaparecido en silencio.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Hirnwellen-Headsets für Endkunden gefährden die Privatsphäre
+***** TLDR
+［aus Titel und Kommentaren, Artikel nicht erreichbar: science.org antwortete auf den direkten Abruf, den Jina-Proxy und zwei CORS-Proxys mit 403］ Science berichtet unter der ursprünglichen Überschrift "Das Gerangel um deine Hirndaten", dass Hersteller von EEG-Wearables für Endkunden die Hirnaufzeichnungen ihrer Kunden zum Training von KI-Modellen nutzen, ohne die Träger darüber zu informieren. Die Zahl, auf die sich der Thread konzentriert, sind 50.000 Stunden angesammelter Trainingsdaten, und das in der Diskussion genannte Gerät ist das Muse-Stirnband. Kommentatoren verweisen darauf, dass der Forschungsvorläufer zum Auslesen privater Informationen aus Consumer-BCI-Signalen über ein Jahrzehnt alt ist: Martinovic et al., "On the Feasibility of Side-Channel Attacks with Brain-Computer Interfaces", USENIX Security 2012.
+***** Take
+frereubu liefert die ehrliche Lesart: Consumer-Headsets erzeugen vage Daten, und die Werbung überinterpretiert sie, das unmittelbare Gedankenlese-Risiko ist also klein. Was davon übrig bleibt, ist die Frage der Einwilligung, und die hängt nicht an der Auflösung. Ein Datensatz, der unter dem Versprechen "bessere Schlafbewertung" entsteht, wird zum Trainingsmaterial für das, was die Firma als Nächstes versucht, und 50.000 Stunden reichen, dass es jemand versucht. peteforde's unbrauchbare Neurosity Crown ist die andere Hälfte des Problems: Die Firma, die dein EEG-Archiv hält, kann einfach aufhören zu existieren. Das Archiv nicht.
+***** Comments
+- Dieses Feld der Ethik sollte man ernst nehmen, aber in diesem konkreten Fall sagen Headsets auf Endkundenniveau über nichts viel aus. Wer irgendeine Form von Neurowissenschaft studiert hat, merkt, wie vage die Daten sind und wie viel Überinterpretation in der Werbung für diese Produkte steckt.
+- Die Firma hat 50.000 Stunden Trainingsdaten angesammelt, das ist ein sehr großer Datensatz. In einem Nebenprojekt zeichne ich Audio in meiner Umgebung auf und transkribiere es, hole EEG-Daten von billigen Sensoren an meinem Kopf und bilde beides aufeinander ab, mit dem Ziel, Modelle zu trainieren, die verstehen, welche Wörter ich denke.
+- Ich habe endlich die Neurosity Crown eingeschaltet, die ich vor Jahren gekauft habe. Die Lichter sind an, aber niemand ist da: Sie kennt die Position meines Kopfes, aber es kommen keine echten EEG-Daten im System an. Mehrere Versuche, den Support zu erreichen, blieben unbeantwortet, und laut Reddit sind die Gründer offenbar still verschwunden.
