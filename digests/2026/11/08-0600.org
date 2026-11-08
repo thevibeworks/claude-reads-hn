@@ -1,0 +1,545 @@
+#+TITLE: HN Digest 2026-11-08 06:00 UTC
+#+DATE: 2026-11-08T06:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Coding agents commit their own passwords, a $10 modem stick runs ten services, and Heisenberg's reactor was 600 cubes short
+
+* Highlights
+- Claude Code configs: 1,122 public GitHub files with live credentials
+- OpenStick: ten containers in 450MB of RAM for $10
+- B8 reactor: short 600 uranium cubes and all the good graphite
+- GitHub rebuilds the PR page, thread still wants the merge queue fixed
+
+* Stories
+
+** Claude Code's "Don't Ask Again" exposes passwords in 1,122 public GitHub files :security:ai:devtools:secrets:
+:PROPERTIES:
+:ID:       50407882
+:URL:      https://apiiro.com/blog/coding-agents-leaking-secrets-github-dont-ask-again
+:HN_URL:   https://news.ycombinator.com/item?id=50407882
+:POINTS:   298
+:COMMENTS: 205
+:BY:       shmulc
+:END:
+
+*** TLDR
+Apiiro searched public GitHub between November 1 and 3, 2026 and found 104,185 committed copies of .claude/settings.local.json across 103,617 repos. Of those, 1,122 files held real credentials: 2,539 distinct secrets across 1,994 repos, including 636 provider keys, 379 database passwords, 122 Supabase service-role keys, 43 SSH credentials and 23 AWS keys, plus 734 more findable only in git history. The mechanism: you type a password into a command, pick "Yes, and don't ask again", and the literal command gets written to the project-local settings file. gitleaks flagged 564 of the 1,122, TruffleHog 643, and 215 were caught by neither, because the secrets sit inside command syntax like PGPASSWORD= instead of a recognizable key format.
+
+*** Take
+The headline oversells the button; committing the file is what exposes you, as Aurornis says in the thread. The finding that matters is the scanner gap. 215 files with live credentials that both gitleaks and TruffleHog walked past, because neither was taught that a password can be a command argument. Claude Code gitignoring the file at creation, which Boris cites, does nothing for the 103,617 repos that already pushed it.
+
+*** Comments
+
+**** bcherny
+:PROPERTIES:
+:COMMENT_ID: 50408112
+:END:
+Boris from the Claude Code team here. Historically Claude Code has not done secret scrubbing (there are many good tools for that), but we are looking into what we can do to prevent this. That said, .claude/settings.local.json is meant to stay local. This is not a file you should check into source control. We automatically gitignore it when Claude creates the file.
+
+**** Aurornis
+:PROPERTIES:
+:COMMENT_ID: 50408245
+:END:
+Confusing headline. They scanned for repos where people had committed their .claude/ folder and local settings and then scanned those files for commands which contained keys or passwords. So pressing "Don't Ask Again" by itself doesn't expose passwords.
+
+**** tsergiu
+:PROPERTIES:
+:COMMENT_ID: 50408390
+:END:
+I'm super paranoid about the level of access AI agents have. The best solution I've been able to come up with is using an ephemeral VM on an isolated network per task, using --dangerously-skip-permissions so it doesn't bother me.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Claude Code 的"不再询问"让密码出现在 1122 个公开 GitHub 文件中
+***** TLDR
+Apiiro 在 2026 年 11 月 1 日至 3 日搜索公开 GitHub，发现 103,617 个仓库中提交了 104,185 份 .claude/settings.local.json。其中 1,122 个文件含有真实凭据：1,994 个仓库中有 2,539 个独立密钥，包括 636 个服务商密钥、379 个数据库密码、122 个 Supabase service-role 密钥、43 组 SSH 凭据和 23 个 AWS 密钥，另有 734 个只能在 git 历史中找到。机制是：你把密码打进命令，选择"是，不再询问"，这条命令原文就被写入项目本地的设置文件。gitleaks 只标记出 1,122 个中的 564 个，TruffleHog 标记 643 个，215 个两者都没抓到，因为密钥藏在 PGPASSWORD= 这类命令语法里，而不是可识别的密钥格式。
+***** Take
+标题夸大了那个按钮的作用，真正泄露的是提交了文件，正如评论里 Aurornis 所说。关键发现是扫描器的盲区：215 个含有有效凭据的文件被 gitleaks 和 TruffleHog 同时漏掉，因为没人教它们密码可以是命令参数。Boris 提到 Claude Code 创建文件时会自动加入 gitignore，但这对已经推送的 103,617 个仓库毫无帮助。
+***** Comments
+- 我是 Claude Code 团队的 Boris。Claude Code 历来不做密钥清洗（已有很多好工具），但我们正在研究如何防止这种情况。另外，.claude/settings.local.json 本应留在本地，不该提交到版本控制。Claude 创建该文件时我们会自动把它加入 gitignore。
+- 标题有误导性。他们是搜索那些提交了 .claude/ 目录和本地设置的仓库，然后在这些文件里扫描含有密钥或密码的命令。所以单纯按下"不再询问"并不会泄露密码。
+- 我对 AI 智能体的访问权限非常谨慎。目前我想到的最好办法是每个任务用一个隔离网络上的临时虚拟机，加上 --dangerously-skip-permissions，这样它就不会反复打扰我。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Claude Codeの「次回から確認しない」でパスワードが1,122件の公開GitHubファイルに流出
+***** TLDR
+Apiiroが2026年11月1日から3日にかけて公開GitHubを調査し、103,617リポジトリに104,185件のコミット済み .claude/settings.local.json を発見した。うち1,122ファイルに実在の資格情報が含まれ、1,994リポジトリで2,539件の個別シークレット、内訳はプロバイダキー636件、DBパスワード379件、Supabaseのservice-roleキー122件、SSH資格情報43件、AWSキー23件で、さらに734件はgit履歴からのみ見つかる。仕組みは、コマンドにパスワードを打ち込んで「はい、次回から確認しない」を選ぶと、そのコマンドが文字列のままプロジェクトローカルの設定ファイルに書き込まれること。gitleaksは1,122件中564件、TruffleHogは643件を検出し、215件はどちらも見逃した。シークレットが PGPASSWORD= のようなコマンド構文の中にあり、認識可能なキー形式ではないためだ。
+***** Take
+見出しはボタンの役割を過大に言っている。流出の原因はファイルをコミットしたことで、スレッドのAurornisの指摘が正しい。重要なのはスキャナの死角だ。有効な資格情報を含む215ファイルをgitleaksとTruffleHogの両方が見過ごした。パスワードがコマンド引数になり得ると誰も教えていなかったからだ。Borisが挙げた「作成時に自動gitignore」は、すでにpushされた103,617リポジトリには何の効果もない。
+***** Comments
+- Claude CodeチームのBorisです。これまでClaude Codeはシークレットの除去を行ってきませんでした（良いツールが多数あるため）が、防止策を検討中です。なお .claude/settings.local.json はローカルに留めるべきファイルで、バージョン管理に入れるものではありません。Claudeが作成する際には自動でgitignoreに追加しています。
+- 紛らわしい見出しだ。彼らは .claude/ フォルダとローカル設定をコミットしてしまったリポジトリを探し、そのファイル内でキーやパスワードを含むコマンドを調べた。つまり「次回から確認しない」を押すだけでパスワードが流出するわけではない。
+- AIエージェントに与えるアクセス権には非常に神経を使っている。今のところ最良の方法は、タスクごとに隔離ネットワーク上の使い捨てVMを用意し、--dangerously-skip-permissions を付けて邪魔されないようにすることだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Claude Code의 '다시 묻지 않기'로 비밀번호가 공개 GitHub 파일 1,122개에 노출
+***** TLDR
+Apiiro가 2026년 11월 1일부터 3일까지 공개 GitHub를 조사해 103,617개 저장소에 커밋된 .claude/settings.local.json 104,185개를 찾았다. 그중 1,122개 파일에 실제 자격증명이 있었고, 1,994개 저장소에서 개별 비밀 2,539건이 나왔다. 공급자 키 636건, DB 비밀번호 379건, Supabase service-role 키 122건, SSH 자격증명 43건, AWS 키 23건이며 git 히스토리에서만 찾을 수 있는 것이 734건 더 있다. 원리는 간단하다. 명령에 비밀번호를 입력하고 '예, 다시 묻지 않기'를 누르면 그 명령이 문자 그대로 프로젝트 로컬 설정 파일에 기록된다. gitleaks는 1,122개 중 564개, TruffleHog는 643개를 탐지했고 215개는 둘 다 놓쳤다. 비밀이 PGPASSWORD= 같은 명령 문법 안에 있어 알아볼 수 있는 키 형식이 아니기 때문이다.
+***** Take
+제목은 버튼의 역할을 과장한다. 실제 노출 원인은 파일을 커밋한 것이고, 스레드의 Aurornis 지적이 맞다. 정작 중요한 발견은 스캐너의 사각지대다. 유효한 자격증명이 담긴 215개 파일을 gitleaks와 TruffleHog가 모두 지나쳤다. 비밀번호가 명령 인자가 될 수 있다는 걸 아무도 가르치지 않았기 때문이다. Boris가 언급한 '생성 시 자동 gitignore'는 이미 푸시된 103,617개 저장소에는 아무 도움이 안 된다.
+***** Comments
+- Claude Code 팀의 Boris입니다. 지금까지 Claude Code는 비밀 값 제거를 하지 않았습니다(좋은 도구가 많기 때문입니다). 다만 방지 방법을 검토하고 있습니다. 그리고 .claude/settings.local.json은 로컬에 남겨야 하는 파일이고 버전 관리에 넣을 것이 아닙니다. Claude가 이 파일을 만들 때 자동으로 gitignore에 추가합니다.
+- 제목이 혼란스럽다. 이들은 .claude/ 폴더와 로컬 설정을 커밋해버린 저장소를 찾아, 그 파일들에서 키나 비밀번호가 들어간 명령을 스캔했다. 즉 '다시 묻지 않기'를 누르는 것만으로 비밀번호가 노출되는 건 아니다.
+- AI 에이전트가 가진 접근 권한에 매우 민감하다. 지금까지 찾은 최선은 작업마다 격리된 네트워크의 일회용 VM을 쓰고 --dangerously-skip-permissions를 붙여 방해받지 않는 방식이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+El "No volver a preguntar" de Claude Code expone contraseñas en 1.122 archivos públicos de GitHub
+***** TLDR
+Apiiro rastreó GitHub público entre el 1 y el 3 de noviembre de 2026 y encontró 104.185 copias de .claude/settings.local.json confirmadas en 103.617 repositorios. De ellas, 1.122 archivos tenían credenciales reales: 2.539 secretos distintos en 1.994 repositorios, entre ellos 636 claves de proveedores, 379 contraseñas de bases de datos, 122 claves service-role de Supabase, 43 credenciales SSH y 23 claves de AWS, más 734 localizables solo en el historial de git. El mecanismo: escribes una contraseña en un comando, eliges "Sí, y no volver a preguntar" y el comando literal queda escrito en el archivo de configuración local del proyecto. gitleaks detectó 564 de los 1.122, TruffleHog 643, y 215 no los vio ninguno de los dos, porque los secretos van dentro de la sintaxis del comando, como PGPASSWORD=, y no en un formato de clave reconocible.
+***** Take
+El titular exagera el papel del botón; lo que te expone es confirmar el archivo, como señala Aurornis en el hilo. El hallazgo importante es el hueco de los escáneres: 215 archivos con credenciales activas que gitleaks y TruffleHog pasaron por alto, porque nadie les enseñó que una contraseña puede ser un argumento de comando. Que Claude Code añada el archivo al gitignore al crearlo, como cita Boris, no sirve de nada para los 103.617 repositorios que ya lo subieron.
+***** Comments
+- Boris, del equipo de Claude Code. Históricamente Claude Code no ha depurado secretos (hay muchas buenas herramientas para eso), pero estamos viendo qué podemos hacer para evitarlo. Dicho esto, .claude/settings.local.json está pensado para quedarse en local. No es un archivo que debas meter en control de versiones. Lo añadimos automáticamente al gitignore cuando Claude lo crea.
+- Titular confuso. Buscaron repositorios donde la gente había subido su carpeta .claude/ y su configuración local, y luego escanearon esos archivos buscando comandos con claves o contraseñas. Así que pulsar "No volver a preguntar" por sí solo no expone contraseñas.
+- Soy muy desconfiado con el nivel de acceso que tienen los agentes de IA. La mejor solución que he encontrado es una VM efímera en una red aislada por cada tarea, con --dangerously-skip-permissions para que no me moleste.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Claude Codes "Nicht mehr fragen" legt Passwörter in 1.122 öffentlichen GitHub-Dateien offen
+***** TLDR
+Apiiro durchsuchte vom 1. bis 3. November 2026 öffentliches GitHub und fand 104.185 eingecheckte Kopien von .claude/settings.local.json in 103.617 Repositories. Davon enthielten 1.122 Dateien echte Zugangsdaten: 2.539 verschiedene Secrets in 1.994 Repositories, darunter 636 Provider-Keys, 379 Datenbank-Passwörter, 122 Supabase-service-role-Keys, 43 SSH-Zugangsdaten und 23 AWS-Keys, plus 734 weitere, die nur in der git-Historie zu finden sind. Der Ablauf: Man tippt ein Passwort in ein Kommando, wählt "Ja, und nicht mehr fragen", und das Kommando wird wörtlich in die projektlokale Settings-Datei geschrieben. gitleaks erkannte 564 der 1.122, TruffleHog 643, und 215 erkannte keines der beiden, weil die Secrets in Kommandosyntax wie PGPASSWORD= stecken und nicht in einem erkennbaren Key-Format.
+***** Take
+Die Überschrift überzeichnet die Rolle des Buttons; offengelegt wird man durch das Einchecken der Datei, wie Aurornis im Thread anmerkt. Der eigentliche Befund ist die Lücke der Scanner: 215 Dateien mit gültigen Zugangsdaten, an denen gitleaks und TruffleHog vorbeigelaufen sind, weil niemand ihnen beigebracht hat, dass ein Passwort ein Kommando-Argument sein kann. Dass Claude Code die Datei beim Anlegen gitignoriert, wie Boris anführt, hilft den 103.617 Repositories nichts, die sie schon gepusht haben.
+***** Comments
+- Boris vom Claude-Code-Team. Claude Code hat bisher keine Secrets herausgefiltert (dafür gibt es viele gute Tools), aber wir prüfen, was wir dagegen tun können. Davon abgesehen: .claude/settings.local.json soll lokal bleiben. Diese Datei gehört nicht in die Versionskontrolle. Wenn Claude sie anlegt, setzen wir sie automatisch in die gitignore.
+- Verwirrende Überschrift. Sie haben nach Repositories gesucht, in denen Leute ihren .claude/-Ordner und ihre lokalen Settings eingecheckt hatten, und dann diese Dateien nach Kommandos mit Keys oder Passwörtern durchsucht. "Nicht mehr fragen" allein legt also keine Passwörter offen.
+- Ich bin extrem misstrauisch, welchen Zugriff KI-Agenten bekommen. Das Beste, was ich gefunden habe, ist eine kurzlebige VM in einem isolierten Netz pro Aufgabe, mit --dangerously-skip-permissions, damit sie mich nicht ständig fragt.
+** What I run on my $10 USD OpenStick homelab :selfhosting:hardware:linux:homelab:
+:PROPERTIES:
+:ID:       50406670
+:URL:      https://blog.bosscher.ch/posts/openstick/
+:HN_URL:   https://news.ycombinator.com/item?id=50406670
+:POINTS:   478
+:COMMENTS: 97
+:BY:       LaurensBER
+:END:
+
+*** TLDR
+The OpenStick is a hackable USB 4G modem that costs about $10: four Cortex-A53 cores at 1 GHz, 512 MB RAM of which roughly 450 MB is usable, 4 GB eMMC, 150 Mbit/s Wi-Fi, an LTE modem and GPS, all passively cooled. The author reflashes it to Debian with systemd and Podman and runs ten services on it: AdGuard Home for DNS filtering, a Cloudflare Tunnel instead of port forwarding, Beszel and Gatus for monitoring, Dozzle for container logs, Diun for update notifications, Fusion as an RSS reader, Shiori for bookmarks, CastSponsorSkip, and the Zeroclaw agent harness.
+
+*** Take
+The number worth noticing is not $10, it is ten containers inside 450 MB. Most self-hosting guides would tell you that setup needs 8 GB, and with RAM priced the way it is right now that gap is the whole point. The part that will actually end this build is the 4 GB eMMC, which is soldered down and has a write-cycle budget that container logs and a DNS filter will chew through.
+
+*** Comments
+
+**** LaurensBER
+:PROPERTIES:
+:COMMENT_ID: 50406801
+:END:
+I've had a lot of fun with this little gadget and it's pretty cool to see how much you can host on a cheap gadget if you pick the right software! Given how expensive RAM is these days, I figured this might be a good option for other people to get started with self-hosting as well!
+
+**** rbanffy
+:PROPERTIES:
+:COMMENT_ID: 50406955
+:END:
+It's more powerful than the RPi Zeros I use on my cluster, kind of same as a Zero 2. What I'd love to see is a stick that plugs into an Ethernet switch with PoE so you assemble a cluster just by literally plugging nodes into a switch.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+我在 10 美元的 OpenStick 家庭服务器上跑了什么
+***** TLDR
+OpenStick 是一种可改装的 USB 4G 上网棒，约 10 美元：四核 Cortex-A53 1GHz、512MB 内存（可用约 450MB）、4GB eMMC、150Mbit/s Wi-Fi、LTE 模块和 GPS，全被动散热。作者把它刷成 Debian，配 systemd 和 Podman，上面跑了十个服务：AdGuard Home 做 DNS 过滤、Cloudflare Tunnel 替代端口转发、Beszel 和 Gatus 做监控、Dozzle 看容器日志、Diun 发更新提醒、Fusion 当 RSS 阅读器、Shiori 管书签，还有 CastSponsorSkip 和 Zeroclaw 智能体框架。
+***** Take
+值得注意的数字不是 10 美元，而是 450MB 内存里塞了十个容器。多数自托管教程会告诉你这套配置需要 8GB，而在当前内存价格下，这个差距才是重点。真正会让这套方案终结的是那块 4GB eMMC：它是焊死的，而容器日志加 DNS 过滤会很快耗掉它的写入寿命。
+***** Comments
+- 玩这个小玩意儿很有意思，看到只要挑对软件，便宜的小设备能托管这么多东西，挺酷的。考虑到现在内存这么贵，我觉得这对想入门自托管的人可能是个不错的选择。
+- 它比我集群里用的树莓派 Zero 更强，大概相当于 Zero 2。我更想看到的是一种插进交换机、靠 PoE 供电的棒子，这样组集群就只需要把节点插到交换机上。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+10ドルのOpenStick自宅サーバーで動かしているもの
+***** TLDR
+OpenStickは約10ドルで買える改造可能なUSB 4Gモデムだ。Cortex-A53の4コア1GHz、512MBのRAM（うち約450MBが利用可能）、4GBのeMMC、150Mbit/sのWi-Fi、LTEモデムとGPSを備え、すべてファンレス。著者はこれにDebianを書き込み、systemdとPodmanで10個のサービスを動かしている。DNSフィルタのAdGuard Home、ポート開放の代わりのCloudflare Tunnel、監視用のBeszelとGatus、コンテナログ用のDozzle、更新通知のDiun、RSSリーダーのFusion、ブックマーク管理のShiori、CastSponsorSkip、そしてエージェント実行環境のZeroclawだ。
+***** Take
+注目すべき数字は10ドルではなく、450MBに10コンテナという点だ。多くのセルフホスト記事はこの構成に8GBが必要だと書く。いまのRAM価格を考えれば、その差こそが本題になる。この構成を先に終わらせるのは4GBのeMMCだろう。基板直付けで、コンテナログとDNSフィルタが書き込み寿命を着実に削っていく。
+***** Comments
+- この小さなガジェットでずいぶん楽しめたし、ソフトを選べば安い機器でここまでホストできるのは面白い。いまRAMが高いので、セルフホストを始めたい人にも良い選択肢になると思った。
+- 自分のクラスタで使っているRPi Zeroより高性能で、だいたいZero 2並みだ。欲しいのはPoE付きのEthernetスイッチに直接差せるスティックで、ノードをスイッチに差すだけでクラスタが組めるようになる。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+10달러짜리 OpenStick 홈랩에서 돌리는 것들
+***** TLDR
+OpenStick은 약 10달러에 구할 수 있는 개조 가능한 USB 4G 모뎀이다. Cortex-A53 4코어 1GHz, 512MB 램(약 450MB 사용 가능), 4GB eMMC, 150Mbit/s 와이파이, LTE 모뎀과 GPS를 갖추고 모두 무팬 방열이다. 저자는 여기에 Debian을 올리고 systemd와 Podman으로 열 개 서비스를 돌린다. DNS 필터링용 AdGuard Home, 포트 포워딩 대신 쓰는 Cloudflare Tunnel, 모니터링용 Beszel과 Gatus, 컨테이너 로그용 Dozzle, 업데이트 알림 Diun, RSS 리더 Fusion, 북마크 관리 Shiori, 그리고 CastSponsorSkip과 에이전트 실행 환경 Zeroclaw다.
+***** Take
+주목할 숫자는 10달러가 아니라 450MB 안에 들어간 컨테이너 열 개다. 대부분의 셀프호스팅 가이드는 이 구성에 8GB가 필요하다고 말하고, 지금 램 가격을 보면 그 격차가 바로 요점이다. 이 구성을 먼저 끝낼 요소는 4GB eMMC다. 보드에 납땜돼 있고, 컨테이너 로그와 DNS 필터가 쓰기 수명을 꾸준히 깎아먹는다.
+***** Comments
+- 이 작은 기기로 꽤 재미있게 놀았고, 소프트웨어만 잘 고르면 싼 기기로 이만큼 호스팅할 수 있다는 게 흥미롭다. 요즘 램이 비싸니 셀프호스팅을 시작하려는 사람에게도 괜찮은 선택지일 것 같다.
+- 제 클러스터에 쓰는 RPi Zero보다 강력하고, 대략 Zero 2 수준이다. 제가 보고 싶은 건 PoE로 이더넷 스위치에 바로 꽂는 형태의 스틱이다. 그러면 노드를 스위치에 꽂는 것만으로 클러스터가 완성된다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Lo que ejecuto en mi homelab OpenStick de 10 dólares
+***** TLDR
+El OpenStick es un módem USB 4G modificable que cuesta unos 10 dólares: cuatro núcleos Cortex-A53 a 1 GHz, 512 MB de RAM de los que unos 450 MB son utilizables, 4 GB de eMMC, Wi-Fi de 150 Mbit/s, módem LTE y GPS, todo con refrigeración pasiva. El autor lo reflashea a Debian con systemd y Podman y ejecuta diez servicios: AdGuard Home para filtrado DNS, un túnel de Cloudflare en lugar de abrir puertos, Beszel y Gatus para monitorización, Dozzle para los logs de contenedores, Diun para avisos de actualización, Fusion como lector RSS, Shiori para marcadores, CastSponsorSkip y el entorno de agentes Zeroclaw.
+***** Take
+La cifra interesante no son los 10 dólares, son diez contenedores dentro de 450 MB. Casi cualquier guía de autoalojamiento te diría que ese montaje necesita 8 GB, y con el precio actual de la RAM esa diferencia es justamente el tema. Lo que terminará con este montaje es la eMMC de 4 GB: va soldada y tiene un presupuesto de ciclos de escritura que los logs de contenedores y un filtro DNS van consumiendo.
+***** Comments
+- Me he divertido mucho con este cacharro y está bastante bien ver cuánto puedes alojar en un aparato barato si eliges el software adecuado. Con lo cara que está la RAM, pensé que podía ser una buena opción para que otros empiecen a autoalojar.
+- Es más potente que las RPi Zero que uso en mi clúster, más o menos como una Zero 2. Lo que me gustaría ver es un stick que se enchufe a un switch Ethernet con PoE, para montar un clúster simplemente conectando nodos al switch.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Was auf meinem 10-Dollar-OpenStick-Homelab läuft
+***** TLDR
+Der OpenStick ist ein umflashbares USB-4G-Modem für rund 10 Dollar: vier Cortex-A53-Kerne mit 1 GHz, 512 MB RAM, davon etwa 450 MB nutzbar, 4 GB eMMC, 150 Mbit/s WLAN, LTE-Modem und GPS, alles passiv gekühlt. Der Autor spielt Debian mit systemd und Podman darauf und betreibt zehn Dienste: AdGuard Home zum DNS-Filtern, einen Cloudflare-Tunnel anstelle von Portweiterleitung, Beszel und Gatus zur Überwachung, Dozzle für Container-Logs, Diun für Update-Hinweise, Fusion als RSS-Reader, Shiori für Bookmarks, CastSponsorSkip und die Agenten-Umgebung Zeroclaw.
+***** Take
+Die bemerkenswerte Zahl sind nicht die 10 Dollar, sondern zehn Container in 450 MB. Die meisten Self-Hosting-Anleitungen würden für dieses Setup 8 GB ansetzen, und bei den aktuellen RAM-Preisen ist genau diese Differenz der Punkt. Was diesen Aufbau tatsächlich beenden wird, ist die 4-GB-eMMC: fest verlötet, mit einem Schreibzyklen-Budget, das Container-Logs und ein DNS-Filter stetig abbauen.
+***** Comments
+- Ich hatte viel Spaß mit dem kleinen Gerät, und es ist schon beeindruckend, wie viel man auf billiger Hardware betreiben kann, wenn man die passende Software wählt. So teuer wie RAM gerade ist, dachte ich, das könnte für andere ein guter Einstieg ins Self-Hosting sein.
+- Er ist stärker als die RPi Zeros in meinem Cluster, etwa auf dem Niveau eines Zero 2. Was ich gern sehen würde, ist ein Stick, der per PoE direkt in einen Ethernet-Switch gesteckt wird, damit man ein Cluster baut, indem man Knoten einfach in den Switch steckt.
+** Uranium cubes reveal why the German nuclear project failed :science:history:nuclear:materials:
+:PROPERTIES:
+:ID:       50377661
+:URL:      https://arstechnica.com/science/2026/11/uranium-cubes-reveal-why-the-german-nuclear-project-failed/
+:HN_URL:   https://news.ycombinator.com/item?id=50377661
+:POINTS:   101
+:COMMENTS: 65
+:BY:       rbanffy
+:END:
+
+*** TLDR
+Timothy Koeth, Miriam Hiebert and colleagues analyzed two surviving uranium cubes from Germany's B8 reactor experiment alongside declassified documents and technical reports, then calculated what criticality would actually have required. Their figure is 1,292 to 1,775 cubes against the 664 Germany assembled, plus roughly twice the heavy water the country produced during the entire war. The stronger conclusion is that no natural-uranium, graphite-moderated pile could have gone critical with the materials Germany had: its graphite came from Ruhr metallurgical coke carrying about twice the neutron-absorbing impurities of the petroleum coke the American program used, after a British naval blockade in January 1940 cut off better sources.
+
+*** Take
+Heisenberg's postwar account was that the pile was a modest amount of uranium short. The materials analysis says the design could not have worked at any size, and the binding constraint was graphite purity rather than uranium quantity. The blockade settled the question in 1940, four years before the cubes were stacked.
+
+*** Comments
+
+**** leonidasrup
+:PROPERTIES:
+:COMMENT_ID: 50378112
+:END:
+Boron contamination of graphite also slowed the Manhattan Project. Fermi writes that the results of the experiment were somewhat discouraging, presumably because of absorption of neutrons by some unknown impurity. In December 1940 Fermi and Szilard met with National Carbon to discuss possible impurities.
+
+**** mannyv
+:PROPERTIES:
+:COMMENT_ID: 50377890
+:END:
+Anyone interested in the bomb should read 'And the Devil Reached Towards the Sky', an oral history of the atomic bomb. It's full of anecdotes and asides, like when they 'found' tons of uranium ore in NY, or the acquisition of silver from Treasury.
+
+**** thisisauserid
+:PROPERTIES:
+:COMMENT_ID: 50378301
+:END:
+This is central to the plot of 'D: Heavy Water', Neal Stephenson's second installment of the Bomb Light Trilogy.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+铀立方体揭示德国核计划为何失败
+***** TLDR
+Timothy Koeth、Miriam Hiebert 及同事分析了德国 B8 反应堆实验留存的两块铀立方体，结合解密文件和技术报告，重新计算了达到临界真正需要的条件。他们的数字是 1,292 到 1,775 块立方体，而德国实际只装了 664 块，另外还需要约为德国整个战争期间产量两倍的重水。更强的结论是：以德国当时掌握的材料，任何天然铀、石墨慢化的反应堆都不可能达到临界。德国的石墨来自鲁尔区的冶金焦炭，其吸收中子的杂质约为美国计划所用石油焦炭的两倍，原因是 1940 年 1 月英国海军封锁切断了更好的来源。
+***** Take
+海森堡战后的说法是，反应堆只差一点铀。材料分析表明，这个设计无论做多大都不可能成功，真正的限制是石墨纯度，而不是铀的数量。封锁在 1940 年就决定了结局，比立方体堆起来早了四年。
+***** Comments
+- 石墨的硼污染也拖慢了曼哈顿计划。费米写道，实验结果有些令人失望，推测是某种未知杂质吸收了中子。1940 年 12 月，费米和西拉德与 National Carbon 会面讨论可能的杂质问题。
+- 对原子弹感兴趣的人都该读《And the Devil Reached Towards the Sky》，一部原子弹口述史。书里满是轶事与插叙，比如他们如何在纽约"找到"数吨铀矿，或者从财政部调来白银的事。
+- 这正是尼尔·斯蒂芬森《Bomb Light》三部曲第二部《D: Heavy Water》的核心情节。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+ウラン立方体が明かすドイツ核計画の失敗理由
+***** TLDR
+Timothy Koeth、Miriam Hiebertらは、ドイツのB8原子炉実験から残った2個のウラン立方体を、機密解除された文書や技術報告と併せて分析し、臨界に実際どれだけ必要だったかを計算した。その数は立方体1,292から1,775個で、ドイツが実際に組んだのは664個。加えて、戦争期間を通じたドイツの重水生産量の約2倍が必要だった。より強い結論は、ドイツが持っていた材料では天然ウランと黒鉛減速の炉はどんな規模でも臨界に達しえなかったということだ。ドイツの黒鉛はルール地方の冶金用コークス由来で、米国計画が使った石油コークスに比べ中性子を吸収する不純物が約2倍あった。1940年1月の英海軍による海上封鎖で、より良い供給源が断たれていた。
+***** Take
+戦後のハイゼンベルクの説明は、炉はウランが少し足りなかっただけというものだった。材料分析が示すのは、この設計はどれだけ大きくしても成立しなかったこと、そして制約はウランの量ではなく黒鉛の純度だったことだ。封鎖が1940年に答えを決めていた。立方体が積まれる4年前である。
+***** Comments
+- 黒鉛のホウ素汚染はマンハッタン計画も遅らせた。フェルミは実験結果がやや期待外れだったと書いており、未知の不純物が中性子を吸収したためと見られる。1940年12月、フェルミとシラードはNational Carbonと不純物の可能性について協議した。
+- 原爆に関心があるなら『And the Devil Reached Towards the Sky』という原爆の口述史を読むべきだ。逸話や余談に満ちていて、ニューヨークでウラン鉱石を何トンも「見つけた」話や、財務省から銀を調達した件なども出てくる。
+- これはニール・スティーヴンスンのBomb Light三部作第2作『D: Heavy Water』の筋の中心になっている。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+우라늄 큐브가 밝힌 독일 핵 계획의 실패 원인
+***** TLDR
+Timothy Koeth, Miriam Hiebert와 동료들은 독일 B8 원자로 실험에서 남은 우라늄 큐브 두 개를 기밀 해제 문서와 기술 보고서와 함께 분석하고, 임계에 실제로 필요한 조건을 계산했다. 결과는 큐브 1,292~1,775개로, 독일이 실제 쌓은 것은 664개였다. 여기에 전쟁 기간 독일이 생산한 중수의 약 두 배가 더 필요했다. 더 강한 결론은 독일이 가진 재료로는 천연 우라늄·흑연 감속 원자로가 어떤 규모로도 임계에 이를 수 없었다는 것이다. 독일 흑연은 루르 지역 야금용 코크스에서 나와, 미국 계획이 쓴 석유 코크스보다 중성자를 흡수하는 불순물이 약 두 배 많았다. 1940년 1월 영국 해군의 봉쇄로 더 좋은 공급원이 끊긴 결과였다.
+***** Take
+하이젠베르크의 전후 설명은 원자로에 우라늄이 조금 부족했다는 것이었다. 재료 분석은 이 설계가 규모와 무관하게 성립할 수 없었고, 제약은 우라늄 양이 아니라 흑연 순도였다고 말한다. 봉쇄가 1940년에 이미 결론을 정했다. 큐브를 쌓기 4년 전이다.
+***** Comments
+- 흑연의 붕소 오염은 맨해튼 계획도 지체시켰다. 페르미는 실험 결과가 다소 실망스러웠다고 적었는데, 미지의 불순물이 중성자를 흡수한 탓으로 보인다. 1940년 12월 페르미와 실라르드는 National Carbon을 만나 불순물 가능성을 논의했다.
+- 원자폭탄에 관심 있다면 원폭 구술사인 'And the Devil Reached Towards the Sky'를 읽어야 한다. 뉴욕에서 우라늄 광석을 수 톤 '찾아낸' 이야기나 재무부에서 은을 조달한 일 같은 일화와 여담이 가득하다.
+- 이것이 닐 스티븐슨의 Bomb Light 3부작 두 번째 작품 'D: Heavy Water'의 핵심 줄거리다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Los cubos de uranio revelan por qué fracasó el proyecto nuclear alemán
+***** TLDR
+Timothy Koeth, Miriam Hiebert y sus colegas analizaron dos cubos de uranio supervivientes del experimento del reactor alemán B8 junto con documentos desclasificados e informes técnicos, y calcularon qué habría exigido realmente la criticidad. Su cifra es de 1.292 a 1.775 cubos frente a los 664 que Alemania llegó a montar, además de unas dos veces el agua pesada que el país produjo en toda la guerra. La conclusión más fuerte es que ninguna pila de uranio natural moderada con grafito podría haber alcanzado la criticidad con los materiales alemanes: su grafito venía de coque metalúrgico del Ruhr, con aproximadamente el doble de impurezas absorbentes de neutrones que el coque de petróleo del programa estadounidense, después de que un bloqueo naval británico en enero de 1940 cortara las fuentes mejores.
+***** Take
+La versión de Heisenberg tras la guerra fue que a la pila le faltaba una cantidad modesta de uranio. El análisis de materiales dice que el diseño no podía funcionar a ningún tamaño, y que la restricción determinante era la pureza del grafito, no la cantidad de uranio. El bloqueo resolvió la cuestión en 1940, cuatro años antes de que se apilaran los cubos.
+***** Comments
+- La contaminación del grafito con boro también ralentizó el Proyecto Manhattan. Fermi escribe que los resultados del experimento fueron algo desalentadores, presumiblemente por la absorción de neutrones por alguna impureza desconocida. En diciembre de 1940, Fermi y Szilard se reunieron con National Carbon para hablar de posibles impurezas.
+- A quien le interese la bomba debería leer 'And the Devil Reached Towards the Sky', una historia oral de la bomba atómica. Está lleno de anécdotas y digresiones, como cuando 'encontraron' toneladas de mineral de uranio en Nueva York, o la obtención de plata del Tesoro.
+- Esto es central en la trama de 'D: Heavy Water', la segunda entrega de la Trilogía Bomb Light de Neal Stephenson.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Uranwürfel zeigen, warum das deutsche Nuklearprojekt scheiterte
+***** TLDR
+Timothy Koeth, Miriam Hiebert und Kollegen untersuchten zwei erhaltene Uranwürfel aus dem deutschen Reaktorversuch B8 zusammen mit freigegebenen Dokumenten und technischen Berichten und berechneten, was Kritikalität tatsächlich erfordert hätte. Ihr Ergebnis: 1.292 bis 1.775 Würfel gegenüber den 664, die Deutschland aufbaute, plus etwa die doppelte Menge an schwerem Wasser, als das Land im gesamten Krieg produzierte. Die weiterreichende Schlussfolgerung lautet, dass mit den deutschen Materialien kein mit Graphit moderierter Natururan-Reaktor kritisch werden konnte: das Graphit stammte aus metallurgischem Koks aus dem Ruhrgebiet und enthielt etwa doppelt so viele neutronenabsorbierende Verunreinigungen wie der Petrolkoks des amerikanischen Programms, nachdem eine britische Seeblockade im Januar 1940 die besseren Quellen abgeschnitten hatte.
+***** Take
+Heisenbergs Darstellung nach dem Krieg lautete, dem Reaktor habe nur wenig Uran gefehlt. Die Materialanalyse sagt, der Entwurf hätte in keiner Größe funktioniert, und die bindende Beschränkung war die Graphitreinheit, nicht die Uranmenge. Die Blockade entschied die Frage 1940, vier Jahre bevor die Würfel gestapelt wurden.
+***** Comments
+- Bor-Verunreinigungen im Graphit haben auch das Manhattan-Projekt verlangsamt. Fermi schreibt, die Ergebnisse des Experiments seien etwas entmutigend gewesen, vermutlich weil irgendeine unbekannte Verunreinigung Neutronen absorbierte. Im Dezember 1940 trafen Fermi und Szilard National Carbon, um über mögliche Verunreinigungen zu sprechen.
+- Wer sich für die Bombe interessiert, sollte 'And the Devil Reached Towards the Sky' lesen, eine mündliche Geschichte der Atombombe. Sie ist voller Anekdoten und Nebenbemerkungen, etwa wie man in New York tonnenweise Uranerz 'fand' oder Silber vom Finanzministerium beschaffte.
+- Das steht im Zentrum der Handlung von 'D: Heavy Water', dem zweiten Teil von Neal Stephensons Bomb-Light-Trilogie.
+** GitHub: New pull request overview page in public preview :github:devtools:codereview:ux:
+:PROPERTIES:
+:ID:       50408931
+:URL:      https://github.blog/changelog/2026-11-05-new-pull-request-overview-page-in-public-preview/
+:HN_URL:   https://news.ycombinator.com/item?id=50408931
+:POINTS:   107
+:COMMENTS: 75
+:BY:       xiaoyu2006
+:END:
+
+*** TLDR
+GitHub opened an opt-in preview of a redesigned pull request overview page on November 5. The merge box now takes less than half its former space while still showing checks, comments and approvals and surfacing what is blocking the merge. Conversations can be filtered to unresolved items or your own comments and sorted newest first, and the header gains buttons to mark a draft ready for review or close the PR. A "Try the Overview page" button in the PR header switches it on, and you can go back to the classic view during the preview.
+
+*** Take
+The changes are real and the thread is still unimpressed, which tells you where the actual pain is. habosa built CodeApprove six years ago because this page was bad enough to warrant a competitor, capevace points out GitHub has years of review data and is not using any of it, and gz09 just wants "Merge when ready" to stop silently failing to merge. A tighter header does not touch any of those.
+
+*** Comments
+
+**** capevace
+:PROPERTIES:
+:COMMENT_ID: 50409102
+:END:
+We've been building our own Review Pipeline, including automated review guides, risk detection and much more. There's SO much to be done around Code Review, I'm very surprised GitHub isn't doing more. They have the reach already, they have years of real review data.
+
+**** habosa
+:PROPERTIES:
+:COMMENT_ID: 50409188
+:END:
+This is a major improvement and still not great. I made CodeApprove 6+ years ago just because the PR page on GitHub is so bad. IMO the correct design is pretty simple: everything on one page, information dense, focus on code and unresolved discussions, keyboard navigation.
+
+**** gz09
+:PROPERTIES:
+:COMMENT_ID: 50409256
+:END:
+I wish they would instead focus on fixing the regressions with PRs first. There is a nasty bug where you click "Merge when ready" but your chances of things actually going to the merge queue seem to be only about 60-70%.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+GitHub：全新的 Pull Request 概览页进入公开预览
+***** TLDR
+GitHub 于 11 月 5 日开放了重新设计的 Pull Request 概览页预览，需要手动开启。合并框占用的空间减少到原来的一半以下，同时仍显示检查、评论和审批状态，并突出当前阻塞合并的因素。讨论可以筛选为仅未解决项或自己的评论，并按最新排序；页头新增了把草稿标记为可审阅和关闭 PR 的按钮。在 PR 页头点击"Try the Overview page"即可启用，预览期间可以随时切回旧版。
+***** Take
+改动是实打实的，而评论区依然不买账，这正说明痛点在别处。habosa 六年前做 CodeApprove，就是因为这个页面糟到值得做个竞品；capevace 指出 GitHub 手握多年的真实审阅数据却完全没用上；gz09 只希望"Merge when ready"别再悄悄合并失败。页头更紧凑，这三件事一件都没解决。
+***** Comments
+- 我们一直在做自己的审阅流水线，包括自动审阅指南、风险检测等等。代码审阅这块有太多事可以做，我很意外 GitHub 没有做得更多。他们已经有了用户规模，也有多年的真实审阅数据。
+- 这是一次明显的改进，但依然不够好。我六年多前做 CodeApprove，就因为 GitHub 的 PR 页面太差。我认为正确的设计很简单：全部放在一页、信息密度高、聚焦代码和未解决的讨论、支持键盘操作。
+- 我更希望他们先修好 PR 现有的退化问题。有个很糟的 bug：你点了"Merge when ready"，但真正进入合并队列的概率似乎只有六七成。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+GitHub：新しいプルリクエスト概要ページがパブリックプレビューに
+***** TLDR
+GitHubは11月5日、再設計したプルリクエスト概要ページのオプトインプレビューを公開した。マージボックスは従来の半分未満のスペースに収まりつつ、チェック、コメント、承認を表示し、マージを妨げている要因を目立たせる。会話は未解決のものだけ、あるいは自分のコメントだけに絞り込み、新しい順に並べ替えられる。ヘッダーにはドラフトをレビュー可能にするボタンとPRを閉じるボタンが追加された。PRヘッダーの「Try the Overview page」で有効化でき、プレビュー期間中は従来表示に戻せる。
+***** Take
+変更自体は実があるのに、スレッドは納得していない。痛みの所在がそこではないということだ。habosaは6年前、このページがひどいからCodeApproveを作った。capevaceはGitHubが何年分もの実レビューデータを持ちながら使っていないと指摘する。gz09は「Merge when ready」が黙って失敗するのをやめてほしいだけだ。ヘッダーを詰めても、どれ一つ解決しない。
+***** Comments
+- 私たちは自前のレビューパイプラインを作っていて、自動レビューガイドやリスク検出なども含んでいる。コードレビュー周りにはやるべきことが山ほどあり、GitHubがもっと手を入れていないのは意外だ。すでにリーチも、何年分もの実レビューデータも持っているのに。
+- 大きな改善だが、それでも良いとは言えない。6年以上前にCodeApproveを作ったのは、GitHubのPRページがあまりにひどかったからだ。正しい設計は単純だと思う。すべて1ページに、情報密度を高く、コードと未解決の議論に集中し、キーボード操作に対応すること。
+- それよりPRの劣化を先に直してほしい。「Merge when ready」を押しても、実際にマージキューに入る確率が6〜7割しかないという厄介なバグがある。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+GitHub: 새 풀 리퀘스트 개요 페이지 퍼블릭 프리뷰
+***** TLDR
+GitHub가 11월 5일 새로 디자인한 풀 리퀘스트 개요 페이지를 선택형 프리뷰로 공개했다. 머지 박스는 기존 공간의 절반 이하로 줄었지만 체크, 댓글, 승인 상태를 그대로 보여주고 머지를 막고 있는 요소를 앞세운다. 대화는 미해결 항목만 또는 내 댓글만으로 필터링하고 최신순으로 정렬할 수 있으며, 헤더에는 초안을 리뷰 가능 상태로 바꾸거나 PR을 닫는 버튼이 생겼다. PR 헤더의 'Try the Overview page' 버튼으로 켤 수 있고, 프리뷰 기간에는 기존 화면으로 돌아갈 수 있다.
+***** Take
+변경은 실질적인데 스레드는 여전히 시큰둥하다. 진짜 통증이 다른 데 있다는 뜻이다. habosa는 6년 전 이 페이지가 나빠서 CodeApprove를 만들었고, capevace는 GitHub가 수년치 실제 리뷰 데이터를 쥐고도 쓰지 않는다고 지적하며, gz09는 'Merge when ready'가 조용히 실패하지 않기만을 바란다. 헤더를 압축해도 이 중 어느 것도 건드리지 못한다.
+***** Comments
+- 우리는 자동 리뷰 가이드와 위험 탐지 등을 포함한 자체 리뷰 파이프라인을 만들고 있다. 코드 리뷰 영역에는 할 일이 정말 많은데 GitHub가 더 하지 않는 게 의외다. 이미 사용자 규모도 있고 수년치 실제 리뷰 데이터도 있다.
+- 분명한 개선이지만 그래도 좋다고는 못 하겠다. 6년도 더 전에 CodeApprove를 만든 건 GitHub의 PR 페이지가 너무 나빴기 때문이다. 올바른 설계는 단순하다. 한 페이지에 전부, 정보 밀도 높게, 코드와 미해결 논의에 집중, 키보드 내비게이션.
+- 그보다 PR의 회귀 버그부터 고쳤으면 좋겠다. 'Merge when ready'를 눌러도 실제로 머지 큐에 들어갈 확률이 60~70% 정도인 고약한 버그가 있다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+GitHub: nueva página de resumen de pull requests en vista previa pública
+***** TLDR
+GitHub abrió el 5 de noviembre una vista previa opcional de la página de resumen de pull requests rediseñada. La caja de fusión ocupa ahora menos de la mitad del espacio anterior y sigue mostrando comprobaciones, comentarios y aprobaciones, además de destacar lo que bloquea la fusión. Las conversaciones se pueden filtrar para ver solo lo no resuelto o solo tus comentarios, y ordenarse de más nuevo a más antiguo; la cabecera añade botones para marcar un borrador como listo para revisión o cerrar la PR. Un botón "Try the Overview page" en la cabecera la activa, y durante la vista previa se puede volver a la versión clásica.
+***** Take
+Los cambios son reales y el hilo sigue sin entusiasmarse, lo que indica dónde está el dolor de verdad. habosa creó CodeApprove hace seis años porque esta página era lo bastante mala para justificar un competidor, capevace señala que GitHub tiene años de datos reales de revisión y no usa ninguno, y gz09 solo quiere que "Merge when ready" deje de fallar en silencio. Una cabecera más compacta no toca nada de eso.
+***** Comments
+- Hemos estado construyendo nuestro propio Review Pipeline, con guías de revisión automáticas, detección de riesgos y mucho más. Hay MUCHÍSIMO por hacer en revisión de código, me sorprende que GitHub no haga más. Ya tienen el alcance y tienen años de datos reales de revisión.
+- Es una mejora importante y sigue sin ser buena. Hice CodeApprove hace más de 6 años solo porque la página de PR de GitHub es muy mala. Para mí el diseño correcto es simple: todo en una página, densa en información, centrada en el código y en las discusiones sin resolver, con navegación por teclado.
+- Ojalá se centraran antes en arreglar las regresiones de las PR. Hay un bug feo en el que pulsas "Merge when ready" y las probabilidades de que la cosa llegue realmente a la cola de fusión parecen ser solo del 60-70%.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+GitHub: neue Pull-Request-Übersichtsseite in der Public Preview
+***** TLDR
+GitHub hat am 5. November eine optionale Vorschau der neu gestalteten Pull-Request-Übersichtsseite freigegeben. Die Merge-Box braucht weniger als die Hälfte des früheren Platzes, zeigt aber weiter Checks, Kommentare und Freigaben und hebt hervor, was das Mergen blockiert. Unterhaltungen lassen sich auf ungelöste Punkte oder eigene Kommentare filtern und nach neuesten sortieren, und die Kopfzeile bekommt Schaltflächen, um einen Draft als bereit zu markieren oder den PR zu schließen. Ein Button "Try the Overview page" in der PR-Kopfzeile schaltet sie ein, und während der Vorschau kann man zur klassischen Ansicht zurück.
+***** Take
+Die Änderungen sind substanziell, und der Thread bleibt unbeeindruckt, was zeigt, wo der eigentliche Schmerz sitzt. habosa baute CodeApprove vor sechs Jahren, weil diese Seite schlecht genug für einen Wettbewerber war, capevace merkt an, dass GitHub jahrelange echte Review-Daten hat und keine davon nutzt, und gz09 will nur, dass "Merge when ready" nicht mehr stillschweigend scheitert. Eine kompaktere Kopfzeile berührt davon nichts.
+***** Comments
+- Wir bauen eine eigene Review-Pipeline, mit automatischen Review-Guides, Risikoerkennung und mehr. Rund um Code Review ist noch SO viel zu tun, ich bin überrascht, dass GitHub nicht mehr macht. Die Reichweite ist da, und jahrelange echte Review-Daten auch.
+- Das ist eine deutliche Verbesserung und trotzdem nicht gut. Ich habe CodeApprove vor über sechs Jahren gebaut, nur weil die PR-Seite auf GitHub so schlecht ist. Das richtige Design ist meiner Meinung nach einfach: alles auf einer Seite, informationsdicht, Fokus auf Code und ungelöste Diskussionen, Tastaturnavigation.
+- Ich wünschte, sie würden sich erst um die Regressionen bei PRs kümmern. Es gibt einen fiesen Bug: Man klickt "Merge when ready", aber die Chance, dass es wirklich in die Merge-Queue kommt, liegt scheinbar nur bei 60 bis 70 Prozent.
+** Five memorable books about programming (2008) :books:programming:forth:culture:
+:PROPERTIES:
+:ID:       50406319
+:URL:      https://prog21.dadgum.com/19.html
+:HN_URL:   https://news.ycombinator.com/item?id=50406319
+:POINTS:   103
+:COMMENTS: 64
+:BY:       andsoitis
+:END:
+
+*** TLDR
+A 2008 post from James Hague naming five books: Michael Abrash's Zen of Assembly Language (1990), Julian Noble's Scientific Forth (1992), Clifford Reiter's Fractals, Visualization and J (2000), Susan Lammers' Programmers At Work (1986) and Leo Brodie's Thinking Forth (1984). The pattern across the list is books where someone with deep expertise in another field picked an unusual language and wrote real programs solving their actual problems, rather than teaching the language through toy examples. Lammers' book is interviews with programmers who mostly had no CS degree; Brodie's is problem decomposition years before the design-patterns literature.
+
+*** Take
+Two Forth books and one J book out of five, chosen in 2008, and the thread answers with Higher-Order Perl, Goldberg's Smalltalk book and Petzold's Code. No two lists agree and none of them is current, which is the actual finding: the programming books that stick are the ones showing someone do real work in a strange language, not the ones documenting an API that has since shipped four major versions.
+
+*** Comments
+
+**** rbanffy
+:PROPERTIES:
+:COMMENT_ID: 50406502
+:END:
+For me, the blue Smalltalk book by Adele Goldberg was deeply formative. It was computing done right and from first principles.
+
+**** so-cal-schemer
+:PROPERTIES:
+:COMMENT_ID: 50406644
+:END:
+How about Higher-Order Perl by Mark Jason Dominus? Some other great low flying titles: The Computational Beauty of Nature by Gary William Flake, The Nature of Computation by Cristopher Moore and Stephan Mertens.
+
+**** jrmg
+:PROPERTIES:
+:COMMENT_ID: 50406730
+:END:
+Programmers at Work: I bought a used copy of it, probably after reading this the first time it was posted. Great book, if you can find it. Code, by Charles Petzold should be on any programmer's list.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+五本难忘的编程书（2008）
+***** TLDR
+James Hague 在 2008 年的一篇文章，列出五本书：Michael Abrash 的《Zen of Assembly Language》（1990）、Julian Noble 的《Scientific Forth》（1992）、Clifford Reiter 的《Fractals, Visualization and J》（2000）、Susan Lammers 的《Programmers At Work》（1986）和 Leo Brodie 的《Thinking Forth》（1984）。这份书单的共同点是：作者在另一个领域有深厚积累，选了一门不常见的语言，用它写解决自己真实问题的程序，而不是用玩具例子教语言。Lammers 那本是对程序员的访谈，受访者大多没有计算机学位；Brodie 那本讲问题分解，比设计模式的文献早了很多年。
+***** Take
+五本里有两本 Forth、一本 J，而且是 2008 年选的；评论区则回以《Higher-Order Perl》、Goldberg 的 Smalltalk 蓝皮书和 Petzold 的《Code》。没有两份书单是一致的，也没有一份是"当下"的，这才是真正的结论：留得下来的编程书，是那些展示有人用一门古怪语言做真实工作的书，不是那些记录某个 API 的书，而那个 API 现在已经发了四个大版本。
+***** Comments
+- 对我来说，Adele Goldberg 那本蓝色的 Smalltalk 书影响极深。那是从第一性原理出发、做对了的计算。
+- Mark Jason Dominus 的《Higher-Order Perl》怎么样？还有几本被低估的好书：Gary William Flake 的《The Computational Beauty of Nature》，Cristopher Moore 和 Stephan Mertens 的《The Nature of Computation》。
+- 《Programmers at Work》：我买了二手的，大概是第一次看到这篇文章之后买的。好书，如果你能找到的话。Charles Petzold 的《Code》应该出现在每个程序员的书单上。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+記憶に残るプログラミング書5冊（2008）
+***** TLDR
+James Hagueによる2008年の記事で、5冊を挙げている。Michael Abrashの『Zen of Assembly Language』（1990）、Julian Nobleの『Scientific Forth』（1992）、Clifford Reiterの『Fractals, Visualization and J』（2000）、Susan Lammersの『Programmers At Work』（1986）、Leo Brodieの『Thinking Forth』（1984）だ。共通するのは、別分野に深い専門を持つ人が珍しい言語を選び、自分の実際の問題を解くプログラムを書いている点で、玩具のような例題で言語を教える本ではない。Lammersの本は、ほとんどが情報科学の学位を持たないプログラマーへのインタビュー集。Brodieの本は、デザインパターンの文献より何年も前に問題分解を論じている。
+***** Take
+5冊のうちForthが2冊、Jが1冊、しかも選ばれたのは2008年。スレッドは『Higher-Order Perl』、GoldbergのSmalltalk本、Petzoldの『Code』で返している。どの二つのリストも一致せず、どれも最新ではない。それが実際の結論だ。残るプログラミング書は、誰かが風変わりな言語で本物の仕事をする様子を見せる本であって、その後メジャーバージョンを四つ重ねたAPIを解説した本ではない。
+***** Comments
+- 私にとっては、Adele Goldbergの青いSmalltalk本が決定的に大きかった。第一原理から正しく組み立てられたコンピューティングだった。
+- Mark Jason Dominusの『Higher-Order Perl』はどうだろう。他にも目立たない良書がある。Gary William Flakeの『The Computational Beauty of Nature』、Cristopher MooreとStephan Mertensの『The Nature of Computation』。
+- 『Programmers at Work』は中古で買った。おそらくこの記事を最初に見たときだ。見つけられるなら良い本だ。Charles Petzoldの『Code』はどのプログラマーのリストにも入るべきだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+기억에 남는 프로그래밍 책 다섯 권 (2008)
+***** TLDR
+James Hague가 2008년에 쓴 글로 다섯 권을 꼽는다. Michael Abrash의 『Zen of Assembly Language』(1990), Julian Noble의 『Scientific Forth』(1992), Clifford Reiter의 『Fractals, Visualization and J』(2000), Susan Lammers의 『Programmers At Work』(1986), Leo Brodie의 『Thinking Forth』(1984)다. 목록을 가로지르는 공통점은, 다른 분야에 깊은 전문성을 가진 사람이 흔치 않은 언어를 골라 자기 실제 문제를 푸는 프로그램을 썼다는 것이다. 장난감 예제로 언어를 가르치는 책이 아니다. Lammers의 책은 대부분 전산학 학위가 없는 프로그래머들과의 인터뷰집이고, Brodie의 책은 디자인 패턴 문헌보다 수년 앞서 문제 분해를 다룬다.
+***** Take
+다섯 권 중 Forth가 두 권, J가 한 권이고 선정 시점은 2008년이다. 스레드는 『Higher-Order Perl』, Goldberg의 Smalltalk 책, Petzold의 『Code』로 답한다. 어떤 두 목록도 일치하지 않고 어느 것도 최신이 아니다. 그게 진짜 결론이다. 남는 프로그래밍 책은 누군가 낯선 언어로 실제 작업을 하는 모습을 보여주는 책이고, 그 사이 메이저 버전을 네 번 올린 API를 설명하는 책이 아니다.
+***** Comments
+- 저에게는 Adele Goldberg의 파란 Smalltalk 책이 깊은 영향을 줬다. 제1원리에서 출발해 제대로 만든 컴퓨팅이었다.
+- Mark Jason Dominus의 『Higher-Order Perl』은 어떤가? 눈에 덜 띄는 좋은 책들도 있다. Gary William Flake의 『The Computational Beauty of Nature』, Cristopher Moore와 Stephan Mertens의 『The Nature of Computation』.
+- 『Programmers at Work』는 중고로 샀다. 아마 이 글을 처음 봤을 때였을 것이다. 구할 수 있다면 좋은 책이다. Charles Petzold의 『Code』는 모든 프로그래머의 목록에 있어야 한다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Cinco libros memorables sobre programación (2008)
+***** TLDR
+Un texto de 2008 de James Hague que nombra cinco libros: Zen of Assembly Language de Michael Abrash (1990), Scientific Forth de Julian Noble (1992), Fractals, Visualization and J de Clifford Reiter (2000), Programmers At Work de Susan Lammers (1986) y Thinking Forth de Leo Brodie (1984). El patrón de la lista son libros en los que alguien con mucha experiencia en otro campo eligió un lenguaje poco habitual y escribió programas reales para resolver sus propios problemas, en lugar de enseñar el lenguaje con ejemplos de juguete. El de Lammers son entrevistas a programadores que en su mayoría no tenían título en informática; el de Brodie trata la descomposición de problemas años antes de la literatura sobre patrones de diseño.
+***** Take
+Dos libros de Forth y uno de J entre cinco, elegidos en 2008, y el hilo responde con Higher-Order Perl, el libro de Smalltalk de Goldberg y Code de Petzold. Ninguna lista coincide con otra y ninguna está actualizada, y eso es justamente el hallazgo: los libros de programación que perduran son los que muestran a alguien haciendo trabajo real en un lenguaje extraño, no los que documentan una API que desde entonces ha publicado cuatro versiones mayores.
+***** Comments
+- Para mí, el libro azul de Smalltalk de Adele Goldberg fue profundamente formativo. Era computación bien hecha y desde primeros principios.
+- ¿Y Higher-Order Perl, de Mark Jason Dominus? Otros títulos buenos que pasan desapercibidos: The Computational Beauty of Nature de Gary William Flake, The Nature of Computation de Cristopher Moore y Stephan Mertens.
+- Programmers at Work: compré una copia de segunda mano, probablemente después de leer esto la primera vez que se publicó. Gran libro, si consigues encontrarlo. Code, de Charles Petzold, debería estar en la lista de cualquier programador.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Fünf einprägsame Bücher über Programmieren (2008)
+***** TLDR
+Ein Beitrag von James Hague aus dem Jahr 2008 nennt fünf Bücher: Zen of Assembly Language von Michael Abrash (1990), Scientific Forth von Julian Noble (1992), Fractals, Visualization and J von Clifford Reiter (2000), Programmers At Work von Susan Lammers (1986) und Thinking Forth von Leo Brodie (1984). Das Muster der Liste sind Bücher, in denen jemand mit tiefer Expertise in einem anderen Fach eine ungewöhnliche Sprache wählte und damit echte Programme für seine tatsächlichen Probleme schrieb, statt die Sprache an Spielbeispielen zu erklären. Lammers' Buch sind Interviews mit Programmierern, die meist keinen Informatikabschluss hatten; Brodies Buch behandelt Problemzerlegung Jahre vor der Entwurfsmuster-Literatur.
+***** Take
+Zwei Forth-Bücher und ein J-Buch von fünf, ausgewählt 2008, und der Thread antwortet mit Higher-Order Perl, Goldbergs Smalltalk-Buch und Petzolds Code. Keine zwei Listen stimmen überein und keine ist aktuell, und genau das ist der Befund: Die Programmierbücher, die bleiben, zeigen jemanden bei echter Arbeit in einer fremden Sprache, nicht eine API, die seit damals vier Hauptversionen hinter sich hat.
+***** Comments
+- Für mich war das blaue Smalltalk-Buch von Adele Goldberg tief prägend. Das war Computing richtig gemacht und von Grund auf.
+- Wie wäre es mit Higher-Order Perl von Mark Jason Dominus? Weitere großartige, wenig beachtete Titel: The Computational Beauty of Nature von Gary William Flake, The Nature of Computation von Cristopher Moore und Stephan Mertens.
+- Programmers at Work: Ich habe ein gebrauchtes Exemplar gekauft, wahrscheinlich nachdem ich das hier beim ersten Posten gelesen hatte. Großartiges Buch, wenn man es findet. Code von Charles Petzold sollte auf der Liste jedes Programmierers stehen.
