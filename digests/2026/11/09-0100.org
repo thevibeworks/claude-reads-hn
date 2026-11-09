@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-11-09 01:00 UTC
+#+DATE: 2026-11-09T01:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Goldman pulls Claude Code from traders weeks before underwriting Anthropic's IPO, Nvidia's board opens a national security inquiry into its CEO, and Outlook starts bouncing mail from domains with no DMARC record
+
+* Highlights
+- Goldman restricted Claude Code to engineers and strats in October; its bankers will still market Anthropic's IPO
+- Jensen Huang told staff he was unfaithful to his wife; the Nvidia board is investigating the national security questions, and he stays CEO
+- Outlook.com began returning 550 5.7.1 on mail from domains with no DMARC record on November 5, with no announcement
+- UIST 2026 best paper: declare which states a drag should reach and let the engine speculatively render the drop targets
+- Dank Material Shell is now Dux: greeter, file manager, search and calendar across niri, Hyprland, Sway and labwc
+
+* Stories
+
+** Goldman Sachs is pulling Claude Code from its bankers and traders :ai:finance:security:enterprise:agents:
+:PROPERTIES:
+:ID:       50415628
+:URL:      https://www.thestateofai.com/news/goldman-sachs-claude-code-traders-bankers
+:HN_URL:   https://news.ycombinator.com/item?id=50415628
+:POINTS:   575
+:COMMENTS: 348
+:BY:       TheWiggles
+:END:
+
+*** TLDR
+Internal guidance in October 2026 narrowed Claude Code and GitHub access at Goldman Sachs to engineers and strats, removing it from traders and bankers. The bank cited productivity and risk concerns from a review: unreviewed code written by non-technical staff, possible information barrier violations between business units, and token billing accumulating across the firm. Roughly 12,000 engineers keep access, as do strats in trading and quantitative research. Goldman's own in-house assistant, which routes to models from several vendors, remains available firmwide; the restriction targets third-party agents that write and run code on their own. Hong Kong bankers had already lost Claude in April 2026 on location and contract grounds, and in July CIO Marco Argenti had publicly praised tools traders built themselves. Traders had been using it to watch client flows, model market moves and produce written and graphic material. Goldman and Morgan Stanley are lead underwriters on Anthropic's IPO.
+
+*** Take
+Read the shape of the cut rather than the headline. If this were about the bill, 12,000 engineers would not have kept their seats; the line was drawn by role, and the roles that lost access are the only ones that can send orders to market. fancyfredbot's reconstruction is the most economical explanation on the page: an agent running under a trader's account, on a workstation that also holds client and prop data, eventually does something that generates an incident report. The underwriting detail is the part worth keeping. Goldman will sell Anthropic shares to institutions while its own risk review concluded the product does not belong on a trader's desk, and both of those documents are now in the record.
+
+*** Comments
+
+**** lukebuehler
+:PROPERTIES:
+:COMMENT_ID: 50416595
+:END:
+Operating coding agents on the primary machines of finance professionals runs directly into the lethal trifecta. You cannot have semi-unattended agents on the same workstations that hold client, trade and prop information plus an email client, the internet and internal networks. A major leak is one prompt injection away.
+
+**** legitster
+:PROPERTIES:
+:COMMENT_ID: 50416136
+:END:
+At our org they have been clawing back Claude access because of chronic billing overages. Gemini is swooping in because they offer flat consistent billing and handle overages by throttling to lower models. For 90 percent of the non-engineering org the experience is near enough that it makes no difference.
+
+**** fancyfredbot
+:PROPERTIES:
+:COMMENT_ID: 50416452
+:END:
+Goldman is unlikely to have decided this proactively; much more likely there was an operational loss. Only traders can send orders to market and book client trades, and Claude Code would have been running as the trader, under their account, with minimal review. Eventually it enters a bad order.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+高盛收回交易员和银行家的 Claude Code 权限
+***** TLDR
+高盛 2026 年 10 月的内部指引把 Claude Code 和 GitHub 的使用范围收窄到工程师和 strats，交易员与银行家被取消权限。银行给出的理由来自一次评估中的生产力和风险问题：非技术人员写出未经审查的代码、各业务部门之间可能违反信息隔离墙、以及按 token 计费在全公司累积。约 12000 名工程师保留权限，交易和量化研究部门的 strats 也保留。高盛自研的、接入多家厂商模型的内部助手仍对全公司开放，这次限制针对的是能自行编写并运行代码的第三方 agent。香港的银行家在 2026 年 4 月已因地域和合同条款失去 Claude，而 7 月时首席信息官 Marco Argenti 还公开称赞过交易员自己搭的工具。交易员此前用它来监控客户资金流、建模市场走势、生成文字和图表材料。高盛和摩根士丹利是 Anthropic IPO 的主承销商。
+***** Take
+要看这次收权的形状，而不是标题。如果问题在账单，12000 名工程师不会保住权限；这条线是按岗位画的，而失去权限的岗位恰好是唯一能向市场下单的那批人。fancyfredbot 的还原是整页里最省力的解释：agent 以交易员的账号运行，所在工作站同时存着客户和自营数据，迟早会做出一件需要写事故报告的事。承销这个细节值得记住。高盛会把 Anthropic 的股票卖给机构投资者，而它自己的风险评估得出的结论是这个产品不该出现在交易员的桌面上，这两份文件现在都留在记录里。
+***** Comments
+- 在金融从业者的主力机器上运行编码 agent，正好撞上致命三要素。你不能让半无人值守的 agent 跑在同时装着客户、交易和自营信息、邮件客户端、互联网和内网的工作站上。一次大泄露离一次提示注入只有一步之遥。
+- 我们公司也在收回 Claude 权限，因为账单长期超支。Gemini 正在趁机进场，因为他们提供固定统一的计费，超额时降级到较低的模型。对非工程部门的 90% 的人来说，体验差别小到无所谓。
+- 高盛不太可能是主动决定这么做的，更可能是出了运营损失。只有交易员能向市场下单和登记客户交易，而 Claude Code 很可能就是以交易员的账号运行、几乎没有复核。早晚会下错一笔单。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+ゴールドマン・サックスがバンカーとトレーダーからClaude Codeを取り上げる
+***** TLDR
+2026年10月の社内ガイダンスで、ゴールドマン・サックスはClaude CodeとGitHubの利用対象をエンジニアとストラッツに限定し、トレーダーとバンカーから取り上げた。銀行側はレビューで出た生産性とリスクの懸念を理由に挙げている。非技術者が書いたレビューなしのコード、事業部門間の情報隔壁違反の可能性、そして全社で積み上がるトークン課金だ。約1万2000人のエンジニアは利用を続けられ、トレーディングとクオンツ調査のストラッツも対象外。複数ベンダーのモデルを使う自社製アシスタントは全社で引き続き使えて、今回の制限は自力でコードを書いて実行するサードパーティのエージェントに向けられている。香港のバンカーは2026年4月に地域と契約条件を理由にすでにClaudeを失っており、7月にはCIOのMarco Argentiがトレーダー自作のツールを公に称賛していた。トレーダーは顧客フローの監視、相場のモデリング、文書や図表の作成に使っていた。ゴールドマンとモルガン・スタンレーはAnthropicのIPOの主幹事だ。
+***** Take
+見出しではなく、この線引きの形を読むべきだ。費用が問題なら1万2000人のエンジニアが席を残せるはずがない。線は職種で引かれ、失ったのは市場に注文を出せる唯一の職種だった。fancyfredbotの再構成がこのページで最も無駄のない説明だ。トレーダーのアカウントで動くエージェントが、顧客データと自己勘定データを抱えた同じ端末にいて、いずれインシデントレポートを生む何かをやる。幹事の話は覚えておく価値がある。ゴールドマンはAnthropic株を機関投資家に売る一方で、自社のリスク審査はこの製品がトレーダーの机に置くものではないと結論した。どちらの文書も記録に残った。
+***** Comments
+- 金融プロの主力マシンでコーディングエージェントを動かすのは、まさに致命的な三要素そのものだ。顧客・取引・自己勘定の情報とメールクライアントとインターネットと社内ネットワークが同居する端末で、半自律のエージェントを走らせてはいけない。大規模な流出はプロンプトインジェクション1回分の距離にある。
+- うちでも請求の超過が続いてClaudeのアクセスを回収している。Geminiは定額の一貫した課金で、超過分は下位モデルへのスロットリングで処理するので一気に入り込んできた。非エンジニア部門の9割には違いが分からない程度の体験だ。
+- ゴールドマンが自発的にこう決めたとは考えにくく、運用損失があった可能性が高い。市場に注文を出して顧客取引を計上できるのはトレーダーだけで、Claude Codeはそのトレーダーのアカウントでほぼ無審査に動いていたはずだ。いずれ誤発注をする。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+골드만삭스, 뱅커와 트레이더에게서 Claude Code 회수
+***** TLDR
+2026년 10월 내부 지침으로 골드만삭스는 Claude Code와 GitHub 사용 범위를 엔지니어와 스트랫으로 좁히고 트레이더와 뱅커에게서 회수했다. 은행은 검토 과정에서 나온 생산성과 리스크 우려를 이유로 들었다. 비기술 인력이 작성한 검토되지 않은 코드, 사업부 간 정보 차단벽 위반 가능성, 전사적으로 누적되는 토큰 과금이다. 약 1만 2000명의 엔지니어는 접근 권한을 유지하고 트레이딩과 퀀트 리서치의 스트랫도 유지한다. 여러 업체 모델을 쓰는 자체 사내 어시스턴트는 전사에 계속 열려 있으며, 이번 제한은 스스로 코드를 작성하고 실행하는 외부 에이전트를 겨냥했다. 홍콩 뱅커들은 2026년 4월 지역과 계약 조건을 이유로 이미 Claude를 잃었고, 7월에는 CIO 마르코 아르젠티가 트레이더들이 직접 만든 도구를 공개적으로 칭찬했다. 트레이더들은 고객 자금 흐름 모니터링, 시장 움직임 모델링, 문서와 그래픽 자료 제작에 사용했다. 골드만과 모건스탠리는 Anthropic IPO의 대표 주관사다.
+***** Take
+제목보다 회수의 모양을 읽어야 한다. 비용 문제였다면 엔지니어 1만 2000명이 자리를 지킬 수 없었다. 선은 직무로 그어졌고, 접근을 잃은 직무는 시장에 주문을 낼 수 있는 유일한 직무다. fancyfredbot의 재구성이 이 페이지에서 가장 경제적인 설명이다. 트레이더 계정으로 돌아가는 에이전트가 고객과 자기자본 데이터가 함께 있는 워크스테이션에 있고, 언젠가 사고 보고서를 만드는 일을 한다. 주관사 대목은 기억할 만하다. 골드만은 Anthropic 주식을 기관에 팔게 되는데, 자체 리스크 검토는 이 제품이 트레이더 책상에 있을 것이 아니라고 결론 내렸다. 두 문서가 모두 기록에 남았다.
+***** Comments
+- 금융 전문가의 주력 머신에서 코딩 에이전트를 돌리는 것은 치명적 삼요소에 정면으로 부딪친다. 고객·거래·자기자본 정보와 이메일 클라이언트, 인터넷, 내부망이 함께 있는 워크스테이션에서 반자율 에이전트를 돌릴 수는 없다. 대형 유출은 프롬프트 인젝션 한 번 거리에 있다.
+- 우리 조직도 만성적인 과금 초과 때문에 Claude 접근을 회수하고 있다. Gemini는 정액 요금에 초과분은 하위 모델로 스로틀링해 처리하기 때문에 치고 들어오고 있다. 비엔지니어링 조직의 90퍼센트에게는 차이가 없을 만큼 비슷한 경험이다.
+- 골드만이 선제적으로 이렇게 결정했을 가능성은 낮고 운영 손실이 있었을 가능성이 훨씬 크다. 시장에 주문을 내고 고객 거래를 기표할 수 있는 건 트레이더뿐이고, Claude Code는 그 트레이더 계정으로 거의 검토 없이 돌아갔을 것이다. 결국 잘못된 주문을 넣는다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Goldman Sachs retira Claude Code a sus banqueros y traders
+***** TLDR
+Una directriz interna de octubre de 2026 limitó el acceso a Claude Code y GitHub en Goldman Sachs a ingenieros y strats, y lo retiró a traders y banqueros. El banco alegó motivos de productividad y riesgo surgidos de una revisión: código sin revisar escrito por personal no técnico, posibles violaciones de las barreras de información entre unidades de negocio y la facturación por tokens acumulándose en toda la firma. Unos 12.000 ingenieros conservan el acceso, igual que los strats de trading e investigación cuantitativa. El asistente interno del banco, que usa modelos de varios proveedores, sigue disponible para todos; la restricción apunta a agentes de terceros que escriben y ejecutan código por su cuenta. Los banqueros de Hong Kong ya habían perdido Claude en abril de 2026 por ubicación y términos contractuales, y en julio el CIO Marco Argenti elogió públicamente las herramientas que los traders construían ellos mismos. Los traders lo usaban para seguir flujos de clientes, modelar movimientos de mercado y producir material escrito y gráfico. Goldman y Morgan Stanley son los coordinadores principales de la OPI de Anthropic.
+***** Take
+Hay que leer la forma del recorte, no el titular. Si fuera por la factura, 12.000 ingenieros no habrían conservado su sitio; la línea se trazó por rol, y los roles que perdieron el acceso son los únicos que pueden enviar órdenes al mercado. La reconstrucción de fancyfredbot es la explicación más económica de la página: un agente corriendo bajo la cuenta de un trader, en una estación que también guarda datos de clientes y de cuenta propia, acaba haciendo algo que genera un informe de incidente. El dato de la OPI es lo que conviene retener. Goldman venderá acciones de Anthropic a institucionales mientras su propia revisión de riesgo concluyó que el producto no corresponde al escritorio de un trader, y ambos documentos ya están en el expediente.
+***** Comments
+- Operar agentes de código en las máquinas principales de profesionales financieros choca de frente con la tríada letal. No puedes tener agentes semidesatendidos en las mismas estaciones que guardan información de clientes, operaciones y cuenta propia, más el cliente de correo, internet y las redes internas. Una fuga grave está a una inyección de prompt de distancia.
+- En mi organización están retirando el acceso a Claude por sobrecostes crónicos de facturación. Gemini está entrando porque ofrece tarifa plana y gestiona los excesos limitando el acceso a los modelos superiores. Para el 90 por ciento de la organización no técnica la experiencia es lo bastante parecida como para no notar la diferencia.
+- Es poco probable que Goldman decidiera esto de forma proactiva; es mucho más probable que hubiera una pérdida operativa. Solo los traders pueden enviar órdenes al mercado y registrar operaciones de clientes, y Claude Code seguramente corría como el trader, con su cuenta y con una revisión mínima. Tarde o temprano mete una orden mala.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Goldman Sachs entzieht Bankern und Händlern Claude Code
+***** TLDR
+Eine interne Anweisung vom Oktober 2026 beschränkte den Zugang zu Claude Code und GitHub bei Goldman Sachs auf Entwickler und Strats und entzog ihn Händlern und Bankern. Die Bank nennt Produktivitäts- und Risikobedenken aus einer Prüfung: ungeprüfter Code von nicht technischem Personal, mögliche Verstöße gegen Informationsbarrieren zwischen Geschäftsbereichen und Token-Abrechnung, die sich firmenweit summiert. Rund 12.000 Entwickler behalten den Zugang, ebenso die Strats in Trading und quantitativer Forschung. Der hauseigene Assistent der Bank, der Modelle mehrerer Anbieter nutzt, bleibt firmenweit verfügbar; die Beschränkung gilt für Agenten Dritter, die selbstständig Code schreiben und ausführen. Banker in Hongkong hatten Claude bereits im April 2026 aufgrund von Standort und Vertragsbedingungen verloren, und im Juli lobte CIO Marco Argenti öffentlich die von Händlern selbst gebauten Werkzeuge. Händler nutzten es, um Kundenflüsse zu beobachten, Marktbewegungen zu modellieren und Text- und Grafikmaterial zu erstellen. Goldman und Morgan Stanley sind Konsortialführer beim Börsengang von Anthropic.
+***** Take
+Entscheidend ist die Form des Schnitts, nicht die Schlagzeile. Ginge es um die Rechnung, hätten 12.000 Entwickler ihre Plätze nicht behalten; die Linie verläuft nach Rolle, und die Rollen, die den Zugang verloren, sind die einzigen, die Orders an den Markt schicken können. fancyfredbots Rekonstruktion ist die sparsamste Erklärung auf der Seite: ein Agent, der unter dem Konto eines Händlers läuft, auf einer Maschine, auf der auch Kunden- und Eigenhandelsdaten liegen, tut irgendwann etwas, das einen Vorfallsbericht erzeugt. Das Detail zum Börsengang ist das Bemerkenswerte. Goldman wird Anthropic-Aktien an Institutionelle verkaufen, während die eigene Risikoprüfung befand, das Produkt gehöre nicht auf den Schreibtisch eines Händlers, und beide Dokumente liegen jetzt vor.
+***** Comments
+- Coding-Agenten auf den Hauptrechnern von Finanzprofis laufen zu lassen, trifft genau die tödliche Dreifaltigkeit. Man kann keine halb unbeaufsichtigten Agenten auf denselben Arbeitsplätzen haben, auf denen Kunden-, Handels- und Eigenhandelsdaten plus Mailclient, Internet und interne Netze liegen. Ein großes Leck ist eine Prompt-Injection entfernt.
+- Bei uns wird der Claude-Zugang wegen chronischer Rechnungsüberschreitungen zurückgenommen. Gemini kommt zum Zug, weil es feste Preise bietet und Überschreitungen über Drosselung auf schwächere Modelle abfedert. Für 90 Prozent der nicht technischen Organisation ist die Erfahrung nah genug, dass es keinen Unterschied macht.
+- Dass Goldman das proaktiv entschieden hat, ist unwahrscheinlich; viel wahrscheinlicher gab es einen operativen Verlust. Nur Händler dürfen Orders an den Markt schicken und Kundengeschäfte buchen, und Claude Code lief vermutlich als der Händler, unter dessen Konto und mit minimaler Prüfung. Irgendwann setzt es eine falsche Order.
+** Nvidia CEO Jensen Huang's letter to staff about affair :nvidia:leadership:national-security:business:
+:PROPERTIES:
+:ID:       50418016
+:URL:      https://www.axios.com/2026/11/08/nvidia-ceo-jensen-huang-affair-email-to-company
+:HN_URL:   https://news.ycombinator.com/item?id=50418016
+:POINTS:   305
+:COMMENTS: 310
+:BY:       karimf
+:END:
+
+*** TLDR
+Nvidia published a message from founder and CEO Jensen Huang on November 8, 2026, sent to staff the day before. In it he writes that he was unfaithful to his wife, that his actions hurt her and their children, and that he fell short of his responsibilities to his family and the company. He asks for privacy for his family and says they bear no responsibility for his choices. Press reports describe the other person as a suspected Chinese intelligence asset, and Nvidia's board has opened an independent investigation into the national security questions those reports raise. Huang says he will cooperate fully and adds that he is committed to protecting Nvidia and supporting American national security. John Rizzo, Nvidia's head of public policy communications, said Huang is committed to continuing to lead the company as CEO without interruption.
+
+*** Take
+Two separate matters are being handled at two different speeds. The personal admission is already settled, in Huang's own words and under his own name. The counterintelligence question is the one with consequences for the company, and it is the one still open. The sequencing is what to watch: Nvidia announced that the CEO continues without interruption before the investigation it commissioned has produced anything, which fixes the answer before the work. flowerlad's point follows directly. Huang has spent two years as the most prominent advocate for selling into China, and every one of those arguments now has to be read alongside an inquiry into whether his judgment there was compromised. Nothing in the letter speaks to that, because a letter cannot.
+
+*** Comments
+
+**** danpalmer
+:PROPERTIES:
+:COMMENT_ID: 50418410
+:END:
+How integral is Huang to the success of Nvidia? He seems less integral than Bezos was to Amazon or Zuckerberg to Meta. I'd expect a board to fire a CEO over this, so he will have to be critical to the business, more than a normal CEO is critical, to survive. The market reaction to him going would be interesting.
+
+**** flowerlad
+:PROPERTIES:
+:COMMENT_ID: 50418435
+:END:
+Now we have to re-evaluate all his statements in favor of selling to China. For example, we want China to build on our stack. On the face of it that seems correct: if China has multiple stacks to pick from, why wouldn't we want them to pick ours? But do they have such a choice?
+
+**** w10-1
+:PROPERTIES:
+:COMMENT_ID: 50419230
+:END:
+I've never seen a more direct statement, with the right priorities, in such a case. As always, recovery under stress is more telling than speed on the happy path.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+英伟达 CEO 黄仁勋就婚外情致全体员工的信
+***** TLDR
+英伟达于 2026 年 11 月 8 日公开了创始人兼 CEO 黄仁勋的一封信，该信前一天发给了员工。他在信中写道自己对妻子不忠，自己的行为伤害了妻子和孩子，也没有做到对家庭和公司的责任。他请外界给家人留出空间，并表示家人对他的选择没有责任。媒体报道称涉事另一方被怀疑是中国情报人员，英伟达董事会已就这些报道引出的国家安全问题启动独立调查。黄仁勋表示将全面配合，并称自己会保护英伟达、支持美国的国家安全。英伟达公共政策传播负责人 John Rizzo 表示，黄仁勋将继续不间断地担任 CEO 领导公司。
+***** Take
+两件事正在以两种不同的速度处理。个人层面的承认已经了结，用的是黄仁勋自己的话、署的是他自己的名字。对公司有后果的是反间谍那部分，而那一部分还没有结论。值得关注的是顺序：英伟达在自己委托的调查还没有产出任何东西之前，就宣布 CEO 继续不间断任职，等于先定答案再做功课。flowerlad 的意见顺着这条线走。黄仁勋两年来是对华销售最显眼的倡导者，现在他当时的每一条论证都必须和一场关于他在这件事上的判断是否受到影响的调查放在一起读。这封信没有回应这一点，因为一封信做不到。
+***** Comments
+- 黄仁勋对英伟达的成功有多不可替代？看起来不如贝索斯对亚马逊、扎克伯格对 Meta 那样不可替代。换个公司的董事会遇到这种事会直接解雇 CEO，所以他必须比一般 CEO 对业务更关键才能留下来。他真的离开的话，市场反应会很值得看。
+- 现在我们得重新评估他所有支持对华销售的表态。比如说我们希望中国在我们的技术栈上构建。表面上听起来是对的：如果中国有多个技术栈可选，我们当然希望他们选我们的。但他们真的有这个选择吗？
+- 这类情况下我没见过比这更直接、优先顺序更对的声明。一如往常，压力之下如何恢复比顺风时跑得多快更能说明问题。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+エヌビディアCEOジェンスン・フアンの不倫についての社員向け書簡
+***** TLDR
+エヌビディアは2026年11月8日、創業者兼CEOのジェンスン・フアンが前日に社員へ送った書簡を公開した。書簡で彼は、妻を裏切ったこと、自分の行為が妻と子どもたちを傷つけたこと、家族と会社への責任を果たせなかったことを記している。家族へのプライバシーを求め、家族には自分の選択の責任はないとも述べた。報道では相手方が中国の情報関係者と疑われているとされ、エヌビディアの取締役会はその報道が提起した国家安全保障上の問題について独立調査を開始した。フアンは全面的に協力するとし、エヌビディアを守り米国の国家安全保障を支持することに責任を持つと書いている。同社の公共政策コミュニケーション責任者ジョン・リッツォは、フアンが中断なくCEOとして会社を率ける続ける意思を示していると述べた。
+***** Take
+二つの別件が二つの速度で処理されている。個人的な事実関係はすでに決着している。フアン自身の言葉で、自分の名前で出された。会社に影響が及ぶのは対情報の論点で、そちらはまだ開いたままだ。注目すべきは順序だ。エヌビディアは自ら委託した調査が何も出していない段階でCEOの中断なき続投を発表した。仕事の前に答えを固定した形になる。flowerladの指摘はそのまま続く。フアンはこの2年、対中販売の最も目立つ擁護者だった。その頃の主張はすべて、彼のその判断が損なわれていなかったかを問う調査と並べて読まれることになる。書簡はそこに答えていない。書簡では答えられないからだ。
+***** Comments
+- エヌビディアの成功にフアンはどれだけ不可欠なのか。ベゾスとアマゾン、ザッカーバーグとメタほど不可欠には見えない。普通の取締役会ならこの件でCEOを解任するだろうから、残るには通常のCEO以上に事業にとって決定的である必要がある。彼が去った場合の市場の反応も興味深い。
+- 彼の対中販売を支持する発言はすべて再評価が必要になった。たとえば中国に我々のスタックの上で作ってほしいという話は、表面上は正しく見える。選べるスタックが複数あるなら我々のを選んでほしいのは当然だ。だが彼らにその選択肢は本当にあるのか。
+- この種の件で、これほど直接的で優先順位の置き方が正しい声明は見たことがない。いつもどおり、順調なときの速さよりストレス下での立て直し方のほうが人を物語る。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+엔비디아 CEO 젠슨 황의 불륜 관련 임직원 서신
+***** TLDR
+엔비디아는 2026년 11월 8일, 창업자이자 CEO인 젠슨 황이 전날 임직원에게 보낸 서신을 공개했다. 그는 서신에서 아내에게 불충실했고 자신의 행동이 아내와 아이들을 상처 입혔으며 가족과 회사에 대한 책임을 다하지 못했다고 적었다. 가족의 사생활을 존중해 달라고 요청하며 가족에게는 자신의 선택에 대한 책임이 없다고 했다. 언론 보도는 상대방이 중국 정보 자산으로 의심된다고 전하며, 엔비디아 이사회는 그 보도가 제기한 국가안보 문제에 대해 독립 조사를 시작했다. 황은 전적으로 협조하겠다고 했고 엔비디아를 보호하고 미국의 국가안보를 지지하는 데 책임을 다하겠다고 덧붙였다. 엔비디아 공공정책 커뮤니케이션 책임자 존 리조는 황이 중단 없이 CEO로서 회사를 계속 이끌 의지를 갖고 있다고 밝혔다.
+***** Take
+별개의 두 사안이 서로 다른 속도로 처리되고 있다. 개인적 인정은 이미 끝났다. 황 자신의 말로, 자신의 이름으로 나왔다. 회사에 결과가 따르는 쪽은 방첩 문제이고, 그것이 아직 열려 있다. 볼 것은 순서다. 엔비디아는 자신이 의뢰한 조사가 아무것도 내놓기 전에 CEO의 중단 없는 유임을 발표했고, 이는 작업보다 답을 먼저 고정한 것이다. flowerlad의 지적이 바로 뒤를 잇는다. 황은 2년 동안 대중국 판매의 가장 두드러진 옹호자였고, 당시의 모든 논증은 이제 그의 그 판단이 훼손되지 않았는지를 묻는 조사와 나란히 읽히게 된다. 서신은 거기에 답하지 않는다. 서신으로는 답할 수 없기 때문이다.
+***** Comments
+- 엔비디아의 성공에 황은 얼마나 필수적인가? 베이조스와 아마존, 저커버그와 메타만큼 필수적으로 보이지는 않는다. 보통의 이사회라면 이 일로 CEO를 해임할 테니, 남으려면 일반적인 CEO보다 사업에 더 결정적이어야 한다. 그가 떠날 경우의 시장 반응도 흥미로울 것이다.
+- 이제 그의 대중국 판매 옹호 발언 전부를 다시 평가해야 한다. 예컨대 중국이 우리 스택 위에 올라오길 바란다는 말은 표면적으로는 맞아 보인다. 고를 수 있는 스택이 여러 개라면 우리 것을 고르길 바라는 게 당연하다. 그런데 그들에게 정말 그런 선택권이 있는가?
+- 이런 사안에서 이보다 더 직접적이고 우선순위가 올바른 성명은 본 적이 없다. 늘 그렇듯 순조로울 때의 속도보다 압박 아래에서의 회복이 더 많은 것을 말해준다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+La carta del CEO de Nvidia, Jensen Huang, al personal sobre su aventura
+***** TLDR
+Nvidia publicó el 8 de noviembre de 2026 un mensaje del fundador y CEO Jensen Huang, enviado al personal el día anterior. En él escribe que fue infiel a su esposa, que sus actos la dañaron a ella y a sus hijos, y que no estuvo a la altura de sus responsabilidades con su familia y con la empresa. Pide privacidad para su familia y dice que ella no tiene responsabilidad alguna por sus decisiones. La prensa describe a la otra persona como una presunta agente de inteligencia china, y el consejo de Nvidia abrió una investigación independiente sobre las cuestiones de seguridad nacional que plantean esos informes. Huang dice que colaborará plenamente y añade que está comprometido con proteger Nvidia y apoyar la seguridad nacional estadounidense. John Rizzo, responsable de comunicación de política pública de Nvidia, dijo que Huang tiene el compromiso de seguir dirigiendo la empresa como CEO sin interrupción.
+***** Take
+Se están tratando dos asuntos distintos a dos velocidades distintas. La admisión personal ya está zanjada, con las palabras de Huang y bajo su nombre. La cuestión de contrainteligencia es la que tiene consecuencias para la empresa y es la que sigue abierta. Lo que hay que mirar es el orden: Nvidia anunció que el CEO continúa sin interrupción antes de que la investigación que encargó haya producido nada, lo que fija la respuesta antes del trabajo. El comentario de flowerlad se sigue directamente. Huang ha pasado dos años como el defensor más visible de vender a China, y cada uno de esos argumentos debe leerse ahora junto a una indagación sobre si su criterio allí estaba comprometido. La carta no dice nada de eso, porque una carta no puede.
+***** Comments
+- ¿Hasta qué punto es Huang indispensable para el éxito de Nvidia? Parece menos indispensable que Bezos para Amazon o Zuckerberg para Meta. Yo esperaría que un consejo despidiera a un CEO por esto, así que para sobrevivir tendrá que ser más crítico para el negocio que un CEO normal. La reacción del mercado a su salida también sería interesante.
+- Ahora hay que reevaluar todas sus declaraciones a favor de vender a China. Por ejemplo, que queremos que China construya sobre nuestro stack. A primera vista parece correcto: si China tiene varios stacks para elegir, ¿por qué no querríamos que eligiera el nuestro? Pero ¿tiene realmente esa opción?
+- Nunca he visto una declaración más directa, con las prioridades correctas, en un caso así. Como siempre, la recuperación bajo presión dice más que la velocidad cuando todo va bien.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Der Brief von Nvidia-CEO Jensen Huang an die Belegschaft über seine Affäre
+***** TLDR
+Nvidia veröffentlichte am 8. November 2026 eine Mitteilung von Gründer und CEO Jensen Huang, die er am Tag davor an die Belegschaft geschickt hatte. Darin schreibt er, dass er seiner Frau untreu war, dass sein Handeln sie und ihre Kinder verletzt hat und dass er seinen Verpflichtungen gegenüber Familie und Unternehmen nicht gerecht wurde. Er bittet um Privatsphäre für seine Familie und sagt, sie trage keine Verantwortung für seine Entscheidungen. Presseberichte beschreiben die andere Person als mutmaßliche chinesische Nachrichtendienstquelle, und Nvidias Aufsichtsrat hat eine unabhängige Untersuchung der darin aufgeworfenen Fragen zur nationalen Sicherheit eingeleitet. Huang sagt, er werde voll kooperieren, und ergänzt, er sei dem Schutz Nvidias und der Unterstützung der US-Sicherheit verpflichtet. John Rizzo, Leiter der Public-Policy-Kommunikation bei Nvidia, sagte, Huang sei entschlossen, das Unternehmen ohne Unterbrechung als CEO weiterzuführen.
+***** Take
+Zwei getrennte Vorgänge werden mit zwei verschiedenen Geschwindigkeiten behandelt. Das persönliche Eingeständnis ist erledigt, in Huangs eigenen Worten und unter seinem Namen. Die Frage der Spionageabwehr hat Folgen für das Unternehmen, und sie ist weiter offen. Auf die Reihenfolge kommt es an: Nvidia erklärte die ununterbrochene Fortführung durch den CEO, bevor die selbst beauftragte Untersuchung irgendetwas ergeben hat, und legt damit die Antwort vor der Arbeit fest. flowerlads Punkt folgt unmittelbar. Huang war zwei Jahre lang der prominenteste Fürsprecher für Verkäufe nach China, und jedes dieser Argumente muss nun neben einer Prüfung gelesen werden, ob sein Urteil dort beeinträchtigt war. Der Brief sagt dazu nichts, weil ein Brief das nicht kann.
+***** Comments
+- Wie unverzichtbar ist Huang für Nvidias Erfolg? Er wirkt weniger unverzichtbar als Bezos für Amazon oder Zuckerberg für Meta. Ich würde erwarten, dass ein Aufsichtsrat einen CEO dafür entlässt, also muss er für das Geschäft entscheidender sein als ein normaler CEO, um zu bleiben. Die Marktreaktion auf seinen Abgang wäre ebenfalls interessant.
+- Jetzt müssen wir all seine Aussagen für Verkäufe nach China neu bewerten. Etwa: Wir wollen, dass China auf unserem Stack baut. Oberflächlich klingt das richtig: Wenn China zwischen mehreren Stacks wählen kann, warum sollten wir nicht unseren wollen? Aber hat es diese Wahl überhaupt?
+- Ich habe in so einem Fall nie eine direktere Erklärung mit den richtigen Prioritäten gesehen. Wie immer sagt die Erholung unter Druck mehr aus als das Tempo, wenn alles glattläuft.
+** Outlook.com Is Quietly Rejecting Email from Domains Without DMARC :email:dmarc:microsoft:sysadmin:dns:
+:PROPERTIES:
+:ID:       50416158
+:URL:      https://mailroute.net/blog/outlook-rejecting-email-without-dmarc
+:HN_URL:   https://news.ycombinator.com/item?id=50416158
+:POINTS:   224
+:COMMENTS: 180
+:BY:       xmddmx
+:END:
+
+*** TLDR
+Since November 5, 2026, Outlook.com, Hotmail, Live and MSN have been rejecting mail from domains with no DMARC record, returning 550 5.7.1 Message rejected: Message lacks SPF/DKIM/DMARC Auth Records. Microsoft published nothing about it, and only some messages from an affected domain get rejected, so a sender can lose mail for days without noticing. This is broader than Microsoft's May 2025 requirement, which applied to senders pushing 5,000 or more messages a day; this one applies to everyone, including small businesses sending a handful of receipts. The fix is one DNS TXT record at _dmarc with v=DMARC1; p=none, which turns on reporting without enforcement. The record alone is not enough: DMARC only passes if SPF or DKIM authenticates and aligns with the domain in the From header.
+
+*** Take
+The word quietly is doing too much work in that headline, and dwm is right to push back: a 550 is a permanent failure code, which is the loudest thing SMTP can say. What makes this annoying is partial enforcement, where some mail gets through, so the bounce reads like an intermittent fault rather than a policy change. The requirement itself is hard to argue with, since a single TXT record with p=none costs nothing and breaks nothing. The grievance with real weight is codethief's, and it is a different one: Microsoft has been accepting mail at the MTA and then discarding it for years, including from domains with SPF, DKIM and DMARC all correct. That failure mode has no error code, no notification and no appeal, and shipping a 550 does not touch it.
+
+*** Comments
+
+**** dwm
+:PROPERTIES:
+:COMMENT_ID: 50418108
+:END:
+They're not rejecting them quietly. They're sending 5xx permanent delivery failures.
+
+**** codethief
+:PROPERTIES:
+:COMMENT_ID: 50418296
+:END:
+Outlook.com has quietly dropped emails from certain domains and IPs for years, even with SPF, DKIM and DMARC all properly set up and no history of spam. They accept the email just fine according to the logs, and it still doesn't end up in the recipient's mailbox. As someone administering their own mail server, Outlook has been the bane of my existence.
+
+**** stephbook
+:PROPERTIES:
+:COMMENT_ID: 50416581
+:END:
+Sounds like something every mail sender should have done already. Good for Microsoft customers, and I don't care one bit for the lazy people who have to late-patch now.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Outlook.com 正在悄悄拒收没有 DMARC 记录域名发来的邮件
+***** TLDR
+自 2026 年 11 月 5 日起，Outlook.com、Hotmail、Live 和 MSN 开始拒收没有 DMARC 记录的域名发来的邮件，返回 550 5.7.1 Message rejected: Message lacks SPF/DKIM/DMARC Auth Records。微软没有发布任何公告，而且同一个受影响域名只有部分邮件被拒，发信方可能连续几天丢邮件而不自知。这比微软 2025 年 5 月的要求范围更广：那次只针对每天发送 5000 封以上的发信方，这次对所有人生效，包括每天只发几封收据的小商户。修复方法是在 _dmarc 加一条 DNS TXT 记录，内容为 v=DMARC1; p=none，开启报告但不执行策略。光有这条记录还不够：只有 SPF 或 DKIM 通过验证并与 From 头里的域名对齐，DMARC 才算通过。
+***** Take
+标题里的「悄悄」承担了太多。dwm 的反驳是对的：550 是永久失败码，这是 SMTP 能发出的最大声响。真正让人难受的是部分执行，有些邮件能过去，于是退信看起来像偶发故障而不是策略变更。要求本身很难反驳，一条 p=none 的 TXT 记录没有成本也不会弄坏任何东西。真正有分量的不满来自 codethief，而且是另一件事：微软多年来在 MTA 层面接收邮件然后丢掉，哪怕域名的 SPF、DKIM、DMARC 全都配对。那种失败没有错误码、没有通知、没有申诉渠道，而发一个 550 根本碰不到它。
+***** Comments
+- 他们并不是悄悄拒收。他们发的是 5xx 永久投递失败。
+- Outlook.com 多年来一直在悄悄丢掉某些域名和 IP 发来的邮件，即使 SPF、DKIM、DMARC 全都配好、也没有任何垃圾邮件历史。按日志看他们正常接收了邮件，但它就是没进收件人的邮箱。作为自己管邮件服务器的人，Outlook 一直是我的噩梦。
+- 这听起来是每个发信方本来就该做好的事。对微软的用户是好事，至于那些现在才不得不临时补上的懒人，我一点都不在意。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Outlook.comがDMARCレコードのないドメインからのメールを静かに拒否している
+***** TLDR
+2026年11月5日以降、Outlook.com、Hotmail、Live、MSNはDMARCレコードのないドメインからのメールを拒否し、550 5.7.1 Message rejected: Message lacks SPF/DKIM/DMARC Auth Recordsを返している。マイクロソフトは何も告知しておらず、しかも対象ドメインからのメールの一部だけが拒否されるため、送信側は数日間気づかずにメールを失いうる。これは2025年5月の要件より広い。あのときは1日5000通以上の送信者が対象だったが、今回は領収書を数通送るだけの小規模事業者も含め全員が対象だ。対処は_dmarcにDNSのTXTレコードを1つ、v=DMARC1; p=noneで追加すること。これはレポートだけを有効にし、強制はしない。ただしレコードだけでは足りない。DMARCが通るのはSPFかDKIMが認証され、Fromヘッダのドメインとアラインしている場合だけだ。
+***** Take
+見出しの「静かに」が働きすぎている。dwmの反論は正しい。550は恒久的な失敗コードで、SMTPが出せる中で最も大きな声だ。厄介なのは部分的な適用のほうだ。一部のメールは通るので、バウンスがポリシー変更ではなく断続的な障害のように見える。要件そのものには反論しにくい。p=noneのTXTレコード1つはコストもゼロで何も壊さない。重みのある不満はcodethiefのもので、しかも別の話だ。マイクロソフトは何年も、MTAで受け取ってから捨てている。SPF、DKIM、DMARCがすべて正しいドメインからのメールでもだ。その失敗にはエラーコードも通知も異議申し立て先もなく、550を返すことはその問題に何も触れない。
+***** Comments
+- 静かに拒否しているわけではない。5xxの恒久的な配信失敗を返している。
+- Outlook.comは何年も、特定のドメインやIPからのメールを静かに捨ててきた。SPF、DKIM、DMARCをすべて正しく設定し、スパム履歴もない場合でもだ。ログ上は問題なく受信していて、それでも受信者のメールボックスには届かない。自前のメールサーバを管理している人間として、Outlookはずっと悩みの種だ。
+- どの送信者もすでにやっておくべきことだと思う。マイクロソフトの顧客にとっては良いことで、今になって慌てて直す怠け者のことは一切気にならない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Outlook.com이 DMARC 레코드 없는 도메인의 메일을 조용히 거부하고 있다
+***** TLDR
+2026년 11월 5일부터 Outlook.com, Hotmail, Live, MSN이 DMARC 레코드가 없는 도메인의 메일을 거부하며 550 5.7.1 Message rejected: Message lacks SPF/DKIM/DMARC Auth Records를 반환하고 있다. 마이크로소프트는 아무런 공지를 하지 않았고, 영향받는 도메인의 메일 중 일부만 거부되기 때문에 발신자가 며칠간 메일을 잃으면서도 알아채지 못할 수 있다. 이는 2025년 5월 요건보다 범위가 넓다. 그때는 하루 5000통 이상 보내는 발신자가 대상이었지만 이번에는 영수증 몇 통을 보내는 소규모 사업자까지 모두가 대상이다. 해결책은 _dmarc에 DNS TXT 레코드 하나를 v=DMARC1; p=none으로 추가하는 것이고, 이는 강제 없이 보고만 켠다. 레코드만으로는 부족하다. DMARC는 SPF나 DKIM이 인증되고 From 헤더의 도메인과 정렬될 때만 통과한다.
+***** Take
+제목의 '조용히'가 너무 많은 일을 하고 있다. dwm의 반박이 옳다. 550은 영구 실패 코드이고, SMTP가 낼 수 있는 가장 큰 소리다. 짜증나는 부분은 부분 적용이다. 일부 메일은 통과하므로 반송이 정책 변경이 아니라 간헐적 장애처럼 보인다. 요건 자체는 반박하기 어렵다. p=none TXT 레코드 하나는 비용이 없고 아무것도 깨뜨리지 않는다. 무게가 있는 불만은 codethief의 것이고, 그것은 다른 이야기다. 마이크로소프트는 수년간 MTA에서 메일을 받아들인 뒤 폐기해 왔다. SPF, DKIM, DMARC가 모두 올바른 도메인의 메일에서도 그랬다. 그 실패에는 에러 코드도 통지도 이의 절차도 없고, 550을 보내는 것은 그 문제를 전혀 건드리지 않는다.
+***** Comments
+- 조용히 거부하는 게 아니다. 5xx 영구 전달 실패를 보내고 있다.
+- Outlook.com은 수년간 특정 도메인과 IP의 메일을 조용히 버려 왔다. SPF, DKIM, DMARC를 모두 제대로 설정하고 스팸 이력이 없어도 그랬다. 로그상으로는 메일을 멀쩡히 받아들이는데 수신자의 메일박스에는 도착하지 않는다. 직접 메일 서버를 운영하는 사람으로서 Outlook은 줄곧 골칫거리였다.
+- 모든 발신자가 이미 해 뒀어야 할 일처럼 들린다. 마이크로소프트 고객에게는 좋은 일이고, 이제야 급히 땜질해야 하는 게으른 사람들은 전혀 신경 쓰이지 않는다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Outlook.com está rechazando en silencio el correo de dominios sin DMARC
+***** TLDR
+Desde el 5 de noviembre de 2026, Outlook.com, Hotmail, Live y MSN rechazan el correo de dominios sin registro DMARC y devuelven 550 5.7.1 Message rejected: Message lacks SPF/DKIM/DMARC Auth Records. Microsoft no publicó nada al respecto y solo algunos mensajes de un dominio afectado son rechazados, así que un remitente puede perder correo durante días sin darse cuenta. Es más amplio que el requisito de mayo de 2025, que afectaba a quienes enviaban 5.000 o más mensajes diarios; este aplica a todos, incluidos pequeños negocios que envían un puñado de recibos. La solución es un registro DNS TXT en _dmarc con v=DMARC1; p=none, que activa los informes sin imponer política. El registro por sí solo no basta: DMARC solo pasa si SPF o DKIM autentica y se alinea con el dominio del encabezado From.
+***** Take
+La palabra silencio hace demasiado trabajo en ese titular, y dwm tiene razón al objetar: un 550 es un código de fallo permanente, lo más alto que puede decir SMTP. Lo molesto es la aplicación parcial: parte del correo pasa, así que el rebote parece un fallo intermitente y no un cambio de política. El requisito en sí es difícil de discutir, porque un único registro TXT con p=none no cuesta nada ni rompe nada. La queja con peso real es la de codethief, y es otra: Microsoft lleva años aceptando correo en el MTA y descartándolo después, incluso de dominios con SPF, DKIM y DMARC correctos. Ese modo de fallo no tiene código de error, ni notificación, ni apelación, y enviar un 550 no lo toca.
+***** Comments
+- No los están rechazando en silencio. Están enviando fallos de entrega permanentes 5xx.
+- Outlook.com lleva años descartando en silencio correos de ciertos dominios e IPs, incluso con SPF, DKIM y DMARC bien configurados y sin historial de spam. Aceptan el correo sin problema según los registros y aun así no llega al buzón del destinatario. Como administrador de mi propio servidor de correo, Outlook ha sido la ruina de mi existencia.
+- Suena a algo que todo remitente debería haber hecho ya. Bien por los clientes de Microsoft, y no me importa lo más mínimo la gente perezosa que ahora tiene que parchear a última hora.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Outlook.com weist still E-Mails von Domains ohne DMARC ab
+***** TLDR
+Seit dem 5. November 2026 weisen Outlook.com, Hotmail, Live und MSN E-Mails von Domains ohne DMARC-Eintrag ab und antworten mit 550 5.7.1 Message rejected: Message lacks SPF/DKIM/DMARC Auth Records. Microsoft hat dazu nichts veröffentlicht, und es werden nur einige Nachrichten einer betroffenen Domain abgewiesen, sodass ein Absender tagelang Mails verlieren kann, ohne es zu merken. Das geht weiter als Microsofts Anforderung vom Mai 2025, die für Absender ab 5.000 Nachrichten pro Tag galt; diese gilt für alle, auch für kleine Betriebe mit einer Handvoll Belegen. Die Lösung ist ein einzelner DNS-TXT-Eintrag unter _dmarc mit v=DMARC1; p=none, der nur Berichte einschaltet und nichts erzwingt. Der Eintrag allein genügt nicht: DMARC besteht nur, wenn SPF oder DKIM authentifiziert und mit der Domain im From-Header übereinstimmt.
+***** Take
+Das Wort still leistet in dieser Schlagzeile zu viel, und dwm widerspricht zu Recht: Ein 550 ist ein permanenter Fehlercode, das Lauteste, was SMTP sagen kann. Ärgerlich ist die teilweise Durchsetzung, bei der ein Teil der Mails durchkommt, sodass der Bounce wie eine sporadische Störung wirkt und nicht wie eine Richtlinienänderung. Gegen die Anforderung selbst ist schwer etwas zu sagen, denn ein TXT-Eintrag mit p=none kostet nichts und bricht nichts. Die Beschwerde mit Gewicht ist die von codethief, und sie betrifft etwas anderes: Microsoft nimmt Mails seit Jahren am MTA an und verwirft sie danach, auch von Domains mit korrektem SPF, DKIM und DMARC. Dieser Fehlerfall hat keinen Fehlercode, keine Benachrichtigung und keinen Einspruch, und ein 550 ändert daran nichts.
+***** Comments
+- Sie weisen sie nicht still ab. Sie senden permanente 5xx-Zustellfehler.
+- Outlook.com verwirft seit Jahren still E-Mails von bestimmten Domains und IPs, selbst bei korrekt eingerichtetem SPF, DKIM und DMARC und ohne Spam-Historie. Laut Logs nehmen sie die Mail problemlos an, und sie landet trotzdem nicht im Postfach des Empfängers. Als jemand, der seinen eigenen Mailserver betreibt, ist Outlook die Plage meines Lebens.
+- Klingt nach etwas, das jeder Absender längst hätte tun sollen. Gut für Microsofts Kunden, und die faulen Leute, die jetzt nachbessern müssen, sind mir völlig gleichgültig.
+** Declarative Dragging :hci:ui:research:web:drag-and-drop:
+:PROPERTIES:
+:ID:       50368481
+:URL:      https://declarative-dragging.github.io/
+:HN_URL:   https://news.ycombinator.com/item?id=50368481
+:POINTS:   325
+:COMMENTS: 38
+:BY:       smusamashah
+:END:
+
+*** TLDR
+A UIST 2026 best paper from Joshua Horowitz, Andrew Blinn and Jeffrey Heer. Instead of writing the geometry, hit testing, feedback and animation code that a bespoke drag interaction usually needs, you declare for each draggable element which future application states dragging it should be able to reach. The engine then speculatively renders those candidate states to work out where the valid drop targets are and what feedback to show. Behaviors compose, so simple ones combine into complex interactions, with modifiers for things like floating and snapping. The implementation is Dragology, an open-source library for SVG web interfaces, and the paper is on the site alongside video demos. Examples include an algebra tree editor, Bezier curve editing, card pile games, trominoes puzzles, the Permutation Lab, and the Hazel programming environment.
+
+*** Take
+The inversion is the contribution: you describe destinations, the engine derives the interaction. That is the right trade for the large class of editors where drop targets are structural rather than arbitrary, which is exactly what the demo list is, trees and curves and card piles. The question the demos do not answer is the one amelius and leecommamichael both land on. Speculative rendering means rendering every candidate state to find out which ones are legal, and every example on the page has a small candidate set. Nothing here shows what happens at a thousand drop zones, and the paper would be stronger for saying so plainly. gobdovan's other complaint is also fair: Apparatus gets cited for speculative rendering, while Sketchpad, ThingLab and Juno-2 do not appear at all.
+
+*** Comments
+
+**** gitgud
+:PROPERTIES:
+:COMMENT_ID: 50417143
+:END:
+That is an elegant way to do it. This could create a renaissance of drag and drop interactions for the web.
+
+**** codedokode
+:PROPERTIES:
+:COMMENT_ID: 50419369
+:END:
+Interesting idea, but it looks too complicated for me. What if there are 1000 places where an element can be dropped? What if we select and drag several elements at a time? It also introduces complicated concepts like composables and even a DSL. Writing custom drag-and-drop code would probably be easier than figuring out how this works. Saying you simply state which future states dragging should lead to is not simple at all.
+
+**** amelius
+:PROPERTIES:
+:COMMENT_ID: 50417473
+:END:
+Does this also work when the search space becomes large? I fear this might lead to an exponential blowup. The examples shown are all tiny.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+声明式拖拽
+***** TLDR
+来自 Joshua Horowitz、Andrew Blinn 和 Jeffrey Heer 的 UIST 2026 最佳论文。定制拖拽交互通常需要手写几何计算、命中测试、反馈和动画代码，而这里的做法是：为每个可拖拽元素声明「拖它应该能到达哪些未来的应用状态」。引擎随后对这些候选状态做推测性渲染，从而算出哪些是合法落点、该显示什么反馈。行为可以组合，简单行为能拼成复杂交互，还有浮动、吸附之类的修饰器。实现是 Dragology，一个面向 SVG 网页界面的开源库，站点上同时提供论文和视频演示。示例包括代数树编辑器、贝塞尔曲线编辑、纸牌堆游戏、三格骨牌拼图、Permutation Lab，以及 Hazel 编程环境。
+***** Take
+这次的贡献就在这个反转：你描述目的地，引擎推导出交互。对于落点由结构决定而非任意位置的那一大类编辑器，这是正确的取舍，而演示列表恰好全是这类东西：树、曲线、纸牌堆。演示没有回答的问题正是 amelius 和 leecommamichael 都指到的那一点。推测性渲染意味着要渲染每一个候选状态才能知道哪些合法，而页面上每个示例的候选集都很小。这里没有任何材料说明一千个落点时会发生什么，论文若把这点直说会更有说服力。gobdovan 的另一条批评也站得住：推测性渲染引用了 Apparatus，而 Sketchpad、ThingLab 和 Juno-2 完全没出现。
+***** Comments
+- 这个做法很优雅。它可能带来网页拖拽交互的一次复兴。
+- 想法有意思，但对我来说太复杂了。如果一个元素有 1000 个可以放的位置怎么办？如果我们一次选中并拖动多个元素怎么办？它还引入了 composable 甚至一套 DSL 这样复杂的概念。自己写拖拽代码恐怕比搞懂这套东西更容易。说「你只要说明拖动应该通向哪些未来状态」，一点都不「只要」。
+- 搜索空间变大时这套还管用吗？我担心会出现指数级膨胀。展示的例子都很小。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+宣言的ドラッグ
+***** TLDR
+Joshua Horowitz、Andrew Blinn、Jeffrey HeerによるUIST 2026ベストペーパー。専用のドラッグ操作には通常、ジオメトリ、ヒットテスト、フィードバック、アニメーションのコードが必要になるが、この手法ではドラッグ可能な要素ごとに「ドラッグで到達できるべき将来のアプリ状態」を宣言する。エンジンはその候補状態を投機的にレンダリングし、どこが有効なドロップ先でどんなフィードバックを出すかを導き出す。振る舞いは合成可能で、単純なものを組み合わせて複雑な操作にでき、浮遊やスナップのような修飾子もある。実装はSVGのWebインターフェース向けオープンソースライブラリDragologyで、サイトには論文と動画デモがある。例として代数ツリーエディタ、ベジエ曲線編集、カードの山札ゲーム、トロミノのパズル、Permutation Lab、プログラミング環境Hazelが挙がっている。
+***** Take
+この反転こそが貢献だ。目的地を記述すれば、エンジンが操作を導出する。ドロップ先が任意ではなく構造で決まる種類のエディタには正しい取引で、デモ一覧がまさにそれだ。木、曲線、カードの山。デモが答えていないのは、ameliusとleecommamichaelが揃って指している点だ。投機的レンダリングとは、どれが妥当かを知るために候補状態をすべて描くことであり、ページ上のどの例も候補集合が小さい。ドロップ先が1000個あるときどうなるかを示す材料はここにはなく、論文はそこを率直に書いたほうが強くなる。gobdovanのもう一つの指摘も妥当だ。投機的レンダリングではApparatusが引かれる一方、Sketchpad、ThingLab、Juno-2はまったく出てこない。
+***** Comments
+- これは優雅なやり方だ。Webのドラッグアンドドロップ操作のルネサンスを起こしうる。
+- 面白い発想だが、自分には複雑すぎる。要素を置ける場所が1000カ所あったらどうするのか。複数の要素を選んで同時にドラッグしたら。composableやDSLといった難しい概念まで持ち込んでいる。独自にドラッグアンドドロップのコードを書くほうが、この仕組みを理解するより簡単だろう。「ドラッグがどの将来状態に至るべきかをただ述べるだけ」はまったく「ただ」ではない。
+- 探索空間が大きくなっても成り立つのか。指数的な爆発を心配している。示されている例はどれも小さい。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+선언적 드래그
+***** TLDR
+Joshua Horowitz, Andrew Blinn, Jeffrey Heer의 UIST 2026 최우수 논문. 맞춤 드래그 상호작용은 보통 기하 계산, 히트 테스트, 피드백, 애니메이션 코드를 직접 써야 하는데, 여기서는 드래그 가능한 요소마다 '드래그로 도달할 수 있어야 하는 미래 애플리케이션 상태'를 선언한다. 그러면 엔진이 그 후보 상태들을 투기적으로 렌더링해 유효한 드롭 대상이 어디인지, 어떤 피드백을 보일지 계산한다. 동작은 합성 가능해 단순한 것들을 조합해 복잡한 상호작용을 만들 수 있고, 떠 있기나 스냅 같은 수정자도 있다. 구현체는 SVG 웹 인터페이스용 오픈소스 라이브러리 Dragology이며, 사이트에 논문과 영상 데모가 함께 있다. 예시로 대수 트리 편집기, 베지에 곡선 편집, 카드 더미 게임, 트로미노 퍼즐, Permutation Lab, 프로그래밍 환경 Hazel이 있다.
+***** Take
+이 뒤집기가 바로 기여다. 목적지를 기술하면 엔진이 상호작용을 유도한다. 드롭 대상이 임의가 아니라 구조로 정해지는 큰 부류의 편집기에는 올바른 거래이고, 데모 목록이 정확히 그것이다. 트리, 곡선, 카드 더미. 데모가 답하지 않는 것은 amelius와 leecommamichael이 함께 짚은 지점이다. 투기적 렌더링은 어떤 것이 유효한지 알기 위해 모든 후보 상태를 그리는 일이고, 페이지의 모든 예시는 후보 집합이 작다. 드롭 영역이 천 개일 때 무슨 일이 벌어지는지 보여주는 자료는 없으며, 논문이 이를 솔직히 밝히면 더 강해질 것이다. gobdovan의 다른 지적도 타당하다. 투기적 렌더링으로 Apparatus는 인용되는데 Sketchpad, ThingLab, Juno-2는 전혀 등장하지 않는다.
+***** Comments
+- 우아한 방식이다. 웹의 드래그 앤 드롭 상호작용에 르네상스를 가져올 수 있다.
+- 흥미로운 아이디어지만 내게는 너무 복잡해 보인다. 요소를 놓을 수 있는 자리가 1000군데면 어떻게 하나? 여러 요소를 한 번에 선택해 끌면? composable이나 DSL 같은 복잡한 개념까지 도입한다. 직접 드래그 앤 드롭 코드를 쓰는 편이 이 구조를 이해하는 것보다 쉬울 것이다. '드래그가 어떤 미래 상태로 이어져야 하는지 그냥 말하면 된다'는 전혀 '그냥'이 아니다.
+- 탐색 공간이 커져도 동작하는가? 지수적 폭발이 걱정된다. 보여준 예시는 모두 아주 작다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Arrastre declarativo
+***** TLDR
+Mejor artículo de UIST 2026, de Joshua Horowitz, Andrew Blinn y Jeffrey Heer. En lugar de escribir el código de geometría, detección de colisiones, retroalimentación y animación que suele exigir una interacción de arrastre a medida, se declara para cada elemento arrastrable qué estados futuros de la aplicación debería poder alcanzar al arrastrarlo. El motor entonces renderiza especulativamente esos estados candidatos para determinar dónde están los destinos válidos y qué retroalimentación mostrar. Los comportamientos se componen, de modo que los simples se combinan en interacciones complejas, con modificadores para cosas como flotar y ajustar. La implementación es Dragology, una biblioteca de código abierto para interfaces web en SVG, y el artículo está en el sitio junto con demos en vídeo. Los ejemplos incluyen un editor de árboles algebraicos, edición de curvas de Bézier, juegos de montones de cartas, rompecabezas de trominós, el Permutation Lab y el entorno de programación Hazel.
+***** Take
+La inversión es el aporte: describes destinos y el motor deriva la interacción. Es el intercambio correcto para la gran clase de editores en los que los destinos son estructurales y no arbitrarios, que es justo lo que muestra la lista de demos: árboles, curvas y montones de cartas. La pregunta que las demos no responden es la que señalan tanto amelius como leecommamichael. Renderizar especulativamente significa dibujar cada estado candidato para saber cuáles son válidos, y todos los ejemplos de la página tienen un conjunto de candidatos pequeño. Nada aquí muestra qué pasa con mil zonas de destino, y el artículo ganaría si lo dijera sin rodeos. La otra objeción de gobdovan también es justa: se cita Apparatus por el renderizado especulativo, mientras que Sketchpad, ThingLab y Juno-2 no aparecen.
+***** Comments
+- Es una manera elegante de hacerlo. Esto podría provocar un renacimiento de las interacciones de arrastrar y soltar en la web.
+- Idea interesante, pero me parece demasiado complicada. ¿Qué pasa si hay 1000 lugares donde se puede soltar un elemento? ¿Y si seleccionamos y arrastramos varios a la vez? Además introduce conceptos complicados como composables e incluso un DSL. Escribir código propio de arrastrar y soltar sería probablemente más fácil que entender cómo funciona esto. Decir que simplemente indicas a qué estados futuros debe llevar el arrastre no es nada simple.
+- ¿Funciona esto también cuando el espacio de búsqueda se vuelve grande? Me temo una explosión exponencial. Los ejemplos mostrados son todos diminutos.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Deklaratives Ziehen
+***** TLDR
+Ein Best Paper der UIST 2026 von Joshua Horowitz, Andrew Blinn und Jeffrey Heer. Statt den Code für Geometrie, Trefferprüfung, Rückmeldung und Animation zu schreiben, den eine eigens gebaute Drag-Interaktion sonst braucht, deklariert man für jedes ziehbare Element, welche künftigen Anwendungszustände durch Ziehen erreichbar sein sollen. Die Engine rendert diese Kandidatenzustände dann spekulativ, um zu bestimmen, wo die gültigen Ablageziele liegen und welche Rückmeldung zu zeigen ist. Verhalten sind komponierbar, einfache lassen sich zu komplexen Interaktionen kombinieren, mit Modifikatoren etwa für Schweben und Einschnappen. Die Implementierung heißt Dragology, eine Open-Source-Bibliothek für SVG-Weboberflächen; das Paper liegt neben Videodemos auf der Seite. Beispiele sind ein Editor für Algebra-Bäume, Bézier-Kurvenbearbeitung, Kartenstapelspiele, Tromino-Puzzles, das Permutation Lab und die Programmierumgebung Hazel.
+***** Take
+Die Umkehrung ist der Beitrag: Man beschreibt Ziele, die Engine leitet die Interaktion ab. Für die große Klasse von Editoren, in denen Ablageziele strukturell und nicht beliebig sind, ist das der richtige Tausch, und genau das zeigt die Demoliste: Bäume, Kurven, Kartenstapel. Die Frage, die die Demos offenlassen, ist die, auf die amelius und leecommamichael beide kommen. Spekulatives Rendern heißt, jeden Kandidatenzustand zu zeichnen, um zu erfahren, welcher zulässig ist, und jedes Beispiel auf der Seite hat eine kleine Kandidatenmenge. Nichts hier zeigt, was bei tausend Ablagezonen passiert, und das Paper wäre stärker, wenn es das klar sagte. gobdovans weiterer Einwand ist ebenfalls berechtigt: Apparatus wird für spekulatives Rendern zitiert, Sketchpad, ThingLab und Juno-2 kommen gar nicht vor.
+***** Comments
+- Das ist eine elegante Lösung. Sie könnte eine Renaissance der Drag-and-Drop-Interaktionen im Web auslösen.
+- Interessante Idee, aber mir zu kompliziert. Was, wenn es 1000 Stellen gibt, an denen ein Element abgelegt werden kann? Was, wenn wir mehrere Elemente gleichzeitig auswählen und ziehen? Es führt außerdem komplizierte Begriffe wie Composables und sogar eine DSL ein. Eigenen Drag-and-Drop-Code zu schreiben wäre wahrscheinlich einfacher, als zu verstehen, wie das funktioniert. Zu sagen, man gebe einfach an, zu welchen künftigen Zuständen das Ziehen führen soll, ist überhaupt nicht einfach.
+- Funktioniert das auch, wenn der Suchraum groß wird? Ich befürchte eine exponentielle Explosion. Die gezeigten Beispiele sind alle winzig.
+** Dux: Free, open-source Wayland desktop shell with file manager and theming :linux:wayland:desktop:open-source:niri:
+:PROPERTIES:
+:ID:       50416053
+:URL:      https://duxlabs.dev/
+:HN_URL:   https://news.ycombinator.com/item?id=50416053
+:POINTS:   188
+:COMMENTS: 60
+:BY:       indigodaddy
+:END:
+
+*** TLDR
+Dux is the project formerly called Dank Material Shell, renamed a few weeks ago and now shipping as DMS 2.1 Stormborn under the MIT license. It is a full shell rather than a status bar: Dux Modular Shell at the core, plus Dux Files as the file manager, Dux GOP as the system monitor, Dux Greeter for login, Dux Search for file search, and Dux Calendar with multi-platform calendar support. It runs on niri, Hyprland, mangowm, Sway, labwc and Miracle Wayland, with preconfigured flavors for the Fedora-based immutable Zirconium and the Fedora Miracle spin, and it recently added support for atomic distros such as Bazzite. The codebase mixes QML, TypeScript and Go, theming is dynamic, and installation is a script that detects your distribution, pulls dependencies and configures the shell.
+
+*** Take
+The rename is the most consequential thing in this release, and not as a joke: nothing called Dank Material Shell was ever going to be a default in a distro spin, and the Fedora flavors suggest that is now the target. The substance is the scope creep in the good direction. A greeter, a file manager, a search tool and a calendar is the list that separates a ricing project from a desktop environment, and the thread's long-term users report the thing nobody expects from this category, which is that they stopped reconfiguring it. The two objections in the thread are the two that will keep it out of a default install. Curl-piped-to-shell as the documented install path is a packaging decision, fixable. diabllicseagull's measured power draw against vanilla niri is the harder one, because a shell that costs battery loses to a bar that does not.
+
+*** Comments
+
+**** jeffnash
+:PROPERTIES:
+:COMMENT_ID: 50416712
+:END:
+DMS rebranded the Dank to Dux a few weeks ago. I've been running DMS plus niri for nearly a year now with no intentions of switching anytime soon. Given how often I've historically changed shells and DEs, this is the ricing equivalent to settling down, getting married, and having kids.
+
+**** greatgib
+:PROPERTIES:
+:COMMENT_ID: 50419102
+:END:
+It is so crazy how normal it looks that a random website suggests you do a curl piped into sh to install anything, and most people would do it without even thinking about it. Someone coming from 10 to 15 years in the past would think people are crazy now, and it looks like they would be right.
+
+**** diabllicseagull
+:PROPERTIES:
+:COMMENT_ID: 50418737
+:END:
+I love what these shells do for the Linux desktop, but on laptops it makes me a bit concerned about battery life. The last time I checked out Dank Material Shell, I saw an impact on power consumption over vanilla niri.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Dux：免费开源的 Wayland 桌面外壳，自带文件管理器和主题
+***** TLDR
+Dux 就是几周前改名的 Dank Material Shell，现在以 DMS 2.1 Stormborn 的版本发布，采用 MIT 许可。它不是一条状态栏，而是一整套外壳：核心是 Dux Modular Shell，另有文件管理器 Dux Files、系统监视器 Dux GOP、登录界面 Dux Greeter、文件搜索 Dux Search，以及支持多平台日历的 Dux Calendar。它可以跑在 niri、Hyprland、mangowm、Sway、labwc 和 Miracle Wayland 上，为基于 Fedora 的不可变系统 Zirconium 和 Fedora Miracle spin 提供预配置版本，最近还加上了对 Bazzite 这类原子化发行版的支持。代码库混用 QML、TypeScript 和 Go，主题是动态的，安装方式是一个会检测发行版、拉取依赖并完成配置的脚本。
+***** Take
+这次发布里最关键的其实是改名，而且不是开玩笑：叫 Dank Material Shell 的东西永远不可能成为某个发行版 spin 的默认选项，而那几个 Fedora 版本说明这正是现在的目标。实质内容是往好方向的范围扩张。登录界面、文件管理器、搜索工具和日历，正是把一个 ricing 项目和一个桌面环境分开的清单，而帖子里的长期用户报告了这个品类最不会出现的事：他们不再反复折腾配置了。帖子里的两条反对意见，正是会把它挡在默认安装之外的两条。把 curl 管进 shell 当成文档里的安装方式是个打包决定，可以改。diabllicseagull 实测相对原版 niri 的耗电增加更难办，因为一个费电的外壳会输给一条不费电的状态栏。
+***** Comments
+- DMS 几周前把 Dank 改成了 Dux。我用 DMS 加 niri 快一年了，短期内没有换的打算。考虑到我以前换外壳和桌面环境有多频繁，这在 ricing 界相当于安定下来、结婚、生孩子。
+- 一个随便的网站让你 curl 管道进 sh 来装东西，这件事看起来居然如此正常，而大多数人会连想都不想就照做，真是疯了。十到十五年前的人看到会觉得现在的人都不正常，而且看起来他是对的。
+- 我很喜欢这些外壳给 Linux 桌面带来的东西，但在笔记本上我有点担心续航。上次我试 Dank Material Shell 时，相比原版 niri 看到了功耗上的影响。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Dux：ファイルマネージャとテーマ機能を備えた無料でオープンソースのWaylandデスクトップシェル
+***** TLDR
+Duxは数週間前にDank Material Shellから改名したプロジェクトで、現在はMITライセンスのDMS 2.1 Stormbornとして配布されている。ステータスバーではなく一揃いのシェルだ。中核のDux Modular Shellに加えて、ファイルマネージャのDux Files、システムモニタのDux GOP、ログイン画面のDux Greeter、ファイル検索のDux Search、マルチプラットフォームのカレンダーに対応したDux Calendarがある。niri、Hyprland、mangowm、Sway、labwc、Miracle Wayland上で動き、FedoraベースのイミュータブルなzirconiumとFedora Miracle spin向けの設定済みフレーバーがあり、最近Bazziteのようなアトミックディストロへの対応も加わった。コードベースはQML、TypeScript、Goの混成で、テーマは動的、インストールはディストロを検出して依存関係を取得し設定まで行うスクリプトだ。
+***** Take
+このリリースで最も影響が大きいのは改名で、冗談ではない。Dank Material Shellという名前のものがディストロのspinの既定になることはあり得なかったし、Fedoraのフレーバーはそこが狙いになったことを示している。中身としては、良い方向へのスコープ拡大だ。グリータ、ファイルマネージャ、検索、カレンダーという並びは、ricingプロジェクトとデスクトップ環境を分ける一覧であり、スレッドの長期ユーザーはこの分野で誰も期待しないことを報告している。設定をいじるのをやめた、という報告だ。スレッドの二つの異論は、既定インストールから遠ざける二つでもある。curlをshに流す方法を公式の手順にしているのはパッケージングの決定で、直せる。素のniriに対する消費電力の増加というdiabllicseagullの観測のほうが厄介だ。バッテリーを食うシェルは、食わないバーに負ける。
+***** Comments
+- DMSは数週間前にDankをDuxに改名した。私はDMSとniriをもう1年近く使っていて、当面乗り換える気はない。これまでシェルやDEをどれだけ頻繁に変えてきたかを考えると、ricing界では落ち着いて結婚して子どもを持つのに相当する。
+- どこかのウェブサイトが何かをインストールするのにcurlをshへ流せと勧めるのが当たり前に見えて、しかも大半の人が何も考えずにそうするのは本当におかしい。10年から15年前の人が見たら今の人は正気を失っていると思うだろうし、どうやらその見立ては正しい。
+- こうしたシェルがLinuxデスクトップにもたらすものは大好きだが、ノートPCではバッテリー持ちが少し気になる。前回Dank Material Shellを試したとき、素のniriに比べて消費電力への影響が見えた。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Dux: 파일 관리자와 테마를 갖춘 무료 오픈소스 Wayland 데스크톱 셸
+***** TLDR
+Dux는 몇 주 전 Dank Material Shell에서 이름을 바꾼 프로젝트로, 현재 MIT 라이선스의 DMS 2.1 Stormborn으로 배포된다. 상태 바가 아니라 완전한 셸이다. 핵심인 Dux Modular Shell에 더해 파일 관리자 Dux Files, 시스템 모니터 Dux GOP, 로그인 화면 Dux Greeter, 파일 검색 Dux Search, 멀티플랫폼 캘린더를 지원하는 Dux Calendar가 있다. niri, Hyprland, mangowm, Sway, labwc, Miracle Wayland에서 동작하고, Fedora 기반 불변 OS인 Zirconium과 Fedora Miracle 스핀용 사전 설정 플레이버가 있으며, 최근 Bazzite 같은 아토믹 배포판 지원도 추가했다. 코드베이스는 QML, TypeScript, Go가 섞여 있고 테마는 동적이며, 설치는 배포판을 감지해 의존성을 받고 셸을 구성하는 스크립트다.
+***** Take
+이번 릴리스에서 가장 결과가 큰 것은 개명이고, 농담이 아니다. Dank Material Shell이라는 이름으로는 어떤 배포판 스핀의 기본값이 될 수 없었고, Fedora 플레이버는 이제 그것이 목표임을 보여준다. 내용 면에서는 좋은 방향의 범위 확장이다. 그리터, 파일 관리자, 검색, 캘린더라는 목록은 ricing 프로젝트와 데스크톱 환경을 가르는 목록이며, 스레드의 장기 사용자들은 이 분야에서 아무도 기대하지 않는 것을 보고한다. 설정을 다시 손대는 일을 그만뒀다는 것이다. 스레드의 두 가지 반론은 기본 설치에서 멀어지게 하는 두 가지다. curl을 sh에 파이프하는 방식을 문서화된 설치 경로로 둔 것은 패키징 결정이고 고칠 수 있다. 순수 niri 대비 전력 소비 증가라는 diabllicseagull의 관찰이 더 어렵다. 배터리를 먹는 셸은 먹지 않는 바에게 진다.
+***** Comments
+- DMS가 몇 주 전 Dank를 Dux로 바꿨다. 나는 DMS에 niri를 거의 1년째 쓰고 있고 당장 바꿀 생각이 없다. 과거에 셸과 데스크톱 환경을 얼마나 자주 바꿨는지 생각하면, 이건 ricing 세계에서 정착해 결혼하고 아이를 갖는 것에 해당한다.
+- 아무 웹사이트가 무언가를 설치하려면 curl을 sh로 파이프하라고 권하는 게 이렇게 당연해 보이고, 대다수가 생각도 없이 그렇게 한다는 게 정말 이상하다. 10~15년 전 사람이 보면 지금 사람들이 미쳤다고 여길 텐데, 보아하니 그 판단이 맞다.
+- 이런 셸이 리눅스 데스크톱에 주는 것들은 좋아하지만 노트북에서는 배터리가 조금 걱정된다. 지난번 Dank Material Shell을 써 봤을 때 순수 niri에 비해 전력 소비에 영향이 보였다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Dux: shell de escritorio Wayland libre y de código abierto con gestor de archivos y temas
+***** TLDR
+Dux es el proyecto antes llamado Dank Material Shell, renombrado hace unas semanas y distribuido ahora como DMS 2.1 Stormborn con licencia MIT. No es una barra de estado sino una shell completa: Dux Modular Shell en el núcleo, más Dux Files como gestor de archivos, Dux GOP como monitor del sistema, Dux Greeter para el inicio de sesión, Dux Search para buscar archivos y Dux Calendar con soporte de calendarios multiplataforma. Funciona sobre niri, Hyprland, mangowm, Sway, labwc y Miracle Wayland, con variantes preconfiguradas para el sistema inmutable Zirconium, basado en Fedora, y para la edición Fedora Miracle, y hace poco añadió soporte para distribuciones atómicas como Bazzite. El código mezcla QML, TypeScript y Go, los temas son dinámicos y la instalación es un script que detecta tu distribución, instala dependencias y configura la shell.
+***** Take
+El cambio de nombre es lo más decisivo de esta versión, y no como chiste: nada llamado Dank Material Shell iba a ser el valor predeterminado de una edición de distribución, y las variantes de Fedora sugieren que eso es ahora el objetivo. La sustancia está en una expansión de alcance en la buena dirección. Un greeter, un gestor de archivos, una herramienta de búsqueda y un calendario es la lista que separa un proyecto de ricing de un entorno de escritorio, y los usuarios de largo plazo del hilo reportan lo que nadie espera en esta categoría: dejaron de reconfigurarlo. Las dos objeciones del hilo son las dos que lo mantendrán fuera de una instalación por defecto. Canalizar curl a la shell como vía documentada de instalación es una decisión de empaquetado, corregible. El consumo medido por diabllicseagull frente a niri a secas es la más difícil, porque una shell que cuesta batería pierde frente a una barra que no.
+***** Comments
+- DMS cambió el Dank por Dux hace unas semanas. Llevo casi un año con DMS más niri y no pienso cambiar por ahora. Dada la frecuencia con la que históricamente he cambiado de shell y de entorno, esto es el equivalente en el mundo del ricing a echar raíces, casarse y tener hijos.
+- Es increíble lo normal que parece que una web cualquiera te sugiera canalizar curl a sh para instalar algo, y que la mayoría lo haga sin pensarlo siquiera. Alguien llegado de hace 10 o 15 años pensaría que la gente está loca ahora, y parece que tendría razón.
+- Me encanta lo que estas shells hacen por el escritorio Linux, pero en portátiles me preocupa algo la duración de la batería. La última vez que probé Dank Material Shell vi un impacto en el consumo frente a niri a secas.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Dux: freie, quelloffene Wayland-Desktop-Shell mit Dateimanager und Theming
+***** TLDR
+Dux ist das Projekt, das früher Dank Material Shell hieß, vor einigen Wochen umbenannt wurde und jetzt als DMS 2.1 Stormborn unter MIT-Lizenz erscheint. Es ist keine Statusleiste, sondern eine vollständige Shell: Dux Modular Shell im Kern, dazu Dux Files als Dateimanager, Dux GOP als Systemmonitor, Dux Greeter für die Anmeldung, Dux Search für die Dateisuche und Dux Calendar mit Unterstützung für mehrere Kalenderplattformen. Es läuft auf niri, Hyprland, mangowm, Sway, labwc und Miracle Wayland, mit vorkonfigurierten Varianten für das Fedora-basierte, unveränderliche Zirconium und den Fedora-Miracle-Spin, und hat kürzlich Unterstützung für atomare Distributionen wie Bazzite erhalten. Die Codebasis mischt QML, TypeScript und Go, das Theming ist dynamisch, und die Installation ist ein Skript, das die Distribution erkennt, Abhängigkeiten holt und die Shell konfiguriert.
+***** Take
+Die Umbenennung ist das Folgenreichste an dieser Version, und das ist kein Scherz: Etwas, das Dank Material Shell heißt, wäre nie Vorgabe in einem Distributions-Spin geworden, und die Fedora-Varianten deuten darauf hin, dass genau das jetzt das Ziel ist. Inhaltlich gibt es eine Ausweitung des Umfangs in die gute Richtung. Greeter, Dateimanager, Suche und Kalender sind die Liste, die ein Ricing-Projekt von einer Desktop-Umgebung trennt, und die Langzeitnutzer im Thread berichten das, was in dieser Kategorie niemand erwartet: Sie haben aufgehört, daran herumzukonfigurieren. Die zwei Einwände im Thread sind genau die zwei, die es aus einer Standardinstallation heraushalten. Curl in die Shell zu pipen als dokumentierten Installationsweg ist eine Paketierungsentscheidung und behebbar. Der von diabllicseagull gemessene Stromverbrauch gegenüber nackten niri ist der härtere Punkt, denn eine Shell, die Akku kostet, verliert gegen eine Leiste, die das nicht tut.
+***** Comments
+- DMS hat das Dank vor einigen Wochen zu Dux umbenannt. Ich nutze DMS plus niri seit fast einem Jahr und habe nicht vor, bald zu wechseln. Angesichts dessen, wie oft ich früher Shells und Desktops gewechselt habe, ist das im Ricing das Äquivalent zu sesshaft werden, heiraten und Kinder haben.
+- Es ist verrückt, wie normal es aussieht, dass eine beliebige Website vorschlägt, zur Installation curl in sh zu pipen, und die meisten Leute würden es tun, ohne überhaupt nachzudenken. Jemand aus der Zeit vor 10 bis 15 Jahren würde denken, die Leute seien jetzt verrückt, und offenbar hätte er recht.
+- Ich mag sehr, was diese Shells für den Linux-Desktop tun, aber auf Laptops mache ich mir etwas Sorgen um die Akkulaufzeit. Als ich Dank Material Shell zuletzt ausprobiert habe, sah ich einen Einfluss auf den Stromverbrauch gegenüber nackten niri.
