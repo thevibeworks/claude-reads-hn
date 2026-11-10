@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-11-10 01:00 UTC
+#+DATE: 2026-11-10T01:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+USPS sells ZIP polygons for $10k, consumer Gemini hands Gmail to human reviewers, and Meta ships both a cheap model and a better k-means
+
+* Highlights
+- USPS ZIP boundary polygons: official at last, $10,000 a year, redistribution barred
+- Consumer Gemini pulls Gmail and Drive contents into chats that human reviewers read
+- Muse Ember: Meta's cheapest model, benchmarked against Haiku, still no weights
+- E-means: moving-average cluster updates hit Lloyd's 25-epoch quality in under 3
+- watched.earth: every satellite that photographed your street this week, with the photos
+
+* Stories
+
+** USPS now offers official ZIP Code boundary polygons :gis:usps:opendata:mapping:
+:PROPERTIES:
+:ID:       50431058
+:URL:      https://postalpro.usps.com/zcb
+:HN_URL:   https://news.ycombinator.com/item?id=50431058
+:POINTS:   439
+:COMMENTS: 217
+:BY:       munro
+:END:
+
+*** TLDR
+USPS is selling ZIP Code boundary polygons built from its own delivery address and location data, updated quarterly, in three license tiers: Internal, Enterprise and Publication. Access requires a signed license agreement and order form, and the license bars redistribution without written consent. The page lists no prices; commenters who opened the order form report the cheapest tier at $10,000 a year.
+
+*** Take
+USPS is the one party that actually knows where its delivery routes run, so this is the only dataset with a real claim to being authoritative, and it costs $10,000 to look at. The sharper objection in the thread is technical: a ZIP code is a set of delivery points, not an area, so a polygon file is a confident answer to a question that has no clean answer. Free Census ZCTA shapefiles are wrong in roughly the same way, for $0.
+
+*** Comments
+
+**** SwellJoe
+:PROPERTIES:
+:COMMENT_ID: 50432624
+:END:
+$10k for the lowest tier? I expect federal data to be free. FCC spectrum coverage maps, maps for federally-managed lands, all free. It's a core part of accountability and transparency.
+
+**** showerst
+:PROPERTIES:
+:COMMENT_ID: 50431583
+:END:
+I thought these were going to be free and got so excited. If you can live with some fuzziness, the Census ZCTA shapefiles are free and close enough for many purposes.
+
+**** labcomputer
+:PROPERTIES:
+:COMMENT_ID: 50434303
+:END:
+It's a more fundamental problem: ZIP codes are not areas and have no boundary. They are collections of mail delivery points.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+USPS 开始提供官方邮政编码边界多边形数据
+***** TLDR
+USPS 开始出售基于自家投递地址和位置数据生成的邮政编码边界多边形，按季度更新，分为 Internal、Enterprise 和 Publication 三个授权等级。获取数据需要签署授权协议和订购表，且未经书面同意不得再分发。页面上没有标价；打开订购表的评论者说最低一档是每年一万美元。
+***** Take
+USPS 是唯一真正清楚自己投递路线走向的一方，所以这是唯一有资格称为权威的数据集，而看一眼要价一万美元。讨论区里更尖锐的反驳是技术层面的：邮政编码是一组投递点，不是一个区域，所以多边形文件是在给一个本就没有干净答案的问题下定论。免费的人口普查局 ZCTA 文件错的方式差不多，但价格是零。
+***** Comments
+- 最低一档就要一万美元？联邦数据本该免费。FCC 频谱覆盖图、联邦土地地图全都免费。这是问责和透明的核心部分。
+- 我还以为会免费，白高兴了一场。如果能接受一些模糊，人口普查局的 ZCTA 文件是免费的，对很多用途来说够用了。
+- 问题更根本：邮政编码不是区域，没有边界。它们是一组投递点的集合。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+USPSが公式の郵便番号境界ポリゴンを提供開始
+***** TLDR
+USPSが自社の配達住所・位置データから作った郵便番号の境界ポリゴンを販売開始。四半期ごとに更新され、Internal、Enterprise、Publicationの3つのライセンス階層がある。取得にはライセンス契約書と注文書への署名が必要で、書面の同意なしの再配布は禁止。ページに価格の記載はないが、注文書を見たコメント投稿者は最安階層が年1万ドルだと報告している。
+***** Take
+配達ルートがどこを通るかを本当に知っているのはUSPSだけなので、権威あるデータと言える唯一のデータセットだが、見るだけで1万ドルかかる。スレッドでより鋭い反論は技術的なものだ。郵便番号は配達地点の集合であって面ではないので、ポリゴンファイルはもともと明確な答えのない問いに自信たっぷりに答えている。無料の国勢調査局ZCTAファイルもほぼ同じ意味で間違っているが、価格は0ドルだ。
+***** Comments
+- 最安階層で1万ドル？連邦データは無料であるべきだ。FCCの電波カバーマップも連邦管理地の地図も無料だ。説明責任と透明性の根幹部分だ。
+- 無料だと思って盛り上がったのに。多少のあいまいさを許容できるなら、国勢調査局のZCTAシェープファイルは無料で、多くの用途には十分近い。
+- もっと根本的な問題だ。郵便番号は面ではなく、境界を持たない。配達地点の集合でしかない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+USPS, 공식 우편번호 경계 폴리곤 제공 시작
+***** TLDR
+USPS가 자체 배달 주소·위치 데이터로 만든 우편번호 경계 폴리곤을 판매한다. 분기별로 갱신되며 Internal, Enterprise, Publication 세 가지 라이선스 등급이 있다. 받으려면 라이선스 계약서와 주문서에 서명해야 하고, 서면 동의 없는 재배포는 금지된다. 페이지에 가격은 없지만 주문서를 열어본 댓글 작성자들은 최저 등급이 연 1만 달러라고 전한다.
+***** Take
+자기 배달 경로가 어디로 지나가는지 실제로 아는 쪽은 USPS뿐이라 권위를 주장할 수 있는 유일한 데이터셋이지만, 보는 값이 1만 달러다. 스레드에서 더 날카로운 반박은 기술적인 쪽이다. 우편번호는 배달 지점의 집합이지 면적이 아니므로, 폴리곤 파일은 깔끔한 답이 없는 질문에 자신 있게 답을 내놓는 셈이다. 무료 센서스국 ZCTA 파일도 거의 같은 방식으로 틀렸고, 가격은 0달러다.
+***** Comments
+- 최저 등급이 1만 달러? 연방 데이터는 무료여야 한다. FCC 주파수 커버리지 지도, 연방 관리 토지 지도 모두 무료다. 책임성과 투명성의 핵심이다.
+- 무료일 거라 생각하고 신났는데. 약간의 부정확함을 감수할 수 있다면 센서스국 ZCTA 셰이프파일은 무료이고 많은 용도에 충분하다.
+- 더 근본적인 문제다. 우편번호는 면적이 아니고 경계도 없다. 배달 지점의 집합일 뿐이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+USPS ya ofrece polígonos oficiales de límites de códigos ZIP
+***** TLDR
+USPS vende polígonos de límites de códigos ZIP construidos con sus propios datos de direcciones y ubicaciones de reparto, con actualizaciones trimestrales y tres niveles de licencia: Internal, Enterprise y Publication. El acceso exige firmar un acuerdo de licencia y un formulario de pedido, y la licencia prohíbe la redistribución sin consentimiento escrito. La página no indica precios; quienes abrieron el formulario informan que el nivel más bajo cuesta 10.000 dólares al año.
+***** Take
+USPS es la única parte que sabe de verdad por dónde pasan sus rutas de reparto, así que este es el único conjunto de datos con derecho a llamarse autoritativo, y verlo cuesta 10.000 dólares. La objeción más afilada del hilo es técnica: un código ZIP es un conjunto de puntos de entrega, no un área, así que un archivo de polígonos responde con seguridad a una pregunta que no tiene respuesta limpia. Los archivos ZCTA gratuitos del Censo están mal más o menos igual, por 0 dólares.
+***** Comments
+- ¿10.000 dólares por el nivel más bajo? Espero que los datos federales sean gratuitos. Los mapas de cobertura de espectro de la FCC y los de tierras federales lo son. Es parte central de la rendición de cuentas y la transparencia.
+- Pensé que iban a ser gratuitos y me emocioné. Si aceptas cierta imprecisión, los shapefiles ZCTA del Censo son gratis y bastan para muchos usos.
+- El problema es más de fondo: los códigos ZIP no son áreas y no tienen límite. Son colecciones de puntos de entrega.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+USPS bietet jetzt offizielle ZIP-Code-Grenzpolygone an
+***** TLDR
+Die USPS verkauft ZIP-Code-Grenzpolygone, die aus ihren eigenen Lieferadress- und Standortdaten erzeugt werden, mit vierteljährlichen Updates und drei Lizenzstufen: Internal, Enterprise und Publication. Der Zugang erfordert einen unterschriebenen Lizenzvertrag und ein Bestellformular, und die Lizenz verbietet die Weitergabe ohne schriftliche Zustimmung. Auf der Seite stehen keine Preise; Kommentatoren, die das Bestellformular geöffnet haben, berichten von 10.000 Dollar pro Jahr für die günstigste Stufe.
+***** Take
+Die USPS ist die einzige Partei, die wirklich weiß, wo ihre Lieferrouten verlaufen, also ist das der einzige Datensatz mit einem echten Anspruch auf Verbindlichkeit, und ein Blick darauf kostet 10.000 Dollar. Der schärfere Einwand im Thread ist technisch: Ein ZIP-Code ist eine Menge von Lieferpunkten, keine Fläche, also gibt eine Polygondatei eine selbstbewusste Antwort auf eine Frage ohne saubere Antwort. Die kostenlosen ZCTA-Dateien des Census Bureau sind ungefähr genauso falsch, für 0 Dollar.
+***** Comments
+- 10.000 Dollar für die niedrigste Stufe? Ich erwarte, dass Bundesdaten kostenlos sind. FCC-Spektrumskarten und Karten bundesverwalteter Flächen sind es. Das ist ein Kernstück von Rechenschaft und Transparenz.
+- Ich dachte, die wären kostenlos, und habe mich riesig gefreut. Wer mit etwas Unschärfe leben kann: die ZCTA-Shapefiles des Census sind gratis und für viele Zwecke nah genug.
+- Das Problem liegt tiefer: ZIP-Codes sind keine Flächen und haben keine Grenze. Sie sind Sammlungen von Lieferpunkten.
+** Google Gemini routes personal Drive files and emails to human annotators :privacy:google:ai:gemini:
+:PROPERTIES:
+:ID:       50429426
+:URL:      https://github.com/thisisme6598/gemini_files/
+:HN_URL:   https://news.ycombinator.com/item?id=50429426
+:POINTS:   370
+:COMMENTS: 94
+:BY:       gf74918
+:END:
+
+*** TLDR
+A GitHub writeup documents consumer Gemini with Connected Apps pulling Gmail and Drive content into a conversation without an explicit @Gmail or @Drive tag, triggered by ambient mentions of things like a trip or a bill, with outcomes ranging from metadata only to full file ingestion with headers intact. Google's own help documentation now says reviewers may see the email or file and advises not connecting apps that hold confidential information, reversing a 2023 statement that personal Gmail, Docs and Drive content is not seen by human reviewers.
+
+*** Take
+The reversal is sitting in Google's own help pages and an edited October 16 blog post, which makes this a policy change published where nobody reads rather than a leak. Read bri3d's correction before repeating it: this is consumer Gemini with Connected Apps you explicitly authorized, and Workspace still contractually claims no human review. The part that should bother you anyway is the trigger. Nobody authorized a retrieval by mentioning their internet bill in passing.
+
+*** Comments
+
+**** bri3d
+:PROPERTIES:
+:COMMENT_ID: 50432666
+:END:
+This is specifically consumer Gemini with Connected Apps. Workspace Gemini still claims not to be subject to human review. If you authorize the Gmail app on consumer Gemini, this applies to you.
+
+**** rustyhancock
+:PROPERTIES:
+:COMMENT_ID: 50431419
+:END:
+It explains conversations where I wondered why Gemini was talking about particular things. I asked about park consultation processes and got an answer uncannily tuned to the email that prompted the question. No mention that it had read my mail.
+
+**** EMM_386
+:PROPERTIES:
+:COMMENT_ID: 50433036
+:END:
+It's worse than that. Photos data is used to infer your interests, your relationships to people in your photos, and where you've been, by associating your face with location data and timestamps.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Google Gemini 把个人云盘文件和邮件送给人工标注员
+***** TLDR
+一篇 GitHub 文档记录了启用 Connected Apps 的消费者版 Gemini 在没有显式 @Gmail 或 @Drive 标记的情况下，仅因对话中提到旅行、账单之类的内容就把 Gmail 和云盘内容拉进对话，结果从只有元数据到连邮件头一起完整摄入都有。Google 自家的帮助文档现在写明审阅人员可能会看到那封邮件或那个文件，并建议不要连接含机密信息的应用，这与 2023 年声明的个人 Gmail、文档和云盘内容不会被人工审阅者看到相反。
+***** Take
+这个转向就摆在 Google 自己的帮助页面和一篇 10 月 16 日被编辑过的博文里，所以这是一次发布在没人看的地方的政策变更，不是泄露。转述之前先看 bri3d 的纠正：这是你自己授权了 Connected Apps 的消费者版 Gemini，Workspace 版在合同上仍然声称没有人工审阅。真正该让人不安的是触发方式。随口提一句宽带账单，没人授权过一次检索。
+***** Comments
+- 这件事只涉及启用了 Connected Apps 的消费者版 Gemini。Workspace 版 Gemini 仍然声称不受人工审阅。如果你在消费者版上授权了 Gmail 应用，那就适用于你。
+- 这解释了我之前的一些对话，当时我纳闷 Gemini 怎么会提到那些事。我问公园改造的公示流程，得到的回答却诡异地贴合那封促使我提问的邮件，而它完全没说读过我的邮件。
+- 情况更糟。相册数据被用来推断你的兴趣、你和照片里的人的关系，以及你去过哪里，方法是把你的脸和位置数据、时间戳关联起来。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Google Geminiが個人のDriveファイルやメールを人間のアノテーターに回している
+***** TLDR
+GitHubの調査文書によると、Connected Appsを有効にした消費者向けGeminiは、@Gmailや@Driveの明示的な指定なしに、旅行や請求書といった話題が会話に出ただけでGmailやDriveの内容を取り込む。結果はメタデータのみから、ヘッダーごと丸ごと取り込むケースまで幅がある。Googleのヘルプ文書は現在、レビュー担当者がそのメールやファイルを見る場合があると明記し、機密情報を含むアプリは接続しないよう勧めている。個人のGmail・ドキュメント・Driveの内容は人間のレビュー担当者に見られないとした2023年の説明とは逆だ。
+***** Take
+この方針転換はGoogle自身のヘルプページと10月16日に編集されたブログ記事に載っている。つまり漏洩ではなく、誰も読まない場所で公表された方針変更だ。広める前にbri3dの訂正を読むべきだ。これは自分でConnected Appsを許可した消費者向けGeminiの話で、Workspace版は契約上いまも人間のレビューはないと主張している。それでも気になるのは発動条件だ。ネット回線の請求書に触れただけで、誰も検索を許可していない。
+***** Comments
+- これはConnected Appsを有効にした消費者向けGeminiに限った話だ。Workspace版Geminiは今も人間のレビュー対象ではないと主張している。消費者版でGmailアプリを許可したなら、あなたには当てはまる。
+- なぜGeminiがあの話題に触れたのか不思議だった会話の説明がついた。公園の意見聴取手続きについて尋ねたら、質問のきっかけになったメールに不気味なほど合った答えが返ってきた。メールを読んだとは一言もなかった。
+- もっと悪い。フォトのデータは、顔を位置データとタイムスタンプに紐づけることで、あなたの興味、写真の人物との関係、行った場所を推定するのに使われている。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+구글 제미나이가 개인 드라이브 파일과 이메일을 사람 주석자에게 넘긴다
+***** TLDR
+한 깃허브 문서는 Connected Apps를 켠 소비자용 제미나이가 @Gmail이나 @Drive를 명시하지 않아도 여행이나 청구서 같은 주제가 대화에 나오면 지메일·드라이브 내용을 끌어온다고 기록했다. 결과는 메타데이터만 나오는 경우부터 헤더까지 포함한 파일 전체 수집까지 다양하다. 구글의 도움말 문서는 이제 검토자가 해당 이메일이나 파일을 볼 수 있다고 명시하고, 기밀 정보가 담긴 앱은 연결하지 말라고 권한다. 개인 지메일·독스·드라이브 내용은 사람 검토자가 보지 않는다던 2023년 설명과 반대다.
+***** Take
+이 입장 변경은 구글 자신의 도움말 페이지와 10월 16일 수정된 블로그 글에 적혀 있다. 유출이 아니라 아무도 읽지 않는 곳에 발표된 정책 변경이다. 옮기기 전에 bri3d의 정정을 읽어야 한다. 이건 본인이 Connected Apps를 허가한 소비자용 제미나이 이야기이고, 워크스페이스는 계약상 여전히 사람 검토가 없다고 주장한다. 그래도 거슬리는 건 발동 조건이다. 인터넷 요금 얘기를 지나가며 꺼낸 것으로 검색을 허가한 사람은 없다.
+***** Comments
+- 이건 Connected Apps를 켠 소비자용 제미나이에 한정된 이야기다. 워크스페이스 제미나이는 여전히 사람 검토 대상이 아니라고 주장한다. 소비자용에서 지메일 앱을 허가했다면 해당된다.
+- 제미나이가 왜 그런 얘기를 꺼내는지 의아했던 대화들이 설명된다. 공원 변경 의견수렴 절차를 물었는데, 그 질문을 하게 만든 이메일에 기괴하게 맞춰진 답이 왔다. 내 메일을 읽었다는 말은 한마디도 없었다.
+- 더 심각하다. 포토 데이터는 얼굴을 위치 정보와 타임스탬프에 연결해 당신의 관심사, 사진 속 인물과의 관계, 다녀온 곳을 추론하는 데 쓰인다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Google Gemini envía archivos personales de Drive y correos a anotadores humanos
+***** TLDR
+Un informe en GitHub documenta que Gemini de consumo con Connected Apps trae contenido de Gmail y Drive a la conversación sin una etiqueta explícita @Gmail o @Drive, activado por menciones de pasada a cosas como un viaje o una factura, con resultados que van desde solo metadatos hasta la ingesta completa del archivo con encabezados incluidos. La documentación de ayuda de Google ahora dice que los revisores pueden ver el correo o el archivo y aconseja no conectar aplicaciones con información confidencial, lo contrario de su declaración de 2023 de que el contenido personal de Gmail, Docs y Drive no es visto por revisores humanos.
+***** Take
+El cambio de postura está en las propias páginas de ayuda de Google y en una entrada de blog editada el 16 de octubre, así que esto es un cambio de política publicado donde nadie lee, no una fuga. Lee la corrección de bri3d antes de repetirlo: se trata de Gemini de consumo con Connected Apps que tú autorizaste, y Workspace sigue afirmando por contrato que no hay revisión humana. Lo que debería incomodar de todos modos es el disparador. Nadie autorizó una búsqueda por mencionar de paso su factura de internet.
+***** Comments
+- Esto es específicamente Gemini de consumo con Connected Apps. Gemini de Workspace sigue afirmando que no está sujeto a revisión humana. Si autorizaste la app de Gmail en Gemini de consumo, te aplica.
+- Explica conversaciones en las que me preguntaba por qué Gemini hablaba de ciertas cosas. Pregunté por procesos de consulta sobre parques y recibí una respuesta inquietantemente ajustada al correo que originó la pregunta. Sin mencionar que había leído mi correo.
+- Es peor que eso. Los datos de Fotos se usan para inferir tus intereses, tus relaciones con las personas de tus fotos y dónde has estado, asociando tu cara con datos de ubicación y marcas de tiempo.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Google Gemini leitet persönliche Drive-Dateien und E-Mails an menschliche Annotatoren
+***** TLDR
+Eine GitHub-Dokumentation zeigt, dass Consumer-Gemini mit Connected Apps Inhalte aus Gmail und Drive in ein Gespräch zieht, ohne dass man @Gmail oder @Drive angibt, ausgelöst durch beiläufige Erwähnungen etwa einer Reise oder einer Rechnung. Die Ergebnisse reichen von reinen Metadaten bis zur vollständigen Dateiaufnahme samt Headern. Googles Hilfeseiten sagen nun, Prüfer könnten die E-Mail oder Datei sehen, und raten davon ab, Apps mit vertraulichen Informationen zu verbinden. Das kehrt eine Aussage von 2023 um, nach der persönliche Gmail-, Docs- und Drive-Inhalte nicht von menschlichen Prüfern gesehen werden.
+***** Take
+Die Kehrtwende steht in Googles eigenen Hilfeseiten und einem am 16. Oktober bearbeiteten Blogbeitrag. Das ist also eine Richtlinienänderung, veröffentlicht an einem Ort, den niemand liest, kein Leak. Lies bri3ds Korrektur, bevor du es weitererzählst: Es geht um Consumer-Gemini mit Connected Apps, die du selbst autorisiert hast, und Workspace behält vertraglich bei, dass es keine menschliche Prüfung gibt. Störend bleibt trotzdem der Auslöser. Niemand hat eine Abfrage genehmigt, indem er nebenbei seine Internetrechnung erwähnt hat.
+***** Comments
+- Das betrifft speziell Consumer-Gemini mit Connected Apps. Workspace-Gemini behauptet weiter, keiner menschlichen Prüfung zu unterliegen. Wer die Gmail-App im Consumer-Gemini autorisiert hat, ist betroffen.
+- Das erklärt Gespräche, in denen ich mich fragte, warum Gemini bestimmte Dinge erwähnt. Ich fragte nach Beteiligungsverfahren für Parks und bekam eine Antwort, die unheimlich genau auf die E-Mail zugeschnitten war, die meine Frage ausgelöst hatte. Kein Wort davon, dass es meine Mails gelesen hat.
+- Es ist schlimmer. Fotos-Daten werden genutzt, um deine Interessen, deine Beziehungen zu Personen auf den Bildern und deine Aufenthaltsorte abzuleiten, indem dein Gesicht mit Standortdaten und Zeitstempeln verknüpft wird.
+** Our Smallest, Most Efficient Model: Muse Ember :ai:llm:meta:benchmarks:
+:PROPERTIES:
+:ID:       50429024
+:URL:      https://research.meta.ai/blog/muse-ember
+:HN_URL:   https://news.ycombinator.com/item?id=50429024
+:POINTS:   237
+:COMMENTS: 98
+:BY:       dvaplima
+:END:
+
+*** TLDR
+Meta released Muse Ember, its smallest model, at $0.10 per million input tokens and $0.50 per million output, with a 1M-token context window, up to 512K output tokens and six reasoning effort levels. Meta claims it matches Claude Haiku 5.5's best score at about a third the cost, with 37.8% on AutomationBench-AA against Haiku's 13.9% and 61.6% on Agents' Last Exam. It is pitched at high-volume agentic work (tool calls, routing, document parsing, extraction) below the larger Muse Wonder, and ships as muse-ember-1.0 on the Meta Model API, Muse Code, Google Cloud and Oracle Cloud. No weights.
+
+*** Take
+"Smallest and most efficient" used to be the sentence that came before a download link. Here it comes before three cloud endpoints, which is a reasonable business decision and also the end of the thing Meta was actually known for. Two details from the thread do more work than the benchmark table: Meta's best numbers come from mini-swe-agent rather than its own harness, and simonw found output quality dropping as reasoning effort went up. A cheap model that gets worse when you think harder is a strange product.
+
+*** Comments
+
+**** Retro_Dev
+:PROPERTIES:
+:COMMENT_ID: 50431857
+:END:
+When they said the model was the smallest of their models yet, I was really hoping it would be open weights. I can't find any weights, how sad.
+
+**** doodlesdev
+:PROPERTIES:
+:COMMENT_ID: 50434219
+:END:
+Interesting that the model's best benchmarks are not on Meta's own agent harness, but on mini-swe-agent.
+
+**** simonw
+:PROPERTIES:
+:COMMENT_ID: 50429478
+:END:
+Six effort levels, so here are six pelicans (actually five, high didn't return a complete SVG). There's usually a strong correlation between thinking level and visual quality. This is the first time I've seen it break.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+我们最小、最高效的模型：Muse Ember
+***** TLDR
+Meta 发布了最小的模型 Muse Ember，输入每百万 token 0.10 美元，输出 0.50 美元，上下文窗口 100 万 token，最多输出 51.2 万 token，有六档推理强度。Meta 称它以大约三分之一的成本追平 Claude Haiku 5.5 的最好成绩，AutomationBench-AA 上 37.8% 对 Haiku 的 13.9%，Agents' Last Exam 上 61.6%。定位是大批量智能体任务（工具调用、路由、文档解析、信息抽取），处在更强的 Muse Wonder 之下，以 muse-ember-1.0 的名义上线 Meta Model API、Muse Code、Google Cloud 和 Oracle Cloud。不开放权重。
+***** Take
+「最小、最高效」这句话以前后面跟的是下载链接，现在跟的是三个云端点。这是合理的商业决定，也是 Meta 真正出名的那件事的终点。讨论区里两个细节比基准表更有信息量：Meta 最好的数字来自 mini-swe-agent 而不是自家的 agent harness；simonw 发现推理强度调高后输出质量反而下降。一个想得越久越差的便宜模型，是个奇怪的产品。
+***** Comments
+- 他们说这是迄今最小的模型时，我真希望会开放权重。找不到任何权重，挺失望。
+- 有意思的是这个模型最好的基准成绩不是在 Meta 自家的 agent harness 上，而是在 mini-swe-agent 上。
+- 六档推理强度，所以这是六只鹈鹕（其实五只，high 档没返回完整的 SVG）。思考强度和画面质量通常强相关，这是我第一次见到这个相关性失效。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+最小かつ最も効率的なモデル：Muse Ember
+***** TLDR
+Metaがもっとも小さいモデルMuse Emberを公開した。入力100万トークンあたり0.10ドル、出力0.50ドル、コンテキストは100万トークン、出力は最大51万2千トークン、推論強度は6段階。MetaはClaude Haiku 5.5の最高スコアに約3分の1のコストで並ぶとし、AutomationBench-AAで37.8%（Haikuは13.9%）、Agents' Last Examで61.6%を示した。ツール呼び出し、ルーティング、文書解析、抽出といった大量のエージェント処理向けで、上位のMuse Wonderの下に位置する。muse-ember-1.0としてMeta Model API、Muse Code、Google Cloud、Oracle Cloudで提供。重みは公開されない。
+***** Take
+「最小かつ最も効率的」という文の後には、以前はダウンロードリンクが続いていた。今は3つのクラウドのエンドポイントが続く。事業判断としては妥当だが、Metaが本当に評価されていた部分の終わりでもある。スレッドの2つの指摘がベンチマーク表より役に立つ。Metaの最良の数値は自社のagent harnessではなくmini-swe-agentで出ている。そしてsimonwは推論強度を上げると出力の質が落ちるのを見つけた。深く考えるほど悪くなる安いモデルは、奇妙な製品だ。
+***** Comments
+- これまでで最小のモデルだと言うので、重みが公開されることを本当に期待していた。どこにも見つからない、残念だ。
+- 興味深いのは、このモデルの最良のベンチマークがMeta自身のagent harnessではなくmini-swe-agentで出ていることだ。
+- 推論強度が6段階なので、ペリカンも6羽（実は5羽、highは完全なSVGを返さなかった）。思考の強さと絵の質にはふつう強い相関があるが、それが崩れたのを見たのは初めてだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+가장 작고 효율적인 모델: Muse Ember
+***** TLDR
+메타가 가장 작은 모델 Muse Ember를 공개했다. 입력 100만 토큰당 0.10달러, 출력 0.50달러, 컨텍스트 100만 토큰, 최대 출력 51만 2천 토큰, 추론 강도는 6단계다. 메타는 약 3분의 1 비용으로 Claude Haiku 5.5의 최고 점수와 맞먹는다며 AutomationBench-AA에서 37.8%(하이쿠 13.9%), Agents' Last Exam에서 61.6%를 제시했다. 도구 호출, 라우팅, 문서 파싱, 추출 같은 대량 에이전트 작업용으로, 상위 모델 Muse Wonder 아래에 위치한다. muse-ember-1.0으로 Meta Model API, Muse Code, 구글 클라우드, 오라클 클라우드에서 제공된다. 가중치는 공개하지 않는다.
+***** Take
+'가장 작고 효율적'이라는 문장 뒤에는 예전엔 다운로드 링크가 붙었다. 이제는 클라우드 엔드포인트 세 개가 붙는다. 사업적으로 합리적인 결정이지만, 메타가 실제로 평가받던 지점의 끝이기도 하다. 스레드의 두 가지가 벤치마크 표보다 유용하다. 메타의 최고 수치는 자사 agent harness가 아니라 mini-swe-agent에서 나왔고, simonw는 추론 강도를 올리면 출력 품질이 떨어지는 것을 확인했다. 더 깊이 생각할수록 나빠지는 저가 모델은 이상한 제품이다.
+***** Comments
+- 지금까지 가장 작은 모델이라고 해서 가중치를 공개할 줄 알고 기대했다. 아무 데도 없다, 아쉽다.
+- 흥미로운 건 이 모델의 최고 벤치마크가 메타 자체 agent harness가 아니라 mini-swe-agent에서 나왔다는 점이다.
+- 추론 강도가 6단계라서 펠리컨도 6마리(실은 5마리, high는 완전한 SVG를 반환하지 않았다). 보통 사고 강도와 그림 품질은 강하게 상관되는데, 그게 깨진 걸 본 건 처음이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Nuestro modelo más pequeño y eficiente: Muse Ember
+***** TLDR
+Meta lanzó Muse Ember, su modelo más pequeño, a 0,10 dólares por millón de tokens de entrada y 0,50 de salida, con ventana de contexto de 1M de tokens, hasta 512K tokens de salida y seis niveles de esfuerzo de razonamiento. Meta afirma que igual la mejor puntuación de Claude Haiku 5.5 a alrededor de un tercio del coste, con 37,8% en AutomationBench-AA frente al 13,9% de Haiku y 61,6% en Agents' Last Exam. Está orientado a trabajo agéntico de alto volumen (llamadas a herramientas, enrutado, análisis y extracción de documentos) por debajo del mayor Muse Wonder, y se publica como muse-ember-1.0 en Meta Model API, Muse Code, Google Cloud y Oracle Cloud. Sin pesos abiertos.
+***** Take
+"El más pequeño y eficiente" solía ser la frase que precedía a un enlace de descarga. Aquí precede a tres endpoints en la nube, que es una decisión de negocio razonable y también el final de aquello por lo que Meta era realmente conocida. Dos detalles del hilo valen más que la tabla de benchmarks: las mejores cifras de Meta salen de mini-swe-agent y no de su propio harness, y simonw vio caer la calidad de la salida al subir el esfuerzo de razonamiento. Un modelo barato que empeora cuando piensa más es un producto raro.
+***** Comments
+- Cuando dijeron que era el más pequeño de sus modelos, esperaba de verdad que tuviera pesos abiertos. No encuentro ninguno, qué pena.
+- Es interesante que los mejores benchmarks del modelo no sean con el harness de agentes de Meta, sino con mini-swe-agent.
+- Seis niveles de esfuerzo, así que aquí van seis pelícanos (en realidad cinco, el nivel alto no devolvió un SVG completo). Normalmente hay fuerte correlación entre nivel de razonamiento y calidad visual. Es la primera vez que la veo romperse.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Unser kleinstes, effizientestes Modell: Muse Ember
+***** TLDR
+Meta hat Muse Ember veröffentlicht, sein kleinstes Modell, für 0,10 Dollar pro Million Eingabe-Token und 0,50 Dollar pro Million Ausgabe-Token, mit 1M-Token-Kontextfenster, bis zu 512K Ausgabe-Token und sechs Stufen des Reasoning-Aufwands. Meta behauptet, es erreiche den besten Wert von Claude Haiku 5.5 bei etwa einem Drittel der Kosten, mit 37,8% auf AutomationBench-AA gegenüber 13,9% bei Haiku und 61,6% auf Agents' Last Exam. Es ist für Agenten-Arbeit in großer Menge gedacht (Tool-Aufrufe, Routing, Dokumentparsing, Extraktion) und steht unter dem größeren Muse Wonder. Verfügbar als muse-ember-1.0 über Meta Model API, Muse Code, Google Cloud und Oracle Cloud. Keine Gewichte.
+***** Take
+"Am kleinsten und effizientesten" war früher der Satz vor einem Download-Link. Hier steht er vor drei Cloud-Endpunkten, eine vertretbare Geschäftsentscheidung und gleichzeitig das Ende dessen, wofür Meta tatsächlich bekannt war. Zwei Punkte aus dem Thread sagen mehr als die Benchmark-Tabelle: Metas beste Zahlen kommen von mini-swe-agent statt vom eigenen Harness, und simonw sah die Ausgabequalität sinken, als der Reasoning-Aufwand stieg. Ein günstiges Modell, das schlechter wird, wenn es länger nachdenkt, ist ein seltsames Produkt.
+***** Comments
+- Als sie sagten, es sei ihr kleinstes Modell, hatte ich wirklich auf offene Gewichte gehofft. Ich finde keine, schade.
+- Interessant, dass die besten Benchmarks des Modells nicht mit Metas eigenem Agenten-Harness entstanden, sondern mit mini-swe-agent.
+- Sechs Aufwandsstufen, also hier sechs Pelikane (eigentlich fünf, "high" lieferte kein vollständiges SVG). Normalerweise korrelieren Denkstufe und visuelle Qualität stark. Das ist das erste Mal, dass ich das brechen sehe.
+** E-means: Outperforming k-means in one-tenth the epochs :machinelearning:algorithms:clustering:gpu:
+:PROPERTIES:
+:ID:       50429734
+:URL:      https://e-means.github.io/
+:HN_URL:   https://news.ycombinator.com/item?id=50429734
+:POINTS:   258
+:COMMENTS: 17
+:BY:       porridgeraisin
+:END:
+
+*** TLDR
+Meta FAIR published E-means, a replacement for Lloyd's algorithm in k-means. Instead of recomputing cluster means over the full batch each epoch, it keeps exponential moving averages of per-cluster sums and counts, so old assignments decay at rate alpha. It adds scaling-law hyperparameter tuning, cosine step-size decay, dead-cluster revival by proportional splitting rather than random resampling, and custom GPU kernels. Claims: Lloyd's 25-epoch quality in 1.2 to 3 epochs, 10 to 45x wall-clock speedup on GPU over Flash-KMeans, 8 to 15x on CPU over Faiss, across 24 configurations from 100k to 100M vectors and 1,024 to 65,536 clusters. It also got stuck in bad local minima on 0 to 3.5% of seeds versus Lloyd's 15.5 to 46%.
+
+*** Take
+Faster and lower final loss at once is the kind of claim that usually means the baseline was tuned badly, so the number worth trusting is the local-minima table, not the speedup. Mini-batch noise helping escape bad optima is a believable mechanism, and the 200-seed comparison is the only result here that is hard to get by accident. bashhq_r's suspicion that the scaling laws were fit after the fact is the right thing to check before you believe the "no tuning needed" part.
+
+*** Comments
+
+**** real_faxenoff
+:PROPERTIES:
+:COMMENT_ID: 50431500
+:END:
+I adapted the method to my IVF index and got a 146x speedup on the GPU. That's impressive.
+
+**** jlhawn
+:PROPERTIES:
+:COMMENT_ID: 50432676
+:END:
+I use Lloyd's to relax an icosahedral equal-area mesh on a sphere, so I tried swapping this in. It's definitely not better for this use case.
+
+**** bashhq_r
+:PROPERTIES:
+:COMMENT_ID: 50432198
+:END:
+The epoch reduction is cool but the hyperparameter laws feel like they were fit post-hoc.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+E-means：用十分之一的轮次超过 k-means
+***** TLDR
+Meta FAIR 发布了 E-means，用来替代 k-means 里的 Lloyd 算法。它不再每轮在全批数据上重算簇均值，而是对每个簇的求和与计数维护指数移动平均，让旧的分配按速率 alpha 衰减。此外还加入了基于缩放律的超参数自动设定、余弦步长衰减、用按比例分裂而非随机重采样来复活空簇，以及专用 GPU 核。论文称：1.2 到 3 轮即达到 Lloyd 算法 25 轮的质量，GPU 上比 Flash-KMeans 快 10 到 45 倍，CPU 上比 Faiss 快 8 到 15 倍，覆盖 24 种配置、10 万到 1 亿向量、1024 到 65536 个簇。陷入糟糕局部最优的比例为 0 到 3.5%，Lloyd 算法是 15.5% 到 46%。
+***** Take
+同时又快又把最终损失压得更低，这种说法通常意味着基线没调好，所以真正值得信的数字是局部最优那张表，而不是加速比。小批量噪声帮助跳出坏的最优点是个可信的机制，而 200 个随机种子的对比是这里唯一难以碰巧得到的结果。bashhq_r 怀疑缩放律是事后拟合的，这正是在相信「不需要调参」之前该去核实的地方。
+***** Comments
+- 我把这个方法改到自己的 IVF 索引上，GPU 上快了 146 倍。很厉害。
+- 我用 Lloyd 算法在球面上松弛一个二十面体等面积网格，于是试着换成这个。对我这个用例明显并不更好。
+- 轮次减少确实不错，但那些超参数律感觉是事后拟合出来的。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+E-means：k-meansを10分の1のエポックで上回る
+***** TLDR
+Meta FAIRがk-meansのLloydアルゴリズムを置き換えるE-meansを公開した。毎エポックで全バッチからクラスタ平均を再計算するのではなく、クラスタごとの合計とカウントの指数移動平均を保持し、古い割り当てをレートalphaで減衰させる。さらにスケーリング則によるハイパーパラメータ自動設定、コサイン減衰のステップサイズ、空クラスタを比例分割で復活させる仕組み、専用GPUカーネルを備える。主張は、Lloydの25エポック相当の品質を1.2〜3エポックで達成、GPUではFlash-KMeansより10〜45倍、CPUではFaissより8〜15倍速く、10万〜1億ベクトル、1,024〜65,536クラスタの24構成で検証したというもの。悪い局所最適に陥った割合は0〜3.5%で、Lloydは15.5〜46%だった。
+***** Take
+速さと最終損失の両方が良いという主張は、たいていベースラインの調整不足を意味する。だから信用すべき数字は速度比ではなく局所最適の表だ。ミニバッチのノイズが悪い最適点からの脱出を助けるという機構はもっともらしく、200シードの比較はここで偶然には得られない唯一の結果だ。スケーリング則が事後的にフィットされたのではというbashhq_rの疑いは、「調整不要」の部分を信じる前に確かめるべき点だ。
+***** Comments
+- この手法を自分のIVFインデックスに適用したら、GPUで146倍速くなった。見事だ。
+- 球面上の正二十面体等面積メッシュをLloydで緩和しているので、これに差し替えてみた。この用途では明らかに良くならなかった。
+- エポック削減はいいが、ハイパーパラメータの法則は事後的にフィットしたように感じる。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+E-means: 10분의 1 에포크로 k-means를 능가
+***** TLDR
+메타 FAIR가 k-means의 로이드 알고리즘을 대체하는 E-means를 공개했다. 매 에포크마다 전체 배치로 클러스터 평균을 다시 계산하는 대신, 클러스터별 합과 개수의 지수이동평균을 유지해 과거 할당이 비율 alpha로 감쇠하게 한다. 여기에 스케일링 법칙 기반 하이퍼파라미터 자동 설정, 코사인 스텝 크기 감쇠, 빈 클러스터를 무작위 재샘플링이 아닌 비례 분할로 되살리는 방식, 전용 GPU 커널을 더했다. 주장은 로이드의 25에포크 품질을 1.2~3에포크에 달성, GPU에서 Flash-KMeans 대비 10~45배, CPU에서 Faiss 대비 8~15배, 10만~1억 벡터와 1,024~65,536 클러스터의 24개 구성에서 검증했다는 것이다. 나쁜 국소 최적에 갇힌 비율은 0~3.5%로 로이드의 15.5~46%와 대비된다.
+***** Take
+더 빠른 동시에 최종 손실도 낮다는 주장은 보통 베이스라인 튜닝이 부실했다는 뜻이다. 그래서 믿을 숫자는 속도 배수가 아니라 국소 최적 표다. 미니배치 노이즈가 나쁜 최적점 탈출을 돕는다는 메커니즘은 그럴듯하고, 200개 시드 비교는 여기서 우연으로 얻기 어려운 유일한 결과다. 스케일링 법칙이 사후에 맞춰진 것 같다는 bashhq_r의 의심은 '튜닝 불필요' 부분을 믿기 전에 확인할 지점이다.
+***** Comments
+- 이 방법을 내 IVF 인덱스에 적용했더니 GPU에서 146배 빨라졌다. 인상적이다.
+- 구면 위 정이십면체 등면적 메시를 로이드로 완화하는 데 쓰고 있어서 이걸로 바꿔봤다. 이 용도에서는 분명히 더 낫지 않았다.
+- 에포크 감소는 멋지지만 하이퍼파라미터 법칙은 사후에 맞춘 느낌이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+E-means: supera a k-means en una décima parte de las épocas
+***** TLDR
+Meta FAIR publicó E-means, un reemplazo del algoritmo de Lloyd en k-means. En lugar de recalcular las medias de los clústeres sobre todo el lote en cada época, mantiene medias móviles exponenciales de las sumas y los recuentos por clúster, de modo que las asignaciones antiguas decaen a una tasa alfa. Añade ajuste de hiperparámetros por leyes de escala, decaimiento cosenoidal del tamaño de paso, revivido de clústeres muertos por división proporcional en vez de remuestreo aleatorio, y kernels de GPU propios. Afirma alcanzar la calidad de 25 épocas de Lloyd en 1,2 a 3 épocas, de 10 a 45 veces más rápido en GPU que Flash-KMeans y de 8 a 15 veces en CPU que Faiss, en 24 configuraciones de 100k a 100M de vectores y de 1.024 a 65.536 clústeres. También quedó atrapado en mínimos locales malos en el 0 a 3,5% de las semillas, frente al 15,5 a 46% de Lloyd.
+***** Take
+Ser más rápido y además lograr menor pérdida final es el tipo de afirmación que suele significar que la línea base estaba mal ajustada, así que la cifra fiable es la tabla de mínimos locales, no la aceleración. Que el ruido de los minilotes ayude a escapar de óptimos malos es un mecanismo creíble, y la comparación con 200 semillas es el único resultado difícil de obtener por accidente. La sospecha de bashhq_r de que las leyes de escala se ajustaron a posteriori es lo que hay que verificar antes de creerse la parte de "sin ajuste manual".
+***** Comments
+- Adapté el método a mi índice IVF y obtuve una aceleración de 146x en GPU. Impresionante.
+- Uso Lloyd para relajar una malla icosaédrica de área igual sobre una esfera, así que probé a sustituirlo. Para este caso claramente no es mejor.
+- La reducción de épocas está bien, pero las leyes de hiperparámetros parecen ajustadas a posteriori.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+E-means: schlägt k-means in einem Zehntel der Epochen
+***** TLDR
+Meta FAIR hat E-means veröffentlicht, einen Ersatz für Lloyds Algorithmus bei k-means. Statt die Cluster-Mittelwerte in jeder Epoche über den gesamten Batch neu zu berechnen, hält es exponentielle gleitende Mittel der Summen und Zählungen pro Cluster, sodass alte Zuordnungen mit Rate Alpha abklingen. Dazu kommen Hyperparameter-Einstellung über Skalierungsgesetze, Kosinus-Abfall der Schrittweite, Wiederbelebung leerer Cluster durch proportionales Aufteilen statt zufälliges Neuziehen und eigene GPU-Kernel. Die Behauptung: Lloyds Qualität nach 25 Epochen in 1,2 bis 3 Epochen, 10- bis 45-fache Beschleunigung auf der GPU gegenüber Flash-KMeans, 8- bis 15-fach auf der CPU gegenüber Faiss, über 24 Konfigurationen von 100k bis 100M Vektoren und 1.024 bis 65.536 Clustern. Außerdem blieb es nur bei 0 bis 3,5% der Seeds in schlechten lokalen Minima hängen, gegenüber 15,5 bis 46% bei Lloyd.
+***** Take
+Schneller und gleichzeitig niedrigerer Endverlust ist die Art Behauptung, die meist bedeutet, dass die Baseline schlecht eingestellt war. Die vertrauenswürdige Zahl ist deshalb die Tabelle zu den lokalen Minima, nicht der Speedup. Dass Minibatch-Rauschen beim Entkommen aus schlechten Optima hilft, ist ein plausibler Mechanismus, und der Vergleich über 200 Seeds ist das einzige Ergebnis hier, das man nicht zufällig bekommt. bashhq_rs Verdacht, die Skalierungsgesetze seien nachträglich angepasst worden, ist genau der Punkt, den man prüfen sollte, bevor man den Teil "kein Tuning nötig" glaubt.
+***** Comments
+- Ich habe die Methode auf meinen IVF-Index übertragen und 146-fache Beschleunigung auf der GPU erreicht. Beeindruckend.
+- Ich nutze Lloyd, um ein ikosaedrisches Netz gleicher Fläche auf einer Kugel zu relaxieren, und habe das hier eingesetzt. Für diesen Fall ist es klar nicht besser.
+- Die Reduktion der Epochen ist schön, aber die Hyperparameter-Gesetze wirken nachträglich angepasst.
+** Show HN: Every satellite that passed over any place this week, and its photos :space:satellites:showhn:geospatial:
+:PROPERTIES:
+:ID:       50428907
+:URL:      https://www.watched.earth
+:HN_URL:   https://news.ycombinator.com/item?id=50428907
+:POINTS:   216
+:COMMENTS: 42
+:BY:       a585gupt
+:END:
+
+*** TLDR
+watched.earth takes a place name or coordinates and lists every satellite that passed over it in the last 7 days, then pulls the actual Sentinel-2, Landsat, GOES and Himawari imagery from those passes via Microsoft Planetary Computer, Element 84 Earth Search and NASA GIBS. Pass search runs SGP4 against the CelesTrak catalog in Web Workers, using adaptive stepping by angular rate plus golden-section search and bisection to pin closest approach to within 0.1 seconds. The globe draws about 17,000 tracked objects on the GPU, solving Kepler's equation in a vertex shader at roughly 17km accuracy. Photos are matched to passes where closest approach falls 10 to 60 minutes after the archive timestamp. Locations are stored on a 10km grid with no IPs or cookies.
+
+*** Take
+The useful thing here is a reindex, not a new dataset: public imagery archives are organized by tile and timestamp, and this reorganizes them by "my street," which is the query everyone actually has. The 10-to-60-minute offset between archive timestamp and actual overpass is the kind of detail that separates a working tool from a demo. The author says 10m per pixel is the best public resolution for most of the world, so adjust your expectations before searching your own roof.
+
+*** Comments
+
+**** HoldOnAMinute
+:PROPERTIES:
+:COMMENT_ID: 50431721
+:END:
+I don't say this lightly: this may be the best combination of style and substance I have ever seen.
+
+**** anonymous908213
+:PROPERTIES:
+:COMMENT_ID: 50433435
+:END:
+Prompting an LLM to write without capitalization so the text reads as genuine, always with the feedback CTA. This violates the rules against LLM-generated text, and yet everyone upvotes it.
+
+**** a585gupt
+:PROPERTIES:
+:COMMENT_ID: 50431678
+:END:
+For most places in the world 10m per pixel is the best public resolution, lower in rural areas and higher in some. Working on sourcing higher res where it's available.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Show HN：过去一周飞过任意地点的每一颗卫星，以及它们拍的照片
+***** TLDR
+watched.earth 接受地名或坐标，列出过去 7 天飞过该点的每一颗卫星，然后通过 Microsoft Planetary Computer、Element 84 Earth Search 和 NASA GIBS 拉取那几次过境的真实 Sentinel-2、Landsat、GOES 和 Himawari 影像。过境搜索在 Web Worker 里对 CelesTrak 目录跑 SGP4，用按角速率的自适应步进加黄金分割搜索和二分法，把最近点精度压到 0.1 秒以内。三维地球在 GPU 上绘制约 17000 个在轨目标，在顶点着色器里解开普勒方程，精度大约 17 公里。照片与过境的匹配规则是最近点落在归档时间戳之后 10 到 60 分钟。位置以 10 公里网格存储，不记录 IP 和 cookie。
+***** Take
+这里真正有用的是重新建索引，而不是新数据：公开影像档案是按图块和时间戳组织的，这个站把它们按「我家这条街」重新组织，而这才是人们真正会提的查询。归档时间戳和实际过境之间 10 到 60 分钟的偏移，正是区分可用工具和演示品的细节。作者说世界上大多数地方最好的公开分辨率是每像素 10 米，所以搜自家屋顶之前先调低期待。
+***** Comments
+- 这话我不轻易说：这可能是我见过风格与内容结合得最好的一个。
+- 让大模型不用大写字母来写，好让文本看起来像真人写的，而且总带着求反馈的那句话。这违反了禁止大模型生成文本的规则，可大家还都在点赞。
+- 世界上大多数地方最好的公开分辨率是每像素 10 米，农村地区更低，有些地方更高。正在想办法接入有高分辨率的区域。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Show HN: 今週どの場所の上を通ったすべての衛星と、その写真
+***** TLDR
+watched.earthは地名か座標を入力すると、過去7日間にその地点の上を通ったすべての衛星を列挙し、Microsoft Planetary Computer、Element 84 Earth Search、NASA GIBS経由でその通過時の実際のSentinel-2、Landsat、GOES、Himawari画像を取得する。通過検索はWeb Worker内でCelesTrakのカタログに対してSGP4を実行し、角速度に応じた可変ステップに黄金分割探索と二分法を組み合わせて最接近時刻を0.1秒以内まで詰める。3D地球は約17,000個の追跡物体をGPUで描き、頂点シェーダーでケプラー方程式を解いて精度は約17km。写真は、最接近がアーカイブのタイムスタンプから10〜60分後に入る通過に対応付けられる。位置は10kmグリッドで保存し、IPもCookieも記録しない。
+***** Take
+ここで有用なのは新しいデータではなく、索引の付け替えだ。公開画像アーカイブはタイルとタイムスタンプで整理されているが、これを「自分の家の通り」で並べ替える。それが実際に誰もが持っている問いだ。アーカイブのタイムスタンプと実際の上空通過の10〜60分のずれは、動くツールとデモを分ける類の細部だ。作者は世界の大半で公開画像の最高解像度は1ピクセル10mだと言っているので、自宅の屋根を探す前に期待値を下げておくとよい。
+***** Comments
+- 軽い気持ちでは言わないが、これは私が見た中で様式と中身の組み合わせが最良かもしれない。
+- 本物に見せるために大文字を使わないようLLMに書かせ、いつもフィードバックの呼びかけが付く。LLM生成テキスト禁止の規則に反しているのに、みんな投票している。
+- 世界の大半では1ピクセル10mが公開画像の最高解像度で、農村部はもっと低く、一部はもっと高い。高解像度が使える地域の調達を進めている。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Show HN: 이번 주 어떤 장소 위를 지나간 모든 위성과 그 사진
+***** TLDR
+watched.earth는 지명이나 좌표를 입력하면 지난 7일간 그 지점 위를 지나간 모든 위성을 나열하고, Microsoft Planetary Computer, Element 84 Earth Search, NASA GIBS를 통해 그 통과 때의 실제 Sentinel-2, Landsat, GOES, Himawari 영상을 가져온다. 통과 검색은 웹 워커에서 CelesTrak 카탈로그에 SGP4를 돌리며, 각속도에 따른 적응형 스테핑에 황금분할 탐색과 이분법을 더해 최근접 시각을 0.1초 이내로 좁힌다. 3D 지구는 추적 물체 약 1만 7천 개를 GPU로 그리고, 버텍스 셰이더에서 케플러 방정식을 풀어 약 17km 정확도를 낸다. 사진은 최근접 시각이 아카이브 타임스탬프 이후 10~60분 사이에 들어오는 통과에 연결된다. 위치는 10km 격자로 저장하고 IP와 쿠키는 남기지 않는다.
+***** Take
+여기서 유용한 건 새 데이터가 아니라 색인을 다시 매긴 것이다. 공개 영상 아카이브는 타일과 타임스탬프로 정리돼 있는데, 이 사이트는 그걸 '우리 집 앞 거리' 기준으로 재배열한다. 사람들이 실제로 던지는 질문이 그것이다. 아카이브 타임스탬프와 실제 통과 사이의 10~60분 오차는 작동하는 도구와 데모를 가르는 종류의 세부사항이다. 제작자는 세계 대부분에서 공개 영상 최고 해상도가 픽셀당 10m라고 하니, 자기 집 지붕을 찾기 전에 기대치를 낮추는 게 좋다.
+***** Comments
+- 가볍게 하는 말이 아니다. 지금까지 본 것 중 형식과 내용의 조합이 가장 좋을지도 모른다.
+- 진짜 사람이 쓴 것처럼 보이게 대문자를 안 쓰도록 LLM에 지시하고, 늘 피드백 요청 문구가 붙는다. LLM 생성 텍스트 금지 규칙 위반인데도 모두가 추천을 누른다.
+- 세계 대부분에서 픽셀당 10m가 공개 영상 최고 해상도이고, 시골은 더 낮고 일부는 더 높다. 고해상도가 있는 지역은 확보를 진행 중이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Show HN: cada satélite que pasó sobre cualquier lugar esta semana, y sus fotos
+***** TLDR
+watched.earth acepta un nombre de lugar o coordenadas y lista cada satélite que pasó por encima en los últimos 7 días, y luego trae las imágenes reales de Sentinel-2, Landsat, GOES e Himawari de esos pasos a través de Microsoft Planetary Computer, Element 84 Earth Search y NASA GIBS. La búsqueda de pasos ejecuta SGP4 sobre el catálogo de CelesTrak en Web Workers, con pasos adaptativos según la velocidad angular más búsqueda por sección dorada y bisección para fijar el acercamiento máximo con precisión de 0,1 segundos. El globo dibuja unos 17.000 objetos rastreados en la GPU, resolviendo la ecuación de Kepler en un vertex shader con unos 17 km de precisión. Las fotos se emparejan con pasos cuyo acercamiento máximo cae entre 10 y 60 minutos después de la marca de tiempo del archivo. Las ubicaciones se guardan en una rejilla de 10 km, sin IPs ni cookies.
+***** Take
+Lo útil aquí es un reindexado, no un conjunto de datos nuevo: los archivos públicos de imágenes están organizados por tesela y marca de tiempo, y esto los reorganiza por "mi calle", que es la consulta que todos tienen de verdad. El desfase de 10 a 60 minutos entre la marca del archivo y el paso real es el tipo de detalle que separa una herramienta que funciona de una demo. El autor dice que 10 m por píxel es la mejor resolución pública para la mayor parte del mundo, así que ajusta tus expectativas antes de buscar tu propio tejado.
+***** Comments
+- No lo digo a la ligera: puede ser la mejor combinación de estilo y sustancia que he visto.
+- Pedirle a un LLM que escriba sin mayúsculas para que el texto parezca auténtico, siempre con la llamada a dar feedback. Esto viola las reglas contra texto generado por LLM, y aun así todo el mundo lo vota.
+- Para la mayoría de los lugares del mundo 10 m por píxel es la mejor resolución pública, menor en zonas rurales y mayor en algunas. Estoy buscando fuentes de mayor resolución donde estén disponibles.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Show HN: Jeder Satellit, der diese Woche über einen Ort geflogen ist, samt Fotos
+***** TLDR
+watched.earth nimmt einen Ortsnamen oder Koordinaten und listet jeden Satelliten auf, der in den letzten 7 Tagen darüber geflogen ist, und holt dann die echten Sentinel-2-, Landsat-, GOES- und Himawari-Bilder dieser Überflüge über Microsoft Planetary Computer, Element 84 Earth Search und NASA GIBS. Die Überflugsuche führt SGP4 gegen den CelesTrak-Katalog in Web Workers aus, mit adaptiver Schrittweite nach Winkelgeschwindigkeit plus Goldener-Schnitt-Suche und Bisektion, um die größte Annäherung auf 0,1 Sekunden festzulegen. Der Globus zeichnet rund 17.000 erfasste Objekte auf der GPU und löst die Kepler-Gleichung in einem Vertex-Shader mit etwa 17 km Genauigkeit. Fotos werden Überflügen zugeordnet, deren größte Annäherung 10 bis 60 Minuten nach dem Archiv-Zeitstempel liegt. Standorte werden auf einem 10-km-Raster gespeichert, ohne IPs oder Cookies.
+***** Take
+Nützlich ist hier eine Neuindexierung, kein neuer Datensatz: öffentliche Bildarchive sind nach Kachel und Zeitstempel geordnet, und das hier ordnet sie nach "meiner Straße", also nach der Frage, die Leute tatsächlich haben. Der Versatz von 10 bis 60 Minuten zwischen Archiv-Zeitstempel und echtem Überflug ist genau das Detail, das ein funktionierendes Werkzeug von einer Demo trennt. Der Autor sagt, 10 m pro Pixel sei für den größten Teil der Welt die beste öffentliche Auflösung. Also die Erwartungen senken, bevor man das eigene Dach sucht.
+***** Comments
+- Ich sage das nicht leichtfertig: Das ist vielleicht die beste Verbindung von Stil und Substanz, die ich je gesehen habe.
+- Ein LLM ohne Großschreibung schreiben zu lassen, damit der Text echt wirkt, immer mit dem Feedback-Aufruf. Das verstößt gegen die Regeln zu LLM-generierten Texten, und trotzdem stimmen alle dafür.
+- Für die meisten Orte der Welt sind 10 m pro Pixel die beste öffentliche Auflösung, in ländlichen Gegenden geringer, an manchen Stellen höher. Ich arbeite daran, höher auflösende Quellen zu erschließen, wo es sie gibt.
