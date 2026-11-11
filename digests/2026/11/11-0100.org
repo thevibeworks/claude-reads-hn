@@ -1,0 +1,512 @@
+#+TITLE: HN Digest 2026-11-11 01:00 UTC
+#+DATE: 2026-11-11T01:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Synaptics bills a volunteer $25,000, Val Town loses to Cloudflare's margins, and Toyota's new kei truck tops out at 25 mph
+
+* Highlights
+- Glasswing after 7 months: 37,966 AI findings, 217 fixed
+- Synaptics patent demand ends an open DisplayLink driver
+- Val Town winds down, read-only from December 10
+- Scion returns with a 25 mph fleet-only kei truck
+- Chrome ships a modern-web skill for coding agents
+
+* Stories
+
+** After 7 months, Glasswing overwhelms maintainers with underwhelming findings :ai:security:opensource:vulnerabilities:
+:PROPERTIES:
+:ID:       50447074
+:URL:      https://www.vulncheck.com/blog/anthropic-glasswing-november-update
+:HN_URL:   https://news.ycombinator.com/item?id=50447074
+:POINTS:   155
+:COMMENTS: 54
+:BY:       panic
+:END:
+
+*** TLDR
+VulnCheck audited seven months of Anthropic's Project Glasswing, the AI vulnerability-hunting program launched April 7, 2026. Of 37,966 findings on Anthropic's public ledger, 19.4% have been disclosed and only 217 are marked fixed, while 1,654 are duplicates and 419 were withdrawn. 442 findings became CVEs, about 0.5% of all 2026 CVEs, and two of those have been exploited in the wild. Anthropic reports a 94.2% true positive rate. curl, which received 45 reports, judged 19 of the 34 it has assessed to be not vulnerabilities, a 55.9% false positive rate.
+
+*** Take
+The distance between a claimed 94.2% true positive rate and curl's measured 55.9% false positive rate is the finding here. Generating reports scales cheaply and triaging them does not, so the cost of being wrong lands on volunteers like Daniel Stenberg, who says he is pacing releases to protect his team. 1,654 duplicates against 217 fixes is not a disclosure pipeline, it is a queue.
+
+*** Comments
+
+**** snowwrestler
+The PHP2Shell vulnerability ended up being paradoxically comforting for me. They turned frontier models loose on PHP, and the big one they found was based on a previously known logic flaw that was extremely difficult to exploit.
+
+**** dfee
+20% of vulnerabilities have been made public, and many of those are marked as withdrawn or duplicates. It's unclear whether the remaining 80% have not been made public because they're not fixed, or because they're not real.
+
+**** delichon
+It is bad if this points to a general pattern of AI being better at finding than fixing vulnerabilities. The larger that ratio, the harder to secure all the things. The current stat from this experiment is 37,966 to 217.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+七个月后，Glasswing 用平淡的发现压垮了维护者
+***** TLDR
+VulnCheck 审查了 Anthropic 于 2026 年 4 月 7 日启动的 AI 漏洞挖掘项目 Glasswing 的七个月成果。公开记录的 37,966 项发现中，19.4% 已披露，仅 217 项被标记为已修复，1,654 项是重复提交，419 项被撤回。442 项发现成为 CVE，约占 2026 年全部 CVE 的 0.5%，其中只有两项在野外被利用。Anthropic 声称真阳性率为 94.2%。收到 45 份报告的 curl 项目在已评估的 34 份中判定 19 份并非漏洞，假阳性率 55.9%。
+***** Take
+声称的 94.2% 真阳性率与 curl 实测的 55.9% 假阳性率之间的差距，才是真正的发现。生成报告的成本可以无限摊薄，分类核实却不能，于是出错的代价落到了 Daniel Stenberg 这样的志愿者身上，他说自己正在放慢发布节奏以保护团队。1,654 项重复对 217 项修复，这不是披露流程，而是一条积压的队列。
+***** Comments
+- PHP2Shell 漏洞反而让我安心了。他们把前沿模型放到 PHP 上，找出来的最大问题基于一个早已知晓、且极难利用的逻辑缺陷。
+- 只有 20% 的漏洞被公开，其中很多还标着撤回或重复。剩下 80% 没公开，是因为还没修复，还是因为它们本就不存在，这点并不清楚。
+- 如果这说明 AI 普遍更擅长发现漏洞而不是修复漏洞，那是坏消息。这个比率越大，要保护所有系统就越难。这次实验的当前数据是 37,966 对 217。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+7か月後、Glasswingは平凡な報告でメンテナーを圧迫している
+***** TLDR
+VulnCheckが、Anthropicが2026年4月7日に開始したAI脆弱性発見プログラムGlasswingの7か月間を検証した。公開台帳の37,966件のうち開示済みは19.4%、修正済みと記されたのはわずか217件で、1,654件が重複、419件が取り下げられている。442件がCVEとなり2026年の全CVEの約0.5%にあたるが、実際に悪用されたのは2件のみ。Anthropicは真陽性率94.2%と報告する。45件の報告を受けたcurlは、評価済み34件のうち19件を脆弱性ではないと判断し、誤検出率は55.9%だった。
+***** Take
+主張される94.2%の真陽性率と、curlが実測した55.9%の誤検出率との差こそが今回の発見だ。報告の生成は安くスケールするが、仕分けはそうならない。だから誤りのコストはDaniel Stenbergのようなボランティアに回り、彼はチームを守るために公開ペースを落としていると述べている。重複1,654件に対し修正217件は、開示の流れではなく滞留した待ち行列だ。
+***** Comments
+- PHP2Shellの脆弱性は逆に安心材料だった。フロンティアモデルをPHPに解き放って見つかった最大のものが、既知で悪用が極めて困難な論理的欠陥に基づいていたのだから。
+- 公開されたのは20%で、その多くが取り下げや重複と記されている。残る80%が未公開なのは、修正されていないからか、そもそも実在しないからか、判別できない。
+- AIが脆弱性の修正よりも発見に長けているという一般的傾向を示すなら、それは良くない。この比率が大きいほど、すべてを守るのは難しくなる。今回の数字は37,966対217だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+7개월 뒤, Glasswing은 시시한 발견으로 메인테이너를 지치게 하고 있다
+***** TLDR
+VulnCheck가 Anthropic이 2026년 4월 7일 시작한 AI 취약점 발굴 프로그램 Glasswing의 7개월을 점검했다. 공개 장부의 37,966건 중 19.4%만 공개됐고 수정 완료로 표시된 것은 217건뿐이며, 1,654건은 중복, 419건은 철회됐다. 442건이 CVE가 되어 2026년 전체 CVE의 약 0.5%를 차지했지만 실제 공격에 쓰인 것은 두 건이다. Anthropic은 참양성률 94.2%를 주장한다. 보고 45건을 받은 curl은 평가를 마친 34건 중 19건을 취약점이 아니라고 판단해 오탐률 55.9%를 기록했다.
+***** Take
+주장된 94.2% 참양성률과 curl이 실제로 측정한 55.9% 오탐률 사이의 간격이 이 글의 핵심이다. 보고서를 만드는 일은 값싸게 늘어나지만 분류하는 일은 그렇지 않다. 그래서 틀렸을 때의 비용이 Daniel Stenberg 같은 자원봉사자에게 떨어지고, 그는 팀을 보호하려 공개 속도를 늦추고 있다고 말한다. 중복 1,654건 대 수정 217건은 공개 파이프라인이 아니라 적체된 대기열이다.
+***** Comments
+- PHP2Shell 취약점은 오히려 안심이 됐다. 프런티어 모델을 PHP에 풀어놓고 찾아낸 가장 큰 건이 이미 알려졌고 악용이 극히 어려운 논리 결함에 기반한 것이었으니까.
+- 공개된 것은 20%이고 그중 상당수가 철회 또는 중복으로 표시돼 있다. 남은 80%가 공개되지 않은 이유가 수정이 안 됐기 때문인지, 실재하지 않기 때문인지 알 수 없다.
+- AI가 취약점을 고치는 것보다 찾는 데 더 능하다는 일반적 패턴을 뜻한다면 나쁜 신호다. 그 비율이 클수록 전부를 지키기 어려워진다. 이번 실험의 수치는 37,966 대 217이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Tras 7 meses, Glasswing abruma a los mantenedores con hallazgos mediocres
+***** TLDR
+VulnCheck revisó siete meses del Proyecto Glasswing de Anthropic, el programa de búsqueda de vulnerabilidades con IA lanzado el 7 de abril de 2026. De los 37,966 hallazgos del registro público, se ha divulgado el 19.4% y solo 217 figuran como corregidos, mientras 1,654 son duplicados y 419 fueron retirados. 442 hallazgos se convirtieron en CVE, cerca del 0.5% de todos los CVE de 2026, y solo dos han sido explotados en la práctica. Anthropic declara una tasa de verdaderos positivos del 94.2%. curl, que recibió 45 informes, descartó 19 de los 34 que ha evaluado, una tasa de falsos positivos del 55.9%.
+***** Take
+La distancia entre el 94.2% de verdaderos positivos declarado y el 55.9% de falsos positivos medido por curl es el verdadero hallazgo. Generar informes escala barato y triarlos no, así que el costo de equivocarse cae sobre voluntarios como Daniel Stenberg, que dice estar espaciando las publicaciones para proteger a su equipo. 1,654 duplicados frente a 217 correcciones no es un canal de divulgación, es una cola atascada.
+***** Comments
+- La vulnerabilidad PHP2Shell acabó resultándome tranquilizadora. Soltaron modelos de frontera sobre PHP y la mayor que encontraron se basaba en un fallo lógico ya conocido y extremadamente difícil de explotar.
+- Se ha hecho público el 20% de las vulnerabilidades, y muchas aparecen como retiradas o duplicadas. No está claro si el 80% restante no se publicó porque no está corregido o porque no es real.
+- Es mala señal si esto apunta a un patrón general de que la IA encuentra vulnerabilidades mejor de lo que las arregla. Cuanto mayor sea esa proporción, más difícil será asegurar todo. La cifra actual del experimento es 37,966 contra 217.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Nach 7 Monaten überrollt Glasswing die Maintainer mit mageren Funden
+***** TLDR
+VulnCheck hat sieben Monate von Anthropics Projekt Glasswing geprüft, dem am 7. April 2026 gestarteten Programm zur KI-gestützten Schwachstellensuche. Von 37,966 Einträgen im öffentlichen Register sind 19.4% veröffentlicht und nur 217 als behoben markiert, während 1,654 Duplikate sind und 419 zurückgezogen wurden. 442 Funde wurden zu CVEs, etwa 0.5% aller CVEs von 2026, und nur zwei davon wurden tatsächlich ausgenutzt. Anthropic nennt eine True-Positive-Rate von 94.2%. curl erhielt 45 Meldungen und bewertete 19 der bisher 34 geprüften als keine Schwachstelle, eine Fehlalarmquote von 55.9%.
+***** Take
+Der Abstand zwischen behaupteten 94.2% True Positives und der von curl gemessenen Fehlalarmquote von 55.9% ist der eigentliche Befund. Berichte zu erzeugen skaliert billig, sie zu sichten nicht. Also tragen Freiwillige wie Daniel Stenberg die Kosten des Irrtums, der sagt, er streckt die Veröffentlichungen, um sein Team zu schützen. 1,654 Duplikate gegen 217 Fixes ist keine Offenlegungskette, sondern eine Warteschlange.
+***** Comments
+- Die PHP2Shell-Lücke war für mich paradoxerweise beruhigend. Man hat Frontier-Modelle auf PHP losgelassen, und der größte Fund beruhte auf einem längst bekannten Logikfehler, der extrem schwer ausnutzbar war.
+- 20% der Schwachstellen wurden veröffentlicht, und viele davon sind als zurückgezogen oder doppelt markiert. Unklar bleibt, ob die übrigen 80% unveröffentlicht sind, weil sie nicht behoben oder weil sie nicht echt sind.
+- Es ist schlecht, wenn das auf ein allgemeines Muster hindeutet: KI findet Schwachstellen besser, als sie sie behebt. Je größer dieses Verhältnis, desto schwerer lässt sich alles absichern. Der aktuelle Stand des Experiments ist 37,966 zu 217.
+** Synaptics patent claims stop work on DisplayLink drivers :linux:patents:opensource:hardware:
+:PROPERTIES:
+:ID:       50443824
+:URL:      https://lwn.net/SubscriberLink/1102549/acbc92e00cee3a3f/
+:HN_URL:   https://news.ycombinator.com/item?id=50443824
+:POINTS:   284
+:COMMENTS: 141
+:BY:       speckx
+:END:
+
+*** TLDR
+Scottish developer Mike Lothian spent months writing Vino, an open-source Linux driver for Synaptics DisplayLink USB display chips, and posted an RFC patch on June 17, 2026. Synaptics sent a first warning on July 20, then a cease-and-desist on August 17 ordering him to stop work and pull his submissions from kernel mailing lists and code-hosting sites, with signed confirmation due August 28. An October 5 letter attached claim charts for two UK patents, GB2484736B and GB2485613B, and demanded $25,000 to cover the cost of documenting his infringement, rising by $25,000 per week. Lothian took the GitHub repository down, saying he cannot afford to defend himself, and the driver now stays on his own machine.
+
+*** Take
+Synaptics sells hardware whose only Linux support is a proprietary blob that breaks on kernel updates, and then invoiced an unpaid volunteer $25,000 for the clerical work of accusing him. The escalation clause gives away the intent: $25,000 a week is not a damages estimate, it is a countdown designed to make folding cheaper than answering. It worked, which is the part that will keep working on the next person.
+
+*** Comments
+
+**** AdmiralAsshat
+Obviously this is intended as a scare tactic, but surely that could never hold up in court? Surely the burden of proof is on the owner of the patents.
+
+**** hnlmorg
+Demanding substantial monetary compensation to recoup the cost of documenting his infringing acts: there is no universe in which this is a reasonable response.
+
+**** kieranl
+DisplayLink is dying due to high DDR prices. Dock companies are cancelling their DisplayLink portfolios because of the unfavorable economics. Good riddance if this is how OSS is treated by Synaptics.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Synaptics 的专利主张让 DisplayLink 驱动开发停摆
+***** TLDR
+苏格兰开发者 Mike Lothian 花了数月编写 Vino，一个面向 Synaptics DisplayLink USB 显示芯片的开源 Linux 驱动，并于 2026 年 6 月 17 日提交了 RFC 补丁。Synaptics 在 7 月 20 日首次警告，8 月 17 日发出停止侵权函，要求他停止开发，并从内核邮件列表和代码托管平台撤回提交，8 月 28 日前提交签字确认。10 月 5 日的信件附上了两项英国专利 GB2484736B 和 GB2485613B 的权利要求对照表，并索赔 2.5 万美元，称用于补偿记录其侵权行为的成本，且每周递增 2.5 万美元。Lothian 下架了 GitHub 仓库，表示自己无力应诉，驱动如今只留在本地。
+***** Take
+Synaptics 卖的硬件在 Linux 上只有一个每逢内核更新就失效的闭源二进制包，然后向一位无偿志愿者开出 2.5 万美元账单，理由是整理指控他的文书有成本。递增条款暴露了意图：每周加 2.5 万不是损害估算，而是倒计时，目的是让投降比应答更便宜。它奏效了，而这正是它还会对下一个人奏效的原因。
+***** Comments
+- 这显然是恐吓手段，但这种要求在法庭上站得住脚吗？举证责任不是在专利持有人那边吗？
+- 要求赔偿一笔可观的钱，用来补偿记录他侵权行为的成本：任何一个世界里这都不是合理的回应。
+- DisplayLink 本来就因 DDR 内存价格高企而走向衰亡，扩展坞厂商正因经济性不佳取消相关产品线。如果 Synaptics 就这样对待开源，那它消失也好。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Synapticsの特許主張でDisplayLinkドライバの開発が停止
+***** TLDR
+スコットランドの開発者Mike Lothianは、Synaptics DisplayLink USBディスプレイチップ向けのオープンソースLinuxドライバVinoを数か月かけて書き、2026年6月17日にRFCパッチを投稿した。Synapticsは7月20日に最初の警告、8月17日には開発停止とカーネルメーリングリストやコードホスティングからの投稿撤回を求める停止通告を送り、8月28日までの署名入り確認を要求した。10月5日の書簡には英国特許GB2484736BとGB2485613Bのクレームチャートが添付され、侵害行為を文書化した費用として2万5000ドルを請求、さらに週ごとに2万5000ドル加算するとした。Lothianは弁護費用を負担できないとしてGitHubリポジトリを削除し、ドライバは手元に留まることになった。
+***** Take
+Synapticsが売るハードウェアのLinux対応は、カーネル更新ごとに壊れるプロプライエタリなバイナリだけだ。そのうえで無給のボランティアに、彼を告発する書類作成の手間として2万5000ドルを請求した。加算条項が意図を露呈している。週2万5000ドルは損害見積りではなく、応答より降伏を安くするためのカウントダウンだ。それは機能した。だからこそ次の誰かにも機能してしまう。
+***** Comments
+- 明らかに脅しの手口だが、こんな要求が法廷で通るはずがないだろう。立証責任は特許権者側にあるのでは。
+- 侵害行為を文書化した費用の回収として相当額の金銭を要求する。これが妥当な対応である世界は存在しない。
+- DisplayLinkはDDR価格の高騰で終わりかけている。採算が合わずドック各社も関連製品を打ち切っている。Synapticsがオープンソースをこう扱うなら、消えて結構だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Synaptics의 특허 주장으로 DisplayLink 드라이버 작업이 중단됐다
+***** TLDR
+스코틀랜드 개발자 Mike Lothian은 Synaptics DisplayLink USB 디스플레이 칩용 오픈소스 리눅스 드라이버 Vino를 몇 달에 걸쳐 작성해 2026년 6월 17일 RFC 패치를 올렸다. Synaptics는 7월 20일 1차 경고에 이어 8월 17일 개발 중단과 커널 메일링 리스트 및 코드 호스팅에서의 제출물 철회를 요구하는 중지 통보를 보내고 8월 28일까지 서명 확인을 요구했다. 10월 5일 서신에는 영국 특허 GB2484736B와 GB2485613B의 청구항 대조표가 첨부됐고, 침해 사실을 문서화한 비용으로 2만 5천 달러를 청구하며 매주 2만 5천 달러씩 증액한다고 했다. Lothian은 변호 비용을 감당할 수 없다며 깃허브 저장소를 내렸고, 드라이버는 로컬에만 남았다.
+***** Take
+Synaptics가 파는 하드웨어의 리눅스 지원은 커널 업데이트마다 깨지는 독점 바이너리 하나뿐이다. 그런 회사가 무보수 자원봉사자에게 그를 고발하는 서류 작업 비용으로 2만 5천 달러를 청구했다. 증액 조항이 의도를 드러낸다. 주당 2만 5천 달러는 손해 산정이 아니라, 대응보다 포기를 싸게 만들려는 카운트다운이다. 그것은 통했고, 그래서 다음 사람에게도 통할 것이다.
+***** Comments
+- 분명 겁주기 전략이지만 이런 요구가 법정에서 통할 수 있나? 입증 책임은 특허권자 쪽에 있을 텐데.
+- 침해 사실을 문서화한 비용을 회수하겠다며 상당한 금액을 요구한다니, 이것이 합당한 대응인 세계는 없다.
+- DisplayLink는 DDR 가격 급등으로 이미 사그라들고 있다. 수익성이 나빠 독 제조사들이 관련 라인을 접고 있다. Synaptics가 오픈소스를 이렇게 대한다면 사라져도 좋다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Las reclamaciones de patentes de Synaptics detienen el trabajo en los controladores DisplayLink
+***** TLDR
+El desarrollador escocés Mike Lothian pasó meses escribiendo Vino, un controlador Linux de código abierto para los chips de vídeo USB DisplayLink de Synaptics, y publicó un parche RFC el 17 de junio de 2026. Synaptics envió un primer aviso el 20 de julio y el 17 de agosto un requerimiento para que cesara el trabajo y retirara sus envíos de las listas del kernel y las plataformas de código, con confirmación firmada para el 28 de agosto. Una carta del 5 de octubre adjuntaba cuadros de reivindicaciones de dos patentes británicas, GB2484736B y GB2485613B, y exigía 25,000 dólares por el coste de documentar su infracción, con un incremento de 25,000 dólares semanales. Lothian retiró el repositorio de GitHub porque no puede costear una defensa, y el controlador se queda en su máquina.
+***** Take
+Synaptics vende hardware cuyo único soporte en Linux es un binario propietario que se rompe con cada actualización del kernel, y luego le facturó 25,000 dólares a un voluntario sin sueldo por el papeleo de acusarlo. La cláusula de escalada delata la intención: 25,000 dólares por semana no es una estimación de daños, es una cuenta atrás para que rendirse salga más barato que responder. Funcionó, y por eso seguirá funcionando con la siguiente persona.
+***** Comments
+- Está claro que es una táctica intimidatoria, pero eso no podría sostenerse en un tribunal. La carga de la prueba recae en el titular de las patentes.
+- Exigir una compensación económica sustancial para recuperar el coste de documentar sus actos infractores: no hay universo en el que esa sea una respuesta razonable.
+- DisplayLink se está muriendo por los altos precios de la DDR. Los fabricantes de docks están cancelando sus líneas por una economía desfavorable. Si así trata Synaptics al código abierto, adiós y buen viaje.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Patentansprüche von Synaptics stoppen die Arbeit an DisplayLink-Treibern
+***** TLDR
+Der schottische Entwickler Mike Lothian schrieb monatelang Vino, einen Open-Source-Linux-Treiber für Synaptics' DisplayLink-USB-Grafikchips, und schickte am 17. Juni 2026 einen RFC-Patch. Synaptics warnte ihn am 20. Juli, schickte am 17. August eine Unterlassungsaufforderung, er solle die Arbeit einstellen und seine Beiträge aus Kernel-Mailinglisten und Code-Plattformen entfernen, mit unterschriebener Bestätigung bis zum 28. August. Ein Schreiben vom 5. Oktober enthielt Claim Charts zu den britischen Patenten GB2484736B und GB2485613B und forderte 25.000 Dollar für den Aufwand, seine Verletzung zu dokumentieren, wöchentlich um weitere 25.000 Dollar steigend. Lothian nahm das GitHub-Repository offline, da er sich keine Verteidigung leisten kann. Der Treiber bleibt nun lokal.
+***** Take
+Synaptics verkauft Hardware, deren einzige Linux-Unterstützung ein proprietäres Binary ist, das bei Kernel-Updates bricht, und stellte dann einem unbezahlten Freiwilligen 25.000 Dollar für die Schreibarbeit der Anklage in Rechnung. Die Eskalationsklausel verrät die Absicht: 25.000 Dollar pro Woche sind keine Schadensschätzung, sondern ein Countdown, der Aufgeben billiger macht als Antworten. Es hat funktioniert, und genau das wird beim Nächsten wieder funktionieren.
+***** Comments
+- Offensichtlich eine Einschüchterungstaktik, aber vor Gericht hätte das doch nie Bestand. Die Beweislast liegt beim Patentinhaber.
+- Eine erhebliche Geldzahlung zu fordern, um die Kosten der Dokumentation seiner Verletzungshandlungen zu erstatten: in keinem Universum ist das eine angemessene Reaktion.
+- DisplayLink stirbt ohnehin an den hohen DDR-Preisen. Dock-Hersteller streichen ihre DisplayLink-Reihen, weil die Wirtschaftlichkeit nicht mehr passt. Wenn Synaptics so mit Open Source umgeht, dann gute Reise.
+** Val Town is winding down :startup:typescript:cloud:shutdown:
+:PROPERTIES:
+:ID:       50443427
+:URL:      https://blog.val.town/winding-down
+:HN_URL:   https://news.ycombinator.com/item?id=50443427
+:POINTS:   299
+:COMMENTS: 77
+:BY:       tosh
+:END:
+
+*** TLDR
+Val Town, the four-year-old platform for writing and hosting small TypeScript snippets in the browser, is shutting down. New signups and upgrades stopped November 10, 2026, the service goes read-only December 10, everything ends January 10, 2027, and the team plans to open-source the code on February 1. Billing has already stopped, current subscriptions keep running free, annual prepayments get partial refunds, and there are migration guides for Cloudflare, Vercel, Netlify and Render. Founder Steve Krouse gave the reason plainly: they could not compete in cloud computing, which is bad news for the business and good news for anyone migrating off.
+
+*** Take
+Krouse is unusually blunt about the shape of the failure. The product was well liked and the company was twelve people reselling compute against Cloudflare's margins, which is not a pricing problem you can solve. The thread adds the detail the post leaves out: Val Town was built on Deno, whose team is moving to Cloudflare and stopping maintenance next year. Owning neither your runtime nor your cost floor is two bets on the same company.
+
+*** Comments
+
+**** cmontella
+Nothing to do with the quality of Val Town, but making a business in this space is really, really hard. You can't start the business without raising millions.
+
+**** jrmann100
+Not mentioned directly in the blog post, but Val Town was fundamentally organized around the Deno runtime, whose team will stop maintaining it next year after joining Cloudflare.
+
+**** yakkomajuri
+We're in a similar space, which technically made us competitors, but I've always appreciated the care they had for the craft and the transparency they drove forward. Even their investor updates were public.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Val Town 停止运营
+***** TLDR
+成立四年的 Val Town 要关停了，这个平台让人在浏览器里编写并托管小段 TypeScript 代码。新注册和升级已于 2026 年 11 月 10 日停止，12 月 10 日进入只读模式，2027 年 1 月 10 日全部服务终止，团队计划 2 月 1 日开源代码。计费已停止，现有订阅免费运行到最后，年付用户获部分退款，官方提供了迁移到 Cloudflare、Vercel、Netlify 和 Render 的指南。创始人 Steve Krouse 把原因说得很直接：他们在云计算领域竞争不过别人，这对公司是坏消息，对要迁走的用户反倒是好消息。
+***** Take
+Krouse 对这场失败的描述异常坦率。产品口碑不错，而公司是十二个人在转售算力，对手是 Cloudflare 的成本结构，这不是调价能解决的问题。评论区补上了公告没写的那一点：Val Town 建立在 Deno 之上，而 Deno 团队将加入 Cloudflare，明年停止维护。运行时和成本底线都不归自己，等于在同一家公司身上押了两次注。
+***** Comments
+- 这跟 Val Town 的质量无关，而是在这个领域做生意真的非常难。不融到几百万，这生意根本开不了张。
+- 博文没直接提，但 Val Town 的根基是 Deno 运行时，而 Deno 团队加入 Cloudflare 后将在明年停止维护它。
+- 我们做的事和他们相近，严格说是竞争对手，但我一直欣赏他们对手艺的用心和推动的透明度，连投资人更新都是公开的。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Val Townが事業を終了する
+***** TLDR
+ブラウザ上で小さなTypeScriptスニペットを書いてホストできるプラットフォーム、創業4年のVal Townが終了する。新規登録とアップグレードは2026年11月10日に停止、12月10日に読み取り専用となり、2027年1月10日に全サービスが終了、2月1日にコードをオープンソース化する予定だ。課金は既に停止、既存のサブスクは無料で継続、年払いは一部返金され、Cloudflare、Vercel、Netlify、Renderへの移行ガイドも用意された。創業者Steve Krouseは理由を率直に述べている。クラウドコンピューティングで競争できなかったという事業にとっての悪い知らせは、移行するユーザーには良い知らせだと。
+***** Take
+Krouseは敗因の形をきわめて率直に語っている。製品は好評で、会社は12人で計算資源を再販し、相手はCloudflareの原価構造だった。値付けで解ける問題ではない。コメント欄が記事の欠けた一点を補う。Val TownはDenoの上に築かれ、そのチームはCloudflareに移り来年保守を終えるのだ。ランタイムも原価の下限も自分のものでないなら、同じ一社に二重に賭けたことになる。
+***** Comments
+- Val Townの出来とは関係なく、この領域で事業を成り立たせるのは本当に難しい。数百万ドル調達しないと始められない。
+- 記事では直接触れていないが、Val TownはDenoランタイムを土台にしていた。そのチームはCloudflareに加わり、来年保守をやめる。
+- 我々も近い領域にいて、厳密には競合だったが、彼らの作り手としての丁寧さと透明性には常に敬意を持っていた。投資家向けの報告まで公開していた。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Val Town이 서비스를 종료한다
+***** TLDR
+브라우저에서 작은 TypeScript 조각을 작성하고 호스팅하던 4년 된 플랫폼 Val Town이 문을 닫는다. 신규 가입과 업그레이드는 2026년 11월 10일 중단됐고, 12월 10일 읽기 전용으로 바뀌며, 2027년 1월 10일 모든 서비스가 종료되고, 2월 1일 코드 오픈소스화가 예정됐다. 과금은 이미 멈췄고 기존 구독은 끝까지 무료로 유지되며 연간 선결제는 일부 환불된다. Cloudflare, Vercel, Netlify, Render로의 이전 가이드도 제공된다. 창업자 Steve Krouse는 이유를 분명히 밝혔다. 클라우드 컴퓨팅에서 경쟁할 수 없었다는 사업의 나쁜 소식이, 떠나는 사용자에게는 좋은 소식이라는 것이다.
+***** Take
+Krouse는 실패의 형태를 유난히 솔직하게 말한다. 제품은 평이 좋았고, 회사는 열두 명이 컴퓨팅을 재판매하며 Cloudflare의 원가 구조를 상대했다. 가격으로 풀 수 있는 문제가 아니다. 댓글이 글에서 빠진 대목을 채운다. Val Town은 Deno 위에 세워졌고, 그 팀은 Cloudflare로 옮겨 내년에 유지보수를 멈춘다. 런타임도 원가 하단도 내 것이 아니라면, 같은 회사에 두 번 베팅한 셈이다.
+***** Comments
+- Val Town의 완성도와는 무관하게, 이 분야에서 사업을 만드는 건 정말로 어렵다. 수백만 달러를 모으지 않으면 시작조차 못 한다.
+- 글에 직접 나오지는 않지만 Val Town은 근본적으로 Deno 런타임을 중심으로 구성돼 있었고, 그 팀은 Cloudflare에 합류한 뒤 내년에 유지보수를 중단한다.
+- 우리도 비슷한 영역에 있어 엄밀히는 경쟁자였지만, 그들이 장인정신에 쏟은 정성과 밀어붙인 투명성은 늘 존중했다. 투자자 업데이트까지 공개했다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Val Town cierra
+***** TLDR
+Val Town, la plataforma de cuatro años para escribir y alojar pequeños fragmentos de TypeScript en el navegador, cierra. Los registros y mejoras se detuvieron el 10 de noviembre de 2026, el servicio pasa a solo lectura el 10 de diciembre, todo termina el 10 de enero de 2027 y el equipo planea liberar el código el 1 de febrero. La facturación ya se detuvo, las suscripciones vigentes siguen gratis, los pagos anuales reciben reembolsos parciales y hay guías de migración a Cloudflare, Vercel, Netlify y Render. El fundador Steve Krouse dio la razón sin rodeos: no podían competir en computación en la nube, lo que es mala noticia para el negocio y buena para quien se vaya.
+***** Take
+Krouse es inusualmente franco sobre la forma del fracaso. El producto gustaba y la empresa era doce personas revendiendo cómputo contra los márgenes de Cloudflare, y eso no es un problema de precios que se pueda resolver. El hilo añade lo que el anuncio omite: Val Town se construyó sobre Deno, cuyo equipo se va a Cloudflare y dejará de mantenerlo el año que viene. No controlar ni tu runtime ni tu coste mínimo son dos apuestas a la misma compañía.
+***** Comments
+- Nada que ver con la calidad de Val Town, pero montar un negocio en este espacio es realmente dificilísimo. No puedes arrancar sin levantar millones.
+- No se menciona directamente en el anuncio, pero Val Town estaba organizada en torno al runtime Deno, cuyo equipo dejará de mantenerlo el año que viene tras unirse a Cloudflare.
+- Estamos en un espacio parecido, lo que técnicamente nos hacía competidores, pero siempre aprecié el cuidado que ponían en el oficio y la transparencia que impulsaron. Hasta sus informes a inversores eran públicos.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Val Town stellt den Betrieb ein
+***** TLDR
+Val Town, die vier Jahre alte Plattform zum Schreiben und Hosten kleiner TypeScript-Snippets im Browser, wird eingestellt. Neuanmeldungen und Upgrades endeten am 10. November 2026, am 10. Dezember wird der Dienst nur noch lesbar, am 10. Januar 2027 ist Schluss, und am 1. Februar soll der Code Open Source werden. Die Abrechnung ist bereits gestoppt, laufende Abos bleiben kostenlos aktiv, Jahresvorauszahlungen werden teilweise erstattet, und es gibt Migrationsanleitungen für Cloudflare, Vercel, Netlify und Render. Gründer Steve Krouse nennt den Grund direkt: Sie konnten im Cloud-Geschäft nicht mithalten, was für die Firma schlecht und für alle Migrierenden gut ist.
+***** Take
+Krouse ist ungewöhnlich offen über die Form des Scheiterns. Das Produkt war beliebt, und die Firma waren zwölf Leute, die Rechenleistung gegen Cloudflares Margen weiterverkauften. Das ist kein Preisproblem, das man lösen kann. Der Thread ergänzt, was der Beitrag auslässt: Val Town baute auf Deno auf, dessen Team zu Cloudflare wechselt und die Pflege nächstes Jahr einstellt. Weder Runtime noch Kostenbasis zu besitzen, sind zwei Wetten auf dieselbe Firma.
+***** Comments
+- Das hat nichts mit der Qualität von Val Town zu tun, aber in diesem Feld ein Geschäft aufzubauen ist wirklich extrem schwer. Ohne Millionen an Kapital fängt man gar nicht an.
+- Im Blogbeitrag nicht direkt erwähnt: Val Town war grundlegend um die Deno-Runtime herum gebaut, deren Team nach dem Wechsel zu Cloudflare die Pflege nächstes Jahr beendet.
+- Wir sind im ähnlichen Feld unterwegs, waren also technisch Wettbewerber, aber ich habe ihre Sorgfalt am Handwerk und ihre Transparenz immer geschätzt. Selbst die Investoren-Updates waren öffentlich.
+** Scion is back and is going to sell a kei truck in America :automotive:hardware:regulation:toyota:
+:PROPERTIES:
+:ID:       50445401
+:URL:      https://www.theautopian.com/scion-is-back-and-its-going-to-sell-a-freaking-kei-truck-in-america/
+:HN_URL:   https://news.ycombinator.com/item?id=50445401
+:POINTS:   308
+:COMMENTS: 229
+:BY:       NaOH
+:END:
+
+*** TLDR
+Toyota is reviving Scion, now branded Scion by Toyota and pitched as a lab for experimental vehicles rather than a cheap youth brand. The first product is the KEI-01, a rebadged Toyota Pixis which is itself a rebadged Daihatsu Hijet Jumbo Cab: 660cc gas engine, CVT, 4WD, roughly 5 feet wide and 11 feet long, 600-pound payload, a bed with three fold-down sides, plus heat and air conditioning. It is capped below 25 mph to certify as a low-speed vehicle, so it is only street legal where the posted limit is under 35 mph. Right-hand drive only, no left-hand version confirmed, fleet-only pilot starting late 2027, no price announced.
+
+*** Take
+The 25 mph cap is the whole vehicle. Certifying as a low-speed vehicle is the only way to skip federal crash standards, and the cost is that the truck can no longer do the job its buyers want it for. HN's farmers already import 25-year-old Hijets that drive 50 mph, so Toyota's offer is the same machine, newer, slower, right-hand drive, and fleet-only. The commenter who said this works for golf courses and islands has the market exactly sized.
+
+*** Comments
+
+**** freetime2
+I use a kei truck for farming. They are very capable driving around on dirt and gravel agricultural roads with 4WD, and they are inexpensive and robust enough that you can really beat them up and use them as a tool without worry.
+
+**** ilamont
+25 mph works for golf courses, resorts, or island use. In rural areas on the mainland, roads connecting towns often have 45 or 55 mph speed limits, so unless you plan on staying on the farm I don't think these are practical.
+
+**** throwaway81523
+I almost bought a used electric one for $5K about a year ago, before the fuel price spikes. I regret not getting it, since it would have held resale value. They're great for local hauling.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Scion 回归，要在美国卖一款 K 卡车
+***** TLDR
+丰田让 Scion 复活，新名为 Scion by Toyota，定位不再是廉价年轻品牌，而是实验性车型的试验场。首款产品 KEI-01 是丰田 Pixis 的换标版，而 Pixis 本身又是大发 Hijet Jumbo Cab 的换标车：660cc 汽油发动机、CVT 变速箱、四驱，车宽约 1.5 米、车长约 3.4 米，载重 272 公斤，货箱三面可翻折，还配有暖风和空调。为符合低速车认证，最高时速被限制在 25 英里以下，因此只能在限速低于 35 英里的道路上合法行驶。仅右舵，未确认左舵版本，2027 年底启动车队试点，价格未公布。
+***** Take
+25 英里的限速就是这辆车的全部。按低速车认证是绕开联邦碰撞标准的唯一路径，代价是这辆卡车再也干不了买家真正需要它干的活。HN 上的农户已经在进口能跑 50 英里时速的 25 年前的 Hijet，丰田给出的是同一台机器，更新、更慢、右舵、只卖车队。那位说它适合高尔夫球场和海岛的评论者，已经把市场规模量准了。
+***** Comments
+- 我用 K 卡车务农。四驱在泥土和碎石农道上非常好使，便宜又结实，可以当工具随便折腾而不用担心。
+- 25 英里时速适合高尔夫球场、度假区或海岛。美国本土的乡村地区，连接城镇的道路限速常常是 45 或 55 英里，除非你只在农场里转，否则不实用。
+- 大约一年前、燃油价格暴涨之前，我差点买了一台二手电动款，5000 美元。没买挺后悔的，它本来能保值。这种车跑本地短途运输非常好。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Scionが復活し、アメリカで軽トラックを売るという
+***** TLDR
+トヨタがScionを復活させ、名称をScion by Toyotaとして、安価な若者向けブランドではなく実験車両の実験場と位置づけた。第一弾のKEI-01はトヨタ・ピクシスのバッジ替えで、ピクシス自体もダイハツ・ハイゼット ジャンボキャブのバッジ替えだ。660ccのガソリンエンジン、CVT、4WD、全幅約1.5メートル、全長約3.4メートル、積載272キロ、三方開きの荷台、暖房とエアコンも付く。低速車として認証を受けるため最高速度は25マイル未満に制限され、制限速度35マイル未満の道路でしか合法に走れない。右ハンドルのみで左ハンドル版は未確認、2027年末から法人向けの限定パイロット、価格は未発表。
+***** Take
+25マイルの上限がこの車のすべてだ。低速車として認証を取ることが連邦衝突基準を回避する唯一の道で、その代償として、買い手が本当にさせたい仕事をこのトラックはもうこなせない。HNの農家はすでに時速50マイル出る25年落ちのハイゼットを輸入している。トヨタの提案は同じ機械で、より新しく、より遅く、右ハンドルで、法人限定だ。ゴルフ場と島ならいけると書いたコメントが、市場の大きさを正確に測っている。
+***** Comments
+- 軽トラを農業で使っている。4WDで土や砂利の農道をよく走るし、安くて頑丈なので道具として気兼ねなく酷使できる。
+- 時速25マイルはゴルフ場やリゾート、島なら使える。本土の田舎では町をつなぐ道の制限速度が45や55マイルだから、農場に留まるつもりでないなら実用的とは思えない。
+- 1年ほど前、燃料価格が急騰する前に中古の電動版を5000ドルで買いかけた。買わなかったのを後悔している。リセールバリューも保てたはずだ。近距離の運搬には最適だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Scion이 돌아와 미국에서 경트럭을 판다
+***** TLDR
+토요타가 Scion을 되살려 Scion by Toyota로 바꾸고, 저가 청년 브랜드가 아니라 실험 차량의 실험실로 내세웠다. 첫 제품 KEI-01은 토요타 픽시스의 배지 교체판이며, 픽시스 자체도 다이하쓰 하이젯 점보 캡의 배지 교체판이다. 660cc 가솔린 엔진, CVT, 4WD, 폭 약 1.5미터, 길이 약 3.4미터, 적재량 272킬로그램, 삼면 개방 적재함, 난방과 에어컨까지 갖췄다. 저속 차량 인증을 받기 위해 최고 속도를 시속 25마일 아래로 제한했고, 그래서 제한속도 35마일 미만 도로에서만 합법이다. 우핸들만 있고 좌핸들 버전은 미확정, 2027년 말 법인 전용 시범 운영, 가격은 미발표.
+***** Take
+시속 25마일 제한이 이 차의 전부다. 저속 차량 인증은 연방 충돌 기준을 건너뛰는 유일한 경로이고, 그 대가로 트럭은 구매자가 정작 시키려던 일을 더는 못 한다. HN의 농부들은 이미 시속 50마일로 달리는 25년 된 하이젯을 수입한다. 토요타의 제안은 같은 기계인데 더 새롭고 더 느리고 우핸들이며 법인 전용이다. 골프장과 섬이라면 쓸 만하다고 쓴 댓글이 시장 규모를 정확히 재놓았다.
+***** Comments
+- 농사에 경트럭을 쓴다. 4WD로 흙길과 자갈 농로를 아주 잘 다니고, 저렴하고 튼튼해서 도구처럼 거칠게 써도 걱정이 없다.
+- 시속 25마일은 골프장, 리조트, 섬에서는 통한다. 본토 시골에서는 마을을 잇는 도로 제한속도가 45나 55마일인 경우가 많아, 농장 안에만 머물 생각이 아니라면 실용적이지 않다.
+- 1년쯤 전, 연료비가 급등하기 전에 중고 전기 모델을 5천 달러에 살까 했다. 안 산 게 후회된다. 중고가도 유지됐을 텐데. 근거리 운반에는 아주 좋다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Scion vuelve y va a vender una kei truck en Estados Unidos
+***** TLDR
+Toyota resucita Scion, ahora como Scion by Toyota y planteada como un laboratorio de vehículos experimentales en lugar de una marca juvenil barata. El primer producto es la KEI-01, una Toyota Pixis rebautizada que a su vez es una Daihatsu Hijet Jumbo Cab rebautizada: motor de gasolina de 660cc, CVT, 4WD, unos 1.5 metros de ancho y 3.4 de largo, 272 kilos de carga, caja con tres laterales plegables, calefacción y aire acondicionado. Está limitada a menos de 25 mph para certificarse como vehículo de baja velocidad, así que solo es legal donde el límite señalizado es inferior a 35 mph. Solo volante a la derecha, sin versión izquierda confirmada, piloto exclusivo para flotas desde finales de 2027 y sin precio anunciado.
+***** Take
+El límite de 25 mph define el vehículo entero. Certificarse como vehículo de baja velocidad es la única vía para saltarse las normas federales de choque, y el precio es que la camioneta ya no puede hacer el trabajo por el que la querrían. Los agricultores de HN ya importan Hijet de 25 años que van a 50 mph, así que la oferta de Toyota es la misma máquina, más nueva, más lenta, con volante a la derecha y solo para flotas. El comentarista que dijo que sirve para campos de golf e islas midió el mercado con exactitud.
+***** Comments
+- Uso una kei truck para la granja. Con 4WD se mueven muy bien por caminos agrícolas de tierra y grava, y son baratas y robustas, así que puedes castigarlas y usarlas como herramienta sin preocuparte.
+- 25 mph sirve para campos de golf, resorts o islas. En zonas rurales del continente las carreteras entre pueblos suelen tener límites de 45 o 55 mph, así que si no piensas quedarte en la granja no me parecen prácticas.
+- Hace un año casi compré una eléctrica usada por 5.000 dólares, antes de la subida del combustible. Me arrepiento de no haberla comprado, porque habría mantenido su valor de reventa. Son excelentes para acarreo local.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Scion ist zurück und will in Amerika einen Kei-Truck verkaufen
+***** TLDR
+Toyota lässt Scion wiederaufleben, jetzt als Scion by Toyota und als Labor für experimentelle Fahrzeuge statt als günstige Jugendmarke. Erstes Produkt ist der KEI-01, ein umgelabelter Toyota Pixis, der selbst ein umgelabelter Daihatsu Hijet Jumbo Cab ist: 660-cm³-Benziner, CVT, Allrad, rund 1,5 Meter breit und 3,4 Meter lang, 272 Kilo Zuladung, Pritsche mit drei klappbaren Seiten, dazu Heizung und Klimaanlage. Er ist auf unter 25 mph begrenzt, um als Low-Speed-Vehicle zugelassen zu werden, und darf damit nur auf Straßen mit Tempolimit unter 35 mph fahren. Nur Rechtslenker, keine Linkslenker-Version bestätigt, Flottenpilot ab Ende 2027, kein Preis genannt.
+***** Take
+Das Limit von 25 mph ist das ganze Fahrzeug. Die Zulassung als Low-Speed-Vehicle ist der einzige Weg um die Crashnormen des Bundes herum, und der Preis ist, dass der Truck die Arbeit, für die ihn Käufer wollen, nicht mehr erledigen kann. Die Landwirte auf HN importieren längst 25 Jahre alte Hijets, die 50 mph fahren. Toyotas Angebot ist dieselbe Maschine, neuer, langsamer, Rechtslenker, nur für Flotten. Der Kommentator, der Golfplätze und Inseln nannte, hat den Markt exakt bemessen.
+***** Comments
+- Ich nutze einen Kei-Truck in der Landwirtschaft. Mit Allrad kommen sie auf Erd- und Schotterwegen sehr gut voran, und sie sind günstig und robust genug, dass man sie als Werkzeug ohne Sorge hart rannehmen kann.
+- 25 mph funktionieren für Golfplätze, Resorts oder Inseln. In ländlichen Gegenden auf dem Festland haben Verbindungsstraßen oft 45 oder 55 mph, also halte ich das für unpraktisch, wenn man nicht auf dem Hof bleiben will.
+- Vor etwa einem Jahr, vor den Spritpreissprüngen, hätte ich fast einen gebrauchten elektrischen für 5.000 Dollar gekauft. Ich bedauere es, denn er hätte seinen Wiederverkaufswert gehalten. Für lokale Transporte sind sie klasse.
+** Show HN: Get your coding agent off ~2019 JavaScript, onto modern web primitives :web:ai:chrome:javascript:showhn:
+:PROPERTIES:
+:ID:       50443812
+:URL:      https://github.com/GoogleChrome/modern-web-guidance
+:HN_URL:   https://news.ycombinator.com/item?id=50443812
+:POINTS:   252
+:COMMENTS: 72
+:BY:       paulirish
+:END:
+
+*** TLDR
+Paul Irish and the Chrome team shipped 1.0 of modern-web-guidance, a set of agent skills that pushes coding agents toward browser-native APIs instead of the div-and-JavaScript patterns that dominate training data. Examples it cites: CSS.highlights for text ranges, dialog with showModal() for backdrops and focus management, field-sizing for auto-growing textareas. It covers 250 web platform features and 203 real use cases across seven areas, installs with npx modern-web-guidance@latest install for Claude, Cursor, Codex and others, and ships a deterministic legacy-scan trained on 30,000 GitHub repos. Apache-2.0, stewarded by the Chrome, Edge, Firefox and MDN teams. Irish says he cut the agentic RAG stack from 500MB native to a 7MB pure-JS package with roughly 10ms search.
+
+*** Take
+The engineering deserves the attention it is getting, and the objection in the thread is still the right one. A commenter listed a dozen CSS features the skills recommend that are stable in Chrome and shipped nowhere else, including @function, calc-size, corner-shape and text-fit. Encoding that into the default behavior of every coding agent is a faster standards lever than any spec process. Firefox and MDN as co-stewards is the thing that makes it survivable, and only if they use it to say no.
+
+*** Comments
+
+**** surround
+Here's a list of browser features the skills will tell your agent to use that are stable in Chrome but not supported by Firefox and Safari: CSS @function, calc-size(), interpolate-size, corner-shape, border-shape, flex-wrap: balance, text-fit, text-decoration-skip-spaces, scroll-axis-lock, scroll-target-group, :target-current, scroll-initial-target.
+
+**** simonw
+Distribution suggestion: set up GitHub Pages to publish a markdown index document of the skills, linking to plain markdown versions of all the documents, designed for search with grep to find the right answer.
+
+**** advisedwang
+Chrome already has too much power in the browser standards world. The last thing we need is everyone's LLMs to follow Chrome team's guidance on how to do web development. This road leads back to: to view this site, please use the dominant browser.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Show HN：让你的编码代理告别 2019 年的 JavaScript，转向现代 Web 原生能力
+***** TLDR
+Paul Irish 和 Chrome 团队发布了 modern-web-guidance 1.0，这是一组代理技能，引导编码代理使用浏览器原生 API，而不是训练数据里占压倒多数的 div 加 JavaScript 写法。文中举例：用 CSS.highlights 处理文本范围，用 dialog 的 showModal() 获得遮罩和焦点管理，用 field-sizing 让文本框自动增高。它覆盖 250 项 Web 平台特性和 203 个真实用例，分为七个领域，通过 npx modern-web-guidance@latest install 安装到 Claude、Cursor、Codex 等工具，并附带一个基于 3 万个 GitHub 仓库训练的确定性 legacy-scan 命令。协议为 Apache-2.0，由 Chrome、Edge、Firefox 和 MDN 团队共同维护。Irish 称他把 agentic RAG 的技术栈从 500MB 的原生实现压缩成 7MB 的纯 JS 包，搜索耗时约 10 毫秒。
+***** Take
+这份工程成果值得它得到的关注，而评论区的质疑同样站得住。一位评论者列出了十几项技能所推荐、却只在 Chrome 稳定、别处都没实现的 CSS 特性，包括 @function、calc-size、corner-shape 和 text-fit。把这些写进每个编码代理的默认行为，比任何标准流程推进得都快。Firefox 和 MDN 作为共同维护方是这件事还能让人接受的原因，但前提是他们真的会用这个身份说不。
+***** Comments
+- 这是技能会让你的代理使用、但只在 Chrome 稳定而 Firefox 和 Safari 都不支持的浏览器特性清单：CSS @function、calc-size()、interpolate-size、corner-shape、border-shape、flex-wrap: balance、text-fit、text-decoration-skip-spaces、scroll-axis-lock、scroll-target-group、:target-current、scroll-initial-target。
+- 分发建议：用 GitHub Pages 发布一个技能的 Markdown 索引页，链接到所有文档的纯 Markdown 版本，并为用 grep 搜索答案而设计。
+- Chrome 在浏览器标准世界里的权力已经过大了。我们最不需要的就是所有人的大模型都遵循 Chrome 团队关于怎么做 Web 开发的指引。这条路通向的是：要浏览本站，请使用某个主流浏览器。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Show HN: コーディングエージェントを2019年のJavaScriptから現代のWebプリミティブへ
+***** TLDR
+Paul IrishとChromeチームがmodern-web-guidance 1.0を公開した。学習データを埋め尽くすdivとJavaScriptの書き方ではなく、ブラウザ標準のAPIへエージェントを導く一連のスキル群だ。例として、テキスト範囲にはCSS.highlights、背景とフォーカス管理にはdialogのshowModal()、自動で伸びるtextareaにはfield-sizingを挙げる。Webプラットフォームの250機能と203の実用ケースを7分野で扱い、npx modern-web-guidance@latest installでClaudeやCursor、Codexなどに導入でき、3万のGitHubリポジトリで訓練した決定論的なlegacy-scanも備える。ライセンスはApache-2.0で、Chrome、Edge、Firefox、MDNの各チームが共同で運営する。Irishはエージェント型RAGを500MBのネイティブ構成から7MBの純JSパッケージに縮め、検索は約10ミリ秒だと述べている。
+***** Take
+この実装は注目に値するし、スレッドでの異議もなお正しい。あるコメントは、スキルが推奨する十数個のCSS機能がChromeでのみ安定し他では未実装だと列挙した。@function、calc-size、corner-shape、text-fitなどだ。それをあらゆるコーディングエージェントの既定の挙動に埋め込むことは、どの標準化プロセスより速い梃子になる。FirefoxとMDNが共同運営に入っていることが唯一の歯止めであり、それは彼らが実際にノーと言う場合に限る。
+***** Comments
+- スキルがエージェントに使わせる機能のうち、Chromeでは安定しているがFirefoxとSafariが未対応のものを挙げる。CSS @function、calc-size()、interpolate-size、corner-shape、border-shape、flex-wrap: balance、text-fit、text-decoration-skip-spaces、scroll-axis-lock、scroll-target-group、:target-current、scroll-initial-target。
+- 配布についての提案。GitHub Pagesでスキルのマークダウン索引を公開し、全文書のプレーンなマークダウン版へリンクし、grepで答えを探せるよう設計するとよい。
+- Chromeはブラウザ標準の世界で既に力を持ちすぎている。みんなのLLMがWeb開発の作法をChromeチームの指針に従うなど、最も要らないことだ。この道の先にあるのは「本サイトの閲覧には支配的なブラウザをお使いください」だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Show HN: 코딩 에이전트를 2019년 자바스크립트에서 현대 웹 프리미티브로
+***** TLDR
+Paul Irish와 크롬 팀이 modern-web-guidance 1.0을 공개했다. 학습 데이터를 지배하는 div와 자바스크립트 패턴 대신 브라우저 기본 API를 쓰도록 코딩 에이전트를 이끄는 스킬 모음이다. 예시로 텍스트 범위에는 CSS.highlights, 배경과 포커스 관리에는 dialog의 showModal(), 자동으로 늘어나는 textarea에는 field-sizing을 든다. 웹 플랫폼 기능 250개와 실제 사용 사례 203개를 일곱 영역으로 다루고, npx modern-web-guidance@latest install로 Claude, Cursor, Codex 등에 설치되며, 깃허브 저장소 3만 개로 훈련한 결정론적 legacy-scan을 포함한다. 라이선스는 Apache-2.0이고 크롬, 엣지, 파이어폭스, MDN 팀이 공동 관리한다. Irish는 에이전틱 RAG 스택을 500MB 네이티브에서 7MB 순수 JS 패키지로 줄여 검색이 약 10밀리초라고 밝혔다.
+***** Take
+구현은 받고 있는 주목만큼의 값을 하고, 스레드의 반론도 여전히 타당하다. 한 댓글은 스킬이 권하는 CSS 기능 열몇 가지가 크롬에서만 안정이고 다른 곳에는 없다고 열거했다. @function, calc-size, corner-shape, text-fit 등이다. 그것을 모든 코딩 에이전트의 기본 동작에 새기는 일은 어떤 표준화 절차보다 빠른 지렛대다. 파이어폭스와 MDN이 공동 관리자로 들어간 점이 이를 견딜 만하게 만들지만, 그들이 실제로 거부권을 쓸 때만 그렇다.
+***** Comments
+- 스킬이 에이전트에게 쓰라고 할 기능 중 크롬에서는 안정이지만 파이어폭스와 사파리가 지원하지 않는 목록이다. CSS @function, calc-size(), interpolate-size, corner-shape, border-shape, flex-wrap: balance, text-fit, text-decoration-skip-spaces, scroll-axis-lock, scroll-target-group, :target-current, scroll-initial-target.
+- 배포 제안: 깃허브 페이지로 스킬의 마크다운 색인 문서를 공개하고, 모든 문서의 평문 마크다운 버전으로 링크하며, grep으로 답을 찾도록 설계하라.
+- 크롬은 이미 브라우저 표준 세계에서 너무 큰 힘을 가졌다. 모두의 LLM이 웹 개발 방식을 크롬 팀 지침에 따르는 것만큼 필요 없는 일이 없다. 이 길의 끝은 이 사이트를 보려면 지배적 브라우저를 쓰라는 안내다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Show HN: saca a tu agente de código del JavaScript de 2019 y llévalo a las primitivas web modernas
+***** TLDR
+Paul Irish y el equipo de Chrome publicaron la 1.0 de modern-web-guidance, un conjunto de habilidades que empuja a los agentes de código hacia APIs nativas del navegador en lugar de los patrones de div y JavaScript que dominan los datos de entrenamiento. Ejemplos que cita: CSS.highlights para rangos de texto, dialog con showModal() para fondos y gestión del foco, y field-sizing para textareas que crecen solos. Cubre 250 funciones de la plataforma web y 203 casos de uso reales en siete áreas, se instala con npx modern-web-guidance@latest install para Claude, Cursor, Codex y otros, e incluye un legacy-scan determinista entrenado con 30.000 repositorios de GitHub. Licencia Apache-2.0, con los equipos de Chrome, Edge, Firefox y MDN como responsables. Irish dice que redujo la pila de RAG agéntico de 500MB nativos a un paquete de 7MB en JS puro con búsquedas de unos 10ms.
+***** Take
+La ingeniería merece la atención que recibe, y la objeción del hilo sigue siendo la correcta. Un comentarista enumeró una docena de funciones CSS que las habilidades recomiendan y que son estables en Chrome y no existen en ningún otro sitio, entre ellas @function, calc-size, corner-shape y text-fit. Grabar eso en el comportamiento por defecto de todos los agentes de código es una palanca de estandarización más rápida que cualquier proceso formal. Que Firefox y MDN compartan la tutela es lo que lo hace tolerable, y solo si la usan para decir no.
+***** Comments
+- Esta es la lista de funciones que las habilidades le dirán a tu agente que use y que son estables en Chrome pero no están soportadas en Firefox ni Safari: CSS @function, calc-size(), interpolate-size, corner-shape, border-shape, flex-wrap: balance, text-fit, text-decoration-skip-spaces, scroll-axis-lock, scroll-target-group, :target-current, scroll-initial-target.
+- Sugerencia de distribución: monta GitHub Pages para publicar un índice en markdown de las habilidades, con enlaces a versiones en markdown plano de todos los documentos, pensado para buscar con grep.
+- Chrome ya tiene demasiado poder en el mundo de los estándares web. Lo último que necesitamos es que los LLM de todo el mundo sigan las indicaciones del equipo de Chrome sobre cómo hacer desarrollo web. Ese camino lleva de vuelta a: para ver este sitio, use el navegador dominante.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Show HN: Hol deinen Coding-Agenten vom JavaScript von 2019 zu modernen Web-Primitiven
+***** TLDR
+Paul Irish und das Chrome-Team haben Version 1.0 von modern-web-guidance veröffentlicht, eine Sammlung von Agent-Skills, die Coding-Agenten zu browsereigenen APIs lenkt statt zu den div-und-JavaScript-Mustern, die die Trainingsdaten dominieren. Genannte Beispiele: CSS.highlights für Textbereiche, dialog mit showModal() für Backdrop und Fokusverwaltung, field-sizing für mitwachsende Textareas. Abgedeckt sind 250 Plattformfunktionen und 203 echte Anwendungsfälle in sieben Bereichen, die Installation läuft über npx modern-web-guidance@latest install für Claude, Cursor, Codex und andere, dazu kommt ein deterministischer legacy-scan, trainiert auf 30.000 GitHub-Repositories. Apache-2.0, betreut von den Teams von Chrome, Edge, Firefox und MDN. Irish sagt, er habe den agentischen RAG-Stack von 500MB native auf ein 7MB-Paket in reinem JS gebracht, mit rund 10ms Suchzeit.
+***** Take
+Die technische Arbeit verdient die Aufmerksamkeit, und der Einwand im Thread bleibt trotzdem richtig. Ein Kommentator listete ein Dutzend CSS-Funktionen auf, die die Skills empfehlen und die nur in Chrome stabil sind, darunter @function, calc-size, corner-shape und text-fit. Das in das Standardverhalten jedes Coding-Agenten zu schreiben, ist ein schnellerer Standardisierungshebel als jeder Spezifikationsprozess. Dass Firefox und MDN mitbetreuen, macht die Sache tragbar, aber nur wenn sie das auch für ein Nein nutzen.
+***** Comments
+- Hier eine Liste von Browser-Funktionen, die die Skills deinem Agenten empfehlen und die in Chrome stabil, in Firefox und Safari aber nicht unterstützt sind: CSS @function, calc-size(), interpolate-size, corner-shape, border-shape, flex-wrap: balance, text-fit, text-decoration-skip-spaces, scroll-axis-lock, scroll-target-group, :target-current, scroll-initial-target.
+- Vorschlag zur Verbreitung: Richte GitHub Pages ein und veröffentliche dort einen Markdown-Index der Skills, der auf reine Markdown-Versionen aller Dokumente verlinkt und auf Suche per grep ausgelegt ist.
+- Chrome hat in der Welt der Browserstandards schon zu viel Macht. Das Letzte, was wir brauchen, ist, dass die LLMs aller Leute den Vorgaben des Chrome-Teams zur Webentwicklung folgen. Dieser Weg führt zurück zu: Zur Ansicht dieser Seite bitte den dominanten Browser verwenden.
