@@ -1,0 +1,512 @@
+#+TITLE: HN Digest 2026-11-12 06:00 UTC
+#+DATE: 2026-11-12T06:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+An HTTP/2 race condition in Apache, Google prices a classifier at a dime, and the Utah Teapot gets chamfered edges at 50
+
+* Highlights
+- Apache HTTP/2 RCE: a commenter reproduced it in 7 minutes for 2 cents
+- Gemini Decisions API: 1,000 questions per request, no output token charge
+- GitHub Actions lockfiles let you go back to readable version tags
+- The Utah Teapot turns 50 and ships another revision
+- 93 of 100 paint splatters parse as valid Perl
+
+* Stories
+
+** Critical RCE Vulnerability in Apache HTTP Server :security:apache:cve:http2:
+:PROPERTIES:
+:ID:       50462177
+:URL:      https://www.wiz.io/blog/cve-2026-119618-rce-apache-http-server-vulnerability
+:HN_URL:   https://news.ycombinator.com/item?id=50462177
+:POINTS:   86
+:COMMENTS: 35
+:BY:       soheilpro
+:END:
+
+*** TLDR
+CVE-2026-119618 is a race condition in assign_headers() in Apache's HTTP/2 module. Concurrent threads share resources without proper synchronization, an attacker corrupts the heap, and the corruption can be driven to arbitrary code execution. Remote, unauthenticated, and the only precondition is that HTTP/2 is enabled. Affects httpd 2.4.55 through 2.4.70 and mod_h2 2.0.8 through 2.0.42; fixed in 2.4.71 and mod_h2 2.0.24. Wiz says 64% of the cloud environments it scans contain a vulnerable resource and 51% have one publicly exposed. No known exploitation as of publication. Restricting protocols to HTTP/1.1 disables the attack surface as a stopgap.
+
+*** Take
+Patch it, then read jerrythegerbil's comment. He pointed a model at a vulnerable build, told it to look for an h2 race because that is the usual culprit now, and reproduced the bug in seven minutes for two cents of DeepSeek spend. The gap between a patch landing and a working exploit existing is now priced in cents, which matters more than the CVSS number. Wiz's own writeup, meanwhile, cites two different CVE numbers in adjacent paragraphs.
+
+*** Comments
+
+**** jerrythegerbil
+This took 7 minutes and $0.02 in deepseek spend through a subscription to reproduce. The prompt was simply directed at a vulnerable version and told to find a h2 race, which is generically the most common culprit these days. Disabling h2 is the mitigation and is effective.
+
+**** thehamkercat
+The post asks 'What is CVE-2026-111497?' and then answers about CVE-2026-119618. Two CVEs? (111497 != 119618)
+
+**** throooooo
+I have a lot of Linux sysadmin experience but haven't touched Apache in more than a decade. I thought it's mostly nginx or other solutions at this point.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Apache HTTP Server 严重远程代码执行漏洞
+***** TLDR
+CVE-2026-119618 是 Apache HTTP/2 模块中 assign_headers() 的一个竞态条件。并发线程共享资源时同步不当，攻击者可破坏堆内存，并借此实现任意代码执行。该漏洞可远程触发、无需认证，唯一前提是启用了 HTTP/2。受影响版本为 httpd 2.4.55 至 2.4.70 以及 mod_h2 2.0.8 至 2.0.42，已在 2.4.71 和 mod_h2 2.0.24 中修复。Wiz 称其扫描的云环境中 64% 存在易受攻击的资源，51% 有公开暴露的实例。发稿时尚无已知的实际利用。临时缓解措施是将协议限制为 HTTP/1.1。
+***** Take
+先打补丁，然后去看 jerrythegerbil 的评论。他把模型指向一个有漏洞的版本，让它去找 h2 竞态条件（因为这是如今最常见的问题类型），七分钟、两美分的 DeepSeek 开销就复现了漏洞。补丁发布到可用漏洞利用之间的时间差，如今的成本是以美分计的，这比 CVSS 评分更值得关注。而 Wiz 自己的文章在相邻段落里给出了两个不同的 CVE 编号。
+***** Comments
+- 这次复现只花了 7 分钟和 0.02 美元的 DeepSeek 订阅额度。提示词只是指向一个有漏洞的版本，让它去找 h2 竞态条件，这是现在最常见的问题类型。禁用 h2 就是有效的缓解措施。
+- 文章问「什么是 CVE-2026-111497？」，然后回答的却是 CVE-2026-119618。两个 CVE？（111497 不等于 119618）
+- 我有大量 Linux 运维经验，但十多年没碰过 Apache 了。我以为现在大家基本都用 nginx 或其他方案了。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Apache HTTP Serverに深刻なRCE脆弱性
+***** TLDR
+CVE-2026-119618はApacheのHTTP/2モジュールのassign_headers()に存在する競合状態。並行スレッドがリソースを共有する際の同期が不適切で、攻撃者はヒープを破壊し、それを任意コード実行につなげられる。リモートかつ認証不要で、前提条件はHTTP/2が有効であることだけ。影響範囲はhttpd 2.4.55〜2.4.70とmod_h2 2.0.8〜2.0.42で、2.4.71とmod_h2 2.0.24で修正済み。Wizによると、同社がスキャンしたクラウド環境の64%に脆弱なリソースがあり、51%は外部に公開されている。公開時点で悪用は確認されていない。暫定対策はプロトコルをHTTP/1.1に限定すること。
+***** Take
+まずパッチを当て、それからjerrythegerbilのコメントを読むべきだ。彼は脆弱なビルドにモデルを向け、最近もっとも多い原因であるh2の競合状態を探せと指示し、7分とDeepSeekの2セント分で再現した。パッチ公開から実用的なエクスプロイト成立までの差が、いまはセント単位の費用で測れる。これはCVSSの数値より重要だ。一方でWiz自身の記事は、隣り合う段落で異なるCVE番号を記載している。
+***** Comments
+- 再現にかかったのは7分とDeepSeekのサブスクで0.02ドル分。プロンプトは脆弱なバージョンを指定してh2の競合を探せと言うだけ。最近はこれが一番ありがちな原因だ。h2を無効化するのが有効な緩和策。
+- 記事は「CVE-2026-111497とは何か」と問いながら、CVE-2026-119618について答えている。CVEが2つ？（111497 ≠ 119618）
+- Linuxの運用経験は長いが、Apacheは10年以上触っていない。今はほとんどnginxか他の選択肢だと思っていた。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Apache HTTP Server의 치명적 원격 코드 실행 취약점
+***** TLDR
+CVE-2026-119618은 Apache HTTP/2 모듈의 assign_headers() 함수에 있는 경쟁 조건이다. 동시 스레드가 자원을 공유할 때 동기화가 제대로 되지 않아 공격자가 힙을 손상시킬 수 있고, 이를 임의 코드 실행으로 이어갈 수 있다. 원격에서 인증 없이 가능하며 전제 조건은 HTTP/2 활성화뿐이다. httpd 2.4.55~2.4.70과 mod_h2 2.0.8~2.0.42가 영향을 받고 2.4.71 및 mod_h2 2.0.24에서 수정됐다. Wiz는 자사가 스캔한 클라우드 환경의 64%에 취약한 리소스가 있고 51%는 외부에 노출돼 있다고 밝혔다. 공개 시점까지 알려진 악용 사례는 없다. 임시 조치는 프로토콜을 HTTP/1.1로 제한하는 것이다.
+***** Take
+패치를 적용하고 나서 jerrythegerbil의 댓글을 읽어보라. 그는 취약한 빌드에 모델을 붙이고 요즘 가장 흔한 원인인 h2 경쟁 조건을 찾으라고 지시했고, 7분과 DeepSeek 2센트로 재현했다. 패치 공개와 동작하는 익스플로잇 사이의 간격이 이제 센트 단위 비용으로 측정된다는 점이 CVSS 점수보다 중요하다. 한편 Wiz의 글은 바로 붙은 두 단락에서 서로 다른 CVE 번호를 적고 있다.
+***** Comments
+- 재현에 7분과 DeepSeek 구독 비용 0.02달러가 들었다. 프롬프트는 취약한 버전을 지정하고 h2 경쟁 조건을 찾으라고 한 것뿐이다. 요즘 가장 흔한 유형이다. h2를 끄는 것이 효과적인 완화책이다.
+- 글은 'CVE-2026-111497이 무엇인가'라고 묻고는 CVE-2026-119618에 대해 답한다. CVE가 두 개인가? (111497 ≠ 119618)
+- 리눅스 운영 경험은 많지만 Apache는 10년 넘게 안 만져봤다. 이제는 대부분 nginx나 다른 솔루션을 쓰는 줄 알았다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Vulnerabilidad crítica de ejecución remota de código en Apache HTTP Server
+***** TLDR
+CVE-2026-119618 es una condición de carrera en assign_headers(), dentro del módulo HTTP/2 de Apache. Los hilos concurrentes comparten recursos sin la sincronización adecuada, el atacante corrompe el heap y esa corrupción puede llevarse hasta la ejecución de código arbitrario. Es remota, sin autenticación, y el único requisito es tener HTTP/2 activado. Afecta a httpd 2.4.55 hasta 2.4.70 y a mod_h2 2.0.8 hasta 2.0.42; está corregida en 2.4.71 y mod_h2 2.0.24. Wiz afirma que el 64% de los entornos de nube que analiza contiene un recurso vulnerable y el 51% tiene alguno expuesto públicamente. No hay explotación conocida al momento de la publicación. Limitar los protocolos a HTTP/1.1 sirve como medida provisional.
+***** Take
+Aplica el parche y después lee el comentario de jerrythegerbil. Apuntó un modelo a una versión vulnerable, le pidió buscar una condición de carrera en h2 porque es la causa más habitual hoy, y reprodujo el fallo en siete minutos con dos centavos de gasto en DeepSeek. La distancia entre la publicación del parche y un exploit funcional se mide ahora en centavos, y eso importa más que la puntuación CVSS. Mientras tanto, el propio artículo de Wiz cita dos números de CVE distintos en párrafos contiguos.
+***** Comments
+- Reproducirlo me llevó 7 minutos y 0,02 dólares de gasto en deepseek con una suscripción. El prompt solo apuntaba a una versión vulnerable y pedía encontrar una carrera en h2, que es el culpable más común hoy. Desactivar h2 es la mitigación y funciona.
+- El post pregunta '¿Qué es CVE-2026-111497?' y luego responde sobre CVE-2026-119618. ¿Dos CVE? (111497 != 119618)
+- Tengo mucha experiencia como administrador de Linux, pero no toco Apache desde hace más de una década. Pensaba que a estas alturas casi todo era nginx u otras soluciones.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Kritische RCE-Schwachstelle im Apache HTTP Server
+***** TLDR
+CVE-2026-119618 ist eine Race Condition in assign_headers() im HTTP/2-Modul von Apache. Gleichzeitig laufende Threads teilen Ressourcen ohne korrekte Synchronisierung, ein Angreifer beschädigt den Heap, und diese Korruption lässt sich zu beliebiger Codeausführung treiben. Remote und ohne Authentifizierung ausnutzbar, einzige Voraussetzung ist aktiviertes HTTP/2. Betroffen sind httpd 2.4.55 bis 2.4.70 und mod_h2 2.0.8 bis 2.0.42; behoben in 2.4.71 und mod_h2 2.0.24. Wiz gibt an, dass 64% der von ihm gescannten Cloud-Umgebungen eine anfällige Ressource enthalten und 51% eine öffentlich erreichbare. Zum Zeitpunkt der Veröffentlichung ist keine Ausnutzung bekannt. Als Übergangslösung lässt sich das Protokoll auf HTTP/1.1 beschränken.
+***** Take
+Patchen, und dann den Kommentar von jerrythegerbil lesen. Er richtete ein Modell auf einen anfälligen Build, ließ es nach einer h2-Race suchen, weil das heute der übliche Verursacher ist, und reproduzierte den Fehler in sieben Minuten für zwei Cent DeepSeek-Kosten. Der Abstand zwischen Patch-Veröffentlichung und funktionierendem Exploit kostet jetzt Cent-Beträge, und das ist wichtiger als die CVSS-Zahl. Der Wiz-Beitrag selbst nennt in aufeinanderfolgenden Absätzen zwei verschiedene CVE-Nummern.
+***** Comments
+- Die Reproduktion dauerte 7 Minuten und kostete 0,02 Dollar DeepSeek-Guthaben aus einem Abo. Der Prompt war lediglich auf eine anfällige Version gerichtet und sollte eine h2-Race finden, was heute der häufigste Verursacher ist. h2 abzuschalten ist die Gegenmaßnahme und sie wirkt.
+- Der Beitrag fragt 'Was ist CVE-2026-111497?' und antwortet dann über CVE-2026-119618. Zwei CVEs? (111497 != 119618)
+- Ich habe viel Linux-Admin-Erfahrung, habe Apache aber seit über einem Jahrzehnt nicht angefasst. Ich dachte, inzwischen läuft fast alles auf nginx oder anderen Lösungen.
+** Gemini Decisions API :ai:google:api:llm:
+:PROPERTIES:
+:ID:       50456791
+:URL:      https://blog.google/innovation-and-ai/technology/developers-tools/gemini-decisions-api/
+:HN_URL:   https://news.ycombinator.com/item?id=50456791
+:POINTS:   353
+:COMMENTS: 109
+:BY:       iamdelirium
+:END:
+
+*** TLDR
+Google shipped an endpoint that does not generate text. You hand it content plus up to 1,000 independent closed-set questions (yes/no, multiple choice with 2 to 255 options, or ordered rubric scores) and the Gemini Decision 1 model scores the candidate options in a single forward pass, returning probabilities and a 0 to 1 confidence per answer so you can route the uncertain cases elsewhere. Inputs include text, images, audio, video and PDFs up to 256K tokens. End-to-end latency is 150 to 250 ms, with 50 to 100 ms of median model compute, and throughput stays nearly flat from 1 to 100 questions per request. It costs $0.10 per million input tokens, nothing for output tokens, and the shared input is billed once regardless of how many questions ride on it. Google claims roughly 5x cheaper than generative alternatives on equivalent tasks.
+
+*** Take
+The billing model is the product. Charging nothing for output and charging the shared context once is what turns 1,000 questions over one document from a generation bill into a rounding error, and the 0 to 1 confidence score is the part that makes it usable in a pipeline instead of a demo. The thread's better question is why this took until now, given that people have spent years bolting JSON schemas and grammar constraints onto chat models to fake exactly this shape. Commenters credit Jev with getting there first, and waximabbax notes Google's version is the pricier one in that lane, with the audio and video inputs as the differentiator.
+
+*** Comments
+
+**** eminence32
+I'm sort of surprised it took Jev for everyone to realize 'oh yeah, this is a useful thing that we should have in our product portfolio'. But maybe this is one of those things that's only obvious in retrospect. I'm sure people were trying something similar years ago with grammar-constrained outputs.
+
+**** waximabbax
+Its bit more expensive than other Decision Models in the same lane. However, it can accept Audio and Video as input as well and for those specific cases it can be extremely useful.
+
+**** kodoman
+I have still not used a decision model. How are people using them at the moment? Is anyone using them in a coding harness like Pi?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Gemini Decisions API
+***** TLDR
+谷歌推出了一个不生成文本的接口。你提交内容以及最多 1000 个彼此独立的封闭式问题（是非题、2 到 255 个选项的多选题，或有序评分量表），Gemini Decision 1 模型在单次前向传播中为候选选项打分，返回概率以及每个答案 0 到 1 的置信度，便于把不确定的情况转交他处。输入支持文本、图片、音频、视频和 PDF，上限 256K tokens。端到端延迟 150 到 250 毫秒，模型计算中位数为 50 到 100 毫秒，每次请求从 1 个到 100 个问题，吞吐几乎保持不变。价格为每百万输入 tokens 0.10 美元，输出 tokens 不计费，且共享输入无论搭载多少问题都只计费一次。谷歌称在同类任务上比生成式方案便宜约 5 倍。
+***** Take
+计费方式就是产品本身。输出不计费、共享上下文只算一次，这才让「对一份文档提 1000 个问题」从一笔生成账单变成零头；而 0 到 1 的置信度分数，是让它能进生产流水线而不只是做演示的关键。评论区更值得问的是：为什么等到现在？多年来大家一直在给聊天模型外挂 JSON schema 和语法约束，模仿的正是这个形态。有人认为 Jev 先做出了这件事，waximabbax 则指出谷歌这版是同类里偏贵的，差异化在于支持音频和视频输入。
+***** Comments
+- 有点意外，居然要等到 Jev 出来，大家才意识到「对，这东西有用，我们产品线里该有」。不过也许这属于事后才显而易见的那类事。几年前肯定就有人用语法约束输出尝试过类似的东西。
+- 它比同类的决策模型稍贵一些。不过它还能接受音频和视频作为输入，在那些特定场景下会非常有用。
+- 我还没用过决策模型。大家现在都怎么用的？有人在 Pi 这类编码框架里用吗？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Gemini Decisions API
+***** TLDR
+Googleがテキストを生成しないAPIを公開した。コンテンツと最大1,000件の独立したクローズドセット質問（はい・いいえ、2〜255択の多肢選択、順序付きルーブリック採点）を渡すと、Gemini Decision 1モデルが候補選択肢を単一のフォワードパスで採点し、確率と回答ごとの0〜1の信頼度を返す。信頼度が低いケースは別経路に回せる。入力はテキスト、画像、音声、動画、PDFに対応し、上限は256Kトークン。エンドツーエンドの遅延は150〜250ミリ秒、モデル計算の中央値は50〜100ミリ秒で、1リクエストあたり1問から100問までスループットはほぼ横ばい。料金は入力100万トークンあたり0.10ドル、出力トークンは無料で、共有入力は質問数にかかわらず一度だけ課金される。Googleは同等タスクで生成系の約5分の1のコストだとしている。
+***** Take
+課金方式こそが製品だ。出力を無課金にし、共有コンテキストを一度だけ課金することで、1つの文書に1,000問という処理が生成コストから端数へと変わる。0〜1の信頼度スコアは、これをデモではなくパイプラインで使えるものにしている部分だ。スレッドのより良い問いは「なぜ今までなかったのか」で、人々は何年もチャットモデルにJSONスキーマや文法制約を取り付けてまさにこの形を模してきた。コメントではJevが先に出したと評価され、waximabbaxはGoogle版はこの分野では高い方で、差別化は音声と動画の入力だと指摘している。
+***** Comments
+- Jevが出るまで『これは有用だから製品ラインに持つべきだ』と誰も気づかなかったのは少し意外だ。もっとも、後から見れば明らかという類の話かもしれない。数年前にも文法制約付き出力で似たことを試した人はいたはずだ。
+- 同じ分野の他の決定モデルより少し高い。ただし音声と動画も入力として受け付けるので、その用途では非常に有用になりうる。
+- 決定モデルはまだ使っていない。みんな今どう使っているのか？Piのようなコーディング環境で使っている人はいる？
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Gemini Decisions API
+***** TLDR
+구글이 텍스트를 생성하지 않는 API를 내놨다. 콘텐츠와 함께 서로 독립적인 폐쇄형 질문을 최대 1,000개(예/아니오, 2~255개 선택지의 다지선다, 순서가 있는 루브릭 채점) 넘기면 Gemini Decision 1 모델이 후보 선택지를 단일 포워드 패스로 채점해 확률과 답변별 0~1 신뢰도를 돌려준다. 불확실한 건은 다른 경로로 넘길 수 있다. 입력은 텍스트, 이미지, 오디오, 비디오, PDF를 지원하며 상한은 256K 토큰이다. 종단 지연은 150~250ms, 모델 연산 중간값은 50~100ms이고 요청당 질문 1개에서 100개까지 처리량이 거의 평탄하게 유지된다. 가격은 입력 100만 토큰당 0.10달러이고 출력 토큰은 무료이며, 공유 입력은 질문 수와 무관하게 한 번만 과금된다. 구글은 동일 작업에서 생성형 대안보다 약 5배 저렴하다고 주장한다.
+***** Take
+과금 구조가 곧 제품이다. 출력을 무료로 하고 공유 컨텍스트를 한 번만 청구하면 문서 하나에 질문 1,000개를 던지는 작업이 생성 비용에서 자릿수 아래로 떨어진다. 0~1 신뢰도 점수는 이것을 데모가 아니라 파이프라인에서 쓸 수 있게 만드는 부분이다. 스레드의 더 나은 질문은 왜 이제서야인가다. 사람들은 몇 년간 챗 모델에 JSON 스키마와 문법 제약을 덧붙여 바로 이 형태를 흉내 내왔다. 댓글에서는 Jev가 먼저 내놨다고 평가하고, waximabbax는 구글 버전이 이 분야에서 비싼 쪽이며 차별점은 오디오와 비디오 입력이라고 지적한다.
+***** Comments
+- Jev가 나올 때까지 '그래, 이건 유용하니 제품군에 있어야 한다'는 걸 아무도 깨닫지 못했다는 게 좀 의외다. 하지만 돌아보면 당연해 보이는 부류일 수도 있다. 몇 년 전에도 문법 제약 출력으로 비슷한 시도를 한 사람들이 분명 있었다.
+- 같은 분야의 다른 결정 모델보다 조금 비싸다. 다만 오디오와 비디오도 입력으로 받을 수 있어서 그런 용도에서는 대단히 유용할 수 있다.
+- 나는 아직 결정 모델을 써본 적이 없다. 요즘 사람들은 이걸 어떻게 쓰고 있나? Pi 같은 코딩 환경에서 쓰는 사람 있나?
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+API Gemini Decisions
+***** TLDR
+Google lanzó un endpoint que no genera texto. Le entregas contenido junto con hasta 1.000 preguntas independientes de conjunto cerrado (sí/no, opción múltiple con 2 a 255 opciones, o puntuación por rúbrica ordenada) y el modelo Gemini Decision 1 puntúa las opciones candidatas en una sola pasada hacia adelante, devolviendo probabilidades y una confianza de 0 a 1 por respuesta para derivar los casos dudosos a otro lado. Acepta texto, imágenes, audio, video y PDF hasta 256K tokens. La latencia de extremo a extremo es de 150 a 250 ms, con 50 a 100 ms de cómputo del modelo en la mediana, y el rendimiento se mantiene casi plano de 1 a 100 preguntas por solicitud. Cuesta 0,10 dólares por millón de tokens de entrada, nada por tokens de salida, y la entrada compartida se cobra una sola vez sin importar cuántas preguntas la acompañen. Google afirma que resulta unas 5 veces más barato que las alternativas generativas en tareas equivalentes.
+***** Take
+El modelo de cobro es el producto. No cobrar la salida y cobrar el contexto compartido una sola vez convierte 1.000 preguntas sobre un documento en un gasto marginal, y la confianza de 0 a 1 es lo que permite usarlo en una tubería real y no solo en una demo. La mejor pregunta del hilo es por qué tardó tanto, dado que durante años se han atornillado esquemas JSON y restricciones gramaticales a modelos de chat para simular exactamente esta forma. Los comentarios atribuyen a Jev haber llegado primero, y waximabbax señala que la versión de Google es la más cara de su categoría, con las entradas de audio y video como diferenciador.
+***** Comments
+- Me sorprende un poco que hiciera falta Jev para que todos se dieran cuenta de 'ah sí, esto es útil y deberíamos tenerlo en el portafolio'. Pero quizá sea de esas cosas que solo son obvias en retrospectiva. Seguro que hace años alguien intentaba algo similar con salidas restringidas por gramática.
+- Es un poco más caro que otros modelos de decisión de la misma categoría. Sin embargo, también acepta audio y video como entrada, y para esos casos concretos puede ser extremadamente útil.
+- Todavía no he usado un modelo de decisión. ¿Cómo los está usando la gente ahora mismo? ¿Alguien los usa en un entorno de programación como Pi?
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Gemini Decisions API
+***** TLDR
+Google hat einen Endpunkt veröffentlicht, der keinen Text generiert. Man übergibt Inhalte plus bis zu 1.000 voneinander unabhängige Fragen mit geschlossener Antwortmenge (ja/nein, Mehrfachauswahl mit 2 bis 255 Optionen oder geordnete Rubrik-Bewertung), und das Modell Gemini Decision 1 bewertet die Kandidatenoptionen in einem einzigen Forward-Pass. Zurück kommen Wahrscheinlichkeiten und ein Konfidenzwert von 0 bis 1 pro Antwort, womit unsichere Fälle umgeleitet werden können. Eingaben sind Text, Bilder, Audio, Video und PDFs bis 256K Tokens. Die Ende-zu-Ende-Latenz liegt bei 150 bis 250 ms, die mediane Modellrechenzeit bei 50 bis 100 ms, und der Durchsatz bleibt von 1 bis 100 Fragen pro Anfrage nahezu flach. Der Preis: 0,10 Dollar pro Million Eingabe-Tokens, nichts für Ausgabe-Tokens, und die geteilte Eingabe wird unabhängig von der Fragenzahl nur einmal berechnet. Google beziffert das bei vergleichbaren Aufgaben als rund 5-mal günstiger als generative Alternativen.
+***** Take
+Das Abrechnungsmodell ist das Produkt. Ausgabe nicht zu berechnen und den geteilten Kontext nur einmal abzurechnen macht aus 1.000 Fragen zu einem Dokument statt einer Generierungsrechnung einen Rundungsfehler, und der Konfidenzwert von 0 bis 1 ist der Teil, der das Ganze in einer Pipeline statt nur in einer Demo brauchbar macht. Die bessere Frage im Thread ist, warum es so lange gedauert hat, nachdem Leute jahrelang JSON-Schemas und Grammatikbeschränkungen auf Chat-Modelle geschraubt haben, um genau diese Form nachzubilden. Kommentare schreiben Jev den Vorsprung zu, und waximabbax merkt an, dass Googles Variante die teurere in diesem Feld ist, mit Audio- und Video-Eingaben als Unterscheidungsmerkmal.
+***** Comments
+- Ich bin etwas überrascht, dass es erst Jev brauchte, damit allen klar wurde: 'ach ja, das ist nützlich und sollte ins Produktportfolio'. Vielleicht ist das aber eines dieser Dinge, die nur im Rückblick offensichtlich sind. Sicher hat jemand vor Jahren Ähnliches mit grammatikbeschränkten Ausgaben versucht.
+- Es ist etwas teurer als andere Decision-Modelle in diesem Feld. Dafür nimmt es auch Audio und Video als Eingabe, und für diese speziellen Fälle kann es extrem nützlich sein.
+- Ich habe noch kein Decision-Modell benutzt. Wie setzen Leute die derzeit ein? Verwendet jemand sie in einer Coding-Umgebung wie Pi?
+** Lock Your GitHub Actions :security:github:supply-chain:devops:
+:PROPERTIES:
+:ID:       50459485
+:URL:      https://hugovk.dev/blog/2026/lock-github-actions/
+:HN_URL:   https://news.ycombinator.com/item?id=50459485
+:POINTS:   194
+:COMMENTS: 35
+:BY:       gslin
+:END:
+
+*** TLDR
+GitHub now supports workflow lockfiles, so you can stop pinning every action to a 40-character commit SHA. Install the extension with `gh extension install github/gh-actions-lock`, run `gh actions-lock` in the repo, and it rewrites your workflow files to readable version tags like v7.0.1 while recording the tag-to-SHA mapping in .github/workflows/actions.lock. Add `gh actions-lock --verify` as a CI job to catch drift between the workflows and the lockfile. Renovate and Dependabot both understand the lockfile for automated updates, and zizmor supports it as of version 1.32.0.
+
+*** Take
+Readable workflow files are a genuine improvement over a wall of hex. The trust story is less settled. Already__Taken's objection in the thread is the sharp one: every fork on GitHub shares one object store, so a commit SHA only proves someone pushed that commit somewhere, not that it was ever released in the repo you think you are using. You traded 'the owner won't move the tag' for 'whoever merged this hash checked where it came from'. And woodruffw, who maintains zizmor, lists the coverage holes: reusable workflow calls still need manual hash pinning, and composite actions get locked only transitively.
+
+*** Comments
+
+**** Already__Taken
+You're trading the trust in the repo owner not moving a tag for trusting whoever merges the commit hash to have checked that's a release in the repo you want and not some fork's commit. All forks on github are the same repo, you can pin any commit, merged upstream or not.
+
+**** woodruffw
+The advice here is really great, but as the maintainer of zizmor I want to note some caveats: they only lock normal action calls. If your workflows invoke other reusable workflows, you need to keep those hash-pinned manually for now. Composite actions are not themselves locked, they get locked transitively.
+
+**** klodolph
+I think my main advice is to avoid GH actions at all, unless avoiding them is somehow painful. There is just a long bad history here.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+给你的 GitHub Actions 加锁
+***** TLDR
+GitHub 现在支持工作流 lockfile，你不必再把每个 action 都钉在 40 位的 commit SHA 上。用 `gh extension install github/gh-actions-lock` 安装扩展，在仓库里运行 `gh actions-lock`，它会把工作流文件改写成 v7.0.1 这样可读的版本标签，同时把标签到 SHA 的映射记录在 .github/workflows/actions.lock 里。把 `gh actions-lock --verify` 加成一个 CI 任务，就能发现工作流和 lockfile 之间的不一致。Renovate 和 Dependabot 都能识别该 lockfile 以自动更新，zizmor 从 1.32.0 起支持。
+***** Take
+比起一整屏十六进制，可读的工作流文件确实是个进步。但信任问题并没有解决。评论里 Already__Taken 的质疑最犀利：GitHub 上所有 fork 共用同一个对象库，所以一个 commit SHA 只能证明有人把这个 commit 推到了某处，并不能证明它在你以为的那个仓库里发布过。你只是把「仓库主人不会移动标签」换成了「合并这个哈希的人确认过它的来源」。而 zizmor 的维护者 woodruffw 列出了覆盖缺口：可复用工作流的调用仍需手动钉哈希，复合 action 只是被间接锁定。
+***** Comments
+- 你只是把对仓库主人不会移动标签的信任，换成了信任合并这个 commit 哈希的人确认过它是你想要的仓库里的发布版本，而不是某个 fork 的提交。GitHub 上所有 fork 都是同一个仓库，你可以钉任何 commit，不管它是否已合并进上游。
+- 这篇建议很好，但作为 zizmor 的维护者我要提几点注意：它只锁定普通的 action 调用。如果你的工作流调用了其他可复用工作流，目前仍需手动钉哈希。复合 action 本身不会被锁定，只是被间接锁定。
+- 我的主要建议是：除非避开 GH Actions 实在太痛苦，否则干脆别用。这里的糟糕历史已经很长了。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+GitHub Actionsをロックせよ
+***** TLDR
+GitHubがワークフローのロックファイルに対応した。各アクションを40文字のコミットSHAに固定し続ける必要はもうない。`gh extension install github/gh-actions-lock`で拡張を入れ、リポジトリで`gh actions-lock`を実行すると、ワークフローファイルがv7.0.1のような読めるバージョンタグに書き換えられ、タグとSHAの対応が.github/workflows/actions.lockに記録される。`gh actions-lock --verify`をCIジョブに加えれば、ワークフローとロックファイルのずれを検出できる。RenovateとDependabotはどちらもこのロックファイルを理解して自動更新でき、zizmorはバージョン1.32.0から対応している。
+***** Take
+16進数の壁に比べれば、読めるワークフローファイルは本物の改善だ。信頼の話はそこまで片付いていない。スレッドでのAlready__Takenの指摘が鋭い。GitHubでは全フォークが1つのオブジェクトストアを共有するため、コミットSHAは誰かがそのコミットをどこかにプッシュしたことしか証明せず、あなたが使っているつもりのリポジトリでリリースされたことは保証しない。『オーナーがタグを動かさない』という信頼を『そのハッシュをマージした人が出所を確認した』に置き換えただけだ。zizmorの保守者woodruffwは抜けも挙げている。再利用可能ワークフローの呼び出しは今も手動でハッシュ固定が必要で、コンポジットアクションは間接的にしかロックされない。
+***** Comments
+- オーナーがタグを動かさないという信頼を、そのコミットハッシュをマージした人が、それが目的のリポジトリのリリースであってどこかのフォークのコミットではないと確認したという信頼に置き換えているだけだ。GitHubでは全フォークが同じリポジトリで、上流にマージされていようといまいと任意のコミットを固定できる。
+- ここでの助言はとても良いが、zizmorの保守者としていくつか注意点を挙げたい。ロックされるのは通常のアクション呼び出しだけだ。ワークフローが他の再利用可能ワークフローを呼ぶ場合、今はそれらを手動でハッシュ固定し続ける必要がある。コンポジットアクション自体はロックされず、間接的にロックされるだけだ。
+- 私の主な助言は、避けるのがよほど苦痛でない限りGH Actionsを使わないことだ。ここには長く良くない歴史がある。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+GitHub Actions를 잠그자
+***** TLDR
+GitHub가 워크플로 락파일을 지원한다. 이제 모든 액션을 40자 커밋 SHA로 고정해둘 필요가 없다. `gh extension install github/gh-actions-lock`으로 확장을 설치하고 리포지터리에서 `gh actions-lock`을 실행하면 워크플로 파일이 v7.0.1처럼 읽을 수 있는 버전 태그로 바뀌고, 태그와 SHA 매핑이 .github/workflows/actions.lock에 기록된다. `gh actions-lock --verify`를 CI 작업으로 추가하면 워크플로와 락파일 사이의 불일치를 잡을 수 있다. Renovate와 Dependabot 모두 이 락파일을 이해해 자동 업데이트에 쓰고, zizmor는 1.32.0부터 지원한다.
+***** Take
+16진수 더미보다 읽을 수 있는 워크플로 파일이 나은 것은 분명한 개선이다. 신뢰 문제는 덜 정리됐다. 스레드에서 Already__Taken의 지적이 날카롭다. GitHub의 모든 포크는 하나의 오브젝트 저장소를 공유하므로, 커밋 SHA는 누군가 그 커밋을 어딘가에 푸시했다는 사실만 증명하고 당신이 쓰고 있다고 생각하는 리포지터리에서 릴리스됐다는 것은 보장하지 않는다. '소유자가 태그를 옮기지 않는다'는 신뢰를 '그 해시를 머지한 사람이 출처를 확인했다'로 바꾼 셈이다. zizmor를 관리하는 woodruffw는 빈틈도 나열한다. 재사용 가능 워크플로 호출은 여전히 수동 해시 고정이 필요하고, 복합 액션은 간접적으로만 잠긴다.
+***** Comments
+- 리포지터리 소유자가 태그를 옮기지 않을 것이라는 신뢰를, 그 커밋 해시를 머지한 사람이 그것이 원하는 리포지터리의 릴리스이고 어떤 포크의 커밋이 아님을 확인했다는 신뢰로 바꾸는 것이다. GitHub의 모든 포크는 같은 리포지터리이고, 업스트림에 머지됐든 아니든 어떤 커밋이든 고정할 수 있다.
+- 여기 조언은 정말 훌륭하지만 zizmor 관리자로서 몇 가지 주의점을 적어둔다. 잠기는 것은 일반 액션 호출뿐이다. 워크플로가 다른 재사용 가능 워크플로를 호출하면 지금은 그것들을 수동으로 해시 고정해둬야 한다. 복합 액션 자체는 잠기지 않고 간접적으로만 잠긴다.
+- 내 주된 조언은, 피하는 것이 어지간히 괴롭지 않다면 GH Actions를 아예 쓰지 말라는 것이다. 여기엔 오래된 나쁜 이력이 있다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Bloquea tus GitHub Actions
+***** TLDR
+GitHub ya admite archivos de bloqueo para flujos de trabajo, así que puedes dejar de fijar cada acción a un SHA de commit de 40 caracteres. Instala la extensión con `gh extension install github/gh-actions-lock`, ejecuta `gh actions-lock` en el repositorio y reescribirá tus flujos de trabajo con etiquetas de versión legibles como v7.0.1, dejando el mapeo de etiqueta a SHA en .github/workflows/actions.lock. Añade `gh actions-lock --verify` como trabajo de CI para detectar desajustes entre los flujos y el archivo de bloqueo. Renovate y Dependabot entienden el archivo para actualizaciones automáticas, y zizmor lo admite desde la versión 1.32.0.
+***** Take
+Tener flujos de trabajo legibles en lugar de un muro de hexadecimal es una mejora real. La cuestión de la confianza está menos resuelta. La objeción de Already__Taken en el hilo es la afilada: todos los forks de GitHub comparten un mismo almacén de objetos, así que un SHA de commit solo prueba que alguien empujó ese commit a algún sitio, no que se haya publicado en el repositorio que crees estar usando. Cambiaste 'el dueño no moverá la etiqueta' por 'quien fusionó este hash comprobó de dónde venía'. Y woodruffw, que mantiene zizmor, enumera los huecos: las llamadas a flujos reutilizables aún requieren fijación manual por hash, y las acciones compuestas solo quedan bloqueadas de forma transitiva.
+***** Comments
+- Estás cambiando la confianza en que el dueño del repositorio no mueva una etiqueta por confiar en que quien fusiona el hash del commit haya comprobado que es una versión publicada del repositorio que quieres y no el commit de algún fork. Todos los forks en github son el mismo repositorio, puedes fijar cualquier commit, fusionado aguas arriba o no.
+- El consejo del artículo es muy bueno, pero como mantenedor de zizmor quiero señalar algunas salvedades: solo bloquean las llamadas normales a acciones. Si tus flujos invocan otros flujos reutilizables, por ahora tienes que mantenerlos fijados por hash a mano. Las acciones compuestas no se bloquean en sí mismas, se bloquean de forma transitiva.
+- Mi consejo principal es evitar GH Actions por completo, a menos que evitarlas resulte doloroso. Aquí hay un largo historial malo.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Sperre deine GitHub Actions
+***** TLDR
+GitHub unterstützt jetzt Lockfiles für Workflows, man muss also nicht länger jede Action an einen 40 Zeichen langen Commit-SHA pinnen. Die Erweiterung lässt sich mit `gh extension install github/gh-actions-lock` installieren; `gh actions-lock` im Repository schreibt die Workflow-Dateien auf lesbare Versionstags wie v7.0.1 um und hält die Zuordnung von Tag zu SHA in .github/workflows/actions.lock fest. Mit `gh actions-lock --verify` als CI-Job erkennt man Abweichungen zwischen Workflows und Lockfile. Renovate und Dependabot verstehen das Lockfile für automatische Updates, zizmor unterstützt es ab Version 1.32.0.
+***** Take
+Lesbare Workflow-Dateien statt einer Wand aus Hex sind ein echter Fortschritt. Die Vertrauensfrage ist weniger geklärt. Der treffende Einwand im Thread kommt von Already__Taken: Alle Forks auf GitHub teilen einen Objektspeicher, ein Commit-SHA beweist also nur, dass jemand diesen Commit irgendwohin gepusht hat, nicht dass er im gemeinten Repository je veröffentlicht wurde. Man tauscht 'der Eigentümer verschiebt das Tag nicht' gegen 'wer diesen Hash gemergt hat, hat die Herkunft geprüft'. Und woodruffw, der zizmor pflegt, zählt die Lücken auf: Aufrufe wiederverwendbarer Workflows brauchen weiter manuelles Hash-Pinning, und Composite Actions werden nur transitiv gesperrt.
+***** Comments
+- Du tauschst das Vertrauen darauf, dass der Repository-Eigentümer ein Tag nicht verschiebt, gegen das Vertrauen darauf, dass derjenige, der den Commit-Hash mergt, geprüft hat, dass es ein Release im gewünschten Repository ist und nicht der Commit irgendeines Forks. Alle Forks auf github sind dasselbe Repository, du kannst jeden Commit pinnen, upstream gemergt oder nicht.
+- Der Rat hier ist wirklich gut, aber als Maintainer von zizmor möchte ich einige Einschränkungen anmerken: Gesperrt werden nur normale Action-Aufrufe. Wenn deine Workflows andere wiederverwendbare Workflows aufrufen, musst du die vorläufig manuell per Hash pinnen. Composite Actions werden nicht selbst gesperrt, sondern nur transitiv.
+- Mein Hauptratschlag lautet, GH Actions ganz zu meiden, sofern das Meiden nicht irgendwie schmerzhaft ist. Es gibt hier eine lange schlechte Vorgeschichte.
+** 93% of paint splatters are valid Perl programs (2019) :perl:humor:programming:sigbovik:
+:PROPERTIES:
+:ID:       50459745
+:URL:      https://www.mcmillen.dev/sigbovik/
+:HN_URL:   https://news.ycombinator.com/item?id=50459745
+:POINTS:   311
+:COMMENTS: 43
+:BY:       zenincognito
+:END:
+
+*** TLDR
+Colin McMillen's SIGBOVIK 2019 paper ran OCR over 100 paint-splatter images and handed the resulting character soup to the Perl interpreter. 93 of the 100 parsed as valid Perl, which answers the paper's stated open problem in the affirmative: it is possible to smear paint on a wall without creating a valid Perl program, but you get seven chances in a hundred. All the splatters and their corresponding source are published in a gallery alongside, with the failures marked in red. The paper took a SIGBOVIK Unwitting Participation Ribbon for containing a genuine artifact.
+
+*** Take
+The joke works because the method is real. OCR on random blobs emits sigils, operators and barewords, which is most of what Perl's grammar is built from, and Perl will accept nearly any of it and quietly evaluate to zero. gnabgib points out this also hit the front page in 2021 and 2024, so HN has now independently rediscovered Perl's permissiveness three times. layer8 supplies the companion fact: a Java properties file can only be invalid by containing a malformed Unicode escape, and after escapes resolve, any sequence of characters is a legal properties file.
+
+*** Comments
+
+**** layer8
+Tangentially related, the only way for a Java properties file to be invalid is if it contains an invalid Unicode escape sequence. After resolving Unicode escapes, any character sequence is a valid properties file.
+
+**** gnabgib
+Popular in 2024 (515 points, 125 comments) and 2021 (431 points, 165 comments).
+
+**** snitty
+SIGBOVIK papers are almost always a delight. From their 2026 publication: permission to make digital or hard copies of portions of this work for personal use is granted; permission for classroom use is also granted, but seems ill-advised.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+93% 的油漆飞溅都是合法的 Perl 程序（2019）
+***** TLDR
+Colin McMillen 在 SIGBOVIK 2019 的论文对 100 张油漆飞溅图像跑了 OCR，再把得到的一堆字符交给 Perl 解释器。100 张里有 93 张被解析为合法的 Perl 程序，这对论文提出的公开问题给出了肯定答案：往墙上甩油漆而不产生合法 Perl 程序是可能的，但一百次里只有七次机会。所有飞溅图及其对应源码都发布在配套画廊里，失败的那些用红字标注。该论文因包含真实产出而获得 SIGBOVIK 的「无意参与奖带」。
+***** Take
+这个玩笑之所以成立，是因为方法是真的。对随机色块做 OCR 会吐出各种符号、运算符和裸词，而这几乎就是 Perl 语法的全部建材，Perl 会照单全收，然后安静地求值为零。gnabgib 指出这篇在 2021 和 2024 年也上过首页，所以 HN 已经独立地三次重新发现了 Perl 的宽容。layer8 补上了一个配套事实：Java properties 文件唯一能不合法的方式是包含格式错误的 Unicode 转义，而转义解析之后，任何字符序列都是合法的 properties 文件。
+***** Comments
+- 顺带一提，Java properties 文件唯一能不合法的情况就是包含无效的 Unicode 转义序列。转义解析完之后，任何字符序列都是合法的 properties 文件。
+- 2024 年上过热门（515 分，125 条评论），2021 年也上过（431 分，165 条评论）。
+- SIGBOVIK 的论文几乎总是让人愉快。引自他们 2026 年的出版说明：允许为个人用途制作本作品部分内容的电子或纸质副本；也允许用于课堂，但似乎不太明智。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+ペンキの飛び散りの93%は有効なPerlプログラムである（2019）
+***** TLDR
+Colin McMillenのSIGBOVIK 2019論文は、100枚のペンキ飛散画像にOCRをかけ、出てきた文字の羅列をPerlインタプリタに渡した。100枚のうち93枚が有効なPerlとして解析され、論文が掲げた未解決問題に肯定で答えた。つまり、有効なPerlプログラムを作らずに壁にペンキを塗りつけることは可能だが、その機会は100回中7回しかない。飛散画像と対応するソースはすべて併設のギャラリーで公開され、失敗例は赤で示されている。本論文は真正な成果物を含むとしてSIGBOVIKの「意図せぬ参加リボン」を受けた。
+***** Take
+この冗談が成立するのは、手法が本物だからだ。ランダムな染みへのOCRはシジル、演算子、ベアワードを吐き出すが、それはPerlの文法を構成する材料のほとんどで、Perlはその大半を受け取って静かにゼロへ評価する。gnabgibは2021年と2024年にもフロントページに載ったと指摘しており、HNはPerlの寛容さを独立に3回再発見したことになる。layer8は対になる事実を添える。Javaのpropertiesファイルが無効になりうるのは不正なUnicodeエスケープを含む場合だけで、エスケープが解決された後はどんな文字列も正当なpropertiesファイルだ。
+***** Comments
+- やや関連するが、Javaのpropertiesファイルが無効になる唯一の方法は、不正なUnicodeエスケープシーケンスを含むことだ。Unicodeエスケープを解決した後は、どんな文字列も有効なpropertiesファイルになる。
+- 2024年に人気（515ポイント、125コメント）、2021年にも（431ポイント、165コメント）。
+- SIGBOVIKの論文はほとんど常に楽しい。2026年の刊行物より：この著作の一部を個人利用のために電子的または紙で複製する許諾を与える。教室での利用も許諾するが、賢明とは思えない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+페인트 얼룩의 93%는 유효한 Perl 프로그램이다 (2019)
+***** TLDR
+Colin McMillen의 SIGBOVIK 2019 논문은 페인트 얼룩 이미지 100장에 OCR을 돌리고, 나온 문자 덩어리를 Perl 인터프리터에 넘겼다. 100장 중 93장이 유효한 Perl로 파싱됐고, 이는 논문이 내세운 미해결 문제에 긍정으로 답한다. 즉 유효한 Perl 프로그램을 만들지 않고 벽에 페인트를 뿌리는 것은 가능하지만 기회는 100번 중 일곱 번뿐이다. 모든 얼룩과 대응하는 소스는 함께 공개된 갤러리에 실려 있고 실패한 것은 빨간색으로 표시돼 있다. 이 논문은 진짜 산출물을 포함했다는 이유로 SIGBOVIK의 '의도치 않은 참여 리본'을 받았다.
+***** Take
+농담이 성립하는 것은 방법이 진짜이기 때문이다. 무작위 얼룩에 OCR을 돌리면 기호와 연산자, 베어워드가 쏟아지는데 그것이 Perl 문법을 이루는 재료의 대부분이고, Perl은 그 대부분을 받아들여 조용히 0으로 평가한다. gnabgib은 이 글이 2021년과 2024년에도 첫 페이지에 올랐다고 지적한다. HN이 Perl의 관용을 독립적으로 세 번 재발견한 셈이다. layer8은 짝이 되는 사실을 보탠다. Java properties 파일이 무효가 될 수 있는 유일한 길은 잘못된 유니코드 이스케이프를 담는 것이고, 이스케이프가 해석된 뒤에는 어떤 문자열이든 적법한 properties 파일이다.
+***** Comments
+- 약간 관련된 이야기인데, Java properties 파일이 무효가 되는 유일한 방법은 유효하지 않은 유니코드 이스케이프 시퀀스를 포함하는 것이다. 유니코드 이스케이프를 해석한 뒤에는 어떤 문자열이든 유효한 properties 파일이다.
+- 2024년에 인기였고(515점, 125개 댓글) 2021년에도 그랬다(431점, 165개 댓글).
+- SIGBOVIK 논문은 거의 항상 즐겁다. 2026년 간행물에서: 이 저작물 일부를 개인적 용도로 디지털 또는 종이 사본으로 만드는 것을 허락한다. 교실 사용도 허락하지만 권할 만해 보이지는 않는다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+El 93% de las salpicaduras de pintura son programas Perl válidos (2019)
+***** TLDR
+El artículo de Colin McMillen para SIGBOVIK 2019 pasó OCR sobre 100 imágenes de salpicaduras de pintura y entregó la sopa de caracteres resultante al intérprete de Perl. 93 de las 100 se analizaron como Perl válido, lo que responde afirmativamente al problema abierto que plantea el artículo: es posible embadurnar pintura en una pared sin crear un programa Perl válido, pero solo tienes siete oportunidades de cada cien. Todas las salpicaduras y su código correspondiente se publican en una galería adjunta, con los fallos marcados en rojo. El artículo recibió el Lazo de Participación Involuntaria de SIGBOVIK por contener un artefacto genuino.
+***** Take
+El chiste funciona porque el método es real. El OCR sobre manchas aleatorias emite sigilos, operadores y palabras sueltas, que es casi todo el material con el que está construida la gramática de Perl, y Perl acepta casi cualquiera de ellos para evaluar silenciosamente a cero. gnabgib señala que esto también llegó a la portada en 2021 y 2024, así que HN ha redescubierto de forma independiente la permisividad de Perl tres veces. layer8 aporta el dato complementario: un archivo de propiedades de Java solo puede ser inválido si contiene una secuencia de escape Unicode mal formada, y una vez resueltos los escapes, cualquier secuencia de caracteres es un archivo de propiedades legal.
+***** Comments
+- Tangencialmente relacionado: la única forma de que un archivo de propiedades de Java sea inválido es que contenga una secuencia de escape Unicode no válida. Una vez resueltos los escapes Unicode, cualquier secuencia de caracteres es un archivo de propiedades válido.
+- Fue popular en 2024 (515 puntos, 125 comentarios) y en 2021 (431 puntos, 165 comentarios).
+- Los artículos de SIGBOVIK son casi siempre un deleite. De su publicación de 2026: se concede permiso para hacer copias digitales o impresas de partes de este trabajo para uso personal; también se concede para uso en el aula, pero parece poco aconsejable.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+93% der Farbspritzer sind gültige Perl-Programme (2019)
+***** TLDR
+Colin McMillens Beitrag für SIGBOVIK 2019 ließ OCR über 100 Bilder von Farbspritzern laufen und übergab die entstandene Zeichensuppe dem Perl-Interpreter. 93 der 100 wurden als gültiges Perl geparst, was die im Papier gestellte offene Frage bejaht: Man kann Farbe an die Wand schmieren, ohne ein gültiges Perl-Programm zu erzeugen, hat dafür aber nur sieben Chancen von hundert. Alle Spritzer und der jeweils zugehörige Quelltext sind in einer begleitenden Galerie veröffentlicht, die Fehlschläge rot markiert. Das Papier erhielt das SIGBOVIK-Band für unfreiwillige Teilnahme, weil es ein echtes Artefakt enthält.
+***** Take
+Der Witz funktioniert, weil die Methode echt ist. OCR auf Zufallsklecksen gibt Sigils, Operatoren und Barewords aus, also fast das gesamte Baumaterial von Perls Grammatik, und Perl nimmt nahezu alles davon an und wertet es still zu Null aus. gnabgib weist darauf hin, dass der Text auch 2021 und 2024 auf der Frontpage war, HN hat Perls Nachgiebigkeit also unabhängig voneinander dreimal wiederentdeckt. layer8 liefert das Gegenstück: Eine Java-Properties-Datei kann nur ungültig sein, wenn sie eine fehlerhafte Unicode-Escape-Sequenz enthält, und nach dem Auflösen der Escapes ist jede Zeichenfolge eine legale Properties-Datei.
+***** Comments
+- Nur am Rande verwandt: Die einzige Möglichkeit, dass eine Java-Properties-Datei ungültig ist, besteht darin, dass sie eine ungültige Unicode-Escape-Sequenz enthält. Nach dem Auflösen der Unicode-Escapes ist jede Zeichenfolge eine gültige Properties-Datei.
+- War 2024 beliebt (515 Punkte, 125 Kommentare) und 2021 ebenfalls (431 Punkte, 165 Kommentare).
+- SIGBOVIK-Papiere sind fast immer ein Vergnügen. Aus der Ausgabe 2026: Die Erlaubnis, digitale oder gedruckte Kopien von Teilen dieser Arbeit für den persönlichen Gebrauch anzufertigen, wird erteilt; die Erlaubnis für den Unterrichtsgebrauch wird ebenfalls erteilt, erscheint aber unratsam.
+** The Utah Teapot :graphics:history:siggraph:3d:
+:PROPERTIES:
+:ID:       50457618
+:URL:      https://graphics.cs.utah.edu/teapot/
+:HN_URL:   https://news.ycombinator.com/item?id=50457618
+:POINTS:   117
+:COMMENTS: 29
+:BY:       cobbal
+:END:
+
+*** TLDR
+Utah's graphics group keeps a page tracking every revision of the teapot Martin Newell modeled in 1975 by approximating the proportions of a physical Melitta pot made by Friesland Porzellan. The original was 28 cubic Bezier patches with no bottom. Jim Blinn scaled it down in 1976, the version that became standard after it debuted at SIGGRAPH that year. Frank Crow added a round bottom in 1987, bringing it to 32 patches. Hank Driskill produced the first solid-interior model in 1992 to deal with surface intersections. Russ Fish hollowed the lid knob in 2006. Cem Yuksel's 2026 revision improves the interior, chamfers the edges and adds curvature continuity so reflections stop showing seams. Yuksel, Blinn and Newell marked the model's 50th anniversary at SIGGRAPH this year.
+
+*** Take
+The revision list is the real document. A test model only needs fixing when renderers get good enough to show what was wrong with it, so each entry dates the moment some shading or reflection technique started catching the teapot's defects. The 2026 fixes are chamfered edges and curvature continuity, which is to say the surface now holds up under reflection maps that would have been unrenderable when Newell built it. Fifty years of bug reports filed by the hardware.
+
+*** Comments
+
+**** apitman
+I work at the University of Utah. They had an incredible graphics symposium a few years ago. I got a render of the teapot signed by several of the speakers, which is a prized possession. There was another guy there with an actual replica teapot which he got signed. I was pretty jealous.
+
+**** EvanAnderson
+I saw the Utah Teapot at the Computer History Museum in Mountain View when I visited in late 2004. I didn't know it was there. I immediately started calling friends, while standing there in the Visible Storage exhibit, telling each of them breathlessly: I'm looking at the Utah teapot. I was told later by a docent that my reaction was not uncommon.
+
+**** fauria
+There is a teapot statue in Dublin, Ireland.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+犹他茶壶
+***** TLDR
+犹他大学图形学组维护着一个页面，记录这只茶壶的每一次修订。Martin Newell 在 1975 年按一只 Friesland Porzellan 制造的 Melitta 实物茶壶的比例建模而成。原始模型是 28 个三次 Bezier 曲面片，没有底。Jim Blinn 在 1976 年把它缩小，这个版本当年在 SIGGRAPH 亮相后成为标准。Frank Crow 在 1987 年加上圆底，片数增至 32。Hank Driskill 在 1992 年做出第一个实心内部的模型以处理曲面自交。Russ Fish 在 2006 年把壶盖的把手做成空心。Cem Yuksel 的 2026 版改进了内部、给边缘做了倒角，并加入曲率连续性，使反射不再显出接缝。今年 Yuksel、Blinn 和 Newell 在 SIGGRAPH 纪念了这个模型问世 50 周年。
+***** Take
+这份修订清单才是真正的文献。一个测试模型只有在渲染器足够强、能暴露它的问题时才需要修，所以每一条记录都标注了某种着色或反射技术开始抓到茶壶缺陷的时刻。2026 年修的是边缘倒角和曲率连续性，也就是说，这个表面现在能经受 Newell 建模时根本无法渲染的反射贴图。五十年的 bug 报告，全是硬件提交的。
+***** Comments
+- 我在犹他大学工作。几年前他们办过一场很棒的图形学研讨会。我拿到了一张茶壶渲染图，上面有好几位演讲者的签名，是我的珍藏。还有个人带了一只真的复制品茶壶去签名，我挺眼红的。
+- 2004 年底我去山景城的计算机历史博物馆时看到了犹他茶壶。我原先不知道它在那儿。我就站在「可见库房」展区里，立刻开始给朋友打电话，激动地一个个告诉他们：我正在看那只犹他茶壶。后来一位讲解员告诉我，这种反应并不少见。
+- 爱尔兰都柏林有一座茶壶雕塑。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+ユタ・ティーポット
+***** TLDR
+ユタ大学のグラフィックスグループは、このティーポットのあらゆる改訂を記録したページを維持している。Martin Newellが1975年に、Friesland Porzellan製の実物のMelittaポットの比率を近似してモデル化したものだ。原型は底のない28枚の三次ベジエパッチだった。Jim Blinnが1976年に縮小し、その年のSIGGRAPHで公開された後、この版が標準になった。Frank Crowが1987年に丸い底を加えてパッチ数は32になった。Hank Driskillは1992年に面の交差に対処するため初の中身が詰まったモデルを作った。Russ Fishは2006年に蓋のつまみを中空にした。Cem Yukselの2026年版は内部を改良し、エッジに面取りを施し、曲率連続性を加えて反射に継ぎ目が出ないようにした。今年のSIGGRAPHでYuksel、Blinn、Newellがこのモデルの50周年を記念した。
+***** Take
+本当の資料は改訂一覧だ。テストモデルは、レンダラーがその欠点を映し出せるほど良くなったときにだけ修正が必要になる。だから各項目は、あるシェーディングや反射の技法がティーポットの欠陥を捉え始めた時点を日付として記している。2026年の修正はエッジの面取りと曲率連続性で、つまりこの表面はNewellが作った当時には描画不可能だった反射マップの下でも耐えるようになった。50年分のバグ報告を、ハードウェアが提出してきたわけだ。
+***** Comments
+- 私はユタ大学で働いている。数年前に素晴らしいグラフィックスのシンポジウムがあった。登壇者数名のサイン入りティーポットのレンダー画像をもらい、今では自慢の品だ。実物のレプリカのティーポットを持ってきてサインをもらった人もいて、かなり羨ましかった。
+- 2004年末にマウンテンビューのコンピュータ歴史博物館を訪れたとき、ユタ・ティーポットを見た。そこにあるとは知らなかった。Visible Storage展示の前に立ったまますぐ友人たちに電話をかけ、息せき切って一人ずつに伝えた。いま、あのユタ・ティーポットを見ていると。後で案内係に、その反応は珍しくないと言われた。
+- アイルランドのダブリンにティーポットの像がある。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+유타 티포트
+***** TLDR
+유타대 그래픽스 그룹은 이 티포트의 모든 개정 이력을 담은 페이지를 유지한다. Martin Newell이 1975년에 Friesland Porzellan이 만든 실제 Melitta 주전자의 비율을 근사해 모델링한 것이다. 원본은 밑면이 없는 3차 베지에 패치 28개였다. Jim Blinn이 1976년에 크기를 줄였고, 그해 SIGGRAPH에서 공개된 뒤 이 버전이 표준이 됐다. Frank Crow가 1987년에 둥근 밑면을 더해 패치 수는 32개가 됐다. Hank Driskill은 1992년에 면 교차 문제를 다루려고 내부가 꽉 찬 첫 모델을 만들었다. Russ Fish는 2006년에 뚜껑 손잡이를 비웠다. Cem Yuksel의 2026년 개정판은 내부를 개선하고 모서리에 챔퍼를 넣고 곡률 연속성을 더해 반사에 이음선이 보이지 않게 했다. 올해 SIGGRAPH에서 Yuksel, Blinn, Newell이 이 모델의 50주년을 기념했다.
+***** Take
+진짜 문서는 개정 목록이다. 테스트 모델은 렌더러가 그 결함을 드러낼 만큼 좋아졌을 때만 고칠 필요가 생기므로, 각 항목은 어떤 셰이딩이나 반사 기법이 티포트의 결함을 잡아내기 시작한 시점을 기록한다. 2026년의 수정은 모서리 챔퍼와 곡률 연속성이다. 다시 말해 이 표면은 Newell이 만들던 시절에는 렌더링조차 불가능했을 반사 맵 아래에서도 버텨낸다. 하드웨어가 제출한 50년치 버그 리포트다.
+***** Comments
+- 나는 유타대에서 일한다. 몇 년 전 이곳에서 훌륭한 그래픽스 심포지엄이 열렸다. 연사 여러 명의 사인이 담긴 티포트 렌더 이미지를 받았는데 아끼는 소장품이다. 실제 복제 티포트를 가져와 사인을 받은 사람도 있어서 꽤 부러웠다.
+- 2004년 말 마운틴뷰의 컴퓨터 역사 박물관에 갔을 때 유타 티포트를 봤다. 거기 있는 줄 몰랐다. Visible Storage 전시 앞에 선 채로 곧바로 친구들에게 전화를 돌리며 한 명씩 숨 가쁘게 말했다. 지금 그 유타 티포트를 보고 있다고. 나중에 안내원이 그런 반응은 드물지 않다고 했다.
+- 아일랜드 더블린에 티포트 조형물이 있다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+La tetera de Utah
+***** TLDR
+El grupo de gráficos de Utah mantiene una página que registra cada revisión de la tetera que Martin Newell modeló en 1975 aproximando las proporciones de una tetera física Melitta fabricada por Friesland Porzellan. La original tenía 28 parches de Bezier cúbicos y carecía de fondo. Jim Blinn la redujo de escala en 1976, la versión que se convirtió en estándar tras su debut en SIGGRAPH ese año. Frank Crow le añadió un fondo redondeado en 1987, llevándola a 32 parches. Hank Driskill produjo el primer modelo con interior sólido en 1992 para resolver las intersecciones de superficies. Russ Fish vació el pomo de la tapa en 2006. La revisión de 2026 de Cem Yuksel mejora el interior, achaflana los bordes y añade continuidad de curvatura para que los reflejos dejen de mostrar costuras. Yuksel, Blinn y Newell conmemoraron este año el 50 aniversario del modelo en SIGGRAPH.
+***** Take
+La lista de revisiones es el documento de verdad. Un modelo de prueba solo necesita arreglos cuando los renderizadores mejoran lo suficiente para mostrar qué tenía mal, así que cada entrada fecha el momento en que alguna técnica de sombreado o reflejo empezó a detectar los defectos de la tetera. Los arreglos de 2026 son bordes achaflanados y continuidad de curvatura, es decir que la superficie ahora aguanta mapas de reflejo que habrían sido imposibles de renderizar cuando Newell la construyó. Cincuenta años de informes de errores presentados por el hardware.
+***** Comments
+- Trabajo en la Universidad de Utah. Hace unos años hubo un simposio de gráficos increíble. Conseguí un render de la tetera firmado por varios de los ponentes, y es una posesión preciada. Había otro tipo con una réplica real de la tetera que también hizo firmar. Me dio bastante envidia.
+- Vi la tetera de Utah en el Computer History Museum de Mountain View cuando lo visité a finales de 2004. No sabía que estaba allí. Empecé a llamar a mis amigos de inmediato, de pie en la exposición Visible Storage, diciéndole a cada uno sin aliento: estoy mirando la tetera de Utah. Un guía me dijo después que mi reacción no era inusual.
+- Hay una estatua de tetera en Dublín, Irlanda.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Die Utah-Teekanne
+***** TLDR
+Die Grafikgruppe in Utah pflegt eine Seite, die jede Revision der Teekanne verzeichnet, die Martin Newell 1975 nach den Proportionen einer echten Melitta-Kanne von Friesland Porzellan modellierte. Das Original bestand aus 28 kubischen Bezier-Patches und hatte keinen Boden. Jim Blinn skalierte sie 1976 herunter, und diese Fassung wurde nach ihrem Debüt auf der SIGGRAPH im selben Jahr zum Standard. Frank Crow ergänzte 1987 einen runden Boden, womit es 32 Patches wurden. Hank Driskill lieferte 1992 das erste Modell mit massivem Inneren, um Flächenschnitte zu beherrschen. Russ Fish machte 2006 den Deckelknauf hohl. Cem Yuksels Revision von 2026 verbessert das Innere, fast die Kanten und ergänzt Krümmungsstetigkeit, damit Reflexionen keine Nähte mehr zeigen. Yuksel, Blinn und Newell begingen den 50. Jahrestag des Modells in diesem Jahr auf der SIGGRAPH.
+***** Take
+Die Revisionsliste ist das eigentliche Dokument. Ein Testmodell muss erst dann korrigiert werden, wenn Renderer gut genug sind, um zu zeigen, was daran falsch war. Jeder Eintrag datiert also den Moment, in dem irgendeine Shading- oder Reflexionstechnik die Mängel der Teekanne zu erfassen begann. Die Korrekturen von 2026 sind gefaste Kanten und Krümmungsstetigkeit, das heißt, die Oberfläche hält jetzt Reflexionskarten stand, die zu Newells Zeiten nicht zu rendern gewesen wären. Fünfzig Jahre Fehlerberichte, eingereicht von der Hardware.
+***** Comments
+- Ich arbeite an der University of Utah. Vor einigen Jahren gab es hier ein großartiges Grafik-Symposium. Ich habe einen Render der Teekanne bekommen, signiert von mehreren Vortragenden, und das ist ein wertvoller Besitz. Ein anderer hatte eine echte Nachbildung der Kanne dabei und ließ sie signieren. Ich war ziemlich neidisch.
+- Ich habe die Utah-Teekanne bei meinem Besuch im Computer History Museum in Mountain View Ende 2004 gesehen. Ich wusste nicht, dass sie dort ist. Ich fing sofort an, Freunde anzurufen, während ich in der Ausstellung Visible Storage stand, und sagte jedem atemlos: Ich schaue gerade die Utah-Teekanne an. Ein Museumsführer sagte mir später, meine Reaktion sei nicht ungewöhnlich.
+- In Dublin, Irland, steht eine Teekannen-Statue.
