@@ -1,0 +1,512 @@
+#+TITLE: HN Digest 2026-11-12 11:00 UTC
+#+DATE: 2026-11-12T11:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Tim Peters remembered, macOS boots on an NVIDIA PC, and a Claude agent waters someone's lettuce
+
+* Highlights
+- Tim Peters, who wrote the Zen of Python and designed Timsort, died on July 15
+- Jane Street published a tutor skill whose main trick is refusing to answer
+- Stela boots macOS on a plain x86-64 PC, with a Metal driver for NVIDIA cards
+- Eight soil probes, an Iceberg lakehouse, and a scheduled agent on the sprinklers
+- bootvine draws systemd's job tree on the console instead of the scrolling log
+
+* Stories
+
+** Tim Peters has died :python:obituary:algorithms:
+:PROPERTIES:
+:ID:       50450488
+:URL:      https://discuss.python.org/t/in-memoriam-tim-peters-1952-2026/110028
+:HN_URL:   https://news.ycombinator.com/item?id=50450488
+:POINTS:   1228
+:COMMENTS: 135
+:BY:       ayhanfuat
+:END:
+
+*** TLDR
+Guido van Rossum announced on November 11 that Tim Peters died on July 15, 2026, at 74. Peters wrote the Zen of Python (PEP 20), designed Timsort in 2002, and worked on pymalloc, dict optimization, cyclic garbage collection, generators, doctest, difflib and pickletools. His first contribution was convincing van Rossum that Python should allow mixed int and float arithmetic. He answered questions on the mailing lists so patiently and so often that the community called him Timbot.
+
+*** Take
+Timsort did not stay in Python. It is the default sort in Java, Android, V8 and Swift, so most sorts running right now are his algorithm under another name.
+
+*** Comments
+
+**** w-m
+$ python -c "import this" -> The Zen of Python, by Tim Peters. Still the first line it prints.
+
+**** leoc
+Along with Gary Robinson he turned pg's 'A Plan for Spam' essay into SpamBayes, which actually worked.
+
+**** lumpa
+I used to read every python-dev post and bug report, so I got the feeling of knowing these people. Tim was always a favorite.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Tim Peters 去世
+***** TLDR
+Guido van Rossum 于 11 月 11 日宣布，Tim Peters 已于 2026 年 7 月 15 日去世，享年 74 岁。Peters 写下了《Python 之禅》（PEP 20），在 2002 年设计了 Timsort，并参与了 pymalloc、字典优化、循环垃圾回收、生成器、doctest、difflib 和 pickletools 的工作。他最早的贡献是说服 van Rossum 让 Python 支持整数与浮点数的混合运算。他在邮件列表上回答问题之耐心、之频繁，让社区称他为 Timbot。
+***** Take
+Timsort 并没有留在 Python 内部。它是 Java、Android、V8 和 Swift 的默认排序算法，所以此刻世界上正在运行的大多数排序，都是他的算法换了个名字。
+***** Comments
+- $ python -c "import this" -> The Zen of Python, by Tim Peters。它打印的第一行至今还是这句。
+- 他和 Gary Robinson 一起，把 pg 的《A Plan for Spam》那篇文章变成了真正能用的 SpamBayes。
+- 我以前把 python-dev 的每一封邮件和每个 bug 都读完，所以觉得自己认识这些人。Tim 一直是我最喜欢的那个。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Tim Petersが死去
+***** TLDR
+Guido van Rossumが11月11日に、Tim Petersが2026年7月15日に74歳で亡くなったと発表した。PetersはZen of Python（PEP 20）を書き、2002年にTimsortを設計し、pymalloc、辞書の最適化、循環参照のガベージコレクション、ジェネレータ、doctest、difflib、pickletoolsに関わった。最初の貢献は、intとfloatの混合演算をPythonで許すべきだとvan Rossumを説得したことだった。メーリングリストでの回答が根気強く数も多かったため、コミュニティは彼をTimbotと呼んだ。
+***** Take
+TimsortはPythonの中に留まらなかった。Java、Android、V8、Swiftの標準ソートであり、いま世界で走っているソートの大半は名前を変えた彼のアルゴリズムだ。
+***** Comments
+- $ python -c "import this" -> The Zen of Python, by Tim Peters。今も最初に出る行はこれだ。
+- Gary Robinsonと共に、pgの「A Plan for Spam」を実際に動くSpamBayesにした人でもある。
+- 昔はpython-devの投稿とバグを全部読んでいたので、この人たちを知っている気がしていた。Timはいつも一番好きだった。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+팀 피터스 별세
+***** TLDR
+귀도 반 로섬이 11월 11일, 팀 피터스가 2026년 7월 15일 74세로 사망했다고 알렸다. 피터스는 Zen of Python(PEP 20)을 쓰고 2002년 Timsort를 설계했으며 pymalloc, 딕셔너리 최적화, 순환 참조 가비지 컬렉션, 제너레이터, doctest, difflib, pickletools 작업에 참여했다. 그의 첫 기여는 파이썬이 int와 float의 혼합 연산을 지원해야 한다고 반 로섬을 설득한 일이었다. 메일링 리스트에서 워낙 끈기 있게 많이 답하는 바람에 커뮤니티는 그를 Timbot이라고 불렀다.
+***** Take
+Timsort는 파이썬 안에 머물지 않았다. 자바, 안드로이드, V8, 스위프트의 기본 정렬이므로 지금 돌아가는 정렬의 대부분은 이름만 바뀐 그의 알고리즘이다.
+***** Comments
+- $ python -c "import this" -> The Zen of Python, by Tim Peters. 지금도 첫 줄은 그대로다.
+- 게리 로빈슨과 함께 pg의 'A Plan for Spam' 글을 실제로 작동하는 SpamBayes로 만든 사람이기도 하다.
+- 예전에 python-dev 글과 버그를 다 읽던 시절이 있어서 이 사람들을 아는 기분이었다. 팀은 늘 내가 가장 좋아한 사람이었다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Ha muerto Tim Peters
+***** TLDR
+Guido van Rossum anunció el 11 de noviembre que Tim Peters murió el 15 de julio de 2026, a los 74 años. Peters escribió el Zen de Python (PEP 20), diseñó Timsort en 2002 y trabajó en pymalloc, la optimización de diccionarios, el recolector de ciclos, los generadores, doctest, difflib y pickletools. Su primera contribución fue convencer a van Rossum de que Python debía permitir aritmética mixta entre int y float. Respondía en las listas de correo con tanta paciencia y tanta frecuencia que la comunidad lo llamaba Timbot.
+***** Take
+Timsort no se quedó dentro de Python. Es el orden por defecto en Java, Android, V8 y Swift, así que la mayoría de las ordenaciones que corren ahora mismo son su algoritmo con otro nombre.
+***** Comments
+- $ python -c "import this" -> The Zen of Python, by Tim Peters. Sigue siendo la primera línea que imprime.
+- Junto con Gary Robinson convirtió el ensayo 'A Plan for Spam' de pg en SpamBayes, que de verdad funcionaba.
+- Leía todos los mensajes y bugs de python-dev, así que sentía que conocía a esta gente. Tim siempre fue mi favorito.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Tim Peters ist gestorben
+***** TLDR
+Guido van Rossum teilte am 11. November mit, dass Tim Peters am 15. Juli 2026 im Alter von 74 Jahren gestorben ist. Peters schrieb das Zen of Python (PEP 20), entwarf 2002 Timsort und arbeitete an pymalloc, der Dict-Optimierung, der Zyklen-Garbage-Collection, Generatoren, doctest, difflib und pickletools. Sein erster Beitrag war, van Rossum davon zu überzeugen, dass Python gemischte Arithmetik aus int und float erlauben sollte. Auf den Mailinglisten antwortete er so geduldig und so oft, dass die Community ihn Timbot nannte.
+***** Take
+Timsort blieb nicht in Python. Es ist die Standardsortierung in Java, Android, V8 und Swift, die meisten Sortiervorgänge, die gerade laufen, sind also sein Algorithmus unter anderem Namen.
+***** Comments
+- $ python -c "import this" -> The Zen of Python, by Tim Peters. Das ist bis heute die erste Zeile.
+- Gemeinsam mit Gary Robinson machte er aus pgs Essay 'A Plan for Spam' das tatsächlich funktionierende SpamBayes.
+- Früher habe ich jeden python-dev-Beitrag und jeden Bug gelesen, da hatte man das Gefühl, diese Leute zu kennen. Tim war immer mein Favorit.
+** Jane Street: Socratic Tutor :ai:education:llm:agents:
+:PROPERTIES:
+:ID:       50438261
+:URL:      https://github.com/janestreet/agent_skills/blob/master/socratic-tutor/SKILL.md
+:HN_URL:   https://news.ycombinator.com/item?id=50438261
+:POINTS:   250
+:COMMENTS: 60
+:BY:       tosh
+:END:
+
+*** TLDR
+Jane Street published an agent skill that turns a coding assistant into a tutor. It splits a topic into 4 to 10 subskills, asks 3 to 5 diagnostic questions to place you, then teaches by asking one question at a time and waiting, instead of explaining. Levels run 0 (unaware) to 5 (can teach it), and a level only counts after correct answers on two or more independent checks; missed spaced-review questions push you back down. Commands include show progress, harder, easier, just tell me, save state and resume from.
+
+*** Take
+The one instruction that matters is the refusal to answer: when the user is wrong, ask a narrower question that exposes the contradiction. Everything else in the file is ordinary curriculum design. That line is the only part fighting the model's default, which is to resolve your confusion immediately and move on.
+
+*** Comments
+
+**** koolba
+Trying this with the Claude CLI is funny because by default its suggestion for your next prompt is the answer to the question.
+
+**** lemax
+I have struggled to get AI to teach me anything without it spilling hints or giving the answer away.
+
+**** zkmon
+Email quality at my work has gone up and AI clearly has a role in it. The cool thing here is that this pulls up people's thinking.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Jane Street：苏格拉底式家教
+***** TLDR
+Jane Street 公开了一个 agent skill，把编程助手变成家教。它把一个主题拆成 4 到 10 个子技能，先用 3 到 5 个诊断问题定位你的水平，然后不讲解，而是一次只问一个问题并等你回答。等级从 0（完全不懂）到 5（能教别人），只有在两次以上独立检验中答对才算达标；间隔复习答错会被降级。可用命令包括 show progress、harder、easier、just tell me、save state 和 resume from。
+***** Take
+真正关键的只有一条指令：拒绝给答案。用户答错时，要问一个更窄的问题，把他推理里的矛盾暴露出来。文件里其他内容都是常规的课程设计。只有这一行在对抗模型的默认行为，也就是立刻替你解决困惑然后往下走。
+***** Comments
+- 用 Claude CLI 试这个挺好笑，因为它默认给你推荐的下一条提示词就是问题的答案。
+- 我一直没法让 AI 好好教我东西，它总是漏提示或者干脆把答案说出来。
+- 我们公司邮件的质量确实变好了，AI 显然有功劳。而这个东西厉害的地方在于，它在把人的思考水平往上拉。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Jane Street: ソクラテス式チューター
+***** TLDR
+Jane Streetが、コーディングアシスタントを家庭教師に変えるagent skillを公開した。トピックを4〜10のサブスキルに分割し、3〜5問の診断で現在地を測ったうえで、説明せずに一問ずつ質問して返答を待つ。レベルは0（知らない）から5（教えられる）までで、独立した2回以上のチェックに正答しないと認定されない。間隔反復の復習で間違えるとレベルは下がる。show progress、harder、easier、just tell me、save state、resume fromといったコマンドがある。
+***** Take
+重要な指示は一つだけで、答えを出さないことだ。ユーザーが間違えたら、推論の矛盾を露出させるより狭い質問をする。他はごく普通のカリキュラム設計でしかない。この一行だけが、混乱を即座に解消して次に進もうとするモデルの既定動作に逆らっている。
+***** Comments
+- Claude CLIで試すと笑える。デフォルトで提案される次のプロンプトが、その質問の答えそのものだ。
+- ヒントを漏らしたり答えを言ってしまわずにAIに教えてもらうのが、どうにもうまくいかない。
+- 職場のメールの質は確かに上がっていて、AIの影響は明らかだ。これの面白い点は、人の思考そのものを引き上げにきていることだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+제인스트리트: 소크라테스식 튜터
+***** TLDR
+제인스트리트가 코딩 어시스턴트를 교사로 바꾸는 agent skill을 공개했다. 주제를 4~10개의 하위 기술로 쪼개고 3~5개의 진단 질문으로 수준을 잡은 뒤, 설명하지 않고 한 번에 한 질문씩 던지며 답을 기다린다. 레벨은 0(모름)부터 5(가르칠 수 있음)까지이며, 독립된 두 번 이상의 확인에서 맞혀야 인정된다. 간격 복습에서 틀리면 레벨이 내려간다. show progress, harder, easier, just tell me, save state, resume from 같은 명령을 쓸 수 있다.
+***** Take
+핵심 지시는 답을 주지 않는다는 한 줄뿐이다. 사용자가 틀리면 추론의 모순이 드러나는 더 좁은 질문을 하라는 것. 나머지는 평범한 교육과정 설계다. 그 한 줄만이 혼란을 즉시 해소하고 넘어가려는 모델의 기본 행동에 맞선다.
+***** Comments
+- Claude CLI로 해보면 웃긴다. 기본으로 추천해 주는 다음 프롬프트가 그 질문의 답이다.
+- AI가 힌트를 흘리거나 답을 말해 버리지 않게 하면서 뭔가를 배우는 데 늘 실패했다.
+- 회사 메일 품질이 올라간 건 사실이고 AI 덕이 분명하다. 이건 사람의 사고 자체를 끌어올린다는 점이 다르다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Jane Street: tutor socrático
+***** TLDR
+Jane Street publicó una agent skill que convierte un asistente de código en tutor. Divide el tema en 4 a 10 subhabilidades, hace 3 a 5 preguntas de diagnóstico para ubicarte y luego enseña preguntando de una en una y esperando, en lugar de explicar. Los niveles van de 0 (no lo conoce) a 5 (puede enseñarlo), y solo cuentan tras acertar en dos o más comprobaciones independientes; fallar un repaso espaciado te baja de nivel. Incluye comandos como show progress, harder, easier, just tell me, save state y resume from.
+***** Take
+La única instrucción que importa es la negativa a responder: cuando el usuario se equivoca, hay que hacer una pregunta más estrecha que exponga la contradicción en su razonamiento. Lo demás es diseño curricular corriente. Esa línea es la única que va contra el comportamiento por defecto del modelo, que es resolverte la duda de inmediato y seguir.
+***** Comments
+- Probarlo con la CLI de Claude tiene gracia, porque la sugerencia que te da para el siguiente prompt es la respuesta a la pregunta.
+- Nunca he conseguido que una IA me enseñe algo sin que suelte pistas o directamente la respuesta.
+- La calidad de los correos en mi trabajo ha subido y la IA tiene algo que ver. Lo interesante de esto es que tira hacia arriba del pensamiento de la gente.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Jane Street: Sokratischer Tutor
+***** TLDR
+Jane Street hat eine Agent Skill veröffentlicht, die einen Coding-Assistenten zum Tutor macht. Sie zerlegt ein Thema in 4 bis 10 Teilfertigkeiten, stellt 3 bis 5 Diagnosefragen zur Einordnung und unterrichtet dann, indem sie eine Frage stellt und wartet, statt zu erklären. Die Stufen reichen von 0 (keine Ahnung) bis 5 (kann es lehren) und gelten erst nach richtigen Antworten in zwei oder mehr unabhängigen Prüfungen; verpasste Wiederholungsfragen stufen zurück. Befehle sind unter anderem show progress, harder, easier, just tell me, save state und resume from.
+***** Take
+Entscheidend ist eine einzige Anweisung, nämlich die Antwort zu verweigern: Wer falsch liegt, bekommt eine engere Frage, die den Widerspruch in seiner Argumentation offenlegt. Alles andere in der Datei ist gewöhnliches Curriculum-Design. Nur diese Zeile arbeitet gegen das Standardverhalten des Modells, die Verwirrung sofort aufzulösen und weiterzugehen.
+***** Comments
+- Mit der Claude-CLI ist das komisch, weil der vorgeschlagene nächste Prompt standardmäßig die Antwort auf die Frage ist.
+- Ich habe es nie geschafft, mir von einer KI etwas beibringen zu lassen, ohne dass sie Hinweise ausplaudert oder die Lösung verrät.
+- Die Mail-Qualität bei uns ist gestiegen, KI hat daran klar ihren Anteil. Das Besondere hier ist, dass es das Denken der Leute nach oben zieht.
+** A general purpose Apple Silicon layer for x86-64 PCs :macos:emulation:reverse-engineering:gpu:
+:PROPERTIES:
+:ID:       50460154
+:URL:      https://github.com/tylertms/Stela
+:HN_URL:   https://news.ycombinator.com/item?id=50460154
+:POINTS:   113
+:COMMENTS: 43
+:BY:       iceboundrock
+:END:
+
+*** TLDR
+Stela boots macOS on an ordinary x86-64 PC with no host operating system underneath. It is a UEFI program containing an ahead-of-time and JIT ARM64-to-x86-64 translator covering more than 3,000 AArch64 instruction encodings, a model of Mac mini (M2) hardware, and a Metal driver that compiles Metal's shader IR straight to Mesa's format for NVIDIA GTX 16 and RTX 20 series and newer. At v0.1.0 macOS and most apps start but it is slow. Requirements: an x86-64-v2 CPU, 8GB RAM, UEFI, a 60GB empty GPT partition. GPL-2.0, contains no Apple code.
+
+*** Take
+The Metal-to-Mesa driver for NVIDIA cards is the part that makes this more than a Hackintosh revival, and also the part most likely to rot. A translator for 3,000 encodings is a finite job; tracking Apple's GPU stack with no documentation is not.
+
+*** Comments
+
+**** iceboundrock
+It is a UEFI boot program with an arm64-to-x86-64 translator, a Metal driver for NVIDIA GPUs and a model of Apple silicon hardware. macOS and most apps start, but it is slow and needs much more testing.
+
+**** yjftsjthsd-h
+So basically an emulator layer that does not need a host OS? I am not really interested in running Darwin, but that is a cool concept.
+
+**** jamesy0ung
+macOS 27.2.1 still ships an x86_64 kernel binary rather than a kernelcache. I wonder if that is any use here.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+给 x86-64 PC 的通用 Apple Silicon 兼容层
+***** TLDR
+Stela 能在普通 x86-64 PC 上直接启动 macOS，底下没有宿主操作系统。它是一个 UEFI 引导程序，内含一个同时用 AOT 和 JIT 的 arm64 到 x86-64 翻译器（覆盖 3000 多种 AArch64 指令编码）、一套 Mac mini（M2）硬件模型，以及一个把 Metal 着色器 IR 直接编译成 Mesa 格式的 Metal 驱动，支持 NVIDIA GTX 16、RTX 20 及更新系列。在 v0.1.0 版本，macOS 和大多数应用能启动，但很慢。要求：x86-64-v2 CPU、8GB 内存、UEFI、60GB 空的 GPT 分区。GPL-2.0，不含任何 Apple 代码。
+***** Take
+为 NVIDIA 显卡写的 Metal-to-Mesa 驱动，是让这个项目不只是黑苹果复刻的关键，同时也是最容易烂掉的部分。翻译 3000 条指令编码是有尽头的活；在没有文档的情况下跟住苹果的 GPU 栈不是。
+***** Comments
+- 它是一个 UEFI 引导程序，带 arm64 到 x86-64 的翻译器、给 NVIDIA 显卡的 Metal 驱动，以及一套 Apple silicon 硬件模型。macOS 和大多数应用能启动，但很慢，还需要大量测试。
+- 所以基本上就是一个不需要宿主系统的模拟层？我其实不想跑 Darwin，但这个思路很酷。
+- macOS 27.2.1 里装的还是 x86_64 的内核二进制，不是 kernelcache。不知道这对这个项目有没有用。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+x86-64 PC向けの汎用Apple Siliconレイヤー
+***** TLDR
+Stelaは、ホストOSなしで普通のx86-64 PC上にmacOSを起動させる。UEFIブートプログラムの中に、AOTとJITを併用するarm64からx86-64への変換器（3,000以上のAArch64命令エンコーディングに対応）、Mac mini（M2）のハードウェアモデル、MetalのシェーダーIRをMesaの形式へ直接コンパイルするMetalドライバ（NVIDIA GTX 16およびRTX 20シリーズ以降対応）が入っている。v0.1.0ではmacOSとほとんどのアプリが起動するが遅い。要件はx86-64-v2 CPU、8GBメモリ、UEFI、空の60GB GPTパーティション。GPL-2.0で、Appleのコードは含まない。
+***** Take
+NVIDIA向けのMetal-to-Mesaドライバが、これを単なるHackintoshの再来以上にしている部分であり、同時に最も腐りやすい部分でもある。3,000個の命令エンコーディングの変換は終わりがある仕事だが、ドキュメントなしでAppleのGPUスタックに追従し続けることは終わらない。
+***** Comments
+- UEFIブートプログラムで、arm64からx86-64への変換器、NVIDIA GPU用のMetalドライバ、Apple siliconのハードウェアモデルを含む。macOSとほとんどのアプリは起動するが、遅く、まだ多くのテストが必要だ。
+- つまりホストOSを必要としないエミュレーション層ということ？Darwinを動かしたいわけではないが、発想としては面白い。
+- macOS 27.2.1はkernelcacheではなくx86_64のカーネルバイナリを今も同梱している。これが何か役に立たないだろうか。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+x86-64 PC를 위한 범용 애플 실리콘 레이어
+***** TLDR
+Stela는 호스트 운영체제 없이 일반 x86-64 PC에서 macOS를 부팅한다. UEFI 부트 프로그램 안에 AOT와 JIT를 함께 쓰는 arm64→x86-64 변환기(AArch64 명령 인코딩 3,000여 종 지원), Mac mini(M2) 하드웨어 모델, Metal 셰이더 IR을 Mesa 형식으로 바로 컴파일하는 Metal 드라이버(NVIDIA GTX 16, RTX 20 시리즈 이상)가 들어 있다. v0.1.0에서 macOS와 대부분의 앱이 실행되지만 느리다. 요구 사항은 x86-64-v2 CPU, 8GB 램, UEFI, 비어 있는 60GB GPT 파티션. GPL-2.0이며 애플 코드는 포함하지 않는다.
+***** Take
+NVIDIA용 Metal-to-Mesa 드라이버가 이 프로젝트를 해킨토시 재현 이상으로 만들고, 동시에 가장 먼저 썩을 부분이다. 명령 인코딩 3,000개 변환은 끝이 있는 작업이지만, 문서 없이 애플의 GPU 스택을 계속 따라가는 일은 끝이 없다.
+***** Comments
+- UEFI 부트 프로그램이고, arm64→x86-64 변환기와 NVIDIA GPU용 Metal 드라이버, 애플 실리콘 하드웨어 모델이 들어 있다. macOS와 대부분의 앱이 실행되지만 느리고 테스트가 훨씬 더 필요하다.
+- 그러니까 호스트 OS가 필요 없는 에뮬레이션 레이어라는 거죠? 다윈을 돌리고 싶은 건 아니지만 개념은 멋지다.
+- macOS 27.2.1은 아직 kernelcache가 아니라 x86_64 커널 바이너리를 같이 넣어 준다. 이게 여기에 쓸모가 있을지 궁금하다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Una capa Apple Silicon de propósito general para PC x86-64
+***** TLDR
+Stela arranca macOS en un PC x86-64 corriente sin ningún sistema operativo anfitrión debajo. Es un programa UEFI que contiene un traductor de arm64 a x86-64 con compilación anticipada y JIT, cubriendo más de 3.000 codificaciones de instrucciones AArch64, un modelo del hardware del Mac mini (M2) y un driver de Metal que compila la IR de shaders de Metal directamente al formato de Mesa para NVIDIA GTX 16 y RTX 20 en adelante. En la v0.1.0 macOS y la mayoría de las aplicaciones arrancan, pero va lento. Requisitos: CPU x86-64-v2, 8GB de RAM, UEFI y una partición GPT vacía de 60GB. GPL-2.0, sin código de Apple.
+***** Take
+El driver Metal-a-Mesa para tarjetas NVIDIA es lo que hace que esto sea más que un revival del Hackintosh, y también lo que antes se va a quedar obsoleto. Traducir 3.000 codificaciones es un trabajo finito; seguir el ritmo del stack gráfico de Apple sin documentación no lo es.
+***** Comments
+- Es un programa de arranque UEFI con un traductor de arm64 a x86-64, un driver de Metal para GPU NVIDIA y un modelo del hardware de Apple silicon. macOS y la mayoría de las apps arrancan, pero va lento y necesita mucha más prueba.
+- ¿Entonces es básicamente una capa de emulación que no necesita sistema anfitrión? No me interesa correr Darwin, pero el concepto está muy bien.
+- macOS 27.2.1 todavía incluye un binario de kernel x86_64 en lugar de un kernelcache. Me pregunto si sirve de algo aquí.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Eine universelle Apple-Silicon-Schicht für x86-64-PCs
+***** TLDR
+Stela bootet macOS auf einem gewöhnlichen x86-64-PC, ohne darunterliegendes Host-Betriebssystem. Es ist ein UEFI-Programm mit einem ARM64-zu-x86-64-Übersetzer, der vorab und per JIT arbeitet und über 3.000 AArch64-Instruktionskodierungen abdeckt, einem Modell der Mac-mini-(M2)-Hardware und einem Metal-Treiber, der Metals Shader-IR direkt in Mesas Format übersetzt, für NVIDIA GTX 16 und RTX 20 und neuer. In v0.1.0 starten macOS und die meisten Apps, aber langsam. Voraussetzungen: x86-64-v2-CPU, 8GB RAM, UEFI, eine leere 60GB-GPT-Partition. GPL-2.0, enthält keinen Apple-Code.
+***** Take
+Der Metal-auf-Mesa-Treiber für NVIDIA-Karten macht das Projekt zu mehr als einer Hackintosh-Neuauflage und ist gleichzeitig der Teil, der am schnellsten verrottet. 3.000 Instruktionskodierungen zu übersetzen ist eine endliche Aufgabe; Apples GPU-Stack ohne Dokumentation zu folgen ist es nicht.
+***** Comments
+- Es ist ein UEFI-Bootprogramm mit einem ARM64-zu-x86-64-Übersetzer, einem Metal-Treiber für NVIDIA-GPUs und einem Modell der Apple-Silicon-Hardware. macOS und die meisten Apps starten, aber es ist langsam und braucht viel mehr Tests.
+- Also im Grunde eine Emulationsschicht, die kein Host-OS braucht? Darwin will ich eigentlich nicht laufen lassen, aber das Konzept ist stark.
+- macOS 27.2.1 liefert noch ein x86_64-Kernel-Binary statt eines Kernelcache. Ob das hier etwas nützt?
+** I gave an agent a lakehouse and control of my garden :iot:ai:agents:data:
+:PROPERTIES:
+:ID:       50415162
+:URL:      https://jatorre.github.io/garden/
+:HN_URL:   https://news.ycombinator.com/item?id=50415162
+:POINTS:   96
+:COMMENTS: 43
+:BY:       jatorre
+:END:
+
+*** TLDR
+jatorre wired eight soil probes, a weather station, a leaf-wetness sensor and a Reolink camera into Iceberg tables, then gave a scheduled Claude agent read access to the data and control of the irrigation through an old Android phone running the Rain Bird app. The agent runs at 08:45 Madrid time, compares moisture trends with past watering responses and the Open-Meteo forecast, looks at camera images, then emails four paragraphs. Guardrails: one change per zone, adjustments capped at 20%, run times between 1 and 15 minutes. Over four million sensor rows across seven tables take 62 MB. It caught caterpillar damage on a close-up leaf shot and found an under-watered corner by comparing probes; it also warned about a low battery for 29 days with no human response. Sensors cost about 300 euros.
+
+*** Take
+The author's own number is the honest one: a 60-euro lettuce on two square meters. The useful finding is elsewhere: the agent needed history, not a dashboard, and it only earned its keep by comparing probes against past watering. The part that should worry him is that the valve guardrails live in a prompt rather than in the controller.
+
+*** Comments
+
+**** ryankrage77
+Given the opportunity, players will optimise the fun out of a game. A fully automated setup is cool, but if it works well you are not gardening any more.
+
+**** rob74
+TIL that lakehouse means data lake plus data warehouse with the clarifying 'data' left out. Next to the word garden you first think of an actual house.
+
+**** anentropic
+"Lakeshed"
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+我给了一个 agent 一套湖仓，还让它管我的花园
+***** TLDR
+jatorre 把八支土壤探针、一个气象站、一个叶面湿度传感器和一台 Reolink 摄像头的数据都接进 Iceberg 表，然后让一个定时运行的 Claude agent 读取这些数据，并通过一台跑着 Rain Bird 应用的旧安卓手机控制灌溉。agent 在马德里时间 08:45 运行，把土壤湿度趋势和过去的浇水反应、Open-Meteo 预报对比，再看摄像头的照片，然后发一封四段的邮件。护栏：每个区域一次只改一项、调整幅度不超过 20%、单次浇水 1 到 15 分钟。七张表总共四百多万行传感器数据，只占 62 MB。它从一张叶片特写里发现了毛虫啃食，又靠对比探针找出了一块浇水不足的角落；它还连续 29 天提醒电池电量低，但没人管。传感器花了大约 300 欧元。
+***** Take
+作者自己给出的数字最诚实：两平方米上种出 60 欧元一棵的生菜。真正有价值的发现在别处：agent 需要的是历史数据而不是仪表盘，而它唯一真正干了活的地方，是把探针数据和过去的浇水记录做对比。真该让他担心的是，阀门的安全限制写在提示词里，而不是在控制器里。
+***** Comments
+- 只要有机会，玩家就会把游戏里的乐趣优化掉。全自动很酷，但如果它运转良好，你就不再是在园艺了。
+- 今天才知道 lakehouse 是 data lake 加 data warehouse，把 data 这个词去掉了。它和 garden 放在一起，第一反应真是以为有栋房子。
+- 「Lakeshed（湖边小棚）」
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+エージェントにレイクハウスと庭の制御権を渡した
+***** TLDR
+jatorreは土壌プローブ8本、気象ステーション、葉面湿潤センサー、ReolinkカメラのデータをすべてIcebergテーブルに流し込み、定期実行のClaudeエージェントにその読み取り権と、Rain Birdアプリを動かす古いAndroid端末経由での灌水制御を与えた。エージェントはマドリード時間8時45分に動き、土壌水分の推移を過去の灌水への反応とOpen-Meteoの予報と突き合わせ、カメラ画像を見て、4段落のメールを送る。ガードレールは、ゾーンごとに変更は1つまで、調整幅は20%まで、散水時間は1〜15分。7テーブル・400万行超のセンサーデータで合計62 MB。葉のクローズアップから毛虫の食害を見つけ、プローブの比較で水の足りていない一角を特定した。一方で電池残量低下の警告は29日間無視された。センサー代は約300ユーロ。
+***** Take
+著者自身の数字が一番正直だ。2平方メートルで60ユーロのレタス。価値ある発見は別のところにある。エージェントが必要としたのはダッシュボードではなく履歴で、実際に役に立ったのはプローブを過去の灌水と比べたときだけだった。心配すべきなのは、バルブのガードレールがコントローラーではなくプロンプトの中にあることだ。
+***** Comments
+- 機会があれば、プレイヤーはゲームから楽しさを最適化して消してしまう。完全自動化はかっこいいが、うまく動いているならもう園芸ではない。
+- lakehouseがdata lakeとdata warehouseから「data」を落とした言葉だと今日知った。gardenと並ぶと、まず本物の家を思い浮かべる。
+- 「Lakeshed（湖畔の小屋）」
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+에이전트에게 레이크하우스와 정원 제어권을 줬다
+***** TLDR
+jatorre는 토양 프로브 8개, 기상 관측 장비, 잎 습윤 센서, Reolink 카메라의 데이터를 모두 Iceberg 테이블에 넣고, 예약 실행되는 Claude 에이전트에게 읽기 권한과 Rain Bird 앱이 돌아가는 구형 안드로이드 폰을 통한 관수 제어권을 줬다. 에이전트는 마드리드 시간 08:45에 실행되어 토양 수분 추세를 과거 관수 반응과 Open-Meteo 예보와 비교하고 카메라 사진을 보고 네 단락짜리 메일을 보낸다. 가드레일은 구역당 변경 1건, 조정 폭 최대 20%, 관수 시간 1~15분. 7개 테이블에 400만 행이 넘는 센서 데이터가 전부 62 MB다. 잎 근접 사진에서 애벌레 피해를 찾아냈고 프로브 비교로 물이 덜 간 구석을 짚어냈다. 반면 배터리 부족 경고는 29일간 무시됐다. 센서 비용은 약 300유로.
+***** Take
+저자가 직접 쓴 숫자가 가장 솔직하다. 2제곱미터에서 나온 60유로짜리 상추. 쓸 만한 결론은 다른 데 있다. 에이전트에게 필요한 건 대시보드가 아니라 이력이었고, 실제로 값을 한 건 프로브를 과거 관수 기록과 비교했을 때뿐이었다. 정작 걱정할 부분은 밸브 가드레일이 컨트롤러가 아니라 프롬프트 안에 있다는 점이다.
+***** Comments
+- 기회가 주어지면 플레이어는 게임에서 재미를 최적화해 없애 버린다. 완전 자동화는 멋지지만, 잘 돌아간다면 그건 더 이상 정원 가꾸기가 아니다.
+- lakehouse가 data lake와 data warehouse에서 'data'를 뺀 말이라는 걸 오늘 알았다. garden 옆에 붙어 있으면 진짜 집을 먼저 떠올린다.
+- "Lakeshed(호숫가 창고)"
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Le di a un agente un lakehouse y el control de mi jardín
+***** TLDR
+jatorre conectó ocho sondas de suelo, una estación meteorológica, un sensor de humedad en hoja y una cámara Reolink a tablas Iceberg, y luego dio a un agente de Claude programado acceso de lectura a los datos y control del riego a través de un móvil Android viejo con la app de Rain Bird. El agente se ejecuta a las 08:45 de Madrid, compara las tendencias de humedad con la respuesta a riegos anteriores y la previsión de Open-Meteo, mira las imágenes de la cámara y envía un correo de cuatro párrafos. Límites: un cambio por zona, ajustes de como máximo el 20% y riegos de 1 a 15 minutos. Más de cuatro millones de filas de sensores en siete tablas ocupan 62 MB. Detectó daño de orugas en un primer plano de una hoja y encontró una esquina mal regada comparando sondas; también avisó de una batería baja durante 29 días sin que nadie hiciera nada. Los sensores costaron unos 300 euros.
+***** Take
+El número más honesto es el del propio autor: una lechuga de 60 euros en dos metros cuadrados. Lo aprovechable está en otro sitio: el agente necesitaba historial, no un panel, y solo se ganó el sueldo al comparar sondas con riegos pasados. Lo que debería preocuparle es que los límites de las válvulas viven en un prompt y no en el controlador.
+***** Comments
+- Si se les da la oportunidad, los jugadores optimizan la diversión hasta eliminarla. Una instalación totalmente automática está muy bien, pero si funciona ya no estás cultivando nada.
+- Hoy aprendí que lakehouse es data lake más data warehouse quitando la palabra 'data'. Junto a 'garden' uno piensa primero en una casa de verdad.
+- "Lakeshed" (cobertizo del lago)
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Ich habe einem Agenten ein Lakehouse und die Kontrolle über meinen Garten gegeben
+***** TLDR
+jatorre hat acht Bodensonden, eine Wetterstation, einen Blattnässesensor und eine Reolink-Kamera in Iceberg-Tabellen geleitet und dann einem zeitgesteuerten Claude-Agenten Lesezugriff auf die Daten sowie die Kontrolle über die Bewässerung gegeben, über ein altes Android-Handy mit der Rain-Bird-App. Der Agent läuft um 08:45 Madrider Zeit, vergleicht Feuchtigkeitsverläufe mit früheren Bewässerungen und der Open-Meteo-Prognose, sieht sich Kamerabilder an und schickt eine Mail mit vier Absätzen. Grenzen: eine Änderung pro Zone, Anpassungen maximal 20 Prozent, Laufzeiten zwischen 1 und 15 Minuten. Über vier Millionen Sensorzeilen in sieben Tabellen belegen 62 MB. Er erkannte Raupenfraß auf einer Blatt-Nahaufnahme und fand durch Sondenvergleich eine zu trockene Ecke; eine schwache Batterie meldete er 29 Tage lang ohne Reaktion. Die Sensoren kosteten rund 300 Euro.
+***** Take
+Die ehrlichste Zahl kommt vom Autor selbst: ein 60-Euro-Salatkopf auf zwei Quadratmetern. Der brauchbare Befund liegt anderswo: Der Agent brauchte Historie, kein Dashboard, und verdiente sein Geld nur dort, wo er Sonden mit früheren Bewässerungen verglich. Sorgen machen sollte ihm, dass die Ventilgrenzen in einem Prompt stehen und nicht in der Steuerung.
+***** Comments
+- Wenn man ihnen die Gelegenheit gibt, optimieren Spieler den Spaß aus einem Spiel heraus. Vollautomatik ist cool, aber wenn sie gut funktioniert, gärtnert man nicht mehr.
+- Heute gelernt: Lakehouse heißt Data Lake plus Data Warehouse, nur ohne das klärende 'Data'. Neben dem Wort Garten denkt man zuerst an ein echtes Haus.
+- "Lakeshed" (Seehütte)
+** A live tree of systemd jobs on the boot console :linux:systemd:rust:tui:
+:PROPERTIES:
+:ID:       50425017
+:URL:      https://codeberg.org/wvhulle/bootvine
+:HN_URL:   https://news.ycombinator.com/item?id=50425017
+:POINTS:   91
+:COMMENTS: 22
+:BY:       orhunp_
+:END:
+
+*** TLDR
+bootvine replaces the scrolling boot log with a live tree of systemd jobs on the console: which units are still pending, a timeline of the slowest ones that already ran, and failures shown with the matching journal lines. It also prompts for passphrases such as LUKS unlocks and follows shutdown. Written mostly in Rust, it watches systemd job status over libdbus and takes a dedicated virtual terminal. Needs systemd 246 or newer as PID 1, libdbus and libsystemd, and a systemd initrd to cover both boot stages. Guides exist for NixOS, Ubuntu and others.
+
+*** Take
+The two existing options are a splash screen that hides everything and a log that scrolls past faster than anyone reads. Showing the dependency graph as it resolves is the first genuinely different answer in years. The objection in the thread, that nobody watches a 12-second boot, holds until a unit hangs for 90 seconds and you want to know which one.
+
+*** Comments
+
+**** nubinetwork
+If I read the screenshot right it took 12 seconds from initrd to fully loaded. My laptop boots so fast that it would take longer to render the screen than to spray the usual text at the VT.
+
+**** kodoman
+I usually do not like TUIs and just want output in emacs text buffers, but this interface is beautiful. A nice thing to glance at that tells you everything you need to know about your units.
+
+**** origini
+What I do not get is why booting still takes seconds. Most hardware can be initialised in parallel and reading the OS into RAM is fast.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+在启动控制台上实时显示 systemd 任务树
+***** TLDR
+bootvine 把滚动的启动日志换成控制台上的 systemd 任务实时树：哪些单元还在等待、已经跑完的最慢单元的时间线，以及失败单元连同对应的 journal 行。它还能处理 LUKS 解锁之类的密码提示，并跟踪关机过程。项目主要用 Rust 写成，通过 libdbus 监听 systemd 的任务状态，并独占一个虚拟终端。要求 systemd 246 及以上作为 PID 1、libdbus 和 libsystemd，以及一个 systemd initrd（这样才能覆盖两个启动阶段）。已有 NixOS、Ubuntu 等发行版的安装说明。
+***** Take
+现有的两个选择是：一块把一切都挡住的启动画面，和一份滚得比谁都读得快的日志。把依赖图解析的过程直接显示出来，是这些年第一个真正不一样的答案。帖子里那个反对意见——没人会盯着 12 秒的启动过程看——在某个单元卡住 90 秒、而你想知道是哪个之前都成立。
+***** Comments
+- 如果我没看错截图，从 initrd 到完全加载花了 12 秒。我的笔记本启动太快了，渲染这个界面的时间比把平常那堆文字喷到 VT 上还长。
+- 我一般不喜欢 TUI，只想把输出扔进 emacs 的文本缓冲区，但这个界面真漂亮。瞄一眼就知道单元的全部情况。
+- 我不明白的是，为什么启动还要花好几秒。大部分硬件都能并行初始化，把系统读进内存也很快。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+起動コンソールにsystemdジョブのライブツリーを表示する
+***** TLDR
+bootvineは、流れていく起動ログの代わりに、systemdジョブのライブツリーをコンソールに表示する。まだ待機中のユニット、すでに実行された中で最も遅かったもののタイムライン、失敗したユニットとそれに対応するjournalの行が見える。LUKSの解錠などパスフレーズの入力も扱い、シャットダウンも追う。主にRustで書かれ、libdbus経由でsystemdのジョブ状態を監視し、専用の仮想端末を占有する。PID 1としてsystemd 246以降、libdbusとlibsystemd、そして両方の起動段階を表示するにはsystemd initrdが必要。NixOSやUbuntuなど向けの手順がある。
+***** Take
+既存の選択肢は、すべてを隠すスプラッシュ画面か、誰も読めない速度で流れるログの二つだけだった。依存グラフが解決していく様子を見せるのは、ここ数年で初めての本当に別の答えだ。スレッドにある「12秒の起動を誰も眺めない」という反論は、あるユニットが90秒止まってそれがどれか知りたくなるまでは正しい。
+***** Comments
+- スクリーンショットを正しく読めば、initrdから完全起動まで12秒。自分のノートはもっと速く起動するので、この画面を描くほうが、いつものテキストをVTに吐き出すより時間がかかる。
+- 普段TUIは好きではなくemacsのテキストバッファに出力してほしい派だが、このインターフェースは美しい。ちらっと見るだけでユニットの状況が全部わかる。
+- 分からないのは、なぜ起動がいまだに数秒かかるのかだ。ハードウェアの大半は並列に初期化できるし、OSをRAMに読み込むのは速い。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+부팅 콘솔에 systemd 작업 트리를 실시간으로 그린다
+***** TLDR
+bootvine은 흘러가는 부팅 로그 대신 systemd 작업의 실시간 트리를 콘솔에 보여 준다. 아직 대기 중인 유닛, 이미 실행된 것 중 가장 느렸던 유닛들의 타임라인, 실패한 유닛과 해당 journal 줄까지 나온다. LUKS 해제 같은 암호 입력도 처리하고 종료 과정도 따라간다. 대부분 러스트로 작성되었고 libdbus로 systemd 작업 상태를 감시하며 전용 가상 터미널을 차지한다. PID 1으로 systemd 246 이상, libdbus와 libsystemd, 두 부팅 단계를 모두 보려면 systemd initrd가 필요하다. NixOS, 우분투 등을 위한 안내가 있다.
+***** Take
+지금까지의 선택지는 전부를 가리는 스플래시 화면과, 아무도 따라 읽을 수 없는 속도로 지나가는 로그 둘뿐이었다. 의존성 그래프가 풀려 가는 과정을 보여 주는 건 수년 만에 처음 나온 진짜 다른 답이다. 12초짜리 부팅을 누가 들여다보냐는 스레드의 반론은, 어떤 유닛이 90초간 멈춰서 그게 뭔지 알고 싶어지기 전까지만 맞다.
+***** Comments
+- 스크린샷을 제대로 읽었다면 initrd에서 완전 로드까지 12초다. 내 노트북은 훨씬 빨리 부팅되니, 이 화면을 그리는 게 평소 텍스트를 VT에 뿌리는 것보다 오래 걸릴 것이다.
+- 나는 보통 TUI를 싫어하고 출력은 emacs 텍스트 버퍼로 받고 싶은 쪽인데, 이 인터페이스는 아름답다. 한 번 흘깃 보면 유닛 상태가 다 보인다.
+- 이해가 안 되는 건 왜 부팅이 아직도 몇 초나 걸리느냐는 거다. 하드웨어 대부분은 병렬로 초기화할 수 있고 OS를 램에 읽어 들이는 건 빠르다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Un árbol en vivo de los trabajos de systemd en la consola de arranque
+***** TLDR
+bootvine sustituye el log de arranque que pasa a toda velocidad por un árbol en vivo de los trabajos de systemd en la consola: qué unidades siguen pendientes, una línea de tiempo de las más lentas que ya corrieron y los fallos junto con las líneas del journal correspondientes. También pide contraseñas, por ejemplo para desbloquear LUKS, y sigue el apagado. Está escrito en su mayor parte en Rust, vigila el estado de los trabajos de systemd por libdbus y ocupa una terminal virtual propia. Requiere systemd 246 o posterior como PID 1, libdbus y libsystemd, y un initrd de systemd para cubrir las dos fases del arranque. Hay guías para NixOS, Ubuntu y otras.
+***** Take
+Las dos opciones que había eran una pantalla de bienvenida que lo tapa todo y un log que pasa más rápido de lo que nadie lee. Mostrar el grafo de dependencias mientras se resuelve es la primera respuesta realmente distinta en años. La objeción del hilo, que nadie se queda mirando un arranque de 12 segundos, vale hasta que una unidad se cuelga 90 segundos y quieres saber cuál.
+***** Comments
+- Si leo bien la captura, tardó 12 segundos desde el initrd hasta estar cargado del todo. Mi portátil arranca tan rápido que tardaría más en dibujar la pantalla que en escupir el texto de siempre en la VT.
+- Normalmente no me gustan las TUI y prefiero la salida en búferes de texto de emacs, pero esta interfaz es bonita. Algo agradable de mirar de reojo que te cuenta todo sobre tus unidades.
+- Lo que no entiendo es por qué arrancar sigue llevando segundos. Casi todo el hardware se puede inicializar en paralelo y leer el sistema a la RAM es rápido.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Ein Live-Baum der systemd-Jobs auf der Boot-Konsole
+***** TLDR
+bootvine ersetzt das durchrauschende Boot-Log durch einen Live-Baum der systemd-Jobs auf der Konsole: welche Units noch ausstehen, eine Zeitleiste der langsamsten bereits gelaufenen Units und Fehler samt der passenden Journal-Zeilen. Es fragt außerdem Passphrasen ab, etwa für LUKS, und begleitet das Herunterfahren. Überwiegend in Rust geschrieben, beobachtet es den systemd-Jobstatus über libdbus und belegt ein eigenes virtuelles Terminal. Voraussetzungen: systemd 246 oder neuer als PID 1, libdbus und libsystemd sowie ein systemd-initrd, um beide Boot-Phasen zu zeigen. Anleitungen gibt es für NixOS, Ubuntu und andere.
+***** Take
+Die zwei bisherigen Optionen waren ein Splash-Screen, der alles verdeckt, und ein Log, das schneller durchläuft, als irgendwer liest. Den Abhängigkeitsgraphen beim Auflösen zu zeigen, ist die erste wirklich andere Antwort seit Jahren. Der Einwand im Thread, niemand schaue einem 12-Sekunden-Boot zu, gilt genau bis eine Unit 90 Sekunden hängt und man wissen will, welche.
+***** Comments
+- Wenn ich den Screenshot richtig lese, hat es vom initrd bis zum fertigen System 12 Sekunden gedauert. Mein Laptop bootet so schnell, dass das Zeichnen dieses Bildschirms länger bräuchte als das übliche Textgespritz auf die VT.
+- Ich mag TUIs normalerweise nicht und will Ausgaben in Emacs-Textpuffern, aber dieses Interface ist schön. Etwas, auf das man kurz schaut und alles über seine Units weiß.
+- Was ich nicht verstehe: Warum dauert Booten überhaupt noch Sekunden? Die meiste Hardware lässt sich parallel initialisieren, und das OS in den RAM zu lesen geht schnell.
