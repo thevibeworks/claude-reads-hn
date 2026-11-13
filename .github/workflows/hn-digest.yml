@@ -180,10 +180,11 @@ jobs:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           DIGEST_DATE: ${{ steps.slot.outputs.digest_date }}
           DIGEST_PATH: ${{ steps.slot.outputs.digest_path }}
-          # WebFetch uses the haiku slot rather than the curator's model. Keep
-          # that slot on an available model explicitly; the historian follows
-          # the curator through `model: inherit`.
-          ANTHROPIC_DEFAULT_HAIKU_MODEL: claude-haiku-4-5-20251001
+          # WebFetch summarizes on the haiku slot, not the curator's model. It
+          # is left unset on purpose: with @v1 installing a current Claude Code,
+          # the `haiku` alias tracks the current Haiku (5.5 on 2.1.323). A dated
+          # id here is the pin that rots next. The historian follows the curator
+          # through `model: inherit`.
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ steps.app-token.outputs.token }}
@@ -199,8 +200,14 @@ jobs:
           # first upstream run logged 13 denials and every later one hit the
           # timeout. This is the permission set the pipeline was actually
           # built against, stated instead of inherited from a bug.
+          #
+          # The curator's model is pinned (it is the edition's voice; changing
+          # it is a decision, not a side effect of an action release). Effort is
+          # explicit because Claude Code starts Opus 5.5 at `medium`, one level
+          # below the `high` Opus 5 ran this job at. Needs Claude Code >= 2.1.280.
           claude_args: |
-            --model claude-opus-5
+            --model claude-opus-5-5
+            --effort high
             --allowedTools Bash,Read,Write,Edit,WebFetch,mcp__barkme__notify
             --mcp-config '{
               "mcpServers": {
