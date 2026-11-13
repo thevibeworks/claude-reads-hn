@@ -1,0 +1,512 @@
+#+TITLE: HN Digest 2026-11-13 01:00 UTC
+#+DATE: 2026-11-13T01:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Microsoft 365 goes dark worldwide, Rust 1.100 adds dependency cooldowns, and someone fingerprints Blackwell GPUs from model weights
+
+* Highlights
+- Microsoft 365 down for hours: a misfiring health check took out Outlook, Teams and SharePoint
+- Rust 1.100 stabilizes the never type after ten years, and Cargo gets dependency cooldowns
+- ZigZag: a $300 embroidery machine's subscription reverse engineered away in Rust
+- Checkpoint forensics claims six Chinese models were initialized on Blackwell GPUs
+- 2026 ED138: a dwarf planet candidate found in Rubin data and on 1937 glass plates
+
+* Stories
+
+** Service degradation on Microsoft 365 :microsoft:outage:cloud:sre:
+:PROPERTIES:
+:ID:       50471731
+:URL:      https://status.cloud.microsoft/
+:HN_URL:   https://news.ycombinator.com/item?id=50471731
+:POINTS:   469
+:COMMENTS: 440
+:BY:       dkpk
+:END:
+
+*** TLDR
+Microsoft 365 went down globally for hours on 12 November, taking out Outlook, Exchange Online, Teams, SharePoint, OneDrive, Copilot 365, Defender and Power BI. Microsoft said a large number of servers became unexpectedly unavailable, pushing traffic onto what remained, and pointed at a component handling health checks that may have misfired after a recent configuration update. It said this was not an attack. Recovery came in stages: an alternative health check was validated on a subset of servers and then applied more widely, followed by an automated process to detect and restart unresponsive servers. Microsoft's own status page buckled under load, so HN readers subscribed to its RSS feed instead.
+
+*** Take
+The fix Microsoft shipped mid-incident, automatic detection and restart of unresponsive servers, is the thing that should have existed before the incident. A health check that marks working servers dead, with no limit on how many it can condemn at once, is a single point of failure sitting on top of a system designed to have none. The status page failing while its RSS feed kept working is the other lesson: the simplest path out was the one nobody was maintaining.
+
+*** Comments
+
+**** beowulfey
+The status page is not working well, but I managed to subscribe to their RSS feed and it has been sending out updates periodically.
+
+**** tatersolid
+My last email arrived 5.5 hours ago. Teams chat and meetings are the only part of Microsoft 365 that seems to work. All our Azure infrastructure is fine, so this is 365-specific. Worst 365 outage our org has seen since we started in 2019.
+
+**** soundworlds
+Microsoft says it validated an alternative health check method on a subset of affected infrastructure and is applying it more broadly, plus an automated recovery process to detect and restart unresponsive servers.
+
+*** i18n                                                  :i18n:
+
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Degradación del servicio en Microsoft 365
+***** TLDR
+Microsoft 365 estuvo caído a nivel mundial durante horas el 12 de noviembre, afectando a Outlook, Exchange Online, Teams, SharePoint, OneDrive, Copilot 365, Defender y Power BI. Microsoft dijo que un gran número de servidores quedó inesperadamente no disponible, lo que desplazó el tráfico a los restantes, y señaló a un componente encargado de las comprobaciones de salud que pudo fallar tras una actualización de configuración reciente. Afirmó que no se trató de un ataque. La recuperación fue por etapas: se validó un método alternativo de comprobación de salud en un subconjunto de servidores y luego se aplicó más ampliamente, seguido de un proceso automático para detectar y reiniciar servidores que no respondían. La propia página de estado de Microsoft se saturó, así que los lectores de HN se suscribieron a su canal RSS.
+***** Take
+La solución que Microsoft desplegó en plena incidencia, la detección y reinicio automáticos de servidores que no responden, es justo lo que debería haber existido antes. Una comprobación de salud que marca como muertos servidores que funcionan, sin límite sobre cuántos puede condenar a la vez, es un punto único de fallo colocado encima de un sistema diseñado para no tener ninguno. Que la página de estado cayera mientras su RSS seguía funcionando es la otra lección: la vía más simple era la que nadie mantenía.
+***** Comments
+- La página de estado no funciona bien, pero conseguí suscribirme a su canal RSS y ha ido enviando actualizaciones periódicamente.
+- Mi último correo llegó hace 5,5 horas. El chat y las reuniones de Teams son lo único de Microsoft 365 que parece funcionar. Toda nuestra infraestructura de Azure está bien, así que esto es específico de 365. Es la peor caída de 365 que ha visto nuestra organización desde que empezamos en 2019.
+- Microsoft dice que validó un método alternativo de comprobación de salud en un subconjunto de la infraestructura afectada y lo está aplicando más ampliamente, además de un proceso de recuperación automática para detectar y reiniciar servidores que no responden.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Dienstbeeinträchtigung bei Microsoft 365
+***** TLDR
+Microsoft 365 war am 12. November weltweit stundenlang ausgefallen und riss Outlook, Exchange Online, Teams, SharePoint, OneDrive, Copilot 365, Defender und Power BI mit. Microsoft erklärte, eine große Zahl von Servern sei unerwartet nicht erreichbar gewesen, wodurch der Verkehr auf die verbleibenden verlagert wurde, und verwies auf eine Komponente für Health Checks, die nach einem kürzlichen Konfigurations-Update fehlerhaft reagiert haben könnte. Ein Angriff sei es nicht gewesen. Die Wiederherstellung erfolgte stufenweise: ein alternatives Health-Check-Verfahren wurde an einem Teil der Server geprüft und dann breiter ausgerollt, gefolgt von einem automatischen Prozess, der nicht reagierende Server erkennt und neu startet. Die Statusseite von Microsoft brach unter der Last zusammen, weshalb HN-Leser stattdessen deren RSS-Feed abonnierten.
+***** Take
+Die Lösung, die Microsoft mitten im Vorfall ausgerollt hat, das automatische Erkennen und Neustarten nicht reagierender Server, ist genau das, was vorher hätte existieren müssen. Ein Health Check, der funktionierende Server für tot erklärt, ohne Grenze dafür, wie viele er gleichzeitig verurteilen darf, ist ein Single Point of Failure über einem System, das keinen haben sollte. Dass die Statusseite ausfiel, während ihr RSS-Feed weiterlief, ist die zweite Lehre: der einfachste Ausweg war der, den niemand pflegte.
+***** Comments
+- Die Statusseite funktioniert kaum, aber ich konnte deren RSS-Feed abonnieren, und der liefert regelmäßig Updates.
+- Meine letzte E-Mail kam vor 5,5 Stunden an. Teams-Chat und -Meetings sind das Einzige in Microsoft 365, das noch läuft. Unsere ganze Azure-Infrastruktur ist in Ordnung, das ist also 365-spezifisch. Der schlimmste 365-Ausfall, den unsere Organisation seit dem Start 2019 erlebt hat.
+- Microsoft sagt, man habe ein alternatives Health-Check-Verfahren an einem Teil der betroffenen Infrastruktur validiert und rolle es breiter aus, dazu einen automatischen Wiederherstellungsprozess, der nicht reagierende Server erkennt und neu startet.
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Microsoft 365 서비스 장애
+***** TLDR
+11월 12일 Microsoft 365가 전 세계적으로 몇 시간 동안 중단되어 Outlook, Exchange Online, Teams, SharePoint, OneDrive, Copilot 365, Defender, Power BI가 영향을 받았다. Microsoft는 다수의 서버가 예기치 않게 사용 불가 상태가 되면서 트래픽이 남은 서버로 몰렸다고 설명하고, 최근 구성 업데이트 이후 오작동했을 가능성이 있는 헬스 체크 담당 구성요소를 원인으로 지목했다. 공격은 아니라고 밝혔다. 복구는 단계적으로 진행됐다. 일부 서버에서 대체 헬스 체크 방식을 검증한 뒤 더 넓게 적용하고, 응답하지 않는 서버를 감지해 재시작하는 자동 절차를 추가했다. Microsoft의 상태 페이지 자체가 부하로 멈추자 HN 독자들은 RSS 피드를 구독했다.
+***** Take
+Microsoft가 장애 중에 투입한 해법, 즉 응답하지 않는 서버를 자동으로 감지해 재시작하는 기능은 장애 전에 있어야 했던 것이다. 정상 작동하는 서버를 죽은 것으로 표시하면서 한 번에 몇 대까지 처리할 수 있는지 제한이 없는 헬스 체크는, 단일 장애점이 없도록 설계된 시스템 위에 올려놓은 단일 장애점이다. 상태 페이지는 죽고 RSS 피드는 살아남은 것이 또 하나의 교훈이다. 가장 단순한 경로가 아무도 관리하지 않던 경로였다.
+***** Comments
+- 상태 페이지는 거의 동작하지 않지만 RSS 피드를 구독해 두니 주기적으로 업데이트가 온다.
+- 마지막 메일을 받은 게 5.5시간 전이다. Microsoft 365에서 Teams 채팅과 회의만 돌아간다. Azure 인프라는 전부 정상이니 365에 국한된 문제다. 2019년에 M365를 도입한 이후 우리 조직이 겪은 최악의 장애다.
+- Microsoft는 영향받은 인프라 일부에서 대체 헬스 체크 방식을 검증했고 더 넓게 적용하는 중이며, 응답하지 않는 서버를 감지해 재시작하는 자동 복구 절차도 준비했다고 밝혔다.
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Microsoft 365でサービス障害
+***** TLDR
+11月12日、Microsoft 365が世界規模で数時間停止し、Outlook、Exchange Online、Teams、SharePoint、OneDrive、Copilot 365、Defender、Power BIに影響が出た。Microsoftは多数のサーバーが予期せず利用不能になり、トラフィックが残りのサーバーに集中したと説明し、直近の構成更新後に誤作動した可能性のあるヘルスチェック担当コンポーネントを原因として挙げた。攻撃ではないとしている。復旧は段階的に行われ、一部のサーバーで代替のヘルスチェック方式を検証してから適用範囲を広げ、応答しないサーバーを検知して再起動する自動処理を追加した。Microsoft自身のステータスページが負荷で停止したため、HNの読者はRSSフィードを購読して情報を追った。
+***** Take
+Microsoftが障害の最中に投入した対策、つまり応答しないサーバーの自動検知と再起動は、本来障害の前に用意されているべきものだった。正常なサーバーを死んだと判定し、一度に何台まで切り離せるかの上限を持たないヘルスチェックは、単一障害点を持たないよう設計されたシステムの上に置かれた単一障害点である。ステータスページが落ちてRSSフィードが生き残ったことがもう一つの教訓だ。最も単純な経路が、誰も手入れしていなかった経路だった。
+***** Comments
+- ステータスページはほとんど機能していないが、RSSフィードを購読できたので定期的に更新が届いている。
+- 最後にメールを受信したのは5.5時間前。Microsoft 365でまともに動くのはTeamsのチャットと会議だけだ。Azureのインフラは全部正常なので、これは365固有の問題。2019年にM365を導入して以来、組織として最悪の障害だ。
+- Microsoftは影響を受けたインフラの一部で代替のヘルスチェック方式を検証し、より広範に適用していると述べ、応答しないサーバーを検知して再起動する自動復旧処理も用意しているとしている。
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Microsoft 365 服务降级
+***** TLDR
+11 月 12 日，Microsoft 365 全球性中断数小时，Outlook、Exchange Online、Teams、SharePoint、OneDrive、Copilot 365、Defender 和 Power BI 均受影响。微软称大量服务器意外不可用，流量因此涌向剩余服务器，并指向一个负责健康检查的组件，它可能在近期的配置更新后出现了误判。微软表示这不是攻击。恢复分阶段进行：先在部分服务器上验证替代的健康检查方式，再扩大应用范围，随后加上自动检测并重启无响应服务器的流程。微软自己的状态页在压力下失灵，HN 读者改为订阅它的 RSS 源。
+***** Take
+微软在事故进行中上线的那套办法，自动检测并重启无响应的服务器，恰恰是事故之前就该有的。一个把正常服务器判定为死亡、又不限制一次能判死多少台的健康检查，就是架在一套刻意避免单点故障的系统之上的单点故障。状态页挂掉而它的 RSS 源照常工作，这是另一个教训：最简单的那条通路，正是没人维护的那条。
+***** Comments
+- 状态页基本不工作，但我订阅上了它的 RSS 源，更新一直在定期推送。
+- 我最后一封邮件是 5.5 小时前收到的。Microsoft 365 里还能用的只有 Teams 聊天和会议。我们所有 Azure 基础设施都正常，所以这是 365 独有的问题。这是我们单位 2019 年上 M365 以来最严重的一次中断。
+- 微软表示已在部分受影响的基础设施上验证了替代的健康检查方式并正在扩大应用，还准备了自动恢复流程，持续检测并重启无响应的服务器。
+** Rust 1.100 :rust:release:cargo:supply-chain:
+:PROPERTIES:
+:ID:       50472038
+:URL:      https://blog.rust-lang.org/2026/11/12/Rust-1.100.0/
+:HN_URL:   https://news.ycombinator.com/item?id=50472038
+:POINTS:   390
+:COMMENTS: 163
+:BY:       mbStavola
+:END:
+
+*** TLDR
+Rust 1.100.0 shipped on 12 November. The never type, written !, is stable after ten years and five failed stabilization attempts; it is the canonical uninhabited type, carried by expressions like return, break and process::exit, and it coerces to any other type. Also stable: the Allocator API for custom allocators, a DropGuard API, and conjuring zero-sized types. On the Cargo side, unused dependencies are now reported as warnings by default with the offending Cargo.toml line, cache collisions are reduced, cargo-install reuses an existing lockfile, and min-publish-age adds dependency cooldowns: the resolver ignores versions published more recently than a configured age unless they are already in Cargo.lock. Commenters listed stabilized APIs the blog post skipped, including bool::toggle, Box::map, str::trim_prefix, str::trim_suffix and Path::trim_prefix.
+
+*** Take
+min-publish-age is the most consequential item in the release and it is four bullets down the page. It answers the supply chain attack that keeps working: a maintainer account is compromised, a malicious patch version goes up, and every CI run in the world pulls it within minutes. A cooldown window costs you nothing except freshness you did not need and removes the entire window of exposure. The never type gets the headline because ten years and five attempts is a better story, but the cooldown is the line that changes your risk profile today.
+
+*** Comments
+
+**** nirinor
+What a release. My favorites: stabilize never type, stabilize custom allocators, and dependency cooldowns, where the resolver ignores versions published more recently than the configured age unless they are already in Cargo.lock.
+
+**** n_u
+Cargo now reports unused dependencies by default, with a warning pointing at the exact line in Cargo.toml and a note that cargo::unused_dependencies is set to warn. Heck yes.
+
+**** ammar_az
+This release is so big that several useful stabilized APIs aren't even mentioned in the blog post, like bool::toggle(), Box::map(), str::trim_prefix(), str::trim_suffix() and Path::trim_prefix().
+
+*** i18n                                                  :i18n:
+
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Rust 1.100
+***** TLDR
+Rust 1.100.0 se publicó el 12 de noviembre. El tipo never, escrito !, es estable después de diez años y cinco intentos fallidos de estabilización; es el tipo deshabitado canónico, lo portan expresiones como return, break y process::exit, y se convierte a cualquier otro tipo. También se estabilizan la Allocator API para asignadores personalizados, una DropGuard API y la creación de tipos de tamaño cero. En Cargo, las dependencias no usadas se avisan ahora por defecto indicando la línea de Cargo.toml, se reducen las colisiones de caché, cargo-install reutiliza el lockfile existente y min-publish-age añade periodos de enfriamiento de dependencias: el resolutor ignora versiones publicadas más recientemente que una antigüedad configurada salvo que ya estén en Cargo.lock. Los comentaristas enumeraron APIs estabilizadas que el blog omitió, como bool::toggle, Box::map, str::trim_prefix, str::trim_suffix y Path::trim_prefix.
+***** Take
+min-publish-age es el punto más importante de la versión y está cuatro viñetas más abajo. Responde al ataque de cadena de suministro que sigue funcionando: se compromete la cuenta de un mantenedor, se publica una versión de parche maliciosa y cada ejecución de CI del mundo la descarga en minutos. Una ventana de enfriamiento no cuesta nada salvo una frescura que no necesitabas, y elimina por completo la ventana de exposición. El tipo never se lleva el titular porque diez años y cinco intentos es una mejor historia, pero el enfriamiento es la línea que cambia tu perfil de riesgo hoy.
+***** Comments
+- Qué versión. Mis favoritos: estabilizar el tipo never, estabilizar los asignadores personalizados y los periodos de enfriamiento de dependencias, donde el resolutor ignora versiones publicadas más recientemente que la antigüedad configurada salvo que ya estén en Cargo.lock.
+- Cargo ahora informa de dependencias no usadas por defecto, con un aviso que apunta a la línea exacta de Cargo.toml y una nota de que cargo::unused_dependencies está en warn. Por fin.
+- Esta versión es tan grande que varias APIs estabilizadas útiles ni se mencionan en el blog, como bool::toggle(), Box::map(), str::trim_prefix(), str::trim_suffix() y Path::trim_prefix().
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Rust 1.100
+***** TLDR
+Rust 1.100.0 erschien am 12. November. Der Never-Typ, geschrieben !, ist nach zehn Jahren und fünf gescheiterten Stabilisierungsversuchen stabil; er ist der kanonische unbewohnte Typ, den Ausdrücke wie return, break und process::exit tragen, und er lässt sich in jeden anderen Typ umwandeln. Ebenfalls stabil: die Allocator API für eigene Allokatoren, eine DropGuard API und das Erzeugen von Typen der Größe null. In Cargo werden unbenutzte Abhängigkeiten jetzt standardmäßig als Warnung gemeldet, mit Verweis auf die Zeile in Cargo.toml; Cache-Kollisionen werden reduziert, cargo-install nutzt eine vorhandene Lockfile, und min-publish-age bringt Abkühlzeiten für Abhängigkeiten: der Resolver ignoriert Versionen, die jünger als ein konfiguriertes Alter sind, sofern sie nicht schon in Cargo.lock stehen. Kommentatoren listeten stabilisierte APIs auf, die der Blogbeitrag auslässt, etwa bool::toggle, Box::map, str::trim_prefix, str::trim_suffix und Path::trim_prefix.
+***** Take
+min-publish-age ist der folgenreichste Punkt dieser Version und steht vier Stichpunkte weiter unten. Er beantwortet den Supply-Chain-Angriff, der weiter funktioniert: ein Maintainer-Konto wird übernommen, eine bösartige Patch-Version geht online, und jeder CI-Lauf der Welt zieht sie innerhalb von Minuten. Ein Abkühlfenster kostet nichts außer einer Aktualität, die man nicht brauchte, und beseitigt das Zeitfenster der Angreifbarkeit vollständig. Der Never-Typ bekommt die Schlagzeile, weil zehn Jahre und fünf Versuche die bessere Geschichte sind, aber die Abkühlzeit ist die Zeile, die heute das Risiko verändert.
+***** Comments
+- Was für ein Release. Meine Favoriten: Never-Typ stabilisiert, eigene Allokatoren stabilisiert und Abkühlzeiten für Abhängigkeiten, bei denen der Resolver Versionen ignoriert, die jünger als das konfigurierte Alter sind, sofern sie nicht schon in Cargo.lock stehen.
+- Cargo meldet unbenutzte Abhängigkeiten jetzt standardmäßig, mit einer Warnung, die auf die genaue Zeile in Cargo.toml zeigt, und dem Hinweis, dass cargo::unused_dependencies auf warn steht. Endlich.
+- Dieses Release ist so groß, dass mehrere nützliche stabilisierte APIs im Blogbeitrag nicht einmal erwähnt werden, etwa bool::toggle(), Box::map(), str::trim_prefix(), str::trim_suffix() und Path::trim_prefix().
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Rust 1.100
+***** TLDR
+11월 12일 Rust 1.100.0이 공개됐다. !로 쓰는 never 타입이 10년과 다섯 번의 실패한 안정화 시도 끝에 안정화됐다. 거주자가 없는 정규 타입으로 return, break, process::exit 같은 표현식이 이 타입을 가지며 다른 어떤 타입으로도 변환된다. 사용자 정의 할당기를 위한 Allocator API, DropGuard API, 크기가 0인 타입 생성도 함께 안정화됐다. Cargo 쪽에서는 사용하지 않는 의존성을 기본적으로 경고로 알리며 Cargo.toml의 해당 줄을 가리키고, 캐시 충돌이 줄었고, cargo-install이 기존 lockfile을 재사용하며, min-publish-age로 의존성 쿨다운이 들어왔다. 설정한 기간보다 최근에 게시된 버전은 이미 Cargo.lock에 있지 않으면 리졸버가 무시한다. 댓글에서는 블로그가 빠뜨린 안정화 API들, bool::toggle, Box::map, str::trim_prefix, str::trim_suffix, Path::trim_prefix 등을 짚었다.
+***** Take
+이 릴리스에서 가장 중요한 항목은 min-publish-age인데 목록에서 네 번째 아래에 묻혀 있다. 아직도 통하는 공급망 공격에 대한 답이다. 메인테이너 계정이 탈취되고 악성 패치 버전이 올라가면 전 세계 CI가 몇 분 안에 그것을 끌어온다. 쿨다운 기간은 필요하지도 않았던 최신성만 포기하면 되고, 노출 구간 자체를 없앤다. never 타입이 헤드라인을 가져가는 건 10년과 다섯 번의 시도가 더 좋은 이야기이기 때문이지만, 오늘 당장 위험도를 바꾸는 줄은 쿨다운 쪽이다.
+***** Comments
+- 대단한 릴리스다. 내 취향으로는 never 타입 안정화, 사용자 정의 할당기 안정화, 그리고 설정한 기간보다 최근에 올라온 버전을 이미 Cargo.lock에 없으면 리졸버가 무시하는 의존성 쿨다운이 최고다.
+- Cargo가 이제 기본으로 사용하지 않는 의존성을 보고한다. Cargo.toml의 정확한 줄을 가리키는 경고와 cargo::unused_dependencies가 warn으로 설정되어 있다는 안내까지 나온다. 드디어.
+- 이 릴리스가 너무 커서 유용한 안정화 API 몇 개는 블로그에 언급조차 없다. bool::toggle(), Box::map(), str::trim_prefix(), str::trim_suffix(), Path::trim_prefix() 같은 것들.
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Rust 1.100
+***** TLDR
+11月12日にRust 1.100.0が公開された。!と書くnever型が、10年と5回の失敗した安定化の試みを経て安定化した。これは正統な無人型で、return、break、process::exitといった式がこの型を持ち、他の任意の型へ変換される。カスタムアロケータ向けのAllocator API、DropGuard API、サイズゼロの型の生成も安定化した。Cargo側では、未使用の依存関係が既定で警告として報告され、Cargo.tomlの該当行が示される。キャッシュの衝突が減り、cargo-installは既存のlockfileを再利用し、min-publish-ageによって依存関係のクールダウンが入った。設定した期間より新しく公開されたバージョンは、すでにCargo.lockにある場合を除いてリゾルバが無視する。コメントでは、ブログが触れていない安定化APIとしてbool::toggle、Box::map、str::trim_prefix、str::trim_suffix、Path::trim_prefixなどが挙げられた。
+***** Take
+このリリースで最も影響が大きい項目はmin-publish-ageで、箇条書きの4つ下に埋もれている。今も通用するサプライチェーン攻撃への回答だ。メンテナのアカウントが乗っ取られ、悪意あるパッチバージョンが公開されると、世界中のCIが数分でそれを取り込む。クールダウン期間は、必要でもなかった新しさを手放すだけで、露出する時間枠そのものを消し去る。10年と5回の挑戦という話のほうが見出しになりやすいのでnever型が注目されるが、今日のリスクを変える一行はクールダウンのほうだ。
+***** Comments
+- すごいリリースだ。お気に入りはnever型の安定化、カスタムアロケータの安定化、そして設定した期間より新しいバージョンをCargo.lockにない限りリゾルバが無視する依存関係のクールダウン。
+- Cargoが既定で未使用の依存関係を報告するようになった。Cargo.tomlの正確な行を指す警告と、cargo::unused_dependenciesがwarnに設定されているという注記まで出る。ようやくだ。
+- このリリースは大きすぎて、有用な安定化APIのいくつかはブログ記事で触れられてもいない。bool::toggle()、Box::map()、str::trim_prefix()、str::trim_suffix()、Path::trim_prefix()など。
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Rust 1.100
+***** TLDR
+Rust 1.100.0 于 11 月 12 日发布。写作 ! 的 never 类型在历经十年和五次失败的稳定化尝试后终于稳定；它是标准的无居留类型，return、break、process::exit 这类表达式都带有它，并可转换为任何其他类型。同时稳定的还有用于自定义分配器的 Allocator API、DropGuard API，以及零大小类型的构造。Cargo 这边，未使用的依赖现在默认以警告形式报告并指出 Cargo.toml 中的具体行，缓存冲突减少，cargo-install 会复用已有的 lockfile，min-publish-age 带来了依赖冷却期：发布时间晚于设定年限的版本，除非已在 Cargo.lock 中，解析器都会忽略。评论里还列出了博客没提的稳定化 API，包括 bool::toggle、Box::map、str::trim_prefix、str::trim_suffix 和 Path::trim_prefix。
+***** Take
+这次发布里最有分量的一项是 min-publish-age，它被压在列表第四条往下。它回应的是至今仍然奏效的供应链攻击：维护者账号被接管，一个恶意补丁版本上线，全世界的 CI 在几分钟内就把它拉了下来。设一个冷却窗口的代价只是放弃你本来也不需要的新鲜度，却把整段暴露时间抹掉了。十年五次尝试是更好的故事，所以 never 类型拿到了标题，但真正改变你今天风险面的那一行是冷却期。
+***** Comments
+- 这版本真够分量。我最喜欢的是稳定 never 类型、稳定自定义分配器，还有依赖冷却期，解析器会忽略发布时间晚于设定年限的版本，除非它已经在 Cargo.lock 里。
+- Cargo 现在默认报告未使用的依赖，警告直接指向 Cargo.toml 的具体行，还会说明 cargo::unused_dependencies 默认为 warn。太好了。
+- 这次发布大到有好几个有用的稳定化 API 连博客都没提，比如 bool::toggle()、Box::map()、str::trim_prefix()、str::trim_suffix() 和 Path::trim_prefix()。
+** Show HN: My $300 embroidery machine needed a subscription, so I built my own app :show-hn:rust:hardware:reverse-engineering:
+:PROPERTIES:
+:ID:       50470488
+:URL:      https://github.com/simpsoka/zigzag
+:HN_URL:   https://news.ycombinator.com/item?id=50470488
+:POINTS:   310
+:COMMENTS: 130
+:BY:       simpsoka
+:END:
+
+*** TLDR
+simpsoka bought a Brother Skitch PP1, a roughly $300 embroidery machine, and found the bundled software limited colors, tools and clip art unless you paid for a subscription. Their verdict on it: truly terrible. So they reverse engineered the Bluetooth protocol with PacketLogger and wrote ZigZag, a free open source editor in Rust with an egui interface and GPU-accelerated stitch rendering. It imports SVG, PNG, JPEG and existing embroidery files, applies stitch types including tatami fill, satin, running, contour, blanket and appliqué, exports PES, PEC, DST, EXP, JEF, VP3 and HTML worksheets, and sends designs to the Skitch directly over Bluetooth. There is also an MCP server so an agent can help build designs. Commenters assumed Claude wrote it; the author says it was ChatGPT.
+
+*** Take
+The machine costs $300 and the software that makes it worth owning is rented. That model only holds while reverse engineering is more expensive than subscribing, and one person with PacketLogger just moved the price to zero. Brother's own app being bad is what made this inevitable: nobody rebuilds software they like. The file format half of this already existed in InkStitch for years, so the new work here is the Bluetooth link to the machine, which is exactly the part a vendor thought nobody would bother with.
+
+*** Comments
+
+**** spdustin
+This is one of the best examples of the way LLMs can empower users to not only scratch all the itches, but demonstrate to anyone who stumbles by just how satisfying it can be to do so themselves.
+
+**** gregsadetsky
+My friend reverse engineered the Brother PE-150 and built a replacement motherboard to control it over USB. These machines go for $100 on eBay, completely functional, which shows the absurdity of the embroidery world.
+
+**** rocmcd
+Also look at InkStitch, an Inkscape plugin that exports SVGs to embroidery machine formats. It's not without faults, there's a surprising amount of care needed for stitch placement, size, type and layering.
+
+*** i18n                                                  :i18n:
+
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Show HN: mi máquina de bordar de 300 dólares pedía suscripción, así que hice mi propia app
+***** TLDR
+simpsoka compró una Brother Skitch PP1, una máquina de bordar de unos 300 dólares, y descubrió que el software incluido limitaba colores, herramientas y clip art salvo que pagaras una suscripción. Su veredicto: realmente malo. Así que hizo ingeniería inversa del protocolo Bluetooth con PacketLogger y escribió ZigZag, un editor libre y de código abierto en Rust con interfaz egui y renderizado de puntadas acelerado por GPU. Importa SVG, PNG, JPEG y archivos de bordado existentes, aplica tipos de puntada como relleno tatami, satén, pespunte, contorno, festón y apliqué, exporta PES, PEC, DST, EXP, JEF, VP3 y hojas de trabajo HTML, y envía los diseños a la Skitch directamente por Bluetooth. También incluye un servidor MCP para que un agente ayude a crear diseños. Los comentaristas supusieron que lo escribió Claude; el autor dice que fue ChatGPT.
+***** Take
+La máquina cuesta 300 dólares y el software que la hace útil se alquila. Ese modelo solo aguanta mientras la ingeniería inversa cueste más que suscribirse, y una sola persona con PacketLogger acaba de poner ese precio a cero. Que la propia app de Brother sea mala es lo que hizo esto inevitable: nadie rehace el software que le gusta. La mitad de esto, los formatos de archivo, ya existía en InkStitch desde hace años, así que lo nuevo es el enlace Bluetooth con la máquina, justo la parte que el fabricante creyó que nadie se molestaría en abordar.
+***** Comments
+- Es uno de los mejores ejemplos de cómo los LLM pueden dar poder a los usuarios no solo para rascar todas sus picazones, sino para demostrar a cualquiera que pase por aquí lo satisfactorio que puede ser hacerlo uno mismo.
+- Un amigo mío hizo ingeniería inversa de la Brother PE-150 y construyó una placa base de repuesto para controlarla por USB. Esas máquinas se venden por 100 dólares en eBay, completamente funcionales, lo que muestra lo absurdo del mundo del bordado.
+- Mirad también InkStitch, un plugin de Inkscape que exporta SVG a formatos de máquinas de bordar. No está libre de defectos, hace falta un cuidado sorprendente con la colocación, el tamaño, el tipo y las capas de las puntadas.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Show HN: Meine 300-Dollar-Stickmaschine wollte ein Abo, also habe ich meine eigene App gebaut
+***** TLDR
+simpsoka kaufte eine Brother Skitch PP1, eine Stickmaschine für rund 300 Dollar, und stellte fest, dass die mitgelieferte Software Farben, Werkzeuge und Clipart beschränkte, solange man kein Abo bezahlte. Das Urteil: wirklich schlecht. Also wurde das Bluetooth-Protokoll mit PacketLogger rückentwickelt und ZigZag geschrieben, ein freier Open-Source-Editor in Rust mit egui-Oberfläche und GPU-beschleunigtem Stichrendering. Er importiert SVG, PNG, JPEG und vorhandene Stickdateien, bietet Sticharten wie Tatami-Füllung, Satin, Steppstich, Kontur, Langettenstich und Applikation, exportiert PES, PEC, DST, EXP, JEF, VP3 und HTML-Arbeitsblätter und schickt Designs per Bluetooth direkt an die Skitch. Dazu kommt ein MCP-Server, damit ein Agent beim Entwerfen helfen kann. Kommentatoren nahmen an, Claude habe es geschrieben; der Autor sagt, es war ChatGPT.
+***** Take
+Die Maschine kostet 300 Dollar, und die Software, die sie erst nützlich macht, wird gemietet. Dieses Modell hält nur, solange Rückentwicklung teurer ist als ein Abo, und eine einzige Person mit PacketLogger hat diesen Preis gerade auf null gesetzt. Dass Brothers eigene App schlecht ist, machte das unvermeidlich: niemand baut Software nach, die ihm gefällt. Die Dateiformat-Hälfte gibt es in InkStitch seit Jahren, neu ist also die Bluetooth-Verbindung zur Maschine, genau der Teil, von dem der Hersteller dachte, dass sich niemand damit abgeben würde.
+***** Comments
+- Das ist eines der besten Beispiele dafür, wie LLMs Nutzer befähigen, nicht nur alle eigenen Wünsche zu erfüllen, sondern jedem Vorbeikommenden zu zeigen, wie befriedigend es ist, das selbst zu tun.
+- Ein Freund von mir hat die Brother PE-150 rückentwickelt und ein Ersatz-Mainboard gebaut, um sie über USB zu steuern. Diese Maschinen gehen für 100 Dollar über eBay, voll funktionsfähig, was die Absurdität der Stickwelt zeigt.
+- Schaut euch auch InkStitch an, ein Inkscape-Plugin, das SVGs in Stickmaschinenformate exportiert. Es hat seine Schwächen, man braucht überraschend viel Sorgfalt bei Stichplatzierung, Größe, Art und Schichtung.
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Show HN: 300달러짜리 자수 기계가 구독을 요구해서 직접 앱을 만들었다
+***** TLDR
+simpsoka는 약 300달러짜리 자수 기계 Brother Skitch PP1을 사고, 번들 소프트웨어가 구독하지 않으면 색상과 도구, 클립아트를 제한한다는 것을 알았다. 그의 평가는 정말 형편없다는 것이었다. 그래서 PacketLogger로 블루투스 프로토콜을 리버스 엔지니어링하고 ZigZag를 만들었다. Rust로 작성한 무료 오픈소스 편집기로, egui 인터페이스와 GPU 가속 스티치 렌더링을 쓴다. SVG, PNG, JPEG와 기존 자수 파일을 가져오고, 다다미 필, 새틴, 러닝, 컨투어, 블랭킷, 아플리케 등의 스티치 유형을 적용하며, PES, PEC, DST, EXP, JEF, VP3와 HTML 작업지로 내보내고, 블루투스로 Skitch에 디자인을 직접 전송한다. 에이전트가 디자인을 돕도록 MCP 서버도 들어 있다. 댓글에서는 Claude가 만들었다고 짐작했지만 저자는 ChatGPT였다고 밝혔다.
+***** Take
+기계는 300달러인데, 그 기계를 쓸 만하게 만드는 소프트웨어는 임대다. 이 모델은 리버스 엔지니어링이 구독보다 비쌀 때만 버틴다. 그리고 PacketLogger를 든 한 사람이 그 가격을 0으로 만들었다. Brother의 앱이 형편없다는 점이 이 일을 필연으로 만들었다. 마음에 드는 소프트웨어를 다시 만드는 사람은 없다. 파일 포맷 쪽 절반은 InkStitch가 수년간 해왔으니, 여기서 새로운 작업은 기계로 가는 블루투스 연결이다. 제조사가 아무도 손대지 않을 거라 여겼던 바로 그 부분이다.
+***** Comments
+- LLM이 사용자에게 힘을 주는 방식을 보여주는 최고의 예 중 하나다. 자기 불편을 전부 해결하게 해주는 것뿐 아니라, 지나가는 누구에게나 직접 해보는 일이 얼마나 만족스러운지 보여준다.
+- 내 친구는 Brother PE-150을 리버스 엔지니어링해서 USB로 제어하는 교체용 메인보드를 만들었다. 이 기계들은 완전히 작동하는 상태로 eBay에서 100달러에 팔린다. 자수 업계가 얼마나 황당한지 보여주는 예다.
+- InkStitch도 보면 좋다. SVG를 자수 기계 포맷으로 내보내는 Inkscape 플러그인이다. 단점이 없지는 않고, 스티치 배치와 크기, 종류, 레이어링에 생각보다 많은 손이 간다.
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Show HN: 300ドルの刺繍ミシンがサブスクを要求してきたので自分でアプリを作った
+***** TLDR
+simpsokaは約300ドルの刺繍ミシンBrother Skitch PP1を買い、付属ソフトがサブスクリプションを払わないと色やツール、クリップアートを制限することを知った。評価は、本当にひどい、だった。そこでPacketLoggerでBluetoothプロトコルをリバースエンジニアリングし、ZigZagを作った。Rust製の無料オープンソースエディタで、eguiのインターフェースとGPUアクセラレーションによるステッチ描画を備える。SVG、PNG、JPEGと既存の刺繍ファイルを読み込み、畳縫い、サテン、ランニング、輪郭、ブランケット、アップリケなどのステッチを適用し、PES、PEC、DST、EXP、JEF、VP3とHTMLワークシートに書き出し、Bluetoothで直接Skitchにデザインを送る。エージェントが設計を手伝えるMCPサーバーも入っている。コメントではClaudeが書いたと推測されたが、著者はChatGPTだと述べている。
+***** Take
+本体は300ドルで、それを使う価値のあるものにするソフトウェアは賃貸だ。このモデルはリバースエンジニアリングがサブスクより高くつく間だけ成り立つが、PacketLoggerを持った一人がその値段をゼロにした。Brother自身のアプリが出来の悪いものだったことが、これを必然にした。気に入っているソフトを作り直す人はいない。ファイル形式の側はInkStitchが何年も前からやっていたので、ここで新しいのは機械へのBluetooth接続であり、まさにメーカーが誰も手を出さないと考えていた部分だ。
+***** Comments
+- LLMがユーザーに力を与えるやり方の、最良の例のひとつだ。自分のかゆいところをすべて掻けるだけでなく、通りかかった誰にでも、それを自分でやるのがどれほど満足感のあることかを示している。
+- 友人がBrother PE-150をリバースエンジニアリングし、USBで制御する交換用マザーボードを作った。この機械は完全に動く状態でeBayで100ドルで売られている。刺繍業界のばかばかしさがよく分かる。
+- InkStitchも見てほしい。SVGを刺繍ミシンの形式に書き出すInkscapeプラグインだ。欠点もあり、ステッチの配置やサイズ、種類、重ね方には驚くほど気を配る必要がある。
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Show HN：我那台 300 美元的刺绣机要订阅，于是我自己写了个应用
+***** TLDR
+simpsoka 买了一台约 300 美元的刺绣机 Brother Skitch PP1，发现随机软件在不付订阅费时会限制颜色、工具和剪贴画。他的评价是：真的很糟。于是他用 PacketLogger 逆向了蓝牙协议，写出了 ZigZag，一个用 Rust 编写的免费开源编辑器，界面基于 egui，针迹渲染由 GPU 加速。它能导入 SVG、PNG、JPEG 和已有的刺绣文件，支持榻榻米填充、缎面、平针、轮廓、毛毯边和贴布等针迹类型，可导出 PES、PEC、DST、EXP、JEF、VP3 和 HTML 工作单，并通过蓝牙直接把图样发给 Skitch。项目还带一个 MCP 服务器，可以让智能体帮忙做设计。评论里有人以为是 Claude 写的，作者说是 ChatGPT。
+***** Take
+机器 300 美元，而让这台机器值得拥有的软件是租来的。这套模式只在逆向比订阅更贵的时候成立，而一个人加一个 PacketLogger 就把这个价格打到了零。Brother 自家应用做得差，是这件事必然发生的原因：没人会去重写自己喜欢的软件。文件格式那一半 InkStitch 已经做了多年，所以这里真正新的工作是通向机器的蓝牙链路，恰好是厂商以为没人会去碰的那一块。
+***** Comments
+- 这是 LLM 赋能用户的最好例子之一：不只让人把所有痒处都挠到，还向路过的任何人展示自己动手做这件事有多满足。
+- 我朋友逆向了 Brother PE-150，做了一块替换主板，通过 USB 控制它。这种机器在 eBay 上 100 美元就能买到，功能完好，足见刺绣这个行业有多荒唐。
+- 也可以看看 InkStitch，一个把 SVG 导出成刺绣机格式的 Inkscape 插件。它并非没有缺点，针迹的位置、尺寸、类型和分层都需要出乎意料的细致处理。
+** Chinese frontier AI models carry the fingerprint of export-controlled GPUs :ai:gpu:export-controls:security:
+:PROPERTIES:
+:ID:       50474883
+:URL:      https://unemploymentlabs.com/checkpoint-forensics
+:HN_URL:   https://news.ycombinator.com/item?id=50474883
+:POINTS:   139
+:COMMENTS: 41
+:BY:       firloop
+:END:
+
+*** TLDR
+The post claims six Chinese models were initialized on export-restricted Nvidia Blackwell GPUs, and explains how it can tell. PyTorch seeds weight initialization deterministically and spreads the work across a GPU's streaming multiprocessors, so the SM count leaves a layout signature: 132 for Hopper, 148 for B200 and B300, 152 for GB200 and GB300. Weights never touched during training keep that pattern intact, and others retain traces of it. Searching for the seed and layout that best reproduce the observed weights yields matches at 49 to 1,385 sigma. The models named are DeepSeek V4-Flash and V4-Pro, Moonshot AI Kimi K3 and K3.1-Pro, MiniMax M3, and Ant Group Ling-3.1-flash; earlier models from the same labs show Hopper signatures. The author reproduced preserved weights from DeepSeek V4-Flash on a physical B300, matching 461 of 469 selected rows above 0.99 correlation, and reports the method was correct on all 24 publicly disclosed hardware cases. The post states its own limit: the fingerprint shows where initialization ran, not where the chips were, who owned them, or where training finished.
+
+*** Take
+The method is genuinely clever and the caveat is the entire story. Renting Blackwell capacity in Singapore or Malaysia is legal under the current rules, so a Blackwell fingerprint is fully consistent with compliance. That makes this evidence of where the compute was, not evidence of a violation, and the post says so while the headline does not. HN did the right thing within minutes: it asked who the author is, noted their position in the export-control debate, and pointed out that no code was published for a forensic claim formatted like a paper.
+
+*** Comments
+
+**** flowerlad
+Chinese AI companies are free to use any Nvidia GPU they want as long as the GPU is not physically located within China. Remotely using GPUs located in Singapore or Malaysia is entirely consistent with US export controls.
+
+**** x313
+The author of this piece is a SWE-turned-influencer China hawk from OpenAI, and this isn't an academic paper despite the theming. There's no link to any code. I mention it because the comments here are assuming truth without verifying the contents.
+
+**** int32_64
+I have run large open models on neoclouds and the KYC has been minimal. Even if the US stops all GPU exports it will be extremely difficult to crack down on Chinese firms renting GPUs on Western servers.
+
+*** i18n                                                  :i18n:
+
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Los modelos chinos de frontera llevan la huella de GPU sujetas a control de exportación
+***** TLDR
+El artículo afirma que seis modelos chinos se inicializaron en GPU Nvidia Blackwell restringidas para exportación, y explica cómo lo deduce. PyTorch siembra la inicialización de pesos de forma determinista y reparte el trabajo entre los multiprocesadores de flujo de la GPU, así que el número de SM deja una firma de distribución: 132 en Hopper, 148 en B200 y B300, 152 en GB200 y GB300. Los pesos que el entrenamiento nunca toca conservan ese patrón intacto y otros guardan rastros de él. Buscar la semilla y la distribución que mejor reproducen los pesos observados da coincidencias de 49 a 1.385 sigmas. Los modelos citados son DeepSeek V4-Flash y V4-Pro, Kimi K3 y K3.1-Pro de Moonshot AI, MiniMax M3 y Ling-3.1-flash de Ant Group; los modelos anteriores de los mismos laboratorios muestran firmas de Hopper. El autor reprodujo pesos preservados de DeepSeek V4-Flash en un B300 físico, con 461 de 469 filas seleccionadas por encima de 0,99 de correlación, y dice que el método acertó en los 24 casos de hardware conocidos públicamente. El propio texto marca su límite: la huella indica dónde se ejecutó la inicialización, no dónde estaban los chips, de quién eran ni dónde terminó el entrenamiento.
+***** Take
+El método es realmente ingenioso y la salvedad es toda la historia. Alquilar capacidad Blackwell en Singapur o Malasia es legal con las reglas actuales, así que una huella Blackwell es plenamente compatible con el cumplimiento. Eso convierte esto en prueba de dónde estaba la computación, no de una infracción, y el texto lo dice mientras el titular no. HN hizo lo correcto en minutos: preguntó quién es el autor, señaló su posición en el debate sobre controles de exportación y advirtió que no se publicó código para una afirmación forense con formato de artículo académico.
+***** Comments
+- Las empresas chinas de IA pueden usar cualquier GPU de Nvidia que quieran siempre que la GPU no esté físicamente en China. Usar en remoto GPU ubicadas en Singapur o Malasia es del todo compatible con los controles de exportación de EE. UU.
+- El autor es un ingeniero convertido en influencer, un halcón anti-China procedente de OpenAI, y esto no es un artículo académico por mucho que lo imite. No hay enlace a ningún código. Lo menciono porque aquí los comentarios dan por cierto el contenido sin verificarlo.
+- He ejecutado modelos abiertos grandes en neoclouds y el KYC ha sido mínimo. Aunque EE. UU. detuviera todas las exportaciones de GPU, sería extremadamente difícil impedir que empresas chinas alquilen GPU en servidores occidentales.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Chinesische Frontier-KI-Modelle tragen den Fingerabdruck exportkontrollierter GPUs
+***** TLDR
+Der Beitrag behauptet, sechs chinesische Modelle seien auf exportbeschränkten Nvidia-Blackwell-GPUs initialisiert worden, und erklärt, woran man das erkennt. PyTorch initialisiert Gewichte deterministisch per Seed und verteilt die Arbeit über die Streaming-Multiprozessoren der GPU, sodass die SM-Zahl eine Layout-Signatur hinterlässt: 132 bei Hopper, 148 bei B200 und B300, 152 bei GB200 und GB300. Gewichte, die das Training nie berührt, behalten dieses Muster unverändert, andere tragen Spuren davon. Sucht man Seed und Layout, die die beobachteten Gewichte am besten reproduzieren, ergeben sich Übereinstimmungen von 49 bis 1.385 Sigma. Genannt werden DeepSeek V4-Flash und V4-Pro, Kimi K3 und K3.1-Pro von Moonshot AI, MiniMax M3 und Ling-3.1-flash von Ant Group; frühere Modelle derselben Labore zeigen Hopper-Signaturen. Der Autor reproduzierte erhaltene Gewichte von DeepSeek V4-Flash auf einem physischen B300 und traf 461 von 469 ausgewählten Zeilen mit Korrelation über 0,99; die Methode habe in allen 24 öffentlich bekannten Hardwarefällen gestimmt. Der Text benennt seine Grenze selbst: der Fingerabdruck zeigt, wo die Initialisierung lief, nicht wo die Chips standen, wem sie gehörten oder wo das Training endete.
+***** Take
+Die Methode ist wirklich klug, und der Vorbehalt ist die ganze Geschichte. Blackwell-Kapazität in Singapur oder Malaysia zu mieten ist nach den aktuellen Regeln legal, ein Blackwell-Fingerabdruck ist also vollständig mit Regelkonformität vereinbar. Damit belegt das, wo die Rechenleistung stand, nicht einen Verstoß, und der Text sagt das, die Schlagzeile nicht. HN hat binnen Minuten das Richtige getan: gefragt, wer der Autor ist, dessen Position in der Exportkontrolldebatte benannt und darauf hingewiesen, dass für eine forensische Behauptung im Papierformat kein Code veröffentlicht wurde.
+***** Comments
+- Chinesische KI-Firmen dürfen jede Nvidia-GPU nutzen, solange die GPU nicht physisch in China steht. GPUs in Singapur oder Malaysia aus der Ferne zu nutzen ist voll mit den US-Exportkontrollen vereinbar.
+- Der Autor ist ein zum Influencer gewordener Entwickler und China-Falke aus OpenAI, und das hier ist trotz der Aufmachung keine wissenschaftliche Arbeit. Es gibt keinen Link zu Code. Ich erwähne es, weil die Kommentare hier den Inhalt für wahr nehmen, ohne ihn zu prüfen.
+- Ich habe große offene Modelle auf Neoclouds laufen lassen, und die KYC-Prüfung war minimal. Selbst wenn die USA alle GPU-Exporte stoppten, wäre es extrem schwer, chinesische Firmen am Mieten von GPUs auf westlichen Servern zu hindern.
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+중국 프런티어 AI 모델에 수출 통제 GPU의 지문이 남아 있다
+***** TLDR
+이 글은 중국 모델 여섯 개가 수출 제한 대상인 엔비디아 Blackwell GPU에서 초기화됐다고 주장하며 그 판별 방법을 설명한다. PyTorch는 가중치 초기화를 결정론적 시드로 수행하고 작업을 GPU의 스트리밍 멀티프로세서에 분산하므로, SM 개수가 배치 서명을 남긴다. Hopper는 132개, B200과 B300은 148개, GB200과 GB300은 152개다. 학습 중 한 번도 건드리지 않은 가중치는 그 패턴을 그대로 유지하고, 다른 가중치에는 흔적이 남는다. 관측된 가중치를 가장 잘 재현하는 시드와 배치를 찾으면 49에서 1,385 시그마 수준의 일치가 나온다. 거론된 모델은 DeepSeek V4-Flash와 V4-Pro, Moonshot AI의 Kimi K3와 K3.1-Pro, MiniMax M3, Ant Group의 Ling-3.1-flash다. 같은 연구소의 이전 모델에서는 Hopper 서명이 나온다. 저자는 실제 B300에서 DeepSeek V4-Flash의 보존된 가중치를 재현해 선택한 469개 행 중 461개가 상관계수 0.99를 넘었다고 밝혔고, 공개된 하드웨어 사례 24건 모두에서 이 방법이 맞았다고 보고한다. 글은 스스로 한계를 명시한다. 이 지문은 초기화가 어디서 돌았는지를 보여줄 뿐, 칩이 어디에 있었는지, 누구 소유였는지, 학습이 어디서 끝났는지는 말해주지 않는다.
+***** Take
+방법 자체는 정말 영리하고, 그 단서 조항이 사실상 이 이야기의 전부다. 싱가포르나 말레이시아에서 Blackwell 용량을 임대하는 것은 현행 규정상 합법이므로, Blackwell 지문은 규정 준수와 완전히 양립한다. 즉 이것은 연산이 어디에 있었는지에 대한 증거이지 위반의 증거가 아니며, 본문은 그렇게 말하지만 제목은 그렇지 않다. HN은 몇 분 만에 옳은 일을 했다. 저자가 누구인지 묻고, 수출 통제 논쟁에서 그의 입장을 지적하고, 논문 형식을 취한 포렌식 주장에 코드가 공개되지 않았다는 점을 짚었다.
+***** Comments
+- 중국 AI 기업은 GPU가 물리적으로 중국 안에 없기만 하면 어떤 엔비디아 GPU든 자유롭게 쓸 수 있다. 싱가포르나 말레이시아에 있는 GPU를 원격으로 쓰는 것은 미국 수출 통제와 완전히 일치한다.
+- 이 글의 저자는 OpenAI 출신의, 개발자에서 인플루언서로 전향한 대중국 강경론자이고, 겉모양과 달리 학술 논문이 아니다. 코드 링크도 없다. 여기 댓글들이 내용을 검증하지 않고 사실로 받아들이고 있어서 언급한다.
+- 나는 네오클라우드에서 큰 오픈 모델을 돌려봤는데 KYC는 최소한이었다. 미국이 GPU 수출을 전부 막는다 해도 중국 기업이 서구 서버에서 GPU를 임대하는 것을 단속하기는 극히 어려울 것이다.
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+中国のフロンティアAIモデルには輸出規制GPUの指紋が残っている
+***** TLDR
+この記事は、中国の6つのモデルが輸出規制対象のNvidia Blackwell GPUで初期化されたと主張し、その判別方法を説明する。PyTorchは重みの初期化を決定論的なシードで行い、処理をGPUのストリーミングマルチプロセッサに分散するため、SM数が配置の署名として残る。Hopperは132、B200とB300は148、GB200とGB300は152だ。学習中に一度も触られない重みはそのパターンをそのまま保ち、他の重みにも痕跡が残る。観測された重みを最もよく再現するシードと配置を探すと、49から1,385シグマの一致が得られる。挙げられたモデルはDeepSeek V4-FlashとV4-Pro、Moonshot AIのKimi K3とK3.1-Pro、MiniMax M3、Ant GroupのLing-3.1-flashで、同じ研究所の以前のモデルはHopperの署名を示す。著者は実機のB300でDeepSeek V4-Flashの保存された重みを再現し、選んだ469行のうち461行が相関0.99超で一致したとし、公開済みの24件のハードウェア事例すべてで手法が正しかったと報告する。記事は自ら限界を明記している。この指紋が示すのは初期化がどこで走ったかであり、チップがどこにあったか、誰の所有だったか、学習がどこで終わったかは分からない。
+***** Take
+手法は本当に巧妙で、その留保条件がこの話のすべてだ。シンガポールやマレーシアでBlackwellの計算資源を借りるのは現行規則では合法なので、Blackwellの指紋は規則の遵守とまったく矛盾しない。つまりこれは計算資源がどこにあったかの証拠であって、違反の証拠ではない。本文はそう書いているが、見出しはそう読めない。HNは数分で正しいことをした。著者が誰かを問い、輸出規制の議論における立場を指摘し、論文の体裁をとった鑑定的主張にコードが公開されていない点を突いた。
+***** Comments
+- 中国のAI企業は、GPUが物理的に中国国内にない限り、どのNvidia GPUでも自由に使える。シンガポールやマレーシアにあるGPUを遠隔で使うのは米国の輸出規制とまったく整合している。
+- この記事の著者はOpenAI出身の、エンジニアからインフルエンサーに転じた対中強硬派で、体裁は似ているが学術論文ではない。コードへのリンクもない。ここのコメントが内容を検証せずに真実として扱っているので指摘しておく。
+- ネオクラウドで大きなオープンモデルを動かしたことがあるが、KYCは最小限だった。米国がGPU輸出を全面的に止めても、中国企業が西側のサーバーでGPUを借りるのを取り締まるのは極めて難しいだろう。
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+中国前沿 AI 模型带有受出口管制 GPU 的指纹
+***** TLDR
+文章声称有六个中国模型是在受出口限制的英伟达 Blackwell GPU 上完成初始化的，并说明了判断方法。PyTorch 的权重初始化由确定性种子驱动，工作会分散到 GPU 的流式多处理器上，因此 SM 数量会留下布局特征：Hopper 为 132 个，B200 和 B300 为 148 个，GB200 和 GB300 为 152 个。训练过程中从未被改动的权重完整保留了这一模式，其余权重则留有痕迹。搜索最能复现观测权重的种子与布局组合，可得到 49 到 1385 西格玛的匹配。被点名的模型是 DeepSeek V4-Flash 和 V4-Pro、Moonshot AI 的 Kimi K3 和 K3.1-Pro、MiniMax M3，以及蚂蚁集团的 Ling-3.1-flash；这些实验室更早的模型显示的是 Hopper 特征。作者在实体 B300 上复现了 DeepSeek V4-Flash 的保留权重，所选 469 行中有 461 行相关性超过 0.99，并称该方法在全部 24 个已公开的硬件案例上都判断正确。文章也自陈局限：这个指纹说明初始化在哪里运行，不说明芯片在哪里、归谁所有，也不说明训练在哪里完成。
+***** Take
+方法确实巧妙，而那条限定说明就是这篇文章的全部要点。按现行规则，在新加坡或马来西亚租用 Blackwell 算力是合法的，所以 Blackwell 指纹与合规完全相容。这意味着它是算力所在位置的证据，而不是违规的证据。正文这么说了，标题没有。HN 在几分钟内做了该做的事：追问作者是谁，指出他在出口管制辩论中的立场，并点出一份写成论文样式的鉴定主张却没有公开任何代码。
+***** Comments
+- 只要 GPU 不在中国境内，中国 AI 公司想用哪款英伟达 GPU 都可以。远程使用位于新加坡或马来西亚的 GPU 完全符合美国的出口管制。
+- 这篇文章的作者是从工程师转型为网红的对华鹰派，出自 OpenAI，尽管包装成学术体，但这并不是一篇论文，也没有任何代码链接。我提这一点，是因为这里的评论都在没有核实内容的情况下当成事实。
+- 我在 neocloud 上跑过大型开源模型，KYC 几乎形同虚设。即使美国停掉所有 GPU 出口，要阻止中国公司在西方服务器上租用 GPU 也会极其困难。
+** Dwarf planet candidate appears which takes roughly 280 years to orbit our sun :astronomy:science:rubin-observatory:
+:PROPERTIES:
+:ID:       50472490
+:URL:      https://www.smithsonianmag.com/smart-news/astronomers-found-a-mysterious-object-orbiting-far-beyond-pluto-it-could-be-a-new-dwarf-planet-hidden-in-our-solar-system-180989857/
+:HN_URL:   https://news.ycombinator.com/item?id=50472490
+:POINTS:   189
+:COMMENTS: 92
+:BY:       cybermango
+:END:
+
+*** TLDR
+Matthew Holman at the Smithsonian Astrophysical Observatory found 2026 ED138 in Vera C. Rubin Observatory images taken between March and June 2026, using software he wrote himself. The object circles the sun once every 281.1 years at roughly 46 times Earth's distance, on an orbit tilted 25 degrees out of the solar system's main plane, which suggests something disturbed it gravitationally. Size estimates run from 370 to 930 miles across, enough to make it a dwarf planet candidate alongside Pluto, Eris, Makemake, Haumea and Ceres, though confirmation is still pending. Once its orbit was known, the object turned up in archival sky images from the past decade and in photographic plates from 1937 held in the Harvard plate stacks.
+
+*** Take
+The 1937 plates are the part worth sitting with. The object was already recorded on glass 89 years ago, and it took the Rubin Observatory plus one astronomer's custom code to work out what that plate had been showing all along. Discovery here was not better optics, it was knowing where to look in data that already existed. Rubin will produce this result by the thousand over the next decade, and the backlog of plates it retroactively explains is its own quiet archive.
+
+*** Comments
+
+**** ddahlen
+My old day job was computing orbits for asteroids and comets. Here is its orbit, rendered in wasm, meant for a desktop and it downloads a 65mb asteroid catalog. This is a big boy.
+
+**** ecshafer
+There was a lot of negative press about demoting Pluto at the time, but it was obviously the right move, and creating the dwarf planet class was correct. Eris, Haumea, Makemake and all these other candidates are the nail in the coffin.
+
+**** christophilus
+They even found it in photographic plates from 1937. Pretty rad.
+
+*** i18n                                                  :i18n:
+
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Aparece un candidato a planeta enano que tarda unos 280 años en orbitar el Sol
+***** TLDR
+Matthew Holman, del Observatorio Astrofísico Smithsonian, encontró 2026 ED138 en imágenes del Observatorio Vera C. Rubin tomadas entre marzo y junio de 2026, usando software escrito por él mismo. El objeto rodea el Sol una vez cada 281,1 años a unas 46 veces la distancia de la Tierra, en una órbita inclinada 25 grados respecto al plano principal del sistema solar, lo que sugiere que algo lo perturbó gravitatoriamente. Las estimaciones de tamaño van de 595 a 1.500 kilómetros de diámetro, suficiente para convertirlo en candidato a planeta enano junto a Plutón, Eris, Makemake, Haumea y Ceres, aunque la confirmación está pendiente. Una vez conocida su órbita, el objeto apareció en imágenes de archivo de la última década y en placas fotográficas de 1937 conservadas en la colección de placas de Harvard.
+***** Take
+Las placas de 1937 son lo que merece detenerse. El objeto ya quedó registrado en vidrio hace 89 años, y hizo falta el Observatorio Rubin más el código propio de un astrónomo para entender qué había estado mostrando esa placa todo el tiempo. El descubrimiento aquí no fue mejor óptica, fue saber dónde mirar en datos que ya existían. Rubin producirá este resultado por miles en la próxima década, y el atraso de placas que explica retroactivamente es un archivo silencioso por sí mismo.
+***** Comments
+- Mi antiguo trabajo era calcular órbitas de asteroides y cometas. Aquí está su órbita, renderizada en wasm, pensada para escritorio y descarga un catálogo de asteroides de 65 MB. Este es grandecito.
+- En su momento hubo mucha prensa negativa por degradar a Plutón, pero era obviamente lo correcto, y crear la clase de planeta enano fue acertado. Eris, Haumea, Makemake y todos estos otros candidatos son el clavo final.
+- Incluso lo encontraron en placas fotográficas de 1937. Es buenísimo.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Kandidat für einen Zwergplaneten mit etwa 280 Jahren Umlaufzeit entdeckt
+***** TLDR
+Matthew Holman vom Smithsonian Astrophysical Observatory fand 2026 ED138 in Aufnahmen des Vera C. Rubin Observatory von März bis Juni 2026, mit selbst geschriebener Software. Das Objekt umläuft die Sonne einmal in 281,1 Jahren in etwa 46-facher Erdentfernung, auf einer Bahn, die 25 Grad gegen die Hauptebene des Sonnensystems geneigt ist, was auf eine frühere gravitative Störung hindeutet. Die Größenschätzungen reichen von 595 bis 1.500 Kilometern Durchmesser, genug für einen Zwergplaneten-Kandidaten neben Pluto, Eris, Makemake, Haumea und Ceres, auch wenn die Bestätigung noch aussteht. Nachdem die Bahn bekannt war, tauchte das Objekt in Archivaufnahmen des letzten Jahrzehnts und auf Fotoplatten von 1937 aus den Harvard Plate Stacks auf.
+***** Take
+Die Platten von 1937 sind der Teil, bei dem man verweilen sollte. Das Objekt war vor 89 Jahren schon auf Glas festgehalten, und es brauchte das Rubin Observatory und den eigenen Code eines Astronomen, um zu erkennen, was diese Platte die ganze Zeit zeigte. Die Entdeckung war hier nicht bessere Optik, sondern das Wissen, wo man in schon vorhandenen Daten suchen muss. Rubin wird dieses Ergebnis im nächsten Jahrzehnt tausendfach liefern, und der Stapel Platten, den es nachträglich erklärt, ist ein eigenes stilles Archiv.
+***** Comments
+- Mein früherer Job war das Berechnen von Bahnen für Asteroiden und Kometen. Hier ist seine Bahn, in wasm gerendert, für Desktop gedacht und sie lädt einen 65 MB großen Asteroidenkatalog. Das ist ein ganz schöner Brocken.
+- Damals gab es viel negative Presse über die Herabstufung von Pluto, aber es war offensichtlich richtig, und die Klasse der Zwergplaneten zu schaffen war korrekt. Eris, Haumea, Makemake und all diese weiteren Kandidaten sind der letzte Nagel im Sarg.
+- Sie haben es sogar auf Fotoplatten von 1937 gefunden. Ziemlich stark.
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+태양을 한 바퀴 도는 데 약 280년 걸리는 왜행성 후보 발견
+***** TLDR
+스미스소니언 천체물리관측소의 매슈 홀먼이 직접 작성한 소프트웨어로 2026년 3월부터 6월 사이에 촬영된 베라 C. 루빈 천문대 이미지에서 2026 ED138을 찾아냈다. 이 천체는 지구-태양 거리의 약 46배 되는 곳에서 281.1년에 한 번 태양을 돈다. 궤도는 태양계 주 평면에서 25도 기울어져 있어 과거에 중력적 교란을 받았음을 시사한다. 지름 추정치는 약 595에서 1,500킬로미터로, 명왕성, 에리스, 마케마케, 하우메아, 세레스와 함께 왜행성 후보가 될 만한 크기지만 확인은 아직 남아 있다. 궤도가 확정된 뒤에는 지난 10년간의 보관 이미지와 하버드 건판 보관소에 있는 1937년 사진 건판에서도 이 천체가 나타났다.
+***** Take
+1937년 건판이 가장 오래 머물러 볼 만한 부분이다. 이 천체는 이미 89년 전에 유리판에 기록되어 있었고, 그 판이 줄곧 보여주던 것이 무엇인지 알아내는 데는 루빈 천문대와 한 천문학자가 직접 쓴 코드가 필요했다. 여기서 발견을 만든 것은 더 좋은 광학계가 아니라, 이미 존재하는 데이터에서 어디를 봐야 하는지 아는 일이었다. 루빈은 앞으로 10년 동안 이런 결과를 수천 건 만들어낼 것이고, 그것이 사후적으로 설명해주는 건판 더미는 그 자체로 조용한 기록 보관소다.
+***** Comments
+- 예전 직업이 소행성과 혜성의 궤도를 계산하는 일이었다. 여기 이 천체의 궤도를 wasm으로 렌더링해뒀다. 데스크톱용이고 65MB짜리 소행성 목록을 내려받는다. 이건 꽤 큰 녀석이다.
+- 당시 명왕성 강등에 대한 부정적 보도가 많았지만 분명히 옳은 결정이었고, 왜행성이라는 분류를 만든 것도 맞았다. 에리스, 하우메아, 마케마케와 이런 후보들이 결정적인 증거다.
+- 1937년 사진 건판에서도 찾아냈다니. 정말 멋지다.
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+太陽を一周するのに約280年かかる準惑星候補が見つかる
+***** TLDR
+スミソニアン天体物理観測所のマシュー・ホルマンが、自作のソフトウェアを使い、2026年3月から6月に撮影されたベラ・C・ルービン天文台の画像から2026 ED138を見つけた。この天体は地球と太陽の距離の約46倍のところを281.1年かけて一周する。軌道は太陽系の主平面から25度傾いており、過去に重力的な乱れを受けたことを示唆する。直径は約595から1,500キロメートルと推定され、冥王星、エリス、マケマケ、ハウメア、ケレスに並ぶ準惑星候補になりうる大きさだが、確認は保留中だ。軌道が分かってからは、過去10年の保管画像と、ハーバードのガラス乾板コレクションにある1937年の写真乾板にもこの天体が写っていた。
+***** Take
+1937年の乾板が最も立ち止まるべき部分だ。この天体は89年前にすでにガラスに記録されていて、その乾板がずっと映していたものを解き明かすには、ルービン天文台と一人の天文学者が書いたコードが必要だった。ここで発見をもたらしたのは優れた光学系ではなく、すでに存在するデータのどこを見るべきかを知ることだった。ルービンは今後10年でこの種の成果を数千件生み出すだろうし、それが後から説明をつける乾板の山は、それ自体が静かな記録庫だ。
+***** Comments
+- 以前の仕事は小惑星や彗星の軌道計算だった。この天体の軌道をwasmで描いてある。デスクトップ向けで、65MBの小惑星カタログをダウンロードする。これはなかなかの大物だ。
+- 当時は冥王星の格下げに否定的な報道が多かったが、明らかに正しい判断だったし、準惑星という分類を作ったのも正しかった。エリス、ハウメア、マケマケや他の候補が決定的な証拠だ。
+- 1937年の写真乾板にまで写っていたとは。かなりすごい。
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+发现一颗绕太阳一圈约需 280 年的矮行星候选天体
+***** TLDR
+史密森天体物理台的马修·霍尔曼用自己编写的软件，从薇拉·鲁宾天文台 2026 年 3 月至 6 月拍摄的图像中找到了 2026 ED138。该天体在约 46 倍地日距离处绕太阳一周需 281.1 年，轨道相对太阳系主平面倾斜 25 度，暗示它曾受到引力扰动。直径估计在约 595 到 1500 公里之间，足以与冥王星、阅神星、鸟神星、妊神星和谷神星一同列为矮行星候选，但仍待确认。轨道确定之后，这个天体又在过去十年的存档图像、以及哈佛玻璃底片库中 1937 年的照相底片上被找了出来。
+***** Take
+1937 年的底片是最值得停下来想一想的部分。这个天体 89 年前就已经被记录在玻璃上，而要弄清那张底片一直在显示什么，需要鲁宾天文台加上一位天文学家自己写的代码。这里促成发现的不是更好的光学系统，而是知道该在已有的数据里看哪儿。未来十年鲁宾会把这类结果产出成千上万份，而它追溯解释的那一堆底片，本身就是一座安静的档案馆。
+***** Comments
+- 我以前的本职工作就是计算小行星和彗星的轨道。这里有它的轨道，用 wasm 渲染，面向桌面端，会下载一个 65MB 的小行星目录。这家伙挺大的。
+- 当年把冥王星降级引来不少负面报道，但那显然是正确的决定，设立矮行星这个分类也是对的。阅神星、妊神星、鸟神星以及这些其他候选天体就是最后的定论。
+- 他们甚至在 1937 年的照相底片上找到了它。相当带劲。
