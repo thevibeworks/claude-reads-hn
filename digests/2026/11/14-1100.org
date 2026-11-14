@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-11-14 11:00 UTC
+#+DATE: 2026-11-14T11:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+ggml reaches 1.0, a used phone undercuts a Pi build, Monkey Island in 13 versions, a granzyme K ageing study, and a music player rewritten without the LLM
+
+* Highlights
+- ggml 1.0.0: deprecated API removed, FP8 on CUDA, faster kernels on every backend
+- Old phone vs Raspberry Pi: a $45 used phone covers what a $350 Pi build needs
+- Monkey Island: 12 scenes across 13 display modes, captured in ScummVM
+- Granzyme K: knockout mice show less organ ageing, but their immune ageing continues
+- AMP: a Zig music player that came out half the size after removing LLM-written code
+
+* Stories
+
+** Ggml v1.0.0 :ai:llm:opensource:inference:c:
+:PROPERTIES:
+:ID:       50493062
+:URL:      https://github.com/ggml-org/ggml/releases/tag/v1.0.0
+:HN_URL:   https://news.ycombinator.com/item?id=50493062
+:POINTS:   275
+:COMMENTS: 45
+:BY:       cobychapple
+:END:
+
+*** TLDR
+The tensor library behind llama.cpp is now 1.0.0. The release removes deprecated public API and the old DIAG_MASK ops, bumps the RPC protocol to v9 (which rejects incompatible peers), and adds OCP FP8 on CUDA plus an FP8 KV cache. Every backend gets performance work: CUDA few-row quantized matmuls and MoE changes, fused MoE routing on Metal, an Intel FlashAttention prefill kernel on Vulkan, Adreno FlashAttention on OpenCL, and new WebGPU, Hexagon and RISC-V/ARM CPU kernels. The notes link to a versioning policy but make no explicit stability promise.
+
+*** Take
+The 1.0 tag mostly marks a cleanup. The bigger story is that the project still gets measurably faster every month on hardware people already own. For a library carrying most of local inference, removing old API is the right first step after 1.0. The next thing users need is a written compatibility promise.
+
+*** Comments
+
+**** jacquesm
+:PROPERTIES:
+:COMMENT_ID: 50494080
+:END:
+Every time I upgrade (once a month or so) there is usually a 5 to 10% speed boost. I ran my usual benchmark before and after today: 4:22 down to 3:59.
+
+**** kodoman
+:PROPERTIES:
+:COMMENT_ID: 50493873
+:END:
+Running on my crappy AMD card that only supports Vulkan, and it's usable thanks to ggml and llama.cpp.
+
+**** minimaxa
+:PROPERTIES:
+:COMMENT_ID: 50494448
+:END:
+You are not serious with this landing page? You have seed money, put a little more effort in.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Ggml v1.0.0 发布
+***** TLDR
+llama.cpp 背后的张量库发布 1.0.0。此版本移除了已弃用的公共 API 和旧的 DIAG_MASK 算子，将 RPC 协议升级到 v9（会拒绝不兼容的节点），并在 CUDA 上加入 OCP FP8 和 FP8 KV 缓存。所有后端都有性能改进：CUDA 少行量化矩阵乘法和 MoE 优化、Metal 融合 MoE 路由、Vulkan 的 Intel FlashAttention 预填充内核、OpenCL 的 Adreno FlashAttention，以及新的 WebGPU、Hexagon 和 RISC-V/ARM CPU 内核。发布说明链接了版本策略，但没有明确的稳定性承诺。
+***** Take
+1.0 标签主要标志着一次清理。更重要的是，这个项目在用户已有的硬件上每月仍能测得明显提速。对于承载大部分本地推理的库来说，1.0 之后先移除旧 API 是对的。用户接下来需要的是一份书面的兼容性承诺。
+***** Comments
+- 我大约每月升级一次，每次通常有 5% 到 10% 的提速。今天升级前后跑了常规基准：从 4:22 降到 3:59。
+- 在我那块只支持 Vulkan 的烂 AMD 卡上跑，多亏 ggml 和 llama.cpp 才能用。
+- 这个落地页你是认真的吗？你们拿了种子轮，多花点心思吧。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Ggml v1.0.0
+***** TLDR
+llama.cppを支えるテンソルライブラリが1.0.0に到達。非推奨の公開APIと古いDIAG_MASK演算を削除し、RPCプロトコルをv9に更新（互換性のないピアは拒否）、CUDAでOCP FP8とFP8 KVキャッシュに対応した。全バックエンドで性能改善があり、CUDAの少行量子化行列積とMoE、Metalの融合MoEルーティング、VulkanのIntel向けFlashAttentionプリフィルカーネル、OpenCLのAdreno向けFlashAttention、WebGPU・Hexagon・RISC-V/ARM CPUの新カーネルが含まれる。バージョニング方針へのリンクはあるが、明示的な安定性の約束はない。
+***** Take
+1.0タグは主に整理の区切りだ。より大きいのは、ユーザーが既に持っているハードウェア上で今も毎月計測できるほど速くなっている点だ。ローカル推論の大半を担うライブラリとして、1.0後にまず古いAPIを削るのは正しい。次にユーザーが必要とするのは、文書化された互換性の約束だ。
+***** Comments
+- 月に一度くらい更新するたびに、だいたい5〜10%速くなる。今日も更新前後でいつものベンチを回したら4:22から3:59になった。
+- Vulkanしか対応していないしょぼいAMDカードで動かしているが、ggmlとllama.cppのおかげで実用になっている。
+- このランディングページは本気？シード資金があるなら、もう少し手をかけてくれ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Ggml v1.0.0
+***** TLDR
+llama.cpp의 기반인 텐서 라이브러리가 1.0.0이 되었다. 지원 중단된 공개 API와 옛 DIAG_MASK 연산을 제거하고, RPC 프로토콜을 v9로 올렸으며(호환되지 않는 피어는 거부), CUDA에 OCP FP8과 FP8 KV 캐시를 추가했다. 모든 백엔드에 성능 개선이 있다: CUDA 소수 행 양자화 행렬곱과 MoE, Metal 융합 MoE 라우팅, Vulkan의 Intel FlashAttention 프리필 커널, OpenCL의 Adreno FlashAttention, 새로운 WebGPU·Hexagon·RISC-V/ARM CPU 커널. 릴리스 노트는 버전 정책을 링크하지만 명시적인 안정성 약속은 없다.
+***** Take
+1.0 태그는 주로 정리 작업을 표시한다. 더 큰 이야기는 사용자가 이미 가진 하드웨어에서 이 프로젝트가 여전히 매달 측정 가능할 만큼 빨라진다는 점이다. 로컬 추론 대부분을 떠받치는 라이브러리로서 1.0 이후 먼저 옛 API를 없애는 것은 옳다. 사용자에게 다음으로 필요한 것은 문서화된 호환성 약속이다.
+***** Comments
+- 한 달에 한 번쯤 업그레이드할 때마다 보통 5~10% 빨라진다. 오늘도 업그레이드 전후로 늘 돌리는 벤치마크를 돌렸더니 4:22에서 3:59가 됐다.
+- Vulkan만 지원하는 형편없는 AMD 카드에서 돌리는데, ggml과 llama.cpp 덕분에 쓸 만하다.
+- 이 랜딩 페이지 진심인가? 시드 투자도 받았으면 좀 더 신경 써라.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Ggml v1.0.0
+***** TLDR
+La biblioteca de tensores detrás de llama.cpp llega a la 1.0.0. Elimina la API pública obsoleta y las viejas operaciones DIAG_MASK, sube el protocolo RPC a v9 (que rechaza nodos incompatibles) y añade OCP FP8 en CUDA y caché KV en FP8. Todos los backends reciben mejoras de rendimiento: multiplicaciones cuantizadas de pocas filas y MoE en CUDA, enrutado MoE fusionado en Metal, un kernel de prefill FlashAttention para Intel en Vulkan, FlashAttention para Adreno en OpenCL y nuevos kernels para WebGPU, Hexagon y CPU RISC-V/ARM. Las notas enlazan una política de versiones pero no prometen estabilidad de forma explícita.
+***** Take
+La etiqueta 1.0 marca sobre todo una limpieza. Lo más relevante es que el proyecto sigue siendo mediblemente más rápido cada mes en hardware que la gente ya tiene. Para una biblioteca que sostiene casi toda la inferencia local, quitar API vieja es el primer paso correcto tras la 1.0. Lo siguiente que necesitan los usuarios es una promesa de compatibilidad por escrito.
+***** Comments
+- Cada vez que actualizo (más o menos una vez al mes) suele haber un 5 a 10% más de velocidad. Hoy pasé mi benchmark habitual antes y después: de 4:22 a 3:59.
+- Lo uso en mi tarjeta AMD mala que solo soporta Vulkan, y es usable gracias a ggml y llama.cpp.
+- ¿En serio con esta página de inicio? Tenéis capital semilla, esforzaos un poco más.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Ggml v1.0.0
+***** TLDR
+Die Tensor-Bibliothek hinter llama.cpp ist jetzt bei 1.0.0. Das Release entfernt veraltete öffentliche API und die alten DIAG_MASK-Ops, hebt das RPC-Protokoll auf v9 an (inkompatible Peers werden abgelehnt) und bringt OCP FP8 auf CUDA sowie einen FP8-KV-Cache. Jedes Backend bekommt Performance-Arbeit: quantisierte Matmuls mit wenigen Zeilen und MoE auf CUDA, fusioniertes MoE-Routing auf Metal, ein Intel-FlashAttention-Prefill-Kernel auf Vulkan, Adreno-FlashAttention auf OpenCL und neue Kernel für WebGPU, Hexagon und RISC-V/ARM-CPUs. Die Notes verlinken eine Versionierungsrichtlinie, geben aber kein explizites Stabilitätsversprechen.
+***** Take
+Das 1.0-Tag markiert vor allem ein Aufräumen. Wichtiger ist, dass das Projekt auf Hardware, die Leute schon besitzen, weiterhin jeden Monat messbar schneller wird. Für eine Bibliothek, die den Großteil lokaler Inferenz trägt, ist das Entfernen alter API nach 1.0 der richtige erste Schritt. Als Nächstes brauchen Nutzer ein schriftliches Kompatibilitätsversprechen.
+***** Comments
+- Jedes Mal, wenn ich upgrade (etwa einmal im Monat), gibt es meist 5 bis 10 % mehr Tempo. Heute vorher und nachher meinen üblichen Benchmark laufen lassen: von 4:22 auf 3:59.
+- Läuft auf meiner miesen AMD-Karte, die nur Vulkan kann, und ist dank ggml und llama.cpp benutzbar.
+- Ist diese Landingpage euer Ernst? Ihr habt Seed-Geld, gebt euch etwas mehr Mühe.
+** Why get an expensive Pi when I have an old phone? :hardware:android:raspberrypi:ewaste:
+:PROPERTIES:
+:ID:       50440709
+:URL:      https://so.long.thanks.fish/why-pi-when-i-have-an-old-phone/
+:HN_URL:   https://news.ycombinator.com/item?id=50440709
+:POINTS:   77
+:COMMENTS: 43
+:BY:       casi
+:END:
+
+*** TLDR
+The author needs a device with a high-resolution camera, GPS, storage and control of an LED strip. The prototype is a rooted Redmi 13C 5G running a custom app, wired over USB-C to an LED controller, with a Huawei Mate 30 tested as a kiosk. A used phone costs about $45 to $75. The equivalent Pi 4 build with camera, GPS and storage comes to about $222, or about $347 once you add an RTC, UPS, touchscreen and 4G HAT. The author used Codex to set up and test the phone's components. Unresolved: whether the 50MP phone JPEGs actually beat a 64MP Arducam, and whether hundreds of matching used phones can be sourced.
+
+*** Take
+The cost comparison is real, and the author states the main weakness plainly: sourcing. Commenters add the rest. With a Pi you can buy the hundredth unit identical to the first, and it comes with GPIO, a maintained kernel and an unlocked bootloader. A phone suits a one-off build with a screen. Making it a product depends on the used-phone market and on rooting each model.
+
+*** Comments
+
+**** Freak_NL
+:PROPERTIES:
+:COMMENT_ID: 50495561
+:END:
+Raspberry Pis are commodity hardware. You can buy one, two, ten, a hundred, and it just scales along.
+
+**** yjftsjthsd-h
+:PROPERTIES:
+:COMMENT_ID: 50495586
+:END:
+Because the Pi has a maintained kernel and a userspace I don't have to fight.
+
+**** classified
+:PROPERTIES:
+:COMMENT_ID: 50495761
+:END:
+As long as it's not an iPhone. Once Apple has bricked your old iPhone, you can't even run your own software on it.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+有旧手机，为什么还要买昂贵的树莓派？
+***** TLDR
+作者需要一台带高分辨率摄像头、GPS、存储并能控制 LED 灯带的设备。原型是一台已 root 的 Redmi 13C 5G，运行自定义应用，通过 USB-C 连接 LED 控制器，另用华为 Mate 30 测试信息亭模式。二手手机约 45 到 75 美元。带摄像头、GPS 和存储的同等 Pi 4 方案约 222 美元，加上 RTC、UPS、触摸屏和 4G HAT 约 347 美元。作者用 Codex 配置和测试手机组件。尚未解决：50MP 手机 JPEG 是否真的胜过 64MP Arducam，以及能否采购到数百台一致的二手手机。
+***** Take
+成本对比是真实的，作者也直白地说出了主要弱点：货源。评论补充了其余部分。树莓派第一百台和第一台完全一样，还自带 GPIO、持续维护的内核和解锁的引导程序。手机适合带屏幕的一次性项目。要做成产品，就取决于二手手机市场和逐个机型的 root。
+***** Comments
+- 树莓派是通用硬件。买一台、两台、十台、一百台，都能直接扩展。
+- 因为树莓派有持续维护的内核，用户空间也不用跟它较劲。
+- 只要不是 iPhone 就行。苹果一旦让你的旧 iPhone 变砖，你连自己的软件都跑不了。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+古いスマホがあるのに、なぜ高価なPiを買うのか？
+***** TLDR
+著者には高解像度カメラ、GPS、ストレージを備え、LEDストリップを制御できるデバイスが必要だった。試作機はroot化したRedmi 13C 5Gで、自作アプリを動かし、USB-CでLEDコントローラに接続している。Huawei Mate 30はキオスク用途で試験中。中古スマホは約45〜75ドル。カメラ、GPS、ストレージ付きの同等なPi 4構成は約222ドル、RTC、UPS、タッチスクリーン、4G HATを足すと約347ドル。著者はCodexでスマホの部品の設定とテストを行った。未解決なのは、50MPのスマホJPEGが64MPのArducamより本当に優れているか、そして同一機種の中古スマホを数百台調達できるかだ。
+***** Take
+コスト比較は本物で、著者は最大の弱点である調達をはっきり書いている。残りはコメントが補っている。Piなら100台目も1台目と同じものが買え、GPIO、保守されたカーネル、アンロック済みブートローダーが付いてくる。スマホは画面付きの一点物に向いている。製品化できるかは中古市場と機種ごとのroot化にかかっている。
+***** Comments
+- Raspberry Piは汎用品だ。1台でも2台でも10台でも100台でも買えて、そのままスケールする。
+- Piには保守されたカーネルがあり、戦わなくていいユーザーランドがあるからだ。
+- iPhoneでなければね。Appleが古いiPhoneを文鎮化したら、自分のソフトすら動かせない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+오래된 폰이 있는데 왜 비싼 파이를 사나?
+***** TLDR
+저자는 고해상도 카메라, GPS, 저장장치를 갖추고 LED 스트립을 제어할 수 있는 장치가 필요했다. 프로토타입은 루팅한 Redmi 13C 5G로, 자체 앱을 실행하며 USB-C로 LED 컨트롤러에 연결된다. Huawei Mate 30은 키오스크 용도로 시험 중이다. 중고폰은 약 45~75달러다. 카메라, GPS, 저장장치를 갖춘 동급 Pi 4 구성은 약 222달러, RTC, UPS, 터치스크린, 4G HAT까지 더하면 약 347달러다. 저자는 Codex로 폰 부품을 설정하고 테스트했다. 미해결 과제는 50MP 폰 JPEG가 64MP Arducam보다 정말 나은지, 그리고 같은 기종 중고폰을 수백 대 구할 수 있는지다.
+***** Take
+비용 비교는 사실이고, 저자는 가장 큰 약점인 조달 문제를 솔직하게 적었다. 나머지는 댓글이 채운다. 파이는 백 번째 기기도 첫 번째와 똑같이 살 수 있고 GPIO, 유지보수되는 커널, 잠금 해제된 부트로더가 딸려 온다. 폰은 화면이 달린 일회성 제작에 맞다. 제품화는 중고폰 시장과 기종별 루팅에 달려 있다.
+***** Comments
+- 라즈베리 파이는 범용 하드웨어다. 한 대, 두 대, 열 대, 백 대를 사도 그대로 확장된다.
+- 파이에는 유지보수되는 커널과 싸울 필요 없는 유저스페이스가 있기 때문이다.
+- 아이폰만 아니면 된다. 애플이 오래된 아이폰을 벽돌로 만들면 내 소프트웨어조차 못 돌린다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+¿Para qué comprar una Pi cara si tengo un móvil viejo?
+***** TLDR
+El autor necesita un dispositivo con cámara de alta resolución, GPS, almacenamiento y control de una tira LED. El prototipo es un Redmi 13C 5G rooteado con una app propia, conectado por USB-C a un controlador LED, y un Huawei Mate 30 en pruebas como quiosco. Un móvil usado cuesta unos 45 a 75 dólares. La build equivalente con Pi 4, cámara, GPS y almacenamiento ronda los 222 dólares, o unos 347 al añadir RTC, SAI, pantalla táctil y HAT 4G. El autor usó Codex para configurar y probar los componentes del móvil. Sin resolver: si los JPEG de 50MP del móvil superan de verdad a una Arducam de 64MP y si se pueden conseguir cientos de móviles usados iguales.
+***** Take
+La comparación de costes es real, y el autor reconoce claramente el punto débil principal: el suministro. Los comentarios añaden el resto. Con una Pi puedes comprar la unidad cien idéntica a la primera, con GPIO, un kernel mantenido y bootloader desbloqueado. Un móvil sirve para un montaje único con pantalla. Convertirlo en producto depende del mercado de segunda mano y de rootear cada modelo.
+***** Comments
+- Las Raspberry Pi son hardware de consumo masivo. Compras una, dos, diez, cien, y escala sin más.
+- Porque la Pi tiene un kernel mantenido y un espacio de usuario con el que no tengo que pelearme.
+- Mientras no sea un iPhone. Cuando Apple inutiliza tu iPhone viejo, ni siquiera puedes ejecutar tu propio software.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Warum einen teuren Pi kaufen, wenn ich ein altes Handy habe?
+***** TLDR
+Der Autor braucht ein Gerät mit hochauflösender Kamera, GPS, Speicher und Steuerung eines LED-Streifens. Der Prototyp ist ein gerootetes Redmi 13C 5G mit eigener App, per USB-C an einen LED-Controller angeschlossen, dazu ein Huawei Mate 30 im Kiosk-Test. Ein gebrauchtes Handy kostet etwa 45 bis 75 Dollar. Ein vergleichbarer Pi-4-Aufbau mit Kamera, GPS und Speicher liegt bei etwa 222 Dollar, mit RTC, USV, Touchscreen und 4G-HAT bei etwa 347 Dollar. Der Autor hat die Komponenten des Handys mit Codex eingerichtet und getestet. Offen bleibt, ob die 50-MP-JPEGs des Handys eine 64-MP-Arducam wirklich schlagen und ob sich Hunderte gleicher Gebrauchthandys beschaffen lassen.
+***** Take
+Der Kostenvergleich stimmt, und der Autor benennt die Hauptschwäche offen: die Beschaffung. Den Rest ergänzen die Kommentare. Beim Pi ist das hundertste Gerät identisch mit dem ersten, und es kommt mit GPIO, gepflegtem Kernel und offenem Bootloader. Ein Handy passt für einen Einzelaufbau mit Bildschirm. Ein Produkt daraus hängt vom Gebrauchtmarkt und vom Rooten jedes einzelnen Modells ab.
+***** Comments
+- Raspberry Pis sind Massenware. Man kauft einen, zwei, zehn, hundert, und es skaliert einfach.
+- Weil der Pi einen gepflegten Kernel und ein Userspace hat, gegen das ich nicht kämpfen muss.
+- Solange es kein iPhone ist. Wenn Apple dein altes iPhone unbrauchbar gemacht hat, kannst du nicht mal eigene Software darauf laufen lassen.
+** Monkey Island: all 13 versions side by side :retrogaming:games:pixelart:scummvm:
+:PROPERTIES:
+:ID:       50493904
+:URL:      https://monkeyisland.pages.dev/
+:HN_URL:   https://news.ycombinator.com/item?id=50493904
+:POINTS:   145
+:COMMENTS: 38
+:BY:       maximilianburke
+:END:
+
+*** TLDR
+A fan site shows the same 12 scenes from The Secret of Monkey Island (1990) in 13 display modes from 8 editions: Hercules, CGA, EGA, VGA, Amiga, Atari ST, Mac, FM Towns, Sega CD and CD releases, for 156 screens in total. Most captures come from ScummVM, with Atari ST mono from the Hatari emulator. All are scaled with nearest-neighbour and corrected to 4:3. You can compare two versions side by side, zoom up to 4x, and turn on a CRT shader adapted from DOSBox Staging, set to match each platform's original monitor. Two brothers made it with AI help. It is unaffiliated with Lucasfilm or Disney.
+
+*** Take
+The value here is the controlled comparison. Every frame is matched, so you are looking only at how each palette and resolution was handled, and the Amiga and CGA artists clearly solved different problems. One caveat from the thread: the anniversary re-release is missing, so "all 13" means the original-era releases only.
+
+*** Comments
+
+**** guidedlight
+:PROPERTIES:
+:COMMENT_ID: 50495332
+:END:
+Incredible that graphics artists provided 13+ variations on the same artwork, without the help of modern tools.
+
+**** tjeerdnet
+:PROPERTIES:
+:COMMENT_ID: 50495592
+:END:
+CGA in cyan, magenta, black and white always felt cold to me. When EGA/VGA came it felt warm and games came to life.
+
+**** FabCH
+:PROPERTIES:
+:COMMENT_ID: 50494840
+:END:
+Technically not all. The anniversary re-release is missing.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+猴岛小英雄：13 个版本并排对比
+***** TLDR
+一个粉丝网站展示了《猴岛小英雄》（1990）的同样 12 个场景，涵盖 8 个版本中的 13 种显示模式：Hercules、CGA、EGA、VGA、Amiga、Atari ST、Mac、FM Towns、Sega CD 和 CD 版，共 156 张画面。大部分截图来自 ScummVM，Atari ST 单色版来自 Hatari 模拟器。全部用最近邻缩放并校正为 4:3。可以并排对比两个版本、最多放大 4 倍，并开启改编自 DOSBox Staging 的 CRT 着色器，按每个平台的原始显示器调校。由两兄弟借助 AI 制作，与 Lucasfilm 或迪士尼无关。
+***** Take
+它的价值在于受控对比。每一帧都对齐，你看到的只是各个调色板和分辨率的处理方式，Amiga 和 CGA 的美术显然在解决不同的问题。讨论里有一个提醒：缺少周年重制版，所以“全部 13 个”只指早期原版。
+***** Comments
+- 美术师在没有现代工具的情况下为同一作品画出 13 种以上的变体，真是不可思议。
+- CGA 的青、品红、黑、白在我看来总是很冷。EGA/VGA 出来后才觉得温暖，游戏才活了过来。
+- 严格来说不是全部。缺了周年重制版。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+モンキーアイランド：全13バージョンを並べて比較
+***** TLDR
+ファンサイトが『The Secret of Monkey Island』（1990）の同じ12シーンを、8つのエディションにわたる13の表示モードで見せている。Hercules、CGA、EGA、VGA、Amiga、Atari ST、Mac、FM Towns、メガCD、CD版で、計156画面。ほとんどはScummVMで撮影され、Atari STのモノクロはHatariエミュレータから。すべてニアレストネイバーで拡大し4:3に補正済み。2つのバージョンを並べて比較でき、最大4倍のズームと、DOSBox Stagingから移植したCRTシェーダーを各プラットフォーム本来のモニターに合わせて使える。兄弟2人がAIの助けを借りて作った。Lucasfilmやディズニーとは無関係。
+***** Take
+価値は条件を揃えた比較にある。全フレームが一致しているので、見えるのはパレットと解像度の扱いの違いだけで、AmigaとCGAのアーティストが別々の課題を解いていたことがはっきりわかる。スレッドからの注意点として、記念リメイク版が欠けているため「全13」は当時のオリジナル版だけを指す。
+***** Comments
+- 現代のツールもなしに、同じアートワークを13以上のバリエーションで描いたグラフィッカーはすごい。
+- シアン、マゼンタ、黒、白のCGAはいつも冷たく感じた。EGA/VGAが来て温かみが出て、ゲームが生き生きした。
+- 厳密には全部ではない。記念リメイク版がない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+몽키 아일랜드: 13개 버전 나란히 비교
+***** TLDR
+한 팬 사이트가 「The Secret of Monkey Island」(1990)의 같은 12개 장면을 8개 에디션, 13개 디스플레이 모드로 보여준다. Hercules, CGA, EGA, VGA, Amiga, Atari ST, Mac, FM Towns, Sega CD, CD 판으로 총 156개 화면이다. 대부분 ScummVM으로 캡처했고 Atari ST 흑백은 Hatari 에뮬레이터에서 가져왔다. 모두 최근접 이웃 방식으로 확대하고 4:3으로 보정했다. 두 버전을 나란히 비교하고 최대 4배까지 확대할 수 있으며, DOSBox Staging에서 가져온 CRT 셰이더를 각 플랫폼의 원래 모니터에 맞춰 켤 수 있다. 두 형제가 AI의 도움을 받아 만들었고, Lucasfilm이나 디즈니와는 무관하다.
+***** Take
+가치는 통제된 비교에 있다. 모든 프레임이 맞춰져 있어 팔레트와 해상도 처리 방식만 보이고, Amiga와 CGA 아티스트가 서로 다른 문제를 풀었다는 것이 분명히 드러난다. 스레드의 한 가지 단서: 기념 리메이크판이 빠져 있어 '13개 전부'는 당시 원작 버전만 뜻한다.
+***** Comments
+- 현대적인 도구도 없이 같은 그림을 13가지 이상으로 그려낸 그래픽 아티스트들이 대단하다.
+- 청록, 자홍, 검정, 흰색의 CGA는 늘 차갑게 느껴졌다. EGA/VGA가 나오자 따뜻해졌고 게임이 살아났다.
+- 엄밀히 말하면 전부는 아니다. 기념 리메이크판이 빠졌다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Monkey Island: las 13 versiones lado a lado
+***** TLDR
+Un sitio de fans muestra las mismas 12 escenas de The Secret of Monkey Island (1990) en 13 modos de pantalla de 8 ediciones: Hercules, CGA, EGA, VGA, Amiga, Atari ST, Mac, FM Towns, Sega CD y versiones en CD, 156 pantallas en total. La mayoría se capturó con ScummVM, y la Atari ST monocromo con el emulador Hatari. Todas están escaladas con vecino más cercano y corregidas a 4:3. Se pueden comparar dos versiones lado a lado, ampliar hasta 4x y activar un shader CRT adaptado de DOSBox Staging, ajustado al monitor original de cada plataforma. Lo hicieron dos hermanos con ayuda de IA. No está afiliado a Lucasfilm ni a Disney.
+***** Take
+El valor está en la comparación controlada. Cada fotograma coincide, así que solo ves cómo se resolvió cada paleta y resolución, y los artistas de Amiga y de CGA claramente resolvían problemas distintos. Un matiz del hilo: falta la reedición de aniversario, así que "las 13" son solo las versiones de la época original.
+***** Comments
+- Increíble que los grafistas hicieran más de 13 variaciones del mismo arte, sin herramientas modernas.
+- El CGA en cian, magenta, negro y blanco siempre me pareció frío. Con EGA/VGA se sintió cálido y los juegos cobraron vida.
+- Técnicamente no están todas. Falta la reedición de aniversario.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Monkey Island: alle 13 Versionen im direkten Vergleich
+***** TLDR
+Eine Fanseite zeigt dieselben 12 Szenen aus The Secret of Monkey Island (1990) in 13 Anzeigemodi aus 8 Editionen: Hercules, CGA, EGA, VGA, Amiga, Atari ST, Mac, FM Towns, Sega CD und CD-Fassungen, insgesamt 156 Bildschirme. Die meisten Aufnahmen stammen aus ScummVM, Atari ST mono aus dem Hatari-Emulator. Alle sind per Nearest-Neighbour skaliert und auf 4:3 korrigiert. Man kann zwei Versionen nebeneinander vergleichen, bis 4x zoomen und einen aus DOSBox Staging übernommenen CRT-Shader einschalten, der auf den ursprünglichen Monitor jeder Plattform abgestimmt ist. Zwei Brüder haben die Seite mit KI-Hilfe gebaut. Sie steht in keiner Verbindung zu Lucasfilm oder Disney.
+***** Take
+Der Wert liegt im kontrollierten Vergleich. Jedes Bild ist abgeglichen, man sieht also nur, wie Palette und Auflösung jeweils umgesetzt wurden, und die Amiga- und CGA-Grafiker haben erkennbar unterschiedliche Probleme gelöst. Ein Einwand aus dem Thread: Die Jubiläumsneuauflage fehlt, "alle 13" meint also nur die Originalfassungen.
+***** Comments
+- Unglaublich, dass Grafiker ohne moderne Werkzeuge 13+ Varianten desselben Artworks erstellt haben.
+- CGA in Cyan, Magenta, Schwarz und Weiß fühlte sich für mich immer kalt an. Mit EGA/VGA wurde es warm und die Spiele erwachten zum Leben.
+- Technisch nicht alle. Die Jubiläumsneuauflage fehlt.
+** Found: A protein that drives ageing without unleashing inflammation :science:biology:ageing:longevity:
+:PROPERTIES:
+:ID:       50488470
+:URL:      https://www.nature.com/articles/d41586-026-03638-3
+:HN_URL:   https://news.ycombinator.com/item?id=50488470
+:POINTS:   205
+:COMMENTS: 38
+:BY:       gumby
+:END:
+
+*** TLDR
+［Nature research highlight is paywalled; based on its free lede and the paper abstract quoted in the thread.］ A study in Immunity identifies the enzyme granzyme K (GzmK) as a driver of tissue ageing. Aged mice engineered to lack it had better heart and liver function, less liver scarring and less kidney damage. Their immune systems still aged, and systemic inflammation was unchanged. In the abstract's words, the result separates immune ageing from tissue ageing. Nature's suggestion is that drugs lowering GzmK might one day slow tissue ageing without weakening immune defences.
+
+*** Take
+The headline sounds like a general claim about ageing. The abstract is narrower: one enzyme, knocked out from birth in mice, slowed organ decline while immune ageing went on as before. That separation is the actual finding, and it is useful. Nothing here was tested in humans, and no drug exists yet.
+
+*** Comments
+
+**** ethanj8011
+:PROPERTIES:
+:COMMENT_ID: 50491235
+:END:
+From the abstract, significantly more nuance: GzmK deficiency attenuated organ aging despite persistent immune aging, identifying it as a tissue-specific driver but not of immune aging or inflammaging.
+
+**** eecc
+:PROPERTIES:
+:COMMENT_ID: 50495363
+:END:
+I wonder what these proteins do to earn their presence in the genome.
+
+**** StilesCrisis
+:PROPERTIES:
+:COMMENT_ID: 50489842
+:END:
+Thank God! Finally, mice that don't age!
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+发现：一种驱动衰老却不引发炎症的蛋白
+***** TLDR
+［Nature 研究亮点有付费墙；依据其免费导语和讨论中引用的论文摘要。］ 一项发表于 Immunity 的研究发现颗粒酶 K（GzmK）是组织衰老的驱动因素。经基因改造缺失该酶的老年小鼠，心脏和肝脏功能更好，肝脏纤维化更少，肾损伤也更少。它们的免疫系统仍在衰老，全身炎症没有变化。按摘要的说法，这一结果把免疫衰老与组织衰老分离开来。Nature 认为，降低 GzmK 的药物将来或许能延缓组织衰老而不削弱免疫防御。
+***** Take
+标题听起来像是关于衰老的普遍结论。摘要要窄得多：在小鼠中从出生起敲除一种酶，减缓了器官衰退，而免疫衰老照常进行。这种分离才是真正的发现，而且有用。这些都还没有在人身上测试，也还没有任何药物。
+***** Comments
+- 摘要里的细节多得多：尽管免疫衰老持续存在，GzmK 缺失仍减缓了器官衰老，说明它是组织特异性的驱动因素，而不是免疫衰老或炎性衰老的驱动因素。
+- 我好奇这些蛋白在基因组里到底做了什么才得以保留。
+- 谢天谢地！终于有不会变老的老鼠了！
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+発見：炎症を引き起こさずに老化を促すタンパク質
+***** TLDR
+［Natureのリサーチハイライトは有料。無料のリードとスレッドで引用された論文アブストラクトに基づく。］ Immunity誌の研究が、酵素グランザイムK（GzmK）を組織老化の要因として特定した。これを欠くよう遺伝子操作された高齢マウスは、心臓と肝臓の機能が良く、肝臓の線維化と腎臓の損傷が少なかった。免疫系は依然として老化し、全身性の炎症は変わらなかった。アブストラクトの言葉では、この結果は免疫老化と組織老化を切り離す。Natureは、GzmKを下げる薬がいずれ免疫防御を弱めずに組織老化を遅らせるかもしれないとしている。
+***** Take
+見出しは老化全般についての主張に聞こえる。アブストラクトはもっと狭い。マウスで生まれつき1つの酵素を欠損させると、免疫老化はそのまま進む一方で臓器の衰えが遅くなった。この切り離しこそが実際の発見で、有用だ。人間ではまだ何も試されておらず、薬もまだ存在しない。
+***** Comments
+- アブストラクトにはもっと細かい話がある。免疫老化が続いてもGzmK欠損は臓器老化を抑えており、組織特異的な老化要因であって、免疫老化や炎症性老化の要因ではない。
+- これらのタンパク質はゲノムに残るために何をしているのだろう。
+- ありがたい！ついに老いないマウスが！
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+발견: 염증을 일으키지 않고 노화를 일으키는 단백질
+***** TLDR
+［Nature 연구 하이라이트는 유료. 무료 도입부와 스레드에 인용된 논문 초록을 바탕으로 함.］ Immunity에 실린 연구가 효소 그랜자임 K(GzmK)를 조직 노화의 원인으로 지목했다. 이 효소가 없도록 유전자를 조작한 늙은 쥐는 심장과 간 기능이 더 좋았고, 간 섬유화와 신장 손상이 적었다. 면역계는 여전히 노화했고 전신 염증은 변하지 않았다. 초록의 표현으로는 이 결과가 면역 노화와 조직 노화를 분리한다. Nature는 GzmK를 낮추는 약이 언젠가 면역 방어를 약화시키지 않고 조직 노화를 늦출 수 있을 것이라고 본다.
+***** Take
+제목은 노화 전반에 대한 주장처럼 들린다. 초록은 훨씬 좁다. 쥐에서 태어날 때부터 효소 하나를 없앴더니 면역 노화는 그대로 진행됐지만 장기 쇠퇴는 느려졌다. 이 분리가 실제 발견이고 유용하다. 사람에게는 아직 아무것도 시험되지 않았고, 약도 아직 없다.
+***** Comments
+- 초록을 보면 훨씬 미묘하다. 면역 노화가 지속되는데도 GzmK 결핍은 장기 노화를 줄였고, 이는 조직 특이적 노화 요인이지 면역 노화나 염증 노화의 요인은 아니라는 뜻이다.
+- 이 단백질들이 게놈에 남아 있으려고 무슨 일을 하는지 궁금하다.
+- 다행이다! 드디어 늙지 않는 쥐가!
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Hallada: una proteína que impulsa el envejecimiento sin desatar inflamación
+***** TLDR
+［El resumen de Nature está tras muro de pago; basado en su entradilla gratuita y el resumen del artículo citado en el hilo.］ Un estudio en Immunity identifica la enzima granzima K (GzmK) como impulsora del envejecimiento de los tejidos. Ratones viejos modificados para carecer de ella tenían mejor función cardíaca y hepática, menos fibrosis hepática y menos daño renal. Su sistema inmune siguió envejeciendo y la inflamación sistémica no cambió. Según el resumen, el resultado separa el envejecimiento inmune del envejecimiento de los tejidos. Nature sugiere que fármacos que reduzcan la GzmK podrían algún día frenar el envejecimiento de los tejidos sin debilitar las defensas inmunes.
+***** Take
+El titular suena a afirmación general sobre el envejecimiento. El resumen es más acotado: una enzima, eliminada desde el nacimiento en ratones, frenó el deterioro de los órganos mientras el envejecimiento inmune seguía igual. Esa separación es el hallazgo real, y es útil. Nada de esto se ha probado en humanos y todavía no existe ningún fármaco.
+***** Comments
+- El resumen tiene mucho más matiz: la falta de GzmK atenuó el envejecimiento de órganos pese a que el envejecimiento inmune persistía, lo que la identifica como impulsora específica de tejidos, no del envejecimiento inmune ni del inflammaging.
+- Me pregunto qué hacen estas proteínas para ganarse su lugar en el genoma.
+- ¡Gracias a Dios! ¡Por fin ratones que no envejecen!
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Gefunden: Ein Protein, das Alterung antreibt, ohne Entzündungen auszulösen
+***** TLDR
+［Das Nature-Research-Highlight ist hinter einer Paywall; basiert auf dem frei lesbaren Vorspann und dem im Thread zitierten Abstract.］ Eine Studie in Immunity identifiziert das Enzym Granzym K (GzmK) als Treiber der Gewebealterung. Alte Mäuse, denen es gentechnisch fehlte, hatten bessere Herz- und Leberfunktion, weniger Leberfibrose und weniger Nierenschäden. Ihr Immunsystem alterte trotzdem, und die systemische Entzündung blieb unverändert. Laut Abstract trennt das Ergebnis Immunalterung von Gewebealterung. Nature zufolge könnten Medikamente, die GzmK senken, eines Tages die Gewebealterung bremsen, ohne die Immunabwehr zu schwächen.
+***** Take
+Die Überschrift klingt nach einer allgemeinen Aussage über das Altern. Das Abstract ist enger gefasst: Ein Enzym, bei Mäusen von Geburt an ausgeschaltet, verlangsamte den Organverfall, während die Immunalterung normal weiterlief. Diese Trennung ist der eigentliche Befund, und sie ist nützlich. Am Menschen wurde nichts davon getestet, und ein Medikament gibt es noch nicht.
+***** Comments
+- Das Abstract ist deutlich differenzierter: GzmK-Mangel bremste die Organalterung trotz anhaltender Immunalterung, was es als gewebespezifischen Treiber ausweist, nicht als Treiber von Immunalterung oder Inflammaging.
+- Ich frage mich, womit sich diese Proteine ihren Platz im Genom verdienen.
+- Gott sei Dank! Endlich Mäuse, die nicht altern!
+** How Not to Build a Music Player :zig:llm:audio:opensource:
+:PROPERTIES:
+:ID:       50491400
+:URL:      https://alichraghi.github.io/blog/how-not-to-build-a-music-player/
+:HN_URL:   https://news.ycombinator.com/item?id=50491400
+:POINTS:   118
+:COMMENTS: 47
+:BY:       vinhnx
+:END:
+
+*** TLDR
+Ali Chraghi started AMP, an offline music player written in Zig (UI and shaders included), after internet blackouts in Iran made online players useless. Its main feature is line-synced lyrics shown without visible timestamps. A few days of heavy Claude use produced much of the early code, tens of thousands of lines he could not review. Codeberg's no-AI policy forced a choice between moving the project and rewriting it. He rewrote it, and the result is about half the size, more robust, and has more features. He would still use an LLM for tedious mechanical edits, but not to write a hobby project. v0.1 is out. Android, Windows and a music server are on the roadmap.
+
+*** Take
+The useful number is the 50% size reduction with the same features. That is a measurement of how much the generated code was over-built, and most people never take it because they never do the rewrite. A Codeberg hosting rule ended up working as the code review he had skipped.
+
+*** Comments
+
+**** mojuba
+:PROPERTIES:
+:COMMENT_ID: 50493962
+:END:
+LLMs are generators. They generate code where removal would solve the problem just as well. The fix didn't work, so now they generate a fix for the fix.
+
+**** rjh29
+:PROPERTIES:
+:COMMENT_ID: 50495577
+:END:
+I also vibe coded my own player. It took less time than testing 5-6 music apps and finding out they were missing feature X.
+
+**** ta2112
+:PROPERTIES:
+:COMMENT_ID: 50492354
+:END:
+We all should be using some kind of version control, and as a bonus you'd have your pre-rewrite history.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+如何不去构建一个音乐播放器
+***** TLDR
+伊朗断网使在线播放器无法使用，Ali Chraghi 因此开始开发 AMP，一个用 Zig 编写（包括 UI 和着色器）的离线音乐播放器。它的主要特色是逐行同步歌词且不显示时间戳。几天大量使用 Claude 生成了大部分早期代码，几万行他无法审查。Codeberg 的禁止 AI 政策迫使他在迁移项目和重写之间二选一。他选择重写，结果体积约减半，更健壮，功能也更多。他仍会用 LLM 做繁琐的机械性修改，但不会用它来写业余项目。v0.1 已发布。Android、Windows 和音乐服务器在路线图上。
+***** Take
+有用的数字是功能相同、体积减少 50%。这量化了生成代码的过度设计程度，而大多数人永远测不到，因为他们从不重写。Codeberg 的托管规则最终起到了他跳过的代码审查的作用。
+***** Comments
+- LLM 是生成器。明明删代码就能解决问题，它们却去生成代码。修复没用，就再生成一个修复的修复。
+- 我也氛围编程了自己的播放器。比试用五六个音乐应用、发现它们都缺某个功能花的时间还少。
+- 大家都应该用某种版本控制，额外好处是还能留下重写前的历史。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+音楽プレーヤーの作り方（失敗編）
+***** TLDR
+イランのネット遮断でオンラインプレーヤーが使えなくなり、Ali ChraghiはZig製（UIとシェーダーも含む）のオフライン音楽プレーヤーAMPを作り始めた。主な特徴は、タイムスタンプを表示しない行同期歌詞だ。数日間Claudeを多用して初期コードの大半を生成し、レビューできない数万行が生まれた。CodebergのAI禁止ポリシーにより、プロジェクトを移すか書き直すかの選択を迫られた。彼は書き直し、結果はサイズが約半分で、より堅牢になり、機能も増えた。退屈な機械的編集にはLLMを使うが、趣味のプロジェクトを書かせることはしないという。v0.1が公開済みで、Android、Windows、音楽サーバーがロードマップにある。
+***** Take
+役に立つ数字は、同じ機能でサイズが50%減ったことだ。生成コードがどれだけ作り込みすぎていたかの実測値であり、ほとんどの人は書き直さないのでこれを測らない。Codebergのホスティング規則が、彼が飛ばしたコードレビューの役目を果たした。
+***** Comments
+- LLMは生成器だ。削除すれば同じように解決するところでコードを生成する。修正が効かなければ、今度は修正の修正を生成する。
+- 自分もプレーヤーをバイブコーディングした。音楽アプリを5〜6個試して機能Xがないと知るより早かった。
+- みんな何らかのバージョン管理を使うべきだ。おまけに書き直し前の履歴も残る。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+음악 플레이어를 이렇게 만들지 마라
+***** TLDR
+이란의 인터넷 차단으로 온라인 플레이어를 쓸 수 없게 되자 Ali Chraghi는 Zig로 작성한(UI와 셰이더 포함) 오프라인 음악 플레이어 AMP를 시작했다. 주요 기능은 타임스탬프 없이 표시되는 줄 단위 동기화 가사다. 며칠간 Claude를 집중적으로 써서 초기 코드 대부분을 만들었는데, 그가 검토할 수 없는 수만 줄이었다. Codeberg의 AI 금지 정책 때문에 프로젝트를 옮기거나 다시 작성해야 했다. 그는 다시 작성했고, 결과물은 크기가 약 절반이며 더 견고하고 기능도 더 많다. 지루한 기계적 수정에는 LLM을 쓰겠지만 취미 프로젝트를 맡기지는 않겠다고 한다. v0.1이 나왔고 Android, Windows, 음악 서버가 로드맵에 있다.
+***** Take
+유용한 숫자는 같은 기능으로 크기가 50% 줄었다는 점이다. 생성된 코드가 얼마나 과하게 만들어졌는지를 잰 값이며, 대부분은 다시 작성하지 않으니 이걸 재 볼 일이 없다. Codeberg의 호스팅 규칙이 그가 건너뛴 코드 리뷰 역할을 했다.
+***** Comments
+- LLM은 생성기다. 삭제로도 똑같이 해결될 곳에서 코드를 생성한다. 수정이 안 먹히면 이제 수정의 수정을 생성한다.
+- 나도 바이브 코딩으로 플레이어를 만들었다. 음악 앱 5~6개를 테스트하고 기능 X가 없다는 걸 알아내는 것보다 빨랐다.
+- 모두 어떤 형태든 버전 관리를 써야 한다. 덤으로 다시 작성하기 전 기록도 남는다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Cómo no construir un reproductor de música
+***** TLDR
+Ali Chraghi empezó AMP, un reproductor de música offline escrito en Zig (interfaz y shaders incluidos), después de que los apagones de internet en Irán inutilizaran los reproductores online. Su función principal son letras sincronizadas por línea sin marcas de tiempo visibles. Unos días de uso intensivo de Claude produjeron gran parte del código inicial, decenas de miles de líneas que no podía revisar. La política anti-IA de Codeberg le obligó a elegir entre mover el proyecto o reescribirlo. Lo reescribió, y el resultado ocupa más o menos la mitad, es más robusto y tiene más funciones. Seguiría usando un LLM para ediciones mecánicas tediosas, pero no para escribir un proyecto personal. La v0.1 ya salió. Android, Windows y un servidor de música están en la hoja de ruta.
+***** Take
+El dato útil es la reducción del 50% de tamaño con las mismas funciones. Mide cuánto sobraba en el código generado, algo que casi nadie mide porque nunca reescribe. Una norma de alojamiento de Codeberg acabó haciendo de la revisión de código que él se había saltado.
+***** Comments
+- Los LLM son generadores. Generan código donde borrarlo resolvería igual el problema. El arreglo no funcionó, así que ahora generan un arreglo del arreglo.
+- Yo también hice mi reproductor con vibe coding. Tardé menos que en probar 5-6 apps de música y descubrir que les faltaba la función X.
+- Todos deberíamos usar algún control de versiones, y de paso tendrías el historial de antes de reescribir.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Wie man keinen Musikplayer baut
+***** TLDR
+Ali Chraghi begann AMP, einen Offline-Musikplayer in Zig (inklusive UI und Shadern), nachdem Internetsperren im Iran Online-Player unbrauchbar gemacht hatten. Hauptfunktion sind zeilensynchrone Liedtexte ohne sichtbare Zeitstempel. Ein paar Tage intensiver Claude-Nutzung lieferten einen Großteil des frühen Codes, zehntausende Zeilen, die er nicht prüfen konnte. Die No-AI-Regel von Codeberg zwang ihn, das Projekt entweder umzuziehen oder neu zu schreiben. Er schrieb es neu, und das Ergebnis ist etwa halb so groß, robuster und hat mehr Funktionen. Für mühsame mechanische Änderungen würde er weiter ein LLM nutzen, aber kein Hobbyprojekt davon schreiben lassen. v0.1 ist erschienen. Android, Windows und ein Musikserver stehen auf der Roadmap.
+***** Take
+Die nützliche Zahl ist die Halbierung der Größe bei gleichem Funktionsumfang. Sie misst, wie überbaut der generierte Code war, und die meisten messen das nie, weil sie nie neu schreiben. Eine Hosting-Regel von Codeberg hat am Ende das Code-Review ersetzt, das er ausgelassen hatte.
+***** Comments
+- LLMs sind Generatoren. Sie erzeugen Code, wo Löschen das Problem genauso lösen würde. Der Fix hat nicht funktioniert, also erzeugen sie einen Fix für den Fix.
+- Ich habe meinen Player auch per Vibe-Coding gebaut. Das ging schneller, als 5-6 Musik-Apps zu testen und festzustellen, dass ihnen Funktion X fehlt.
+- Wir sollten alle irgendeine Versionsverwaltung nutzen, und als Bonus hätte man die Historie vor dem Neuschreiben.
