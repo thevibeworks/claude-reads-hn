@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-11-14 06:00 UTC
+#+DATE: 2026-11-14T06:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+WSJ says Nvidia financed buyers for its own GPUs, Jonathan Blow asks where the AI software boom went, and Ratatui's maintainer proposes terminal borders that take up no cells
+
+* Highlights
+- Nvidia: WSJ reports billions in guarantees to buyers who couldn't afford its chips
+- Jonathan Blow: faster coding hasn't produced better software
+- Cell borders: a DCS protocol for borders that use no cells, so far in a Ghostty fork
+- 3Com: Ethernet pioneer to HP footnote, and alumni dispute the post-mortem
+- JEPA on Push-T: 600 runs say planning and goal scoring matter more than the predictor
+
+* Stories
+
+** Nvidia Allegedly Engineered Scarcity by Funding AI Startups to Buy Its GPUs :nvidia:ai:gpu:finance:business:
+:PROPERTIES:
+:ID:       50493251
+:URL:      https://www.techpowerup.com/354814/nvidia-allegedly-engineered-scarcity-by-funding-ai-startups-to-buy-its-gpus
+:HN_URL:   https://news.ycombinator.com/item?id=50493251
+:POINTS:   249
+:COMMENTS: 127
+:BY:       speckx
+:END:
+
+*** TLDR
+［TechPowerUp returned 403; based on the Wall Street Journal report it summarizes, as quoted in the thread.］ According to the WSJ, Nvidia was in talks to provide billions of dollars in guarantees to cloud providers and data-center developers that could not afford its chips. Some of these deals were led by Jensen Huang's son-in-law, Nico Caprez, who offered upstart neoclouds financing to turn them into long-term customers. The report says the aim was to keep demand looking high and to absorb an oversupply of chips ordered from TSMC. In an August meeting about the problem, Huang reportedly called CFO Colette Kress, now acting CEO after his exit, "a deer in the headlights" while she was pushing to cut back the circular deals. Nvidia already holds stakes in customers such as CoreWeave and Nebius.
+
+*** Take
+The circular financing was public a year ago. The new allegation is about intent: using financing to keep the shortage going, which supports prices on every chip Nvidia sells, not only the ones it financed. cloudbonsai's math shows the 2025 equity stakes were about 8% of revenue, so the financing did not create the demand. The guarantees are not in that 8%, and if the GPU shortage was partly paid for by Nvidia, buyers who used it as their measure of AI demand were reading a number Nvidia helped set.
+
+*** Comments
+
+**** mrgordon
+:PROPERTIES:
+:COMMENT_ID: 50494233
+:END:
+Nvidia gives Nebius first access to their newest chips, ensures they get deployed at top performance, allows Nvidia to recognize the revenue upfront, and ends up owning equity in the upside... It sounds like a mutually beneficial deal rather than something shady to me.
+
+**** dofm
+:PROPERTIES:
+:COMMENT_ID: 50494034
+:END:
+Vendor financing is already a sign of an unhealthy market. When widespread, almost always. If the only easy way you can borrow enough to buy a thing is from the vendor, that's bad.
+
+**** cloudbonsai
+:PROPERTIES:
+:COMMENT_ID: 50494049
+:END:
+Nvidia added $17B of non-marketable securities in 2025, and its total revenue was $215B. So, assuming all these equity investments went to GPU purchases, they only amount to 8% of its annual revenue.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Nvidia 被指资助 AI 初创公司购买其 GPU 以制造短缺
+***** TLDR
+［TechPowerUp 返回 403；内容依据讨论中引用的《华尔街日报》报道。］ 据《华尔街日报》报道，Nvidia 曾商谈为买不起其芯片的云服务商和数据中心开发商提供数十亿美元担保。其中部分交易由黄仁勋的女婿 Nico Caprez 主导，他向新兴云服务商提供融资，希望把它们变成长期客户。报道称，目的是维持需求旺盛的印象，并消化向台积电过量订购的芯片。在 8 月一次讨论该问题的会议上，黄仁勋据称说 CFO Colette Kress 像"被车灯吓呆的鹿"，当时她正主张削减这类循环交易；黄仁勋离职后，她现任代理 CEO。Nvidia 已持有 CoreWeave、Nebius 等客户的股份。
+***** Take
+循环融资一年前就已公开。新的指控关乎意图：用融资维持短缺，而短缺会支撑 Nvidia 所有芯片的价格，不只是它资助的那部分。cloudbonsai 算出 2025 年的股权投资约占营收 8%，所以需求不是融资造出来的。但担保不在这 8% 里，而且如果 GPU 短缺部分是 Nvidia 花钱买来的，那些把短缺当作 AI 需求指标的买家，看的其实是 Nvidia 参与设定的数字。
+***** Comments
+- Nvidia 让 Nebius 优先拿到最新芯片，确保以最佳性能部署，让 Nvidia 提前确认收入，最后还持有上涨收益的股权……在我看来这是互利交易，不是什么见不得人的事。
+- 供应商融资本身就是市场不健康的信号。普遍存在时几乎总是如此。如果你只能从卖家那里轻松借到足够的钱来买东西，那就不妙了。
+- Nvidia 在 2025 年新增了 170 亿美元非上市证券，总营收为 2150 亿美元。所以即使假设这些股权投资全部用于购买 GPU，也只占年营收的 8%。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Nvidia、AIスタートアップに資金を出して自社GPUを買わせ、品薄を演出した疑い
+***** TLDR
+［TechPowerUpは403。スレッドで引用されたWall Street Journalの記事に基づく。］ WSJによると、Nvidiaは自社チップを買う余裕のないクラウド事業者やデータセンター開発企業に、数十億ドル規模の保証を提供する交渉をしていた。一部の案件はジェンスン・フアンの義理の息子Nico Caprezが主導し、新興クラウド事業者に融資を持ちかけて長期顧客にしようとしていた。狙いは需要が高いという見かけを保ち、TSMCに過剰発注したチップをさばくことだったとされる。この問題を扱った8月の会議で、フアンは循環取引の縮小を求めていたCFOのColette Kressを「ヘッドライトに照らされた鹿」と呼んだと報じられている。Kressはフアンの退任後、現在CEO代行を務める。NvidiaはCoreWeaveやNebiusなどの顧客にすでに出資している。
+***** Take
+循環融資は1年前から公になっていた。新しい疑惑は意図に関するものだ。融資で品薄を続けさせれば、Nvidiaが融資した分だけでなく全チップの価格が支えられる。cloudbonsaiの計算では2025年の出資は売上の約8%で、需要そのものを融資が生んだわけではない。ただし保証はこの8%に含まれず、GPU不足の一部がNvidiaの金で作られていたなら、それをAI需要の指標にしていた買い手は、Nvidiaが決めるのに関わった数字を見ていたことになる。
+***** Comments
+- NvidiaはNebiusに最新チップを優先的に供給し、最高性能で導入させ、売上を前倒しで計上でき、さらに値上がり益のある株式も持つ……怪しい話ではなく、互いに得な取引に見える。
+- ベンダーファイナンスはそれ自体が不健全な市場のサインだ。広く行われているなら、ほぼ間違いなく。買うための十分なお金を売り手からしか簡単に借りられないなら、それはまずい。
+- Nvidiaは2025年に170億ドルの非上場証券を積み増し、総売上は2150億ドルだった。出資がすべてGPU購入に回ったと仮定しても、年間売上の8%にすぎない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Nvidia, AI 스타트업에 자금을 대 자사 GPU를 사게 해 품귀를 만들었다는 의혹
+***** TLDR
+［TechPowerUp은 403 반환. 스레드에 인용된 Wall Street Journal 보도를 바탕으로 함.］ WSJ에 따르면 Nvidia는 자사 칩을 살 여력이 없는 클라우드 업체와 데이터센터 개발사에 수십억 달러 규모의 보증을 제공하는 협상을 벌였다. 일부 거래는 젠슨 황의 사위 Nico Caprez가 주도했으며, 그는 신생 클라우드 업체에 자금을 제공해 장기 고객으로 만들려 했다. 보도는 그 목적이 수요가 높다는 인상을 유지하고 TSMC에 과잉 주문한 칩을 소화하는 것이었다고 전한다. 이 문제를 다룬 8월 회의에서 황은 순환 거래 축소를 주장하던 CFO Colette Kress를 "헤드라이트 앞의 사슴"이라고 불렀다고 한다. Kress는 황이 물러난 뒤 현재 CEO 대행이다. Nvidia는 이미 CoreWeave, Nebius 등 고객사 지분을 보유하고 있다.
+***** Take
+순환 금융은 1년 전에 이미 공개됐다. 새 의혹은 의도에 관한 것이다. 금융으로 품귀를 유지하면 Nvidia가 자금을 댄 물량만이 아니라 모든 칩의 가격이 떠받쳐진다. cloudbonsai의 계산으로는 2025년 지분 투자가 매출의 약 8%라서, 수요 자체를 금융이 만든 것은 아니다. 하지만 보증은 이 8%에 포함되지 않고, GPU 품귀의 일부를 Nvidia가 돈으로 만든 것이라면 이를 AI 수요 지표로 삼던 구매자들은 Nvidia가 정하는 데 관여한 숫자를 보고 있었던 셈이다.
+***** Comments
+- Nvidia는 Nebius에 최신 칩을 먼저 공급하고, 최고 성능으로 배치되도록 하며, 매출을 미리 인식하고, 상승분이 있는 지분까지 갖는다... 수상한 일이 아니라 서로 이득인 거래로 보인다.
+- 벤더 파이낸싱은 그 자체로 건강하지 않은 시장의 신호다. 널리 퍼져 있다면 거의 항상 그렇다. 무언가를 살 만큼 돈을 쉽게 빌릴 곳이 판매자뿐이라면 그건 나쁜 일이다.
+- Nvidia는 2025년에 170억 달러어치 비상장 증권을 늘렸고 총매출은 2150억 달러였다. 이 지분 투자가 전부 GPU 구매에 쓰였다고 가정해도 연 매출의 8%에 불과하다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Nvidia habría provocado escasez financiando a startups de IA para que compraran sus GPU
+***** TLDR
+［TechPowerUp devolvió 403; basado en el reportaje del Wall Street Journal citado en el hilo.］ Según el WSJ, Nvidia negoció garantías por miles de millones de dólares para proveedores de nube y promotores de centros de datos que no podían pagar sus chips. Algunos de esos acuerdos los dirigía el yerno de Jensen Huang, Nico Caprez, que ofrecía financiación a nubes emergentes para convertirlas en clientes a largo plazo. El reportaje dice que el objetivo era mantener la apariencia de demanda alta y colocar un exceso de chips pedidos a TSMC. En una reunión en agosto sobre el problema, Huang habría llamado "un ciervo deslumbrado por los faros" a la CFO Colette Kress, que pedía reducir los acuerdos circulares y ahora es CEO interina tras la salida de Huang. Nvidia ya tiene participaciones en clientes como CoreWeave y Nebius.
+***** Take
+La financiación circular era pública desde hace un año. La acusación nueva es sobre la intención: usar la financiación para prolongar la escasez, que sostiene el precio de todos los chips de Nvidia, no solo de los que financió. El cálculo de cloudbonsai muestra que las participaciones de 2025 fueron cerca del 8% de los ingresos, así que la financiación no creó la demanda. Las garantías no están en ese 8%, y si parte de la escasez de GPU la pagó Nvidia, los compradores que la usaban para medir la demanda de IA miraban una cifra que Nvidia ayudó a fijar.
+***** Comments
+- Nvidia da a Nebius acceso prioritario a sus chips más nuevos, se asegura de que se desplieguen con el máximo rendimiento, puede reconocer los ingresos por adelantado y acaba con participación en la revalorización... Me parece un acuerdo beneficioso para ambos, no algo turbio.
+- La financiación del proveedor ya es señal de un mercado poco sano. Cuando está generalizada, casi siempre. Si la única forma fácil de pedir prestado lo suficiente para comprar algo es al propio vendedor, eso es malo.
+- Nvidia añadió 17.000 millones de dólares en valores no negociables en 2025, y sus ingresos totales fueron 215.000 millones. Aun suponiendo que todas esas inversiones se destinaran a comprar GPU, solo suponen el 8% de sus ingresos anuales.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Nvidia soll Knappheit erzeugt haben, indem es KI-Startups den Kauf seiner GPUs finanzierte
+***** TLDR
+［TechPowerUp lieferte 403; Grundlage ist der im Thread zitierte Bericht des Wall Street Journal.］ Laut WSJ verhandelte Nvidia über Garantien in Milliardenhöhe für Cloud-Anbieter und Rechenzentrumsentwickler, die sich seine Chips nicht leisten konnten. Einige dieser Deals führte Jensen Huangs Schwiegersohn Nico Caprez, der jungen Neoclouds Finanzierung anbot, um sie zu langfristigen Kunden zu machen. Ziel sei gewesen, den Eindruck hoher Nachfrage zu erhalten und ein Überangebot an bei TSMC bestellten Chips abzusetzen. In einem Treffen im August zu dem Problem soll Huang Finanzchefin Colette Kress, die die Kreisgeschäfte zurückfahren wollte, "ein Reh im Scheinwerferlicht" genannt haben. Kress ist nach Huangs Abgang heute Interims-CEO. Nvidia hält bereits Anteile an Kunden wie CoreWeave und Nebius.
+***** Take
+Die Kreisfinanzierung ist seit einem Jahr bekannt. Neu ist der Vorwurf zur Absicht: mit Finanzierung die Knappheit zu verlängern, die den Preis jedes Nvidia-Chips stützt, nicht nur der finanzierten. cloudbonsais Rechnung zeigt, dass die Beteiligungen 2025 etwa 8 % des Umsatzes ausmachten, die Nachfrage hat die Finanzierung also nicht erzeugt. Die Garantien stecken nicht in diesen 8 %, und wenn ein Teil der GPU-Knappheit von Nvidia bezahlt war, haben Käufer, die sie als Maß für die KI-Nachfrage nahmen, auf eine Zahl geschaut, die Nvidia mitbestimmt hat.
+***** Comments
+- Nvidia gibt Nebius als Erstem Zugriff auf die neuesten Chips, sorgt dafür, dass sie mit maximaler Leistung laufen, kann den Umsatz vorab verbuchen und hält am Ende Anteile am Wertzuwachs... Für mich klingt das nach einem Geschäft zum beiderseitigen Vorteil, nicht nach etwas Zwielichtigem.
+- Lieferantenfinanzierung ist schon ein Zeichen für einen ungesunden Markt. Wenn sie weit verbreitet ist, fast immer. Wenn man sich das Geld für einen Kauf nur beim Verkäufer leicht leihen kann, ist das schlecht.
+- Nvidia hat 2025 nicht börsennotierte Wertpapiere für 17 Mrd. Dollar hinzugefügt, bei einem Gesamtumsatz von 215 Mrd. Dollar. Selbst wenn alle diese Beteiligungen in GPU-Käufe flossen, sind das nur 8 % des Jahresumsatzes.
+** Jonathan Blow – If AI solved coding, why is my software still the same? ［video］ :ai:programming:software:gamedev:
+:PROPERTIES:
+:ID:       50484658
+:URL:      https://www.youtube.com/watch?v=IRK8h67ol7Q
+:HN_URL:   https://news.ycombinator.com/item?id=50484658
+:POINTS:   203
+:COMMENTS: 203
+:BY:       helloplanets
+:END:
+
+*** TLDR
+［from the video description + comments; no transcript was reachable.］ A conversation on The Students channel between Jonathan Blow, the Braid and The Witness developer, and Wolf Tivy about how software complexity keeps growing, why current AI can't yet write better code than people, and what the world would look like if it could. Commenters say Blow argues software development has barely advanced since the early 2000s, and that the video answers its own title: companies haven't changed what they optimize for, so AI gives them more of the same, faster.
+
+*** Take
+The thread backs Blow up more than it means to. The strongest counterexamples are personal tools and small indie teams, which is his point: AI helps where one person decides what gets built, and big companies are still slowed by reviews, legal and five-person microservice teams. empath75 merges 100+ PRs a week on a side project and 8 at work. That gap is about the organization, and a better model won't close it.
+
+*** Comments
+
+**** _aavaa_
+:PROPERTIES:
+:COMMENT_ID: 50485473
+:END:
+The video does actually answer its own title, which is refreshing... AI gives you more of what you want and gives it faster, that doesn't on its own change the culture or goals of a company.
+
+**** empath75
+:PROPERTIES:
+:COMMENT_ID: 50487229
+:END:
+I have a personal project where I am merging 100+ PRs a week and at work I would be lucky to merge 8. I spend 20x as much time trying to get PRs merged as I do actually doing the work.
+
+**** Animats
+:PROPERTIES:
+:COMMENT_ID: 50493846
+:END:
+Because AI coding has only worked well in the last six months. Two years ago it sucked. A year ago it was flaky. Now, Claude nails a lot of problems routinely.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Jonathan Blow：如果 AI 解决了编程，为什么我的软件还是老样子？［视频］
+***** TLDR
+［依据视频简介和评论；无法获取字幕。］ 这是 The Students 频道的一期对谈，嘉宾是《Braid》《The Witness》的开发者 Jonathan Blow 和 Wolf Tivy，话题包括软件复杂度为何不断增长、为什么现在的 AI 还写不出比人更好的代码，以及如果它能做到世界会是什么样。评论者称 Blow 认为软件开发自 2000 年代初以来几乎没有进步，而视频也回答了标题的问题：公司没有改变优化目标，所以 AI 只是让它们更快地得到更多同样的东西。
+***** Take
+讨论区比它自己以为的更支持 Blow。最有力的反例是个人工具和小型独立团队，这正是他的观点：AI 在一个人决定做什么的地方有用，而大公司仍被评审、法务和五人微服务团队拖慢。empath75 在个人项目里每周合并 100 多个 PR，在公司只有 8 个。这个差距出在组织上，更好的模型也解决不了。
+***** Comments
+- 这个视频确实回答了自己的标题，这很难得……AI 让你更快地得到更多你想要的东西，但这本身不会改变一家公司的文化或目标。
+- 我有个个人项目每周合并 100 多个 PR，而在公司能合并 8 个就算走运。我花在让 PR 被合并上的时间是实际干活时间的 20 倍。
+- 因为 AI 编程只是在最近六个月才好用。两年前很烂，一年前不稳定。现在 Claude 能稳定解决很多问题。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Jonathan Blow「AIがコーディングを解決したなら、なぜ自分のソフトは何も変わらないのか」［動画］
+***** TLDR
+［動画の説明文とコメントに基づく。文字起こしは取得できず。］ The Studentsチャンネルでの、『Braid』『The Witness』の開発者Jonathan BlowとWolf Tivyの対談。ソフトウェアの複雑さが増え続ける理由、今のAIがまだ人より良いコードを書けない理由、書けるようになったら世界はどうなるかを話している。コメントによれば、Blowはソフトウェア開発が2000年代初頭からほとんど進歩していないと主張し、動画はタイトルの問いにも答えている。企業が最適化する目標を変えていないので、AIは同じものをより多く、より速く出すだけだという。
+***** Take
+スレッドは本人たちが思う以上にBlowを支持している。最も強い反例は個人ツールや小さなインディーチームで、それこそ彼の主張だ。AIが役立つのは一人で作るものを決められる場面で、大企業はレビューや法務、5人のマイクロサービスチームで遅いままだ。empath75は個人プロジェクトで週100件以上PRをマージし、職場では8件。この差は組織の問題で、モデルが良くなっても埋まらない。
+***** Comments
+- この動画はちゃんとタイトルの問いに答えていて、それが新鮮だ……AIは欲しいものをより多く、より速くくれるが、それだけでは会社の文化や目標は変わらない。
+- 個人プロジェクトでは週に100件以上PRをマージしているのに、職場では8件マージできれば運がいい。PRをマージしてもらうのに、実際の作業の20倍の時間を使っている。
+- AIコーディングがまともに動くようになったのはここ半年だからだ。2年前はひどかった。1年前は不安定だった。今はClaudeが多くの問題を安定して解く。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Jonathan Blow – AI가 코딩을 해결했다면 왜 내 소프트웨어는 그대로인가? ［영상］
+***** TLDR
+［영상 설명과 댓글 기반. 자막은 확보하지 못함.］ The Students 채널에서 『Braid』와 『The Witness』 개발자 Jonathan Blow와 Wolf Tivy가 나눈 대담이다. 소프트웨어 복잡성이 왜 계속 커지는지, 지금의 AI가 왜 아직 사람보다 나은 코드를 쓰지 못하는지, 쓸 수 있게 되면 세상이 어떻게 될지를 다룬다. 댓글에 따르면 Blow는 소프트웨어 개발이 2000년대 초 이후 거의 발전하지 않았다고 주장하며, 영상은 제목의 질문에도 답한다. 회사들이 최적화 목표를 바꾸지 않았으니 AI는 같은 것을 더 많이, 더 빨리 내놓을 뿐이라는 것이다.
+***** Take
+스레드는 스스로 생각하는 것보다 Blow를 더 지지한다. 가장 강한 반례는 개인용 도구와 소규모 인디 팀인데, 그게 바로 그의 요지다. AI는 한 사람이 무엇을 만들지 정하는 곳에서 도움이 되고, 대기업은 여전히 리뷰, 법무, 5인 마이크로서비스 팀 때문에 느리다. empath75는 개인 프로젝트에서 주당 PR 100개 이상을 머지하고 회사에서는 8개다. 이 격차는 조직의 문제이고 더 좋은 모델로는 메워지지 않는다.
+***** Comments
+- 이 영상은 실제로 제목의 질문에 답한다는 점이 신선하다... AI는 원하는 것을 더 많이, 더 빨리 주지만 그것만으로 회사의 문화나 목표가 바뀌지는 않는다.
+- 개인 프로젝트에서는 주당 PR을 100개 넘게 머지하는데 회사에서는 8개만 머지해도 운이 좋은 편이다. PR을 머지시키는 데 실제 작업보다 20배 많은 시간을 쓴다.
+- AI 코딩이 제대로 된 건 최근 6개월뿐이니까. 2년 전엔 형편없었고, 1년 전엔 불안정했다. 지금은 Claude가 많은 문제를 꾸준히 해결한다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Jonathan Blow: si la IA resolvió la programación, ¿por qué mi software sigue igual? ［vídeo］
+***** TLDR
+［a partir de la descripción del vídeo y los comentarios; no se pudo obtener la transcripción.］ Una conversación en el canal The Students entre Jonathan Blow, creador de Braid y The Witness, y Wolf Tivy sobre por qué la complejidad del software no deja de crecer, por qué la IA actual aún no escribe mejor código que las personas y cómo sería el mundo si lo hiciera. Según los comentarios, Blow sostiene que el desarrollo de software apenas ha avanzado desde principios de los 2000, y el vídeo responde a su propio título: las empresas no han cambiado lo que optimizan, así que la IA les da más de lo mismo, más rápido.
+***** Take
+El hilo le da la razón a Blow más de lo que pretende. Los contraejemplos más sólidos son herramientas personales y equipos indie pequeños, que es justo su argumento: la IA ayuda donde una sola persona decide qué se construye, y las grandes empresas siguen frenadas por revisiones, el departamento legal y equipos de cinco personas con microservicios. empath75 fusiona más de 100 PR por semana en un proyecto personal y 8 en el trabajo. Esa diferencia es de organización, y un modelo mejor no la cierra.
+***** Comments
+- El vídeo sí responde a su propio título, lo cual se agradece... La IA te da más de lo que quieres y más rápido, pero eso por sí solo no cambia la cultura ni los objetivos de una empresa.
+- Tengo un proyecto personal en el que fusiono más de 100 PR por semana, y en el trabajo tendría suerte de fusionar 8. Paso 20 veces más tiempo intentando que acepten mis PR que haciendo el trabajo.
+- Porque la programación con IA solo funciona bien desde hace seis meses. Hace dos años era mala. Hace un año era poco fiable. Ahora Claude resuelve muchos problemas de forma rutinaria.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Jonathan Blow – Wenn KI das Programmieren gelöst hat, warum ist meine Software noch dieselbe? ［Video］
+***** TLDR
+［nach Videobeschreibung und Kommentaren; kein Transkript erreichbar.］ Ein Gespräch auf dem Kanal The Students zwischen Jonathan Blow, dem Entwickler von Braid und The Witness, und Wolf Tivy darüber, warum die Komplexität von Software immer weiter wächst, warum heutige KI noch keinen besseren Code als Menschen schreibt und wie die Welt aussähe, wenn sie es könnte. Laut den Kommentaren argumentiert Blow, die Softwareentwicklung sei seit den frühen 2000ern kaum vorangekommen, und das Video beantwortet seinen Titel selbst: Firmen haben nicht geändert, worauf sie optimieren, also liefert KI ihnen mehr vom Gleichen, nur schneller.
+***** Take
+Der Thread stützt Blow stärker, als er vorhat. Die besten Gegenbeispiele sind persönliche Tools und kleine Indie-Teams, und genau das ist sein Punkt: KI hilft dort, wo eine Person entscheidet, was gebaut wird, während große Firmen weiter an Reviews, Rechtsabteilung und Fünf-Personen-Microservice-Teams hängen. empath75 merged in einem Privatprojekt über 100 PRs pro Woche und bei der Arbeit 8. Diese Lücke liegt an der Organisation, und ein besseres Modell schließt sie nicht.
+***** Comments
+- Das Video beantwortet tatsächlich seinen eigenen Titel, was erfrischend ist... KI gibt dir mehr von dem, was du willst, und schneller, aber das allein ändert nicht die Kultur oder die Ziele einer Firma.
+- Ich habe ein Privatprojekt, in dem ich über 100 PRs pro Woche merge, und bei der Arbeit hätte ich Glück, 8 zu mergen. Ich verbringe 20-mal so viel Zeit damit, PRs gemergt zu bekommen, wie mit der eigentlichen Arbeit.
+- Weil KI-Programmierung erst seit sechs Monaten gut funktioniert. Vor zwei Jahren war sie mies. Vor einem Jahr unzuverlässig. Jetzt löst Claude viele Probleme routiniert.
+** Terminal borders that don't cost a cell :terminal:tui:ratatui:ghostty:protocols:
+:PROPERTIES:
+:ID:       50491423
+:URL:      https://www.joshka.net/cell-borders/
+:HN_URL:   https://news.ycombinator.com/item?id=50491423
+:POINTS:   170
+:COMMENTS: 79
+:BY:       vinhnx
+:END:
+
+*** TLDR
+Josh McKinney, a Ratatui maintainer, proposes "cell borders": thin lines drawn on cell edges as an attribute, the way background color is, instead of box-drawing characters that each use a full row or column. Each cell can carry up to twelve segments (the halves of four edges plus four arms from the center), each with its own color, width and style, plus rounded corners. Borders scroll, erase and reflow with the text and are left out of copy-paste. The wire format is a namespaced DCS string with a pen held in the cursor, rectangle commands and a capability query; terminals that don't support it ignore it and apps fall back to box characters. A Ghostty fork implements version 1 in about 1,650 lines (macOS only so far), and Ratatui demo apps run on it. Open problems: tmux drops unknown DCS, and the never-freed border table could reach tens of MB in the worst case. He discloses heavy AI assistance.
+
+*** Take
+The spec is careful about compatibility, but it only matters if terminals ship it, and so far one fork does. McKinney says Ghostty, Rio and kitty could pick it up quickly and Terminal.app never will, which means apps will keep the box-character fallback for years. tptacek asks why stop at borders, and McKinney agrees: he wants a semantic terminal protocol, and this is the piece small enough to get merged.
+
+*** Comments
+
+**** tptacek
+:PROPERTIES:
+:COMMENT_ID: 50491720
+:END:
+If you're changing the terminal protocol and the terminal itself to do this, why not do something more ambitious; a full monospaced information-dense UI framework, a terminal designed for user interfaces, rather than one designed to replicate the limitations of dumb terminals?
+
+**** joouha
+:PROPERTIES:
+:COMMENT_ID: 50491778
+:END:
+A much better alternative to this would be to for more terminal emulators to implement overstrike mode (DECSET 20, as available on the VK100). That way you could just draw border characters over existing text cells.
+
+**** joshka
+:PROPERTIES:
+:COMMENT_ID: 50492475
+:END:
+Tmux drops DCS that it doesn't know like this. That aside, this is extra state per cell that needs to be tracked, handled, understood from a rendering perspective etc.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+不占单元格的终端边框
+***** TLDR
+Ratatui 维护者 Josh McKinney 提出"单元格边框"：像背景色一样作为属性，在单元格边缘画细线，而不是用每个都占一整行或一整列的制表字符。每个单元格最多可带 12 段线（四条边各两半，加上从中心伸出的四条臂），每段有独立的颜色、宽度和样式，还支持圆角。边框随文字一起滚动、擦除和重排，复制粘贴时不会被带上。传输格式是带命名空间的 DCS 字符串，包括保存在光标中的画笔、矩形命令和能力查询；不支持的终端会忽略它，应用则回退到制表字符。一个 Ghostty 分支用约 1650 行实现了第 1 版（目前只在 macOS 上运行过），Ratatui 演示程序可以在上面运行。尚未解决的问题：tmux 会丢弃未知的 DCS，而从不释放的边框表在最坏情况下可能达到几十 MB。作者说明大量使用了 AI 辅助。
+***** Take
+这份规范对兼容性考虑得很周到，但只有终端真正发布支持才有意义，而目前只有一个分支。McKinney 说 Ghostty、Rio 和 kitty 可以很快跟进，Terminal.app 永远不会，这意味着应用还要保留多年的制表字符回退。tptacek 问为什么只做边框，McKinney 也同意：他想要一个语义化的终端协议，而这是其中小到足以被合并的一块。
+***** Comments
+- 既然你要为此修改终端协议和终端本身，为什么不做得更有野心一些：一个完整的等宽、高信息密度 UI 框架，一个为用户界面设计的终端，而不是一个复刻哑终端局限的终端？
+- 更好的替代方案是让更多终端模拟器实现叠写模式（DECSET 20，VK100 上就有）。这样你可以直接在现有文字单元格上画边框字符。
+- tmux 会丢弃这类它不认识的 DCS。除此之外，这是每个单元格额外的状态，需要跟踪、处理，并在渲染层面理解。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+セルを消費しないターミナルの罫線
+***** TLDR
+RatatuiのメンテナーJosh McKinneyが「セルボーダー」を提案した。それぞれ1行や1列を丸ごと使う罫線文字の代わりに、背景色と同じくセルの属性として辺に細い線を描く。各セルは最大12本の線分（4辺それぞれの半分と、中心から伸びる4本の腕）を持て、それぞれ色、太さ、スタイルを指定でき、角丸にも対応する。罫線はテキストと一緒にスクロール、消去、リフローされ、コピー&ペーストには含まれない。通信形式は名前空間付きのDCS文字列で、カーソルに保持されるペン、矩形コマンド、対応確認クエリがある。非対応のターミナルは無視し、アプリは罫線文字にフォールバックする。Ghosttyのフォークが約1,650行でバージョン1を実装し（現状macOSのみ）、Ratatuiのデモアプリが動く。未解決の問題として、tmuxは未知のDCSを捨て、解放されない罫線テーブルは最悪で数十MBになりうる。AIを多用したことも明記している。
+***** Take
+仕様は互換性に気を配っているが、意味を持つのはターミナルが実際に搭載したときで、今のところフォーク1つだけだ。McKinneyはGhostty、Rio、kittyはすぐ取り込めるがTerminal.appは絶対にない、と言っている。つまりアプリは何年も罫線文字のフォールバックを残すことになる。tptacekはなぜ罫線で止めるのかと問い、McKinneyも同意している。彼が欲しいのは意味ベースのターミナルプロトコルで、これはマージしてもらえるくらい小さい一部分だ。
+***** Comments
+- このためにターミナルのプロトコルもターミナル自体も変えるなら、もっと野心的なものにしたらどうか。ダム端末の制約を再現するターミナルではなく、等幅で情報密度の高い本格的なUIフレームワーク、ユーザーインターフェースのために設計されたターミナルを。
+- もっと良い代案は、より多くのターミナルエミュレータが重ね打ちモード（DECSET 20、VK100にあったもの）を実装することだ。そうすれば既存の文字セルの上に罫線文字をそのまま描ける。
+- tmuxはこういう知らないDCSを捨てる。それとは別に、これはセルごとの追加状態で、追跡し、処理し、描画の観点で理解する必要がある。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+셀을 차지하지 않는 터미널 테두리
+***** TLDR
+Ratatui 메인테이너 Josh McKinney가 "셀 테두리"를 제안했다. 각각 한 행이나 한 열을 통째로 쓰는 박스 그리기 문자 대신, 배경색처럼 셀 속성으로 가장자리에 얇은 선을 그린다. 각 셀은 최대 12개 선분(네 변의 절반씩과 중심에서 뻗는 네 개의 팔)을 가질 수 있고, 각각 색, 두께, 스타일을 따로 지정하며 둥근 모서리도 지원한다. 테두리는 텍스트와 함께 스크롤, 삭제, 리플로되고 복사-붙여넣기에는 포함되지 않는다. 전송 형식은 네임스페이스가 붙은 DCS 문자열로, 커서에 담긴 펜, 사각형 명령, 기능 조회가 있다. 지원하지 않는 터미널은 이를 무시하고 앱은 박스 문자로 대체한다. Ghostty 포크가 약 1,650줄로 버전 1을 구현했고(아직 macOS에서만 실행), Ratatui 데모 앱이 그 위에서 돌아간다. 남은 문제로 tmux는 모르는 DCS를 버리고, 해제되지 않는 테두리 테이블은 최악의 경우 수십 MB에 이를 수 있다. 작성자는 AI 도움을 많이 받았다고 밝혔다.
+***** Take
+스펙은 호환성을 꼼꼼히 챙기지만 터미널이 실제로 탑재해야 의미가 있고, 지금은 포크 하나뿐이다. McKinney는 Ghostty, Rio, kitty는 금방 받아들일 수 있지만 Terminal.app은 절대 아니라고 말한다. 결국 앱들은 몇 년 동안 박스 문자 대체를 유지해야 한다. tptacek은 왜 테두리에서 멈추냐고 묻고 McKinney도 동의한다. 그가 원하는 건 의미 기반 터미널 프로토콜이고, 이건 머지될 만큼 작은 조각이다.
+***** Comments
+- 이걸 위해 터미널 프로토콜과 터미널 자체를 바꿀 거라면 더 야심 차게 가면 어떨까. 덤 터미널의 한계를 재현하는 터미널이 아니라, 고정폭에 정보 밀도가 높은 완전한 UI 프레임워크, 사용자 인터페이스를 위해 설계된 터미널 말이다.
+- 훨씬 나은 대안은 더 많은 터미널 에뮬레이터가 겹쳐 쓰기 모드(DECSET 20, VK100에 있던 것)를 구현하는 것이다. 그러면 기존 텍스트 셀 위에 테두리 문자를 그냥 그릴 수 있다.
+- tmux는 이렇게 모르는 DCS를 버린다. 그와 별개로 이건 셀마다 추가되는 상태라서 추적하고, 처리하고, 렌더링 관점에서 이해해야 한다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Bordes de terminal que no ocupan una celda
+***** TLDR
+Josh McKinney, mantenedor de Ratatui, propone los "bordes de celda": líneas finas dibujadas en los bordes de las celdas como un atributo, igual que el color de fondo, en lugar de caracteres de dibujo de cajas que ocupan cada uno una fila o columna entera. Cada celda puede llevar hasta doce segmentos (las mitades de sus cuatro lados y cuatro brazos desde el centro), cada uno con su color, grosor y estilo, además de esquinas redondeadas. Los bordes se desplazan, se borran y se reajustan con el texto, y no se incluyen al copiar y pegar. El formato es una cadena DCS con espacio de nombres, con un lápiz guardado en el cursor, comandos de rectángulo y una consulta de capacidades; los terminales que no lo soportan lo ignoran y las apps vuelven a los caracteres de caja. Un fork de Ghostty implementa la versión 1 en unas 1.650 líneas (solo en macOS por ahora) y las demos de Ratatui funcionan sobre él. Problemas abiertos: tmux descarta DCS desconocidos y la tabla de bordes, que nunca se libera, podría ocupar decenas de MB en el peor caso. El autor declara que usó mucha ayuda de IA.
+***** Take
+La especificación cuida la compatibilidad, pero solo importa si los terminales la incluyen, y por ahora lo hace un fork. McKinney dice que Ghostty, Rio y kitty podrían adoptarla rápido y Terminal.app nunca, así que las apps mantendrán el respaldo con caracteres de caja durante años. tptacek pregunta por qué quedarse en los bordes, y McKinney está de acuerdo: quiere un protocolo de terminal semántico, y esta es la pieza lo bastante pequeña como para que la acepten.
+***** Comments
+- Si vas a cambiar el protocolo del terminal y el propio terminal para esto, ¿por qué no algo más ambicioso: un framework de UI monoespaciado y denso en información, un terminal diseñado para interfaces de usuario en vez de uno que replica las limitaciones de los terminales tontos?
+- Una alternativa mucho mejor sería que más emuladores de terminal implementaran el modo de sobreimpresión (DECSET 20, disponible en el VK100). Así podrías dibujar caracteres de borde directamente sobre las celdas de texto existentes.
+- Tmux descarta los DCS que no conoce, como este. Aparte de eso, es estado extra por celda que hay que seguir, gestionar y entender desde el punto de vista del renderizado.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Terminal-Rahmen, die keine Zelle kosten
+***** TLDR
+Josh McKinney, Maintainer von Ratatui, schlägt "Zellrahmen" vor: dünne Linien an Zellkanten als Attribut, so wie die Hintergrundfarbe, statt Rahmenzeichen, die jeweils eine ganze Zeile oder Spalte belegen. Jede Zelle kann bis zu zwölf Segmente tragen (die Hälften der vier Kanten plus vier Arme vom Mittelpunkt), jedes mit eigener Farbe, Breite und Stil, dazu abgerundete Ecken. Rahmen scrollen, löschen und umbrechen mit dem Text und werden beim Kopieren nicht mitgenommen. Das Format ist ein DCS-String mit Namensraum, mit einem Stift im Cursor, Rechteckbefehlen und einer Fähigkeitsabfrage; Terminals ohne Unterstützung ignorieren ihn, und Apps greifen auf Rahmenzeichen zurück. Ein Ghostty-Fork implementiert Version 1 in rund 1.650 Zeilen (bisher nur unter macOS), und Ratatui-Demos laufen darauf. Offene Probleme: tmux verwirft unbekannte DCS, und die nie freigegebene Rahmentabelle kann im schlimmsten Fall einige zehn MB erreichen. Er legt offen, dass er viel KI-Hilfe genutzt hat.
+***** Take
+Die Spezifikation achtet sorgfältig auf Kompatibilität, zählt aber erst, wenn Terminals sie ausliefern, und bisher tut das ein Fork. McKinney sagt, Ghostty, Rio und kitty könnten schnell nachziehen, Terminal.app nie, also behalten Apps den Rückfall auf Rahmenzeichen noch jahrelang. tptacek fragt, warum bei Rahmen aufhören, und McKinney stimmt zu: Er will ein semantisches Terminalprotokoll, und dies ist das Stück, das klein genug ist, um gemergt zu werden.
+***** Comments
+- Wenn du dafür das Terminalprotokoll und das Terminal selbst änderst, warum nicht etwas Ehrgeizigeres: ein vollständiges, informationsdichtes UI-Framework in Festbreitenschrift, ein Terminal, das für Benutzeroberflächen gebaut ist, statt die Grenzen dummer Terminals nachzubilden?
+- Eine viel bessere Alternative wäre, dass mehr Terminalemulatoren den Überschreibmodus (DECSET 20, wie beim VK100) implementieren. Dann könnte man Rahmenzeichen einfach über vorhandene Textzellen zeichnen.
+- Tmux verwirft unbekannte DCS wie diesen. Davon abgesehen ist das zusätzlicher Zustand pro Zelle, der verfolgt, verarbeitet und beim Rendern verstanden werden muss.
+** What Happened to 3Com? :history:networking:business:hardware:
+:PROPERTIES:
+:ID:       50491830
+:URL:      https://dfarq.homeip.net/what-happened-to-3com/
+:HN_URL:   https://news.ycombinator.com/item?id=50491830
+:POINTS:   101
+:COMMENTS: 56
+:BY:       gvieri
+:END:
+
+*** TLDR
+Dave Farquhar's post (dated 2026, but a commenter points to a 2022 archived copy) traces 3Com from Bob Metcalfe founding it in 1979 to HP buying what was left for $2.7 billion in 2009. For two decades its network cards were the reliable default, and at the dotcom peak it was a $5.8 billion company that put its name on Candlestick Park. The post lists the mistakes: leaving enterprise switching to Cisco, overpaying for US Robotics and its modems and Palm Pilots, betting on dial-up without a broadband plan, and losing NIC margins to Intel. It made no profit from 2000 to 2005. The author's verdict is that 3Com depended too much on network cards, which were about half its revenue during the bust.
+
+*** Take
+"Too dependent on network cards" doesn't fit a company that owned Palm, US Robotics, half of a Huawei joint venture and an IPS vendor, as cobychapple notes. 3Com bought a lot and kept little of it: it spun off Palm in 2000 and left switching to Cisco. The former employees in the thread add the 3+Open and OS/2 LAN Manager deal with Microsoft, which the post leaves out.
+
+*** Comments
+
+**** RachelF
+:PROPERTIES:
+:COMMENT_ID: 50492351
+:END:
+They never really diversified out of network cards, their cards were very very good, but for most people paying 3x as much wasn't worth it... Palm/Handspring/Treo could have been the iPhone, if they'd been better managed.
+
+**** cobychapple
+:PROPERTIES:
+:COMMENT_ID: 50492824
+:END:
+"never diversified" is a funny epitaph for a company that at various points owned Palm, US Robotics, half a Huawei JV and an IPS vendor.
+
+**** walrus01
+:PROPERTIES:
+:COMMENT_ID: 50493047
+:END:
+I can't really agree with that because 3com never had a serious router product line. They had LAN switching equipment and NICs. There was nothing like a whole product line of routers that could take a full BGP table in the 1999-2000-2001 era.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+3Com 后来怎么了？
+***** TLDR
+Dave Farquhar 的文章（标注 2026 年，但有评论者指出存档中有 2022 年的版本）讲述了 3Com 从 1979 年 Bob Metcalfe 创立，到 2009 年惠普以 27 亿美元收购其剩余资产的历程。二十年里它的网卡一直是可靠的默认选择，互联网泡沫顶峰时公司市值 58 亿美元，还冠名了烛台球场。文章列出了它的失误：把企业交换机市场让给思科、高价收购 US Robotics 及其调制解调器和 Palm Pilot、押注拨号上网却没有宽带计划、网卡利润被英特尔挤压。2000 到 2005 年它没有盈利。作者的结论是 3Com 过于依赖网卡，泡沫破裂期间网卡约占其营收一半。
+***** Take
+正如 cobychapple 所说，"过于依赖网卡"并不适合一家先后拥有 Palm、US Robotics、华为合资公司一半股份和一家 IPS 厂商的公司。3Com 买了很多，留下的很少：2000 年分拆了 Palm，又把交换机让给了思科。讨论中的前员工补充了与微软合作的 3+Open 和 OS/2 LAN Manager，文章里没有提到。
+***** Comments
+- 他们从没真正摆脱网卡业务。他们的网卡非常非常好，但对大多数人来说多付 3 倍的钱不值得……Palm/Handspring/Treo 如果管理得更好，本可以成为 iPhone。
+- 对一家先后拥有 Palm、US Robotics、半个华为合资公司和一家 IPS 厂商的公司来说，"从未多元化"真是个滑稽的墓志铭。
+- 我不太同意，因为 3Com 从没有过像样的路由器产品线。他们有局域网交换设备和网卡。在 1999 到 2001 年那个时期，他们没有任何能承载完整 BGP 路由表的路由器产品线。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+3Comに何が起きたのか？
+***** TLDR
+Dave Farquharの記事（日付は2026年だが、コメント欄で2022年のアーカイブ版が指摘されている）は、1979年のBob Metcalfeによる創業から、2009年にHPが残りを27億ドルで買収するまでの3Comをたどる。20年間そのNICは信頼できる定番で、ドットコム最盛期には58億ドル規模の企業となり、キャンドルスティック・パークの命名権も持った。記事が挙げる失敗は、企業向けスイッチをCiscoに明け渡したこと、US Roboticsとそのモデム、Palm Pilotを高値で買ったこと、ブロードバンドの計画なしにダイヤルアップに賭けたこと、NICの利益をIntelに奪われたこと。2000年から2005年まで黒字はなかった。著者の結論は、3ComがNICに依存しすぎていたというもので、バブル崩壊期にNICは売上の約半分だった。
+***** Take
+cobychappleが言うとおり、「NICに依存しすぎ」はPalm、US Robotics、Huaweiとの合弁の半分、IPSベンダーを所有していた会社には合わない。3Comは多くを買ったが、ほとんど残さなかった。2000年にPalmを分社化し、スイッチはCiscoに譲った。スレッドの元社員たちは、記事が触れていないMicrosoftとの3+OpenとOS/2 LAN Managerの件を補足している。
+***** Comments
+- 彼らはNICから本当の意味で多角化しなかった。カードはとても良かったが、大半の人には3倍払う価値はなかった……Palm/Handspring/Treoは、もっとうまく経営されていればiPhoneになれたかもしれない。
+- Palm、US Robotics、Huawei合弁の半分、IPSベンダーを時期によって所有していた会社に「多角化しなかった」は面白い墓碑銘だ。
+- それには同意しかねる。3Comにはまともなルーター製品群がなかった。あったのはLANスイッチとNICだ。1999〜2001年ごろにフルBGPテーブルを扱えるルーター製品群のようなものは何もなかった。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+3Com은 어떻게 됐나?
+***** TLDR
+Dave Farquhar의 글(날짜는 2026년이지만 댓글에서 2022년 아카이브 사본이 지적됨)은 1979년 Bob Metcalfe의 창업부터 2009년 HP가 남은 자산을 27억 달러에 인수하기까지 3Com을 따라간다. 20년간 3Com 랜카드는 믿을 만한 기본 선택이었고, 닷컴 정점에는 58억 달러 규모 회사로 캔들스틱 파크에 이름을 붙였다. 글이 꼽는 실수는 기업용 스위치를 Cisco에 넘긴 것, US Robotics와 그 모뎀, Palm Pilot을 비싸게 산 것, 브로드밴드 계획 없이 다이얼업에 건 것, 랜카드 마진을 Intel에 뺏긴 것이다. 2000년부터 2005년까지 이익을 내지 못했다. 저자의 결론은 3Com이 랜카드에 너무 의존했다는 것으로, 거품 붕괴기에 랜카드가 매출의 약 절반이었다.
+***** Take
+cobychapple 말대로 "랜카드에 너무 의존했다"는 Palm, US Robotics, Huawei 합작사 절반, IPS 업체를 소유했던 회사에 맞지 않는다. 3Com은 많이 샀지만 남긴 건 적었다. 2000년에 Palm을 분사했고 스위치는 Cisco에 넘겼다. 스레드의 전 직원들은 글에 없는 Microsoft와의 3+Open, OS/2 LAN Manager 건을 보탠다.
+***** Comments
+- 그들은 랜카드에서 제대로 다각화하지 못했다. 카드는 정말 좋았지만 대부분의 사람에게 3배를 낼 가치는 없었다... Palm/Handspring/Treo는 더 잘 경영됐다면 iPhone이 될 수도 있었다.
+- 시기마다 Palm, US Robotics, Huawei 합작사 절반, IPS 업체를 소유했던 회사에 "다각화하지 않았다"는 웃긴 묘비명이다.
+- 동의하기 어렵다. 3Com에는 제대로 된 라우터 제품군이 없었다. LAN 스위치 장비와 랜카드가 있었을 뿐이다. 1999~2001년 무렵 풀 BGP 테이블을 받을 수 있는 라우터 제품군 같은 건 전혀 없었다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+¿Qué pasó con 3Com?
+***** TLDR
+El artículo de Dave Farquhar (fechado en 2026, aunque un comentarista señala una copia archivada de 2022) recorre 3Com desde su fundación por Bob Metcalfe en 1979 hasta que HP compró lo que quedaba por 2.700 millones de dólares en 2009. Durante dos décadas sus tarjetas de red fueron la opción fiable por defecto, y en el pico de las puntocom era una empresa de 5.800 millones que puso su nombre al Candlestick Park. El texto enumera los errores: abandonar la conmutación empresarial y dejársela a Cisco, pagar de más por US Robotics con sus módems y las Palm Pilot, apostar por el acceso telefónico sin plan de banda ancha y perder margen en tarjetas frente a Intel. No tuvo beneficios entre 2000 y 2005. El veredicto del autor es que 3Com dependía demasiado de las tarjetas de red, que eran cerca de la mitad de sus ingresos durante la crisis.
+***** Take
+"Demasiado dependiente de las tarjetas de red" no encaja con una empresa que tuvo Palm, US Robotics, la mitad de una empresa conjunta con Huawei y un fabricante de IPS, como señala cobychapple. 3Com compró mucho y conservó poco: escindió Palm en 2000 y dejó la conmutación a Cisco. Los exempleados del hilo añaden el acuerdo con Microsoft de 3+Open y OS/2 LAN Manager, que el artículo omite.
+***** Comments
+- Nunca se diversificaron de verdad más allá de las tarjetas de red. Sus tarjetas eran muy, muy buenas, pero para la mayoría pagar el triple no merecía la pena... Palm/Handspring/Treo podría haber sido el iPhone si la hubieran gestionado mejor.
+- "Nunca se diversificó" es un epitafio curioso para una empresa que en distintos momentos tuvo Palm, US Robotics, media empresa conjunta con Huawei y un fabricante de IPS.
+- No estoy de acuerdo, porque 3Com nunca tuvo una línea seria de routers. Tenían conmutadores LAN y tarjetas de red. No había nada parecido a una línea de routers capaces de manejar una tabla BGP completa en la época de 1999 a 2001.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Was ist aus 3Com geworden?
+***** TLDR
+Dave Farquhars Beitrag (datiert 2026, ein Kommentator verweist aber auf eine archivierte Fassung von 2022) verfolgt 3Com von der Gründung durch Bob Metcalfe 1979 bis zum Kauf der Reste durch HP für 2,7 Mrd. Dollar im Jahr 2009. Zwei Jahrzehnte lang waren seine Netzwerkkarten die verlässliche Standardwahl, und auf dem Höhepunkt des Dotcom-Booms war es ein 5,8-Milliarden-Dollar-Unternehmen, das dem Candlestick Park seinen Namen gab. Der Beitrag zählt die Fehler auf: den Rückzug aus Enterprise-Switches zugunsten von Cisco, den überteuerten Kauf von US Robotics samt Modems und Palm Pilots, die Wette auf Einwahl ohne Breitbandplan und den Margenverlust bei Netzwerkkarten gegen Intel. Von 2000 bis 2005 machte es keinen Gewinn. Das Fazit des Autors: 3Com hing zu sehr an Netzwerkkarten, die in der Krise etwa die Hälfte des Umsatzes ausmachten.
+***** Take
+"Zu abhängig von Netzwerkkarten" passt nicht zu einer Firma, die Palm, US Robotics, ein halbes Joint Venture mit Huawei und einen IPS-Hersteller besaß, wie cobychapple anmerkt. 3Com hat viel gekauft und wenig behalten: Palm wurde 2000 abgespalten, Switches überließ man Cisco. Ehemalige Mitarbeiter im Thread ergänzen den Deal mit Microsoft um 3+Open und OS/2 LAN Manager, den der Beitrag auslässt.
+***** Comments
+- Sie haben sich nie wirklich über Netzwerkkarten hinaus diversifiziert. Ihre Karten waren sehr, sehr gut, aber für die meisten lohnte sich der dreifache Preis nicht... Palm/Handspring/Treo hätte das iPhone werden können, wenn man es besser geführt hätte.
+- "Nie diversifiziert" ist ein lustiger Grabspruch für eine Firma, die zu verschiedenen Zeiten Palm, US Robotics, ein halbes Huawei-Joint-Venture und einen IPS-Hersteller besaß.
+- Dem kann ich nicht zustimmen, denn 3Com hatte nie eine ernsthafte Router-Produktlinie. Sie hatten LAN-Switches und Netzwerkkarten. In der Zeit von 1999 bis 2001 gab es nichts wie eine Router-Linie, die eine volle BGP-Tabelle aufnehmen konnte.
+** After 600 experiments, here's what I discovered about JEPA world models :ai:robotics:world-models:research:
+:PROPERTIES:
+:ID:       50487185
+:URL:      https://haddyalchaer.com/jepa
+:HN_URL:   https://news.ycombinator.com/item?id=50487185
+:POINTS:   237
+:COMMENTS: 37
+:BY:       halcdev
+:END:
+
+*** TLDR
+Haddy Alchaer added four planning methods, none requiring retraining, to LeWM, a JEPA world model, on the Push-T block-pushing task. Swapping the learned predictor for true simulator physics barely changed success (78% vs 77%), so the predictor was not the bottleneck. Planning 75 steps at once succeeded 22% of the time; splitting it into subgoals 25 steps apart reached 80%. A graph of about 460,000 embedded demonstration states reached 85% once jumps between demonstrations had a cost, after free jumps produced impossible plans. Shifted, rotated and mirrored demo segments filled gaps in memory. Scoring goals on the block alone, ignoring where the pusher happened to be, took one exact-physics test from 9/50 to 39/50. The post also says the standard benchmark is noisy (68% on the official 50 episodes, 44% on 250 fresh ones) and that 84% of its goals already have a near-identical state in memory. On a harder cross-demonstration test the best planner reaches 56%.
+
+*** Take
+The noisy benchmark and the goal-scoring result are worth more than the title suggests: if a seed change flips 38 of 250 episodes and the pusher's position in the goal image costs 30 tasks, a lot of published Push-T comparisons are measuring noise. reasonabl_human is right that subgoals and search over a replay buffer are known techniques. A plainer title and a few citations would have avoided the "discovered" pushback.
+
+*** Comments
+
+**** reasonabl_human
+:PROPERTIES:
+:COMMENT_ID: 50489519
+:END:
+Someone spends time iterating with a coding agent exploring a field that's new to them. The agent's suggestions come from existing literature, but it rarely says "this is Search on the Replay Buffer, here's the paper." So each new concept feels like a discovery and gets written up that way.
+
+**** robotresearcher
+:PROPERTIES:
+:COMMENT_ID: 50488606
+:END:
+Why lean so hard on the demonstration examples? Surely the actual task here is to move between any two arbitrary poses... And the one thing you know 100% about a physical robot system is that you will never encounter exactly the same situation twice.
+
+**** hazrmard
+:PROPERTIES:
+:COMMENT_ID: 50489425
+:END:
+JEPA is very similar to Model Predictive Control... Is JEPA just MPC but where the "M" is a latent-space model?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+做了 600 次实验后，我对 JEPA 世界模型的发现
+***** TLDR
+Haddy Alchaer 在 Push-T 推方块任务上，为 JEPA 世界模型 LeWM 加了四种都不需要重新训练的规划方法。把学到的预测器换成真实模拟器物理，成功率几乎不变（78% 对 77%），所以瓶颈不在预测器。一次规划 75 步的成功率为 22%；拆成每 25 步一个子目标后达到 80%。用约 46 万个嵌入的演示状态建图，起初演示之间的跳转不计成本，产生了物理上不可能的计划；给跳转加上成本后成功率达到 85%。平移、旋转和镜像的演示片段可以填补记忆中的空缺。只按方块位置评判目标、忽略推杆恰好在哪，使一项精确物理测试从 9/50 提升到 39/50。文章还指出标准基准噪声很大（官方 50 个回合 68%，250 个新回合 44%），而且其中 84% 的目标在记忆里已有几乎相同的状态。在更难的跨演示测试上，最好的规划器达到 56%。
+***** Take
+基准噪声和目标评分这两个结果比标题暗示的更有价值：如果换个随机种子就能翻转 250 个回合中的 38 个，而目标图里推杆的位置就让 30 个任务失败，那么很多已发表的 Push-T 对比衡量的其实是噪声。reasonabl_human 说得对，子目标和在回放缓冲区上搜索都是已知技术。标题平实一点、加几处引用，就不会招来对"发现"一词的反驳。
+***** Comments
+- 有人花时间和编程智能体反复迭代，探索一个对自己来说全新的领域。智能体的建议来自现有文献，但它很少会说"这叫 Search on the Replay Buffer，论文在这里"。于是每个新概念都像是发现，也就被这样写了出来。
+- 为什么这么依赖演示样本？真正的任务应该是在任意两个姿态之间移动……而对物理机器人系统你能百分之百确定的一点是，你永远不会两次遇到完全相同的情况。
+- JEPA 和模型预测控制非常相似……JEPA 是不是就是把"M"换成潜空间模型的 MPC？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+600回の実験でJEPA世界モデルについてわかったこと
+***** TLDR
+Haddy Alchaerは、JEPA世界モデルLeWMに、再学習が不要な4つのプランニング手法をPush-Tのブロック押しタスクで追加した。学習済み予測器を本物のシミュレータ物理に置き換えても成功率はほぼ変わらず（78%対77%）、ボトルネックは予測器ではなかった。75ステップを一度に計画すると成功率22%、25ステップごとのサブゴールに分けると80%。約46万のデモ状態を埋め込んだグラフは、当初デモ間の移動をコストなしにしたため物理的に不可能な計画を生んだが、移動にコストを付けると85%に達した。平行移動、回転、鏡像にしたデモ区間でメモリの穴を埋めた。押し棒がたまたまどこにあったかを無視し、ブロックだけでゴールを判定すると、厳密な物理を使ったテストで9/50から39/50に上がった。記事は、標準ベンチマークのノイズが大きいこと（公式50エピソードで68%、新しい250エピソードで44%）、ゴールの84%がメモリ内にほぼ同じ状態を持つことも指摘する。より難しいデモ間テストでは最良のプランナーで56%。
+***** Take
+ベンチマークのノイズとゴール判定の結果は、タイトルが示すより価値がある。シードを変えるだけで250エピソード中38が反転し、ゴール画像の押し棒の位置で30タスクを落とすなら、公表されているPush-Tの比較の多くはノイズを測っている。サブゴールやリプレイバッファ上の探索が既知の手法だというreasonabl_humanの指摘は正しい。地味なタイトルと少しの引用があれば「発見」への反発は避けられた。
+***** Comments
+- 誰かが自分にとって新しい分野をコーディングエージェントと試行錯誤しながら探る。エージェントの提案は既存の文献から来ているのに、「これはSearch on the Replay Bufferで、論文はこれ」とはめったに言わない。だから新しい概念がいちいち発見に感じられ、そう書かれる。
+- なぜそこまでデモの例に頼るのか？本当のタスクは任意の2つの姿勢の間を動かすことのはずだ……そして物理ロボットについて100%確かなのは、まったく同じ状況に二度出会うことはないということだ。
+- JEPAはモデル予測制御とよく似ている……JEPAは「M」が潜在空間モデルになったMPCにすぎないのでは？
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+600번의 실험 끝에 JEPA 월드 모델에 대해 알게 된 것
+***** TLDR
+Haddy Alchaer는 Push-T 블록 밀기 과제에서 JEPA 월드 모델 LeWM에 재학습이 필요 없는 플래닝 기법 네 가지를 더했다. 학습된 예측기를 실제 시뮬레이터 물리로 바꿔도 성공률은 거의 같아서(78% 대 77%) 병목은 예측기가 아니었다. 75스텝을 한 번에 계획하면 성공률 22%, 25스텝마다 하위 목표로 나누면 80%였다. 약 46만 개의 임베딩된 시연 상태로 그래프를 만들었더니 처음에는 시연 간 점프에 비용이 없어 물리적으로 불가능한 계획이 나왔고, 점프에 비용을 붙이자 85%에 이르렀다. 이동, 회전, 대칭 변환한 시연 구간으로 메모리의 빈 곳을 채웠다. 푸셔가 우연히 있던 위치를 무시하고 블록만으로 목표를 판정하자 정확한 물리 테스트 하나에서 9/50이 39/50이 됐다. 글은 표준 벤치마크의 노이즈가 크고(공식 50개 에피소드 68%, 새 250개 에피소드 44%) 목표의 84%가 이미 메모리에 거의 같은 상태를 갖고 있다고도 지적한다. 더 어려운 교차 시연 테스트에서 최고 플래너는 56%다.
+***** Take
+벤치마크 노이즈와 목표 판정 결과는 제목이 암시하는 것보다 가치가 있다. 시드만 바꿔도 250개 에피소드 중 38개가 뒤집히고 목표 이미지 속 푸셔 위치 때문에 30개 과제를 놓친다면, 발표된 Push-T 비교의 상당수는 노이즈를 재고 있는 셈이다. 하위 목표와 리플레이 버퍼 탐색이 이미 알려진 기법이라는 reasonabl_human의 지적은 맞다. 담백한 제목과 인용 몇 개면 "발견"에 대한 반발은 피할 수 있었다.
+***** Comments
+- 누군가 자신에게 새로운 분야를 코딩 에이전트와 반복 실험하며 탐색한다. 에이전트의 제안은 기존 문헌에서 나오지만 "이건 Search on the Replay Buffer이고 논문은 여기"라고 말해주는 경우는 드물다. 그래서 새 개념마다 발견처럼 느껴지고 그렇게 글로 쓰인다.
+- 왜 시연 예시에 그렇게 의존하나? 실제 과제는 임의의 두 자세 사이를 옮기는 것일 텐데... 물리 로봇 시스템에 대해 100% 확실한 건 똑같은 상황을 두 번 만나지 않는다는 것이다.
+- JEPA는 모델 예측 제어와 매우 비슷하다... JEPA는 "M"이 잠재 공간 모델인 MPC일 뿐인가?
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Tras 600 experimentos, esto es lo que descubrí sobre los modelos del mundo JEPA
+***** TLDR
+Haddy Alchaer añadió cuatro métodos de planificación, ninguno con reentrenamiento, a LeWM, un modelo del mundo JEPA, en la tarea de empujar bloques Push-T. Cambiar el predictor aprendido por la física real del simulador apenas alteró el éxito (78% frente a 77%), así que el predictor no era el cuello de botella. Planificar 75 pasos de una vez funcionó el 22% de las veces; dividirlo en subobjetivos cada 25 pasos llegó al 80%. Un grafo de unos 460.000 estados de demostración embebidos alcanzó el 85% cuando los saltos entre demostraciones pasaron a tener coste, después de que los saltos gratuitos produjeran planes imposibles. Segmentos de demostración desplazados, rotados y reflejados rellenaron huecos en la memoria. Evaluar los objetivos solo por el bloque, sin tener en cuenta dónde estaba el empujador, llevó una prueba con física exacta de 9/50 a 39/50. El texto también señala que el benchmark estándar es ruidoso (68% en los 50 episodios oficiales, 44% en 250 nuevos) y que el 84% de sus objetivos ya tiene un estado casi idéntico en memoria. En una prueba más difícil entre demostraciones, el mejor planificador llega al 56%.
+***** Take
+El ruido del benchmark y el resultado sobre la evaluación de objetivos valen más de lo que sugiere el título: si cambiar la semilla invierte 38 de 250 episodios y la posición del empujador en la imagen objetivo cuesta 30 tareas, muchas comparaciones publicadas en Push-T están midiendo ruido. reasonabl_human tiene razón en que los subobjetivos y la búsqueda sobre un replay buffer son técnicas conocidas. Un título más llano y algunas citas habrían evitado las críticas al "descubrí".
+***** Comments
+- Alguien pasa tiempo iterando con un agente de programación en un campo que es nuevo para él. Las sugerencias del agente salen de la literatura existente, pero casi nunca dice "esto es Search on the Replay Buffer, aquí está el artículo". Así que cada concepto nuevo parece un descubrimiento y se escribe como tal.
+- ¿Por qué apoyarse tanto en los ejemplos de demostración? La tarea real debería ser moverse entre dos poses arbitrarias... Y lo único que sabes al 100% de un robot físico es que nunca te encontrarás exactamente la misma situación dos veces.
+- JEPA se parece mucho al control predictivo por modelo... ¿Es JEPA simplemente MPC donde la "M" es un modelo de espacio latente?
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Nach 600 Experimenten: Was ich über JEPA-Weltmodelle herausgefunden habe
+***** TLDR
+Haddy Alchaer hat LeWM, einem JEPA-Weltmodell, für die Blockschiebe-Aufgabe Push-T vier Planungsmethoden hinzugefügt, die alle ohne Neutraining auskommen. Den gelernten Prädiktor durch echte Simulatorphysik zu ersetzen, änderte die Erfolgsquote kaum (78 % gegenüber 77 %), der Prädiktor war also nicht der Engpass. 75 Schritte auf einmal zu planen gelang in 22 % der Fälle; mit Teilzielen alle 25 Schritte waren es 80 %. Ein Graph aus rund 460.000 eingebetteten Demonstrationszuständen erreichte 85 %, sobald Sprünge zwischen Demonstrationen etwas kosteten, nachdem kostenlose Sprünge unmögliche Pläne erzeugt hatten. Verschobene, gedrehte und gespiegelte Demo-Abschnitte füllten Lücken im Speicher. Ziele nur am Block zu bewerten und zu ignorieren, wo der Schieber zufällig stand, hob einen Test mit exakter Physik von 9/50 auf 39/50. Der Beitrag sagt außerdem, dass der Standard-Benchmark verrauscht ist (68 % auf den offiziellen 50 Episoden, 44 % auf 250 neuen) und 84 % seiner Ziele bereits einen fast identischen Zustand im Speicher haben. Auf einem schwereren Test über Demonstrationen hinweg erreicht der beste Planer 56 %.
+***** Take
+Das Benchmark-Rauschen und das Ergebnis zur Zielbewertung sind mehr wert, als der Titel vermuten lässt: Wenn ein anderer Seed 38 von 250 Episoden kippt und die Position des Schiebers im Zielbild 30 Aufgaben kostet, messen viele veröffentlichte Push-T-Vergleiche Rauschen. reasonabl_human hat recht, dass Teilziele und Suche über einen Replay-Buffer bekannte Techniken sind. Ein schlichterer Titel und ein paar Zitate hätten den Widerspruch gegen das "herausgefunden" vermieden.
+***** Comments
+- Jemand verbringt Zeit damit, mit einem Coding-Agenten ein für ihn neues Feld zu erkunden. Die Vorschläge des Agenten stammen aus der vorhandenen Literatur, aber er sagt selten "das ist Search on the Replay Buffer, hier ist das Paper". Also fühlt sich jedes neue Konzept wie eine Entdeckung an und wird so aufgeschrieben.
+- Warum so stark auf die Demonstrationsbeispiele stützen? Die eigentliche Aufgabe ist doch, zwischen zwei beliebigen Posen zu wechseln... Und das eine, was man bei einem physischen Robotersystem zu 100 % weiß: Man trifft nie zweimal auf genau dieselbe Situation.
+- JEPA ist Model Predictive Control sehr ähnlich... Ist JEPA einfach MPC, bei dem das "M" ein Modell im latenten Raum ist?
