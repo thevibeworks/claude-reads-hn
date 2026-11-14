@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-11-14 01:00 UTC
+#+DATE: 2026-11-14T01:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+A comms network update grounds every US departure, a $50 synth maker builds tools for custom firmware, and Google won't fix a hidden clipboard warning
+
+* Highlights
+- FAA ground stop: early reports blame an update to an L3Harris comms network
+- FM-1: M-VAVE ships official tooling for community firmware
+- Haskell Foundation: Go build speed, Rust onboarding, 10-year stability
+- Isometric SF: 1,300 sq mi of Bay Area painted by a distilled 4B model
+- Android clipboard: two toasts hide the read warning, Won't Fix
+
+* Stories
+
+** FAA issues national ground stop :aviation:faa:outage:infrastructure:
+:PROPERTIES:
+:ID:       50489641
+:URL:      https://www.nbcnews.com/news/us-news/faa-orders-nationwide-ground-stop-departing-flights-reasons-safety-rcna609247
+:HN_URL:   https://news.ycombinator.com/item?id=50489641
+:POINTS:   1250
+:COMMENTS: 753
+:BY:       zulln
+:END:
+
+*** TLDR
+At 3:54 p.m. ET Friday the FAA ordered every departing flight in the US to stay on the ground "due to extraordinary circumstances and for reasons of safety," with no other explanation. About 4,042 US-bound flights were in the air at the time. Homeland Security Secretary Markwayne Mullin blamed a telecommunications outage and said there was no sign of anything nefarious, and officials told NBC it did not look like a cyberattack. By 6 p.m. Reagan National had run out of parking space and O'Hare was close. Air Space Intelligence, the vendor behind the FAA's AI-assisted SMART traffic system announced for nationwide rollout days earlier, said its software was not the cause. WSJ and CBS reports cited in the thread point to an update to an L3Harris-run network that carries controller-to-pilot radio, which rebooted the system and crashed it.
+
+*** Take
+The early explanation is a bad update to one contractor-run network, which matches the January 2023 NOTAM outage more than any attack theory. The FAA's only public statement for hours was one line of boilerplate, so the best live information came from hobbyists running SDRs and ADS-B feeds. The SMART AI rumor was weak, and the FAA's silence gave it room to spread.
+
+*** Comments
+
+**** fooey
+:PROPERTIES:
+:COMMENT_ID: 50491855
+:END:
+starting to see some explanations for what's going on ... "An update to the private communications network that connects America's air traffic control system caused the system to reboot, leading to a crash and a communications outage, multiple sources told CBS News. The system is operated by L3Harris"
+
+**** sixhobbits
+:PROPERTIES:
+:COMMENT_ID: 50490935
+:END:
+Botched rollout of AI for ATC announced yesterday as rolling out nationwide?
+
+**** jbredeche
+:PROPERTIES:
+:COMMENT_ID: 50489883
+:END:
+On a plane about to take off and obviously we didn't. The captain is very confused and says he doesn't know what this means.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+FAA 发布全国停飞令
+***** TLDR
+美东时间周五下午 3:54，FAA 命令美国所有出港航班停在地面，理由只有一句"出于特殊情况和安全原因"。当时约有 4,042 架飞往美国的航班在空中。国土安全部长 Markwayne Mullin 将其归因于电信故障，称目前没有恶意行为的迹象，官员也向 NBC 表示这不像网络攻击。到下午 6 点，里根国家机场已无停机位，奥黑尔机场也接近饱和。几天前刚宣布在全国推广的 FAA AI 辅助 SMART 空管系统的供应商 Air Space Intelligence 表示其软件不是原因。讨论中引用的 WSJ 和 CBS 报道指向 L3Harris 运营的、承载管制员与飞行员无线电通信的网络：一次更新导致系统重启并崩溃。
+***** Take
+初步解释是某个承包商运营的网络更新出错，这更像 2023 年 1 月的 NOTAM 故障，而非任何攻击论。FAA 数小时内唯一的公开声明就是一句套话，所以最好的实时信息来自运行 SDR 和 ADS-B 接收器的爱好者。SMART AI 的传言站不住脚，但 FAA 的沉默给了它传播的空间。
+***** Comments
+- 开始看到一些解释了……"连接美国空管系统的私有通信网络的一次更新导致系统重启，进而崩溃并造成通信中断，多位消息人士告诉 CBS 新闻。该系统由 L3Harris 运营"
+- 昨天刚宣布全国推广的空管 AI 搞砸了？
+- 我在一架即将起飞的飞机上，显然没飞成。机长非常困惑，说他不知道这是什么意思。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+FAAが全米で地上待機命令を発出
+***** TLDR
+米東部時間の金曜午後3時54分、FAAは米国内の全出発便に地上待機を命じた。理由は「特別な事情と安全上の理由による」の一文のみ。その時点で米国行きの約4,042便が飛行中だった。国土安全保障長官のMarkwayne Mullinは通信障害が原因とし、悪意ある行為の兆候はないと述べ、当局者もNBCにサイバー攻撃には見えないと語った。午後6時までにレーガン・ナショナル空港は駐機スペースがなくなり、オヘア空港も満杯に近づいた。数日前に全国展開が発表されたFAAのAI支援型SMART管制システムのベンダーAir Space Intelligenceは、自社ソフトは原因ではないと表明。スレッドで引用されたWSJとCBSの報道は、管制官とパイロット間の無線を担うL3Harris運用ネットワークへの更新がシステムを再起動させ、クラッシュさせたと伝えている。
+***** Take
+初期の説明は請負業者が運用する1つのネットワークへの更新ミスで、攻撃説よりも2023年1月のNOTAM障害に近い。FAAの公式声明は何時間も定型文1行だけで、最も良いリアルタイム情報はSDRやADS-B受信機を動かす愛好家から来た。SMART AI犯人説は根拠が弱いが、FAAの沈黙が広まる余地を与えた。
+***** Comments
+- 原因の説明が出始めた……「米国の航空管制システムをつなぐ専用通信ネットワークの更新でシステムが再起動し、クラッシュと通信障害を招いたと複数の関係者がCBSニュースに語った。このシステムはL3Harrisが運用している」
+- 昨日全国展開が発表された管制用AIの導入失敗？
+- 離陸直前の機内にいたが、当然飛ばなかった。機長はとても混乱していて、これが何を意味するのか分からないと言っている。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+FAA, 전국 지상 정지 명령 발령
+***** TLDR
+미 동부시간 금요일 오후 3시 54분, FAA는 미국 내 모든 출발 항공편에 지상 대기를 명령했다. 이유는 "특별한 상황과 안전상의 이유"라는 한 문장뿐이었다. 당시 미국행 항공편 약 4,042편이 비행 중이었다. 국토안보부 장관 Markwayne Mullin은 통신 장애가 원인이며 악의적 행위의 징후는 없다고 했고, 당국자들도 NBC에 사이버 공격으로 보이지 않는다고 말했다. 오후 6시까지 레이건 내셔널 공항은 주기 공간이 바닥났고 오헤어 공항도 거의 찼다. 며칠 전 전국 도입이 발표된 FAA의 AI 보조 SMART 관제 시스템 공급업체 Air Space Intelligence는 자사 소프트웨어가 원인이 아니라고 밝혔다. 스레드에서 인용된 WSJ와 CBS 보도는 관제사와 조종사 간 무선을 담당하는 L3Harris 운영 네트워크의 업데이트가 시스템을 재부팅시키고 다운시켰다고 전한다.
+***** Take
+초기 설명은 하청업체가 운영하는 네트워크 하나의 업데이트 실수로, 공격설보다 2023년 1월 NOTAM 장애와 더 닮았다. FAA의 공개 발표는 몇 시간 동안 상투적인 한 줄뿐이었고, 가장 좋은 실시간 정보는 SDR과 ADS-B 수신기를 돌리는 취미가들에게서 나왔다. SMART AI 원인설은 근거가 약했지만 FAA의 침묵이 퍼질 여지를 줬다.
+***** Comments
+- 무슨 일인지 설명이 나오기 시작했다... "미국 항공 관제 시스템을 연결하는 사설 통신망의 업데이트로 시스템이 재부팅되면서 다운과 통신 장애가 발생했다고 여러 소식통이 CBS 뉴스에 전했다. 이 시스템은 L3Harris가 운영한다"
+- 어제 전국 도입을 발표한 관제용 AI가 망가진 건가?
+- 이륙 직전 비행기에 타 있었는데 당연히 못 떴다. 기장은 매우 혼란스러워하며 이게 무슨 뜻인지 모르겠다고 한다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+La FAA ordena una paralización nacional de despegues
+***** TLDR
+A las 3:54 p.m. hora del Este del viernes, la FAA ordenó que todos los vuelos de salida en EE. UU. permanecieran en tierra "por circunstancias extraordinarias y por razones de seguridad", sin más explicación. En ese momento había unos 4.042 vuelos con destino a EE. UU. en el aire. El secretario de Seguridad Nacional, Markwayne Mullin, lo atribuyó a una caída de telecomunicaciones y dijo que no había indicios de nada malicioso; funcionarios dijeron a NBC que no parecía un ciberataque. A las 6 p.m. el aeropuerto Reagan National se había quedado sin espacio para aparcar aviones y O'Hare estaba cerca. Air Space Intelligence, proveedor del nuevo sistema de tráfico SMART asistido por IA que la FAA anunció para todo el país días antes, dijo que su software no fue la causa. Informes del WSJ y CBS citados en el hilo apuntan a una actualización de una red operada por L3Harris que transporta la radio entre controladores y pilotos, que reinició el sistema y lo hizo caer.
+***** Take
+La explicación inicial es una mala actualización de una sola red operada por un contratista, lo que se parece más a la caída del NOTAM de enero de 2023 que a cualquier teoría de ataque. La única declaración pública de la FAA durante horas fue una línea de texto estándar, así que la mejor información en directo vino de aficionados con SDR y receptores ADS-B. El rumor sobre la IA de SMART era débil, y el silencio de la FAA le dio espacio para propagarse.
+***** Comments
+- empiezan a verse algunas explicaciones de lo que pasa ... "Una actualización de la red privada de comunicaciones que conecta el sistema de control aéreo de EE. UU. hizo que el sistema se reiniciara, provocando una caída y un corte de comunicaciones, dijeron varias fuentes a CBS News. El sistema lo opera L3Harris"
+- ¿Despliegue fallido de la IA para control aéreo anunciada ayer para todo el país?
+- Estoy en un avión a punto de despegar y obviamente no despegamos. El capitán está muy confundido y dice que no sabe qué significa esto.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+FAA verhängt landesweiten Startstopp
+***** TLDR
+Am Freitag um 15:54 Uhr Ostküstenzeit ordnete die FAA an, dass alle abfliegenden Flüge in den USA am Boden bleiben, "aufgrund außergewöhnlicher Umstände und aus Sicherheitsgründen", ohne weitere Erklärung. Zu diesem Zeitpunkt waren rund 4.042 Flüge mit Ziel USA in der Luft. Heimatschutzminister Markwayne Mullin nannte einen Ausfall der Telekommunikation als Ursache und sah keine Hinweise auf böswillige Absicht; Beamte sagten NBC, es sehe nicht nach einem Cyberangriff aus. Bis 18 Uhr hatte Reagan National keine Abstellplätze mehr, O'Hare war fast voll. Air Space Intelligence, Anbieter des KI-gestützten SMART-Verkehrssystems der FAA, dessen landesweite Einführung Tage zuvor angekündigt wurde, erklärte, seine Software sei nicht die Ursache. Im Thread zitierte Berichte von WSJ und CBS nennen ein Update an einem von L3Harris betriebenen Netz für den Funk zwischen Lotsen und Piloten, das das System neu startete und abstürzen ließ.
+***** Take
+Die erste Erklärung ist ein fehlerhaftes Update an einem einzigen, von einem Auftragnehmer betriebenen Netz. Das ähnelt dem NOTAM-Ausfall vom Januar 2023 mehr als jeder Angriffstheorie. Die einzige öffentliche Aussage der FAA war stundenlang eine Zeile Standardtext, also kamen die besten Live-Informationen von Hobbyisten mit SDRs und ADS-B-Empfängern. Das SMART-KI-Gerücht war schwach, aber das Schweigen der FAA ließ ihm Raum.
+***** Comments
+- langsam tauchen Erklärungen auf ... "Ein Update des privaten Kommunikationsnetzes, das die US-Flugsicherung verbindet, führte zu einem Neustart des Systems, einem Absturz und einem Kommunikationsausfall, sagten mehrere Quellen CBS News. Das System wird von L3Harris betrieben"
+- Verpatzte Einführung der KI für die Flugsicherung, die gestern landesweit angekündigt wurde?
+- Sitze in einem Flugzeug kurz vor dem Start, und natürlich sind wir nicht gestartet. Der Kapitän ist sehr verwirrt und sagt, er wisse nicht, was das bedeutet.
+** FM-1 Workbench :hardware:music:firmware:open-source:
+:PROPERTIES:
+:ID:       50488325
+:URL:      https://open.m-vave.com/fm1-workbench
+:HN_URL:   https://news.ycombinator.com/item?id=50488325
+:POINTS:   179
+:COMMENTS: 102
+:BY:       simonebrunozzi
+:END:
+
+*** TLDR
+M-VAVE, a Chinese maker of budget music gear, runs an official browser workbench for its FM-1, a pocket FM synth that commenters put at about $50. The workbench updates firmware, previews the instrument in a browser simulator compiled from the same C sources, and manages projects, samples and DX7 voices. M-VAVE publishes its own open firmware (V14: 8 tracks, 8 sample slots, a 128-voice DX7 library, DIN/USB/BLE MIDI) under GPLv3 with a linking exception, ships the proprietary sound engine as a binary SDK that anyone may redistribute inside FM-1 firmware, and supports switching to and from third-party firmware. Building firmware needs Windows and the JieLi vendor toolchain.
+
+*** Take
+M-VAVE is doing what most synth makers refuse to do: treating community firmware as a feature and building the flashing, backup and rollback tools for it. The engine is still a binary blob and builds need a Windows-only vendor compiler, so this is open enough to hack on, not open hardware. For a $50 device that is a reasonable trade, and it explains why commenters are swapping firmware every few days.
+
+*** Comments
+
+**** swiftcoder
+:PROPERTIES:
+:COMMENT_ID: 50488747
+:END:
+The explosion of firmwares for this device, and the manufacturers embrace thereof, is a rare bright spot in post-LLM music tech
+
+**** EmX_3000
+:PROPERTIES:
+:COMMENT_ID: 50489042
+:END:
+Downsides immediately jump out at me, it lacks real DIN MIDI ports, having those irritating 1/8" jacks instead which require an adapter. Built in battery ... It has a fan, that's not good at all. It looks cheap ... and not sturdy.
+
+**** varispeed
+:PROPERTIES:
+:COMMENT_ID: 50489071
+:END:
+Basically people get ability to run AI made crap vst plugins in a calculator sized box and yet they go crazy about it. ... edit: that reminds me I actually bought one too, but forgot about it. Still unopened.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+FM-1 工作台
+***** TLDR
+中国平价音乐设备厂商 M-VAVE 为其口袋 FM 合成器 FM-1（评论者称约 50 美元）提供官方浏览器工作台。它可以更新固件、在由同一套 C 源码编译的浏览器模拟器中预览乐器，并管理工程、采样和 DX7 音色。M-VAVE 以带链接例外的 GPLv3 发布自己的开源固件（V14：8 轨、8 个采样槽、128 个 DX7 音色库、DIN/USB/BLE MIDI），把专有音源引擎作为二进制 SDK 提供，任何人都可将其包含在 FM-1 固件中再分发，并支持在第三方固件之间来回切换。编译固件需要 Windows 和杰理（JieLi）厂商工具链。
+***** Take
+M-VAVE 做了大多数合成器厂商拒绝做的事：把社区固件当作卖点，并为其提供刷写、备份和回滚工具。引擎仍是二进制黑盒，编译需要仅限 Windows 的厂商编译器，所以这是"足够开放可供折腾"，而不是开源硬件。对一台 50 美元的设备来说这个取舍合理，也解释了为什么评论区的人每隔几天就换一次固件。
+***** Comments
+- 这台设备固件的爆发式增长，以及厂商对此的拥抱，是后 LLM 时代音乐科技中难得的亮点
+- 缺点一眼就能看出来：没有真正的 DIN MIDI 接口，而是需要转接头的烦人 1/8 英寸插孔。内置电池……还有风扇，这很不好。看起来很廉价……也不结实。
+- 基本上就是让人能在计算器大小的盒子里跑 AI 做的垃圾 VST 插件，大家却为之疯狂。……补充：这让我想起我其实也买了一台，但忘了。还没拆封。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+FM-1 ワークベンチ
+***** TLDR
+中国の低価格音楽機器メーカーM-VAVEは、ポケットサイズのFMシンセFM-1（コメントによれば約50ドル）向けに公式のブラウザ版ワークベンチを提供している。ファームウェア更新、同じCソースからコンパイルしたブラウザシミュレーターでの試奏、プロジェクト・サンプル・DX7音色の管理ができる。M-VAVEはリンク例外付きGPLv3で自社のオープンファームウェア（V14：8トラック、8サンプルスロット、128音色のDX7ライブラリ、DIN/USB/BLE MIDI）を公開し、独自の音源エンジンはFM-1用ファームに含めて誰でも再配布できるバイナリSDKとして提供、サードパーティ製ファームとの切り替えにも対応する。ファームのビルドにはWindowsとJieLiのベンダーツールチェーンが必要。
+***** Take
+M-VAVEは多くのシンセメーカーが拒んできたことをやっている。コミュニティ製ファームを機能として扱い、書き込み・バックアップ・ロールバックのツールまで用意した。エンジンはバイナリのままで、ビルドにはWindows専用のベンダーコンパイラが要るので、いじれる程度に開かれているだけでオープンハードウェアではない。50ドルの機器なら妥当な取引で、コメント欄の人々が数日ごとにファームを入れ替えている理由でもある。
+***** Comments
+- このデバイス向けファームウェアの爆発的な増加と、メーカーがそれを歓迎していることは、LLM以後の音楽テックにおける数少ない明るい話題だ
+- 欠点がすぐ目につく。本物のDIN MIDI端子がなく、アダプターが必要な厄介な1/8インチジャック。内蔵バッテリー……ファンがあるのは全く良くない。安っぽく見えるし……頑丈でもない。
+- 要は電卓サイズの箱でAI製のクソVSTプラグインを動かせるだけなのに、みんな夢中になっている。……追記：そういえば自分も1台買って忘れていた。まだ未開封だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+FM-1 워크벤치
+***** TLDR
+중국의 저가 음악 장비 제조사 M-VAVE는 포켓 FM 신시사이저 FM-1(댓글에 따르면 약 50달러)용 공식 브라우저 워크벤치를 운영한다. 펌웨어 업데이트, 같은 C 소스로 컴파일한 브라우저 시뮬레이터에서의 미리 듣기, 프로젝트·샘플·DX7 음색 관리가 가능하다. M-VAVE는 링크 예외가 붙은 GPLv3로 자체 오픈 펌웨어(V14: 8트랙, 8개 샘플 슬롯, 128개 DX7 음색 라이브러리, DIN/USB/BLE MIDI)를 공개하고, 독점 사운드 엔진은 누구나 FM-1 펌웨어에 넣어 재배포할 수 있는 바이너리 SDK로 제공하며, 서드파티 펌웨어와의 전환도 지원한다. 펌웨어 빌드에는 Windows와 JieLi 벤더 툴체인이 필요하다.
+***** Take
+M-VAVE는 대부분의 신스 제조사가 거부하는 일을 하고 있다. 커뮤니티 펌웨어를 기능으로 대하고 플래싱, 백업, 롤백 도구까지 만들었다. 엔진은 여전히 바이너리 덩어리이고 빌드에는 Windows 전용 벤더 컴파일러가 필요하니, 손댈 수 있을 만큼 열려 있을 뿐 오픈 하드웨어는 아니다. 50달러짜리 기기라면 합리적인 거래이고, 댓글 작성자들이 며칠마다 펌웨어를 바꾸는 이유이기도 하다.
+***** Comments
+- 이 기기용 펌웨어의 폭발적 증가와 제조사가 이를 받아들인 것은 LLM 이후 음악 기술에서 보기 드문 밝은 소식이다
+- 단점이 바로 보인다. 진짜 DIN MIDI 포트가 없고 어댑터가 필요한 짜증 나는 1/8인치 잭이 달려 있다. 내장 배터리... 팬이 있는 건 전혀 좋지 않다. 싸 보이고... 튼튼하지도 않다.
+- 결국 계산기만 한 상자에서 AI가 만든 쓰레기 VST 플러그인을 돌릴 수 있게 된 건데 다들 열광한다. ... 수정: 그러고 보니 나도 하나 샀는데 잊고 있었다. 아직 뜯지도 않았다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+FM-1 Workbench
+***** TLDR
+M-VAVE, un fabricante chino de equipo musical económico, mantiene un banco de trabajo oficial en el navegador para su FM-1, un sintetizador FM de bolsillo que los comentaristas sitúan en unos 50 dólares. Sirve para actualizar el firmware, probar el instrumento en un simulador web compilado desde el mismo código C y gestionar proyectos, samples y voces DX7. M-VAVE publica su propio firmware abierto (V14: 8 pistas, 8 ranuras de samples, una biblioteca DX7 de 128 voces, MIDI DIN/USB/BLE) bajo GPLv3 con excepción de enlace, distribuye el motor de sonido propietario como un SDK binario que cualquiera puede redistribuir dentro de firmware para FM-1, y permite cambiar a firmware de terceros y volver. Compilar firmware requiere Windows y la cadena de herramientas del fabricante JieLi.
+***** Take
+M-VAVE hace lo que la mayoría de fabricantes de sintetizadores se niega a hacer: tratar el firmware de la comunidad como una función y construir las herramientas de flasheo, copia de seguridad y vuelta atrás. El motor sigue siendo un binario cerrado y compilar requiere un compilador del fabricante solo para Windows, así que es lo bastante abierto para trastear, no hardware abierto. Para un aparato de 50 dólares es un trato razonable, y explica por qué los comentaristas cambian de firmware cada pocos días.
+***** Comments
+- La explosión de firmwares para este aparato, y que el fabricante la acoja, es un raro punto positivo en la tecnología musical post-LLM
+- Los defectos saltan a la vista: no tiene puertos MIDI DIN de verdad, sino esos molestos jacks de 1/8" que requieren adaptador. Batería integrada ... Tiene un ventilador, eso no está nada bien. Parece barato ... y poco robusto.
+- Básicamente la gente puede ejecutar plugins VST basura hechos con IA en una caja del tamaño de una calculadora y aun así se vuelven locos. ... edito: eso me recuerda que yo también compré uno, pero lo olvidé. Sigue sin abrir.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+FM-1 Workbench
+***** TLDR
+M-VAVE, ein chinesischer Hersteller günstiger Musikgeräte, betreibt eine offizielle Browser-Workbench für seinen FM-1, einen FM-Synthesizer im Taschenformat, den Kommentatoren auf etwa 50 Dollar beziffern. Damit lassen sich Firmware aktualisieren, das Instrument in einem aus denselben C-Quellen kompilierten Browser-Simulator ausprobieren und Projekte, Samples und DX7-Sounds verwalten. M-VAVE veröffentlicht seine eigene offene Firmware (V14: 8 Spuren, 8 Sample-Slots, eine DX7-Bibliothek mit 128 Sounds, DIN/USB/BLE-MIDI) unter GPLv3 mit Linking-Ausnahme, liefert die proprietäre Klangerzeugung als binäres SDK, das jeder in FM-1-Firmware weiterverbreiten darf, und unterstützt den Wechsel zu und von Fremdfirmware. Zum Bauen der Firmware braucht man Windows und die JieLi-Toolchain des Chipherstellers.
+***** Take
+M-VAVE tut, was die meisten Synth-Hersteller verweigern: Community-Firmware als Feature behandeln und die Werkzeuge zum Flashen, Sichern und Zurückrollen selbst bauen. Die Engine bleibt ein Binärblob, und Builds brauchen einen Windows-only-Compiler des Chipherstellers. Das ist offen genug zum Basteln, aber keine offene Hardware. Für ein 50-Dollar-Gerät ist das ein vernünftiger Tausch und erklärt, warum Kommentatoren alle paar Tage die Firmware wechseln.
+***** Comments
+- Die Explosion an Firmwares für dieses Gerät, und dass der Hersteller sie begrüßt, ist ein seltener Lichtblick in der Musiktechnik nach den LLMs
+- Die Nachteile springen sofort ins Auge: keine echten DIN-MIDI-Buchsen, stattdessen diese lästigen 3,5-mm-Klinken, die einen Adapter brauchen. Eingebauter Akku ... Es hat einen Lüfter, das ist gar nicht gut. Es sieht billig aus ... und nicht stabil.
+- Im Grunde können Leute KI-gemachten Mist-VST-Plugins in einer taschenrechnergroßen Kiste laufen lassen, und trotzdem drehen sie durch. ... Edit: Da fällt mir ein, ich habe auch eins gekauft und es vergessen. Noch originalverpackt.
+** A technical vision for the Haskell ecosystem :haskell:programming-languages:devtools:
+:PROPERTIES:
+:ID:       50484235
+:URL:      https://discourse.haskell.org/t/a-technical-vision-for-the-haskell-ecosystem/15078
+:HN_URL:   https://news.ycombinator.com/item?id=50484235
+:POINTS:   177
+:COMMENTS: 82
+:BY:       cosmic_quanta
+:END:
+
+*** TLDR
+The Haskell Foundation's newly formed Technical Leadership Committee posted its vision. It pitches Haskell as the best language for "human in the loop" AI work, arguing that review is the bottleneck and Haskell's types favor the reviewer. The goals: Go-like iteration speed (GHC's own CI takes 6 hours; the target is 2), C#-grade debugging with live step-through and useful stack traces, and Rust-grade onboarding built on Unix "do one thing well" principles. It also wants the fastest security incident response of any language ecosystem, regular penetration tests, a solid crypto library stack, and the ability to compile 10-year-old code on the latest GHC without changes. Work will be funded through a community proposal process.
+
+*** Take
+The goals are right, and commenters spotted the contradiction on first read: Rust's onboarding is good because Cargo does everything, while Haskell's is bad partly because newcomers are told to install both Cabal and Stack. A plan that names Cargo as the benchmark and Unix minimalism as the method has to choose one. The 10-year compatibility goal is the most valuable item on the list and the one GHC's record of breaking changes makes hardest.
+
+*** Comments
+
+**** _bent
+:PROPERTIES:
+:COMMENT_ID: 50485513
+:END:
+Rust is so approachable because Cargo does not subscribe to "do one thing". In fact Cargo does a bunch of things. Which is very convenient for newcomers, because they only need to learn one thing instead of a bunch ... > Cabal and Stack: which one should I install? > We recommend installing both. One thing and one thing well
+
+**** ecshafer
+:PROPERTIES:
+:COMMENT_ID: 50487028
+:END:
+why isn't it more popular with AI? Haskell is very terse and token efficient, it has many expressive safety features. ... An ideal language for agentic AI I would think is extremely strict, where the AI can iterate over the tooling for correctness.
+
+**** jimbokun
+:PROPERTIES:
+:COMMENT_ID: 50486169
+:END:
+Is it even possible for Haskell to have compilation times similar to Go, given the language semantics?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Haskell 生态系统的技术愿景
+***** TLDR
+Haskell 基金会新成立的技术领导委员会发布了其愿景。它把 Haskell 定位为最适合"人在回路"AI 工作的语言，理由是代码审查是瓶颈，而 Haskell 的类型系统有利于审查者。目标包括：Go 级别的迭代速度（GHC 自身 CI 耗时 6 小时，目标是 2 小时）、C# 级别的调试能力（实时单步调试和有用的堆栈跟踪）、以及基于 Unix"只做一件事并做好"原则的 Rust 级别入门体验。它还希望拥有所有语言生态中最快的安全事件响应、定期渗透测试、可靠的密码学库栈，以及用最新 GHC 无需修改即可编译 10 年前的代码。工作将通过社区提案流程获得资助。
+***** Take
+目标是对的，评论者第一眼就发现了矛盾：Rust 入门体验好，是因为 Cargo 包办一切；而 Haskell 入门体验差，部分原因是新手被告知 Cabal 和 Stack 都要装。一个把 Cargo 当标杆、又把 Unix 极简主义当方法的计划必须二选一。10 年兼容性目标是清单上最有价值的一项，也是 GHC 破坏性变更的历史使之最难实现的一项。
+***** Comments
+- Rust 之所以易上手，正是因为 Cargo 不遵循"只做一件事"。事实上 Cargo 做了一大堆事。这对新手非常方便，因为他们只需学一个东西而不是一堆……> Cabal 和 Stack：我该装哪个？> 我们建议两个都装。只做一件事并做好
+- 为什么它在 AI 领域不更流行？Haskell 非常简洁、节省 token，有很多表达力强的安全特性。……我认为理想的智能体 AI 语言应该极其严格，让 AI 能借助工具链反复迭代直到正确。
+- 考虑到语言语义，Haskell 的编译时间真的可能做到和 Go 差不多吗？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Haskellエコシステムの技術ビジョン
+***** TLDR
+Haskell Foundationで新たに発足した技術リーダーシップ委員会がビジョンを公表した。レビューがボトルネックであり、Haskellの型はレビュアーに有利だとして、Haskellを「人間が介在する」AI作業に最適な言語と位置づける。目標は、Go並みの反復速度（GHC自身のCIは6時間、目標は2時間）、ライブのステップ実行や役立つスタックトレースを備えたC#並みのデバッグ、Unixの「一つのことをうまくやる」原則に基づくRust並みのオンボーディング。さらに言語エコシステムで最速のセキュリティインシデント対応、定期的なペネトレーションテスト、堅牢な暗号ライブラリ群、10年前のコードを最新GHCで無修正のままコンパイルできることも掲げる。作業はコミュニティ提案プロセスを通じて資金を得る。
+***** Take
+目標は正しく、コメント欄は一読で矛盾を見つけた。Rustのオンボーディングが良いのはCargoが何でもやるからで、Haskellのそれが悪い一因は初心者がCabalとStackの両方を入れるよう言われることだ。Cargoを基準に掲げ、Unix的ミニマリズムを手段に掲げる計画は、どちらかを選ぶ必要がある。10年互換の目標はリストで最も価値があり、GHCの破壊的変更の歴史を考えると最も難しい項目でもある。
+***** Comments
+- Rustが取っつきやすいのは、Cargoが「一つのことだけ」に従わないからだ。実際Cargoはたくさんのことをやる。初心者にはとても便利で、たくさんではなく一つだけ覚えればいい……> CabalとStack、どちらを入れるべき？> 両方入れることを推奨します。一つのことをうまく、ね
+- なぜAIの世界でもっと人気がないのか？Haskellは非常に簡潔でトークン効率が良く、表現力のある安全機能が多い。……エージェント型AIに理想的な言語は極めて厳格で、AIがツールを使って正しくなるまで反復できるものだと思う。
+- 言語のセマンティクスを考えると、HaskellでGo並みのコンパイル時間なんて本当に可能なのか？
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Haskell 생태계를 위한 기술 비전
+***** TLDR
+Haskell 재단에 새로 구성된 기술 리더십 위원회가 비전을 발표했다. 코드 리뷰가 병목이고 Haskell의 타입은 리뷰어에게 유리하다며, Haskell을 "사람이 개입하는" AI 작업에 가장 적합한 언어로 내세운다. 목표는 Go 수준의 반복 속도(GHC 자체 CI는 6시간, 목표는 2시간), 실시간 단계별 디버깅과 쓸모 있는 스택 트레이스를 갖춘 C# 수준의 디버깅, Unix의 "한 가지 일을 잘하라" 원칙에 기반한 Rust 수준의 온보딩이다. 또한 언어 생태계 중 가장 빠른 보안 사고 대응, 정기적인 침투 테스트, 견고한 암호 라이브러리 스택, 10년 된 코드를 최신 GHC에서 수정 없이 컴파일하는 것도 목표로 한다. 작업은 커뮤니티 제안 절차를 통해 자금을 지원받는다.
+***** Take
+목표는 옳고, 댓글은 처음 읽자마자 모순을 짚었다. Rust의 온보딩이 좋은 건 Cargo가 모든 걸 하기 때문이고, Haskell의 온보딩이 나쁜 이유 중 하나는 초보자에게 Cabal과 Stack을 둘 다 설치하라고 하기 때문이다. Cargo를 기준으로, Unix 미니멀리즘을 방법으로 내세우는 계획은 하나를 골라야 한다. 10년 호환성 목표는 목록에서 가장 가치 있는 항목이자, GHC의 하위 호환성 파괴 이력 때문에 가장 어려운 항목이다.
+***** Comments
+- Rust가 쉬운 건 Cargo가 "한 가지 일만"을 따르지 않기 때문이다. 사실 Cargo는 여러 가지 일을 한다. 초보자에겐 아주 편리한데, 여러 개가 아니라 하나만 배우면 되기 때문이다... > Cabal과 Stack: 뭘 설치해야 하나요? > 둘 다 설치하길 권합니다. 한 가지 일을 잘하라더니
+- 왜 AI 쪽에서 더 인기가 없을까? Haskell은 매우 간결하고 토큰 효율적이며 표현력 있는 안전 기능이 많다. ... 에이전트형 AI에 이상적인 언어는 극도로 엄격해서 AI가 도구를 통해 정확해질 때까지 반복할 수 있는 언어라고 생각한다.
+- 언어 의미론을 고려하면 Haskell이 Go와 비슷한 컴파일 시간을 갖는 게 가능하기는 한가?
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Una visión técnica para el ecosistema Haskell
+***** TLDR
+El recién formado Comité de Liderazgo Técnico de la Haskell Foundation publicó su visión. Presenta Haskell como el mejor lenguaje para el trabajo con IA con "humano en el bucle", argumentando que la revisión es el cuello de botella y que los tipos de Haskell favorecen al revisor. Los objetivos: velocidad de iteración similar a Go (la CI del propio GHC tarda 6 horas; la meta es 2), depuración al nivel de C# con ejecución paso a paso en vivo y trazas de pila útiles, y una incorporación al nivel de Rust basada en el principio Unix de "hacer una cosa y hacerla bien". También quiere la respuesta a incidentes de seguridad más rápida de cualquier ecosistema, pruebas de penetración periódicas, un conjunto sólido de bibliotecas criptográficas y poder compilar código de hace 10 años con el GHC más reciente sin cambios. El trabajo se financiará mediante propuestas de la comunidad.
+***** Take
+Los objetivos son correctos, y los comentaristas vieron la contradicción a la primera: la incorporación de Rust es buena porque Cargo lo hace todo, y la de Haskell es mala en parte porque a los novatos se les dice que instalen tanto Cabal como Stack. Un plan que pone a Cargo como referencia y el minimalismo Unix como método tiene que elegir. El objetivo de compatibilidad a 10 años es lo más valioso de la lista y lo que el historial de cambios incompatibles de GHC hace más difícil.
+***** Comments
+- Rust es tan accesible porque Cargo no se adhiere a "hacer una sola cosa". De hecho Cargo hace un montón de cosas. Lo cual es muy cómodo para los novatos, porque solo tienen que aprender una cosa en lugar de muchas ... > Cabal y Stack: ¿cuál instalo? > Recomendamos instalar ambos. Una cosa y hacerla bien
+- ¿por qué no es más popular con la IA? Haskell es muy conciso y eficiente en tokens, tiene muchas funciones de seguridad expresivas. ... Creo que el lenguaje ideal para IA agéntica sería extremadamente estricto, donde la IA pueda iterar con las herramientas hasta que el código sea correcto.
+- ¿Es siquiera posible que Haskell tenga tiempos de compilación parecidos a Go, dada la semántica del lenguaje?
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Eine technische Vision für das Haskell-Ökosystem
+***** TLDR
+Das neu gegründete Technical Leadership Committee der Haskell Foundation hat seine Vision veröffentlicht. Es stellt Haskell als beste Sprache für KI-Arbeit mit "Mensch in der Schleife" dar, weil Code-Review der Engpass sei und Haskells Typen den Reviewer begünstigen. Die Ziele: Iterationstempo wie bei Go (GHCs eigene CI braucht 6 Stunden, Ziel sind 2), Debugging auf C#-Niveau mit Live-Einzelschritt und brauchbaren Stacktraces, und Einstieg auf Rust-Niveau nach dem Unix-Prinzip "mach eine Sache gut". Dazu die schnellste Reaktion auf Sicherheitsvorfälle aller Sprachökosysteme, regelmäßige Penetrationstests, ein solider Kryptografie-Stack und die Möglichkeit, 10 Jahre alten Code ohne Änderungen mit dem neuesten GHC zu kompilieren. Finanziert wird über einen Community-Vorschlagsprozess.
+***** Take
+Die Ziele stimmen, und die Kommentatoren fanden den Widerspruch beim ersten Lesen: Rusts Einstieg ist gut, weil Cargo alles macht, und Haskells ist schlecht, auch weil Neulingen geraten wird, sowohl Cabal als auch Stack zu installieren. Ein Plan, der Cargo als Maßstab und Unix-Minimalismus als Methode nennt, muss sich entscheiden. Das Ziel der 10-Jahres-Kompatibilität ist der wertvollste Punkt der Liste und angesichts der Geschichte inkompatibler GHC-Änderungen der schwierigste.
+***** Comments
+- Rust ist so zugänglich, weil Cargo sich nicht an "mach nur eine Sache" hält. Cargo macht tatsächlich eine Menge Dinge. Das ist für Neulinge sehr bequem, weil sie nur eine Sache lernen müssen statt vieler ... > Cabal und Stack: Welches soll ich installieren? > Wir empfehlen beide. Eine Sache, und die gut
+- Warum ist es bei KI nicht beliebter? Haskell ist sehr knapp und tokeneffizient und hat viele ausdrucksstarke Sicherheitsfunktionen. ... Eine ideale Sprache für agentische KI wäre meiner Meinung nach extrem streng, sodass die KI mit den Werkzeugen iterieren kann, bis der Code korrekt ist.
+- Ist es angesichts der Sprachsemantik überhaupt möglich, dass Haskell Kompilierzeiten wie Go erreicht?
+** Show HN: Isometric SF – A pixel-art map of the SF Bay Area :show-hn:maps:generative-ai:pixel-art:
+:PROPERTIES:
+:ID:       50487228
+:URL:      https://isometricsf.com/
+:HN_URL:   https://news.ycombinator.com/item?id=50487228
+:POINTS:   147
+:COMMENTS: 51
+:BY:       juscha1
+:END:
+
+*** TLDR
+Justin Chavez turned 1,300 square miles of the Bay Area from Google Photorealistic 3D Tiles into a SimCity 3000-style isometric map, facing east to show the Peninsula's coastline. His write-up explains the pipeline: render tiles headlessly with three.js and Playwright, have Nano Banana 2 restyle a set of seed renders, train a Qwen Image Edit 2511 LoRA as a prototyping model, then use it to produce 4,380 examples for a FLUX.2 Klein 4B LoRA that paints a tile in about 1 second on an H100 versus 3.9 seconds for Qwen. Seams between independently painted tiles are blended with a 64 px fade he calls hemming, and Google's mismatched aerial imagery needed heavy color correction first. The final paint took about 119 H100-hours (172 including experiments), 3 TB of storage, and Claude Code to drive it.
+
+*** Take
+The write-up is the more useful product: a reproducible recipe for distilling a frontier image model into a 4B model, with evals for color and seams to pick the checkpoint, which applies well beyond maps. The thread's complaint is fair. This is an AI style filter over photogrammetry, with wavy lines and generation artifacts, and calling it pixel art invites comparison with work where every pixel was placed by hand.
+
+*** Comments
+
+**** dnlzro
+:PROPERTIES:
+:COMMENT_ID: 50487765
+:END:
+Yours is just as good as the best of them, so great job making it more efficient without loss of quality! But... I'm always disappointed when I zoom in and see that it's not actually pixel art, and it's full of the kinds of artifacts that are typical of any AI-generated imagery :(
+
+**** jeffbee
+:PROPERTIES:
+:COMMENT_ID: 50487941
+:END:
+I feel like instead of using an image-mode model, it would be better to use a code model that generates the scene. ... the image generators aren't respecting the rules of "pixel art". Straight lines and flat planes are straight and flat in pixel art. These images are wavy and irregular.
+
+**** packeted
+:PROPERTIES:
+:COMMENT_ID: 50488981
+:END:
+Found my house in East Bay and it looks accurate, cool.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Show HN：Isometric SF，旧金山湾区像素风地图
+***** TLDR
+Justin Chavez 将 Google 写实 3D 瓦片中 1,300 平方英里的湾区转换成《模拟城市 3000》风格的等距地图，朝东放置以展示半岛海岸线。他的文章解释了流程：用 three.js 和 Playwright 无头渲染瓦片；让 Nano Banana 2 对一批种子渲染图进行风格重绘；训练 Qwen Image Edit 2511 LoRA 作为原型模型；再用它生成 4,380 个样本训练 FLUX.2 Klein 4B LoRA，在 H100 上每块瓦片约 1 秒，而 Qwen 需 3.9 秒。独立绘制的瓦片之间的接缝用他称为"锁边"的 64 像素渐变融合，而 Google 不一致的航拍图需要先做大量色彩校正。最终绘制约用 119 个 H100 小时（含实验共 172 小时）、3 TB 存储，并由 Claude Code 驱动。
+***** Take
+文章才是更有用的产品：一份可复现的方法，把前沿图像模型蒸馏到 4B 模型，并用色彩和接缝评估来挑选检查点，用途远不止地图。评论区的批评也公平：这是覆盖在摄影测量数据上的 AI 风格滤镜，线条弯曲、有生成瑕疵，称之为像素画就会招来与逐像素手工作品的比较。
+***** Comments
+- 你的作品和其中最好的一样好，在不损失质量的情况下提高了效率，干得漂亮！但是……每次放大看到它其实不是真正的像素画，而且满是 AI 生成图像的典型瑕疵，我都很失望 :(
+- 我觉得与其用图像模型，不如用代码模型来生成场景。……图像生成器不遵守"像素画"的规则。像素画里的直线和平面是笔直平整的，而这些图像是弯曲不规则的。
+- 在东湾找到了我家，看起来很准确，酷。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Show HN：Isometric SF、サンフランシスコ・ベイエリアのピクセルアート地図
+***** TLDR
+Justin ChavezはGoogleのフォトリアリスティック3Dタイルからベイエリア1,300平方マイルを『シムシティ3000』風のアイソメトリック地図に変換し、半島の海岸線を見せるため東向きにした。解説記事のパイプラインは、three.jsとPlaywrightでタイルをヘッドレス描画し、Nano Banana 2でシード画像を画風変換、Qwen Image Edit 2511のLoRAをプロトタイプモデルとして学習、それで4,380例を生成してFLUX.2 Klein 4BのLoRAを学習するというもの。KleinはH100で1タイル約1秒、Qwenは3.9秒。個別に描いたタイル間の継ぎ目は彼が「ヘミング」と呼ぶ64pxのフェードでなじませ、Googleの不揃いな航空写真には事前に大量の色補正が必要だった。最終描画は約119 H100時間（実験込みで172時間）、3TBのストレージ、そしてClaude Codeで進めた。
+***** Take
+より役立つのは解説記事の方だ。最先端の画像モデルを4Bモデルに蒸留し、色と継ぎ目の評価でチェックポイントを選ぶ再現可能な手順で、地図以外にも使える。スレッドの不満ももっともで、これは写真測量データにかけたAIの画風フィルターであり、線は歪み生成アーティファクトもある。ピクセルアートと呼べば、1ピクセルずつ手で置いた作品と比べられることになる。
+***** Comments
+- 最高の作品群と同等の出来で、品質を落とさず効率化したのは見事！でも……ズームするたびに実際はピクセルアートではなく、AI生成画像にありがちなアーティファクトだらけなのを見てがっかりする :(
+- 画像モデルを使うより、シーンを生成するコードモデルを使う方が良いと思う。……画像生成器は「ピクセルアート」のルールを守っていない。ピクセルアートでは直線や平面はまっすぐ平らだ。これらの画像は波打って不規則だ。
+- イーストベイの自宅を見つけたけど正確に見える、いいね。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Show HN: Isometric SF, 샌프란시스코 베이 지역 픽셀 아트 지도
+***** TLDR
+Justin Chavez는 구글 포토리얼리스틱 3D 타일에서 베이 지역 1,300제곱마일을 심시티 3000 스타일의 아이소메트릭 지도로 바꿨고, 반도 해안선을 보여주기 위해 동쪽을 향하게 했다. 그의 글은 파이프라인을 설명한다. three.js와 Playwright로 타일을 헤드리스 렌더링하고, Nano Banana 2로 시드 렌더를 화풍 변환한 뒤, Qwen Image Edit 2511 LoRA를 프로토타입 모델로 학습시키고, 이를 이용해 4,380개 예제를 만들어 FLUX.2 Klein 4B LoRA를 학습시켰다. Klein은 H100에서 타일당 약 1초, Qwen은 3.9초다. 독립적으로 그린 타일 사이의 이음새는 그가 '헤밍'이라 부르는 64px 페이드로 섞고, 구글의 제각각인 항공 사진은 먼저 대대적인 색 보정이 필요했다. 최종 작업에는 약 119 H100 시간(실험 포함 172시간), 3TB 저장 공간, 그리고 이를 구동한 Claude Code가 들었다.
+***** Take
+더 유용한 결과물은 글 쪽이다. 최신 이미지 모델을 4B 모델로 증류하고 색상과 이음새 평가로 체크포인트를 고르는 재현 가능한 방법으로, 지도 외에도 쓸 수 있다. 스레드의 불만도 타당하다. 이건 사진측량 데이터에 씌운 AI 화풍 필터라 선이 구불거리고 생성 아티팩트가 있으며, 픽셀 아트라고 부르면 픽셀 하나하나를 손으로 찍은 작품과 비교당하게 된다.
+***** Comments
+- 그중 최고 작품들만큼 좋고, 품질 손실 없이 효율을 높였다니 훌륭하다! 하지만... 확대할 때마다 실제로는 픽셀 아트가 아니고 AI 생성 이미지 특유의 아티팩트로 가득한 걸 보면 늘 실망스럽다 :(
+- 이미지 모델보다 장면을 생성하는 코드 모델을 쓰는 게 나을 것 같다. ... 이미지 생성기는 "픽셀 아트"의 규칙을 지키지 않는다. 픽셀 아트에서 직선과 평면은 곧고 평평하다. 이 이미지들은 구불구불하고 불규칙하다.
+- 이스트베이에서 우리 집을 찾았는데 정확해 보인다, 멋지다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Show HN: Isometric SF, un mapa en pixel art del Área de la Bahía de San Francisco
+***** TLDR
+Justin Chavez convirtió 1.300 millas cuadradas del Área de la Bahía, a partir de los Photorealistic 3D Tiles de Google, en un mapa isométrico al estilo de SimCity 3000, orientado al este para mostrar la costa de la Península. Su artículo explica el proceso: renderizar teselas sin interfaz con three.js y Playwright, hacer que Nano Banana 2 reestilice un conjunto de renders semilla, entrenar un LoRA de Qwen Image Edit 2511 como modelo de prototipado y usarlo para producir 4.380 ejemplos para un LoRA de FLUX.2 Klein 4B, que pinta una tesela en un segundo en una H100 frente a 3,9 segundos de Qwen. Las costuras entre teselas pintadas por separado se mezclan con un fundido de 64 px que él llama dobladillo, y las imágenes aéreas dispares de Google necesitaron mucha corrección de color previa. El pintado final costó unas 119 horas de H100 (172 contando experimentos), 3 TB de almacenamiento y Claude Code para dirigirlo.
+***** Take
+El artículo es el producto más útil: una receta reproducible para destilar un modelo de imagen de frontera en uno de 4B, con evaluaciones de color y costuras para elegir el checkpoint, aplicable mucho más allá de los mapas. La queja del hilo es justa. Es un filtro de estilo con IA sobre fotogrametría, con líneas onduladas y artefactos de generación, y llamarlo pixel art invita a compararlo con obras donde cada píxel se colocó a mano.
+***** Comments
+- El tuyo es tan bueno como los mejores, ¡buen trabajo haciéndolo más eficiente sin perder calidad! Pero... siempre me decepciona hacer zoom y ver que no es pixel art de verdad, y que está lleno de los artefactos típicos de cualquier imagen generada por IA :(
+- Creo que en lugar de un modelo de imagen sería mejor usar un modelo de código que genere la escena. ... los generadores de imágenes no respetan las reglas del "pixel art". En pixel art las líneas rectas y los planos son rectos y planos. Estas imágenes son onduladas e irregulares.
+- Encontré mi casa en East Bay y parece exacta, genial.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Show HN: Isometric SF, eine Pixel-Art-Karte der San Francisco Bay Area
+***** TLDR
+Justin Chavez hat 1.300 Quadratmeilen der Bay Area aus Googles Photorealistic 3D Tiles in eine isometrische Karte im Stil von SimCity 3000 verwandelt, nach Osten ausgerichtet, um die Küste der Halbinsel zu zeigen. Sein Artikel erklärt die Pipeline: Kacheln headless mit three.js und Playwright rendern, Nano Banana 2 eine Auswahl an Ausgangsrendern umstilisieren lassen, ein Qwen-Image-Edit-2511-LoRA als Prototyp-Modell trainieren und damit 4.380 Beispiele für ein FLUX.2-Klein-4B-LoRA erzeugen, das eine Kachel auf einer H100 in etwa 1 Sekunde malt statt 3,9 Sekunden mit Qwen. Nähte zwischen unabhängig gemalten Kacheln werden mit einer 64-px-Überblendung geglättet, die er Säumen nennt, und Googles uneinheitliche Luftbilder brauchten vorher viel Farbkorrektur. Das finale Malen kostete etwa 119 H100-Stunden (172 inklusive Experimente), 3 TB Speicher und Claude Code als Steuerung.
+***** Take
+Der Artikel ist das nützlichere Produkt: ein reproduzierbares Rezept, um ein Frontier-Bildmodell in ein 4B-Modell zu destillieren, mit Evals für Farbe und Nähte zur Wahl des Checkpoints, weit über Karten hinaus anwendbar. Die Kritik im Thread ist berechtigt. Es ist ein KI-Stilfilter über Photogrammetrie mit welligen Linien und Generierungsartefakten, und wer es Pixel Art nennt, lädt zum Vergleich mit Arbeiten ein, bei denen jedes Pixel von Hand gesetzt wurde.
+***** Comments
+- Deins ist so gut wie die besten davon, toll, dass du es ohne Qualitätsverlust effizienter gemacht hast! Aber... ich bin jedes Mal enttäuscht, wenn ich hineinzoome und sehe, dass es keine echte Pixel Art ist und voller Artefakte, wie sie für KI-generierte Bilder typisch sind :(
+- Ich glaube, statt eines Bildmodells wäre ein Code-Modell besser, das die Szene erzeugt. ... die Bildgeneratoren halten sich nicht an die Regeln von "Pixel Art". Gerade Linien und ebene Flächen sind in Pixel Art gerade und eben. Diese Bilder sind wellig und unregelmäßig.
+- Habe mein Haus in der East Bay gefunden und es sieht korrekt aus, cool.
+** Ctrl+C, Ctrl+v, Ctrl+cve: Bypassing Android's Clipboard Read Security Measures :android:security:privacy:google:
+:PROPERTIES:
+:ID:       50487605
+:URL:      https://toninoble.com/post/ctrlc-ctrlv-ctrlcve
+:HN_URL:   https://news.ycombinator.com/item?id=50487605
+:POINTS:   67
+:COMMENTS: 30
+:BY:       dethmasque
+:END:
+
+*** TLDR
+Since Android 12 the system shows a toast whenever an app reads the clipboard. Toni Noble wrote a test app that reads the clipboard and immediately fires two of its own toasts, which display in place of the system warning, so the user never learns their copied data was read. The scenario: a coworker sends a password in Slack, you copy it, and the next app you open quietly takes it. Google Authenticator marks copied codes as sensitive so keyboards hide them, but other foreground apps can still read them. Android's security team rated the bug Moderate and then closed it as Won't Fix, so the author published the details and filed a feature request for per-app clipboard permissions, like the existing Location and Notification settings.
+
+*** Take
+Won't Fix holds up only if the toast was never a security control, yet Google's developer guidance presents it as a way to make clipboard theft harder to miss. A short-lived notice that any app can push off the screen does not protect passwords. The fix the author asked for, per-app clipboard permission, already exists in some form in iOS's paste prompt and GrapheneOS's secure paste.
+
+*** Comments
+
+**** ryandrake
+:PROPERTIES:
+:COMMENT_ID: 50488804
+:END:
+If we never had the clipboard (on any computer, not just Android) and it was suddenly invented today, it would never pass any major company's privacy or security review.
+
+**** streetfighter64
+:PROPERTIES:
+:COMMENT_ID: 50490838
+:END:
+I think allowing any program to read the clipboard at all is a huge mistake. The way it should work is that it's entirely safeguarded by the OS, and the only time an app can see the contents is when it receives them in a Ctrl+V event initiated by the user.
+
+**** chinhodado
+:PROPERTIES:
+:COMMENT_ID: 50488713
+:END:
+A long time ago I wrote a dictionary app for my own use, which would show word definition upon the word being copied into the clipboard ... Then around Android 10 they tightened security and decided background apps can no longer receive clipboard event. Which makes sense from a security standpoint, but it totally broke my dictionary app.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Ctrl+C、Ctrl+V、Ctrl+CVE：绕过 Android 剪贴板读取安全措施
+***** TLDR
+自 Android 12 起，每当应用读取剪贴板，系统都会显示一条 toast 提示。Toni Noble 写了一个测试应用，读取剪贴板后立即弹出两条自己的 toast，这些提示会取代系统警告显示，用户因此永远不会知道复制的数据被读取了。场景：同事在 Slack 发来密码，你复制后，打开的下一个应用悄悄拿走了它。Google Authenticator 会把复制的验证码标记为敏感，让键盘隐藏它们，但其他前台应用仍可读取。Android 安全团队将此漏洞评为中危，随后以"不予修复"关闭，于是作者公开了细节，并提交了按应用授权剪贴板访问的功能请求，类似现有的位置和通知权限。
+***** Take
+只有当 toast 从来不算安全控制时，"不予修复"才站得住，但 Google 自己的开发者指南把它描述为让剪贴板窃取更难被忽视的手段。一条任何应用都能挤掉的短暂提示保护不了密码。作者要求的修复，即按应用授权剪贴板，在 iOS 的粘贴提示和 GrapheneOS 的安全粘贴中已以某种形式存在。
+***** Comments
+- 如果我们从来没有剪贴板（任何电脑上，不只是 Android），而它今天突然被发明出来，它永远通不过任何大公司的隐私或安全审查。
+- 我认为允许任何程序读取剪贴板本身就是个大错。正确的方式应该是完全由操作系统保护，应用只有在收到用户发起的 Ctrl+V 事件时才能看到内容。
+- 很久以前我给自己写了个词典应用，单词一复制到剪贴板就显示释义……后来大约在 Android 10，他们收紧了安全策略，后台应用不能再接收剪贴板事件。从安全角度说这很合理，但彻底毁了我的词典应用。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Ctrl+C、Ctrl+V、Ctrl+CVE：Androidのクリップボード読み取り保護を回避する
+***** TLDR
+Android 12以降、アプリがクリップボードを読むたびにシステムがトースト通知を表示する。Toni Nobleは、クリップボードを読んだ直後に独自のトーストを2つ出すテストアプリを作った。これがシステムの警告の代わりに表示されるため、ユーザーはコピーしたデータが読まれたことに気づかない。想定シナリオは、同僚がSlackでパスワードを送り、それをコピーした後に開いたアプリが黙って取得するというもの。Google Authenticatorはコピーしたコードを機密扱いにしてキーボードのプレビューから隠すが、他のフォアグラウンドアプリは読める。Androidのセキュリティチームはこのバグを深刻度「中」と評価した後「修正しない」として閉じたため、作者は詳細を公開し、位置情報や通知と同様のアプリ単位のクリップボード権限を求める機能リクエストを出した。
+***** Take
+「修正しない」が成り立つのはトーストが最初からセキュリティ機能でなかった場合だけだが、Googleの開発者向けガイドはそれをクリップボード窃取を見逃しにくくする手段として説明している。どのアプリでも画面から押し出せる一瞬の通知ではパスワードは守れない。作者が求めたアプリ単位のクリップボード権限は、iOSのペースト確認やGrapheneOSのセキュアペーストとして何らかの形ですでに存在する。
+***** Comments
+- もしクリップボードが（Androidに限らずどのコンピューターにも）存在せず、今日突然発明されたとしたら、大企業のプライバシーやセキュリティのレビューを決して通らないだろう。
+- そもそもどのプログラムにもクリップボードの読み取りを許すのが大きな間違いだと思う。本来はOSが完全に保護し、アプリが内容を見られるのはユーザーが起こしたCtrl+Vイベントで受け取ったときだけであるべきだ。
+- 昔、自分用に辞書アプリを書いた。単語をクリップボードにコピーすると定義を表示するものだ……その後Android 10あたりでセキュリティが強化され、バックグラウンドアプリはクリップボードのイベントを受け取れなくなった。セキュリティ的には理解できるが、辞書アプリは完全に壊れた。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Ctrl+C, Ctrl+V, Ctrl+CVE: 안드로이드 클립보드 읽기 보안 조치 우회
+***** TLDR
+안드로이드 12부터는 앱이 클립보드를 읽을 때마다 시스템이 토스트 알림을 띄운다. Toni Noble은 클립보드를 읽은 직후 자체 토스트 두 개를 띄우는 테스트 앱을 만들었다. 이 토스트가 시스템 경고 대신 표시되므로 사용자는 복사한 데이터가 읽혔다는 사실을 알 수 없다. 시나리오는 이렇다. 동료가 Slack으로 비밀번호를 보내고, 당신이 복사한 뒤 연 다음 앱이 조용히 가져간다. Google Authenticator는 복사한 코드를 민감 정보로 표시해 키보드 미리보기에서 숨기지만, 다른 포그라운드 앱은 여전히 읽을 수 있다. 안드로이드 보안팀은 이 버그를 중간 심각도로 평가한 뒤 '수정 안 함'으로 종료했고, 이에 저자는 세부 내용을 공개하고 위치·알림 권한처럼 앱별 클립보드 권한을 요구하는 기능 요청을 올렸다.
+***** Take
+'수정 안 함'은 토스트가 애초에 보안 장치가 아니었을 때만 정당하다. 그런데 구글의 개발자 가이드는 이를 클립보드 탈취를 놓치기 어렵게 하는 수단으로 설명한다. 어떤 앱이든 화면에서 밀어낼 수 있는 짧은 알림으로는 비밀번호를 지킬 수 없다. 저자가 요구한 앱별 클립보드 권한은 iOS의 붙여넣기 확인과 GrapheneOS의 보안 붙여넣기로 이미 어떤 형태로든 존재한다.
+***** Comments
+- 만약 클립보드가 (안드로이드뿐 아니라 어떤 컴퓨터에도) 없었는데 오늘 갑자기 발명됐다면, 어떤 대기업의 개인정보·보안 검토도 통과하지 못했을 것이다.
+- 애초에 어떤 프로그램이든 클립보드를 읽게 허용하는 것 자체가 큰 실수라고 본다. 원래는 OS가 완전히 보호하고, 앱은 사용자가 시작한 Ctrl+V 이벤트로 받을 때만 내용을 볼 수 있어야 한다.
+- 오래전에 내가 쓰려고 사전 앱을 만들었는데, 단어를 클립보드에 복사하면 뜻을 보여주는 앱이었다... 그런데 안드로이드 10쯤 보안이 강화되면서 백그라운드 앱은 클립보드 이벤트를 받을 수 없게 됐다. 보안상으로는 이해가 되지만 내 사전 앱은 완전히 망가졌다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Ctrl+C, Ctrl+V, Ctrl+CVE: cómo saltarse las medidas de seguridad de lectura del portapapeles de Android
+***** TLDR
+Desde Android 12, el sistema muestra un aviso emergente (toast) cada vez que una app lee el portapapeles. Toni Noble escribió una app de prueba que lee el portapapeles e inmediatamente lanza dos toasts propios, que se muestran en lugar del aviso del sistema, de modo que el usuario nunca se entera de que sus datos copiados fueron leídos. El escenario: un compañero te manda una contraseña por Slack, la copias y la siguiente app que abres se la lleva en silencio. Google Authenticator marca los códigos copiados como sensibles para que los teclados los oculten, pero otras apps en primer plano pueden leerlos igualmente. El equipo de seguridad de Android calificó el fallo como Moderado y luego lo cerró como Won't Fix, así que el autor publicó los detalles y abrió una solicitud de permisos de portapapeles por app, como los de Ubicación y Notificaciones.
+***** Take
+El Won't Fix solo se sostiene si el toast nunca fue un control de seguridad, pero la guía para desarrolladores de Google lo presenta como una forma de hacer más difícil que el robo del portapapeles pase desapercibido. Un aviso breve que cualquier app puede tapar no protege contraseñas. La solución que pidió el autor, permisos de portapapeles por app, ya existe de alguna forma en el aviso de pegado de iOS y en el pegado seguro de GrapheneOS.
+***** Comments
+- Si nunca hubiéramos tenido portapapeles (en ningún ordenador, no solo Android) y se inventara hoy de repente, jamás pasaría la revisión de privacidad o seguridad de ninguna gran empresa.
+- Creo que permitir que cualquier programa lea el portapapeles es un error enorme. Debería funcionar de forma que el sistema operativo lo proteja por completo, y la única vez que una app pueda ver el contenido sea cuando lo reciba en un evento Ctrl+V iniciado por el usuario.
+- Hace mucho escribí una app de diccionario para mi propio uso, que mostraba la definición de una palabra al copiarla al portapapeles ... Luego, hacia Android 10, endurecieron la seguridad y decidieron que las apps en segundo plano ya no podían recibir eventos del portapapeles. Tiene sentido desde el punto de vista de la seguridad, pero rompió por completo mi app de diccionario.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Ctrl+C, Ctrl+V, Ctrl+CVE: Androids Schutz beim Lesen der Zwischenablage umgehen
+***** TLDR
+Seit Android 12 zeigt das System eine Toast-Meldung, wenn eine App die Zwischenablage liest. Toni Noble schrieb eine Test-App, die die Zwischenablage liest und sofort zwei eigene Toasts auslöst. Diese erscheinen anstelle der Systemwarnung, sodass der Nutzer nie erfährt, dass seine kopierten Daten gelesen wurden. Das Szenario: Ein Kollege schickt ein Passwort über Slack, man kopiert es, und die nächste geöffnete App greift es still ab. Google Authenticator markiert kopierte Codes als sensibel, damit Tastaturen sie ausblenden, doch andere Apps im Vordergrund können sie trotzdem lesen. Das Android-Sicherheitsteam stufte den Fehler als mittelschwer ein und schloss ihn dann als Won't Fix, also veröffentlichte die Autorin oder der Autor die Details und reichte einen Feature-Wunsch nach App-spezifischen Berechtigungen für die Zwischenablage ein, ähnlich wie bei Standort und Benachrichtigungen.
+***** Take
+Won't Fix ist nur haltbar, wenn der Toast nie eine Sicherheitsmaßnahme war, doch Googles Entwicklerleitfaden stellt ihn als Mittel dar, um Diebstahl aus der Zwischenablage auffälliger zu machen. Ein kurzer Hinweis, den jede App vom Bildschirm verdrängen kann, schützt keine Passwörter. Die geforderte Lösung, eine Berechtigung pro App, gibt es in irgendeiner Form schon bei der Einfügen-Abfrage von iOS und beim sicheren Einfügen von GrapheneOS.
+***** Comments
+- Hätten wir nie eine Zwischenablage gehabt (auf keinem Computer, nicht nur Android) und würde sie heute plötzlich erfunden, würde sie die Datenschutz- oder Sicherheitsprüfung keines großen Unternehmens bestehen.
+- Ich halte es für einen riesigen Fehler, überhaupt irgendeinem Programm das Lesen der Zwischenablage zu erlauben. Eigentlich sollte das Betriebssystem sie komplett schützen, und eine App sollte den Inhalt nur sehen, wenn sie ihn über ein vom Nutzer ausgelöstes Strg+V-Ereignis erhält.
+- Vor langer Zeit schrieb ich für mich eine Wörterbuch-App, die die Definition eines Wortes anzeigte, sobald es in die Zwischenablage kopiert wurde ... Dann, etwa mit Android 10, wurde die Sicherheit verschärft und Hintergrund-Apps konnten keine Zwischenablage-Ereignisse mehr empfangen. Aus Sicherheitssicht sinnvoll, aber es hat meine Wörterbuch-App komplett kaputt gemacht.
