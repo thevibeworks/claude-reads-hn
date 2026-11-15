@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-11-15 16:00 UTC
+#+DATE: 2026-11-15T16:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+A blog post says AI code should be open source, Apple's OLED MacBook flickers at 240Hz, Lutnick's chip rules meet Cantor's deals, and Starship's catch thread passes 1,000 comments
+
+* Highlights
+- AI code and open source: HN says uncopyrightable code makes the license moot
+- MacBook Pro PROLED: Notebookcheck measures 240Hz PWM, owners report dizziness
+- Lutnick: NYT ties chip-rental rules to Cantor Fitzgerald's data center deals
+- Turbo Pascal 3: a 39,731-byte IDE versus a 44,016-byte touch
+- Starship Flight 15 (revisit): the thread moves on to crew safety and payload
+
+* Stories
+
+** All AI-generated code should be Open Source :ai:opensource:copyright:licensing:
+:PROPERTIES:
+:ID:       50507303
+:URL:      https://jakub.jankiewicz.org/blog/ai-code-open-source/
+:HN_URL:   https://news.ycombinator.com/item?id=50507303
+:POINTS:   463
+:COMMENTS: 284
+:BY:       jcubic
+:END:
+
+*** TLDR
+Jakub Jankiewicz, author of jQuery Terminal and LIPS Scheme, makes two arguments. First, models were trained on scraped open source code and on Stack Overflow content under Creative Commons licenses that require attribution, so closing their output amounts to license laundering. Second, purely AI-generated code has no human author and should not be copyrightable, citing the monkey selfie dispute, the US Copyright Office, and Wikimedia Commons, which tags AI images as public domain. Because the UK and some other countries do protect computer-generated works, he asks developers to release such code under an open source license or CC0, at least where humans did little beyond writing prompts.
+
+*** Take
+The two arguments work against each other. If unreviewed AI output has no copyright, nobody holds the rights needed to license it, so the CC0 request only matters in places like the UK. The training argument is stronger, and blagie's report of a company having an LLM rewrite their AGPL code to get around the license shows where the harm actually happens. A request for voluntary CC0 does nothing about that.
+
+*** Comments
+
+**** blagie
+:PROPERTIES:
+:COMMENT_ID: 50507729
+:END:
+One company first pirated my AGPL code... After many months of fighting, they had an LLM clone the system. The LLM clone feels: a) Buggy and bad compared to my code b) Still, like it's basically my creative content.
+
+**** ubercow13
+:PROPERTIES:
+:COMMENT_ID: 50507523
+:END:
+If AI generated code is not copyrightable, releasing it under an open source license is meaningless.
+
+**** sqreept
+:PROPERTIES:
+:COMMENT_ID: 50507707
+:END:
+This is like saying: All humans who learned from open source code should only produce open source code.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+所有 AI 生成的代码都应该开源
+***** TLDR
+jQuery Terminal 和 LIPS Scheme 的作者 Jakub Jankiewicz 提出两个论点。第一，模型是用抓取来的开源代码和 Stack Overflow 内容训练的，后者采用要求署名的知识共享许可，因此把模型输出闭源等于“许可证洗白”。第二，纯 AI 生成的代码没有人类作者，不应受版权保护，他引用了猴子自拍案、美国版权局的立场，以及把 AI 图片标为公有领域的维基共享资源。由于英国等国家确实保护计算机生成的作品，他呼吁开发者把这类代码以开源许可或 CC0 发布，至少在人类只写了提示词的情况下应如此。
+***** Take
+这两个论点互相矛盾。如果未经审查的 AI 输出没有版权，就没有人拥有授权所需的权利，CC0 的请求只在英国这类地方才有意义。训练数据的论点更有力：blagie 说有公司让 LLM 重写他的 AGPL 代码来绕开许可证，这才是真正造成损害的地方。自愿发布 CC0 的呼吁解决不了这个问题。
+***** Comments
+- 有家公司先盗用了我的 AGPL 代码……经过几个月的交涉，他们让 LLM 克隆了整个系统。这个克隆版感觉：a) 比我的代码更多 bug、更差 b) 但基本上仍然是我的创作内容。
+- 如果 AI 生成的代码不受版权保护，用开源许可证发布它就没有意义。
+- 这就像在说：所有从开源代码中学习过的人都只能写开源代码。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+AI生成コードはすべてオープンソースにすべきだ
+***** TLDR
+jQuery TerminalとLIPS Schemeの作者Jakub Jankiewiczは2つの主張をする。第一に、モデルはスクレイピングされたオープンソースコードと、帰属表示を求めるクリエイティブ・コモンズのもとにあるStack Overflowの内容で訓練されたので、その出力をクローズドにするのはライセンスロンダリングだ。第二に、純粋にAIが生成したコードには人間の著作者がいないので著作権の対象にすべきでない。根拠としてサル自撮り訴訟、米国著作権局、AI画像をパブリックドメインとするWikimedia Commonsを挙げる。英国などはコンピュータ生成作品を保護するため、少なくとも人間がプロンプトを書いただけのコードはオープンソースライセンスかCC0で公開するよう求めている。
+***** Take
+2つの主張は互いに打ち消し合う。レビューされていないAI出力に著作権がないなら、ライセンスを付与する権利を持つ人もいない。CC0の要請が意味を持つのは英国のような国だけだ。訓練データの主張のほうが強い。blagieは、ある企業がLLMにAGPLコードを書き直させてライセンスを回避したと報告しており、実害はそこで起きている。自発的なCC0の呼びかけではこれは止められない。
+***** Comments
+- ある会社がまず私のAGPLコードを無断使用した……何カ月も争った末、彼らはLLMでシステムをクローンした。そのクローンは a) 私のコードよりバグが多く出来が悪い b) それでも基本的に私の創作物に感じる。
+- AI生成コードに著作権がないなら、オープンソースライセンスで公開しても意味がない。
+- それは「オープンソースのコードから学んだ人間は全員オープンソースのコードしか書いてはいけない」と言うようなものだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+모든 AI 생성 코드는 오픈소스여야 한다
+***** TLDR
+jQuery Terminal과 LIPS Scheme의 저자 Jakub Jankiewicz는 두 가지를 주장한다. 첫째, 모델은 무단 수집된 오픈소스 코드와 저작자 표시를 요구하는 크리에이티브 커먼즈 라이선스의 Stack Overflow 콘텐츠로 학습했으므로 그 출력을 폐쇄하는 것은 라이선스 세탁이다. 둘째, 순수하게 AI가 만든 코드는 인간 저작자가 없으니 저작권이 없어야 한다. 원숭이 셀카 분쟁, 미국 저작권청, AI 이미지를 퍼블릭 도메인으로 표시하는 위키미디어 공용을 근거로 든다. 영국 등은 컴퓨터 생성 저작물을 보호하므로, 적어도 사람이 프롬프트만 쓴 코드는 오픈소스 라이선스나 CC0로 공개하라고 요청한다.
+***** Take
+두 주장은 서로 충돌한다. 검토하지 않은 AI 출력에 저작권이 없다면 라이선스를 줄 권리를 가진 사람도 없으므로, CC0 요청은 영국 같은 곳에서만 의미가 있다. 학습 데이터 주장이 더 강하다. blagie는 한 회사가 LLM으로 자신의 AGPL 코드를 다시 써서 라이선스를 피했다고 전했고, 실제 피해는 거기서 생긴다. 자발적 CC0 호소로는 이를 막을 수 없다.
+***** Comments
+- 한 회사가 먼저 내 AGPL 코드를 무단으로 썼다... 몇 달을 싸운 끝에 그들은 LLM으로 시스템을 복제했다. 그 복제본은 a) 내 코드보다 버그가 많고 형편없으며 b) 그래도 기본적으로 내 창작물처럼 느껴진다.
+- AI 생성 코드에 저작권이 없다면 오픈소스 라이선스로 공개하는 것은 의미가 없다.
+- 이건 오픈소스 코드로 배운 모든 사람은 오픈소스 코드만 써야 한다고 말하는 것과 같다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Todo el código generado por IA debería ser de código abierto
+***** TLDR
+Jakub Jankiewicz, autor de jQuery Terminal y LIPS Scheme, plantea dos argumentos. Primero, los modelos se entrenaron con código abierto extraído de la web y con contenido de Stack Overflow bajo licencias Creative Commons que exigen atribución, así que cerrar su resultado equivale a blanquear licencias. Segundo, el código generado solo por IA no tiene autor humano y no debería tener copyright; cita el caso del selfie del mono, la Oficina de Copyright de EE. UU. y Wikimedia Commons, que marca las imágenes de IA como dominio público. Como el Reino Unido y otros países sí protegen las obras generadas por ordenador, pide publicar ese código con licencia abierta o CC0, al menos cuando las personas solo escribieron prompts.
+***** Take
+Los dos argumentos se contradicen. Si la salida de IA sin revisar no tiene copyright, nadie tiene los derechos necesarios para licenciarla, y la petición de CC0 solo importa en sitios como el Reino Unido. El argumento del entrenamiento es más fuerte: blagie cuenta que una empresa usó un LLM para reescribir su código AGPL y esquivar la licencia, y ahí está el daño real. Pedir CC0 voluntario no resuelve eso.
+***** Comments
+- Una empresa primero pirateó mi código AGPL... Tras muchos meses de pelea, hicieron que un LLM clonara el sistema. El clon se siente: a) con más errores y peor que mi código b) aun así, básicamente mi contenido creativo.
+- Si el código generado por IA no tiene copyright, publicarlo con una licencia de código abierto no tiene sentido.
+- Es como decir: todas las personas que aprendieron con código abierto solo deberían producir código abierto.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Aller KI-generierte Code sollte Open Source sein
+***** TLDR
+Jakub Jankiewicz, Autor von jQuery Terminal und LIPS Scheme, bringt zwei Argumente. Erstens wurden die Modelle mit abgegrastem Open-Source-Code und mit Stack-Overflow-Inhalten unter Creative-Commons-Lizenzen trainiert, die Namensnennung verlangen; deren Ausgabe proprietär zu machen sei Lizenzwäsche. Zweitens habe rein KI-generierter Code keinen menschlichen Urheber und solle nicht urheberrechtlich geschützt sein. Er verweist auf den Affen-Selfie-Streit, das US Copyright Office und Wikimedia Commons, das KI-Bilder als gemeinfrei markiert. Da Großbritannien und andere Länder computergenerierte Werke schützen, sollen Entwickler solchen Code unter einer Open-Source-Lizenz oder CC0 veröffentlichen, zumindest wenn Menschen nur Prompts geschrieben haben.
+***** Take
+Die beiden Argumente widersprechen sich. Wenn ungeprüfte KI-Ausgabe kein Urheberrecht hat, besitzt niemand die Rechte, um sie zu lizenzieren, und die CC0-Bitte zählt nur in Ländern wie Großbritannien. Das Trainingsargument ist stärker: blagie berichtet, dass eine Firma seinen AGPL-Code per LLM neu schreiben ließ, um die Lizenz zu umgehen. Dort entsteht der eigentliche Schaden, und ein Aufruf zu freiwilligem CC0 ändert daran nichts.
+***** Comments
+- Eine Firma hat zuerst meinen AGPL-Code raubkopiert... Nach monatelangem Streit ließ sie das System von einem LLM klonen. Der Klon wirkt: a) fehlerhaft und schlecht im Vergleich zu meinem Code b) trotzdem im Grunde wie mein kreativer Inhalt.
+- Wenn KI-generierter Code nicht urheberrechtlich geschützt ist, ist eine Veröffentlichung unter Open-Source-Lizenz bedeutungslos.
+- Das ist, als würde man sagen: Alle Menschen, die von Open-Source-Code gelernt haben, dürfen nur Open-Source-Code schreiben.
+** The MacBook Pro's OLED PWM Problem: When a 'Better' Display Becomes Worse to Use :apple:hardware:displays:accessibility:
+:PROPERTIES:
+:ID:       50506719
+:URL:      https://macanorak.com/the-macbook-pros-oled-pwm-problem-when-a-better-display-becomes-worse-to-use/
+:HN_URL:   https://news.ycombinator.com/item?id=50506719
+:POINTS:   223
+:COMMENTS: 126
+:BY:       MacAnorak
+:END:
+
+*** TLDR
+Apple's new MacBook Pro offers a tandem OLED "PROLED XDR" display with touch input alongside the Mini-LED model. Owners on MacRumors, Reddit and AppleInsider report headaches, eye fatigue, dizziness and nausea, and some have returned the machine, including people who used OLED phones without trouble. Notebookcheck measured 240Hz PWM flicker at 99% brightness and below, combined with DC dimming, against 14,880Hz on the M4 Pro Mini-LED model. The author notes that PWM sensitivity varies from person to person and does not explain every case of eye strain. They ask Apple to offer a comfort option such as the iPhone's Display Pulse Smoothing setting.
+
+*** Take
+Apple sells this as a pro display for people who stare at it all day, and 240Hz is well below the low-risk range in IEEE 1789, so this is a spec problem, not a few unusually sensitive users. legitronics thinks the two OLED layers may be driven out of phase, for an effective 480 to 960Hz. If so, a firmware change could help, which is a better outcome than the current advice to return the laptop. Anyone sensitive to flicker should try the screen at low brightness before the return window closes.
+
+*** Comments
+
+**** amluto
+:PROPERTIES:
+:COMMENT_ID: 50507253
+:END:
+There's actual industry guidance: IEEE 1789. And 240Hz, at any respectable depth of modulation, does not meet the low-risk limit... I am wondering whether this is actually just an amazing firmware goof.
+
+**** legitronics
+:PROPERTIES:
+:COMMENT_ID: 50507268
+:END:
+I think what's happening with the tandem oled is they both pwm at 480hz and 180 degrees out of phase giving effective 960hz when both are in use.
+
+**** intrasight
+:PROPERTIES:
+:COMMENT_ID: 50507088
+:END:
+So that tiny fraction of users would be well served with some other display and can either return their MacBook or use an external monitor.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+MacBook Pro 的 OLED PWM 问题：当“更好”的屏幕变得更难用
+***** TLDR
+苹果新款 MacBook Pro 在 Mini-LED 型号之外新增了支持触控的串联 OLED“PROLED XDR”屏幕。MacRumors、Reddit 和 AppleInsider 上的用户反映出现头痛、眼疲劳、头晕和恶心，部分人已退货，其中包括用 OLED 手机多年没问题的人。Notebookcheck 测得亮度在 99% 及以下时存在 240Hz 的 PWM 频闪，并结合了 DC 调光，而 M4 Pro Mini-LED 型号为 14,880Hz。作者指出 PWM 敏感度因人而异，也不能解释所有眼疲劳。他呼吁苹果提供类似 iPhone“显示屏脉冲平滑”的舒适选项。
+***** Take
+苹果把这块屏幕卖给整天盯着它的专业用户，而 240Hz 远低于 IEEE 1789 的低风险范围，所以这是规格问题，不是少数特别敏感的用户的问题。legitronics 认为两层 OLED 可能是反相驱动的，等效频率为 480 到 960Hz。如果是这样，固件更新也许能改善，这比现在“退货”的建议要好。对频闪敏感的人应在退货期结束前用低亮度测试这块屏幕。
+***** Comments
+- 业界是有明确指导的：IEEE 1789。240Hz 在任何像样的调制深度下都达不到低风险限值……我怀疑这其实是个惊人的固件失误。
+- 我认为串联 OLED 的两层都以 480Hz 做 PWM，相位差 180 度，两层同时工作时等效为 960Hz。
+- 那一小部分用户换个显示器就好，要么退掉 MacBook，要么用外接显示器。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+MacBook ProのOLED PWM問題：「より良い」ディスプレイが使いにくくなるとき
+***** TLDR
+Appleの新しいMacBook Proは、Mini-LEDモデルに加えてタッチ対応のタンデムOLED「PROLED XDR」ディスプレイを提供する。MacRumors、Reddit、AppleInsiderでは頭痛、目の疲れ、めまい、吐き気の報告があり、OLEDスマホを問題なく使ってきた人も含め返品した人もいる。Notebookcheckは輝度99%以下で240HzのPWMフリッカーをDC調光と併用で測定した。M4 ProのMini-LEDモデルは14,880Hzだった。著者はPWMへの感受性は人によって違い、すべての眼精疲労を説明するわけではないと述べる。iPhoneの「ディスプレイのパルス平滑化」のような快適性オプションをAppleに求めている。
+***** Take
+Appleはこれを一日中画面を見るプロ向けに売っており、240HzはIEEE 1789の低リスク範囲を大きく下回る。つまり一部の敏感なユーザーの問題ではなく仕様の問題だ。legitronicsは2層のOLEDが逆位相で駆動され、実効480〜960Hzになっている可能性を指摘する。それならファームウェアで改善できるかもしれず、今の「返品しろ」という助言よりましだ。フリッカーに敏感な人は返品期限内に低輝度で試すべきだ。
+***** Comments
+- 業界の指針はちゃんとある：IEEE 1789。240Hzはまともな変調深度なら低リスク限界を満たさない……これは実は驚くべきファームウェアのミスではないかと思う。
+- タンデムOLEDでは両方の層が480Hzで180度位相をずらしてPWMしていて、両方使うと実効960Hzになっているのだと思う。
+- そのごく一部のユーザーは別のディスプレイを使えばいい。MacBookを返品するか外部モニターを使えばいい。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+MacBook Pro의 OLED PWM 문제: '더 나은' 디스플레이가 쓰기 더 힘들어질 때
+***** TLDR
+애플의 새 MacBook Pro는 Mini-LED 모델과 함께 터치를 지원하는 탠덤 OLED 'PROLED XDR' 디스플레이를 제공한다. MacRumors, Reddit, AppleInsider에서는 두통, 눈 피로, 어지러움, 메스꺼움을 호소하는 사용자들이 있고, OLED 폰을 문제없이 써 온 사람을 포함해 일부는 반품했다. Notebookcheck는 밝기 99% 이하에서 DC 디밍과 함께 240Hz PWM 깜빡임을 측정했으며, M4 Pro Mini-LED 모델은 14,880Hz였다. 저자는 PWM 민감도가 사람마다 다르고 모든 눈 피로를 설명하지는 못한다고 말한다. 그러면서 iPhone의 '디스플레이 펄스 스무딩' 같은 편의 옵션을 애플에 요구한다.
+***** Take
+애플은 이 화면을 하루 종일 보는 전문가용으로 팔고 있고, 240Hz는 IEEE 1789의 저위험 범위보다 한참 낮다. 그러니 일부 민감한 사용자의 문제가 아니라 사양 문제다. legitronics는 두 OLED 층이 반대 위상으로 구동돼 실효 480~960Hz일 수 있다고 본다. 그렇다면 펌웨어로 개선될 수 있고, 지금의 '반품하라'는 조언보다 낫다. 깜빡임에 민감한 사람은 반품 기간 안에 낮은 밝기로 시험해 봐야 한다.
+***** Comments
+- 실제 업계 지침이 있다: IEEE 1789. 240Hz는 웬만한 변조 깊이에서 저위험 한계를 충족하지 못한다... 사실 놀라운 펌웨어 실수가 아닐까 싶다.
+- 탠덤 OLED의 두 층이 각각 480Hz로 180도 위상차를 두고 PWM해서 둘 다 쓸 때 실효 960Hz가 되는 것 같다.
+- 그 소수의 사용자는 다른 디스플레이를 쓰면 된다. MacBook을 반품하거나 외장 모니터를 쓰면 된다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+El problema de PWM de la pantalla OLED del MacBook Pro: cuando una pantalla 'mejor' se vuelve peor de usar
+***** TLDR
+El nuevo MacBook Pro de Apple ofrece, junto al modelo Mini-LED, una pantalla OLED tándem "PROLED XDR" con entrada táctil. Usuarios en MacRumors, Reddit y AppleInsider cuentan dolores de cabeza, fatiga visual, mareos y náuseas, y algunos lo han devuelto, incluso gente que usaba móviles OLED sin problemas. Notebookcheck midió parpadeo PWM de 240Hz al 99% de brillo o menos, combinado con atenuación DC, frente a 14.880Hz en el modelo M4 Pro Mini-LED. El autor señala que la sensibilidad al PWM varía según la persona y no explica toda la fatiga visual. Pide a Apple una opción de confort como el ajuste de suavizado de pulsos de pantalla del iPhone.
+***** Take
+Apple vende esta pantalla a profesionales que la miran todo el día, y 240Hz está muy por debajo del rango de bajo riesgo de IEEE 1789, así que es un problema de especificación y no de unos pocos usuarios muy sensibles. legitronics cree que las dos capas OLED podrían ir desfasadas, con un efectivo de 480 a 960Hz. Si es así, una actualización de firmware podría ayudar, algo mejor que el consejo actual de devolver el portátil. Quien sea sensible al parpadeo debería probarla con poco brillo antes de que venza el plazo de devolución.
+***** Comments
+- Hay una guía real del sector: IEEE 1789. Y 240Hz, con cualquier profundidad de modulación razonable, no cumple el límite de bajo riesgo... Me pregunto si en realidad es un fallo de firmware asombroso.
+- Creo que en el OLED tándem ambas capas hacen PWM a 480Hz desfasadas 180 grados, lo que da 960Hz efectivos cuando se usan las dos.
+- Esa pequeña fracción de usuarios estaría bien servida con otra pantalla: pueden devolver el MacBook o usar un monitor externo.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Das OLED-PWM-Problem des MacBook Pro: Wenn ein „besseres“ Display schlechter zu benutzen ist
+***** TLDR
+Apples neues MacBook Pro bietet neben dem Mini-LED-Modell ein Tandem-OLED-Display „PROLED XDR“ mit Touch-Eingabe. Besitzer auf MacRumors, Reddit und AppleInsider berichten von Kopfschmerzen, Augenermüdung, Schwindel und Übelkeit, einige haben das Gerät zurückgegeben, darunter Leute, die OLED-Handys problemlos nutzen. Notebookcheck maß 240Hz-PWM-Flimmern bei 99 % Helligkeit und darunter, kombiniert mit DC-Dimming, gegenüber 14.880Hz beim M4-Pro-Mini-LED-Modell. Der Autor betont, dass die PWM-Empfindlichkeit von Person zu Person verschieden ist und nicht jede Augenbelastung erklärt. Er fordert von Apple eine Komfortoption wie die iPhone-Einstellung „Display-Pulsglättung“.
+***** Take
+Apple verkauft dieses Display an Profis, die den ganzen Tag darauf schauen, und 240Hz liegt weit unter dem Niedrigrisiko-Bereich von IEEE 1789. Das ist also ein Spezifikationsproblem und nicht eines von ein paar besonders empfindlichen Nutzern. legitronics vermutet, dass die beiden OLED-Schichten gegenphasig angesteuert werden, effektiv mit 480 bis 960Hz. Dann könnte ein Firmware-Update helfen, was besser wäre als der aktuelle Rat, das Gerät zurückzugeben. Wer flimmerempfindlich ist, sollte das Display vor Ablauf der Rückgabefrist bei niedriger Helligkeit testen.
+***** Comments
+- Es gibt eine echte Branchenrichtlinie: IEEE 1789. Und 240Hz erfüllt bei jeder ernsthaften Modulationstiefe nicht den Niedrigrisiko-Grenzwert... Ich frage mich, ob das eigentlich nur ein erstaunlicher Firmware-Fehler ist.
+- Ich glaube, beim Tandem-OLED arbeiten beide Schichten mit 480Hz PWM um 180 Grad phasenverschoben, was effektiv 960Hz ergibt, wenn beide aktiv sind.
+- Dieser winzige Teil der Nutzer wäre mit einem anderen Display gut bedient und kann das MacBook zurückgeben oder einen externen Monitor nutzen.
+** Lutnick Pushed to Weaken Chip Rules That Overlap with His Family Business :politics:chips:exportcontrols:nvidia:
+:PROPERTIES:
+:ID:       50506180
+:URL:      https://www.nytimes.com/2026/11/15/us/politics/lutnick-pushed-to-weaken-chip-rules-that-overlap-with-his-family-business.html
+:HN_URL:   https://news.ycombinator.com/item?id=50506180
+:POINTS:   232
+:COMMENTS: 97
+:BY:       JumpCrisscross
+:END:
+
+*** TLDR
+［from title + comments, NYT article paywalled and unreachable］ The New York Times reports that Commerce Secretary Howard Lutnick pushed to loosen export rules on AI chips while Cantor Fitzgerald, the firm now run by his sons, helped finance data centers that depend on those rules. Excerpts quoted in the thread say the US ban on selling chips directly to China has led to many data centers in Southeast Asia, including Malaysia, serving Chinese customers, and that Lutnick now decides whether to close that route. The paper also writes that these deals are a small part of Cantor's business, that other banks have similar partnerships, and that there is no evidence Cantor's investments influenced his decisions.
+
+*** Take
+By the article's own account, the story is a conflict of interest with no proven quid pro quo, and sokoloff is right that the headline is stronger than the body. The underlying policy question is still real. Renting Blackwell time in Malaysia gives Chinese customers what the export ban denies them, and the official who can close that route has family members who earn fees financing it. Lutnick should recuse himself from that decision regardless of whether he was influenced.
+
+*** Comments
+
+**** sokoloff
+:PROPERTIES:
+:COMMENT_ID: 50506720
+:END:
+Buried well below the fold and below two ads... 'there is no evidence that Cantor's investments influenced Mr. Lutnick's deliberations.' Overlap? These interests are barely even tangent.
+
+**** mrala
+:PROPERTIES:
+:COMMENT_ID: 50506908
+:END:
+You also chose to cherry-pick a tiny section. Here's the next paragraph: 'It is now up to Mr. Lutnick to decide whether to tighten the rules in ways that would cut off this avenue.'
+
+**** dwoldrich
+:PROPERTIES:
+:COMMENT_ID: 50508446
+:END:
+The US doesn't allow export of chips to China, but does allow it to rent time on them running in its hemisphere. The Biden admin restricted renting advanced GPU time and the Trump admin relaxed it.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+卢特尼克推动放宽与其家族企业利益重叠的芯片规则
+***** TLDR
+［根据标题和评论整理，《纽约时报》原文有付费墙，无法访问］ 《纽约时报》报道，商务部长霍华德·卢特尼克推动放宽 AI 芯片出口规则，而由他儿子们执掌的 Cantor Fitzgerald 同时在为依赖这些规则的数据中心安排融资。评论中引用的段落称，美国禁止直接向中国出售芯片，导致东南亚（包括马来西亚）出现大量面向中国客户的数据中心，而是否堵上这条路现在由卢特尼克决定。报道同时写道，这些交易只占 Cantor 业务的一小部分，其他银行也有类似合作，且没有证据表明 Cantor 的投资影响了他的决策。
+***** Take
+按文章自己的说法，这是利益冲突，但没有被证实的利益交换，sokoloff 说标题比正文更重，这点没错。但背后的政策问题是真实的：在马来西亚租用 Blackwell 算力，让中国客户拿到了出口禁令不让他们拿到的东西，而有权堵上这条路的官员，其家人正靠为它融资赚取费用。无论他是否受到影响，卢特尼克都应回避这项决定。
+***** Comments
+- 埋在折叠线以下、两个广告下面的一句：“没有证据表明 Cantor 的投资影响了卢特尼克的决策。”重叠？这些利益几乎沾不上边。
+- 你也是在断章取义。下一段是：“现在要由卢特尼克决定是否收紧规则，堵住这条途径。”
+- 美国不允许向中国出口芯片，但允许中国租用在本半球运行的芯片算力。拜登政府限制了先进 GPU 算力租用，特朗普政府放宽了它。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+ラトニック氏、家族の事業と重なる半導体規則の緩和を推進
+***** TLDR
+［タイトルとコメントから作成。NYTの記事はペイウォールで閲覧不可］ ニューヨーク・タイムズによると、ハワード・ラトニック商務長官はAIチップの輸出規則の緩和を推し進め、その間に息子たちが率いるCantor Fitzgeraldは、それらの規則に依存するデータセンターの資金調達を手がけていた。スレッドで引用された部分によれば、米国が中国へのチップの直接販売を禁じた結果、マレーシアを含む東南アジアに中国の顧客向けデータセンターが急増し、その抜け道を塞ぐかどうかは今やラトニック氏が決める立場にある。記事は、これらの取引はCantorの事業のごく一部で、他の銀行にも同様の提携があり、Cantorの投資が彼の判断に影響した証拠はないとも書いている。
+***** Take
+記事自身の説明では、これは利益相反であって見返りの証拠はなく、見出しが本文より強いというsokoloffの指摘は正しい。それでも政策上の問題は現実だ。マレーシアでBlackwellの計算時間を借りれば、中国の顧客は輸出禁止で得られないものを手に入れられる。その抜け道を塞げる当局者の家族が、それへの融資で手数料を得ている。影響があったかどうかに関係なく、ラトニック氏はこの決定から身を引くべきだ。
+***** Comments
+- 折り返しのずっと下、広告2つの下に埋もれている：「Cantorの投資がラトニック氏の判断に影響した証拠はない」。重なり？これらの利害はほとんど接点すらない。
+- あなたも都合のいい一部だけを抜き出している。次の段落はこうだ：「この抜け道を断つ形で規則を厳しくするかどうかは、今やラトニック氏次第だ」。
+- 米国は中国へのチップ輸出を認めていないが、西半球で稼働するチップの時間貸しは認めている。バイデン政権は先端GPUの時間貸しを制限し、トランプ政権はそれを緩めた。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+러트닉, 가족 사업과 겹치는 반도체 규정 완화 추진
+***** TLDR
+［제목과 댓글 기반, NYT 기사는 유료 장벽으로 접근 불가］ 뉴욕타임스에 따르면 하워드 러트닉 상무장관은 AI 칩 수출 규정 완화를 추진했고, 그의 아들들이 운영하는 Cantor Fitzgerald는 그 규정에 기대는 데이터센터의 자금 조달을 도왔다. 스레드에 인용된 대목에 따르면 미국이 중국에 칩을 직접 팔지 못하게 하자 말레이시아를 포함한 동남아에 중국 고객용 데이터센터가 크게 늘었고, 이 경로를 막을지는 이제 러트닉이 결정한다. 기사는 이런 거래가 Cantor 사업의 작은 부분이고, 다른 은행에도 비슷한 제휴가 있으며, Cantor의 투자가 그의 판단에 영향을 줬다는 증거는 없다고도 쓴다.
+***** Take
+기사 자체의 설명대로라면 이건 대가성이 입증되지 않은 이해충돌이고, 제목이 본문보다 세다는 sokoloff의 지적은 맞다. 그래도 정책 문제는 실재한다. 말레이시아에서 Blackwell 시간을 빌리면 중국 고객은 수출 금지로 막힌 것을 얻는다. 그 경로를 막을 수 있는 관료의 가족이 그 자금 조달로 수수료를 번다. 영향을 받았든 아니든 러트닉은 이 결정에서 빠져야 한다.
+***** Comments
+- 접히는 선 한참 아래, 광고 두 개 밑에 묻혀 있다: 'Cantor의 투자가 러트닉의 판단에 영향을 줬다는 증거는 없다.' 겹친다고? 이 이해관계는 거의 스치지도 않는다.
+- 당신도 일부만 골라 인용했다. 다음 문단은 이렇다: '이 경로를 끊는 방향으로 규정을 강화할지는 이제 러트닉에게 달렸다.'
+- 미국은 중국에 칩 수출을 허용하지 않지만, 서반구에서 돌아가는 칩의 시간 임대는 허용한다. 바이든 정부는 첨단 GPU 시간 임대를 제한했고 트럼프 정부는 이를 완화했다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Lutnick presionó para suavizar reglas sobre chips que se solapan con el negocio de su familia
+***** TLDR
+［a partir del título y los comentarios, el artículo del NYT está tras un muro de pago y no fue accesible］ The New York Times informa de que el secretario de Comercio, Howard Lutnick, impulsó flexibilizar las reglas de exportación de chips de IA mientras Cantor Fitzgerald, la firma que ahora dirigen sus hijos, ayudaba a financiar centros de datos que dependen de esas reglas. Fragmentos citados en el hilo dicen que la prohibición de vender chips directamente a China ha llenado el sudeste asiático, Malasia incluida, de centros de datos para clientes chinos, y que ahora Lutnick decide si cierra esa vía. El diario también escribe que esos negocios son una parte pequeña de Cantor, que otros bancos tienen acuerdos similares y que no hay pruebas de que las inversiones de Cantor influyeran en sus decisiones.
+***** Take
+Según el propio artículo, se trata de un conflicto de intereses sin contrapartida demostrada, y sokoloff tiene razón en que el titular es más fuerte que el texto. El problema de fondo sigue siendo real: alquilar tiempo de Blackwell en Malasia da a clientes chinos lo que la prohibición de exportar les niega, y el cargo que puede cerrar esa vía tiene familiares que cobran comisiones por financiarla. Lutnick debería apartarse de esa decisión, haya influido o no.
+***** Comments
+- Enterrado muy abajo y debajo de dos anuncios: 'no hay pruebas de que las inversiones de Cantor influyeran en las deliberaciones del Sr. Lutnick'. ¿Solapamiento? Estos intereses apenas se rozan.
+- Tú también elegiste un fragmento a conveniencia. Este es el párrafo siguiente: 'Ahora le corresponde al Sr. Lutnick decidir si endurece las reglas de forma que se corte esta vía'.
+- EE. UU. no permite exportar chips a China, pero sí permite alquilarle tiempo en chips que funcionan en su hemisferio. El gobierno de Biden restringió el alquiler de GPU avanzadas y el de Trump lo relajó.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Lutnick drängte auf schwächere Chip-Regeln, die sich mit seinem Familienunternehmen überschneiden
+***** TLDR
+［aus Titel und Kommentaren, NYT-Artikel hinter Paywall und nicht erreichbar］ Laut New York Times setzte sich Handelsminister Howard Lutnick für lockerere Exportregeln bei KI-Chips ein, während Cantor Fitzgerald, die Firma, die jetzt seine Söhne leiten, Rechenzentren mitfinanzierte, die von diesen Regeln abhängen. Im Thread zitierte Passagen sagen, das US-Verbot direkter Chipverkäufe an China habe zu vielen Rechenzentren in Südostasien, darunter Malaysia, für chinesische Kunden geführt, und nun entscheide Lutnick, ob dieser Weg geschlossen wird. Die Zeitung schreibt auch, diese Geschäfte seien ein kleiner Teil von Cantors Geschäft, andere Banken hätten ähnliche Partnerschaften und es gebe keine Belege, dass Cantors Investitionen seine Entscheidungen beeinflusst hätten.
+***** Take
+Nach der eigenen Darstellung des Artikels geht es um einen Interessenkonflikt ohne nachgewiesene Gegenleistung, und sokoloff hat recht, dass die Überschrift stärker ist als der Text. Das politische Problem bleibt real: Wer Blackwell-Rechenzeit in Malaysia mietet, bekommt als chinesischer Kunde, was das Exportverbot verwehrt, und der Amtsträger, der diesen Weg schließen kann, hat Familienangehörige, die an seiner Finanzierung verdienen. Lutnick sollte sich aus dieser Entscheidung heraushalten, ob er beeinflusst wurde oder nicht.
+***** Comments
+- Weit unten und unter zwei Anzeigen versteckt: „Es gibt keine Belege, dass Cantors Investitionen Herrn Lutnicks Überlegungen beeinflusst haben.“ Überschneidung? Diese Interessen berühren sich kaum.
+- Du hast dir auch nur einen kleinen Abschnitt herausgepickt. Der nächste Absatz lautet: „Nun liegt es an Herrn Lutnick zu entscheiden, ob er die Regeln so verschärft, dass dieser Weg abgeschnitten wird.“
+- Die USA erlauben keinen Chipexport nach China, erlauben aber, Rechenzeit auf Chips in ihrer Hemisphäre zu mieten. Die Biden-Regierung beschränkte das Mieten fortgeschrittener GPU-Zeit, die Trump-Regierung lockerte es.
+** Things That Turbo Pascal Is Smaller Than (2011) :retrocomputing:pascal:bloat:compilers:
+:PROPERTIES:
+:ID:       50506894
+:URL:      https://prog21.dadgum.com/116.html
+:HN_URL:   https://news.ycombinator.com/item?id=50506894
+:POINTS:   94
+:COMMENTS: 37
+:BY:       ksec
+:END:
+
+*** TLDR
+A 2011 post by James Hague. Turbo Pascal 3.02 for MS-DOS (1986), a full Pascal compiler with commercial extensions and an integrated editor, was 39,731 bytes and built projects much faster than Microsoft's compilers. As of October 2011 it was smaller than minified jQuery 1.6 (90,518 bytes), the yahoo.com home page (219,583), the white iPhone 4S image on apple.com (190,157), zlib.h in the OS X Lion SDK (80,504), the OS X Lion touch binary (44,016), a vim reference card PDF (47,508), Erlang's compiled parser (286,324), and the Wikipedia page for C++ (214,251).
+
+*** Take
+Half the list compares a program to images and documentation, which says little. The touch comparison is the useful one: a utility that updates a timestamp is bigger than a compiler plus IDE. Most of that is fixed per-binary overhead such as startup code, argument parsing and error handling, which is jll29's point about a shell that builds core commands into a single binary. The binary sizes in this list have only grown since 2011.
+
+*** Comments
+
+**** jll29
+:PROPERTIES:
+:COMMENT_ID: 50508542
+:END:
+The fact that the touch command's binary should exceed Turbo Pascal is insane... There's no reason (other than laziness) why that should take more than 2k.
+
+**** throwaway2037
+:PROPERTIES:
+:COMMENT_ID: 50508385
+:END:
+zlib.h in the Mac OS X Lion SDK (80,504 bytes). What a stupid comparison. zlib.h is probably 99% comments.
+
+**** jbellis
+:PROPERTIES:
+:COMMENT_ID: 50507510
+:END:
+Anders Heljsberg GOAT. Turbo Pascal, Delphi, C#, TypeScript, just a phenomenal career marked with better taste than any other language designer I can think of.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+比 Turbo Pascal 还大的东西（2011）
+***** TLDR
+James Hague 2011 年的文章。1986 年发布的 MS-DOS 版 Turbo Pascal 3.02 是一个带商用扩展和集成编辑器的完整 Pascal 编译器，只有 39,731 字节，构建项目比微软的编译器快得多。到 2011 年 10 月，它比以下东西都小：压缩版 jQuery 1.6（90,518 字节）、yahoo.com 首页（219,583）、apple.com 上的白色 iPhone 4S 图片（190,157）、OS X Lion SDK 中的 zlib.h（80,504）、OS X Lion 的 touch 程序（44,016）、一份 vim 速查卡 PDF（47,508）、Erlang 编译后的解析器（286,324），以及维基百科的 C++ 页面（214,251）。
+***** Take
+清单里一半是拿程序和图片、文档比，说明不了什么。touch 的对比才有用：一个只更新时间戳的工具比编译器加 IDE 还大。其中大部分是每个二进制都要带的固定开销，比如启动代码、参数解析和错误处理，这正是 jll29 说的把核心命令编进同一个 shell 二进制的意义。清单里这些二进制的体积自 2011 年以来只增不减。
+***** Comments
+- touch 命令的二进制居然比 Turbo Pascal 还大，这太离谱了……除了懒，没有任何理由让它超过 2k。
+- OS X Lion SDK 里的 zlib.h（80,504 字节）。多蠢的比较。zlib.h 大概 99% 都是注释。
+- Anders Hejlsberg 是史上最强。Turbo Pascal、Delphi、C#、TypeScript，职业生涯非凡，品味胜过我能想到的任何语言设计者。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Turbo Pascalより大きいもの（2011）
+***** TLDR
+James Hagueによる2011年の記事。1986年のMS-DOS版Turbo Pascal 3.02は、商用向け拡張と統合エディタを備えた完全なPascalコンパイラで、39,731バイトしかなく、Microsoftのコンパイラよりはるかに速くビルドできた。2011年10月時点で、圧縮版jQuery 1.6（90,518バイト）、yahoo.comのトップページ（219,583）、apple.comの白いiPhone 4S画像（190,157）、OS X Lion SDKのzlib.h（80,504）、OS X Lionのtouchバイナリ（44,016）、vimのリファレンスカードPDF（47,508）、Erlangのコンパイル済みパーサ（286,324）、WikipediaのC++のページ（214,251）より小さかった。
+***** Take
+リストの半分はプログラムを画像や文書と比べていて、ほとんど意味がない。役に立つのはtouchとの比較だ。タイムスタンプを更新するだけのユーティリティが、コンパイラとIDEより大きい。その大半はスタートアップコード、引数解析、エラー処理といったバイナリごとの固定オーバーヘッドで、jll29が言う「主要コマンドを1つのシェルバイナリに組み込む」構成の利点はそこにある。このリストのバイナリサイズは2011年以降も増え続けている。
+***** Comments
+- touchコマンドのバイナリがTurbo Pascalより大きいなんて正気じゃない……怠慢以外に2kを超える理由はない。
+- OS X Lion SDKのzlib.h（80,504バイト）。ばかげた比較だ。zlib.hはたぶん99%がコメントだ。
+- Anders Hejlsbergは史上最高。Turbo Pascal、Delphi、C#、TypeScript。思いつく他のどの言語設計者よりもセンスの良い、驚異的なキャリアだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Turbo Pascal보다 큰 것들 (2011)
+***** TLDR
+James Hague의 2011년 글. 1986년 MS-DOS용 Turbo Pascal 3.02는 상업용 확장과 통합 편집기를 갖춘 완전한 Pascal 컴파일러였는데 크기는 39,731바이트였고, 마이크로소프트 컴파일러보다 훨씬 빨리 빌드했다. 2011년 10월 기준으로 압축된 jQuery 1.6(90,518바이트), yahoo.com 첫 페이지(219,583), apple.com의 흰색 iPhone 4S 이미지(190,157), OS X Lion SDK의 zlib.h(80,504), OS X Lion의 touch 바이너리(44,016), vim 참조 카드 PDF(47,508), Erlang의 컴파일된 파서(286,324), 위키백과 C++ 문서(214,251)보다 작았다.
+***** Take
+목록의 절반은 프로그램을 이미지나 문서와 비교해서 별 의미가 없다. 쓸모 있는 건 touch 비교다. 타임스탬프만 바꾸는 유틸리티가 컴파일러와 IDE보다 크다. 대부분은 시작 코드, 인자 파싱, 오류 처리 같은 바이너리마다 붙는 고정 오버헤드이고, jll29가 말한 핵심 명령을 하나의 셸 바이너리에 넣는 방식의 장점이 바로 그것이다. 이 목록의 바이너리 크기는 2011년 이후 계속 커지기만 했다.
+***** Comments
+- touch 명령의 바이너리가 Turbo Pascal보다 크다는 건 말도 안 된다... 게으름 말고는 2k를 넘을 이유가 없다.
+- OS X Lion SDK의 zlib.h(80,504바이트). 어리석은 비교다. zlib.h는 아마 99%가 주석일 것이다.
+- Anders Hejlsberg가 역대 최고다. Turbo Pascal, Delphi, C#, TypeScript. 내가 아는 어떤 언어 설계자보다 감각이 뛰어난 놀라운 경력이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Cosas más grandes que Turbo Pascal (2011)
+***** TLDR
+Un artículo de James Hague de 2011. Turbo Pascal 3.02 para MS-DOS (1986), un compilador Pascal completo con extensiones comerciales y editor integrado, ocupaba 39.731 bytes y compilaba proyectos mucho más rápido que los compiladores de Microsoft. En octubre de 2011 era más pequeño que jQuery 1.6 minificado (90.518 bytes), la portada de yahoo.com (219.583), la imagen del iPhone 4S blanco en apple.com (190.157), zlib.h en el SDK de OS X Lion (80.504), el binario de touch de OS X Lion (44.016), una tarjeta de referencia de vim en PDF (47.508), el analizador compilado de Erlang (286.324) y la página de Wikipedia sobre C++ (214.251).
+***** Take
+La mitad de la lista compara un programa con imágenes y documentación, lo que dice poco. La comparación útil es la de touch: una utilidad que actualiza una marca de tiempo es más grande que un compilador con IDE. Casi todo es sobrecarga fija por binario, como código de arranque, análisis de argumentos y manejo de errores, que es el argumento de jll29 sobre un shell que integra los comandos básicos en un solo binario. Los tamaños de esta lista no han hecho más que crecer desde 2011.
+***** Comments
+- Que el binario de touch supere a Turbo Pascal es una locura... No hay razón (aparte de la pereza) para que ocupe más de 2k.
+- zlib.h en el SDK de Mac OS X Lion (80.504 bytes). Qué comparación más tonta. zlib.h es probablemente un 99% comentarios.
+- Anders Hejlsberg es el mejor de la historia. Turbo Pascal, Delphi, C#, TypeScript: una carrera fenomenal con mejor gusto que cualquier otro diseñador de lenguajes que conozca.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Dinge, die größer sind als Turbo Pascal (2011)
+***** TLDR
+Ein Beitrag von James Hague aus dem Jahr 2011. Turbo Pascal 3.02 für MS-DOS (1986), ein vollständiger Pascal-Compiler mit kommerziellen Erweiterungen und integriertem Editor, war 39.731 Bytes groß und baute Projekte viel schneller als Microsofts Compiler. Im Oktober 2011 war er kleiner als minifiziertes jQuery 1.6 (90.518 Bytes), die Startseite von yahoo.com (219.583), das Bild des weißen iPhone 4S auf apple.com (190.157), zlib.h im OS X Lion SDK (80.504), das touch-Binary von OS X Lion (44.016), eine vim-Kurzreferenz als PDF (47.508), Erlangs kompilierter Parser (286.324) und die Wikipedia-Seite zu C++ (214.251).
+***** Take
+Die Hälfte der Liste vergleicht ein Programm mit Bildern und Dokumentation, was wenig aussagt. Der nützliche Vergleich ist touch: Ein Werkzeug, das einen Zeitstempel aktualisiert, ist größer als Compiler plus IDE. Der Großteil ist fester Overhead pro Binary wie Startcode, Argument-Parsing und Fehlerbehandlung. Darauf zielt jll29 mit einer Shell, die die Kernbefehle in ein einziges Binary einbaut. Die Binary-Größen in dieser Liste sind seit 2011 nur gewachsen.
+***** Comments
+- Dass das touch-Binary größer als Turbo Pascal ist, ist irre... Es gibt keinen Grund (außer Faulheit), warum es mehr als 2k brauchen sollte.
+- zlib.h im Mac OS X Lion SDK (80.504 Bytes). Was für ein dummer Vergleich. zlib.h besteht wahrscheinlich zu 99 % aus Kommentaren.
+- Anders Hejlsberg ist der Größte. Turbo Pascal, Delphi, C#, TypeScript: eine phänomenale Karriere mit besserem Geschmack als jeder andere Sprachdesigner, der mir einfällt.
+** SpaceX catches the Starship to end Flight 15 :space:spacex:starship:revisit:
+:PROPERTIES:
+:ID:       50500963
+:URL:      https://www.spacex.com/launches/starship-flight-15
+:HN_URL:   https://news.ycombinator.com/item?id=50500963
+:POINTS:   1497
+:COMMENTS: 1029
+:BY:       ls612
+:END:
+
+*** TLDR
+Revisit: covered on November 15 at 01:00 with 427 comments, now at 1,029. SpaceX's mission page: Starship reached orbit, deployed 26 Starlink V3 satellites, coasted for more than 20 hours, then flew back to Starbase and was caught by the tower arms 22.5 hours after liftoff, the first catch of the ship. The Super Heavy booster cut its boostback burn short on low fuel mass, aborted to an offshore landing in the Gulf, and its flight termination system fired after the landing burn. The newer comments are less about the catch and more about what it does and does not prove: crew safety, payload capacity and the Space Shuttle comparison.
+
+*** Take
+The second half of the thread is more useful than the first. Zigurd, a longtime critic, accepts the milestone and lists what remains: reflying the ship, catching both stages, and either a crew escape system or reliability no rocket has shown. izend's numbers give the practical case: Flight 14 carried 44,330 kg of Starlink, about twice the Shuttle's maximum payload. That supports a cheap cargo rocket now. A crewed vehicle is a separate claim that this flight did not test.
+
+*** Comments
+
+**** Zigurd
+:PROPERTIES:
+:COMMENT_ID: 50507176
+:END:
+I've been a frequent critic of starship... It marks the possibility of a new era... to fly manned missions, starship either needs to be redesigned to accommodate an escape system, or it needs to show a level of reliability and safety never previously achieved by a rocket.
+
+**** sneak
+:PROPERTIES:
+:COMMENT_ID: 50507504
+:END:
+I bet there are lots of people willing to fly on Starship even if it had Falcon 9's level of reliability even without an escape system.
+
+**** izend
+:PROPERTIES:
+:COMMENT_ID: 50507571
+:END:
+Starship was not designed for manned missions... Flight 14 launched 26 Starlink v3 sats for a total payload of 44,330 kg. The Space Shuttle's max payload capacity was only 22,780kg.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+SpaceX 回收捕获星舰，结束第 15 次飞行
+***** TLDR
+重访：11 月 15 日 01:00 期报道时有 427 条评论，现在为 1,029 条。SpaceX 任务页面：星舰入轨，部署了 26 颗 Starlink V3 卫星，滑行 20 多小时后飞回星港，在起飞 22.5 小时后被塔臂捕获，这是飞船的首次捕获。超重型助推器因燃料质量不足提前结束返航点火，自动中止并改为在墨西哥湾海上降落，着陆点火后飞行终止系统被触发。新评论讨论的不再是捕获本身，而是它证明了什么、没证明什么：载人安全、运载能力，以及与航天飞机的比较。
+***** Take
+这个帖子的后半部分比前半部分更有价值。长期批评星舰的 Zigurd 承认了这一里程碑，并列出了剩下的工作：飞船复飞、两级都被捕获，以及要么加装乘员逃逸系统，要么达到任何火箭都没达到过的可靠性。izend 的数字说明了实际用途：第 14 次飞行运送了 44,330 公斤的 Starlink，约为航天飞机最大载荷的两倍。这支持它现在作为廉价货运火箭的定位。载人飞船是另一回事，这次飞行并没有测试它。
+***** Comments
+- 我一直是星舰的批评者……这标志着一个新时代的可能性……要执行载人任务，星舰要么重新设计以加装逃逸系统，要么展现出任何火箭都未曾达到的可靠性和安全性。
+- 我敢打赌，即使星舰只有猎鹰 9 号的可靠性、没有逃逸系统，也会有很多人愿意乘坐。
+- 星舰本来就不是为载人任务设计的……第 14 次飞行发射了 26 颗 Starlink v3 卫星，总载荷 44,330 公斤。航天飞机的最大载荷只有 22,780 公斤。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+SpaceX、スターシップを捕獲しフライト15を終える
+***** TLDR
+再訪：11月15日01:00号で427コメントの時点で取り上げ、現在は1,029。SpaceXのミッションページによると、スターシップは軌道に到達し、Starlink V3衛星26基を放出、20時間以上周回した後スターベースへ戻り、打ち上げから22.5時間後にタワーのアームに捕獲された。船体の捕獲は初めて。Super Heavyブースターは燃料質量不足でブーストバック噴射を早期に終え、メキシコ湾の洋上着水に自動で切り替え、着陸噴射の後に飛行終了システムが作動した。新しいコメントは捕獲そのものより、それが何を証明し何を証明していないかに移っている。有人飛行の安全性、ペイロード、スペースシャトルとの比較だ。
+***** Take
+スレッドの後半は前半より役に立つ。長年の批判者Zigurdはこの節目を認めたうえで、残る課題を挙げる。船体の再飛行、両段の捕獲、そして脱出システムか、どのロケットも達成していない信頼性のどちらか。izendの数字は実用面を示す。フライト14は44,330kgのStarlinkを運び、シャトルの最大ペイロードの約2倍だった。これは今の時点で安価な貨物ロケットとしての価値を裏付ける。有人機は別の主張で、今回の飛行では試されていない。
+***** Comments
+- 私はスターシップをよく批判してきた……これは新時代の可能性を示すものだ……有人ミッションを飛ばすには、脱出システムを載せる再設計をするか、どのロケットも達成したことのない信頼性と安全性を示す必要がある。
+- Falcon 9並みの信頼性で脱出システムがなくても、スターシップに乗りたい人はたくさんいるはずだ。
+- スターシップは有人ミッション向けに設計されていない……フライト14はStarlink v3衛星26基、総ペイロード44,330kgを打ち上げた。スペースシャトルの最大ペイロードは22,780kgにすぎない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+SpaceX, 스타십을 붙잡아 15차 비행 마무리
+***** TLDR
+재방문: 11월 15일 01:00호에서 댓글 427개일 때 다뤘고 지금은 1,029개다. SpaceX 미션 페이지에 따르면 스타십은 궤도에 올라 Starlink V3 위성 26기를 배치하고 20시간 넘게 비행한 뒤 스타베이스로 돌아와 이륙 22.5시간 만에 타워 팔에 붙잡혔다. 우주선을 붙잡은 것은 처음이다. Super Heavy 부스터는 연료 질량 부족으로 귀환 점화를 일찍 끝냈고, 자동 중단 후 멕시코만 해상 착륙으로 전환했으며, 착륙 점화 뒤 비행 종료 시스템이 작동했다. 새 댓글은 포획 자체보다 그것이 무엇을 증명하고 무엇을 증명하지 못했는지에 관한 것이다. 유인 안전, 탑재량, 우주왕복선과의 비교다.
+***** Take
+스레드의 후반부가 전반부보다 유용하다. 오랜 비판자 Zigurd는 이번 성과를 인정하면서 남은 과제를 꼽는다. 우주선 재비행, 두 단 모두 포획, 그리고 탈출 시스템을 넣거나 어떤 로켓도 보여 주지 못한 신뢰성을 입증하는 것. izend의 숫자는 실용적 근거를 준다. 14차 비행은 Starlink 44,330kg을 실었고, 이는 우주왕복선 최대 탑재량의 약 두 배다. 이는 지금 당장 저렴한 화물 로켓으로서의 가치를 뒷받침한다. 유인 우주선은 별개의 주장이고, 이번 비행은 그것을 시험하지 않았다.
+***** Comments
+- 나는 스타십을 자주 비판해 왔다... 이건 새 시대의 가능성을 보여 준다... 유인 임무를 하려면 스타십은 탈출 시스템을 넣도록 재설계하거나, 어떤 로켓도 이루지 못한 수준의 신뢰성과 안전성을 보여야 한다.
+- Falcon 9 수준의 신뢰성에 탈출 시스템이 없어도 스타십을 타려는 사람은 많을 거라고 장담한다.
+- 스타십은 유인 임무용으로 설계되지 않았다... 14차 비행은 Starlink v3 위성 26기, 총 탑재량 44,330kg을 발사했다. 우주왕복선의 최대 탑재량은 22,780kg에 불과했다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+SpaceX atrapa la Starship para cerrar el vuelo 15
+***** TLDR
+Revisita: se cubrió el 15 de noviembre a las 01:00 con 427 comentarios, ahora tiene 1.029. Según la página de la misión de SpaceX, Starship llegó a órbita, desplegó 26 satélites Starlink V3, pasó más de 20 horas en el espacio y volvió a Starbase, donde los brazos de la torre la atraparon 22,5 horas después del despegue, la primera captura de la nave. El propulsor Super Heavy acortó su encendido de regreso por poca masa de combustible, abortó hacia un aterrizaje en el golfo y su sistema de terminación de vuelo se activó tras el encendido de aterrizaje. Los comentarios nuevos tratan menos de la captura y más de lo que demuestra y no demuestra: seguridad para tripulación, capacidad de carga y la comparación con el transbordador espacial.
+***** Take
+La segunda mitad del hilo es más útil que la primera. Zigurd, crítico desde hace tiempo, acepta el hito y enumera lo que falta: volver a volar la nave, atrapar ambas etapas y, o bien un sistema de escape para la tripulación, o bien una fiabilidad que ningún cohete ha demostrado. Las cifras de izend dan el argumento práctico: el vuelo 14 llevó 44.330 kg de Starlink, unas dos veces la carga máxima del transbordador. Eso respalda un cohete de carga barato hoy. Un vehículo tripulado es otra afirmación, y este vuelo no la puso a prueba.
+***** Comments
+- He criticado Starship a menudo... Marca la posibilidad de una nueva era... para volar misiones tripuladas, Starship tiene que rediseñarse para incluir un sistema de escape o demostrar un nivel de fiabilidad y seguridad que ningún cohete ha logrado antes.
+- Apuesto a que mucha gente estaría dispuesta a volar en Starship aunque tuviera la fiabilidad del Falcon 9 y ningún sistema de escape.
+- Starship no se diseñó para misiones tripuladas... El vuelo 14 lanzó 26 satélites Starlink v3 con una carga total de 44.330 kg. La carga máxima del transbordador espacial era de solo 22.780 kg.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+SpaceX fängt das Starship zum Abschluss von Flug 15
+***** TLDR
+Revisit: am 15. November um 01:00 mit 427 Kommentaren behandelt, jetzt 1.029. Laut SpaceX-Missionsseite erreichte Starship den Orbit, setzte 26 Starlink-V3-Satelliten aus, flog über 20 Stunden um die Erde, kehrte dann nach Starbase zurück und wurde 22,5 Stunden nach dem Start von den Turmarmen gefangen, der erste Fang des Schiffs. Der Super-Heavy-Booster beendete seine Rückflugzündung wegen zu wenig Treibstoff vorzeitig, brach automatisch zu einer Landung im Golf ab, und nach der Landezündung löste das Flugabbruchsystem aus. Die neueren Kommentare handeln weniger vom Fang als davon, was er beweist und was nicht: Sicherheit für Besatzungen, Nutzlast und der Vergleich mit dem Space Shuttle.
+***** Take
+Die zweite Hälfte des Threads ist nützlicher als die erste. Zigurd, ein langjähriger Kritiker, erkennt den Meilenstein an und zählt auf, was fehlt: das Schiff erneut fliegen, beide Stufen fangen und entweder ein Rettungssystem für die Besatzung oder eine Zuverlässigkeit, die noch keine Rakete gezeigt hat. izends Zahlen liefern das praktische Argument: Flug 14 brachte 44.330 kg Starlink ins All, etwa doppelt so viel wie die maximale Nutzlast des Shuttles. Das spricht schon jetzt für eine günstige Frachtrakete. Ein bemanntes Fahrzeug ist eine andere Behauptung, die dieser Flug nicht getestet hat.
+***** Comments
+- Ich habe Starship oft kritisiert... Es markiert die Möglichkeit einer neuen Ära... Für bemannte Missionen muss Starship entweder für ein Rettungssystem umkonstruiert werden oder eine Zuverlässigkeit und Sicherheit zeigen, die noch keine Rakete erreicht hat.
+- Ich wette, viele Leute würden mit Starship fliegen, selbst wenn es nur die Zuverlässigkeit der Falcon 9 und kein Rettungssystem hätte.
+- Starship wurde nicht für bemannte Missionen entworfen... Flug 14 brachte 26 Starlink-v3-Satelliten mit insgesamt 44.330 kg Nutzlast ins All. Die maximale Nutzlast des Space Shuttle betrug nur 22.780 kg.
