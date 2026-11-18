@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-11-18 01:00 UTC
+#+DATE: 2026-11-18T01:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Java's Base64 decoder gets an RCE, a PHP patch takes down NSANet, Apple goes dark, Quad9 leaves France, and jQuery ships a point release
+
+* Highlights
+- Java4Shell: 65 bytes of Base64 overwrite the heap on AVX-512 servers
+- NSANet down: the DNI blames a PHP patch, not an attack
+- Apple outage: iCloud sign-in fails and retail stores cannot sell iPhones
+- Quad9 quits France rather than block domains for rightsholders
+- jQuery 4.1.0: a ReDoS fix and rules for machine-generated contributions
+
+* Stories
+
+** Java4Shell: RCE in OpenJDK when processing Base64 :security:java:cve:ai:
+:PROPERTIES:
+:ID:       50538240
+:URL:      https://calif.io/java4shell/
+:HN_URL:   https://news.ycombinator.com/item?id=50538240
+:POINTS:   472
+:COMMENTS: 124
+:BY:       werrett
+:END:
+
+*** TLDR
+Calif disclosed CVE-2026-114938 (CVSS 4.0: 9.2), a heap out-of-bounds write in OpenJDK's AVX-512 Base64 intrinsic. When input ends in '=' padding, a miscalculated mask writes 64 bytes, 62 past the end of the output array. 64 'A' characters plus '=' trigger it. It affects OpenJDK 17.0.6+ and builds from it (Temurin, Corretto, Oracle, Azul and others) on Intel Ice Lake Xeon or newer and AMD Zen 4 or newer. ARM is not affected. Calif turned it into a Heartbleed-style memory leak and pre-auth RCE against Keycloak, Jira, Confluence, Jenkins, Artifactory and PingFederate. Researcher Quang Luong found it with Codex in about an hour, and the first exploit took two more hours, for under $200 in tokens. Patches shipped November 17. The workaround is -XX:-UseBASE64Intrinsics or -XX:UseAVX=2 (x86 only). Product exploit chains are being withheld for now.
+
+*** Take
+Several commenters assume AVX-512 makes this niche. It does not: Ice Lake Xeons and Zen 4 EPYCs are most x86 server fleets bought in the last five years. The figure to remember is the cost. One researcher, one agent, three hours and $200 produced pre-auth RCE in Jira. The article's own fix is to delete fast paths most users never needed, and that is the right reading.
+
+*** Comments
+
+**** hypfer
+:PROPERTIES:
+:COMMENT_ID: 50538735
+:END:
+Given that this is AVX512-only, how many enterprises run vulnerable Java applications on non-Intel servers? The name makes it sound like Log4J, but it kinda isn't all that relevant?
+
+**** eyalitki
+:PROPERTIES:
+:COMMENT_ID: 50538534
+:END:
+Mainstream modules have trivial logic bugs that testing could fully cover. Maybe we can even name a testing philosophy to match it.
+
+**** nikanj
+:PROPERTIES:
+:COMMENT_ID: 50538743
+:END:
+Just like the last one, Debian patched at embargo drop and Ubuntu still isn't patched. Why do we even pay for Ubuntu?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Java4Shell：OpenJDK 处理 Base64 时存在远程代码执行漏洞
+***** TLDR
+Calif 披露了 CVE-2026-114938（CVSS 4.0 评分 9.2），这是 OpenJDK AVX-512 Base64 内建函数中的堆越界写入漏洞。当输入以“=”填充结尾时，错误计算的掩码会写入 64 字节，超出输出数组末尾 62 字节。64 个“A”加一个“=”即可触发。受影响的是 OpenJDK 17.0.6 及以上版本和基于它的发行版（Temurin、Corretto、Oracle、Azul 等），运行在 Intel Ice Lake Xeon 及更新、AMD Zen 4 及更新的 CPU 上。ARM 不受影响。Calif 将其利用为类似 Heartbleed 的内存泄露，并对 Keycloak、Jira、Confluence、Jenkins、Artifactory 和 PingFederate 实现了免认证 RCE。研究员 Quang Luong 用 Codex 约一小时发现漏洞，再用两小时写出首个利用，token 花费不到 200 美元。补丁于 11 月 17 日发布。临时缓解：-XX:-UseBASE64Intrinsics 或 -XX:UseAVX=2（仅限 x86）。针对具体产品的利用链暂不公开。
+***** Take
+不少评论认为 AVX-512 让它变成小众问题。并非如此：Ice Lake Xeon 和 Zen 4 EPYC 就是过去五年采购的大部分 x86 服务器。真正该记住的是成本：一名研究员、一个智能体、三小时、200 美元，就拿到了 Jira 的免认证 RCE。文章自己给出的修复思路是删掉大多数用户根本用不上的快速路径，这个判断是对的。
+***** Comments
+- 既然只影响 AVX512，有多少企业在非 Intel 服务器上跑有漏洞的 Java 应用？名字听起来像 Log4J，但好像没那么严重？
+- 主流模块里居然有测试完全能覆盖的低级逻辑错误。也许我们可以给这种测试理念起个名字。
+- 和上次一样，Debian 在禁令解除时立刻打了补丁，Ubuntu 至今没打。我们为什么还要给 Ubuntu 付钱？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Java4Shell：OpenJDKのBase64処理にリモートコード実行の脆弱性
+***** TLDR
+CalifがCVE-2026-114938（CVSS 4.0で9.2）を公表。OpenJDKのAVX-512 Base64イントリンシックにおけるヒープ境界外書き込みだ。入力が「=」パディングで終わると、誤って計算されたマスクにより64バイトが書き込まれ、出力配列の末尾を62バイト超える。「A」64文字と「=」で発生する。影響範囲はOpenJDK 17.0.6以降とそれをベースにしたビルド（Temurin、Corretto、Oracle、Azulなど）で、Intel Ice Lake Xeon以降、AMD Zen 4以降のCPUが対象。ARMは影響を受けない。CalifはHeartbleed型のメモリ漏えいと、Keycloak、Jira、Confluence、Jenkins、Artifactory、PingFederateへの認証前RCEを実証した。研究者Quang LuongはCodexで約1時間で発見し、最初のエクスプロイトにさらに2時間、トークン費用は200ドル未満だった。パッチは11月17日に公開。回避策は-XX:-UseBASE64Intrinsicsまたは-XX:UseAVX=2（x86のみ）。製品別のエクスプロイトチェーンは当面非公開。
+***** Take
+AVX-512限定だからニッチだと考えるコメントが多いが、そうではない。Ice Lake XeonとZen 4 EPYCは、ここ5年で購入されたx86サーバーの大半だ。覚えておくべきはコストで、研究者1人とエージェント1つ、3時間と200ドルでJiraの認証前RCEに至った。記事自身が示す対策は、ほとんどのユーザーが必要としない高速パスを削除することで、その読みは正しい。
+***** Comments
+- AVX512限定なら、脆弱なJavaアプリを非Intelサーバーで動かしている企業はどれだけある？名前はLog4Jっぽいけど、それほど重要じゃないのでは？
+- 主要モジュールに、テストで完全にカバーできる単純なロジックのバグがあるとは驚きだ。そういうテスト哲学に名前を付けてもいいかもね。
+- 前回と同じく、Debianはエンバーゴ解除と同時にパッチ済み、Ubuntuはまだ。なぜUbuntuにお金を払っているんだ？
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Java4Shell: OpenJDK의 Base64 처리 중 원격 코드 실행 취약점
+***** TLDR
+Calif가 CVE-2026-114938(CVSS 4.0 기준 9.2)을 공개했다. OpenJDK의 AVX-512 Base64 인트린직에서 발생하는 힙 경계 밖 쓰기 버그다. 입력이 '=' 패딩으로 끝나면 잘못 계산된 마스크가 64바이트를 써서 출력 배열 끝을 62바이트 넘어간다. 'A' 64개와 '=' 하나로 발생한다. OpenJDK 17.0.6 이상과 이를 기반으로 한 빌드(Temurin, Corretto, Oracle, Azul 등)가 Intel Ice Lake Xeon 이상, AMD Zen 4 이상 CPU에서 영향을 받는다. ARM은 영향이 없다. Calif는 이를 Heartbleed식 메모리 유출과 Keycloak, Jira, Confluence, Jenkins, Artifactory, PingFederate에 대한 인증 전 RCE로 발전시켰다. 연구원 Quang Luong이 Codex로 약 1시간 만에 찾았고, 첫 익스플로잇에 2시간이 더 걸렸으며 토큰 비용은 200달러 미만이었다. 패치는 11월 17일 배포됐다. 임시 대응은 -XX:-UseBASE64Intrinsics 또는 -XX:UseAVX=2(x86 전용)다. 제품별 익스플로잇 체인은 당분간 공개하지 않는다.
+***** Take
+여러 댓글이 AVX-512 전용이라 소수 문제라고 본다. 그렇지 않다. Ice Lake Xeon과 Zen 4 EPYC는 지난 5년간 구매된 x86 서버의 대부분이다. 기억할 숫자는 비용이다. 연구원 한 명, 에이전트 하나, 3시간, 200달러로 Jira 인증 전 RCE가 나왔다. 대부분의 사용자가 쓰지도 않는 고속 경로를 지우라는 글의 결론이 맞다.
+***** Comments
+- AVX512 전용이라면, 취약한 Java 앱을 비 Intel 서버에서 돌리는 기업이 얼마나 될까? 이름은 Log4J 같지만 그렇게 중요하지 않은 것 아닌가?
+- 주류 모듈에 테스트로 완전히 커버할 수 있는 단순한 논리 버그가 있다니 놀랍다. 이런 테스트 철학에 이름을 붙여도 되겠다.
+- 지난번처럼 Debian은 엠바고 해제와 동시에 패치했고 Ubuntu는 아직이다. 왜 Ubuntu에 돈을 내는 걸까?
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Java4Shell: RCE en OpenJDK al procesar Base64
+***** TLDR
+Calif publicó CVE-2026-114938 (CVSS 4.0: 9.2), una escritura fuera de límites en el heap dentro del intrínseco Base64 con AVX-512 de OpenJDK. Cuando la entrada termina con relleno '=', una máscara mal calculada escribe 64 bytes, 62 más allá del final del array de salida. Basta con 64 caracteres 'A' y un '='. Afecta a OpenJDK 17.0.6+ y sus derivados (Temurin, Corretto, Oracle, Azul y otros) en Intel Xeon Ice Lake o posterior y AMD Zen 4 o posterior. ARM no está afectado. Calif lo convirtió en una fuga de memoria al estilo Heartbleed y en RCE sin autenticación contra Keycloak, Jira, Confluence, Jenkins, Artifactory y PingFederate. El investigador Quang Luong lo encontró con Codex en una hora, y el primer exploit le llevó dos horas más, con menos de 200 dólares en tokens. Los parches salieron el 17 de noviembre. La mitigación es -XX:-UseBASE64Intrinsics o -XX:UseAVX=2 (solo x86). Las cadenas de exploits por producto se retienen por ahora.
+***** Take
+Varios comentaristas creen que AVX-512 lo convierte en un caso de nicho. No lo es: los Xeon Ice Lake y los EPYC Zen 4 son la mayoría de los servidores x86 comprados en los últimos cinco años. La cifra a recordar es el coste: un investigador, un agente, tres horas y 200 dólares dieron RCE sin autenticación en Jira. La solución que propone el propio artículo es borrar rutas rápidas que casi nadie necesitaba, y es la lectura correcta.
+***** Comments
+- Si solo afecta a AVX512, ¿cuántas empresas ejecutan aplicaciones Java vulnerables en servidores que no son Intel? El nombre suena a Log4J, pero ¿quizá no es tan relevante?
+- Es asombroso que módulos principales tengan errores lógicos triviales que las pruebas podrían cubrir por completo. Quizá podamos ponerle nombre a esa filosofía de pruebas.
+- Igual que la última vez, Debian parcheó al levantarse el embargo y Ubuntu sigue sin parche. ¿Por qué pagamos por Ubuntu?
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Java4Shell: RCE in OpenJDK bei der Verarbeitung von Base64
+***** TLDR
+Calif hat CVE-2026-114938 (CVSS 4.0: 9,2) veröffentlicht, einen Heap-Out-of-Bounds-Write im AVX-512-Base64-Intrinsic von OpenJDK. Endet die Eingabe mit '='-Padding, schreibt eine falsch berechnete Maske 64 Bytes, 62 davon hinter das Ende des Ausgabe-Arrays. 64 'A' plus '=' lösen es aus. Betroffen sind OpenJDK 17.0.6+ und darauf basierende Builds (Temurin, Corretto, Oracle, Azul u. a.) auf Intel Xeon ab Ice Lake und AMD ab Zen 4. ARM ist nicht betroffen. Calif baute daraus ein Heartbleed-artiges Speicherleck und Pre-Auth-RCE gegen Keycloak, Jira, Confluence, Jenkins, Artifactory und PingFederate. Forscher Quang Luong fand den Fehler mit Codex in etwa einer Stunde, der erste Exploit dauerte zwei weitere Stunden, die Token kosteten unter 200 Dollar. Patches erschienen am 17. November. Workaround: -XX:-UseBASE64Intrinsics oder -XX:UseAVX=2 (nur x86). Produktspezifische Exploit-Ketten werden vorerst zurückgehalten.
+***** Take
+Mehrere Kommentare halten das wegen AVX-512 für ein Nischenproblem. Ist es nicht: Ice-Lake-Xeons und Zen-4-EPYCs sind der Großteil der x86-Server, die in den letzten fünf Jahren gekauft wurden. Die wichtige Zahl sind die Kosten: ein Forscher, ein Agent, drei Stunden und 200 Dollar ergaben Pre-Auth-RCE in Jira. Der Artikel empfiehlt selbst, Fast Paths zu löschen, die kaum jemand braucht, und das ist die richtige Lehre.
+***** Comments
+- Wenn das nur AVX512 betrifft: Wie viele Unternehmen betreiben verwundbare Java-Anwendungen auf Nicht-Intel-Servern? Der Name klingt nach Log4J, aber ist das wirklich so relevant?
+- Erstaunlich, dass Kernmodule triviale Logikfehler haben, die Tests vollständig abdecken könnten. Vielleicht können wir dieser Testphilosophie sogar einen Namen geben.
+- Wie beim letzten Mal hat Debian sofort zum Embargo-Ende gepatcht, Ubuntu immer noch nicht. Wofür bezahlen wir Ubuntu eigentlich?
+** Highly classified US national security communications network goes down :security:nsa:outage:government:
+:PROPERTIES:
+:ID:       50532849
+:URL:      https://www.cnn.com/2026/11/17/politics/highly-classified-national-security-communications-network-goes-down
+:HN_URL:   https://news.ycombinator.com/item?id=50532849
+:POINTS:   455
+:COMMENTS: 538
+:BY:       monkeydust
+:END:
+
+*** TLDR
+CNN, citing six people familiar with the matter, reports that NSANet, the NSA's internal classified network, went down on Tuesday, leaving staff unable to pass classified information internally. The NSA put non-emergency staff on staggered 'code yellow' arrivals and called it 'temporary degradation during scheduled routine maintenance', saying mission-critical capabilities stayed up. Director of National Intelligence Jay Clayton said the outage followed a software patch for the recent PHP vulnerabilities that left some systems unable to come back up, and that there is no sign of a cyberattack behind this or the week's other outages (FAA ground stop, Microsoft 365, Chase). Five Eyes sharing was not affected. Restoration was still in progress at publication.
+
+*** Take
+The thread is mostly 538 comments of 'third time is enemy action'. The DNI's explanation is simpler: an emergency PHP patch broke systems that then would not boot. That is less dramatic than sabotage and still bad news, because the agency that urged everyone to patch could not patch its own network cleanly. With Java4Shell landing the same day, expect more maintenance outages this week.
+
+*** Comments
+
+**** empath75
+:PROPERTIES:
+:COMMENT_ID: 50533521
+:END:
+Once is happenstance. Twice is coincidence. The third time it's enemy action.
+
+**** sandworm101
+:PROPERTIES:
+:COMMENT_ID: 50533646
+:END:
+Bespoke networks fall down all the time. We are probably only hearing about this because of the other recent failures. As we become more sensitive to outages, every normal outage becomes part of the global pattern.
+
+**** Avicebron
+:PROPERTIES:
+:COMMENT_ID: 50533394
+:END:
+It's clear, there is a screaming need for competent, well paid IT across all sectors.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+美国高度机密的国家安全通信网络宕机
+***** TLDR
+CNN 援引六名知情人士报道，NSA 内部机密网络 NSANet 于周二宕机，员工无法在内部传递机密信息。NSA 让非紧急人员按“黄色代码”错峰到岗，称这是“计划内例行维护期间的临时性能下降”，关键任务能力仍正常运行。国家情报总监 Jay Clayton 表示，宕机发生在针对近期 PHP 漏洞的软件补丁之后，部分系统无法重新启动；他还表示，没有迹象表明此次及本周其他故障（FAA 全国停飞、Microsoft 365、Chase）是网络攻击所致。五眼联盟情报共享未受影响。截至发稿，恢复工作仍在进行。
+***** Take
+538 条评论大多在说“第三次就是敌人干的”。国家情报总监的解释更简单：紧急 PHP 补丁让系统无法重启。这没有破坏行动那么戏剧化，但仍然是坏消息：呼吁大家打补丁的机构，自己都没能顺利打好补丁。Java4Shell 同一天公布，本周预计还会有更多维护导致的宕机。
+***** Comments
+- 一次是偶然，两次是巧合，第三次就是敌人的行动。
+- 定制网络经常出故障。我们之所以听说这件事，可能只是因为最近其他故障的巧合。我们对宕机越敏感，每一次普通故障就越会被看成全球模式的一部分。
+- 很明显，各行各业都极度需要能干且薪水体面的 IT 人员。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+米国の最高機密の国家安全保障通信ネットワークがダウン
+***** TLDR
+CNNは関係者6人の話として、NSAの内部機密ネットワークNSANetが火曜日にダウンし、職員が機密情報を内部でやり取りできなくなったと報じた。NSAは緊急要員以外を「コードイエロー」の時差出勤とし、「定期メンテナンス中の一時的な性能低下」で、ミッションに不可欠な機能は稼働していると説明した。国家情報長官Jay Claytonは、最近のPHP脆弱性に対するソフトウェアパッチの後に障害が起き、一部システムが再起動できなくなったと述べ、今回や今週の他の障害（FAAの全面運航停止、Microsoft 365、Chase）の背後にサイバー攻撃の兆候はないとした。Five Eyesの情報共有に影響はない。掲載時点で復旧作業は続いていた。
+***** Take
+538件のコメントの大半は「3回目は敵の仕業」という話だ。国家情報長官の説明はもっと単純で、緊急のPHPパッチでシステムが起動しなくなったというもの。破壊工作ほど劇的ではないが、悪い知らせには変わりない。皆にパッチ適用を促した機関自身が、自分のネットワークにうまく適用できなかったのだから。Java4Shellが同じ日に公表されたので、今週はメンテナンス起因の障害がさらに増えるだろう。
+***** Comments
+- 1回は偶然、2回は偶然の一致、3回目は敵の行動だ。
+- 独自構築のネットワークはしょっちゅう落ちる。最近の他の障害と重なったから耳に入っているだけだろう。障害に敏感になるほど、普通の障害まで世界的なパターンの一部に見えてくる。
+- あらゆる分野で、有能で十分な給料をもらえるITが切実に必要なのは明らかだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+미국 최고 기밀 국가안보 통신망 다운
+***** TLDR
+CNN은 사정을 아는 6명을 인용해 NSA 내부 기밀망 NSANet이 화요일에 다운돼 직원들이 기밀 정보를 내부에서 주고받지 못했다고 보도했다. NSA는 비필수 인력을 '코드 옐로' 시차 출근으로 돌렸고, '예정된 정기 유지보수 중 일시적 성능 저하'이며 핵심 임무 기능은 유지된다고 밝혔다. 국가정보장 Jay Clayton은 최근 PHP 취약점에 대한 소프트웨어 패치 이후 일부 시스템이 다시 올라오지 않았다고 말했고, 이번 건과 이번 주 다른 장애(FAA 전국 운항 중단, Microsoft 365, Chase)에 사이버 공격 징후는 없다고 했다. Five Eyes 정보 공유는 영향을 받지 않았다. 보도 시점에 복구는 진행 중이었다.
+***** Take
+538개 댓글 대부분은 '세 번째는 적의 행동'이라는 얘기다. 국가정보장의 설명은 더 단순하다. 긴급 PHP 패치 후 시스템이 부팅되지 않았다는 것이다. 사보타주만큼 극적이진 않지만 여전히 나쁜 소식이다. 모두에게 패치를 촉구한 기관이 자기 네트워크조차 깔끔하게 패치하지 못했기 때문이다. 같은 날 Java4Shell까지 나왔으니 이번 주에 유지보수발 장애가 더 나올 것이다.
+***** Comments
+- 한 번은 우연, 두 번은 우연의 일치, 세 번째는 적의 행동이다.
+- 맞춤형 네트워크는 늘 장애가 난다. 최근 다른 장애와 겹쳐서 우리가 듣게 된 것뿐일 것이다. 장애에 민감해질수록 평범한 장애도 전 세계적 패턴의 일부로 보이게 된다.
+- 모든 분야에서 유능하고 제대로 보수를 받는 IT 인력이 절실하게 필요한 게 분명하다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Cae una red de comunicaciones de seguridad nacional de EE. UU. altamente clasificada
+***** TLDR
+CNN, citando a seis personas conocedoras del asunto, informa de que NSANet, la red clasificada interna de la NSA, cayó el martes y el personal no pudo intercambiar información clasificada internamente. La NSA escalonó la llegada del personal no esencial bajo un 'código amarillo' y lo describió como una 'degradación temporal durante un mantenimiento rutinario programado', asegurando que las capacidades críticas siguieron funcionando. El director de Inteligencia Nacional, Jay Clayton, dijo que la caída siguió a un parche para las recientes vulnerabilidades de PHP que impidió que algunos sistemas volvieran a arrancar, y que no hay indicios de un ciberataque detrás de esta ni de las otras caídas de la semana (parada de la FAA, Microsoft 365, Chase). El intercambio con los Cinco Ojos no se vio afectado. La restauración seguía en curso al publicarse.
+***** Take
+El hilo son sobre todo 538 comentarios de 'la tercera vez es acción enemiga'. La explicación del director de Inteligencia es más simple: un parche urgente de PHP rompió sistemas que luego no arrancaron. Es menos dramático que un sabotaje y sigue siendo una mala noticia, porque la agencia que pidió a todos parchear no pudo parchear limpiamente su propia red. Con Java4Shell publicado el mismo día, habrá más caídas por mantenimiento esta semana.
+***** Comments
+- Una vez es casualidad. Dos veces es coincidencia. La tercera es acción enemiga.
+- Las redes hechas a medida se caen continuamente. Probablemente solo nos enteramos por la coincidencia con los otros fallos recientes. Cuanto más sensibles somos a las caídas, más parece cada caída normal parte de un patrón global.
+- Está claro que hace muchísima falta personal de TI competente y bien pagado en todos los sectores.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Hochgeheimes Kommunikationsnetz der US-Sicherheitsbehörden ausgefallen
+***** TLDR
+CNN berichtet unter Berufung auf sechs Eingeweihte, dass NSANet, das interne Geheimnetz der NSA, am Dienstag ausfiel und Mitarbeiter intern keine Verschlusssachen austauschen konnten. Die NSA schickte nicht notwendiges Personal unter 'Code Yellow' in gestaffelte Arbeitszeiten und sprach von 'vorübergehender Beeinträchtigung während planmäßiger Routinewartung'; missionskritische Fähigkeiten liefen weiter. Geheimdienstkoordinator Jay Clayton sagte, der Ausfall folgte auf einen Patch für die jüngsten PHP-Schwachstellen, nach dem einige Systeme nicht wieder hochkamen, und es gebe keine Hinweise auf einen Cyberangriff hinter diesem oder den anderen Ausfällen der Woche (FAA-Flugstopp, Microsoft 365, Chase). Der Austausch mit den Five Eyes war nicht betroffen. Zum Zeitpunkt der Veröffentlichung lief die Wiederherstellung noch.
+***** Take
+Der Thread besteht zum Großteil aus 538 Kommentaren nach dem Muster 'beim dritten Mal ist es feindliche Aktion'. Die Erklärung des Geheimdienstkoordinators ist einfacher: Ein Notfall-Patch für PHP legte Systeme lahm, die danach nicht mehr starteten. Das ist weniger dramatisch als Sabotage, aber trotzdem eine schlechte Nachricht, denn die Behörde, die alle zum Patchen aufrief, bekam ihr eigenes Netz nicht sauber gepatcht. Da Java4Shell am selben Tag kam, sind diese Woche weitere wartungsbedingte Ausfälle zu erwarten.
+***** Comments
+- Einmal ist Zufall. Zweimal ist Koinzidenz. Beim dritten Mal ist es feindliche Aktion.
+- Maßgeschneiderte Netze fallen ständig aus. Wir hören davon vermutlich nur wegen der anderen jüngsten Ausfälle. Je sensibler wir für Ausfälle werden, desto mehr wirkt jeder normale Ausfall wie Teil eines globalen Musters.
+- Offensichtlich braucht es in allen Branchen dringend kompetente, gut bezahlte IT-Leute.
+** Apple Services Down :apple:outage:icloud:reliability:
+:PROPERTIES:
+:ID:       50535238
+:URL:      https://developer.apple.com/system-status/
+:HN_URL:   https://news.ycombinator.com/item?id=50535238
+:POINTS:   619
+:COMMENTS: 343
+:BY:       willy_k
+:END:
+
+*** TLDR
+The link is Apple's developer status page. Apple's two status pages list a broad outage on November 17: iCloud sign-in, iCloud Mail and iCloud.com were slow or unavailable from 08:45 to 13:15 PST; the App Store and Volume Purchase Program were down 08:45 to 12:00; AppleCare purchases, Apple Business Manager and School Manager also failed. On the developer side, App Store Connect, its analytics, Apple Music for Artists and the Developer ID notary service were still listed as down hours later, and Xcode Cloud was out from 09:00 to 14:30. Commenters report Apple Stores could not process sales, returns or repairs, and new iPhones could not be activated. Apple has given no cause.
+
+*** Take
+Apple's status page says 'some users were affected' on the same day its own retail stores could not sell an iPhone. A former employee says stores used to take offline card payments and keep cash drawers, and that later management removed both. That removed fallback is the lesson here, more than any theory about who caused the outage.
+
+*** Comments
+
+**** testfrequency
+:PROPERTIES:
+:COMMENT_ID: 50535918
+:END:
+This Apple one is a bad outage. The retail stores are unable to do transactions, process repairs, or use any of their internal services. They are essentially fully offline.
+
+**** Someone1234
+:PROPERTIES:
+:COMMENT_ID: 50536671
+:END:
+You're just more aware of common outages that happen every week. The FAA one is the only legitimately exceptional outage. None of the recent popular outages have been the result of a cyber attack or AI.
+
+**** ditn
+:PROPERTIES:
+:COMMENT_ID: 50536547
+:END:
+When I worked at an Apple Store in 2012-2014 we could take offline card payments and we had hidden cash drawers. I vaguely remember new retail leadership getting rid of both.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Apple 服务宕机
+***** TLDR
+链接是 Apple 的开发者状态页。Apple 的两个状态页列出了 11 月 17 日的大范围故障：iCloud 登录、iCloud 邮件和 iCloud.com 在太平洋时间 08:45 至 13:15 缓慢或不可用；App Store 和批量购买计划在 08:45 至 12:00 宕机；AppleCare 购买、Apple 商务管理和校园教务管理也出现故障。开发者方面，App Store Connect 及其分析、Apple Music for Artists 和 Developer ID 公证服务几小时后仍显示宕机，Xcode Cloud 在 09:00 至 14:30 中断。评论者称 Apple Store 零售店无法处理销售、退货或维修，新 iPhone 无法激活。Apple 未说明原因。
+***** Take
+Apple 状态页写着“部分用户受到影响”，而同一天它自己的零售店连一台 iPhone 都卖不出去。一位前员工说，门店以前能离线刷卡，还有现金抽屉，后来的管理层把两者都取消了。比起猜测是谁造成了故障，被取消的备用手段才是这件事的教训。
+***** Comments
+- 这次 Apple 的故障很严重。零售店无法交易、无法处理维修，也用不了任何内部服务，基本上完全离线。
+- 你只是更关注每周都会发生的常见故障。FAA 那次才是真正例外的故障。最近这些热门故障没有一次是网络攻击或 AI 造成的。
+- 我 2012 到 2014 年在 Apple Store 工作时，我们可以离线刷卡，还有隐藏的现金抽屉。我隐约记得后来新的零售管理层把两者都取消了。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Appleのサービスがダウン
+***** TLDR
+リンク先はAppleの開発者向けステータスページ。Appleの2つのステータスページには11月17日の広範な障害が記載されている。iCloudのサインイン、iCloudメール、iCloud.comは太平洋時間08:45から13:15まで遅延または利用不可、App Storeと Volume Purchase Programは08:45から12:00までダウン、AppleCareの購入、Apple Business Manager、School Managerも失敗した。開発者側ではApp Store Connectとその分析、Apple Music for Artists、Developer ID公証サービスが数時間後もダウン表示のままで、Xcode Cloudは09:00から14:30まで停止した。コメントによると、Apple Storeでは販売、返品、修理ができず、新しいiPhoneのアクティベーションもできなかった。Appleは原因を明らかにしていない。
+***** Take
+ステータスページは「一部のユーザーに影響」と書いているが、同じ日にApple自身の直営店はiPhoneを1台も売れなかった。元従業員によると、以前の店舗はオフラインでカード決済ができ、現金の引き出しもあったが、後の経営陣が両方を廃止した。誰が障害を起こしたかの推測より、その廃止されたフォールバックこそが教訓だ。
+***** Comments
+- 今回のAppleの障害はひどい。直営店は取引も修理受付もできず、社内サービスも一切使えない。実質的に完全にオフラインだ。
+- 毎週起きているありふれた障害に気づきやすくなっているだけだ。本当に例外的なのはFAAの件だけ。最近話題の障害でサイバー攻撃やAIが原因のものは一つもない。
+- 2012〜2014年ごろApple Storeで働いていた時は、オフラインでカード決済ができたし、隠し現金引き出しもあった。新しい小売部門の経営陣が両方なくしたと記憶している。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Apple 서비스 다운
+***** TLDR
+링크는 Apple 개발자 상태 페이지다. Apple의 두 상태 페이지에는 11월 17일의 광범위한 장애가 올라와 있다. iCloud 로그인, iCloud 메일, iCloud.com은 태평양시 08:45부터 13:15까지 느리거나 사용할 수 없었고, App Store와 대량 구매 프로그램은 08:45부터 12:00까지 다운됐으며, AppleCare 구매, Apple 비즈니스 관리자, School Manager도 실패했다. 개발자 쪽에서는 App Store Connect와 분석, Apple Music for Artists, Developer ID 공증 서비스가 몇 시간 뒤에도 다운으로 표시됐고, Xcode Cloud는 09:00부터 14:30까지 중단됐다. 댓글에 따르면 Apple Store 매장은 판매, 반품, 수리를 처리하지 못했고 새 iPhone을 활성화할 수 없었다. Apple은 원인을 밝히지 않았다.
+***** Take
+Apple 상태 페이지는 '일부 사용자가 영향을 받았다'고 적었지만, 같은 날 Apple 매장은 iPhone 한 대도 팔지 못했다. 한 전직 직원은 매장이 예전에는 오프라인 카드 결제가 가능했고 현금 서랍도 있었는데, 이후 경영진이 둘 다 없앴다고 한다. 누가 장애를 일으켰는지에 대한 추측보다 그 없어진 대체 수단이 이번 일의 교훈이다.
+***** Comments
+- 이번 Apple 장애는 심각하다. 매장에서 결제, 수리 접수, 내부 서비스를 전혀 못 쓴다. 사실상 완전히 오프라인이다.
+- 매주 일어나는 흔한 장애를 더 의식하게 됐을 뿐이다. 진짜 예외적인 건 FAA 건 하나다. 최근 화제가 된 장애 중 사이버 공격이나 AI 때문인 건 하나도 없다.
+- 2012~2014년쯤 Apple Store에서 일할 때는 오프라인 카드 결제가 가능했고 숨겨진 현금 서랍도 있었다. 새 리테일 경영진이 둘 다 없앤 걸로 기억한다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Caída de los servicios de Apple
+***** TLDR
+El enlace es la página de estado para desarrolladores de Apple. Las dos páginas de estado de Apple muestran una caída amplia el 17 de noviembre: el inicio de sesión de iCloud, iCloud Mail e iCloud.com estuvieron lentos o caídos de 08:45 a 13:15 PST; el App Store y el Programa de Compras por Volumen cayeron de 08:45 a 12:00; también fallaron las compras de AppleCare, Apple Business Manager y School Manager. En el lado de desarrolladores, App Store Connect, sus analíticas, Apple Music for Artists y el servicio de notarización de Developer ID seguían caídos horas después, y Xcode Cloud estuvo fuera de 09:00 a 14:30. Según los comentarios, las Apple Store no podían procesar ventas, devoluciones ni reparaciones, ni activar iPhones nuevos. Apple no ha dado una causa.
+***** Take
+La página de estado de Apple dice que 'algunos usuarios se vieron afectados' el mismo día en que sus propias tiendas no podían vender un iPhone. Un exempleado cuenta que las tiendas antes aceptaban pagos con tarjeta sin conexión y tenían cajones de efectivo, y que una dirección posterior eliminó ambos. Ese respaldo eliminado es la lección, más que cualquier teoría sobre quién causó la caída.
+***** Comments
+- Esta caída de Apple es grave. Las tiendas no pueden hacer transacciones, procesar reparaciones ni usar ningún servicio interno. Están prácticamente desconectadas.
+- Solo eres más consciente de las caídas habituales que ocurren cada semana. La de la FAA es la única realmente excepcional. Ninguna de las caídas sonadas recientes se debe a un ciberataque o a la IA.
+- Cuando trabajé en una Apple Store en 2012-2014 podíamos aceptar pagos con tarjeta sin conexión y teníamos cajones de efectivo ocultos. Recuerdo vagamente que una nueva dirección de tiendas eliminó ambos.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Apple-Dienste ausgefallen
+***** TLDR
+Der Link führt zu Apples Statusseite für Entwickler. Apples zwei Statusseiten verzeichnen einen breiten Ausfall am 17. November: iCloud-Anmeldung, iCloud Mail und iCloud.com waren von 08:45 bis 13:15 PST langsam oder nicht erreichbar; App Store und Volume Purchase Program fielen von 08:45 bis 12:00 aus; auch AppleCare-Käufe, Apple Business Manager und School Manager scheiterten. Auf der Entwicklerseite standen App Store Connect samt Analytics, Apple Music for Artists und der Developer-ID-Notardienst Stunden später noch auf Ausfall, Xcode Cloud war von 09:00 bis 14:30 weg. Laut Kommentaren konnten Apple Stores weder Verkäufe, Rückgaben noch Reparaturen abwickeln, und neue iPhones ließen sich nicht aktivieren. Apple hat keine Ursache genannt.
+***** Take
+Apples Statusseite meldet 'einige Nutzer waren betroffen', während die eigenen Läden am selben Tag kein iPhone verkaufen konnten. Ein ehemaliger Mitarbeiter sagt, die Stores konnten früher Kartenzahlungen offline annehmen und hatten Bargeldschubladen, bis eine spätere Führung beides abschaffte. Dieser abgeschaffte Notbetrieb ist die eigentliche Lehre, nicht die Frage, wer den Ausfall verursacht hat.
+***** Comments
+- Dieser Apple-Ausfall ist schlimm. Die Läden können keine Transaktionen machen, keine Reparaturen abwickeln und keine internen Dienste nutzen. Sie sind praktisch komplett offline.
+- Dir fallen nur die üblichen Ausfälle mehr auf, die jede Woche passieren. Der FAA-Ausfall ist der einzige wirklich außergewöhnliche. Keiner der viel diskutierten Ausfälle der letzten Zeit ging auf einen Cyberangriff oder KI zurück.
+- Als ich 2012 bis 2014 in einem Apple Store gearbeitet habe, konnten wir Kartenzahlungen offline annehmen und hatten versteckte Bargeldschubladen. Ich meine mich zu erinnern, dass eine neue Retail-Führung beides abgeschafft hat.
+** Quad9's withdrawal from France: A canary in the coal mine :dns:privacy:eu:copyright:
+:PROPERTIES:
+:ID:       50538994
+:URL:      https://blog.cloudflare.com/quad9-withdrawal-from-france/
+:HN_URL:   https://news.ycombinator.com/item?id=50538994
+:POINTS:   236
+:COMMENTS: 67
+:BY:       subset
+:END:
+
+*** TLDR
+Cloudflare writes that Quad9, the Swiss non-profit public DNS resolver, is pulling out of France after a French court, acting for copyright holders, ordered it to block piracy-linked domains and imposed daily fines for non-compliance. Quad9 had no other way to comply than DNS blocking, so it left. Cloudflare says it has never blocked domains on 1.1.1.1, that a French court rejected similar penalties against it because its CDN-level actions counted as compliance, and that it is appealing a Belgian order (with Google and Cisco) that requires resolver blocking by early January 2027. Its case against resolver blocking: users switch resolvers in a minute, blocking a domain hides legal content too, one country's order leaks across borders, and takedowns at European hosts would work better.
+
+*** Take
+The order hit Quad9 first because Quad9 is the smallest player: a non-profit with no CDN to point at as compliance and no budget for daily fines. Cloudflare, Google and Cisco can litigate. Orders like this push small resolvers out first and leave DNS with the big providers, which is the opposite of what EU regulators say they want. Cloudflare's post also does not say whether it would withdraw if it loses in Belgium.
+
+*** Comments
+
+**** johnhtodd
+:PROPERTIES:
+:COMMENT_ID: 50539856
+:END:
+(CTO at Quad9) Quad9 is 100% opposed to piracy, but DNS is the wrong place to attack that problem. The outcomes are subtle now, but will create a splinternet that is broken, untrustworthy and fragmented.
+
+**** surgical_fire
+:PROPERTIES:
+:COMMENT_ID: 50539757
+:END:
+I would take the 'free and open Internet' argument more seriously if it didn't come from Cloudflare, which puts all sorts of barriers in front of you if you are not using a corporate-approved fingerprinted browser.
+
+**** jonstewart
+:PROPERTIES:
+:COMMENT_ID: 50540083
+:END:
+I'm sympathetic to Quad9 and think this is heavy-handed. But in 30+ years online, the wealth and power of the internet concentrated in a few companies like Cloudflare while its harms went unaddressed. I'm not surprised by a Thermidorian reaction from France.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Quad9 退出法国：煤矿里的金丝雀
+***** TLDR
+Cloudflare 撰文称，瑞士非营利公共 DNS 解析服务 Quad9 将退出法国。此前法国法院应版权方请求，命令其屏蔽与盗版相关的域名，并对不执行处以按日计算的罚款。Quad9 除了 DNS 屏蔽之外没有其他方式证明合规，因此选择撤出。Cloudflare 表示它从未在 1.1.1.1 上屏蔽过域名；法国法院曾驳回对其的类似罚款，因为它在 CDN 层面的措施被认定为已合规；它还与 Google、Cisco 一起就比利时一项要求在 2027 年 1 月初前实施解析器屏蔽的命令提起上诉。它反对解析器屏蔽的理由是：用户一分钟就能换解析器，屏蔽域名会连带屏蔽合法内容，一国命令会波及他国，而在欧洲托管商处下架效果更好。
+***** Take
+命令先打到 Quad9，是因为它是最小的参与者：一家非营利机构，没有 CDN 可以拿来证明合规，也没有预算承担每日罚款。Cloudflare、Google 和 Cisco 有能力打官司。这类命令会先把小型解析器挤出去，把 DNS 留给大厂，这与欧盟监管机构声称的目标正好相反。Cloudflare 的文章也没有说明，如果在比利时败诉，它是否会撤出。
+***** Comments
+- （Quad9 CTO）Quad9 百分之百反对盗版，但 DNS 不是解决这个问题的地方。后果现在还不明显，但会造成一个破碎、不可信、割裂的分裂网络。
+- 如果“自由开放的互联网”这个论点不是出自 Cloudflare，我会更认真对待。只要你不用企业认可、可被指纹识别的浏览器，Cloudflare 就会给你设置各种障碍。
+- 我同情 Quad9，也觉得这种做法过于强硬。但在我上网的 30 多年里，互联网的财富和权力集中到了 Cloudflare 这样的少数公司，而它的危害一直没人处理。法国出现热月式的反扑，我并不意外。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Quad9のフランス撤退：炭鉱のカナリア
+***** TLDR
+Cloudflareによると、スイスの非営利公開DNSリゾルバーQuad9がフランスから撤退する。フランスの裁判所が著作権者の申し立てを受け、海賊版関連ドメインのブロックを命じ、従わない場合は日ごとの罰金を科したためだ。Quad9にはDNSブロック以外に遵守を示す手段がなく、撤退を選んだ。Cloudflareは、1.1.1.1でドメインをブロックしたことは一度もないこと、CDNレベルの措置が遵守とみなされたため同様の罰金をフランスの裁判所が退けたこと、2027年1月初めまでにリゾルバーでのブロックを求めるベルギーの命令にGoogle、Ciscoと共に控訴していることを説明する。リゾルバーでのブロックに反対する理由として、利用者は1分でリゾルバーを変えられる、ドメインのブロックで合法なコンテンツも隠れる、1国の命令が国境を越えて影響する、欧州のホスティング事業者での削除の方が効果的、を挙げる。
+***** Take
+命令が最初にQuad9に当たったのは、最も小さな事業者だからだ。遵守の証拠として示せるCDNもなく、日ごとの罰金を払う予算もない非営利団体である。Cloudflare、Google、Ciscoは訴訟で戦える。こうした命令はまず小さなリゾルバーを締め出し、DNSを大手に集中させる。EUの規制当局が掲げる目標とは正反対だ。Cloudflareの記事は、ベルギーで敗訴した場合に撤退するかどうかも書いていない。
+***** Comments
+- （Quad9のCTO）Quad9は海賊版に100%反対だが、DNSはその問題に取り組む場所ではない。影響は今は目立たないが、壊れて信頼できない、分断されたスプリンターネットを生むだろう。
+- 「自由で開かれたインターネット」という主張も、Cloudflareから出たものでなければもっと真剣に受け取る。企業公認のフィンガープリント可能なブラウザを使っていないと、あらゆる障壁を置いてくる会社だ。
+- Quad9には同情するし、これは強引だと思う。でも30年以上ネットを使ってきて、インターネットの富と力はCloudflareのような少数企業に集中し、その害は放置されてきた。フランスでテルミドール的な反動が起きても驚かない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Quad9의 프랑스 철수: 탄광 속 카나리아
+***** TLDR
+Cloudflare에 따르면 스위스 비영리 공개 DNS 리졸버 Quad9이 프랑스에서 철수한다. 프랑스 법원이 저작권자의 요청에 따라 불법 복제 관련 도메인 차단을 명령하고, 따르지 않으면 일일 벌금을 부과했기 때문이다. Quad9에는 DNS 차단 외에 준수를 입증할 방법이 없어 철수를 택했다. Cloudflare는 1.1.1.1에서 도메인을 차단한 적이 없고, CDN 수준 조치가 준수로 인정돼 프랑스 법원이 비슷한 벌금을 기각했으며, 2027년 1월 초까지 리졸버 차단을 요구하는 벨기에 명령에 Google, Cisco와 함께 항소 중이라고 밝혔다. 리졸버 차단에 반대하는 이유로는 사용자가 1분이면 리졸버를 바꿀 수 있고, 도메인을 막으면 합법 콘텐츠도 가려지며, 한 나라의 명령이 국경을 넘어 영향을 주고, 유럽 호스팅 업체에서 삭제하는 편이 더 효과적이라는 점을 든다.
+***** Take
+명령이 Quad9부터 덮친 건 가장 작은 사업자이기 때문이다. 준수 근거로 내밀 CDN도 없고 일일 벌금을 감당할 예산도 없는 비영리 단체다. Cloudflare, Google, Cisco는 소송으로 버틸 수 있다. 이런 명령은 작은 리졸버부터 밀어내고 DNS를 대형 업체에 몰아준다. EU 규제 당국이 원한다고 말하는 것과 정반대다. Cloudflare 글은 벨기에에서 패소하면 철수할지도 밝히지 않는다.
+***** Comments
+- (Quad9 CTO) Quad9은 불법 복제에 100% 반대하지만, DNS는 그 문제를 공략할 곳이 아니다. 지금은 영향이 미묘하지만 망가지고 신뢰할 수 없으며 분열된 스플린터넷을 만들 것이다.
+- '자유롭고 개방된 인터넷' 주장이 Cloudflare에서 나온 게 아니라면 더 진지하게 받아들이겠다. 기업이 승인한 핑거프린팅 가능한 브라우저를 안 쓰면 온갖 장벽을 세우는 회사다.
+- Quad9에 공감하고 이건 과도하다고 생각한다. 하지만 30년 넘게 온라인에 있으면서 인터넷의 부와 권력은 Cloudflare 같은 소수 기업에 집중됐고 그 폐해는 방치됐다. 프랑스에서 테르미도르식 반동이 나와도 놀랍지 않다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+La retirada de Quad9 de Francia: un canario en la mina
+***** TLDR
+Cloudflare escribe que Quad9, el resolvedor DNS público suizo sin ánimo de lucro, se retira de Francia después de que un tribunal francés, a petición de titulares de derechos de autor, le ordenara bloquear dominios vinculados a la piratería e impusiera multas diarias por incumplimiento. Quad9 no tenía otra forma de cumplir que el bloqueo DNS, así que se fue. Cloudflare dice que nunca ha bloqueado dominios en 1.1.1.1, que un tribunal francés rechazó multas similares contra ella porque sus medidas a nivel de CDN contaron como cumplimiento, y que está recurriendo (con Google y Cisco) una orden belga que exige bloqueo en el resolvedor antes de principios de enero de 2027. Sus argumentos contra el bloqueo en el resolvedor: los usuarios cambian de resolvedor en un minuto, bloquear un dominio oculta también contenido legal, la orden de un país traspasa fronteras, y retirar contenido en los alojamientos europeos funcionaría mejor.
+***** Take
+La orden golpeó primero a Quad9 porque es el actor más pequeño: una organización sin ánimo de lucro sin CDN que presentar como cumplimiento y sin presupuesto para multas diarias. Cloudflare, Google y Cisco pueden litigar. Órdenes así expulsan primero a los resolvedores pequeños y dejan el DNS en manos de los grandes, justo lo contrario de lo que los reguladores europeos dicen buscar. El texto de Cloudflare tampoco aclara si se retiraría si pierde en Bélgica.
+***** Comments
+- (CTO de Quad9) Quad9 se opone al 100% a la piratería, pero el DNS es el lugar equivocado para atacar ese problema. Los efectos son sutiles ahora, pero crearán una splinternet rota, poco fiable y fragmentada.
+- Me tomaría más en serio el argumento de 'Internet libre y abierto' si no viniera de Cloudflare, que te pone todo tipo de barreras si no usas un navegador con huella digital aprobado por las corporaciones.
+- Simpatizo con Quad9 y creo que esto es torpe y autoritario. Pero en más de 30 años en línea, la riqueza y el poder de Internet se concentraron en unas pocas empresas como Cloudflare mientras sus daños quedaban sin atender. No me sorprende una reacción termidoriana de Francia.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Quad9 zieht sich aus Frankreich zurück: ein Kanarienvogel in der Kohlemine
+***** TLDR
+Cloudflare schreibt, dass Quad9, der gemeinnützige öffentliche DNS-Resolver aus der Schweiz, sich aus Frankreich zurückzieht. Ein französisches Gericht hatte ihm auf Antrag von Rechteinhabern befohlen, Piraterie-Domains zu sperren, und tägliche Strafgelder bei Nichtbefolgung verhängt. Quad9 konnte nur per DNS-Sperre nachkommen und ging deshalb. Cloudflare sagt, es habe auf 1.1.1.1 nie Domains gesperrt, ein französisches Gericht habe ähnliche Strafen gegen Cloudflare abgelehnt, weil Maßnahmen auf CDN-Ebene als Erfüllung galten, und es fechte gemeinsam mit Google und Cisco eine belgische Anordnung an, die Resolver-Sperren bis Anfang Januar 2027 verlangt. Seine Argumente gegen Resolver-Sperren: Nutzer wechseln den Resolver in einer Minute, eine Domain-Sperre verdeckt auch legale Inhalte, die Anordnung eines Landes wirkt über Grenzen hinweg, und Löschungen bei europäischen Hostern wären wirksamer.
+***** Take
+Die Anordnung traf zuerst Quad9, weil Quad9 der kleinste Akteur ist: eine gemeinnützige Organisation ohne CDN, das sie als Erfüllung vorweisen könnte, und ohne Budget für tägliche Strafgelder. Cloudflare, Google und Cisco können prozessieren. Solche Anordnungen drängen kleine Resolver zuerst hinaus und überlassen DNS den Großen, also das Gegenteil dessen, was EU-Regulierer nach eigener Aussage wollen. Cloudflares Beitrag sagt auch nicht, ob es sich zurückziehen würde, falls es in Belgien verliert.
+***** Comments
+- (CTO von Quad9) Quad9 lehnt Piraterie zu 100 % ab, aber DNS ist der falsche Ort, um das Problem anzugehen. Die Folgen sind jetzt noch subtil, werden aber ein kaputtes, unzuverlässiges und zersplittertes Splinternet schaffen.
+- Ich würde das Argument vom 'freien und offenen Internet' ernster nehmen, wenn es nicht von Cloudflare käme, das einem alle möglichen Hürden in den Weg stellt, wenn man keinen konzernkonformen, per Fingerprint erkennbaren Browser nutzt.
+- Ich habe Verständnis für Quad9 und halte das für plump. Aber in über 30 Jahren online haben sich Reichtum und Macht des Internets bei wenigen Firmen wie Cloudflare konzentriert, während seine Schäden unbeachtet blieben. Eine thermidorianische Reaktion aus Frankreich überrascht mich nicht.
+** jQuery 4.1.0 :javascript:jquery:webdev:opensource:
+:PROPERTIES:
+:ID:       50537156
+:URL:      https://github.com/jquery/jquery/releases/tag/4.1.0
+:HN_URL:   https://news.ycombinator.com/item?id=50537156
+:POINTS:   244
+:COMMENTS: 134
+:BY:       petecooper
+:END:
+
+*** TLDR
+jQuery 4.1.0 is a maintenance release. It adds a responseURL field to jqXHR, an alternative completion callback API for Ajax transports, serialization of form-associated custom elements, and createElementNS-based CSS handling so XML documents work. The selector engine gets a ReDoS fix in identifier matching, U+FFFD for invalid escape code points, faster uniqueSort and a Safari 27 regex workaround. getElementsByTagName/ClassName are dropped in favor of querySelectorAll. The docs add a commercial support vendor and guidelines for machine-generated contributions. It ships alongside 3.8.0 for the older branch.
+
+*** Take
+The ReDoS fix is the change that matters, because jQuery still runs on a large share of old sites that will never move to a framework. Keeping a 20-year-old library patched is unglamorous work, and the team is still doing it. The thread is mostly nostalgia, plus a useful complaint that silent no-ops on empty selections hid bugs for a decade.
+
+*** Comments
+
+**** hax0ron3
+:PROPERTIES:
+:COMMENT_ID: 50537763
+:END:
+Although jQuery isn't very relevant these days, I still find its pattern of chaining methods on a set chosen by a selector to be a beautiful example of going with a language's features.
+
+**** hinkley
+:PROPERTIES:
+:COMMENT_ID: 50537539
+:END:
+I don't want jQuery back. jQuery decided that calling a function on an empty list should be a no-op, but nearly every time we wanted something to definitely happen or it was a bug.
+
+**** whalesalad
+:PROPERTIES:
+:COMMENT_ID: 50537385
+:END:
+FAA ground stop: initiated. Microsoft 365: down. United Airlines: down. Apple: down. Clandestine NSA network: down. jQuery: 4.1.0 released :)
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+jQuery 4.1.0
+***** TLDR
+jQuery 4.1.0 是一个维护版本。它为 jqXHR 增加了 responseURL 字段，为 Ajax 传输层提供了另一种完成回调 API，支持序列化表单关联的自定义元素，CSS 处理改用 createElementNS 以支持 XML 文档。选择器引擎修复了标识符匹配中的 ReDoS 问题，无效转义码点改为 U+FFFD，uniqueSort 更快，并加入了 Safari 27 正则表达式的规避方案。getElementsByTagName/ClassName 被移除，改用 querySelectorAll。文档新增了一家商业支持供应商和针对机器生成贡献的指南。同时为旧分支发布了 3.8.0。
+***** Take
+真正重要的是 ReDoS 修复，因为大量永远不会迁移到框架的老网站仍在运行 jQuery。给一个 20 年的老库持续打补丁是不起眼的工作，而团队还在做。讨论串大多是怀旧，另外有一条有用的抱怨：空选择集上的静默无操作让 bug 藏了十年。
+***** Comments
+- 虽然 jQuery 如今已不太重要，但我仍然觉得它在选择器选中的集合上链式调用方法的模式，是顺应语言特性的优美范例。
+- 我不想让 jQuery 回来。jQuery 决定在空列表上调用函数时什么都不做，但几乎每次我们都希望某件事一定发生，否则就是 bug。
+- FAA 全国停飞：已启动。Microsoft 365：宕机。美联航：宕机。Apple：宕机。秘密 NSA 网络：宕机。jQuery：4.1.0 发布 :)
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+jQuery 4.1.0
+***** TLDR
+jQuery 4.1.0はメンテナンスリリース。jqXHRへのresponseURLフィールド、Ajaxトランスポート向けの別の完了コールバックAPI、フォーム関連カスタム要素のシリアライズ、XMLドキュメントに対応するためのcreateElementNSベースのCSS処理が加わった。セレクタエンジンでは識別子マッチングのReDoS修正、無効なエスケープコードポイントのU+FFFD化、uniqueSortの高速化、Safari 27の正規表現回避策が入った。getElementsByTagName/ClassNameは廃止され、querySelectorAllに置き換えられた。ドキュメントには商用サポートベンダーと機械生成コントリビューションのガイドラインが追加された。旧ブランチ向けに3.8.0も同時リリース。
+***** Take
+重要なのはReDoS修正だ。フレームワークに移行することのない古いサイトの多くで、jQueryはまだ動いている。20年前のライブラリにパッチを当て続けるのは地味な仕事だが、チームはそれを続けている。スレッドはほぼ懐古話で、空の選択に対する無言のno-opが10年間バグを隠してきたという有益な不満もある。
+***** Comments
+- jQueryは今ではあまり重要ではないが、セレクタで選んだ集合にメソッドをチェーンするパターンは、言語の特性に沿った美しい例だと今でも思う。
+- jQueryに戻ってきてほしくはない。jQueryは空リストへの関数呼び出しをno-opにしたが、ほぼ毎回、何かが確実に起きてほしいか、そうでなければバグだった。
+- FAA全面運航停止：発動。Microsoft 365：ダウン。ユナイテッド航空：ダウン。Apple：ダウン。秘密のNSAネットワーク：ダウン。jQuery：4.1.0リリース :)
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+jQuery 4.1.0
+***** TLDR
+jQuery 4.1.0은 유지보수 릴리스다. jqXHR에 responseURL 필드, Ajax 전송 계층용 대체 완료 콜백 API, 폼 연관 커스텀 요소 직렬화, XML 문서를 지원하기 위한 createElementNS 기반 CSS 처리가 추가됐다. 셀렉터 엔진에는 식별자 매칭의 ReDoS 수정, 잘못된 이스케이프 코드 포인트의 U+FFFD 처리, 더 빠른 uniqueSort, Safari 27 정규식 우회가 들어갔다. getElementsByTagName/ClassName은 제거되고 querySelectorAll로 대체됐다. 문서에는 상업 지원 업체와 기계 생성 기여에 대한 가이드라인이 추가됐다. 구 브랜치용 3.8.0도 함께 나왔다.
+***** Take
+중요한 변경은 ReDoS 수정이다. 프레임워크로 옮길 일 없는 수많은 오래된 사이트가 여전히 jQuery로 돌아간다. 20년 된 라이브러리를 계속 패치하는 건 티 나지 않는 일인데, 팀은 여전히 그 일을 하고 있다. 스레드는 대부분 향수지만, 빈 선택에 대한 조용한 no-op이 10년 동안 버그를 숨겼다는 유용한 불만도 있다.
+***** Comments
+- jQuery가 요즘은 별로 중요하지 않지만, 셀렉터로 고른 집합에 메서드를 체이닝하는 패턴은 언어의 특성을 잘 살린 아름다운 예라고 생각한다.
+- jQuery가 돌아오길 바라지 않는다. jQuery는 빈 리스트에 함수를 호출하면 아무것도 안 하도록 했지만, 거의 매번 우리는 뭔가가 반드시 일어나길 원했고 아니면 버그였다.
+- FAA 운항 중단: 개시. Microsoft 365: 다운. 유나이티드 항공: 다운. Apple: 다운. 비밀 NSA 네트워크: 다운. jQuery: 4.1.0 출시 :)
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+jQuery 4.1.0
+***** TLDR
+jQuery 4.1.0 es una versión de mantenimiento. Añade un campo responseURL a jqXHR, una API alternativa de callback de finalización para los transportes Ajax, serialización de elementos personalizados asociados a formularios y manejo de CSS basado en createElementNS para que funcionen los documentos XML. El motor de selectores recibe una corrección de ReDoS en la coincidencia de identificadores, U+FFFD para puntos de código de escape inválidos, un uniqueSort más rápido y un parche para las expresiones regulares de Safari 27. Se eliminan getElementsByTagName/ClassName en favor de querySelectorAll. La documentación añade un proveedor de soporte comercial y pautas para contribuciones generadas por máquina. Se publica junto a 3.8.0 para la rama antigua.
+***** Take
+La corrección de ReDoS es el cambio que importa, porque jQuery sigue funcionando en una gran parte de sitios antiguos que nunca pasarán a un framework. Mantener parcheada una biblioteca de 20 años es un trabajo poco vistoso, y el equipo lo sigue haciendo. El hilo es sobre todo nostalgia, más una queja útil: que las operaciones nulas silenciosas sobre selecciones vacías escondieron bugs durante una década.
+***** Comments
+- Aunque jQuery ya no es muy relevante, su patrón de encadenar métodos sobre un conjunto elegido por un selector me sigue pareciendo un bello ejemplo de aprovechar las características del lenguaje.
+- No quiero que vuelva jQuery. jQuery decidió que llamar a una función sobre una lista vacía no hiciera nada, pero casi siempre queríamos que algo pasara sí o sí, o era un bug.
+- Parada de la FAA: iniciada. Microsoft 365: caído. United Airlines: caído. Apple: caído. Red clandestina de la NSA: caída. jQuery: 4.1.0 publicado :)
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+jQuery 4.1.0
+***** TLDR
+jQuery 4.1.0 ist ein Wartungsrelease. Es bringt ein responseURL-Feld für jqXHR, eine alternative Completion-Callback-API für Ajax-Transports, Serialisierung formularassoziierter Custom Elements und CSS-Handling über createElementNS, damit XML-Dokumente funktionieren. Die Selektor-Engine erhält einen ReDoS-Fix beim Identifier-Matching, U+FFFD für ungültige Escape-Codepoints, schnelleres uniqueSort und einen Workaround für Regex-Probleme in Safari 27. getElementsByTagName/ClassName fallen zugunsten von querySelectorAll weg. Die Doku nennt einen kommerziellen Support-Anbieter und Richtlinien für maschinell erzeugte Beiträge. Parallel erscheint 3.8.0 für den alten Zweig.
+***** Take
+Der ReDoS-Fix ist die wichtige Änderung, denn jQuery läuft noch auf einem großen Teil alter Websites, die nie auf ein Framework umsteigen werden. Eine 20 Jahre alte Bibliothek weiter zu patchen ist unspektakuläre Arbeit, und das Team macht sie weiter. Der Thread ist größtenteils Nostalgie, dazu eine nützliche Beschwerde: Stille No-ops auf leeren Selektionen haben ein Jahrzehnt lang Bugs versteckt.
+***** Comments
+- jQuery ist heute nicht mehr sehr relevant, aber das Muster, Methoden auf einer per Selektor gewählten Menge zu verketten, finde ich immer noch ein schönes Beispiel dafür, die Eigenschaften einer Sprache zu nutzen.
+- Ich will jQuery nicht zurück. jQuery hat entschieden, dass ein Funktionsaufruf auf einer leeren Liste nichts tut, aber fast jedes Mal wollten wir, dass etwas sicher passiert, sonst war es ein Bug.
+- FAA-Flugstopp: eingeleitet. Microsoft 365: down. United Airlines: down. Apple: down. Geheimes NSA-Netz: down. jQuery: 4.1.0 veröffentlicht :)
