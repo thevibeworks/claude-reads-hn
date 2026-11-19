@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-11-19 16:00 UTC
+#+DATE: 2026-11-19T16:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+The EU moves 40k staff to Matrix, myQ fills garage alerts with ads, and the UK has to admit it sent Apple a secret order
+
+* Highlights
+- European Commission: Matrix for 40k staff, presence switched off under load
+- Garage Door Spam: myQ replaced by a $62 local board
+- UK tribunal: government must admit its Apple encryption order exists
+- Pete Warden: local AI, 200 ms voice, memory-bound inference
+- Lastbook: a 388 GB offline survival library that does not run on phones
+
+* Stories
+
+** How the European Commission rolled out Matrix to more than 40k staff :matrix:eu:sovereignty:messaging:encryption:
+:PROPERTIES:
+:ID:       50558533
+:URL:      https://element.io/blog/how-the-european-commission-rolled-out-matrix-to-more-than-40-000-staff/
+:HN_URL:   https://news.ycombinator.com/item?id=50558533
+:POINTS:   582
+:COMMENTS: 278
+:BY:       liotier
+:END:
+
+*** TLDR
+［from title + comments, article unreachable: the URL now redirects to Element's Matrix Conference 2026 talk index］ Element's post covers the European Commission deploying Matrix to more than 40,000 staff. Excerpts quoted in the thread say the Commission first defined sovereignty along five dimensions, including resilience and business continuity, vendor diversity, control over its data and ownership of the platform. They also say live presence (the online/away indicator) was switched off once its load started to hurt performance. Commenters link Politico's October report of officials calling the Element Pro deployment 'absolute s–t', and note that it runs alongside Teams as a channel for sensitive communication rather than replacing it.
+
+*** Take
+Presence was the first thing to break, and a Matrix server operator in the thread explains why: on their server, presence updates outnumber every other event type by three orders of magnitude. The bigger risk is adoption. If Teams stays the default, Matrix becomes a backup channel that staff open only during an outage. The Commission's contract is the best chance in years to fix device verification and restart the paused MLS work, the two complaints that come up in every Matrix thread.
+
+*** Comments
+
+**** seanieb
+:PROPERTIES:
+:COMMENT_ID: 50559157
+:END:
+Matrix's encryption is a tire fire. Their work to move to MLS seems to be abandoned.
+
+**** JadedBlueEyes
+:PROPERTIES:
+:COMMENT_ID: 50559249
+:END:
+There's a lot of parallel work going on to improve encryption in Matrix, including MLS. This is a million times better than the status quo: Teams. Cleartext directly to the US.
+
+**** goobatrooba
+:PROPERTIES:
+:COMMENT_ID: 50562002
+:END:
+For the commission it's for now just a backup, main one is Teams. Shocking.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+欧盟委员会如何向 4 万多名员工推广 Matrix
+***** TLDR
+［根据标题和评论整理，文章无法访问：该链接现在跳转到 Element 的 Matrix Conference 2026 演讲目录］ Element 的文章介绍了欧盟委员会向 4 万多名员工部署 Matrix。讨论中引用的段落称，委员会先从五个维度定义了主权，包括韧性与业务连续性、供应商多元化、数据控制权和平台所有权。引文还称，随着用户增加，实时在线状态（在线/离开指示）的负载开始影响性能，于是被关闭。评论者贴出了 Politico 10 月的报道，官员称这套 Element Pro 部署“简直是垃圾”；还有人指出它与 Teams 并行，用作敏感通信渠道，并没有取代 Teams。
+***** Take
+最先出问题的是在线状态。讨论中一位 Matrix 服务器运维者解释了原因：在其服务器上，在线状态更新比其他所有事件类型多三个数量级。更大的风险在于使用率。如果 Teams 仍是默认工具，Matrix 就会变成只有故障时才有人打开的备用渠道。委员会的这份合同是多年来修复设备验证、重启已暂停的 MLS 工作的最好机会，而这两点正是每次 Matrix 讨论都会出现的抱怨。
+***** Comments
+- Matrix 的加密一团糟。他们迁移到 MLS 的工作似乎已经放弃了。
+- Matrix 有很多改进加密的工作在同时进行，包括 MLS。这比现状好一百万倍：Teams，明文直接传到美国。
+- 对委员会来说，它目前只是备用，主力还是 Teams。令人震惊。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+欧州委員会が4万人超の職員にMatrixを展開した方法
+***** TLDR
+［タイトルとコメントから作成。記事は取得不可：URLはElementのMatrix Conference 2026講演一覧にリダイレクトされる］ Elementの記事は、欧州委員会が4万人超の職員にMatrixを展開した事例を紹介している。スレッドで引用された抜粋によると、委員会はまず主権を5つの観点で定義した。レジリエンスと事業継続、ベンダーの多様性、データの管理権、プラットフォームの所有などだ。また、利用者が増えるにつれてリアルタイムのプレゼンス表示（オンライン/離席）の負荷が性能に影響し始めたため、無効化したという。コメントでは、職員がElement Proの導入を「最悪」と呼んだという10月のPoliticoの報道が紹介され、Teamsを置き換えるのではなく機密性の高い連絡用に併用されていると指摘されている。
+***** Take
+最初に壊れたのはプレゼンスで、スレッドにいるMatrixサーバー運用者がその理由を説明している。その運用者のサーバーでは、プレゼンス更新が他のすべてのイベント種別より3桁多い。より大きなリスクは定着するかどうかだ。Teamsが標準のままなら、Matrixは障害時にしか開かれない予備チャネルになる。委員会の契約は、デバイス認証の改善と停止中のMLS作業の再開にとって、ここ数年で最大の機会だ。どちらもMatrixのスレッドで毎回出てくる不満である。
+***** Comments
+- Matrixの暗号化はひどい状態だ。MLSへの移行作業は放棄されたようだ。
+- MLSを含め、Matrixの暗号化を改善する作業は並行していくつも進んでいる。現状のTeamsより100万倍ましだ。平文のまま米国に直行なのだから。
+- 委員会にとって今のところは予備にすぎず、メインはTeamsだ。衝撃的だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+유럽연합 집행위원회가 직원 4만 명 이상에게 Matrix를 도입한 방법
+***** TLDR
+［제목과 댓글 기반, 기사 접근 불가: URL이 Element의 Matrix Conference 2026 발표 목록으로 리디렉션됨］ Element의 글은 유럽연합 집행위원회가 직원 4만 명 이상에게 Matrix를 배포한 사례를 다룬다. 스레드에 인용된 발췌에 따르면 위원회는 먼저 주권을 다섯 가지 차원으로 정의했다. 회복력과 업무 연속성, 공급업체 다양성, 데이터 통제, 플랫폼 소유권 등이다. 또 사용자가 늘면서 실시간 접속 상태(온라인/자리 비움) 표시의 부하가 성능에 영향을 주기 시작해 이 기능을 껐다고 한다. 댓글에서는 관료들이 Element Pro 배포를 '완전 쓰레기'라고 불렀다는 Politico의 10월 보도가 언급됐고, Teams를 대체하는 것이 아니라 민감한 소통용 채널로 병행 운영된다는 지적도 나왔다.
+***** Take
+가장 먼저 무너진 것은 접속 상태 기능이었고, 스레드의 한 Matrix 서버 운영자가 이유를 설명한다. 그 운영자의 서버에서는 접속 상태 업데이트가 다른 모든 이벤트 유형보다 1000배 많다. 더 큰 위험은 실제 사용 여부다. Teams가 기본 도구로 남으면 Matrix는 장애 때만 여는 예비 채널이 된다. 위원회의 계약은 기기 인증을 고치고 중단된 MLS 작업을 재개할 수 있는 몇 년 만의 가장 좋은 기회다. 이 두 가지는 Matrix 관련 스레드마다 나오는 불만이다.
+***** Comments
+- Matrix의 암호화는 엉망이다. MLS로의 전환 작업은 포기된 것 같다.
+- MLS를 포함해 Matrix 암호화를 개선하는 작업이 여러 갈래로 진행 중이다. 현재 상태인 Teams보다 백만 배 낫다. 평문이 그대로 미국으로 간다.
+- 위원회에게는 아직 예비용일 뿐이고 주력은 Teams다. 충격적이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Cómo la Comisión Europea desplegó Matrix para más de 40.000 empleados
+***** TLDR
+［a partir del título y los comentarios; artículo inaccesible: la URL ahora redirige al índice de charlas de la Matrix Conference 2026 de Element］ El artículo de Element describe cómo la Comisión Europea desplegó Matrix para más de 40.000 empleados. Según los fragmentos citados en el hilo, la Comisión definió primero la soberanía en cinco dimensiones, entre ellas resiliencia y continuidad del negocio, diversidad de proveedores, control sobre sus datos y propiedad de la plataforma. También dicen que la presencia en vivo (el indicador de conectado/ausente) se desactivó cuando su carga empezó a afectar al rendimiento. Los comentaristas enlazan el reportaje de Politico de octubre en el que funcionarios llamaban al despliegue de Element Pro 'una auténtica m–da', y señalan que convive con Teams como canal para comunicaciones sensibles en lugar de sustituirlo.
+***** Take
+La presencia fue lo primero en fallar, y un operador de servidores Matrix en el hilo explica por qué: en su servidor, las actualizaciones de presencia superan a cualquier otro tipo de evento en tres órdenes de magnitud. El riesgo mayor es la adopción. Si Teams sigue siendo la herramienta por defecto, Matrix se queda en un canal de respaldo que el personal solo abre durante una caída. El contrato de la Comisión es la mejor oportunidad en años para arreglar la verificación de dispositivos y reactivar el trabajo pausado de MLS, las dos quejas que aparecen en cada hilo sobre Matrix.
+***** Comments
+- El cifrado de Matrix es un desastre. Su trabajo para pasar a MLS parece abandonado.
+- Hay mucho trabajo en paralelo para mejorar el cifrado en Matrix, incluido MLS. Esto es un millón de veces mejor que la situación actual: Teams. Texto plano directo a EE. UU.
+- Para la Comisión, por ahora es solo un respaldo; el principal es Teams. Increíble.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Wie die Europäische Kommission Matrix für mehr als 40.000 Mitarbeitende eingeführt hat
+***** TLDR
+［aus Titel und Kommentaren; Artikel nicht erreichbar: Die URL leitet jetzt auf Elements Vortragsübersicht der Matrix Conference 2026 weiter］ Elements Beitrag beschreibt, wie die Europäische Kommission Matrix für mehr als 40.000 Mitarbeitende eingeführt hat. Laut den im Thread zitierten Auszügen definierte die Kommission Souveränität zuerst in fünf Dimensionen, darunter Resilienz und Geschäftskontinuität, Anbietervielfalt, Kontrolle über die eigenen Daten und Eigentum an der Plattform. Außerdem wurde die Live-Präsenz (die Online/Abwesend-Anzeige) abgeschaltet, als ihre Last die Leistung zu beeinträchtigen begann. Kommentatoren verlinken den Politico-Bericht vom Oktober, in dem Beamte die Element-Pro-Einführung als 'absoluten Mist' bezeichneten, und weisen darauf hin, dass sie neben Teams als Kanal für sensible Kommunikation läuft und Teams nicht ersetzt.
+***** Take
+Die Präsenz ging als Erstes kaputt, und ein Matrix-Serverbetreiber im Thread erklärt den Grund: Auf seinem Server gibt es drei Größenordnungen mehr Präsenz-Updates als Ereignisse jedes anderen Typs. Das größere Risiko ist die Nutzung. Bleibt Teams der Standard, wird Matrix zum Notfallkanal, den die Belegschaft nur bei einem Ausfall öffnet. Der Vertrag der Kommission ist seit Jahren die beste Gelegenheit, die Geräteverifizierung zu reparieren und die pausierte MLS-Arbeit wieder aufzunehmen. Genau diese beiden Beschwerden tauchen in jedem Matrix-Thread auf.
+***** Comments
+- Die Verschlüsselung von Matrix ist ein Desaster. Die Arbeit am Umstieg auf MLS scheint aufgegeben.
+- An der Verschlüsselung in Matrix wird parallel viel gearbeitet, auch an MLS. Das ist eine Million Mal besser als der Status quo: Teams. Klartext direkt in die USA.
+- Für die Kommission ist es vorerst nur ein Backup, das Hauptwerkzeug ist Teams. Schockierend.
+** Garage Door Spam :iot:smart-home:ads:notifications:open-source:
+:PROPERTIES:
+:ID:       50519231
+:URL:      https://blog.harrison.page/garage-door-spam/
+:HN_URL:   https://news.ycombinator.com/item?id=50519231
+:POINTS:   570
+:COMMENTS: 240
+:BY:       harrisonpage
+:END:
+
+*** TLDR
+Harrison Page relied on Chamberlain's myQ app for door open/close alerts, even though the app itself was 'encrusted with ads'. Chamberlain cut off third-party API access in late 2023, and in October 2026 the notifications changed in a way he would not accept (the post shows this only in a screenshot). He replaced myQ with two ratgdo32 boards (about $62), which control the opener over the local network through ESPHome or HomeKit. He added them to HomeKit for Siri, wrote a nightly script that polls each board's JSON status endpoint and posts to Slack if a door is open, reached the boards over Tailscale, and got a small pull request merged upstream. His alerts now show who opened the door, which myQ never did.
+
+*** Take
+If myQ is now putting promotions into door alerts, as the title and commenters suggest, Chamberlain is teaching owners to ignore the one notification that has a security purpose. Apple's App Store guideline 4.5.4 already requires explicit opt-in for promotional push notifications, and Google's Play guidelines prohibit advertising other products in notifications. The rules exist and are not enforced. A $62 board and an evening of setup replaced the app completely, which shows how little the myQ cloud adds besides the ads.
+
+*** Comments
+
+**** wallst07
+:PROPERTIES:
+:COMMENT_ID: 50558842
+:END:
+Apps for devices that I purchased that show ads is probably one of my biggest tech pet peeves. I will sell/replace/throw every device if I see an ad in the ecosystem.
+
+**** steve_taylor
+:PROPERTIES:
+:COMMENT_ID: 50559189
+:END:
+Apple used to forbid marketing notifications, but they relaxed their policy a while ago. What's really needed is system-wide notification channels and a global off-switch for marketing notifications.
+
+**** enragedcacti
+:PROPERTIES:
+:COMMENT_ID: 50561744
+:END:
+Android has had most of this for a while now, though Google's policing of it isn't that great.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+车库门垃圾推送
+***** TLDR
+Harrison Page 一直用 Chamberlain 的 myQ 应用接收车库门开关提醒，尽管这个应用本身“布满广告”。Chamberlain 在 2023 年底切断了第三方 API 访问，2026 年 10 月通知又出现了他无法接受的变化（文章只用截图展示）。他用两块 ratgdo32 控制板（约 62 美元）取代了 myQ，它们通过 ESPHome 或 HomeKit 在局域网内控制开门器。他把控制板接入 HomeKit 以便用 Siri 操作，写了一个夜间脚本轮询每块板子的 JSON 状态接口，发现门开着就发到 Slack，通过 Tailscale 远程访问控制板，还向上游提交了一个小的拉取请求并被合并。现在他的提醒能显示是谁开的门，这是 myQ 从未做到的。
+***** Take
+如果 myQ 真的像标题和评论者暗示的那样往开门提醒里塞促销，Chamberlain 就是在教用户忽略唯一一个有安全用途的通知。苹果 App Store 审核指南 4.5.4 已经要求促销推送必须明确征得同意，Google Play 指南也禁止在通知中为其他产品做广告。规则是有的，只是没人执行。一块 62 美元的板子加一个晚上的配置就完全替代了这个应用，可见 myQ 云服务除了广告几乎没提供什么。
+***** Comments
+- 我买的设备配套应用居然显示广告，这大概是我最讨厌的科技现象之一。只要在生态里看到广告，我就会把设备卖掉、换掉或扔掉。
+- 苹果以前禁止营销通知，但前段时间放宽了政策。真正需要的是系统级的通知分类，以及一个全局关闭营销通知的开关。
+- 安卓早就有这些功能的大部分了，只是 Google 的监管做得不怎么样。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+ガレージドアのスパム
+***** TLDR
+Harrison Pageは、アプリ自体が「広告まみれ」でも、ガレージドアの開閉通知のためにChamberlainのmyQアプリを使っていた。Chamberlainは2023年末にサードパーティのAPIアクセスを遮断し、2026年10月には通知が彼にとって受け入れられない形に変わった（記事ではスクリーンショットでのみ示されている）。彼はmyQを2枚のratgdo32ボード（約62ドル）に置き換えた。これはESPHomeやHomeKit経由でローカルネットワーク上から開閉機を制御する。HomeKitに追加してSiriで操作できるようにし、各ボードのJSONステータスエンドポイントを毎晩確認してドアが開いていればSlackに投稿するスクリプトを書き、Tailscale経由でボードにアクセスし、小さなプルリクエストを上流にマージしてもらった。今の通知には誰がドアを開けたかが表示される。myQにはできなかったことだ。
+***** Take
+タイトルやコメントが示すようにmyQがドア通知に販促を入れ始めたのなら、Chamberlainは防犯目的を持つ唯一の通知を無視するようユーザーを慣らしていることになる。AppleのApp Storeガイドライン4.5.4は販促プッシュ通知に明示的なオプトインを求めており、GoogleのPlayガイドラインも通知で他製品を広告することを禁じている。ルールはあるが執行されていない。62ドルのボードと一晩の設定でアプリを完全に置き換えられたことは、myQのクラウドが広告以外にほとんど価値を加えていないことを示している。
+***** Comments
+- 買ったデバイスのアプリが広告を表示するのは、テック関連で一番腹が立つことの一つだ。エコシステムで広告を見たら、どのデバイスでも売るか買い替えるか捨てる。
+- Appleは以前マーケティング通知を禁止していたが、少し前に方針を緩めた。本当に必要なのはシステム全体の通知チャネルと、マーケティング通知を一括でオフにするスイッチだ。
+- Androidにはだいぶ前からその大半がある。ただGoogleの取り締まりはあまり良くない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+차고 문 스팸
+***** TLDR
+Harrison Page는 앱 자체가 '광고투성이'인데도 차고 문 열림/닫힘 알림을 받으려고 Chamberlain의 myQ 앱을 써 왔다. Chamberlain은 2023년 말 서드파티 API 접근을 차단했고, 2026년 10월에는 알림이 그가 받아들일 수 없는 방식으로 바뀌었다(글에서는 스크린샷으로만 보여 준다). 그는 myQ를 ratgdo32 보드 두 개(약 62달러)로 교체했다. 이 보드는 ESPHome이나 HomeKit을 통해 로컬 네트워크에서 개폐기를 제어한다. 그는 Siri로 쓰도록 HomeKit에 추가했고, 매일 밤 각 보드의 JSON 상태 엔드포인트를 확인해 문이 열려 있으면 Slack에 올리는 스크립트를 작성했으며, Tailscale로 보드에 접근하고, 작은 풀 리퀘스트를 업스트림에 병합시켰다. 이제 알림에 누가 문을 열었는지 표시되는데, myQ는 한 번도 이걸 해 주지 않았다.
+***** Take
+제목과 댓글이 암시하듯 myQ가 문 알림에 홍보를 넣기 시작했다면, Chamberlain은 보안 목적이 있는 유일한 알림을 무시하도록 사용자를 길들이고 있는 셈이다. Apple App Store 가이드라인 4.5.4는 이미 홍보용 푸시 알림에 명시적 동의를 요구하고, Google Play 가이드라인도 알림으로 다른 제품을 광고하는 것을 금지한다. 규칙은 있지만 집행되지 않는다. 62달러짜리 보드와 하룻저녁 설정으로 앱을 완전히 대체할 수 있었다는 건, myQ 클라우드가 광고 말고는 별로 하는 일이 없다는 뜻이다.
+***** Comments
+- 내가 산 기기의 앱이 광고를 보여 주는 건 아마 기술 관련해서 가장 짜증 나는 일 중 하나다. 생태계에서 광고를 보면 어떤 기기든 팔거나 바꾸거나 버릴 거다.
+- Apple은 예전에 마케팅 알림을 금지했지만 얼마 전 정책을 완화했다. 정말 필요한 건 시스템 전체의 알림 채널과 마케팅 알림을 한 번에 끄는 스위치다.
+- 안드로이드에는 이미 오래전부터 대부분 있다. 다만 Google의 단속은 그리 좋지 않다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Spam de la puerta del garaje
+***** TLDR
+Harrison Page usaba la app myQ de Chamberlain para recibir avisos de apertura y cierre del garaje, aunque la app estaba 'incrustada de anuncios'. Chamberlain cortó el acceso de terceros a su API a finales de 2023, y en octubre de 2026 las notificaciones cambiaron de una forma que él no aceptó (el artículo solo lo muestra en una captura). Sustituyó myQ por dos placas ratgdo32 (unos 62 dólares), que controlan el motor por la red local mediante ESPHome o HomeKit. Las añadió a HomeKit para usar Siri, escribió un script nocturno que consulta el endpoint de estado JSON de cada placa y avisa en Slack si una puerta está abierta, accedió a ellas a través de Tailscale y consiguió que le aceptaran un pequeño pull request en el proyecto. Ahora sus avisos indican quién abrió la puerta, algo que myQ nunca hizo.
+***** Take
+Si myQ está metiendo promociones en los avisos de la puerta, como sugieren el título y los comentarios, Chamberlain está enseñando a los usuarios a ignorar la única notificación que tiene una función de seguridad. La norma 4.5.4 de la App Store de Apple ya exige consentimiento explícito para notificaciones promocionales, y las directrices de Google Play prohíben anunciar otros productos en notificaciones. Las reglas existen y nadie las aplica. Una placa de 62 dólares y una tarde de configuración sustituyeron la app por completo, lo que muestra lo poco que aporta la nube de myQ aparte de los anuncios.
+***** Comments
+- Que las apps de dispositivos que he comprado muestren anuncios es probablemente una de las cosas de la tecnología que más me molestan. Venderé, cambiaré o tiraré cualquier dispositivo si veo un anuncio en su ecosistema.
+- Apple antes prohibía las notificaciones de marketing, pero relajó su política hace un tiempo. Lo que de verdad hace falta son canales de notificación a nivel de sistema y un interruptor global para apagar las de marketing.
+- Android tiene la mayor parte de esto desde hace tiempo, aunque Google no lo vigila muy bien.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Garagentor-Spam
+***** TLDR
+Harrison Page nutzte die myQ-App von Chamberlain für Benachrichtigungen über das Öffnen und Schließen des Garagentors, obwohl die App selbst 'mit Werbung verkrustet' war. Chamberlain sperrte Ende 2023 den API-Zugang für Drittanbieter, und im Oktober 2026 änderten sich die Benachrichtigungen auf eine Weise, die er nicht hinnehmen wollte (der Beitrag zeigt das nur per Screenshot). Er ersetzte myQ durch zwei ratgdo32-Platinen (etwa 62 Dollar), die den Torantrieb über das lokale Netzwerk per ESPHome oder HomeKit steuern. Er band sie für Siri in HomeKit ein, schrieb ein nächtliches Skript, das den JSON-Status-Endpunkt jeder Platine abfragt und bei offenem Tor in Slack meldet, erreichte die Platinen über Tailscale und bekam einen kleinen Pull Request ins Projekt gemergt. Seine Benachrichtigungen zeigen jetzt, wer das Tor geöffnet hat, was myQ nie konnte.
+***** Take
+Falls myQ inzwischen Werbung in die Tor-Benachrichtigungen packt, wie Titel und Kommentare nahelegen, bringt Chamberlain den Nutzern bei, die einzige Benachrichtigung mit Sicherheitszweck zu ignorieren. Apples App-Store-Richtlinie 4.5.4 verlangt bereits eine ausdrückliche Zustimmung für Werbe-Pushs, und die Google-Play-Richtlinien verbieten Werbung für andere Produkte in Benachrichtigungen. Die Regeln gibt es, sie werden nur nicht durchgesetzt. Eine Platine für 62 Dollar und ein Abend Einrichtung haben die App vollständig ersetzt. Das zeigt, wie wenig die myQ-Cloud außer Werbung beiträgt.
+***** Comments
+- Apps für Geräte, die ich gekauft habe und die Werbung zeigen, sind wahrscheinlich eines meiner größten Ärgernisse in der Technik. Ich verkaufe, ersetze oder entsorge jedes Gerät, wenn ich Werbung im Ökosystem sehe.
+- Apple hat Marketing-Benachrichtigungen früher verboten, die Regel aber vor einer Weile gelockert. Was wirklich fehlt, sind systemweite Benachrichtigungskanäle und ein globaler Ausschalter für Marketing-Benachrichtigungen.
+- Android hat das meiste davon schon länger, allerdings kontrolliert Google es nicht besonders gut.
+** UK government forced to admit it issued Apple a secret encryption order :privacy:encryption:apple:uk:surveillance:
+:PROPERTIES:
+:ID:       50562113
+:URL:      https://macanorak.com/uk-government-forced-to-admit-it-issued-apple-a-secret-encryption-order/
+:HN_URL:   https://news.ycombinator.com/item?id=50562113
+:POINTS:   226
+:COMMENTS: 103
+:BY:       Terretta
+:END:
+
+*** TLDR
+On 19 November 2026 the Investigatory Powers Tribunal ruled that the UK government must acknowledge it issued Apple a Technical Capability Notice under the Investigatory Powers Act. It rejected the government's 'neither confirm nor deny' position because disclosure would not harm national security. Liberty and Privacy International brought the challenge. A January 2025 notice reportedly demanded access to encrypted iCloud data worldwide. After the Washington Post reported it in February 2025, Apple withdrew Advanced Data Protection for new UK users. The UK dropped that notice in mid-2025 under US pressure and reportedly issued a second one limited to British users. The ruling does not decide whether the order is lawful or say what it requires. Apple's separate challenge is expected to reach a substantive hearing in 2027.
+
+*** Take
+The government spent 21 months refusing to confirm an order the Washington Post had already reported, and the tribunal found that the secrecy protected nothing. Everything that matters is still hidden: what Apple was told to build, whether that is legal, and how far the second notice reaches. natch argues in the thread that Apple's wording has shifted from 'nobody can access your data, not even Apple' to 'Apple cannot access your data', and that narrower promise is the kind of gap a capability notice would use.
+
+*** Comments
+
+**** dmitrygr
+:PROPERTIES:
+:COMMENT_ID: 50563306
+:END:
+If the government is to be accountable to its people, its actions cannot be secret as they relate to those people.
+
+**** natch
+:PROPERTIES:
+:COMMENT_ID: 50563168
+:END:
+They used to say nobody can access your data, not even Apple. Now they say Apple cannot access your data.
+
+**** bigyabai
+:PROPERTIES:
+:COMMENT_ID: 50562751
+:END:
+I'll never forget that Apple was A-okay moving their iCloud encryption keys into China.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+英国政府被迫承认曾向苹果发出秘密加密命令
+***** TLDR
+2026 年 11 月 19 日，英国调查权力法庭裁定，政府必须承认曾根据《调查权力法》向苹果发出“技术能力通知”。法庭驳回了政府“既不确认也不否认”的立场，理由是公开此事不会损害国家安全。提出质疑的是 Liberty 和 Privacy International。据报道，2025 年 1 月的通知要求获取全球范围内加密的 iCloud 数据。2025 年 2 月《华盛顿邮报》报道后，苹果对英国新用户撤下了“高级数据保护”。英国在 2025 年年中迫于美国压力撤回了该通知，据报道随后又发出了仅针对英国用户的第二份通知。此次裁决没有判定该命令是否合法，也没有说明它要求什么。苹果另行提起的诉讼预计将在 2027 年进行实质性听证。
+***** Take
+《华盛顿邮报》早已报道了这项命令，政府却花了 21 个月拒绝确认，而法庭认定这种保密什么也没保护。真正重要的内容仍然保密：苹果被要求构建什么、这是否合法、第二份通知的范围有多大。natch 在讨论中指出，苹果的措辞已从“没有人能访问你的数据，连苹果也不能”变成了“苹果无法访问你的数据”，而这种更窄的承诺正是技术能力通知可以利用的漏洞。
+***** Comments
+- 如果政府要对人民负责，那么涉及人民的行为就不能保密。
+- 他们以前说没有人能访问你的数据，连苹果也不能。现在他们说苹果无法访问你的数据。
+- 我永远不会忘记，苹果把 iCloud 加密密钥迁到中国时可是毫无意见。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+英国政府、Appleに秘密の暗号化命令を出していたことを認めざるを得なくなる
+***** TLDR
+2026年11月19日、調査権限審判所は、英国政府が調査権限法に基づきAppleに技術的能力通知を出したことを認めなければならないと判断した。開示しても国家安全保障を損なわないとして、政府の「肯定も否定もしない」という立場を退けた。異議を申し立てたのはLibertyとPrivacy Internationalだ。報道によれば、2025年1月の通知は世界中の暗号化されたiCloudデータへのアクセスを要求していた。2025年2月にワシントン・ポストが報じた後、Appleは英国の新規ユーザー向けに高度なデータ保護の提供をやめた。英国は2025年半ばに米国の圧力でこの通知を撤回し、その後英国ユーザーに限定した2通目を出したと報じられている。今回の判断は命令が合法かどうかも、何を求めているかも示していない。Apple自身の訴えは2027年に実質審理が予定されている。
+***** Take
+ワシントン・ポストがすでに報じていた命令について、政府は21か月も確認を拒み、審判所はその秘密主義が何も守っていなかったと判断した。重要な点はすべてまだ秘密のままだ。Appleが何を作れと言われたのか、それが合法なのか、2通目の通知がどこまで及ぶのか。スレッドでnatchは、Appleの表現が「誰もあなたのデータにアクセスできない、Appleでさえも」から「Appleはあなたのデータにアクセスできない」に変わったと指摘しており、この狭まった約束こそ技術的能力通知が使える隙間だ。
+***** Comments
+- 政府が国民に対して説明責任を負うなら、国民に関わる行為は秘密であってはならない。
+- 以前は、誰もあなたのデータにアクセスできない、Appleでさえも、と言っていた。今はAppleはあなたのデータにアクセスできない、と言っている。
+- AppleがiCloudの暗号鍵を中国に移すことにはまったく抵抗がなかったのを私は決して忘れない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+영국 정부, Apple에 비밀 암호화 명령을 내렸다고 인정할 수밖에 없게 돼
+***** TLDR
+2026년 11월 19일 영국 수사권한재판소는 정부가 수사권한법에 따라 Apple에 기술역량통지를 발부했다는 사실을 인정해야 한다고 판결했다. 공개해도 국가 안보를 해치지 않는다며 정부의 '확인도 부인도 하지 않는다'는 입장을 기각했다. 이의를 제기한 곳은 Liberty와 Privacy International이다. 보도에 따르면 2025년 1월의 통지는 전 세계의 암호화된 iCloud 데이터에 대한 접근을 요구했다. 2025년 2월 워싱턴포스트가 이를 보도한 뒤 Apple은 영국 신규 사용자에게 고급 데이터 보호 기능 제공을 중단했다. 영국은 2025년 중반 미국의 압력으로 이 통지를 철회했고, 이후 영국 사용자로 한정한 두 번째 통지를 발부한 것으로 알려졌다. 이번 판결은 명령의 합법성도, 무엇을 요구하는지도 판단하지 않았다. Apple의 별도 소송은 2027년에 본안 심리가 예정돼 있다.
+***** Take
+워싱턴포스트가 이미 보도한 명령을 정부는 21개월 동안 확인하지 않았고, 재판소는 그 비밀 유지가 아무것도 보호하지 못했다고 판단했다. 중요한 내용은 여전히 비밀이다. Apple이 무엇을 만들라는 요구를 받았는지, 그것이 합법인지, 두 번째 통지가 어디까지 미치는지. natch는 스레드에서 Apple의 표현이 '아무도 당신의 데이터에 접근할 수 없다, Apple조차도'에서 'Apple은 당신의 데이터에 접근할 수 없다'로 바뀌었다고 지적한다. 이렇게 좁아진 약속이 바로 기술역량통지가 파고들 수 있는 틈이다.
+***** Comments
+- 정부가 국민에게 책임을 지려면, 국민과 관련된 행위는 비밀일 수 없다.
+- 예전에는 아무도 당신의 데이터에 접근할 수 없다, Apple조차도라고 했다. 지금은 Apple은 당신의 데이터에 접근할 수 없다고 한다.
+- Apple이 iCloud 암호화 키를 중국으로 옮기는 데 아무 문제 없어 했던 걸 나는 절대 잊지 않을 것이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+El Gobierno británico, obligado a admitir que dio a Apple una orden secreta sobre cifrado
+***** TLDR
+El 19 de noviembre de 2026, el Investigatory Powers Tribunal dictaminó que el Gobierno británico debe reconocer que emitió a Apple un Technical Capability Notice en virtud de la Investigatory Powers Act. Rechazó la postura de 'ni confirmar ni desmentir' porque revelarlo no dañaría la seguridad nacional. La impugnación la presentaron Liberty y Privacy International. Según las informaciones, un aviso de enero de 2025 exigía acceso a datos cifrados de iCloud en todo el mundo. Tras publicarlo el Washington Post en febrero de 2025, Apple retiró la Protección Avanzada de Datos para nuevos usuarios en el Reino Unido. El Reino Unido retiró ese aviso a mediados de 2025 por presión de EE. UU. y, según se informa, emitió un segundo limitado a usuarios británicos. El fallo no decide si la orden es legal ni revela qué exige. Se espera que la impugnación propia de Apple llegue a una vista sobre el fondo en 2027.
+***** Take
+El Gobierno pasó 21 meses negándose a confirmar una orden que el Washington Post ya había publicado, y el tribunal concluyó que ese secreto no protegía nada. Todo lo importante sigue oculto: qué se pidió a Apple que construyera, si es legal y hasta dónde llega el segundo aviso. natch sostiene en el hilo que Apple pasó de decir 'nadie puede acceder a tus datos, ni siquiera Apple' a 'Apple no puede acceder a tus datos', y esa promesa más estrecha es justo el tipo de hueco que aprovecharía un aviso de capacidad técnica.
+***** Comments
+- Si el Gobierno ha de rendir cuentas ante su pueblo, sus actos no pueden ser secretos en lo que afecta a ese pueblo.
+- Antes decían que nadie puede acceder a tus datos, ni siquiera Apple. Ahora dicen que Apple no puede acceder a tus datos.
+- Nunca olvidaré que a Apple le pareció perfecto trasladar sus claves de cifrado de iCloud a China.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Britische Regierung muss eingestehen, Apple eine geheime Verschlüsselungsanordnung erteilt zu haben
+***** TLDR
+Am 19. November 2026 entschied das Investigatory Powers Tribunal, dass die britische Regierung anerkennen muss, Apple eine Technical Capability Notice nach dem Investigatory Powers Act erteilt zu haben. Es verwarf die Haltung 'weder bestätigen noch dementieren', weil eine Offenlegung der nationalen Sicherheit nicht schade. Geklagt hatten Liberty und Privacy International. Eine Anordnung vom Januar 2025 verlangte Berichten zufolge weltweit Zugriff auf verschlüsselte iCloud-Daten. Nachdem die Washington Post im Februar 2025 darüber berichtet hatte, nahm Apple den Erweiterten Datenschutz für neue Nutzer in Großbritannien zurück. Großbritannien zog diese Anordnung Mitte 2025 auf US-Druck zurück und erließ Berichten zufolge eine zweite, auf britische Nutzer beschränkte. Das Urteil klärt weder, ob die Anordnung rechtmäßig ist, noch was sie verlangt. Apples eigene Klage soll 2027 in der Sache verhandelt werden.
+***** Take
+Die Regierung hat 21 Monate lang verweigert, eine Anordnung zu bestätigen, über die die Washington Post längst berichtet hatte, und das Tribunal stellte fest, dass diese Geheimhaltung nichts geschützt hat. Alles Wesentliche bleibt geheim: was Apple bauen sollte, ob das rechtmäßig ist und wie weit die zweite Anordnung reicht. natch argumentiert im Thread, Apples Formulierung habe sich von 'niemand kann auf deine Daten zugreifen, nicht einmal Apple' zu 'Apple kann nicht auf deine Daten zugreifen' verschoben. Genau dieses engere Versprechen ist die Lücke, die eine solche Anordnung nutzen würde.
+***** Comments
+- Wenn die Regierung ihrem Volk gegenüber rechenschaftspflichtig sein soll, dürfen ihre Handlungen, die dieses Volk betreffen, nicht geheim sein.
+- Früher hieß es, niemand kann auf deine Daten zugreifen, nicht einmal Apple. Jetzt heißt es, Apple kann nicht auf deine Daten zugreifen.
+- Ich werde nie vergessen, dass Apple keinerlei Problem damit hatte, seine iCloud-Schlüssel nach China zu verlegen.
+** Pete Warden on local AI, open models, voice interfaces, the future of hardware :local-ai:open-models:voice:hardware:inference:
+:PROPERTIES:
+:ID:       50561508
+:URL:      https://thedataexchange.media/pete-warden-moonshine/
+:HN_URL:   https://news.ycombinator.com/item?id=50561508
+:POINTS:   153
+:COMMENTS: 142
+:BY:       datascientist
+:END:
+
+*** TLDR
+In a Data Exchange interview, Pete Warden argues that 'AI wants to be local'. Inference needs far less infrastructure than search, open-weight models trail frontier models by only a few months, and the remaining obstacles are usability and marketing. He puts a 9B model at about 9 GB in 8-bit and roughly half that in 4-bit. For voice he sets a target of about 200 ms per response, against two seconds or more for typical cloud voice. He prefers chaining speech-to-text, an LLM and text-to-speech over end-to-end speech models, and says he ran a voice interface on a Raspberry Pi Pico with 500 KB of RAM. On hardware, he says inference is limited by memory bandwidth, GPUs are overkill for it, and high-bandwidth flash looks promising. He also argues that zero marginal cost per call makes features viable that per-call pricing would rule out.
+
+*** Take
+The cost argument is his strongest: features that would be too expensive at per-token prices become possible when each call costs nothing. herf gives the best counter in the thread: datacenters batch requests and keep hardware busy, while a home GPU sits idle most of the day. The two positions fit together. Batch jobs and frontier-level coding go to the cloud. Voice, which needs a reply in about 200 ms, and anything private stay on the device.
+
+*** Comments
+
+**** lrvick
+:PROPERTIES:
+:COMMENT_ID: 50563160
+:END:
+I run 8x r9700s at home which lets me run up to 2x 1M context sessions of GLM 5.3 flash at ~50tps. I exclusively use this setup for all AI usage.
+
+**** paxy
+:PROPERTIES:
+:COMMENT_ID: 50562313
+:END:
+99%+ of consumers aren't going to care. How many are ready to buy thousands of dollars worth of AI hardware?
+
+**** herf
+:PROPERTIES:
+:COMMENT_ID: 50562385
+:END:
+I love local AI, but even so, I admit the economics point the other way. Utilization is massively better with always-on servers doing parallelism (in-flight batching).
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Pete Warden 谈本地 AI、开放模型、语音界面和硬件的未来
+***** TLDR
+在 Data Exchange 的访谈中，Pete Warden 认为“AI 天生想在本地运行”。推理所需的基础设施远少于搜索，开放权重模型只落后前沿模型几个月，剩下的障碍是易用性和营销。他估计 9B 模型在 8 位精度下约需 9 GB，4 位精度下大约减半。语音方面，他把目标定在每次响应约 200 毫秒，而常见的云端语音要两秒以上。他更倾向于把语音转文字、LLM 和文字转语音串联起来，而不是用端到端语音模型，并说他曾在只有 500 KB 内存的 Raspberry Pi Pico 上运行语音界面。硬件方面，他认为推理受内存带宽限制，GPU 用于推理是大材小用，高带宽闪存值得期待。他还认为，每次调用零边际成本会让许多按次计费下不可行的功能变得可行。
+***** Take
+成本论点最有力：按 token 计费时过于昂贵的功能，在每次调用不花钱时就变得可行。讨论中 herf 给出了最好的反驳：数据中心能批量处理请求、让硬件保持满负荷，而家里的 GPU 一天大部分时间都在闲置。这两种观点可以兼容。批处理任务和前沿水平的编程交给云端；需要约 200 毫秒内回应的语音，以及任何隐私内容，留在设备上。
+***** Comments
+- 我在家里跑 8 块 r9700，可以同时运行最多 2 个 100 万上下文的 GLM 5.3 flash 会话，约每秒 50 个 token。我所有的 AI 使用都只用这套设备。
+- 99% 以上的消费者根本不会在意。有多少人愿意花几千美元买 AI 硬件？
+- 我喜欢本地 AI，但即便如此，我也承认经济账指向另一边。始终在线、做并行（动态批处理）的服务器利用率要高得多。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Pete Wardenが語るローカルAI、オープンモデル、音声インターフェース、ハードウェアの未来
+***** TLDR
+Data Exchangeのインタビューで、Pete Wardenは「AIはローカルで動きたがっている」と主張する。推論は検索よりはるかに少ないインフラで済み、オープンウェイトのモデルは最先端モデルに数か月しか遅れておらず、残る障害は使いやすさとマーケティングだという。9Bモデルは8ビットで約9GB、4ビットならその半分ほどだと見積もる。音声については応答あたり約200ミリ秒を目標とし、一般的なクラウド音声は2秒以上かかるとする。エンドツーエンドの音声モデルより、音声認識、LLM、音声合成をつなぐ構成を好み、RAM 500KBのRaspberry Pi Picoで音声インターフェースを動かしたと語る。ハードウェア面では、推論はメモリ帯域に制約され、GPUは推論には過剰で、高帯域フラッシュに期待しているという。また、1回あたりの限界費用がゼロになれば、従量課金では成り立たない機能が実現できると論じる。
+***** Take
+最も説得力があるのはコストの議論だ。トークン単位の料金では高すぎる機能も、1回の呼び出しが無料なら作れる。スレッドで最も良い反論はherfのものだ。データセンターはリクエストをバッチ処理してハードウェアを常に稼働させるが、家庭のGPUは1日の大半を遊んでいる。2つの立場は両立する。バッチ処理や最先端レベルのコーディングはクラウドへ。約200ミリ秒で応答する必要がある音声や、プライベートな用途はデバイス上に残る。
+***** Comments
+- 自宅でr9700を8枚動かしていて、100万コンテキストのGLM 5.3 flashセッションを最大2本、約50tpsで回せる。AIの用途はすべてこの環境だけで済ませている。
+- 消費者の99%以上は気にしない。AIハードウェアに何千ドルも払う準備がある人がどれだけいる？
+- ローカルAIは大好きだが、それでも経済性は逆を指していると認める。常時稼働で並列処理（インフライトバッチング）をするサーバーのほうが稼働率は圧倒的に高い。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Pete Warden이 말하는 로컬 AI, 오픈 모델, 음성 인터페이스, 하드웨어의 미래
+***** TLDR
+Data Exchange 인터뷰에서 Pete Warden은 'AI는 로컬로 가려 한다'고 주장한다. 추론은 검색보다 훨씬 적은 인프라로 가능하고, 오픈 웨이트 모델은 최첨단 모델에 몇 달밖에 뒤처지지 않으며, 남은 장애물은 사용성과 마케팅이라는 것이다. 그는 9B 모델이 8비트에서 약 9GB, 4비트에서 그 절반쯤이라고 본다. 음성에서는 응답당 약 200ms를 목표로 제시하는데, 일반적인 클라우드 음성은 2초 이상 걸린다. 엔드투엔드 음성 모델보다 음성 인식, LLM, 음성 합성을 연결하는 방식을 선호하며, RAM 500KB짜리 Raspberry Pi Pico에서 음성 인터페이스를 돌렸다고 말한다. 하드웨어 면에서는 추론이 메모리 대역폭에 묶여 있고, GPU는 추론에 과하며, 고대역폭 플래시가 유망하다고 본다. 또 호출당 한계 비용이 0이 되면 호출당 과금으로는 불가능한 기능이 가능해진다고 주장한다.
+***** Take
+가장 강력한 건 비용 논거다. 토큰당 가격으로는 너무 비싼 기능도 호출 비용이 0이면 만들 수 있다. 스레드에서 가장 좋은 반론은 herf의 것이다. 데이터센터는 요청을 묶어 처리해 하드웨어를 계속 돌리지만, 집의 GPU는 하루 대부분을 놀고 있다. 두 입장은 함께 성립한다. 배치 작업과 최첨단 수준의 코딩은 클라우드로 가고, 약 200ms 안에 답해야 하는 음성과 사적인 작업은 기기에 남는다.
+***** Comments
+- 집에서 r9700 8장을 돌려서 100만 컨텍스트 GLM 5.3 flash 세션을 최대 2개, 약 50tps로 실행한다. 모든 AI 사용을 이 장비로만 한다.
+- 소비자의 99% 이상은 신경 쓰지 않을 것이다. AI 하드웨어에 수천 달러를 쓸 준비가 된 사람이 얼마나 되겠나?
+- 로컬 AI를 좋아하지만, 그래도 경제성은 반대쪽을 가리킨다는 걸 인정한다. 상시 가동하며 병렬 처리(인플라이트 배칭)를 하는 서버의 활용률이 압도적으로 높다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Pete Warden sobre IA local, modelos abiertos, interfaces de voz y el futuro del hardware
+***** TLDR
+En una entrevista con The Data Exchange, Pete Warden sostiene que 'la IA quiere ser local'. La inferencia necesita mucha menos infraestructura que la búsqueda, los modelos de pesos abiertos van solo unos meses por detrás de los de frontera y los obstáculos restantes son la usabilidad y el marketing. Calcula que un modelo de 9B ocupa unos 9 GB en 8 bits y aproximadamente la mitad en 4 bits. Para la voz fija un objetivo de unos 200 ms por respuesta, frente a dos segundos o más de la voz en la nube habitual. Prefiere encadenar reconocimiento de voz, un LLM y síntesis de voz en lugar de modelos de voz de extremo a extremo, y cuenta que hizo funcionar una interfaz de voz en una Raspberry Pi Pico con 500 KB de RAM. Sobre hardware, dice que la inferencia está limitada por el ancho de banda de memoria, que las GPU son excesivas para ella y que la memoria flash de alto ancho de banda es prometedora. También argumenta que un coste marginal cero por llamada hace viables funciones que el pago por llamada descartaría.
+***** Take
+El argumento del coste es el más sólido: funciones demasiado caras con precios por token pasan a ser posibles cuando cada llamada no cuesta nada. herf da la mejor réplica del hilo: los centros de datos agrupan peticiones y mantienen el hardware ocupado, mientras que una GPU doméstica está parada casi todo el día. Las dos posturas encajan. Los trabajos por lotes y la programación de nivel frontera van a la nube. La voz, que necesita responder en unos 200 ms, y todo lo privado se quedan en el dispositivo.
+***** Comments
+- Tengo 8 r9700 en casa, con lo que puedo ejecutar hasta 2 sesiones de GLM 5.3 flash con 1M de contexto a unos 50 tps. Uso exclusivamente este equipo para todo mi uso de IA.
+- Al 99 % de los consumidores no les va a importar. ¿Cuántos están dispuestos a gastar miles de dólares en hardware de IA?
+- Me encanta la IA local, pero aun así admito que la economía apunta en la otra dirección. La utilización es muchísimo mejor con servidores siempre encendidos que paralelizan (batching en vuelo).
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Pete Warden über lokale KI, offene Modelle, Sprachschnittstellen und die Zukunft der Hardware
+***** TLDR
+In einem Interview mit The Data Exchange argumentiert Pete Warden, dass 'KI lokal sein will'. Inferenz braucht weit weniger Infrastruktur als Suche, Open-Weight-Modelle liegen nur wenige Monate hinter den Spitzenmodellen, und die verbleibenden Hürden sind Bedienbarkeit und Marketing. Ein 9B-Modell veranschlagt er auf etwa 9 GB in 8 Bit und etwa die Hälfte in 4 Bit. Für Sprache setzt er ein Ziel von rund 200 ms pro Antwort, gegenüber zwei Sekunden oder mehr bei typischer Cloud-Sprachverarbeitung. Er bevorzugt eine Kette aus Spracherkennung, LLM und Sprachsynthese gegenüber End-to-End-Sprachmodellen und berichtet, er habe eine Sprachschnittstelle auf einem Raspberry Pi Pico mit 500 KB RAM betrieben. Zur Hardware sagt er, Inferenz sei durch die Speicherbandbreite begrenzt, GPUs seien dafür überdimensioniert und Flash mit hoher Bandbreite sei vielversprechend. Außerdem argumentiert er, dass null Grenzkosten pro Aufruf Funktionen möglich machen, die bei Abrechnung pro Aufruf wegfallen würden.
+***** Take
+Das Kostenargument ist sein stärkstes: Funktionen, die bei Preisen pro Token zu teuer wären, werden möglich, wenn ein Aufruf nichts kostet. herf liefert im Thread den besten Einwand: Rechenzentren bündeln Anfragen und halten die Hardware ausgelastet, während eine Heim-GPU den Großteil des Tages ungenutzt bleibt. Beide Positionen passen zusammen. Batch-Aufgaben und Programmieren auf Spitzenniveau gehen in die Cloud. Sprache, die in etwa 200 ms antworten muss, und alles Private bleiben auf dem Gerät.
+***** Comments
+- Ich betreibe zu Hause 8 r9700, damit kann ich bis zu 2 Sitzungen GLM 5.3 flash mit 1M Kontext bei etwa 50 tps laufen lassen. Ich nutze für alles, was mit KI zu tun hat, ausschließlich dieses Setup.
+- Über 99 % der Verbraucher wird das egal sein. Wie viele sind bereit, Tausende Dollar für KI-Hardware auszugeben?
+- Ich liebe lokale KI, aber trotzdem gebe ich zu, dass die Wirtschaftlichkeit in die andere Richtung zeigt. Die Auslastung ist bei ständig laufenden Servern mit Parallelisierung (In-Flight-Batching) massiv besser.
+** Everything you need to survive and rebuild society :preparedness:offline:open-source:knowledge:
+:PROPERTIES:
+:ID:       50560822
+:URL:      https://lastbook.org/
+:HN_URL:   https://news.ycombinator.com/item?id=50560822
+:POINTS:   252
+:COMMENTS: 144
+:BY:       tejohnso
+:END:
+
+*** TLDR
+Lastbook is a free, open-source offline reference app from the Immortal-Protocols GitHub organization, for Mac (M1 or newer, macOS 14+), Windows 10/11 and Ubuntu. It bundles guides on first aid, drinking water, food preservation, repairs, power and emergency preparation, with medical material drawn from Hesperian, the WHO and the Red Cross. The site says Lastbook itself is not clinically reviewed. It also includes 2,324 videos, offline maps with more than 258,000 places and layers for water, medical, fire stations and shelter, and an optional local Gemma chat that answers from the library and links its sources. Libraries come in 7.7 GB, 67.5 GB and about 388 GB sizes, and the AI adds about 17 GB. It needs internet for setup and does not run on phones or tablets.
+
+*** Take
+A collapse library that runs only on laptops and desktops leaves out the devices people are most likely to keep charged: phones and e-readers that a small solar panel can top up. Kiwix already serves offline Wikipedia on Android, and a printed first-aid manual needs no power at all. The source choices for the medical content are sound. The format is the weak point, and the open GitHub issue asking for an Android build is the right request.
+
+*** Comments
+
+**** edent
+:PROPERTIES:
+:COMMENT_ID: 50562587
+:END:
+There appears to be no way just to download the PDFs. That would be most useful for an eInk device (battery lasts ages, cheap and easy to recharge with solar or a hand-crank).
+
+**** bovermyer
+:PROPERTIES:
+:COMMENT_ID: 50561775
+:END:
+For a solution for rebuilding society, it is conspicuously light on the society part. A print library is what you'd want there.
+
+**** ltbarcly3
+:PROPERTIES:
+:COMMENT_ID: 50561981
+:END:
+Why would electricity be in short supply? If that includes some solar your point is pretty much moot.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+生存和重建社会所需的一切
+***** TLDR
+Lastbook 是 GitHub 组织 Immortal-Protocols 推出的免费开源离线参考应用，支持 Mac（M1 或更新机型，macOS 14 及以上）、Windows 10/11 和 Ubuntu。它收录了急救、饮用水、食品保存、维修、电力和应急准备等方面的指南，医疗内容来自 Hesperian、世界卫生组织和红十字会。网站说明 Lastbook 本身未经临床审核。它还包含 2,324 个视频、收录 25.8 万多个地点并带有水源、医疗、消防站和避难所图层的离线地图，以及一个可选的本地 Gemma 聊天功能，能根据资料库作答并附上来源链接。资料库分为 7.7 GB、67.5 GB 和约 388 GB 三档，AI 另需约 17 GB。安装需要联网，且不支持手机或平板。
+***** Take
+一个只能在笔记本和台式机上运行的末日资料库，恰恰漏掉了人们最可能保持有电的设备：用小块太阳能板就能充电的手机和电子阅读器。Kiwix 早就能在安卓上提供离线维基百科，而纸质急救手册根本不需要电。医疗内容的来源选择是可靠的，问题出在形式上。GitHub 上要求推出安卓版的那个 issue 提的正是对的需求。
+***** Comments
+- 似乎没有办法直接下载 PDF。PDF 对墨水屏设备最有用（电池续航极长，用太阳能或手摇充电又便宜又方便）。
+- 作为重建社会的方案，它在“社会”这部分明显很单薄。那种情况下你需要的是纸质资料库。
+- 为什么会缺电？如果有太阳能，你的观点基本就不成立了。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+生き延びて社会を再建するために必要なすべて
+***** TLDR
+Lastbookは、GitHubのImmortal-Protocols組織による無料のオープンソースのオフライン参照アプリで、Mac（M1以降、macOS 14以上）、Windows 10/11、Ubuntuに対応する。応急処置、飲料水、食品保存、修理、電力、防災準備のガイドを収録し、医療情報はHesperian、WHO、赤十字の資料に基づく。サイトはLastbook自体は臨床的な監修を受けていないと明記している。ほかに2,324本の動画、25万8千以上の地点と水、医療、消防署、避難所のレイヤーを持つオフライン地図、ライブラリから回答して出典をリンクする任意のローカルGemmaチャットも含む。ライブラリは7.7GB、67.5GB、約388GBの3種類で、AIは約17GB追加になる。セットアップにはインターネットが必要で、スマートフォンやタブレットでは動かない。
+***** Take
+ノートPCとデスクトップでしか動かない崩壊後の図書館は、人々が最も充電を保てそうなデバイスを外している。小さなソーラーパネルで充電できるスマートフォンや電子書籍リーダーだ。KiwixはすでにAndroidでオフライン版Wikipediaを提供しており、印刷された応急処置マニュアルなら電力はいらない。医療コンテンツの出典選びは妥当だ。弱点は形式で、Android版を求めるGitHubのissueは正しい要望だ。
+***** Comments
+- PDFだけをダウンロードする方法がないようだ。電子ペーパー端末ならそれが一番役に立つ（バッテリーは長持ちし、ソーラーや手回しで安く簡単に充電できる）。
+- 社会を再建するための解決策としては、「社会」の部分が目立って薄い。そういう状況で欲しいのは紙の図書館だ。
+- なぜ電気が不足するんだ？太陽光があるなら、その主張はほぼ意味がない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+생존하고 사회를 재건하는 데 필요한 모든 것
+***** TLDR
+Lastbook은 GitHub 조직 Immortal-Protocols가 만든 무료 오픈소스 오프라인 참고 앱으로, Mac(M1 이상, macOS 14 이상), Windows 10/11, Ubuntu를 지원한다. 응급처치, 식수, 식품 보존, 수리, 전력, 비상 대비에 관한 안내서를 담고 있으며, 의료 자료는 Hesperian, WHO, 적십자에서 가져왔다. 사이트는 Lastbook 자체가 임상 검토를 받지 않았다고 밝힌다. 또 동영상 2,324개, 25만 8천 곳 이상의 장소와 식수, 의료, 소방서, 대피소 레이어를 갖춘 오프라인 지도, 라이브러리를 바탕으로 답하고 출처를 링크하는 선택형 로컬 Gemma 채팅도 포함한다. 라이브러리는 7.7GB, 67.5GB, 약 388GB 세 가지이고 AI는 약 17GB가 추가된다. 설치에는 인터넷이 필요하며 휴대폰과 태블릿에서는 실행되지 않는다.
+***** Take
+노트북과 데스크톱에서만 돌아가는 종말 대비 도서관은 사람들이 가장 충전 상태를 유지하기 쉬운 기기를 빼놓았다. 작은 태양광 패널로 충전할 수 있는 휴대폰과 전자책 단말기다. Kiwix는 이미 안드로이드에서 오프라인 위키백과를 제공하고, 인쇄된 응급처치 매뉴얼은 전기가 전혀 필요 없다. 의료 콘텐츠의 출처 선택은 타당하다. 약점은 형식이고, 안드로이드 버전을 요청하는 GitHub 이슈가 옳은 요구다.
+***** Comments
+- PDF만 따로 내려받을 방법이 없는 것 같다. 전자잉크 기기에는 그게 가장 유용할 텐데(배터리가 오래가고, 태양광이나 손 크랭크로 싸고 쉽게 충전된다).
+- 사회를 재건하는 해법치고는 '사회' 부분이 눈에 띄게 빈약하다. 그런 상황에서 필요한 건 인쇄된 도서관이다.
+- 왜 전기가 부족하겠나? 태양광이 있다면 그 주장은 거의 의미가 없다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Todo lo que necesitas para sobrevivir y reconstruir la sociedad
+***** TLDR
+Lastbook es una app de consulta sin conexión, gratuita y de código abierto, de la organización de GitHub Immortal-Protocols, para Mac (M1 o posterior, macOS 14+), Windows 10/11 y Ubuntu. Incluye guías de primeros auxilios, agua potable, conservación de alimentos, reparaciones, energía y preparación ante emergencias, con material médico tomado de Hesperian, la OMS y la Cruz Roja. El sitio aclara que Lastbook en sí no tiene revisión clínica. También trae 2.324 vídeos, mapas sin conexión con más de 258.000 lugares y capas de agua, atención médica, bomberos y refugios, y un chat local opcional con Gemma que responde a partir de la biblioteca y enlaza sus fuentes. Las bibliotecas vienen en tamaños de 7,7 GB, 67,5 GB y unos 388 GB, y la IA añade unos 17 GB. Necesita internet para la instalación y no funciona en móviles ni tabletas.
+***** Take
+Una biblioteca para el colapso que solo funciona en portátiles y ordenadores de sobremesa deja fuera los dispositivos que la gente tiene más probabilidades de mantener cargados: móviles y lectores de libros electrónicos que se recargan con un panel solar pequeño. Kiwix ya ofrece Wikipedia sin conexión en Android, y un manual de primeros auxilios impreso no necesita electricidad. Las fuentes elegidas para el contenido médico son sólidas. El punto débil es el formato, y la issue abierta en GitHub que pide una versión para Android es la petición correcta.
+***** Comments
+- Parece que no hay forma de descargar solo los PDF. Eso sería lo más útil para un dispositivo de tinta electrónica (la batería dura muchísimo y se recarga fácil y barato con energía solar o una manivela).
+- Para ser una solución para reconstruir la sociedad, flojea claramente en la parte de la sociedad. Lo que querrías ahí es una biblioteca impresa.
+- ¿Por qué iba a escasear la electricidad? Si eso incluye algo de energía solar, tu argumento prácticamente no se sostiene.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Alles, was man zum Überleben und für den Wiederaufbau der Gesellschaft braucht
+***** TLDR
+Lastbook ist eine kostenlose Open-Source-Offline-Nachschlage-App der GitHub-Organisation Immortal-Protocols für Mac (M1 oder neuer, macOS 14+), Windows 10/11 und Ubuntu. Sie bündelt Anleitungen zu Erster Hilfe, Trinkwasser, Lebensmittelkonservierung, Reparaturen, Energie und Notfallvorsorge, wobei medizinisches Material von Hesperian, der WHO und dem Roten Kreuz stammt. Die Website weist darauf hin, dass Lastbook selbst nicht klinisch geprüft ist. Dazu kommen 2.324 Videos, Offline-Karten mit mehr als 258.000 Orten und Ebenen für Wasser, medizinische Versorgung, Feuerwachen und Notunterkünfte sowie ein optionaler lokaler Gemma-Chat, der aus der Bibliothek antwortet und seine Quellen verlinkt. Die Bibliotheken gibt es in 7,7 GB, 67,5 GB und etwa 388 GB, die KI braucht zusätzlich rund 17 GB. Für die Einrichtung ist Internet nötig, und auf Smartphones oder Tablets läuft die App nicht.
+***** Take
+Eine Bibliothek für den Zusammenbruch, die nur auf Laptops und Desktops läuft, lässt genau die Geräte weg, die man am ehesten geladen halten kann: Smartphones und E-Reader, die sich mit einem kleinen Solarpanel aufladen lassen. Kiwix liefert Offline-Wikipedia bereits auf Android, und ein gedrucktes Erste-Hilfe-Handbuch braucht gar keinen Strom. Die Quellen für die medizinischen Inhalte sind gut gewählt. Die Schwachstelle ist das Format, und das offene GitHub-Issue, das eine Android-Version verlangt, ist die richtige Forderung.
+***** Comments
+- Es scheint keine Möglichkeit zu geben, einfach die PDFs herunterzuladen. Das wäre für ein E-Ink-Gerät am nützlichsten (der Akku hält ewig und lässt sich billig und einfach per Solar oder Handkurbel laden).
+- Für eine Lösung zum Wiederaufbau der Gesellschaft ist der Teil über die Gesellschaft auffallend dünn. Da würde man eine gedruckte Bibliothek wollen.
+- Warum sollte Strom knapp sein? Wenn dazu etwas Solarenergie gehört, ist dein Punkt praktisch hinfällig.
