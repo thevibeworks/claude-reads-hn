@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-11-19 06:00 UTC
+#+DATE: 2026-11-19T06:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Microsoft prices its coding model against Opus, Ruby patches seven memory bugs, and a garage opener gives up its AES key
+
+* Highlights
+- Microsoft MAI: seven models, MAI Code 2 claims 96% of Opus 5.5 at 5% of the price
+- Ruby: seven Regexp and String memory bugs, upgrade to 4.0.10, 3.4.13 or 3.3.14
+- Voyager explorer: open the RTG and drill down to one bit of memory
+- MyQ 819LMB: an Arduino dumps the AES key so the bridge stops rebooting offline
+- ExitPath: 16 proprietary tools mapped to 30 open-source exits, with difficulty scores
+
+* Stories
+
+** Seven new models at scalable price-performance :ai:microsoft:llm:coding:
+:PROPERTIES:
+:ID:       50548021
+:URL:      https://microsoft.ai/news/microsoft-ignite-2026/
+:HN_URL:   https://news.ycombinator.com/item?id=50548021
+:POINTS:   495
+:COMMENTS: 334
+:BY:       gmays
+:END:
+
+*** TLDR
+At Ignite on November 17, Microsoft AI announced seven models. MAI Code 2 ships in GitHub Copilot; Microsoft says it reaches 96% of Claude Opus 5.5's coding score at 5% of the price and 98% of GPT-6.1 Sol's at 40%. MAI Code 2 Flash targets quick edits at 20% of Haiku 5.5's price. MAI Cyber 2 Flash patches codebases and beats GPT-6 Astra on CyberGym-E2E at under 2% of the cost per task. MAI Image 2.7 tops Artificial Analysis for image editing (Flash version about $10 per 1,000 images). MAI Realtime 1 does speech-to-speech from $0.01 per minute. Dragon Copilot Transcribe handles medical notes for about 10 million patient visits a month. Decision 1.1 routes requests to bigger models only when needed. Microsoft also put its Maia 200 accelerator into production at 1.7x more tokens per watt. All comparisons are Microsoft's own.
+
+*** Take
+The pitch is about price, not quality. If 96% of Opus 5.5 at 5% of the cost holds up outside Microsoft's own four-benchmark average, coding models are a commodity and the premium labs have to justify their margin. Commenters noticed the models are missing from independent leaderboards, so wait for third-party numbers before moving your Copilot budget.
+
+*** Comments
+
+**** athrowaway3z
+:PROPERTIES:
+:COMMENT_ID: 50550913
+:END:
+I was on the fence on jumping into the Anthropic IPO - but i think i'm going to skip it... It is just too much of a fungible utility.
+
+**** tyingq
+:PROPERTIES:
+:COMMENT_ID: 50549241
+:END:
+This seems a pretty bold statement, especially the Opus 5.5 comparison.
+
+**** testtestmetest
+:PROPERTIES:
+:COMMENT_ID: 50552743
+:END:
+I would literally take a 75% pay cut to go work at a place where llms are banned and I can use my own mind.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+七款新模型，主打可扩展的性价比
+***** TLDR
+微软 AI 在 11 月 17 日的 Ignite 大会上发布了七款模型。MAI Code 2 已上线 GitHub Copilot；微软称其编码得分达到 Claude Opus 5.5 的 96%，价格只有 5%，达到 GPT-6.1 Sol 的 98%，价格为 40%。MAI Code 2 Flash 面向快速修改，价格为 Haiku 5.5 的 20%。MAI Cyber 2 Flash 用于修补代码库，在 CyberGym-E2E 上胜过 GPT-6 Astra，单任务成本不到其 2%。MAI Image 2.7 在 Artificial Analysis 图像编辑榜排名第一（Flash 版约每 1000 张 10 美元）。MAI Realtime 1 提供语音对语音对话，每分钟 0.01 美元起。Dragon Copilot Transcribe 处理医疗记录，每月约 1000 万次就诊。Decision 1.1 只在需要时把请求路由到大模型。微软还将 Maia 200 加速器投入生产，每瓦 token 数提升 1.7 倍。所有对比数据均来自微软自己。
+***** Take
+卖点是价格而不是质量。如果“以 5% 的价格达到 Opus 5.5 的 96%”在微软自选的四项基准平均值之外也成立，编码模型就成了大宗商品，高端实验室必须证明自己的溢价。评论者注意到这些模型没有出现在独立排行榜上，所以在调整 Copilot 预算之前，先等第三方数据。
+***** Comments
+- 我本来在犹豫要不要参与 Anthropic 的 IPO，但我想我会放弃……它太像可替代的公用设施了。
+- 这个说法相当大胆，尤其是和 Opus 5.5 的比较。
+- 我真的愿意降薪 75%，去一个禁止使用 LLM、能用自己脑子的地方工作。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+スケーラブルな価格性能比を備えた7つの新モデル
+***** TLDR
+Microsoft AIは11月17日のIgniteで7つのモデルを発表した。MAI Code 2はGitHub Copilotで提供され、MicrosoftによればClaude Opus 5.5のコーディングスコアの96%を価格5%で、GPT-6.1 Solの98%を価格40%で達成する。MAI Code 2 Flashは素早い修正向けで、Haiku 5.5の20%の価格。MAI Cyber 2 Flashはコードベースのパッチを担い、CyberGym-E2EでGPT-6 Astraをタスクあたり2%未満のコストで上回る。MAI Image 2.7はArtificial Analysisの画像編集で1位（Flash版は1,000枚約10ドル）。MAI Realtime 1は音声対音声で毎分0.01ドルから。Dragon Copilot Transcribeは月約1,000万件の診察の医療記録を処理する。Decision 1.1は必要な時だけ大きなモデルにリクエストを振り分ける。MicrosoftはMaia 200アクセラレータも量産に入れ、ワットあたりトークン数は1.7倍。比較はすべてMicrosoft自身によるもの。
+***** Take
+売りは品質ではなく価格だ。「Opus 5.5の96%を5%の価格で」がMicrosoft自選の4ベンチマーク平均以外でも成り立つなら、コーディングモデルはコモディティになり、高価格のラボは利幅を正当化しなければならない。コメント欄ではこれらのモデルが独立系リーダーボードに載っていないと指摘されている。Copilotの予算を動かす前に第三者の数字を待つべきだ。
+***** Comments
+- AnthropicのIPOに乗るか迷っていたが、見送ると思う……あまりにも代替可能なユーティリティだ。
+- かなり大胆な主張だ。特にOpus 5.5との比較は。
+- LLMが禁止されていて自分の頭を使える職場なら、本気で75%の減給を受け入れる。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+확장 가능한 가격 대비 성능의 신규 모델 7종
+***** TLDR
+Microsoft AI가 11월 17일 Ignite에서 모델 7종을 발표했다. MAI Code 2는 GitHub Copilot에 탑재되며, Microsoft에 따르면 Claude Opus 5.5 코딩 점수의 96%를 5% 가격에, GPT-6.1 Sol의 98%를 40% 가격에 달성한다. MAI Code 2 Flash는 빠른 수정용으로 Haiku 5.5 가격의 20%다. MAI Cyber 2 Flash는 코드베이스를 패치하며 CyberGym-E2E에서 작업당 2% 미만 비용으로 GPT-6 Astra를 앞선다. MAI Image 2.7은 Artificial Analysis 이미지 편집 1위(Flash 버전은 1,000장당 약 10달러). MAI Realtime 1은 분당 0.01달러부터 음성 대 음성 대화를 제공한다. Dragon Copilot Transcribe는 월 약 1,000만 건 진료의 의료 기록을 처리한다. Decision 1.1은 필요할 때만 요청을 큰 모델로 라우팅한다. Microsoft는 Maia 200 가속기도 양산에 들어갔으며 와트당 토큰이 1.7배다. 모든 비교는 Microsoft 자체 수치다.
+***** Take
+핵심은 품질이 아니라 가격이다. '5% 가격에 Opus 5.5의 96%'가 Microsoft가 고른 네 가지 벤치마크 평균 밖에서도 유지된다면 코딩 모델은 범용 상품이 되고, 프리미엄 연구소는 마진을 정당화해야 한다. 댓글에서는 이 모델들이 독립 리더보드에 없다는 점을 지적했다. Copilot 예산을 옮기기 전에 제3자 수치를 기다려라.
+***** Comments
+- Anthropic IPO에 들어갈지 고민했는데 안 할 것 같다... 너무 대체 가능한 유틸리티다.
+- 꽤 대담한 주장이다. 특히 Opus 5.5와의 비교는.
+- LLM이 금지되고 내 머리를 쓸 수 있는 곳이라면 정말로 75% 연봉 삭감도 받아들이겠다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Siete modelos nuevos con relación precio-rendimiento escalable
+***** TLDR
+En Ignite, el 17 de noviembre, Microsoft AI anunció siete modelos. MAI Code 2 llega a GitHub Copilot; Microsoft dice que alcanza el 96% de la puntuación de programación de Claude Opus 5.5 al 5% del precio y el 98% de GPT-6.1 Sol al 40%. MAI Code 2 Flash apunta a ediciones rápidas al 20% del precio de Haiku 5.5. MAI Cyber 2 Flash parchea bases de código y supera a GPT-6 Astra en CyberGym-E2E con menos del 2% del coste por tarea. MAI Image 2.7 lidera Artificial Analysis en edición de imágenes (la versión Flash cuesta unos 10 dólares por 1.000 imágenes). MAI Realtime 1 ofrece voz a voz desde 0,01 dólares por minuto. Dragon Copilot Transcribe procesa notas médicas de unos 10 millones de consultas al mes. Decision 1.1 envía peticiones a modelos grandes solo cuando hace falta. Microsoft también puso en producción su acelerador Maia 200, con 1,7 veces más tokens por vatio. Todas las comparaciones son de Microsoft.
+***** Take
+El argumento es el precio, no la calidad. Si el 96% de Opus 5.5 al 5% del coste se sostiene fuera de la media de cuatro benchmarks elegidos por Microsoft, los modelos de programación son una mercancía y los laboratorios premium tienen que justificar su margen. Los comentaristas notaron que los modelos no aparecen en clasificaciones independientes, así que conviene esperar cifras de terceros antes de mover el presupuesto de Copilot.
+***** Comments
+- Estaba dudando si entrar en la OPV de Anthropic, pero creo que paso... Es demasiado una utilidad intercambiable.
+- Parece una afirmación bastante atrevida, sobre todo la comparación con Opus 5.5.
+- Aceptaría literalmente un recorte del 75% del sueldo por trabajar en un sitio donde los LLM estén prohibidos y pueda usar mi propia cabeza.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Sieben neue Modelle mit skalierbarem Preis-Leistungs-Verhältnis
+***** TLDR
+Auf der Ignite am 17. November kündigte Microsoft AI sieben Modelle an. MAI Code 2 kommt in GitHub Copilot; laut Microsoft erreicht es 96% des Coding-Werts von Claude Opus 5.5 zu 5% des Preises und 98% von GPT-6.1 Sol zu 40%. MAI Code 2 Flash zielt auf schnelle Änderungen zu 20% des Preises von Haiku 5.5. MAI Cyber 2 Flash patcht Codebasen und schlägt GPT-6 Astra bei CyberGym-E2E mit unter 2% der Kosten pro Aufgabe. MAI Image 2.7 führt bei Artificial Analysis in der Bildbearbeitung (Flash-Version etwa 10 Dollar pro 1.000 Bilder). MAI Realtime 1 bietet Sprache-zu-Sprache ab 0,01 Dollar pro Minute. Dragon Copilot Transcribe verarbeitet medizinische Notizen für etwa 10 Millionen Patientenkontakte im Monat. Decision 1.1 leitet Anfragen nur bei Bedarf an große Modelle weiter. Außerdem ist der Beschleuniger Maia 200 in Produktion, mit 1,7-mal mehr Tokens pro Watt. Alle Vergleiche stammen von Microsoft selbst.
+***** Take
+Das Argument ist der Preis, nicht die Qualität. Wenn 96% von Opus 5.5 zu 5% der Kosten auch außerhalb von Microsofts selbst gewähltem Vier-Benchmark-Durchschnitt hält, sind Coding-Modelle Massenware und die Premium-Labore müssen ihre Marge rechtfertigen. Kommentatoren bemerkten, dass die Modelle in unabhängigen Ranglisten fehlen. Vor einer Umschichtung des Copilot-Budgets also auf Zahlen von Dritten warten.
+***** Comments
+- Ich war unschlüssig, ob ich beim Anthropic-Börsengang einsteige, aber ich lasse es wohl... Es ist einfach zu sehr ein austauschbares Versorgungsgut.
+- Das ist eine ziemlich gewagte Aussage, besonders der Vergleich mit Opus 5.5.
+- Ich würde buchstäblich 75% Gehaltskürzung hinnehmen, um dort zu arbeiten, wo LLMs verboten sind und ich meinen eigenen Kopf benutzen kann.
+** Multiple vulnerabilities in Regexp and String case conversion :security:ruby:memory-safety:
+:PROPERTIES:
+:ID:       50554038
+:URL:      https://www.ruby-lang.org/en/news/2026/11/18/multiple-vulnerabilities-in-regexp-and-string/
+:HN_URL:   https://news.ycombinator.com/item?id=50554038
+:POINTS:   174
+:COMMENTS: 50
+:BY:       runesoerensen
+:END:
+
+*** TLDR
+Ruby disclosed seven memory-safety bugs in the C code behind Regexp and String case conversion: heap buffer overflows, a double free, an integer overflow and out-of-bounds reads. Most have proof-of-concept exploits and may allow remote code execution when an app compiles or matches attacker-supplied patterns, or changes the case of a crafted string. Affected: Ruby 3.3.13 and earlier, 3.4.0 to 3.4.12, and 4.0.0 to 4.0.9. Fixed in 4.0.10, 3.4.13 and 3.3.14. CVE IDs have been requested but not assigned, so the advisory uses GHSA IDs. Ruby 3.2 and older are end-of-life and get no fix.
+
+*** Take
+Most Rails apps never compile user regexes, so the bugs that matter are the case-conversion ones. tptacek points out that multipart POST fields can pick their own encoding, which puts a crafted Windows-1252 or Shift_JIS string in front of `upcase` in ordinary request handling. Upgrade today. Teams still on Ruby 3.2 now have a concrete reason to move.
+
+*** Comments
+
+**** tptacek
+:PROPERTIES:
+:COMMENT_ID: 50554822
+:END:
+If you upcase a string containing a sharp 's', it gets normalized to "SS"... if the last character of a string you upcase is ß, it looks like you get a one-byte overflow.
+
+**** rvz
+:PROPERTIES:
+:COMMENT_ID: 50555667
+:END:
+These are all C-based memory corruption vulnerabilities... 'Thanks to Stephan Lipp (Ada Logics) and Anthropic for reporting this issue.'
+
+**** lousken
+:PROPERTIES:
+:COMMENT_ID: 50554474
+:END:
+I need a vacation
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Regexp 和 String 大小写转换中的多个漏洞
+***** TLDR
+Ruby 披露了 Regexp 和 String 大小写转换背后 C 代码中的七个内存安全漏洞：堆缓冲区溢出、双重释放、整数溢出和越界读取。大多数已有概念验证利用代码，当应用编译或匹配攻击者提供的正则，或对精心构造的字符串转换大小写时，可能导致远程代码执行。受影响版本：Ruby 3.3.13 及更早、3.4.0 到 3.4.12、4.0.0 到 4.0.9。修复版本为 4.0.10、3.4.13 和 3.3.14。CVE 编号已申请但尚未分配，公告使用 GHSA 编号。Ruby 3.2 及更早版本已停止维护，不会得到修复。
+***** Take
+大多数 Rails 应用从不编译用户提供的正则，所以真正要紧的是大小写转换漏洞。tptacek 指出 multipart POST 字段可以自选编码，这让精心构造的 Windows-1252 或 Shift_JIS 字符串在普通请求处理中就能到达 `upcase`。今天就升级。还在用 Ruby 3.2 的团队现在有了迁移的具体理由。
+***** Comments
+- 如果对包含德语 ß 的字符串做 upcase，它会被转换成“SS”……如果字符串最后一个字符是 ß，看起来会造成一个字节的溢出。
+- 这些都是基于 C 的内存破坏漏洞……“感谢 Stephan Lipp（Ada Logics）和 Anthropic 报告此问题。”
+- 我需要休个假
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+RegexpとStringの大文字小文字変換における複数の脆弱性
+***** TLDR
+RubyはRegexpとStringの大文字小文字変換を支えるCコードにある7件のメモリ安全性バグを公表した。ヒープバッファオーバーフロー、二重解放、整数オーバーフロー、範囲外読み取りだ。大半には概念実証コードがあり、攻撃者が与えたパターンをコンパイルまたはマッチする場合や、細工された文字列の大文字小文字を変換する場合にリモートコード実行につながる可能性がある。影響を受けるのはRuby 3.3.13以前、3.4.0〜3.4.12、4.0.0〜4.0.9。修正版は4.0.10、3.4.13、3.3.14。CVE IDは申請済みだが未割り当てのため、勧告はGHSA IDを使う。Ruby 3.2以前はサポート終了で修正されない。
+***** Take
+ほとんどのRailsアプリはユーザーの正規表現をコンパイルしないので、問題になるのは大文字小文字変換のバグだ。tptacekはmultipart POSTのフィールドが自分でエンコーディングを選べると指摘しており、細工したWindows-1252やShift_JISの文字列が通常のリクエスト処理で`upcase`に届く。今日アップグレードすること。まだRuby 3.2のチームには移行する具体的な理由ができた。
+***** Comments
+- ドイツ語のßを含む文字列をupcaseすると「SS」に正規化される……最後の文字がßだと1バイトのオーバーフローが起きるようだ。
+- これらはすべてCベースのメモリ破壊脆弱性だ……「Stephan Lipp（Ada Logics）とAnthropicの報告に感謝します。」
+- 休暇が欲しい
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Regexp와 String 대소문자 변환의 여러 취약점
+***** TLDR
+Ruby가 Regexp와 String 대소문자 변환을 담당하는 C 코드의 메모리 안전성 버그 7건을 공개했다. 힙 버퍼 오버플로, 이중 해제, 정수 오버플로, 범위 밖 읽기다. 대부분 개념 증명 익스플로잇이 있으며, 앱이 공격자가 제공한 패턴을 컴파일하거나 매칭할 때, 또는 조작된 문자열의 대소문자를 바꿀 때 원격 코드 실행으로 이어질 수 있다. 영향 버전: Ruby 3.3.13 이하, 3.4.0~3.4.12, 4.0.0~4.0.9. 수정 버전은 4.0.10, 3.4.13, 3.3.14. CVE ID는 신청했지만 아직 배정되지 않아 권고문은 GHSA ID를 쓴다. Ruby 3.2 이하는 지원 종료로 수정되지 않는다.
+***** Take
+대부분의 Rails 앱은 사용자 정규식을 컴파일하지 않으므로 중요한 것은 대소문자 변환 버그다. tptacek은 multipart POST 필드가 인코딩을 스스로 고를 수 있어, 조작된 Windows-1252나 Shift_JIS 문자열이 일반 요청 처리 중에 `upcase`에 도달한다고 지적한다. 오늘 업그레이드하라. 아직 Ruby 3.2를 쓰는 팀에게는 옮길 구체적인 이유가 생겼다.
+***** Comments
+- 독일어 ß가 들어간 문자열을 upcase하면 "SS"로 정규화된다... 마지막 문자가 ß면 1바이트 오버플로가 생기는 것 같다.
+- 전부 C 기반 메모리 손상 취약점이다... 'Stephan Lipp(Ada Logics)과 Anthropic의 보고에 감사드립니다.'
+- 휴가가 필요해
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Múltiples vulnerabilidades en Regexp y en la conversión de mayúsculas y minúsculas de String
+***** TLDR
+Ruby publicó siete fallos de seguridad de memoria en el código C de Regexp y de la conversión de mayúsculas y minúsculas de String: desbordamientos de búfer en el heap, una doble liberación, un desbordamiento de entero y lecturas fuera de límites. La mayoría tiene exploits de prueba de concepto y podrían permitir ejecución remota de código cuando una aplicación compila o evalúa patrones del atacante, o cambia las mayúsculas de una cadena manipulada. Afectadas: Ruby 3.3.13 y anteriores, 3.4.0 a 3.4.12 y 4.0.0 a 4.0.9. Corregidas en 4.0.10, 3.4.13 y 3.3.14. Se pidieron CVE pero aún no se asignaron, así que el aviso usa identificadores GHSA. Ruby 3.2 y anteriores están fuera de soporte y no recibirán parche.
+***** Take
+La mayoría de las apps Rails nunca compila regex de usuarios, así que los fallos que importan son los de conversión de mayúsculas. tptacek señala que los campos de un POST multipart pueden elegir su propia codificación, lo que pone una cadena manipulada en Windows-1252 o Shift_JIS delante de `upcase` en el manejo normal de peticiones. Actualiza hoy. Los equipos que siguen en Ruby 3.2 ya tienen un motivo concreto para migrar.
+***** Comments
+- Si pasas a mayúsculas una cadena con la ß alemana, se normaliza a "SS"... si el último carácter es ß, parece que obtienes un desbordamiento de un byte.
+- Todas son vulnerabilidades de corrupción de memoria en C... 'Gracias a Stephan Lipp (Ada Logics) y Anthropic por reportar este problema.'
+- Necesito vacaciones
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Mehrere Schwachstellen in Regexp und der Groß-/Kleinschreibungsumwandlung von String
+***** TLDR
+Ruby hat sieben Speichersicherheitsfehler im C-Code hinter Regexp und der Groß-/Kleinschreibungsumwandlung von String veröffentlicht: Heap-Pufferüberläufe, ein Double Free, ein Integer-Überlauf und Lesezugriffe außerhalb der Grenzen. Für die meisten gibt es Proof-of-Concept-Exploits; sie können Remote Code Execution ermöglichen, wenn eine Anwendung vom Angreifer gelieferte Muster kompiliert oder abgleicht oder die Schreibung eines präparierten Strings ändert. Betroffen sind Ruby 3.3.13 und älter, 3.4.0 bis 3.4.12 sowie 4.0.0 bis 4.0.9. Behoben in 4.0.10, 3.4.13 und 3.3.14. CVE-Nummern sind beantragt, aber noch nicht vergeben, daher nutzt die Meldung GHSA-IDs. Ruby 3.2 und älter sind End-of-Life und bekommen keinen Fix.
+***** Take
+Die meisten Rails-Apps kompilieren nie Regexes von Nutzern, also zählen vor allem die Fehler bei der Schreibungsumwandlung. tptacek weist darauf hin, dass Felder in multipart-POSTs ihre Kodierung selbst wählen können. Damit landet ein präparierter Windows-1252- oder Shift_JIS-String bei ganz normaler Request-Verarbeitung in `upcase`. Heute aktualisieren. Wer noch auf Ruby 3.2 ist, hat jetzt einen konkreten Grund zum Umstieg.
+***** Comments
+- Wenn man einen String mit dem deutschen ß in Großbuchstaben umwandelt, wird daraus "SS"... ist ß das letzte Zeichen, entsteht anscheinend ein Ein-Byte-Überlauf.
+- Das sind alles Speicherkorruptionsfehler in C... 'Danke an Stephan Lipp (Ada Logics) und Anthropic für die Meldung.'
+- Ich brauche Urlaub
+** Show HN: Take Voyager 1 apart, down to a single memory chip :space:nasa:visualization:show-hn:
+:PROPERTIES:
+:ID:       50548161
+:URL:      https://rshekhar.com/voyager/
+:HN_URL:   https://news.ycombinator.com/item?id=50548161
+:POINTS:   179
+:COMMENTS: 45
+:BY:       raj-shekhar
+:END:
+
+*** TLDR
+Raj Shekhar built an interactive 3D site, posted the day Voyager 1 reached one light-day from Earth (about 25.9 billion km). It shows where both Voyagers are now, with a timeline from the 1977 launch through the planetary flybys and into the 2030s. A take-apart view lets you open the nuclear battery down to its 24 plutonium spheres, go into the data computer to a single memory chip and one bit of command-computer memory, see how the Golden Record's cover explains how to play it, and step through how Voyager 1 was repaired by radio. Another view shows which Deep Space Network dish is listening to each probe live. There is also a 4-minute film.
+
+*** Take
+The memory-chip view shows the actual hardware that engineers had to work around from a day's signal travel away, which most news coverage of Voyager repairs only describes in words. One commenter asks whether it was vibecoded and checked against any authoritative source. That is worth answering, because the drill-down only teaches anything if the details are correct.
+
+*** Comments
+
+**** IAmNotACellist
+:PROPERTIES:
+:COMMENT_ID: 50549848
+:END:
+What analog processes cause a CMOS memory IC that we like to think of as being discrete to be consistently wrong at reading its stored values?
+
+**** glimshe
+:PROPERTIES:
+:COMMENT_ID: 50549455
+:END:
+This appears to be vibecoded, but what was the process? Was there any original research or AI did most/all of it?
+
+**** carter-qadenza
+:PROPERTIES:
+:COMMENT_ID: 50554314
+:END:
+Seeing the spectrometers reminded me that nearly my entire physics degree only covered what was known up until the 50's.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Show HN：把旅行者 1 号拆开，一直拆到单个内存芯片
+***** TLDR
+Raj Shekhar 做了一个交互式 3D 网站，在旅行者 1 号距地球达到一光日（约 259 亿公里）当天发布。网站显示两艘旅行者号的当前位置，时间线从 1977 年发射、经过行星飞掠一直延伸到 2030 年代。拆解视图可以打开核电池，看到里面的 24 个钚球；进入数据计算机，直到单个内存芯片和指令计算机内存中的一个比特；查看金唱片封面如何说明播放方法；还能一步步了解旅行者 1 号如何通过无线电修复。另一个视图实时显示深空网络中哪座天线在接收每个探测器的信号。另附一部 4 分钟短片。
+***** Take
+内存芯片视图展示了工程师在信号要走一整天的距离外必须绕开的真实硬件，而大多数关于旅行者号修复的新闻只用文字描述。有评论者问这是不是 AI 生成的、有没有对照权威资料核实。这个问题值得回答，因为逐层拆解只有在细节准确时才有教育意义。
+***** Comments
+- 是什么模拟过程让我们以为是离散的 CMOS 存储芯片，持续读错它存储的值？
+- 这看起来像是 vibe coding 做的，过程是怎样的？有原创研究，还是大部分都是 AI 做的？
+- 看到那些光谱仪让我想起，我的物理学位几乎只讲到了 50 年代以前的知识。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Show HN：ボイジャー1号を1個のメモリチップまで分解する
+***** TLDR
+Raj Shekharはインタラクティブな3Dサイトを作り、ボイジャー1号が地球から1光日（約259億km）に達した日に公開した。両ボイジャーの現在位置を表示し、1977年の打ち上げから惑星フライバイを経て2030年代までのタイムラインがある。分解ビューでは原子力電池を開いて24個のプルトニウム球まで見られ、データコンピュータに入って1個のメモリチップ、さらにコマンドコンピュータのメモリ1ビットまで降りられる。ゴールデンレコードのジャケットが再生方法をどう説明しているか、ボイジャー1号が無線でどう修理されたかも順に見られる。別のビューでは、どのディープスペースネットワークのアンテナが各探査機を受信しているかをリアルタイムで表示する。4分間の映像もある。
+***** Take
+メモリチップのビューは、信号が届くのに丸1日かかる距離から技術者が回避しなければならなかった実際のハードウェアを見せる。ボイジャー修理のニュースのほとんどは言葉で説明するだけだった。あるコメントはバイブコーディングで作ったのか、信頼できる資料で確認したのかを尋ねている。答える価値のある質問だ。掘り下げ表示は細部が正確でなければ何も教えないからだ。
+***** Comments
+- 離散的だと考えているCMOSメモリICが、保存値を一貫して読み違えるのはどんなアナログ的プロセスによるのか？
+- バイブコーディングっぽいけど、どういうプロセスだった？独自の調査はあったのか、それともほぼAIがやったのか？
+- 分光計を見て、物理の学位で習ったことのほぼすべてが50年代までに分かっていたことだったと思い出した。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Show HN: 보이저 1호를 메모리 칩 하나까지 분해하기
+***** TLDR
+Raj Shekhar가 인터랙티브 3D 사이트를 만들어 보이저 1호가 지구에서 1광일(약 259억 km)에 도달한 날 공개했다. 두 보이저의 현재 위치를 보여주며, 1977년 발사부터 행성 근접 비행을 거쳐 2030년대까지의 타임라인이 있다. 분해 보기에서는 원자력 전지를 열어 플루토늄 구슬 24개까지 볼 수 있고, 데이터 컴퓨터로 들어가 메모리 칩 하나와 명령 컴퓨터 메모리의 비트 하나까지 내려간다. 골든 레코드 표지가 재생 방법을 어떻게 설명하는지, 보이저 1호가 무선으로 어떻게 수리됐는지도 단계별로 볼 수 있다. 다른 보기에서는 어느 심우주 통신망 안테나가 각 탐사선을 실시간으로 수신하는지 보여준다. 4분짜리 영상도 있다.
+***** Take
+메모리 칩 보기는 신호가 하루 걸리는 거리에서 엔지니어들이 우회해야 했던 실제 하드웨어를 보여준다. 보이저 수리 뉴스 대부분은 말로만 설명했다. 한 댓글은 바이브코딩으로 만들었는지, 권위 있는 자료와 대조했는지 묻는다. 답할 가치가 있는 질문이다. 세부 탐색은 내용이 정확해야만 배울 것이 있기 때문이다.
+***** Comments
+- 우리가 이산적이라고 생각하는 CMOS 메모리 IC가 저장된 값을 계속 잘못 읽게 만드는 아날로그 과정은 무엇일까?
+- 바이브코딩으로 만든 것 같은데 과정이 어땠나? 직접 조사한 건지, AI가 대부분 한 건지?
+- 분광계를 보니 내 물리학 학위가 거의 50년대까지 알려진 내용만 다뤘다는 게 떠올랐다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Show HN: Desmonta la Voyager 1 hasta un solo chip de memoria
+***** TLDR
+Raj Shekhar creó un sitio 3D interactivo, publicado el día en que la Voyager 1 llegó a un día luz de la Tierra (unos 25.900 millones de km). Muestra dónde están ahora las dos Voyager, con una línea de tiempo desde el lanzamiento de 1977, pasando por los sobrevuelos planetarios, hasta la década de 2030. Una vista de despiece permite abrir la batería nuclear hasta sus 24 esferas de plutonio, entrar en el ordenador de datos hasta un solo chip de memoria y un bit de la memoria del ordenador de comandos, ver cómo la portada del Disco de Oro explica cómo reproducirlo y seguir paso a paso cómo se reparó la Voyager 1 por radio. Otra vista muestra en directo qué antena de la Red de Espacio Profundo escucha cada sonda. Incluye una película de 4 minutos.
+***** Take
+La vista del chip de memoria muestra el hardware real que los ingenieros tuvieron que sortear a un día de distancia de señal, algo que la mayoría de las noticias sobre las reparaciones de la Voyager solo describe con palabras. Un comentarista pregunta si se hizo con vibecoding y si se contrastó con alguna fuente fiable. Vale la pena responder, porque el despiece solo enseña algo si los detalles son correctos.
+***** Comments
+- ¿Qué procesos analógicos hacen que un circuito de memoria CMOS, que solemos imaginar como discreto, lea sus valores almacenados de forma consistentemente errónea?
+- Parece hecho con vibecoding, pero ¿cuál fue el proceso? ¿Hubo investigación original o la IA hizo casi todo?
+- Ver los espectrómetros me recordó que casi toda mi carrera de física solo cubrió lo que se sabía hasta los años 50.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Show HN: Voyager 1 zerlegen, bis hinunter zu einem einzelnen Speicherchip
+***** TLDR
+Raj Shekhar hat eine interaktive 3D-Seite gebaut und sie an dem Tag veröffentlicht, an dem Voyager 1 einen Lichttag von der Erde entfernt war (etwa 25,9 Milliarden km). Sie zeigt, wo beide Voyager-Sonden gerade sind, mit einer Zeitleiste vom Start 1977 über die Planetenvorbeiflüge bis in die 2030er. In einer Zerlegeansicht öffnet man die Radionuklidbatterie bis zu ihren 24 Plutoniumkugeln, geht in den Datenrechner bis zu einem einzelnen Speicherchip und einem Bit im Speicher des Kommandorechners, sieht, wie das Cover der Golden Record das Abspielen erklärt, und verfolgt Schritt für Schritt, wie Voyager 1 per Funk repariert wurde. Eine weitere Ansicht zeigt live, welche Antenne des Deep Space Network jede Sonde empfängt. Dazu gibt es einen 4-minütigen Film.
+***** Take
+Die Speicherchip-Ansicht zeigt die echte Hardware, um die Ingenieure aus einem Tag Signallaufzeit Entfernung herumarbeiten mussten. Die meisten Berichte über Voyager-Reparaturen beschreiben das nur in Worten. Ein Kommentator fragt, ob die Seite per Vibecoding entstand und mit einer verlässlichen Quelle abgeglichen wurde. Die Frage verdient eine Antwort, denn die Detailansicht vermittelt nur dann etwas, wenn die Details stimmen.
+***** Comments
+- Welche analogen Prozesse führen dazu, dass ein CMOS-Speicher-IC, den wir uns als diskret vorstellen, seine gespeicherten Werte dauerhaft falsch liest?
+- Das sieht nach Vibecoding aus, aber wie war der Prozess? Gab es eigene Recherche, oder hat die KI das meiste gemacht?
+- Die Spektrometer haben mich daran erinnert, dass mein Physikstudium fast nur abdeckte, was bis in die 50er bekannt war.
+** Dumping an AES key from a MyQ garage opener to stop rebooting when offline :hardware:iot:reverse-engineering:smart-home:
+:PROPERTIES:
+:ID:       50525260
+:URL:      https://kusha.me/blog/stop_myq_homebridge_819lmb_rebooting/
+:HN_URL:   https://news.ycombinator.com/item?id=50525260
+:POINTS:   89
+:COMMENTS: 32
+:BY:       kusha
+:END:
+
+*** TLDR
+Chamberlain's MyQ Home Bridge 819LMB is a HomeKit device that should work entirely on the local network. Cut off from the internet, it reboots every 5 to 10 minutes while connections to connect.myqdevice.com:8883 hang, and every 30 minutes even when those connections are refused, because the firmware expects a retained MQTT message from Chamberlain's broker. The author wired an Arduino Uno through two resistors to the board's 10-pin SWD debug pad, halted the Cortex-M4, scanned flash for the key-reading routines and printed the serial number and AES-128 key in about 129 seconds. With those, a local Mosquitto broker in Docker and local DNS entries for both MyQ domains, the bridge connects over PSK-AES128-CBC-SHA, reports itself as online and stops rebooting.
+
+*** Take
+This only worked because Chamberlain left SWD debug access unlocked, and commenters suspect the firmware is not signed either. The device has a forced cloud check that reboots it every 30 minutes and an open debug port anyone with an Arduino can read. If you are buying an opener, pick one with dry-contact inputs and add your own relay.
+
+*** Comments
+
+**** kusha
+:PROPERTIES:
+:COMMENT_ID: 50525261
+:END:
+By HomeKit spec it is supposed to function 100% locally... if the garage door opener cannot reach their cloud, a firmware watchdog triggers a hard reboot every 30 minutes.
+
+**** Namidairo
+:PROPERTIES:
+:COMMENT_ID: 50554730
+:END:
+If they didn't bother flipping the security flag in OTP to disable JTAG, then one has to wonder whether they even used secure boot and signed images.
+
+**** don-code
+:PROPERTIES:
+:COMMENT_ID: 50554347
+:END:
+Does lack of Internet connectivity mask some bigger problem with the firmware on the device periodically needing a restart?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+从 MyQ 车库门控制器中提取 AES 密钥，让它断网时不再重启
+***** TLDR
+Chamberlain 的 MyQ Home Bridge 819LMB 是一款 HomeKit 设备，本应完全在本地网络运行。断网后，在连接 connect.myqdevice.com:8883 挂起时它每 5 到 10 分钟重启一次；即使这些连接被拒绝，也会每 30 分钟重启一次，因为固件需要从 Chamberlain 的服务器收到一条保留的 MQTT 消息。作者用两个电阻把 Arduino Uno 接到主板的 10 针 SWD 调试焊盘上，暂停 Cortex-M4，扫描闪存找到读取密钥的函数，大约 129 秒后打印出序列号和 AES-128 密钥。有了这些，再加上 Docker 里的本地 Mosquitto 服务器和两个 MyQ 域名的本地 DNS 记录，设备通过 PSK-AES128-CBC-SHA 连接，自认为在线，不再重启。
+***** Take
+这之所以可行，是因为 Chamberlain 没有锁定 SWD 调试接口，评论者还怀疑固件也没有签名。这台设备一边强制云端检查、每 30 分钟重启，一边留着任何有 Arduino 的人都能读取的调试口。如果要买开门器，选带干接点输入的，再自己加继电器。
+***** Comments
+- 按 HomeKit 规范它应该 100% 本地运行……如果车库门控制器连不上他们的云，固件看门狗每 30 分钟就会强制重启。
+- 如果他们连 OTP 里禁用 JTAG 的安全标志都没设置，那就不得不怀疑他们到底有没有用安全启动和签名镜像。
+- 断网是不是掩盖了固件需要定期重启的更大问题？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+MyQガレージオープナーからAES鍵を抜き出し、オフライン時の再起動を止める
+***** TLDR
+ChamberlainのMyQ Home Bridge 819LMBはHomeKitデバイスで、本来はローカルネットワークだけで動くはずだ。インターネットから切り離すと、connect.myqdevice.com:8883への接続がハングする間は5〜10分ごとに再起動し、接続を拒否しても30分ごとに再起動する。ファームウェアがChamberlainのブローカーからの保持MQTTメッセージを待っているためだ。作者はArduino Unoを抵抗2本経由で基板の10ピンSWDデバッグパッドにつなぎ、Cortex-M4を停止させ、フラッシュから鍵読み出しルーチンを探し、約129秒でシリアル番号とAES-128鍵を表示させた。それを使い、Docker上のローカルMosquittoブローカーと両MyQドメインのローカルDNSを用意すると、ブリッジはPSK-AES128-CBC-SHAで接続し、オンラインと報告して再起動しなくなった。
+***** Take
+これが成功したのはChamberlainがSWDデバッグアクセスをロックしていなかったからで、コメント欄ではファームウェアも署名されていないのではと疑われている。30分ごとに再起動させる強制クラウドチェックがありながら、Arduinoがあれば誰でも読めるデバッグポートが開いている。オープナーを買うなら無電圧接点入力のあるものを選び、自分でリレーを付けるといい。
+***** Comments
+- HomeKitの仕様上、100%ローカルで動くはず……クラウドに届かないとファームウェアのウォッチドッグが30分ごとにハードリブートする。
+- OTPのセキュリティフラグでJTAGを無効化すらしていないなら、セキュアブートや署名付きイメージを使っているのかも疑わしい。
+- ネット接続がないことが、定期的に再起動が必要なファームウェアのもっと大きな問題を隠しているのでは？
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+MyQ 차고 문 개폐기에서 AES 키를 추출해 오프라인 재부팅 막기
+***** TLDR
+Chamberlain의 MyQ Home Bridge 819LMB는 HomeKit 기기로, 원래 로컬 네트워크만으로 동작해야 한다. 인터넷을 끊으면 connect.myqdevice.com:8883 연결이 멈춘 동안 5~10분마다 재부팅하고, 연결을 거부해도 30분마다 재부팅한다. 펌웨어가 Chamberlain 브로커의 보존 MQTT 메시지를 기다리기 때문이다. 저자는 Arduino Uno를 저항 두 개를 거쳐 보드의 10핀 SWD 디버그 패드에 연결하고, Cortex-M4를 정지시킨 뒤 플래시에서 키 읽기 루틴을 찾아 약 129초 만에 시리얼 번호와 AES-128 키를 출력했다. 이를 이용해 Docker의 로컬 Mosquitto 브로커와 두 MyQ 도메인의 로컬 DNS를 설정하자, 브리지는 PSK-AES128-CBC-SHA로 접속해 온라인으로 보고하고 재부팅을 멈췄다.
+***** Take
+Chamberlain이 SWD 디버그 접근을 잠그지 않았기 때문에 가능했고, 댓글에서는 펌웨어 서명도 없을 것으로 의심한다. 30분마다 재부팅시키는 강제 클라우드 검사가 있으면서, Arduino만 있으면 누구나 읽을 수 있는 디버그 포트는 열려 있다. 개폐기를 산다면 무전압 접점 입력이 있는 제품을 고르고 직접 릴레이를 달아라.
+***** Comments
+- HomeKit 사양상 100% 로컬로 동작해야 한다... 클라우드에 연결되지 않으면 펌웨어 워치독이 30분마다 강제 재부팅한다.
+- OTP의 보안 플래그로 JTAG조차 비활성화하지 않았다면, 시큐어 부트나 서명된 이미지를 썼는지도 의문이다.
+- 인터넷 연결이 없다는 게 주기적으로 재시작이 필요한 펌웨어의 더 큰 문제를 가리고 있는 건 아닐까?
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Extraer una clave AES de un abridor de garaje MyQ para que deje de reiniciarse sin conexión
+***** TLDR
+El MyQ Home Bridge 819LMB de Chamberlain es un dispositivo HomeKit que debería funcionar por completo en la red local. Sin internet, se reinicia cada 5 a 10 minutos mientras las conexiones a connect.myqdevice.com:8883 se quedan colgadas, y cada 30 minutos aunque esas conexiones se rechacen, porque el firmware espera un mensaje MQTT retenido del broker de Chamberlain. El autor conectó un Arduino Uno mediante dos resistencias al pad de depuración SWD de 10 pines de la placa, detuvo el Cortex-M4, buscó en la flash las rutinas que leen la clave e imprimió el número de serie y la clave AES-128 en unos 129 segundos. Con eso, un broker Mosquitto local en Docker y entradas DNS locales para los dos dominios de MyQ, el puente se conecta con PSK-AES128-CBC-SHA, se declara en línea y deja de reiniciarse.
+***** Take
+Esto solo funcionó porque Chamberlain dejó desbloqueado el acceso de depuración SWD, y los comentaristas sospechan que el firmware tampoco va firmado. El aparato tiene una comprobación obligatoria con la nube que lo reinicia cada 30 minutos y un puerto de depuración abierto que cualquiera con un Arduino puede leer. Si vas a comprar un abridor, elige uno con entradas de contacto seco y añade tu propio relé.
+***** Comments
+- Según la especificación HomeKit debería funcionar 100% en local... si el abridor no llega a su nube, un watchdog del firmware fuerza un reinicio cada 30 minutos.
+- Si ni siquiera activaron el flag de seguridad en la OTP para desactivar JTAG, cabe preguntarse si usaron arranque seguro e imágenes firmadas.
+- ¿La falta de internet esconde un problema mayor en el firmware que necesita reiniciarse periódicamente?
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+AES-Schlüssel aus einem MyQ-Garagentoröffner auslesen, damit er offline nicht mehr neu startet
+***** TLDR
+Chamberlains MyQ Home Bridge 819LMB ist ein HomeKit-Gerät, das eigentlich komplett im lokalen Netz funktionieren sollte. Ohne Internet startet es alle 5 bis 10 Minuten neu, solange Verbindungen zu connect.myqdevice.com:8883 hängen, und alle 30 Minuten selbst dann, wenn diese Verbindungen abgewiesen werden, weil die Firmware eine gespeicherte MQTT-Nachricht von Chamberlains Broker erwartet. Der Autor verband einen Arduino Uno über zwei Widerstände mit dem 10-poligen SWD-Debug-Pad der Platine, hielt den Cortex-M4 an, durchsuchte den Flash nach den Routinen zum Schlüssellesen und gab in etwa 129 Sekunden Seriennummer und AES-128-Schlüssel aus. Damit, einem lokalen Mosquitto-Broker in Docker und lokalen DNS-Einträgen für beide MyQ-Domains verbindet sich die Bridge per PSK-AES128-CBC-SHA, meldet sich als online und startet nicht mehr neu.
+***** Take
+Das klappte nur, weil Chamberlain den SWD-Debugzugang offen ließ, und Kommentatoren vermuten, dass auch die Firmware nicht signiert ist. Das Gerät hat eine erzwungene Cloud-Prüfung, die es alle 30 Minuten neu startet, und einen offenen Debug-Port, den jeder mit einem Arduino auslesen kann. Wer einen Öffner kauft, sollte einen mit potenzialfreien Kontakteingängen nehmen und ein eigenes Relais anschließen.
+***** Comments
+- Laut HomeKit-Spezifikation soll es zu 100% lokal funktionieren... erreicht der Öffner ihre Cloud nicht, erzwingt ein Firmware-Watchdog alle 30 Minuten einen Neustart.
+- Wenn sie nicht einmal das Sicherheitsflag im OTP gesetzt haben, um JTAG zu deaktivieren, fragt man sich, ob sie überhaupt Secure Boot und signierte Images nutzen.
+- Überdeckt die fehlende Internetverbindung ein größeres Problem in der Firmware, die regelmäßig neu starten muss?
+** Show HN: ExitPath – Open-source ways out of Slack, Notion and Microsoft 365 :open-source:self-hosting:show-hn:saas:
+:PROPERTIES:
+:ID:       50547980
+:URL:      https://exitpath-ruddy.vercel.app/
+:HN_URL:   https://news.ycombinator.com/item?id=50547980
+:POINTS:   194
+:COMMENTS: 57
+:BY:       zerocool0101
+:END:
+
+*** TLDR
+ExitPath maps 16 proprietary tools (Google Docs, Drive and Gmail, Microsoft Office, OneDrive, Outlook, Teams, Slack, Zoom, Notion, Dropbox, Google Photos, 1Password, GitHub, VS Code and macOS Terminal) to 30 open-source or self-hostable alternatives, including LibreOffice, Nextcloud, Thunderbird, Zulip, Element, Jitsi Meet, Immich, Vaultwarden, Forgejo, VSCodium and Ghostty. Each route gets a migration difficulty score out of 100, from 0 for VS Code and Terminal to 56 for Teams, plus an Easy, Moderate or Demanding label. Two five-part guides cover leaving Google Workspace and Microsoft 365. The grades assume one person self-hosting.
+
+*** Take
+Grading for one self-hoster leaves out what keeps organisations on Microsoft. Commenters list Exchange free/busy calendaring and Entra identity and SSO, and neither appears in the list. It works as a checklist for an individual. To help an IT department it needs an identity section first.
+
+*** Comments
+
+**** dagss
+:PROPERTIES:
+:COMMENT_ID: 50552281
+:END:
+The one big important thing is identity / SSO for companies. Don't see it on the list... Microsoft Entra is basically the reasons people still use other Microsoft products.
+
+**** EvanAnderson
+:PROPERTIES:
+:COMMENT_ID: 50550336
+:END:
+The biggest blocker for using free/libre/open-source email for my Customers has been calendaring.
+
+**** MarkMarine
+:PROPERTIES:
+:COMMENT_ID: 50555570
+:END:
+Feels like notion is catching a stray here... I work with non-devs, and notion is a godsend.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Show HN：ExitPath，告别 Slack、Notion 和 Microsoft 365 的开源出路
+***** TLDR
+ExitPath 把 16 款专有工具（Google 文档、云端硬盘和 Gmail、Microsoft Office、OneDrive、Outlook、Teams、Slack、Zoom、Notion、Dropbox、Google 相册、1Password、GitHub、VS Code 和 macOS 终端）对应到 30 个开源或可自托管的替代品，包括 LibreOffice、Nextcloud、Thunderbird、Zulip、Element、Jitsi Meet、Immich、Vaultwarden、Forgejo、VSCodium 和 Ghostty。每条迁移路线都有满分 100 的难度分，从 VS Code 和终端的 0 分到 Teams 的 56 分，并标注“简单”“中等”或“困难”。另有两份五部分指南，介绍如何离开 Google Workspace 和 Microsoft 365。评分假设是单人自托管。
+***** Take
+按单人自托管打分，漏掉了让组织离不开微软的东西。评论者列出了 Exchange 的空闲/忙碌日历和 Entra 身份认证与 SSO，这两项都不在列表里。它适合作为个人清单。要帮到 IT 部门，得先加上身份认证部分。
+***** Comments
+- 对公司来说最重要的是身份认证/SSO，列表里没看到……Microsoft Entra 基本上就是人们还在用其他微软产品的原因。
+- 我的客户使用自由/开源邮件的最大障碍一直是日历。
+- 感觉 Notion 在这里躺枪了……我和非开发人员一起工作，Notion 简直是救星。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Show HN：ExitPath、Slack・Notion・Microsoft 365から抜け出すオープンソースの道
+***** TLDR
+ExitPathは16のプロプライエタリツール（Googleドキュメント、ドライブ、Gmail、Microsoft Office、OneDrive、Outlook、Teams、Slack、Zoom、Notion、Dropbox、Googleフォト、1Password、GitHub、VS Code、macOSターミナル）を、LibreOffice、Nextcloud、Thunderbird、Zulip、Element、Jitsi Meet、Immich、Vaultwarden、Forgejo、VSCodium、Ghosttyなど30のオープンソースまたはセルフホスト可能な代替に対応させる。各ルートには100点満点の移行難易度スコアがあり、VS Codeとターミナルの0点からTeamsの56点まで、さらに「簡単」「普通」「大変」のラベルが付く。Google WorkspaceとMicrosoft 365から離れるための5部構成のガイドが2つある。評価は1人でセルフホストすることを前提にしている。
+***** Take
+1人のセルフホスト前提で採点すると、組織をMicrosoftにつなぎとめているものが抜け落ちる。コメント欄ではExchangeの空き時間カレンダーとEntraのID管理・SSOが挙げられているが、どちらもリストにない。個人のチェックリストとしては使える。IT部門の役に立つには、まずID管理の項目が必要だ。
+***** Comments
+- 企業にとって一番大事なのはID管理/SSOだ。リストに見当たらない……Microsoft Entraこそ、人々が他のMicrosoft製品を使い続ける理由だ。
+- 顧客にフリー/オープンソースのメールを使ってもらう最大の障害はカレンダーだった。
+- Notionはとばっちりを受けている気がする……非開発者と働いているが、Notionは本当に助かる。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Show HN: ExitPath, Slack·Notion·Microsoft 365에서 벗어나는 오픈소스 경로
+***** TLDR
+ExitPath는 16개 독점 도구(Google 문서, 드라이브, Gmail, Microsoft Office, OneDrive, Outlook, Teams, Slack, Zoom, Notion, Dropbox, Google 포토, 1Password, GitHub, VS Code, macOS 터미널)를 LibreOffice, Nextcloud, Thunderbird, Zulip, Element, Jitsi Meet, Immich, Vaultwarden, Forgejo, VSCodium, Ghostty 등 30개 오픈소스 또는 자체 호스팅 대안에 대응시킨다. 경로마다 100점 만점의 이전 난이도 점수가 있으며 VS Code와 터미널의 0점부터 Teams의 56점까지이고, '쉬움', '보통', '어려움' 라벨이 붙는다. Google Workspace와 Microsoft 365를 떠나는 5부 구성 가이드가 두 개 있다. 점수는 혼자 자체 호스팅하는 경우를 가정한다.
+***** Take
+1인 자체 호스팅 기준으로 채점하면 조직을 Microsoft에 묶어 두는 요소가 빠진다. 댓글에서는 Exchange의 일정 가용성 확인과 Entra ID 관리 및 SSO를 꼽는데, 둘 다 목록에 없다. 개인용 체크리스트로는 쓸 만하다. IT 부서에 도움이 되려면 먼저 ID 관리 항목이 필요하다.
+***** Comments
+- 회사에 가장 중요한 건 ID/SSO인데 목록에 없다... Microsoft Entra가 사람들이 다른 Microsoft 제품을 계속 쓰는 이유다.
+- 고객에게 자유/오픈소스 이메일을 쓰게 하는 데 가장 큰 걸림돌은 캘린더였다.
+- Notion이 괜히 유탄을 맞는 것 같다... 비개발자와 일하는데 Notion은 정말 구세주다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Show HN: ExitPath, salidas de código abierto para dejar Slack, Notion y Microsoft 365
+***** TLDR
+ExitPath relaciona 16 herramientas propietarias (Google Docs, Drive y Gmail, Microsoft Office, OneDrive, Outlook, Teams, Slack, Zoom, Notion, Dropbox, Google Fotos, 1Password, GitHub, VS Code y la Terminal de macOS) con 30 alternativas de código abierto o autoalojables, entre ellas LibreOffice, Nextcloud, Thunderbird, Zulip, Element, Jitsi Meet, Immich, Vaultwarden, Forgejo, VSCodium y Ghostty. Cada ruta tiene una puntuación de dificultad de migración sobre 100, desde 0 para VS Code y la Terminal hasta 56 para Teams, más una etiqueta Fácil, Moderada o Exigente. Dos guías de cinco partes explican cómo dejar Google Workspace y Microsoft 365. Las notas asumen una sola persona que se lo autoaloja.
+***** Take
+Puntuar para una sola persona que se autoaloja deja fuera lo que mantiene a las organizaciones en Microsoft. Los comentaristas mencionan el calendario de disponibilidad de Exchange y la identidad y el SSO de Entra, y ninguno aparece en la lista. Sirve como lista de comprobación individual. Para ayudar a un departamento de TI necesita primero una sección de identidad.
+***** Comments
+- Lo más importante para las empresas es la identidad / SSO. No lo veo en la lista... Microsoft Entra es básicamente la razón por la que la gente sigue usando otros productos de Microsoft.
+- El mayor obstáculo para que mis clientes usen correo libre/de código abierto ha sido el calendario.
+- Parece que Notion recibe un golpe gratuito aquí... trabajo con gente que no programa y Notion es una bendición.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Show HN: ExitPath, Open-Source-Auswege aus Slack, Notion und Microsoft 365
+***** TLDR
+ExitPath ordnet 16 proprietäre Werkzeuge (Google Docs, Drive und Gmail, Microsoft Office, OneDrive, Outlook, Teams, Slack, Zoom, Notion, Dropbox, Google Fotos, 1Password, GitHub, VS Code und das macOS-Terminal) 30 quelloffenen oder selbst hostbaren Alternativen zu, darunter LibreOffice, Nextcloud, Thunderbird, Zulip, Element, Jitsi Meet, Immich, Vaultwarden, Forgejo, VSCodium und Ghostty. Jede Route erhält einen Migrationsschwierigkeitswert von 100, von 0 für VS Code und Terminal bis 56 für Teams, dazu ein Etikett Einfach, Mittel oder Anspruchsvoll. Zwei fünfteilige Anleitungen behandeln den Ausstieg aus Google Workspace und Microsoft 365. Die Bewertungen gehen von einer Person aus, die selbst hostet.
+***** Take
+Wer für eine einzelne selbst hostende Person bewertet, lässt weg, was Organisationen bei Microsoft hält. Kommentatoren nennen die Frei/Gebucht-Kalender von Exchange sowie Identität und SSO über Entra, und beides fehlt in der Liste. Als persönliche Checkliste taugt die Seite. Um einer IT-Abteilung zu helfen, braucht sie zuerst einen Abschnitt zu Identität.
+***** Comments
+- Das wirklich Wichtige für Firmen ist Identität / SSO. Sehe ich nicht auf der Liste... Microsoft Entra ist im Grunde der Grund, warum Leute andere Microsoft-Produkte weiter nutzen.
+- Das größte Hindernis, damit meine Kunden freie/quelloffene E-Mail nutzen, war immer der Kalender.
+- Notion kriegt hier wohl einen Querschläger ab... ich arbeite mit Nicht-Entwicklern, und Notion ist ein Segen.
