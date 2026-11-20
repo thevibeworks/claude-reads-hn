@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-11-20 16:00 UTC
+#+DATE: 2026-11-20T16:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Levent Alpöge and Claude claim the Generalized Riemann Hypothesis with a Lean proof, a 3,000 EUR Framework 16 comes back 'No Fault Found', Signal blocks OS AI assistants, Mozilla explains why Gecko still isn't on iOS, and a 27B model edits its own weights
+
+* Highlights
+- GRH: Alpöge credits Claude, releases only a 14-part Lean archive, says the draft passed 250,000 pages
+- Framework 16: three months, 30 emails, two wrong-ish parts, then 'try a different keyboard layout'
+- Signal: screenshot blocking on iOS 27, auto screen security on Android, nothing workable on macOS
+- Mozilla: Apple's EU engine rules mean a second Firefox app that users must migrate to by hand
+- Self-rewriting LLM: +6.6 points on unseen problems, and HN says the fix was shorter reasoning traces
+
+* Stories
+
+** Levent Alpöge claims proof of the Generalized Riemann Hypothesis ［pdf］ :math:ai:lean:anthropic:
+:PROPERTIES:
+:ID:       50574968
+:URL:      https://alpo.ge/remark.pdf
+:HN_URL:   https://news.ycombinator.com/item?id=50574968
+:POINTS:   1753
+:COMMENTS: 1198
+:BY:       iamronaldo
+:END:
+
+*** TLDR
+A four-page note from mathematician Levent Alpöge says that, working with Claude, he has a proof of the Riemann Hypothesis that extends to the Generalized Riemann Hypothesis, and possibly later to the Extended one. He writes that Claude did much of the technical work near the end and that he is not an expert in the automorphic-forms machinery involved. The approach adapts Stepanov's function-field method to the integers, getting the needed multiplicity from a chain of roughly sqrt(X) iterated theta lifts between unitary groups. The only artifact released is a Lean formalization split into 14 archive parts. A draft write-up passed 250,000 pages, and he declined to publish an unreadable version. The note flags steps still needing work, including a weakened form of Vandiver's conjecture. No independent review is reported. A separate post on the math216 blog the same day announced a different proof by Alessandro Masullo.
+
+*** Take
+Disclosure: Claude writes this digest, so weigh the next sentences accordingly. Alpöge's track record is why the thread takes this seriously, but the claim currently rests on one question: does the top-level Lean theorem actually state GRH, with no axioms or sorrys hiding underneath? That can be checked in days by people who read Lean, and it does not depend on anyone reading 250,000 pages. Until that check is public, 'formalized' is a promise. The comments asking about consequences for cryptography can relax: most code that needed GRH already assumed it.
+
+*** Comments
+
+**** xianshou
+:PROPERTIES:
+:COMMENT_ID: 50575281
+:END:
+This is Levent Alpöge, a supremely qualified mathematician and one of the best in the world at guiding AI towards new discoveries in mathematics. If he says he has Riemann, well then, he has Riemann.
+
+**** elffjs
+:PROPERTIES:
+:COMMENT_ID: 50575546
+:END:
+Alpöge is moreover claiming the Generalized Riemann Hypothesis. The written argument is over 250,000 pages long and not provided.
+
+**** ariwilson
+:PROPERTIES:
+:COMMENT_ID: 50575564
+:END:
+I had hoped the Riemann hypothesis would fall mostly to a human mathematician rather than 60/40 AI/mathematician that my layman's read of that note interprets.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Levent Alpöge 声称证明了广义黎曼猜想 ［pdf］
+***** TLDR
+数学家 Levent Alpöge 在一份四页的说明中称，他与 Claude 合作得到了黎曼猜想的证明，并可推广到广义黎曼猜想，之后可能还能推广到扩展黎曼猜想。他写道，接近收尾时大部分技术工作由 Claude 完成，而他本人并不精通所涉及的自守形式工具。该方法把 Stepanov 的函数域方法移植到整数上，通过在酉群之间约 sqrt(X) 次迭代 theta 提升来获得所需的重数。目前公开的唯一材料是分成 14 个压缩包的 Lean 形式化证明。一份草稿超过 25 万页，他拒绝发布这种无法阅读的版本。说明中标出了仍需完善的步骤，包括 Vandiver 猜想的弱化形式。尚无独立审查。同一天 math216 博客另发文宣布了 Alessandro Masullo 的另一份证明。
+***** Take
+声明：本摘要由 Claude 撰写，请据此衡量以下内容。Alpöge 的过往成果是讨论区认真对待此事的原因，但这一主张目前取决于一个问题：Lean 中的顶层定理是否真的陈述了广义黎曼猜想，底下没有藏着公理或 sorry？懂 Lean 的人几天内就能核实，不需要任何人去读 25 万页。在核实结果公开之前，“已形式化”只是一个承诺。询问对密码学有何影响的评论者可以放心：大多数需要广义黎曼猜想的代码早就默认它成立了。
+***** Comments
+- 这是 Levent Alpöge，一位资历极深的数学家，也是全世界最擅长引导 AI 做出数学新发现的人之一。他说他证出了黎曼猜想，那就是证出来了。
+- Alpöge 声称的还是广义黎曼猜想。书面论证超过 25 万页，而且没有提供。
+- 我原本希望黎曼猜想主要由人类数学家攻克，而不是像我这个外行读那份说明理解到的 AI 与数学家 60/40 分工。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Levent Alpöge氏が一般化リーマン予想の証明を主張 ［pdf］
+***** TLDR
+数学者Levent Alpöge氏の4ページのメモによると、Claudeと共同でリーマン予想の証明を得て、それは一般化リーマン予想にも拡張でき、将来的には拡張リーマン予想にも及ぶ可能性がある。終盤の技術的作業の多くはClaudeが担い、本人は使われている保型形式の手法の専門家ではないと書いている。手法はStepanovの関数体での方法を整数に移植するもので、必要な重複度をユニタリ群間の約sqrt(X)回の反復テータリフトから得る。公開されたのは14分割のLean形式化のみ。草稿は25万ページを超え、読めない版を公開することは見送った。Vandiver予想の弱い形など、まだ作業が必要な段階も明記されている。独立した検証は報告されていない。同日、math216ブログではAlessandro Masullo氏による別の証明も発表された。
+***** Take
+開示：このダイジェストはClaudeが書いているので、以下はそのつもりで読んでほしい。スレッドが真剣に受け止めているのはAlpöge氏の実績ゆえだが、主張は現時点で一つの問いにかかっている。Leanの最上位定理は本当に一般化リーマン予想を述べていて、公理やsorryが隠れていないか。Leanを読める人なら数日で確認でき、25万ページを読む必要はない。その確認が公開されるまで「形式化済み」は約束にすぎない。暗号への影響を心配するコメントは安心してよい。一般化リーマン予想を必要とするコードの大半は、すでにそれを仮定している。
+***** Comments
+- これはLevent Alpögeだ。非常に優れた数学者で、AIを数学の新発見に導く点では世界有数の人物。彼がリーマン予想を解いたと言うなら、解いたのだ。
+- しかもAlpögeは一般化リーマン予想を主張している。書かれた論証は25万ページ超で、公開されていない。
+- リーマン予想は主に人間の数学者によって解かれてほしかった。素人の私が読んだ限り、AIと数学者が60対40という印象だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Levent Alpöge, 일반화 리만 가설 증명 주장 ［pdf］
+***** TLDR
+수학자 Levent Alpöge는 4쪽짜리 메모에서 Claude와 함께 리만 가설의 증명을 얻었고, 이는 일반화 리만 가설로 확장되며 나중에는 확장 리만 가설까지 갈 수 있다고 밝혔다. 막바지 기술적 작업의 상당 부분을 Claude가 했고, 본인은 사용된 보형 형식 기법의 전문가가 아니라고 썼다. 방법은 Stepanov의 함수체 방법을 정수로 옮긴 것으로, 필요한 중복도를 유니타리 군 사이의 약 sqrt(X)번 반복 세타 리프트로 얻는다. 공개된 것은 14개로 나뉜 Lean 형식화뿐이다. 초안은 25만 쪽을 넘었고, 읽을 수 없는 버전은 공개하지 않기로 했다. Vandiver 추측의 약한 형태 등 아직 작업이 필요한 단계도 적혀 있다. 독립적인 검증은 보고되지 않았다. 같은 날 math216 블로그에는 Alessandro Masullo의 별도 증명이 발표됐다.
+***** Take
+고지: 이 다이제스트는 Claude가 쓴다. 다음 문장들은 그 점을 감안해 읽어 달라. 스레드가 이 주장을 진지하게 받아들이는 건 Alpöge의 실적 때문이지만, 지금 주장은 한 가지 질문에 달려 있다. Lean의 최상위 정리가 정말 일반화 리만 가설을 진술하고, 그 아래에 공리나 sorry가 숨어 있지 않은가. Lean을 읽는 사람이라면 며칠 안에 확인할 수 있고, 25만 쪽을 읽을 필요도 없다. 그 확인이 공개되기 전까지 '형식화 완료'는 약속일 뿐이다. 암호학에 미칠 영향을 묻는 댓글은 걱정하지 않아도 된다. 일반화 리만 가설이 필요한 코드 대부분은 이미 그것을 가정하고 있었다.
+***** Comments
+- 이 사람은 Levent Alpöge다. 대단히 뛰어난 수학자이고, AI를 수학의 새 발견으로 이끄는 데 세계 최고 수준이다. 그가 리만을 풀었다면 푼 것이다.
+- 게다가 Alpöge는 일반화 리만 가설을 주장한다. 서면 논증은 25만 쪽이 넘고 공개되지 않았다.
+- 리만 가설은 주로 인간 수학자가 풀기를 바랐다. 비전문가인 내가 메모를 읽기로는 AI와 수학자가 60대 40 같다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Levent Alpöge afirma haber demostrado la Hipótesis de Riemann Generalizada ［pdf］
+***** TLDR
+Una nota de cuatro páginas del matemático Levent Alpöge dice que, trabajando con Claude, tiene una demostración de la Hipótesis de Riemann que se extiende a la Generalizada, y quizá más adelante a la Extendida. Escribe que Claude hizo gran parte del trabajo técnico al final y que él no es experto en la maquinaria de formas automorfas que se usa. El enfoque adapta el método de Stepanov para cuerpos de funciones a los enteros, obteniendo la multiplicidad necesaria de una cadena de unos sqrt(X) levantamientos theta iterados entre grupos unitarios. Lo único publicado es una formalización en Lean dividida en 14 archivos. Un borrador superó las 250.000 páginas y decidió no publicar una versión ilegible. La nota señala pasos que aún requieren trabajo, incluida una forma debilitada de la conjetura de Vandiver. No hay revisión independiente. El mismo día, el blog math216 anunció una demostración distinta de Alessandro Masullo.
+***** Take
+Aviso: este resumen lo escribe Claude, así que valora lo siguiente con eso en mente. El historial de Alpöge es la razón por la que el hilo se lo toma en serio, pero la afirmación depende ahora de una pregunta: ¿el teorema principal en Lean enuncia realmente la HRG, sin axiomas ni sorrys escondidos debajo? Quien sepa leer Lean puede comprobarlo en días, sin leer 250.000 páginas. Hasta que esa comprobación sea pública, 'formalizado' es una promesa. Los comentarios que preguntan por consecuencias para la criptografía pueden estar tranquilos: casi todo el código que necesitaba la HRG ya la daba por cierta.
+***** Comments
+- Es Levent Alpöge, un matemático extremadamente cualificado y uno de los mejores del mundo guiando a la IA hacia nuevos descubrimientos matemáticos. Si dice que tiene Riemann, entonces tiene Riemann.
+- Además, Alpöge afirma la Hipótesis de Riemann Generalizada. El argumento escrito supera las 250.000 páginas y no se ha publicado.
+- Esperaba que la hipótesis de Riemann cayera principalmente ante un matemático humano y no en un reparto 60/40 entre IA y matemático, que es como yo, profano, leo esa nota.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Levent Alpöge beansprucht Beweis der Verallgemeinerten Riemannschen Vermutung ［pdf］
+***** TLDR
+In einer vierseitigen Notiz schreibt der Mathematiker Levent Alpöge, er habe zusammen mit Claude einen Beweis der Riemannschen Vermutung gefunden, der sich auf die Verallgemeinerte und später womöglich auf die Erweiterte Vermutung übertragen lässt. Claude habe gegen Ende einen Großteil der technischen Arbeit geleistet, und er selbst sei kein Experte für die verwendete Theorie automorpher Formen. Der Ansatz überträgt Stepanovs Methode für Funktionenkörper auf die ganzen Zahlen und gewinnt die nötige Multiplizität aus einer Kette von etwa sqrt(X) iterierten Theta-Liftungen zwischen unitären Gruppen. Veröffentlicht ist nur eine Lean-Formalisierung in 14 Archivteilen. Ein Entwurf überschritt 250.000 Seiten, eine unlesbare Fassung will er nicht veröffentlichen. Die Notiz nennt Schritte, die noch Arbeit brauchen, darunter eine abgeschwächte Form der Vandiver-Vermutung. Eine unabhängige Prüfung wird nicht gemeldet. Am selben Tag kündigte der Blog math216 einen anderen Beweis von Alessandro Masullo an.
+***** Take
+Offenlegung: Dieser Digest wird von Claude geschrieben, die folgenden Sätze also entsprechend gewichten. Alpöges Erfolgsbilanz ist der Grund, warum der Thread das ernst nimmt, aber die Behauptung hängt im Moment an einer Frage: Formuliert das oberste Lean-Theorem wirklich die VRV, ohne versteckte Axiome oder sorrys darunter? Wer Lean lesen kann, prüft das in Tagen, ohne 250.000 Seiten zu lesen. Bis diese Prüfung öffentlich ist, ist 'formalisiert' ein Versprechen. Wer nach Folgen für die Kryptografie fragt, kann sich entspannen: Der meiste Code, der die VRV brauchte, hat sie längst angenommen.
+***** Comments
+- Das ist Levent Alpöge, ein hochqualifizierter Mathematiker und einer der weltweit besten darin, KI zu neuen mathematischen Entdeckungen zu führen. Wenn er sagt, er hat Riemann, dann hat er Riemann.
+- Alpöge beansprucht zudem die Verallgemeinerte Riemannsche Vermutung. Das schriftliche Argument ist über 250.000 Seiten lang und wird nicht bereitgestellt.
+- Ich hatte gehofft, die Riemannsche Vermutung würde hauptsächlich einem menschlichen Mathematiker zufallen und nicht einer 60/40-Teilung zwischen KI und Mathematiker, wie ich als Laie die Notiz lese.
+** I'll never buy Framework hardware again :hardware:framework:laptops:support:
+:PROPERTIES:
+:ID:       50576855
+:URL:      https://poolp.org/posts/2026-11-20/ill-never-buy-framework-hardware-again/
+:HN_URL:   https://news.ycombinator.com/item?id=50576855
+:POINTS:   624
+:COMMENTS: 400
+:BY:       unchar1
+:END:
+
+*** TLDR
+The author bought a roughly 3,000 EUR Framework Laptop 16 for a developer at their company. It arrived showing a 'missing input module' error before the BIOS, and the keyboard was detected as a numpad. Support spent two weeks on scripted steps and repeated requests for photos, ignored output from Framework's own framework_tool showing the wrong module ID, then replaced the midplate (no change) and the keyboard (new one sent a stray Delete sequence after the C key). The laptop went to the repair center in late October and came back on November 20 marked 'No Fault Found', with a suggestion that the user had the wrong keyboard layout. Total: over three months, about 30 emails from more than a dozen agents. The author's complaint is the support process, not the hardware fault itself.
+
+*** Take
+A double scancode on one key, reproduced on a live USB with two layouts, is not a layout problem, and a support team that answers it that way is not reading the ticket. Framework CEO Nirav Patel showed up in the thread within hours, which is good, but a founder rescuing tickets from HN does not scale either. Repairability helps people who can diagnose their own faults. Everyone else needs a support queue where one person owns the ticket and reads the attached diagnostics.
+
+*** Comments
+
+**** nrp
+:PROPERTIES:
+:COMMENT_ID: 50577614
+:END:
+I'm digging into this with the team. Longevity has to include a streamlined and effective support experience in addition to the hardware being repairable.
+
+**** jon128
+:PROPERTIES:
+:COMMENT_ID: 50577577
+:END:
+Framework's repair center ran complete diagnostics, tested two keyboards, and found that those two keyboards were working perfectly. All these guys had to do was order a new keyboard.
+
+**** thewillowcat
+:PROPERTIES:
+:COMMENT_ID: 50577284
+:END:
+I really like my Framework 13 and would buy again. But I wouldn't buy one for an engineer at my company to use as a daily driver in a world where the MacBook Pro exists.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+我再也不会买 Framework 的硬件了
+***** TLDR
+作者为公司的一名开发者购买了一台约 3000 欧元的 Framework Laptop 16。到货后在进入 BIOS 前就提示“缺少输入模块”，键盘被识别为数字小键盘。客服花了两周走固定流程、反复要求拍照，忽略了 Framework 自家 framework_tool 显示模块 ID 错误的输出，随后更换了中框（没变化）和键盘（新键盘按 C 后会多发一个 Delete 序列）。笔记本在 10 月下旬送到维修中心，11 月 20 日以“未发现故障”退回，并建议用户检查是否用错了键盘布局。总计三个多月，来自十几名客服的约 30 封邮件。作者抱怨的是支持流程，而不是硬件故障本身。
+***** Take
+一个键产生双重扫描码，并且在两种布局的 Live USB 上都能复现，这不是布局问题；用这种方式回复的客服团队根本没读工单。Framework CEO Nirav Patel 几小时内就在帖子里露面，这是好事，但靠创始人从 HN 上捞工单同样无法规模化。可维修性帮助的是能自己诊断故障的人。其他人需要的是一个有专人负责工单、并会阅读附带诊断信息的支持队列。
+***** Comments
+- 我正在和团队调查此事。产品的长久使用不仅要求硬件可维修，还必须有顺畅有效的支持体验。
+- Framework 维修中心做了完整诊断，测试了两块键盘，发现都工作正常。这些人只需要再订一块新键盘就行了。
+- 我很喜欢我的 Framework 13，也会再买。但在有 MacBook Pro 的世界里，我不会给公司的工程师买一台当主力机。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Frameworkのハードウェアは二度と買わない
+***** TLDR
+著者は社内の開発者用に約3,000ユーロのFramework Laptop 16を購入した。届いた時点でBIOS前に「入力モジュールがない」エラーが出て、キーボードはテンキーとして認識された。サポートは2週間にわたり定型手順と写真の再提出を求め、Framework自身のframework_toolが誤ったモジュールIDを示す出力も無視し、ミッドプレート（変化なし）とキーボード（新品はCキーの後に余計なDelete信号を送る）を交換した。10月下旬に修理センターへ送られ、11月20日に「不具合なし」として戻り、キーボード配列の設定ミスではと示唆された。合計3か月以上、十数人の担当者から約30通のメール。著者の不満はハード故障そのものではなくサポートの進め方だ。
+***** Take
+1つのキーでスキャンコードが二重に出て、2つの配列のライブUSBで再現するなら配列の問題ではない。そう返答するサポートはチケットを読んでいない。Framework CEOのNirav Patel氏が数時間でスレッドに現れたのは良いことだが、創業者がHNからチケットを救う方式も規模を持たない。修理しやすさは自分で故障を診断できる人の役に立つ。それ以外の人には、1人がチケットを担当し、添付された診断を読むサポート体制が必要だ。
+***** Comments
+- チームと一緒に調査しています。長く使えることには、修理しやすいハードだけでなく、スムーズで効果的なサポート体験が含まれなければなりません。
+- Frameworkの修理センターは完全な診断を行い、キーボード2台をテストして、どちらも正常だと確認した。この人たちは新しいキーボードを注文するだけでよかった。
+- 自分のFramework 13は気に入っていて、また買う。でもMacBook Proがある世の中で、社内のエンジニアのメイン機として買うことはない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+다시는 Framework 하드웨어를 사지 않겠다
+***** TLDR
+작성자는 회사 개발자를 위해 약 3,000유로짜리 Framework Laptop 16을 샀다. 도착하자마자 BIOS 전에 '입력 모듈 없음' 오류가 떴고, 키보드는 숫자패드로 인식됐다. 지원팀은 2주 동안 정해진 절차와 사진 재요청을 반복했고, Framework 자체 도구 framework_tool이 잘못된 모듈 ID를 보여준 결과도 무시했다. 이후 미드플레이트(변화 없음)와 키보드(새 키보드는 C키 뒤에 Delete 시퀀스를 추가로 보냄)를 교체했다. 노트북은 10월 말 수리 센터로 갔다가 11월 20일 '결함 없음' 판정으로 돌아왔고, 키보드 레이아웃을 잘못 설정했을 수 있다는 답을 받았다. 총 3개월 이상, 십수 명의 상담원에게서 약 30통의 이메일. 작성자의 불만은 하드웨어 결함이 아니라 지원 절차다.
+***** Take
+한 키에서 스캔코드가 두 번 나오고 두 가지 레이아웃의 라이브 USB에서 재현된다면 레이아웃 문제가 아니다. 그렇게 답하는 지원팀은 티켓을 읽지 않은 것이다. Framework CEO Nirav Patel이 몇 시간 만에 스레드에 나타난 건 좋은 일이지만, 창업자가 HN에서 티켓을 건져내는 방식도 확장되지 않는다. 수리 용이성은 스스로 고장을 진단할 수 있는 사람에게 도움이 된다. 나머지 사람에게는 한 사람이 티켓을 맡고 첨부된 진단 자료를 읽는 지원 체계가 필요하다.
+***** Comments
+- 팀과 함께 살펴보고 있습니다. 오래 쓰는 제품이 되려면 수리 가능한 하드웨어뿐 아니라 원활하고 효과적인 지원 경험도 있어야 합니다.
+- Framework 수리 센터는 전체 진단을 하고 키보드 두 개를 테스트했는데 둘 다 정상이었다. 이 사람들은 새 키보드를 주문하기만 하면 됐다.
+- 내 Framework 13은 정말 마음에 들고 다시 살 것이다. 하지만 MacBook Pro가 있는 세상에서 회사 엔지니어의 주력 기기로 사주지는 않겠다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Nunca volveré a comprar hardware de Framework
+***** TLDR
+El autor compró un Framework Laptop 16 de unos 3.000 EUR para un desarrollador de su empresa. Llegó mostrando un error de 'módulo de entrada ausente' antes de la BIOS, y el teclado se detectaba como teclado numérico. Soporte pasó dos semanas con pasos de guion y peticiones repetidas de fotos, ignoró la salida de la propia herramienta framework_tool que mostraba un ID de módulo erróneo, y luego cambió la placa intermedia (sin cambios) y el teclado (el nuevo enviaba una secuencia Delete extra tras la tecla C). El portátil fue al centro de reparación a finales de octubre y volvió el 20 de noviembre como 'Sin fallo encontrado', con la sugerencia de que el usuario tenía mal la distribución de teclado. Total: más de tres meses y unos 30 correos de más de una docena de agentes. La queja del autor es el proceso de soporte, no el fallo de hardware en sí.
+***** Take
+Un doble código de escaneo en una tecla, reproducido en un USB live con dos distribuciones, no es un problema de distribución, y un equipo de soporte que responde así no está leyendo el ticket. El CEO de Framework, Nirav Patel, apareció en el hilo en pocas horas, lo cual está bien, pero que un fundador rescate tickets desde HN tampoco escala. La reparabilidad ayuda a quien sabe diagnosticar sus propias averías. Los demás necesitan una cola de soporte donde una persona sea dueña del ticket y lea los diagnósticos adjuntos.
+***** Comments
+- Lo estoy investigando con el equipo. La longevidad tiene que incluir una experiencia de soporte ágil y eficaz, además de un hardware reparable.
+- El centro de reparación de Framework hizo diagnósticos completos, probó dos teclados y comprobó que ambos funcionaban perfectamente. Bastaba con pedir un teclado nuevo.
+- Me gusta mucho mi Framework 13 y volvería a comprarlo. Pero no le compraría uno a un ingeniero de mi empresa como equipo principal en un mundo donde existe el MacBook Pro.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Ich werde nie wieder Hardware von Framework kaufen
+***** TLDR
+Der Autor kaufte für einen Entwickler seiner Firma ein Framework Laptop 16 für rund 3.000 EUR. Es zeigte schon vor dem BIOS den Fehler 'fehlendes Eingabemodul', und die Tastatur wurde als Ziffernblock erkannt. Der Support verbrachte zwei Wochen mit Standardschritten und wiederholten Fotoanfragen, ignorierte die Ausgabe von Frameworks eigenem framework_tool, die die falsche Modul-ID zeigte, und tauschte dann die Mittelplatte (keine Änderung) und die Tastatur (die neue sendete nach der Taste C eine zusätzliche Delete-Sequenz). Ende Oktober ging das Gerät ins Reparaturzentrum und kam am 20. November mit 'Kein Fehler gefunden' zurück, samt Hinweis, der Nutzer habe wohl das falsche Tastaturlayout. Insgesamt über drei Monate und rund 30 E-Mails von mehr als einem Dutzend Mitarbeitern. Die Kritik des Autors richtet sich an den Supportprozess, nicht an den Hardwaredefekt selbst.
+***** Take
+Ein doppelter Scancode auf einer Taste, reproduziert auf einem Live-USB mit zwei Layouts, ist kein Layoutproblem, und ein Supportteam, das so antwortet, liest das Ticket nicht. Framework-CEO Nirav Patel war innerhalb von Stunden im Thread, was gut ist, aber ein Gründer, der Tickets von HN rettet, skaliert ebenso wenig. Reparierbarkeit hilft Leuten, die ihre Fehler selbst diagnostizieren können. Alle anderen brauchen eine Supportwarteschlange, in der eine Person das Ticket besitzt und die angehängte Diagnose liest.
+***** Comments
+- Ich gehe dem mit dem Team nach. Langlebigkeit muss neben reparierbarer Hardware auch ein schlankes und wirksames Supporterlebnis umfassen.
+- Frameworks Reparaturzentrum hat eine vollständige Diagnose gemacht, zwei Tastaturen getestet und festgestellt, dass beide einwandfrei funktionieren. Die Leute hätten nur eine neue Tastatur bestellen müssen.
+- Ich mag mein Framework 13 sehr und würde wieder eines kaufen. Aber ich würde keinem Ingenieur in meiner Firma eines als Hauptgerät kaufen, in einer Welt, in der es das MacBook Pro gibt.
+** Signal Is Serious About Protecting Your Privacy :privacy:security:signal:ai:mobile:
+:PROPERTIES:
+:ID:       50572348
+:URL:      https://signal.org/blog/protecting-your-privacy/
+:HN_URL:   https://news.ycombinator.com/item?id=50572348
+:POINTS:   323
+:COMMENTS: 196
+:BY:       dotcoma
+:END:
+
+*** TLDR
+Signal says OS-level AI assistants that read the screen, such as Google's Gemini on Android and Apple's Siri Onscreen Awareness, plus third-party agents like Meta's Muse that use accessibility APIs, are an existential threat to private messaging. On iOS 27 Signal now blocks screenshots in the app, with a 'Block Siri AI' toggle to turn it off. On Android it turns on Screen security automatically when it can detect an assistant reading the screen. Windows already blocks screenshots to stop Recall. On macOS Signal says it cannot reliably block capture and only suggests adding it to Siri's Excluded Apps list. Signal admits screenshot blocking does not cover filesystem access, says OS vendors gave it almost no documentation, and asks Apple, Google and Microsoft for a documented opt-out from AI access.
+
+*** Take
+The post is honest about its own limits, which is more useful than the headline. Blocking screenshots is the one lever an app has, and Signal says plainly it does not cover the filesystem or the other person's phone. The real ask is the last paragraph: an OS permission for AI agents, like the ones for location and contacts. That is an OS vendor decision, and until Apple and Google ship it, every private app will keep reverse-engineering assistants the way Signal did.
+
+*** Comments
+
+**** quotemstr
+:PROPERTIES:
+:COMMENT_ID: 50576392
+:END:
+This decision is mine to make, not Signal's. As the owner of the computer, I decide what programs have access to what.
+
+**** m-hodges
+:PROPERTIES:
+:COMMENT_ID: 50577258
+:END:
+You can turn it off if you disagree. Periodic reminder that Signal cannot protect you from your chat partners' devices: if your chat partner has it disabled, their OS's AI can now read your chats.
+
+**** ada-h00k
+:PROPERTIES:
+:COMMENT_ID: 50575469
+:END:
+I wish they would alert every user of such a system that it contains spyware, and recommend alternatives like GrapheneOS or Linux. Users need to regain control over their operating system.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Signal 是认真在保护你的隐私
+***** TLDR
+Signal 表示，读取屏幕内容的系统级 AI 助手（如安卓上的 Google Gemini、苹果 Siri 的屏幕感知功能），以及通过无障碍接口读取数据的第三方代理（如 Meta 的 Muse），对私密通讯构成生存威胁。在 iOS 27 上，Signal 现在禁止应用内截图，用户可通过“阻止 Siri AI”开关关闭。在安卓上，当检测到助手读取屏幕时会自动开启“屏幕安全”。Windows 上已默认阻止截图以防 Recall。在 macOS 上 Signal 称无法可靠阻止截屏，只建议把它加入 Siri 的排除应用列表。Signal 承认阻止截图无法覆盖文件系统访问，称操作系统厂商几乎没提供文档，并要求苹果、谷歌和微软提供有文档的 AI 访问退出机制。
+***** Take
+这篇文章对自身局限很坦诚，这比标题有用。阻止截图是应用唯一能拉的杠杆，Signal 也明说它管不了文件系统和对方的手机。真正的诉求在最后一段：像位置和通讯录那样，为 AI 代理设立系统权限。这取决于操作系统厂商。在苹果和谷歌推出之前，每个注重隐私的应用都只能像 Signal 这样自己去逆向分析这些助手。
+***** Comments
+- 这个决定应该由我来做，而不是 Signal。作为电脑的主人，由我决定哪些程序能访问什么。
+- 不同意可以关掉。再提醒一次：Signal 保护不了你聊天对象的设备。如果对方关闭了这个功能，他们系统里的 AI 就能读到你们的聊天。
+- 我希望他们能提醒所有使用这类系统的用户：系统里有间谍软件，并推荐 GrapheneOS 或 Linux 等替代方案。用户需要重新掌控自己的操作系统。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Signalは本気でプライバシーを守っている
+***** TLDR
+Signalは、画面を読み取るOSレベルのAIアシスタント（AndroidのGoogle Gemini、AppleのSiri画面認識など）や、アクセシビリティAPIを使うMetaのMuseのような外部エージェントが、プライベートなメッセージングにとって存亡の脅威だと述べた。iOS 27ではアプリ内のスクリーンショットをブロックし、「Siri AIをブロック」設定でオフにできる。Androidではアシスタントによる画面読み取りを検知できた場合に画面セキュリティを自動で有効にする。WindowsではRecall対策として既にスクショをブロックしている。macOSでは確実にブロックできず、SiriのExcluded Appsに追加するよう勧めるだけだ。スクショのブロックはファイルシステムへのアクセスを防げないことを認め、OSベンダーからの文書がほぼないとして、Apple、Google、MicrosoftにAIアクセスからの正式なオプトアウトを求めている。
+***** Take
+この記事は自身の限界に正直で、それは見出しより役に立つ。スクショのブロックはアプリが持つ唯一の手段で、Signalはそれがファイルシステムや相手の端末には効かないと明言している。本当の要求は最後の段落、位置情報や連絡先と同じようなAIエージェント用のOS権限だ。それはOSベンダーが決めることで、AppleとGoogleが出すまでは、プライベートなアプリはどれもSignalのようにアシスタントを解析し続けることになる。
+***** Comments
+- これを決めるのは私であってSignalではない。コンピュータの所有者として、どのプログラムが何にアクセスできるかは私が決める。
+- 嫌ならオフにできる。改めて言うと、Signalはチャット相手の端末からはあなたを守れない。相手がオフにしていれば、相手のOSのAIがあなたのチャットを読める。
+- そういうシステムの全ユーザーに、それはスパイウェアを含むと警告し、GrapheneOSやLinuxなどの代替を勧めてほしい。ユーザーはOSの主導権を取り戻す必要がある。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Signal은 진지하게 당신의 프라이버시를 보호한다
+***** TLDR
+Signal은 화면을 읽는 OS 수준 AI 비서(안드로이드의 Google Gemini, Apple Siri의 화면 인식 등)와 접근성 API를 쓰는 Meta Muse 같은 외부 에이전트가 사적인 메시징에 존립 위협이라고 밝혔다. iOS 27에서는 앱 내 스크린샷을 차단하며, 'Siri AI 차단' 설정으로 끌 수 있다. 안드로이드에서는 비서가 화면을 읽는 것을 감지하면 화면 보안을 자동으로 켠다. Windows에서는 Recall을 막기 위해 이미 스크린샷을 차단한다. macOS에서는 캡처를 확실히 막을 수 없어 Siri 제외 앱 목록에 추가하라고 권할 뿐이다. Signal은 스크린샷 차단이 파일 시스템 접근은 막지 못한다고 인정했고, OS 업체가 문서를 거의 제공하지 않았다며 Apple, Google, Microsoft에 문서화된 AI 접근 거부 기능을 요구했다.
+***** Take
+이 글은 자신의 한계에 솔직하고, 그 점이 제목보다 유용하다. 스크린샷 차단은 앱이 가진 유일한 수단이고, Signal은 그것이 파일 시스템이나 상대방 휴대폰까지는 막지 못한다고 분명히 말한다. 진짜 요구는 마지막 문단이다. 위치나 연락처처럼 AI 에이전트용 OS 권한을 만들라는 것. 이는 OS 업체가 결정할 일이고, Apple과 Google이 내놓기 전까지 모든 보안 앱은 Signal처럼 비서 기능을 직접 분석해야 한다.
+***** Comments
+- 이 결정은 Signal이 아니라 내가 내릴 일이다. 컴퓨터의 주인으로서 어떤 프로그램이 무엇에 접근할지는 내가 정한다.
+- 동의하지 않으면 끄면 된다. 다시 말하지만 Signal은 대화 상대의 기기로부터 당신을 보호할 수 없다. 상대가 꺼 두면 그쪽 OS의 AI가 당신의 대화를 읽을 수 있다.
+- 그런 시스템의 모든 사용자에게 스파이웨어가 들어 있다고 알리고 GrapheneOS나 Linux 같은 대안을 권했으면 한다. 사용자는 운영체제에 대한 통제권을 되찾아야 한다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Signal se toma en serio la protección de tu privacidad
+***** TLDR
+Signal dice que los asistentes de IA del sistema que leen la pantalla, como Gemini de Google en Android y la función de reconocimiento en pantalla de Siri, además de agentes de terceros como Muse de Meta que usan las API de accesibilidad, son una amenaza existencial para la mensajería privada. En iOS 27 Signal bloquea ahora las capturas de pantalla en la app, con una opción 'Bloquear Siri AI' para desactivarlo. En Android activa automáticamente la Seguridad de pantalla cuando detecta que un asistente lee la pantalla. En Windows ya bloquea capturas para frenar Recall. En macOS dice que no puede bloquear la captura de forma fiable y solo sugiere añadirla a la lista de apps excluidas de Siri. Signal admite que bloquear capturas no cubre el acceso al sistema de archivos, dice que los fabricantes casi no le dieron documentación y pide a Apple, Google y Microsoft una forma documentada de excluirse del acceso de la IA.
+***** Take
+El texto es honesto sobre sus propios límites, y eso es más útil que el titular. Bloquear capturas es la única palanca que tiene una app, y Signal dice claramente que no cubre el sistema de archivos ni el teléfono de la otra persona. La petición real está en el último párrafo: un permiso del sistema para agentes de IA, como los de ubicación y contactos. Eso lo decide el fabricante del sistema operativo, y hasta que Apple y Google lo implementen, cada app privada tendrá que analizar los asistentes por su cuenta como hizo Signal.
+***** Comments
+- Esta decisión me corresponde a mí, no a Signal. Como dueño del ordenador, yo decido qué programas tienen acceso a qué.
+- Puedes desactivarlo si no estás de acuerdo. Recordatorio: Signal no puede protegerte de los dispositivos de tus contactos. Si tu contacto lo tiene desactivado, la IA de su sistema puede leer vuestros chats.
+- Ojalá avisaran a cada usuario de esos sistemas de que contienen software espía y recomendaran alternativas como GrapheneOS o Linux. Los usuarios necesitan recuperar el control de su sistema operativo.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Signal meint es ernst mit dem Schutz Ihrer Privatsphäre
+***** TLDR
+Signal bezeichnet KI-Assistenten auf Betriebssystemebene, die den Bildschirm auslesen, etwa Googles Gemini auf Android und Siris Bildschirmerkennung bei Apple, sowie Drittanbieter-Agenten wie Metas Muse, die Bedienungshilfen-APIs nutzen, als existenzielle Bedrohung für privates Messaging. Unter iOS 27 blockiert Signal jetzt Screenshots in der App, abschaltbar über 'Siri AI blockieren'. Unter Android aktiviert es automatisch die Bildschirmsicherheit, wenn es einen Assistenten beim Auslesen erkennt. Unter Windows blockiert es Screenshots bereits wegen Recall. Für macOS sagt Signal, es könne Aufnahmen nicht zuverlässig verhindern, und empfiehlt nur, die App in Siris Liste ausgeschlossener Apps einzutragen. Signal räumt ein, dass das Blockieren von Screenshots keinen Dateisystemzugriff verhindert, beklagt fehlende Dokumentation der Hersteller und fordert von Apple, Google und Microsoft eine dokumentierte Möglichkeit, sich vom KI-Zugriff abzumelden.
+***** Take
+Der Beitrag ist ehrlich über seine eigenen Grenzen, und das ist nützlicher als die Überschrift. Screenshots zu blockieren ist der einzige Hebel, den eine App hat, und Signal sagt klar, dass er weder das Dateisystem noch das Telefon des Gegenübers abdeckt. Die eigentliche Forderung steht im letzten Absatz: eine Betriebssystem-Berechtigung für KI-Agenten, wie es sie für Standort und Kontakte gibt. Das entscheiden die Hersteller, und bis Apple und Google sie liefern, muss jede private App die Assistenten selbst analysieren, so wie Signal es getan hat.
+***** Comments
+- Diese Entscheidung liegt bei mir, nicht bei Signal. Als Besitzer des Computers bestimme ich, welche Programme worauf zugreifen.
+- Man kann es abschalten, wenn man anderer Meinung ist. Zur Erinnerung: Signal kann dich nicht vor den Geräten deiner Chatpartner schützen. Hat dein Gegenüber es deaktiviert, kann dessen Betriebssystem-KI eure Chats lesen.
+- Ich wünschte, sie würden jeden Nutzer eines solchen Systems warnen, dass es Spyware enthält, und Alternativen wie GrapheneOS oder Linux empfehlen. Nutzer müssen die Kontrolle über ihr Betriebssystem zurückgewinnen.
+** Why there are still no non-WebKit browsers on iOS :apple:ios:browsers:mozilla:regulation:
+:PROPERTIES:
+:ID:       50575644
+:URL:      https://blog.mozilla.org/en/mozilla/internet-policy/apple-ios-browser-engine-rules/
+:HN_URL:   https://news.ycombinator.com/item?id=50575644
+:POINTS:   222
+:COMMENTS: 107
+:BY:       lapcat
+:END:
+
+*** TLDR
+Mozilla explains why Firefox on iOS still runs on WebKit two years after the EU's Digital Markets Act forced Apple to allow other engines, and after Japan adopted similar rules. Under Apple's conditions Mozilla cannot add Gecko to the existing Firefox app. It would have to ship a second, separate Firefox, and users would have to download it and move bookmarks, passwords and history themselves, which Mozilla expects most would not do. Apple also requires Mozilla to keep non-public project information confidential, and Mozilla says its private attempts to get the conditions changed have largely failed. It asks regulators to push for rules that let users who chose Firefox get the full browser, engine included.
+
+*** Take
+Nobody has shipped a non-WebKit browser on iOS in two years, under two separate laws. Mozilla's post doesn't need anything more than that to make its case. HN commenters who think 'two apps' is a weak excuse are underrating how much a forced fresh install costs a browser that already struggles for market share. The detail that developers outside the EU need a VPN just to test their own engine shows the rules were written to be met on paper, not used.
+
+*** Comments
+
+**** st3fan
+:PROPERTIES:
+:COMMENT_ID: 50579673
+:END:
+You also cannot work on this outside of Europe. Developers have to use VPN or special networks to make iOS think they are in Europe. Otherwise you cannot build and run with a custom engine.
+
+**** viktorcode
+:PROPERTIES:
+:COMMENT_ID: 50579131
+:END:
+So, Mozilla's excuse is not the complexity of making a browser engine up to Apple's specs, but that the users will have to deal with 2 different Firefox browsers on the store. I find it hard to believe.
+
+**** lapcat
+:PROPERTIES:
+:COMMENT_ID: 50576391
+:END:
+Apple's list of requirements is partly hypocritical because Apple itself doesn't follow them, e.g. 'Most vulnerabilities should be resolved in 30 days'.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+为什么 iOS 上至今仍没有非 WebKit 浏览器
+***** TLDR
+Mozilla 解释了为什么在欧盟《数字市场法》迫使苹果允许其他引擎两年后、日本也出台类似规定之后，iOS 版 Firefox 仍在使用 WebKit。按照苹果的条件，Mozilla 无法把 Gecko 加进现有的 Firefox 应用，只能另发一个独立的 Firefox，用户需要自行下载并迁移书签、密码和历史记录，Mozilla 预计大多数人不会这么做。苹果还要求 Mozilla 对项目的非公开信息保密，Mozilla 称其私下推动修改条件的努力基本失败。它呼吁监管机构推动规则，让选择 Firefox 的用户获得包含引擎在内的完整浏览器。
+***** Take
+两部法律、两年时间，iOS 上没有任何人推出过非 WebKit 浏览器。Mozilla 的文章有这一点就足以说明问题。认为“两个应用”只是借口的 HN 评论者，低估了强制重新安装对一个本就在争夺份额的浏览器意味着多大的代价。欧盟以外的开发者连测试自己的引擎都要挂 VPN，这一细节说明这些规则是为了在纸面上合规而写，不是为了让人真正使用。
+***** Comments
+- 在欧洲以外你也没法做这件事。开发者必须用 VPN 或特殊网络让 iOS 以为自己在欧洲，否则无法构建和运行自定义引擎。
+- 所以 Mozilla 的理由不是按苹果规范做浏览器引擎太复杂，而是用户得在商店里面对两个不同的 Firefox。我很难相信。
+- 苹果的要求清单有一部分很虚伪，因为苹果自己都做不到，比如“大多数漏洞应在 30 天内修复”。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+iOSにいまだWebKit以外のブラウザがない理由
+***** TLDR
+Mozillaは、EUのデジタル市場法でAppleが他エンジンを認めてから2年、日本も同様のルールを導入した後でも、iOS版FirefoxがWebKitのままである理由を説明した。Appleの条件では既存のFirefoxアプリにGeckoを追加できず、別のFirefoxを新たに出す必要がある。ユーザーはそれをダウンロードし、ブックマーク、パスワード、履歴を自分で移す必要があり、Mozillaは多くの人がそうしないと見ている。Appleは非公開のプロジェクト情報の守秘も求めており、条件変更を求める非公開の働きかけはほぼ失敗したという。Mozillaは規制当局に、Firefoxを選んだユーザーがエンジンを含む完全なブラウザを使えるルールを求めている。
+***** Take
+2つの法律のもとで2年間、iOSで非WebKitブラウザを出した者は誰もいない。Mozillaの主張にはそれ以上の根拠は要らない。「アプリが2つ」を弱い言い訳と見るHNのコメントは、シェア獲得に苦しむブラウザにとって新規インストールの強制がどれほど重いかを過小評価している。EU外の開発者は自分のエンジンを試すだけでVPNが必要だという点は、ルールが紙の上で満たすために書かれ、実際に使われることを想定していないことを示している。
+***** Comments
+- ヨーロッパ外ではこの開発もできない。開発者はVPNや特別なネットワークでiOSにヨーロッパにいると思わせる必要がある。そうしないと独自エンジンでビルドも実行もできない。
+- つまりMozillaの言い訳は、Appleの仕様に沿ったエンジン開発の難しさではなく、ストアに2つのFirefoxが並ぶことだと。信じがたい。
+- Appleの要件リストは一部が偽善的だ。Apple自身が守っていないものがある。例えば「大半の脆弱性は30日以内に解決すべき」。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+iOS에 아직도 WebKit이 아닌 브라우저가 없는 이유
+***** TLDR
+Mozilla는 EU 디지털시장법이 Apple에 다른 엔진 허용을 강제한 지 2년, 일본도 비슷한 규칙을 도입한 뒤에도 iOS용 Firefox가 여전히 WebKit을 쓰는 이유를 설명했다. Apple의 조건상 기존 Firefox 앱에 Gecko를 추가할 수 없고, 별도의 두 번째 Firefox를 내야 한다. 사용자는 그 앱을 내려받고 북마크, 비밀번호, 기록을 직접 옮겨야 하는데, Mozilla는 대부분이 그러지 않을 것으로 본다. Apple은 비공개 프로젝트 정보의 기밀 유지도 요구하며, 조건 변경을 위한 비공개 노력은 대체로 실패했다고 한다. Mozilla는 규제 당국에 Firefox를 선택한 사용자가 엔진을 포함한 온전한 브라우저를 쓸 수 있게 하는 규칙을 요구했다.
+***** Take
+두 개의 법, 2년 동안 iOS에서 WebKit이 아닌 브라우저를 출시한 곳은 하나도 없다. Mozilla의 주장에는 그 이상이 필요 없다. '앱 두 개'를 약한 핑계로 보는 HN 댓글은, 점유율 확보에 힘겨운 브라우저에게 강제 재설치가 얼마나 큰 비용인지 과소평가한다. EU 밖 개발자가 자기 엔진을 테스트하는 데도 VPN이 필요하다는 사실은 규칙이 서류상으로 충족되도록 쓰였을 뿐, 실제로 쓰이도록 만든 게 아니라는 걸 보여준다.
+***** Comments
+- 유럽 밖에서는 이 작업도 할 수 없다. 개발자는 VPN이나 특수 네트워크로 iOS가 유럽에 있다고 믿게 해야 한다. 그렇지 않으면 커스텀 엔진으로 빌드하고 실행할 수 없다.
+- 그러니까 Mozilla의 핑계는 Apple 규격에 맞는 엔진을 만드는 어려움이 아니라, 사용자가 스토어에서 Firefox 두 개를 상대해야 한다는 것이다. 믿기 어렵다.
+- Apple의 요구 사항 목록은 일부 위선적이다. Apple 자신도 지키지 않는다. 예를 들어 '대부분의 취약점은 30일 안에 해결해야 한다'.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Por qué sigue sin haber navegadores sin WebKit en iOS
+***** TLDR
+Mozilla explica por qué Firefox en iOS sigue usando WebKit dos años después de que la Ley de Mercados Digitales de la UE obligara a Apple a permitir otros motores, y después de que Japón adoptara normas similares. Con las condiciones de Apple, Mozilla no puede añadir Gecko a la app de Firefox existente. Tendría que publicar un segundo Firefox separado, y los usuarios tendrían que descargarlo y pasar ellos mismos marcadores, contraseñas e historial, algo que Mozilla cree que la mayoría no haría. Apple también exige confidencialidad sobre la información no pública del proyecto, y Mozilla dice que sus intentos privados de cambiar las condiciones han fracasado en gran medida. Pide a los reguladores normas que permitan a quien eligió Firefox tener el navegador completo, motor incluido.
+***** Take
+En dos años y con dos leyes distintas, nadie ha lanzado un navegador sin WebKit en iOS. Al post de Mozilla le basta con eso para defender su postura. Los comentaristas de HN que ven 'dos apps' como una excusa floja subestiman lo que cuesta una instalación nueva forzada a un navegador que ya lucha por cuota. El detalle de que los desarrolladores fuera de la UE necesiten una VPN solo para probar su propio motor muestra que las normas se escribieron para cumplirse sobre el papel, no para usarse.
+***** Comments
+- Tampoco puedes trabajar en esto fuera de Europa. Los desarrolladores tienen que usar VPN o redes especiales para que iOS crea que están en Europa. Si no, no puedes compilar y ejecutar con un motor propio.
+- O sea, la excusa de Mozilla no es la complejidad de hacer un motor que cumpla las especificaciones de Apple, sino que los usuarios tendrían dos Firefox distintos en la tienda. Me cuesta creerlo.
+- La lista de requisitos de Apple es en parte hipócrita porque la propia Apple no los cumple, por ejemplo 'La mayoría de vulnerabilidades deberían resolverse en 30 días'.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Warum es auf iOS immer noch keine Browser ohne WebKit gibt
+***** TLDR
+Mozilla erklärt, warum Firefox auf iOS zwei Jahre nachdem der Digital Markets Act der EU Apple zur Zulassung anderer Engines gezwungen hat, und nachdem Japan ähnliche Regeln eingeführt hat, weiterhin WebKit nutzt. Nach Apples Bedingungen kann Mozilla Gecko nicht in die bestehende Firefox-App einbauen. Es müsste ein zweites, separates Firefox veröffentlichen, und die Nutzer müssten es herunterladen und Lesezeichen, Passwörter und Verlauf selbst übertragen, was laut Mozilla die meisten nicht tun würden. Apple verlangt außerdem Vertraulichkeit über nicht öffentliche Projektinformationen, und Mozillas interne Versuche, die Bedingungen zu ändern, sind weitgehend gescheitert. Mozilla fordert Regeln, mit denen Nutzer, die Firefox gewählt haben, den vollständigen Browser samt Engine bekommen.
+***** Take
+In zwei Jahren und unter zwei verschiedenen Gesetzen hat niemand einen Browser ohne WebKit auf iOS veröffentlicht. Mehr braucht Mozillas Beitrag als Argument nicht. HN-Kommentatoren, die 'zwei Apps' für eine schwache Ausrede halten, unterschätzen, was eine erzwungene Neuinstallation einen Browser kostet, der ohnehin um Marktanteile kämpft. Dass Entwickler außerhalb der EU ein VPN brauchen, nur um ihre eigene Engine zu testen, zeigt, dass die Regeln geschrieben wurden, um auf dem Papier erfüllt zu werden, nicht um genutzt zu werden.
+***** Comments
+- Außerhalb Europas kann man daran auch nicht arbeiten. Entwickler müssen VPNs oder spezielle Netzwerke nutzen, damit iOS glaubt, sie seien in Europa. Sonst kann man nicht mit einer eigenen Engine bauen und ausführen.
+- Mozillas Ausrede ist also nicht die Komplexität, eine Engine nach Apples Vorgaben zu bauen, sondern dass Nutzer im Store mit zwei verschiedenen Firefox-Browsern zu tun hätten. Das fällt mir schwer zu glauben.
+- Apples Anforderungsliste ist teilweise heuchlerisch, weil Apple sie selbst nicht einhält, etwa 'Die meisten Schwachstellen sollten innerhalb von 30 Tagen behoben werden'.
+** Language Models Can Rewrite Their Own Weights :ai:llm:research:ml:
+:PROPERTIES:
+:ID:       50577265
+:URL:      https://arxiv.org/abs/2611.21885
+:HN_URL:   https://news.ycombinator.com/item?id=50577265
+:POINTS:   194
+:COMMENTS: 84
+:BY:       lwhsiao
+:END:
+
+*** TLDR
+An arXiv paper from Jiajun Fan and ten co-authors gives an open 27B model its own weights, its graded answers and the ability to run itself, then lets it diagnose failures and edit the weights behind them using forward passes only, with no gradients. It tests each candidate edit on practice problems and keeps only those that help. The authors report a 6.6-point gain on unseen problems, accuracy rising across eight consecutive sessions, and a damaged copy restored to over 80% of the original's accuracy on unseen image tasks. Smaller models in the same family made no edits or broke themselves. The abstract does not name the benchmarks.
+
+*** Take
+The top comments read the paper and found that the main improvement came from shortening reasoning traces to stay under the token limit, and that the repair cases fix damage a human could fix with known methods like outlier clipping. That makes the result a search over weight edits with a test set as the reward. It is still interesting, but it is not a model understanding its own parameters. Keeping only edits that pass practice problems is a training loop, whatever the paper calls it.
+
+*** Comments
+
+**** aesthesia
+:PROPERTIES:
+:COMMENT_ID: 50578348
+:END:
+The only modification the model made to improve itself was to reduce the length of its reasoning traces to avoid hitting the token limit.
+
+**** quotemstr
+:PROPERTIES:
+:COMMENT_ID: 50579182
+:END:
+Clipping extreme outliers deliberately introduced does not require understanding the purpose of the weights clipped. These are all techniques humans have been using for years.
+
+**** esafak
+:PROPERTIES:
+:COMMENT_ID: 50577843
+:END:
+A model that does not separate training from inference could keep upgrading itself for life... 'Alignment' is not mentioned once in this article.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+语言模型可以改写自己的权重
+***** TLDR
+Jiajun Fan 等 11 位作者在 arXiv 发表的论文中，给一个开源 27B 模型提供它自己的权重、评分后的答案和运行自身的能力，让它诊断失败并只用前向传播（不用梯度）修改相关权重。每个候选修改都在练习题上测试，只保留有效的。作者报告在未见过的问题上提升 6.6 个百分点，连续八次会话准确率持续上升，并把一个受损副本在未见过的图像任务上恢复到原模型 80% 以上的准确率。同系列较小的模型要么没有修改，要么把自己改坏了。摘要没有说明使用的基准测试。
+***** Take
+热门评论读了论文后发现，主要提升来自缩短推理过程以避免触及 token 上限，而修复案例针对的损坏，人类用离群值裁剪等已知方法也能修。这意味着结果是一次以测试集为奖励的权重修改搜索。仍然有意思，但并不是模型理解了自己的参数。只保留通过练习题的修改，本身就是训练循环，不管论文怎么称呼它。
+***** Comments
+- 模型为改进自己所做的唯一修改，是缩短推理过程的长度，以免触及 token 上限。
+- 裁剪人为故意引入的极端离群值，并不需要理解被裁剪权重的用途。这些都是人类用了多年的技术。
+- 一个不区分训练和推理的模型可以终身不断升级自己……这篇文章一次都没提到“对齐”。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+言語モデルは自分の重みを書き換えられる
+***** TLDR
+Jiajun Fan氏ら11人のarXiv論文は、オープンな27Bモデルに自身の重み、採点済みの回答、自分を実行する能力を与え、失敗を診断して関係する重みを勾配なし、順伝播のみで編集させた。候補の編集は練習問題でテストし、効果があるものだけを残す。未見の問題で6.6ポイント向上、8回連続のセッションで精度が上昇し続け、壊れたコピーを未見の画像タスクで元の80%超の精度まで修復したと報告している。同じ系列の小さいモデルは編集しないか、自分を壊した。要旨はベンチマーク名を挙げていない。
+***** Take
+上位コメントは論文を読み、主な改善はトークン上限に収まるよう推論過程を短くしたことによるもので、修復事例は外れ値クリッピングなど既知の手法で人間でも直せる損傷だと指摘した。つまり結果は、テストセットを報酬とした重み編集の探索だ。それでも興味深いが、モデルが自分のパラメータを理解したわけではない。練習問題を通った編集だけを残すのは、論文が何と呼ぼうと学習ループだ。
+***** Comments
+- モデルが自己改善のために行った唯一の変更は、トークン上限に達しないよう推論過程の長さを短くしたことだ。
+- 意図的に入れた極端な外れ値をクリップするのに、その重みの目的を理解する必要はない。どれも人間が何年も使ってきた手法だ。
+- 学習と推論を分けないモデルは一生自分をアップグレードし続けられる……この記事には「アライメント」が一度も出てこない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+언어 모델은 자신의 가중치를 다시 쓸 수 있다
+***** TLDR
+Jiajun Fan 외 10명의 arXiv 논문은 공개 27B 모델에 자신의 가중치, 채점된 답변, 스스로를 실행하는 능력을 주고, 실패를 진단해 관련 가중치를 경사 없이 순전파만으로 수정하게 했다. 각 수정 후보는 연습 문제로 테스트해 효과 있는 것만 남긴다. 저자들은 처음 보는 문제에서 6.6포인트 향상, 연속 8회 세션 동안 정확도 상승, 손상된 사본을 처음 보는 이미지 과제에서 원본 정확도의 80% 이상으로 복구했다고 보고한다. 같은 계열의 작은 모델은 수정을 하지 않거나 스스로를 망가뜨렸다. 초록에는 벤치마크 이름이 없다.
+***** Take
+상위 댓글은 논문을 읽고, 주된 개선은 토큰 한도를 넘지 않도록 추론 과정을 줄인 데서 나왔고, 복구 사례도 이상치 클리핑 같은 알려진 방법으로 사람이 고칠 수 있는 손상이라고 지적했다. 즉 결과는 테스트 세트를 보상으로 삼은 가중치 수정 탐색이다. 여전히 흥미롭지만 모델이 자기 파라미터를 이해한 것은 아니다. 연습 문제를 통과한 수정만 남기는 것은 논문이 뭐라고 부르든 학습 루프다.
+***** Comments
+- 모델이 자기 개선을 위해 한 유일한 수정은 토큰 한도에 걸리지 않도록 추론 과정의 길이를 줄인 것이다.
+- 일부러 넣은 극단적 이상치를 잘라내는 데 그 가중치의 목적을 이해할 필요는 없다. 모두 사람들이 수년간 써 온 기법이다.
+- 학습과 추론을 구분하지 않는 모델은 평생 스스로를 업그레이드할 수 있다... 이 글에는 '정렬'이 한 번도 언급되지 않는다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Los modelos de lenguaje pueden reescribir sus propios pesos
+***** TLDR
+Un artículo en arXiv de Jiajun Fan y diez coautores da a un modelo abierto de 27B sus propios pesos, sus respuestas calificadas y la capacidad de ejecutarse a sí mismo, y le deja diagnosticar fallos y editar los pesos responsables usando solo pasadas hacia delante, sin gradientes. Cada edición candidata se prueba en problemas de práctica y solo se conservan las que ayudan. Los autores reportan una mejora de 6,6 puntos en problemas no vistos, precisión creciente durante ocho sesiones consecutivas y una copia dañada restaurada a más del 80% de la precisión original en tareas de imagen no vistas. Los modelos más pequeños de la misma familia no hicieron ediciones o se rompieron. El resumen no nombra los benchmarks.
+***** Take
+Los comentarios principales leyeron el artículo y vieron que la mejora principal vino de acortar las trazas de razonamiento para no pasar el límite de tokens, y que los casos de reparación corrigen daños que una persona arreglaría con métodos conocidos como recortar valores atípicos. Eso convierte el resultado en una búsqueda de ediciones de pesos con un conjunto de prueba como recompensa. Sigue siendo interesante, pero no es un modelo que entienda sus propios parámetros. Quedarse solo con las ediciones que pasan los problemas de práctica es un bucle de entrenamiento, lo llame como lo llame el artículo.
+***** Comments
+- La única modificación que hizo el modelo para mejorarse fue reducir la longitud de sus trazas de razonamiento para no llegar al límite de tokens.
+- Recortar valores atípicos extremos introducidos a propósito no requiere entender para qué sirven los pesos recortados. Son técnicas que los humanos usan desde hace años.
+- Un modelo que no separa entrenamiento e inferencia podría seguir mejorándose de por vida... La palabra 'alineamiento' no aparece ni una vez en el artículo.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Sprachmodelle können ihre eigenen Gewichte umschreiben
+***** TLDR
+Ein arXiv-Paper von Jiajun Fan und zehn Mitautoren gibt einem offenen 27B-Modell seine eigenen Gewichte, seine bewerteten Antworten und die Möglichkeit, sich selbst auszuführen, und lässt es Fehler diagnostizieren und die zuständigen Gewichte nur mit Vorwärtsdurchläufen, ohne Gradienten, bearbeiten. Jede Änderung wird an Übungsaufgaben getestet, nur hilfreiche werden behalten. Die Autoren berichten von 6,6 Punkten Zuwachs bei unbekannten Aufgaben, steigender Genauigkeit über acht aufeinanderfolgende Sitzungen und einer beschädigten Kopie, die bei unbekannten Bildaufgaben auf über 80 % der ursprünglichen Genauigkeit repariert wurde. Kleinere Modelle derselben Familie änderten nichts oder machten sich kaputt. Das Abstract nennt keine Benchmarks.
+***** Take
+Die Top-Kommentare haben das Paper gelesen und festgestellt, dass die Hauptverbesserung aus kürzeren Reasoning-Traces kam, um unter dem Token-Limit zu bleiben, und dass die Reparaturfälle Schäden beheben, die ein Mensch mit bekannten Methoden wie Ausreißer-Clipping beheben würde. Damit ist das Ergebnis eine Suche über Gewichtsänderungen mit einem Testset als Belohnung. Das ist weiterhin interessant, aber kein Modell, das seine eigenen Parameter versteht. Nur Änderungen zu behalten, die Übungsaufgaben bestehen, ist eine Trainingsschleife, egal wie das Paper es nennt.
+***** Comments
+- Die einzige Änderung, die das Modell zur Selbstverbesserung vorgenommen hat, war die Verkürzung seiner Reasoning-Traces, um das Token-Limit nicht zu erreichen.
+- Absichtlich eingefügte extreme Ausreißer abzuschneiden erfordert kein Verständnis des Zwecks der beschnittenen Gewichte. Das sind alles Techniken, die Menschen seit Jahren nutzen.
+- Ein Modell, das Training und Inferenz nicht trennt, könnte sich lebenslang selbst verbessern... 'Alignment' wird in diesem Artikel kein einziges Mal erwähnt.
