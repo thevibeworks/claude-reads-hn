@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-11-20 06:00 UTC
+#+DATE: 2026-11-20T06:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Two base64 bugs, one in OpenSSL and one Oracle sat on for two months, plus MIT's CAD course, Onlook's relaunch and RegExr going offline over AI hacking
+
+* Highlights
+- OpenSSL CVE-2026-121481: a 9.8 in the title, 'important' in the PR
+- java4shell: the fix was public on GitHub in September
+- MIT How to CAD Almost Anything: six commercial tools, no FreeCAD
+- Onlook: a design canvas that turns every change into a PR
+- RegExr goes offline until its old code can be secured
+
+* Stories
+
+** OpenSSL: Buffer overflow in EVP_EncodeBlock() (CVE-2026-121481, CVSS 9.8) :security:openssl:c:cve:
+:PROPERTIES:
+:ID:       50569226
+:URL:      https://github.com/openssl/openssl/pull/33652
+:HN_URL:   https://news.ycombinator.com/item?id=50569226
+:POINTS:   108
+:COMMENTS: 55
+:BY:       JacobHenner
+:END:
+
+*** TLDR
+OpenSSL PR #33652 fixes CVE-2026-121481 in EVP_EncodeBlock(), the base64 encoder. The function can write past its output buffer when given NULL buffers, a negative length, or an input so large (around 1.5GB) that the encoded size no longer fits in an int. The PR author's command-line trigger is a huge -proxy_pass value passed to openssl s_client through an environment variable. The PR targets master, 4.0 and 4.1, and OpenSSL labels it 'important', not critical. The first fix returned -1. Tomas Mraz worried that callers cast the result to size_t, Bob Beck objected to returning 0 because 0 means success, and the final version asserts on those inputs instead. Bob Beck also called the report's reproducer 'completely synthetic'.
+
+*** Take
+The 9.8 in the HN title does not match OpenSSL's own rating, and one reviewer doubts the bug deserves a CVE at all. To be affected you need OpenSSL 4.x, which most distros do not ship yet, and an attacker-controlled input of more than a gigabyte going into a single base64 call. Patch on your normal schedule. The bigger problem is the API design: the function takes an int length and trusts the caller to compute the output buffer size with a formula, and it is still in use in 2026.
+
+*** Comments
+
+**** amluto
+:PROPERTIES:
+:COMMENT_ID: 50569705
+:END:
+On a very very quick read, the bug is that EVP_EncodeBlock malfunctions if the input is larger than ~1.5GB. As a seasoned C programmer, I can immediately observe that the whole API is bad: the caller is expected to calculate the buffer length on their own, using a nontrivial formula.
+
+**** userbinator
+:PROPERTIES:
+:COMMENT_ID: 50569917
+:END:
+I think CVSS 9.8 is exaggerated. This is not remotely anywhere near as serious as Heartbleed. It's an internal function which will fail if its input is far too long, but exploitability rests on how untrusted input can reach it.
+
+**** ansipunk
+:PROPERTIES:
+:COMMENT_ID: 50570653
+:END:
+I am getting a serious vulnerability fatigue, every single day there's at least two new vulnerabilities in major pieces of software.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+OpenSSL：EVP_EncodeBlock() 缓冲区溢出（CVE-2026-121481，CVSS 9.8）
+***** TLDR
+OpenSSL PR #33652 修复了 base64 编码函数 EVP_EncodeBlock() 中的 CVE-2026-121481。当传入 NULL 缓冲区、负长度，或输入大到（约 1.5GB）编码后长度超出 int 范围时，该函数会越界写入输出缓冲区。PR 作者给出的命令行触发方式是通过环境变量向 openssl s_client 传入超长的 -proxy_pass。该 PR 针对 master、4.0 和 4.1 分支，OpenSSL 将其标为“important”而非严重。最初的修复返回 -1。Tomas Mraz 担心调用方会把返回值强转为 size_t，Bob Beck 反对返回 0，因为 0 表示成功，最终版本改为对这些输入触发断言。Bob Beck 还称报告中的复现代码“完全是人为构造的”。
+***** Take
+HN 标题里的 9.8 与 OpenSSL 自己的评级不符，还有一位审阅者怀疑这个漏洞是否值得一个 CVE。要受影响，你需要运行 OpenSSL 4.x（大多数发行版尚未采用），并且有超过 1GB 的攻击者可控输入进入一次 base64 调用。按正常节奏打补丁即可。更大的问题是 API 设计：函数接收 int 类型的长度，并依赖调用方用公式自行计算输出缓冲区大小，而它在 2026 年仍在使用。
+***** Comments
+- 粗略看了一下，问题是输入超过约 1.5GB 时 EVP_EncodeBlock 会出错。作为资深 C 程序员，我一眼就能看出整个 API 都很糟：调用方需要用一个不简单的公式自己算缓冲区长度。
+- 我觉得 CVSS 9.8 夸大了。这远没有 Heartbleed 严重。这是个内部函数，输入过长时会出错，但能否被利用取决于不可信输入如何到达它。
+- 我有严重的漏洞疲劳，每天主流软件里都至少出两个新漏洞。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+OpenSSL：EVP_EncodeBlock() のバッファオーバーフロー（CVE-2026-121481、CVSS 9.8）
+***** TLDR
+OpenSSL の PR #33652 は、base64 エンコーダ EVP_EncodeBlock() の CVE-2026-121481 を修正する。NULL バッファ、負の長さ、またはエンコード後のサイズが int に収まらないほど大きい入力（約1.5GB）を渡すと、出力バッファの外に書き込む。PR 作成者が示したコマンドラインでの再現方法は、環境変数経由で openssl s_client に巨大な -proxy_pass を渡すもの。対象は master、4.0、4.1 で、OpenSSL の評価は critical ではなく「important」。最初の修正は -1 を返していたが、Tomas Mraz は呼び出し側が戻り値を size_t にキャストすることを懸念し、Bob Beck は 0 が成功を意味するため 0 を返すことに反対した。最終版はこうした入力でアサートする。Bob Beck は報告の再現コードを「完全に人工的」とも評した。
+***** Take
+HN タイトルの 9.8 は OpenSSL 自身の評価と一致せず、CVE に値するか疑うレビュアーもいる。影響を受けるには、まだ多くのディストリが採用していない OpenSSL 4.x を使い、攻撃者が制御する1GB超の入力を1回の base64 呼び出しに渡す必要がある。通常のスケジュールでパッチを当てればよい。より大きな問題は API 設計で、int の長さを受け取り、出力バッファのサイズ計算を呼び出し側の公式任せにする関数が2026年になっても使われている。
+***** Comments
+- ざっと読んだ限り、入力が約1.5GBを超えると EVP_EncodeBlock が誤動作するというバグ。熟練の C プログラマとしてすぐ分かるのは、API 全体が悪いということ。呼び出し側が自明でない式でバッファ長を自分で計算しなければならない。
+- CVSS 9.8 は誇張だと思う。Heartbleed とは比べ物にならない。入力が長すぎると失敗する内部関数で、悪用できるかは信頼できない入力がどう届くか次第だ。
+- 深刻な脆弱性疲れを感じている。毎日、主要ソフトウェアで少なくとも2つは新しい脆弱性が出る。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+OpenSSL: EVP_EncodeBlock() 버퍼 오버플로(CVE-2026-121481, CVSS 9.8)
+***** TLDR
+OpenSSL PR #33652는 base64 인코더 EVP_EncodeBlock()의 CVE-2026-121481을 수정한다. NULL 버퍼, 음수 길이, 또는 인코딩 크기가 int 범위를 넘을 만큼 큰 입력(약 1.5GB)이 들어오면 출력 버퍼 밖에 쓴다. PR 작성자가 제시한 명령줄 재현 방법은 환경 변수로 openssl s_client에 거대한 -proxy_pass 값을 넘기는 것이다. 대상은 master, 4.0, 4.1이며 OpenSSL은 critical이 아닌 'important'로 분류했다. 첫 수정은 -1을 반환했다. Tomas Mraz는 호출자가 반환값을 size_t로 캐스팅할까 걱정했고, Bob Beck은 0이 성공을 뜻하므로 0 반환에 반대했다. 최종 버전은 이런 입력에서 assert를 건다. Bob Beck은 보고서의 재현 코드가 '완전히 인위적'이라고도 했다.
+***** Take
+HN 제목의 9.8은 OpenSSL 자체 등급과 맞지 않고, 한 리뷰어는 CVE를 붙일 만한지조차 의심한다. 영향을 받으려면 대부분의 배포판이 아직 쓰지 않는 OpenSSL 4.x에, 공격자가 제어하는 1GB 이상의 입력이 한 번의 base64 호출로 들어가야 한다. 평소 일정대로 패치하면 된다. 더 큰 문제는 API 설계다. int 길이를 받고 출력 버퍼 크기 계산을 호출자의 공식에 맡기는 함수가 2026년에도 쓰이고 있다.
+***** Comments
+- 아주 대충 읽어 보면, 입력이 약 1.5GB를 넘으면 EVP_EncodeBlock이 오동작하는 버그다. 숙련된 C 프로그래머로서 API 전체가 나쁘다는 게 바로 보인다. 호출자가 간단하지 않은 공식으로 버퍼 길이를 직접 계산해야 한다.
+- CVSS 9.8은 과장이라고 본다. Heartbleed와는 전혀 비교가 안 된다. 입력이 너무 길면 실패하는 내부 함수이고, 악용 가능성은 신뢰할 수 없는 입력이 어떻게 도달하느냐에 달려 있다.
+- 취약점 피로가 심하다. 매일 주요 소프트웨어에서 새 취약점이 최소 두 개씩 나온다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+OpenSSL: desbordamiento de búfer en EVP_EncodeBlock() (CVE-2026-121481, CVSS 9.8)
+***** TLDR
+El PR #33652 de OpenSSL corrige CVE-2026-121481 en EVP_EncodeBlock(), el codificador base64. La función puede escribir fuera de su búfer de salida si recibe búferes NULL, una longitud negativa o una entrada tan grande (unos 1,5 GB) que el tamaño codificado ya no cabe en un int. El autor del PR lo dispara desde la línea de comandos pasando un -proxy_pass enorme a openssl s_client mediante una variable de entorno. El PR apunta a master, 4.0 y 4.1, y OpenSSL lo etiqueta como 'important', no crítico. La primera corrección devolvía -1. Tomas Mraz temía que los llamadores convirtieran el resultado a size_t, Bob Beck se opuso a devolver 0 porque 0 significa éxito, y la versión final usa una aserción con esas entradas. Bob Beck también calificó el reproductor del informe de 'completamente sintético'.
+***** Take
+El 9.8 del título en HN no coincide con la calificación de OpenSSL, y un revisor duda de que el fallo merezca un CVE. Para verse afectado hace falta OpenSSL 4.x, que la mayoría de las distribuciones aún no incluye, y una entrada de más de un gigabyte controlada por el atacante que llegue a una sola llamada base64. Aplique el parche en su ciclo habitual. El problema mayor es el diseño de la API: la función recibe una longitud int y confía en que el llamador calcule el tamaño del búfer de salida con una fórmula, y se sigue usando en 2026.
+***** Comments
+- Leyendo muy por encima, el fallo es que EVP_EncodeBlock funciona mal si la entrada supera ~1,5 GB. Como programador de C veterano, veo enseguida que toda la API es mala: el llamador tiene que calcular la longitud del búfer por su cuenta con una fórmula no trivial.
+- Creo que el CVSS 9.8 es exagerado. Esto no es ni remotamente tan grave como Heartbleed. Es una función interna que falla si la entrada es demasiado larga, pero que sea explotable depende de cómo pueda llegarle una entrada no confiable.
+- Tengo una fatiga de vulnerabilidades seria: cada día aparecen al menos dos nuevas en software importante.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+OpenSSL: Pufferüberlauf in EVP_EncodeBlock() (CVE-2026-121481, CVSS 9.8)
+***** TLDR
+OpenSSL-PR #33652 behebt CVE-2026-121481 in EVP_EncodeBlock(), dem Base64-Encoder. Die Funktion kann über ihren Ausgabepuffer hinaus schreiben, wenn sie NULL-Puffer, eine negative Länge oder eine so große Eingabe (rund 1,5 GB) erhält, dass die kodierte Größe nicht mehr in einen int passt. Der PR-Autor löst den Fehler auf der Kommandozeile mit einem riesigen -proxy_pass für openssl s_client aus, übergeben per Umgebungsvariable. Der PR zielt auf master, 4.0 und 4.1, und OpenSSL stuft ihn als 'important' ein, nicht als kritisch. Der erste Fix gab -1 zurück. Tomas Mraz befürchtete, dass Aufrufer das Ergebnis nach size_t casten, Bob Beck lehnte eine Rückgabe von 0 ab, weil 0 Erfolg bedeutet, und die finale Version löst bei solchen Eingaben eine Assertion aus. Bob Beck nannte den Reproduzierer im Bericht außerdem 'völlig synthetisch'.
+***** Take
+Die 9.8 im HN-Titel entspricht nicht OpenSSLs eigener Einstufung, und ein Reviewer bezweifelt, dass der Fehler überhaupt einen CVE verdient. Betroffen ist nur, wer OpenSSL 4.x nutzt, das die meisten Distributionen noch nicht ausliefern, und eine vom Angreifer kontrollierte Eingabe von über einem Gigabyte in einen einzigen Base64-Aufruf gibt. Im normalen Rhythmus patchen. Das größere Problem ist das API-Design: Die Funktion nimmt eine int-Länge und verlässt sich darauf, dass der Aufrufer die Größe des Ausgabepuffers per Formel berechnet, und sie ist 2026 noch im Einsatz.
+***** Comments
+- Nach sehr flüchtigem Lesen: EVP_EncodeBlock funktioniert falsch, wenn die Eingabe größer als ~1,5 GB ist. Als erfahrener C-Programmierer sehe ich sofort, dass die ganze API schlecht ist: Der Aufrufer soll die Pufferlänge selbst mit einer nicht trivialen Formel berechnen.
+- Ich halte CVSS 9.8 für übertrieben. Das ist bei Weitem nicht so ernst wie Heartbleed. Es ist eine interne Funktion, die bei zu langer Eingabe versagt, aber die Ausnutzbarkeit hängt davon ab, wie nicht vertrauenswürdige Eingaben sie erreichen.
+- Ich habe ernsthafte Schwachstellen-Müdigkeit: Jeden Tag gibt es mindestens zwei neue Lücken in wichtiger Software.
+** Someone reported java4shell bug in September 2026 :security:java:openjdk:oracle:ai:
+:PROPERTIES:
+:ID:       50558906
+:URL:      https://github.com/openjdk/jdk/pull/32781
+:HN_URL:   https://news.ycombinator.com/item?id=50558906
+:POINTS:   402
+:COMMENTS: 110
+:BY:       notmine1337
+:END:
+
+*** TLDR
+OpenJDK PR #32781, opened on September 9, 2026 by albertnetymk, is titled 'AVX-512 Base64 decoder overwrites output buffer on short padded tail'. It describes the same heap overflow Calif disclosed this week as java4shell, with the same trigger of 64 'A' characters plus '=', and includes a fix. The bug traces back to a JVM crash first reported to Adoptium in June. In that Adoptium issue the author wrote on October 1 that Oracle had emailed asking him not to proceed with a PR until approved, and on October 28 that Oracle had taken it over. The PR got no reviews, received an inactivity warning, and was closed on November 4. Commenters say Oracle's eventual commit message matches the PR's word for word. Calif says its researcher found the bug with Codex. Another commenter, dlor, says his offline fuzzing harness found it independently and he reported it to Oracle last Friday.
+
+*** Take
+The thread's first theory, a real bug report killed by a stale-PR bot, is wrong. Oracle knew about the bug from at least October 1, told the outside contributor to wait, and shipped the fix in the November 17 patch, which is normal embargo handling. The open question is about Calif's claim. A public PR with the same title, the same trigger and a working fix had been on GitHub for two months, so 'Codex found it in an hour' may partly mean the model had read that PR. The other lesson is about embargoes: the fix for a heap overflow was readable by anyone browsing OpenJDK pull requests for two months before users got a patch.
+
+*** Comments
+
+**** black3r
+:PROPERTIES:
+:COMMENT_ID: 50562104
+:END:
+This PR's author says there on October 1st: 'Got an email from Oracle asking me to NOT proceed with a PR until receiving approval.' and then on October 28th: 'It's taken over by Oracle. Nothing required from us.'
+
+**** InsidiousWombat
+:PROPERTIES:
+:COMMENT_ID: 50561212
+:END:
+Nice proof that the auto-close bots are literal cancer on project that make stuff worse. It was literal bug with provided fix. All it needed is someone to have a proper look.
+
+**** dlor
+:PROPERTIES:
+:COMMENT_ID: 50569127
+:END:
+I also found this independently ahead of disclosure and reported it to Oracle last Friday. My harness found it after a fuzzing run. The harness itself doesn't run with Internet access, but who knows if this was in the training set itself.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+有人早在 2026 年 9 月就报告了 java4shell 漏洞
+***** TLDR
+OpenJDK PR #32781 由 albertnetymk 于 2026 年 9 月 9 日提交，标题为“AVX-512 Base64 解码器在带填充的短尾部覆盖输出缓冲区”。它描述的正是 Calif 本周以 java4shell 之名披露的堆溢出，触发方式同样是 64 个“A”加一个“=”，并附带了修复。该漏洞可追溯到 6 月首次报告给 Adoptium 的一次 JVM 崩溃。作者在那个 Adoptium issue 中写道，10 月 1 日 Oracle 发邮件要求他在获批前不要继续提交 PR，10 月 28 日又写道 Oracle 已接手。该 PR 没有任何审阅，收到不活跃警告后于 11 月 4 日关闭。评论者称 Oracle 最终的提交说明与该 PR 一字不差。Calif 称其研究员借助 Codex 发现了漏洞。另一位评论者 dlor 说他的离线模糊测试工具独立发现了它，并在上周五报告给了 Oracle。
+***** Take
+讨论串最初的说法是：一个真实的漏洞报告被自动关闭机器人扼杀了。这是错的。Oracle 至少从 10 月 1 日起就知道这个漏洞，让外部贡献者等待，并在 11 月 17 日的补丁中发布了修复，这是正常的禁运流程。悬而未决的是 Calif 的说法。一个标题相同、触发方式相同、带有可用修复的公开 PR 已在 GitHub 上放了两个月，所以“Codex 一小时就找到了”可能部分意味着模型读过那个 PR。另一个教训关于禁运本身：在用户拿到补丁前的两个月里，任何浏览 OpenJDK PR 的人都能读到这个堆溢出的修复。
+***** Comments
+- 这个 PR 的作者在那里 10 月 1 日写道：“收到 Oracle 的邮件，要求我在获得批准前不要继续 PR。”然后 10 月 28 日写道：“已被 Oracle 接手，我们无需做什么。”
+- 这很好地证明了自动关闭机器人是项目的毒瘤，只会让事情更糟。这是个真实的漏洞，还附带了修复。只需要有人认真看一眼。
+- 我也在披露前独立发现了它，并在上周五报告给了 Oracle。我的工具是在一次模糊测试后发现的。工具本身不联网，但谁知道这是否在训练数据里。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+java4shell のバグは2026年9月に報告されていた
+***** TLDR
+OpenJDK の PR #32781 は albertnetymk が2026年9月9日に作成したもので、タイトルは「AVX-512 Base64 デコーダがパディング付きの短い末尾で出力バッファを上書きする」。Calif が今週 java4shell として公表したのと同じヒープオーバーフローで、トリガーも同じ「A」64文字と「=」、修正も含まれていた。バグの発端は6月に Adoptium に報告された JVM クラッシュ。その Adoptium の issue で作成者は、10月1日に Oracle から承認まで PR を進めないよう求めるメールが来たと書き、10月28日には Oracle が引き継いだと書いた。PR はレビューされず、非アクティブ警告の後11月4日にクローズされた。コメント欄によると、Oracle の最終的なコミットメッセージは PR と一字一句同じ。Calif は研究者が Codex でバグを見つけたとしている。別のコメント投稿者 dlor は、オフラインのファジングツールが独立に見つけ、先週金曜に Oracle に報告したと述べている。
+***** Take
+スレッドの最初の説、つまり本物のバグ報告が自動クローズのボットに潰されたという話は誤りだ。Oracle は少なくとも10月1日からバグを把握し、外部の貢献者に待つよう伝え、11月17日のパッチで修正を出した。これは通常のエンバーゴ対応だ。残る疑問は Calif の主張のほうにある。同じタイトル、同じトリガー、動く修正を備えた公開 PR が2か月間 GitHub にあったので、「Codex が1時間で見つけた」はモデルがその PR を読んでいたことを部分的に意味するかもしれない。もう一つの教訓はエンバーゴ自体についてで、ユーザーにパッチが届く前の2か月間、ヒープオーバーフローの修正は OpenJDK の PR を見る誰にでも読めた。
+***** Comments
+- この PR の作成者はそこで10月1日に「Oracle から、承認を受けるまで PR を進めないよう求めるメールが来た」と書き、10月28日に「Oracle が引き継いだ。こちらでやることはない」と書いている。
+- 自動クローズのボットがプロジェクトの癌で、事態を悪化させることの見事な証明だ。修正付きの本物のバグだった。必要だったのは誰かがきちんと見ることだけ。
+- 私も公表前に独立に見つけて、先週金曜に Oracle に報告した。ファジングの実行後にツールが見つけた。ツール自体はインターネットに接続しないが、学習データに入っていたかどうかは誰にも分からない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+누군가 2026년 9월에 java4shell 버그를 보고했다
+***** TLDR
+OpenJDK PR #32781은 albertnetymk가 2026년 9월 9일에 올린 것으로, 제목은 'AVX-512 Base64 디코더가 패딩된 짧은 꼬리에서 출력 버퍼를 덮어씀'이다. Calif가 이번 주 java4shell로 공개한 것과 같은 힙 오버플로이며, 트리거도 'A' 64개와 '='로 같고 수정도 포함돼 있었다. 이 버그는 6월 Adoptium에 처음 보고된 JVM 크래시에서 시작됐다. 작성자는 그 Adoptium 이슈에 10월 1일 Oracle이 승인 전까지 PR을 진행하지 말라는 이메일을 보냈다고, 10월 28일에는 Oracle이 넘겨받았다고 썼다. PR은 리뷰를 받지 못했고, 비활성 경고 후 11월 4일 닫혔다. 댓글에 따르면 Oracle의 최종 커밋 메시지는 PR과 글자 하나 다르지 않다. Calif는 연구원이 Codex로 버그를 찾았다고 한다. 다른 댓글 작성자 dlor는 자신의 오프라인 퍼징 도구가 독립적으로 찾아 지난주 금요일 Oracle에 보고했다고 말한다.
+***** Take
+스레드의 첫 가설, 즉 진짜 버그 보고가 자동 종료 봇에 묻혔다는 이야기는 틀렸다. Oracle은 적어도 10월 1일부터 버그를 알았고, 외부 기여자에게 기다리라고 했으며, 11월 17일 패치로 수정을 내놨다. 평범한 엠바고 처리다. 남는 의문은 Calif의 주장이다. 같은 제목, 같은 트리거, 작동하는 수정을 담은 공개 PR이 두 달간 GitHub에 있었으니, 'Codex가 한 시간 만에 찾았다'는 말은 모델이 그 PR을 읽었다는 뜻일 수도 있다. 또 하나의 교훈은 엠바고 자체에 관한 것이다. 사용자가 패치를 받기 전 두 달 동안, 힙 오버플로 수정은 OpenJDK PR을 보는 누구나 읽을 수 있었다.
+***** Comments
+- 이 PR 작성자가 거기서 10월 1일에 'Oracle에서 승인받기 전까지 PR을 진행하지 말라는 이메일을 받았다'고 썼고, 10월 28일에는 'Oracle이 넘겨받았다. 우리가 할 일은 없다'고 썼다.
+- 자동 종료 봇이 프로젝트의 암이고 상황을 더 나쁘게 만든다는 훌륭한 증거다. 수정까지 딸린 진짜 버그였다. 누군가 제대로 봐 주기만 하면 됐다.
+- 나도 공개 전에 독립적으로 찾아서 지난주 금요일 Oracle에 보고했다. 퍼징 실행 후 내 도구가 찾았다. 도구는 인터넷에 연결되지 않지만, 학습 데이터에 있었는지는 누가 알겠나.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Alguien reportó el fallo java4shell en septiembre de 2026
+***** TLDR
+El PR #32781 de OpenJDK, abierto el 9 de septiembre de 2026 por albertnetymk, se titula 'El decodificador Base64 AVX-512 sobrescribe el búfer de salida con una cola corta con relleno'. Describe el mismo desbordamiento de heap que Calif publicó esta semana como java4shell, con el mismo disparador de 64 caracteres 'A' más '=', e incluye una corrección. El fallo viene de un cierre inesperado de la JVM reportado a Adoptium en junio. En esa incidencia de Adoptium el autor escribió el 1 de octubre que Oracle le había pedido por correo no seguir con un PR hasta tener aprobación, y el 28 de octubre que Oracle se había hecho cargo. El PR no recibió revisiones, tuvo un aviso de inactividad y se cerró el 4 de noviembre. Los comentaristas dicen que el mensaje del commit final de Oracle coincide palabra por palabra con el del PR. Calif afirma que su investigador encontró el fallo con Codex. Otro comentarista, dlor, dice que su herramienta de fuzzing sin conexión lo encontró de forma independiente y que lo reportó a Oracle el viernes pasado.
+***** Take
+La primera teoría del hilo, un reporte real eliminado por un bot de PRs inactivos, es falsa. Oracle conocía el fallo al menos desde el 1 de octubre, pidió al colaborador externo que esperara y publicó la corrección en el parche del 17 de noviembre, que es el manejo normal de un embargo. La pregunta abierta es sobre la afirmación de Calif. Un PR público con el mismo título, el mismo disparador y una corrección funcional llevaba dos meses en GitHub, así que 'Codex lo encontró en una hora' puede significar en parte que el modelo había leído ese PR. La otra lección es sobre los embargos: durante dos meses antes del parche, cualquiera que revisara los PRs de OpenJDK podía leer la corrección de un desbordamiento de heap.
+***** Comments
+- El autor de este PR dice allí el 1 de octubre: 'Recibí un correo de Oracle pidiéndome NO seguir con un PR hasta recibir aprobación.' y luego el 28 de octubre: 'Oracle se ha hecho cargo. No necesitamos hacer nada.'
+- Buena prueba de que los bots de cierre automático son un cáncer para los proyectos y empeoran las cosas. Era un fallo real con la corrección incluida. Solo hacía falta que alguien lo mirara bien.
+- Yo también lo encontré de forma independiente antes de la divulgación y lo reporté a Oracle el viernes pasado. Mi herramienta lo encontró tras una sesión de fuzzing. No tiene acceso a Internet, pero quién sabe si esto estaba en los datos de entrenamiento.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Jemand hat den java4shell-Bug schon im September 2026 gemeldet
+***** TLDR
+OpenJDK-PR #32781, am 9. September 2026 von albertnetymk eröffnet, trägt den Titel 'AVX-512-Base64-Decoder überschreibt Ausgabepuffer bei kurzem gepaddetem Ende'. Er beschreibt denselben Heap-Überlauf, den Calif diese Woche als java4shell veröffentlicht hat, mit demselben Auslöser aus 64 'A' plus '=', und enthält einen Fix. Der Bug geht auf einen JVM-Absturz zurück, der im Juni an Adoptium gemeldet wurde. In diesem Adoptium-Issue schrieb der Autor am 1. Oktober, Oracle habe ihn per E-Mail gebeten, den PR bis zur Freigabe nicht weiterzuverfolgen, und am 28. Oktober, Oracle habe übernommen. Der PR bekam keine Reviews, erhielt eine Inaktivitätswarnung und wurde am 4. November geschlossen. Laut Kommentaren stimmt Oracles spätere Commit-Nachricht Wort für Wort mit der des PRs überein. Calif sagt, sein Forscher habe den Bug mit Codex gefunden. Ein anderer Kommentator, dlor, sagt, sein Offline-Fuzzing-Werkzeug habe ihn unabhängig gefunden, und er habe ihn letzten Freitag an Oracle gemeldet.
+***** Take
+Die erste Theorie im Thread, ein echter Bugreport sei von einem Stale-PR-Bot erledigt worden, stimmt nicht. Oracle kannte den Bug spätestens seit dem 1. Oktober, bat den externen Beitragenden zu warten und lieferte den Fix mit dem Patch vom 17. November aus. Das ist normale Embargo-Praxis. Offen ist die Frage zu Califs Behauptung. Ein öffentlicher PR mit demselben Titel, demselben Auslöser und einem funktionierenden Fix lag zwei Monate auf GitHub, also kann 'Codex hat ihn in einer Stunde gefunden' teilweise bedeuten, dass das Modell diesen PR gelesen hatte. Die andere Lehre betrifft Embargos: Zwei Monate vor dem Patch konnte jeder, der OpenJDK-PRs durchsah, den Fix für einen Heap-Überlauf lesen.
+***** Comments
+- Der Autor dieses PRs schreibt dort am 1. Oktober: 'Habe eine E-Mail von Oracle bekommen, die mich bittet, NICHT mit einem PR fortzufahren, bis ich eine Freigabe erhalte.' und am 28. Oktober: 'Oracle hat übernommen. Von uns ist nichts nötig.'
+- Schöner Beweis, dass Auto-Close-Bots ein Krebsgeschwür für Projekte sind und alles schlimmer machen. Es war ein echter Bug mit mitgeliefertem Fix. Es hätte nur jemand richtig hinschauen müssen.
+- Ich habe ihn auch unabhängig vor der Veröffentlichung gefunden und letzten Freitag an Oracle gemeldet. Mein Werkzeug fand ihn nach einem Fuzzing-Lauf. Es läuft ohne Internetzugang, aber wer weiß, ob das in den Trainingsdaten war.
+** How to CAD Almost Anything :cad:education:mit:3d-printing:
+:PROPERTIES:
+:ID:       50528119
+:URL:      https://ocw.mit.edu/courses/res-16-002-how-to-cad-almost-anything-january-iap-2024/
+:HN_URL:   https://news.ycombinator.com/item?id=50528119
+:POINTS:   204
+:COMMENTS: 60
+:BY:       o4c
+:END:
+
+*** TLDR
+RES.16-002 on MIT OpenCourseWare is a non-credit workshop from MIT Aeronautics and Astronautics, taught by Andy G. Eskenazi and first run during January IAP 2024. It teaches basic CAD through reverse engineering: students pick a real object (a mug, a soda can, a rocket, jet engine blades, a LEGO build) and model it in 3D. There are separate tracks, each with GitHub materials and YouTube session recordings, for SolidWorks, Creo, Fusion, Inventor, Onshape and Siemens NX. Instructor notes cover why students enrolled, how to learn a CAD package, and free alternatives to paid tools.
+
+*** Take
+All six tracks use commercial software, and that is the main gap commenters point out. They ask for FreeCAD, and one user with hundreds of hours in FreeCAD, SolveSpace and Onshape says the new open-source fluidcad fixed nearly everything he disliked about them. The reverse-engineering method is the part worth taking. Measuring a real object and rebuilding it teaches you how a part is meant to work, and that carries over to any CAD tool, including the AI-generated models some commenters already print.
+
+*** Comments
+
+**** mafm
+:PROPERTIES:
+:COMMENT_ID: 50569326
+:END:
+There has been a recent explosion in open source cad options. fluidcad appears to be a remarkably good option now. fluidcad resolves pretty much everything I found painful about those options.
+
+**** xnx
+:PROPERTIES:
+:COMMENT_ID: 50567769
+:END:
+Probably a useful intro tutorial for basic traditional CAD, but I don't see any mention of photo to 3D or AI assisted CAD. Workflows must be very different now.
+
+**** beering
+:PROPERTIES:
+:COMMENT_ID: 50567828
+:END:
+Despite AI being able to do all this already, I still think it's a very interesting skill to learn because almost all products around you are designed this way.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+如何用 CAD 设计（几乎）任何东西
+***** TLDR
+MIT 开放课件上的 RES.16-002 是 MIT 航空航天系开设的无学分工作坊，由 Andy G. Eskenazi 讲授，首次开设于 2024 年 1 月的 IAP 期间。课程通过逆向工程教授基础 CAD：学生挑选一个真实物体（马克杯、汽水罐、火箭、喷气发动机叶片、乐高作品）并建立三维模型。课程按软件分为 SolidWorks、Creo、Fusion、Inventor、Onshape 和 Siemens NX 几个方向，每个都有 GitHub 资料和 YouTube 课程录像。讲师笔记涉及学生的选课原因、如何学习 CAD 软件，以及付费工具的免费替代品。
+***** Take
+六个方向全部使用商业软件，这是评论者指出的主要缺口。他们希望加入 FreeCAD，一位在 FreeCAD、SolveSpace 和 Onshape 上各花了上百小时的用户说，新的开源工具 fluidcad 几乎解决了他对这些工具的所有不满。逆向工程的方法才是值得借鉴的部分。测量一个真实物体再重建它，能让你理解零件的设计意图，这一点适用于任何 CAD 工具，包括一些评论者已经在打印的 AI 生成模型。
+***** Comments
+- 最近开源 CAD 选项爆发式增长。fluidcad 现在看起来是个非常好的选择。它几乎解决了我在那些工具上遇到的所有痛点。
+- 作为传统 CAD 的入门教程大概有用，但我没看到任何关于照片转 3D 或 AI 辅助 CAD 的内容。现在的工作流程肯定很不一样了。
+- 尽管 AI 已经能做这些，我仍然觉得这是一项很有意思的技能，因为你身边几乎所有产品都是这样设计出来的。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+（ほぼ）何でも CAD で作る方法
+***** TLDR
+MIT OpenCourseWare の RES.16-002 は MIT 航空宇宙工学科の単位なしワークショップで、講師は Andy G. Eskenazi、初回は2024年1月の IAP 期間。リバースエンジニアリングを通じて基本的な CAD を教える。学生は実物（マグカップ、炭酸飲料の缶、ロケット、ジェットエンジンのブレード、LEGO 作品）を選び、3D モデルにする。SolidWorks、Creo、Fusion、Inventor、Onshape、Siemens NX ごとに別コースがあり、それぞれ GitHub の教材と YouTube の講義録画がある。講師ノートでは受講理由、CAD ソフトの学び方、有料ツールの無料代替を扱う。
+***** Take
+6コースすべてが商用ソフトで、これがコメント欄の指摘する一番の穴だ。FreeCAD を求める声があり、FreeCAD、SolveSpace、Onshape をそれぞれ数百時間使った人は、新しいオープンソースの fluidcad が不満点をほぼ解消したと言う。持ち帰る価値があるのはリバースエンジニアリングの手法だ。実物を測って作り直すと部品の設計意図が分かり、それはどの CAD ツールにも、コメント欄で既に印刷されている AI 生成モデルにも通用する。
+***** Comments
+- 最近オープンソース CAD の選択肢が爆発的に増えている。今は fluidcad がかなり良い選択肢に見える。それらのツールで辛かった点をほぼすべて解決してくれる。
+- 従来型の CAD の入門としては役立つだろうが、写真から 3D や AI 支援 CAD への言及が見当たらない。今はワークフローがまるで違うはずだ。
+- AI がもうこれを全部できるとしても、身の回りのほぼすべての製品がこうやって設計されているので、学ぶ価値のある面白いスキルだと思う。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+(거의) 무엇이든 CAD로 만드는 법
+***** TLDR
+MIT OpenCourseWare의 RES.16-002는 MIT 항공우주공학과의 비학점 워크숍으로, Andy G. Eskenazi가 가르치며 2024년 1월 IAP 기간에 처음 열렸다. 역설계를 통해 기초 CAD를 가르친다. 학생들은 실물(머그컵, 탄산음료 캔, 로켓, 제트엔진 블레이드, 레고 작품)을 골라 3D로 모델링한다. SolidWorks, Creo, Fusion, Inventor, Onshape, Siemens NX별로 트랙이 나뉘며, 각각 GitHub 자료와 YouTube 강의 녹화가 있다. 강사 노트는 수강 이유, CAD 프로그램 익히는 법, 유료 도구의 무료 대안을 다룬다.
+***** Take
+여섯 트랙 모두 상용 소프트웨어를 쓰며, 댓글이 지적하는 가장 큰 빈틈이 이것이다. FreeCAD를 원하는 목소리가 있고, FreeCAD, SolveSpace, Onshape를 각각 수백 시간 쓴 사용자는 새 오픈소스 도구 fluidcad가 불만을 거의 다 해결했다고 말한다. 가져갈 만한 것은 역설계 방법이다. 실물을 재고 다시 만들어 보면 부품이 어떻게 작동하도록 설계됐는지 배우게 되고, 이는 어떤 CAD 도구에도, 일부 댓글 작성자가 이미 출력하는 AI 생성 모델에도 통한다.
+***** Comments
+- 최근 오픈소스 CAD 선택지가 폭발적으로 늘었다. 지금은 fluidcad가 아주 좋은 선택으로 보인다. 그 도구들에서 괴로웠던 점을 거의 전부 해결해 준다.
+- 전통적인 CAD 입문 튜토리얼로는 쓸모 있겠지만, 사진에서 3D로 가거나 AI 보조 CAD에 대한 언급은 없다. 요즘 작업 흐름은 많이 다를 텐데.
+- AI가 이미 이걸 다 할 수 있어도, 주변 제품 거의 전부가 이렇게 설계되니 배워 볼 만한 흥미로운 기술이라고 생각한다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Cómo hacer en CAD (casi) cualquier cosa
+***** TLDR
+RES.16-002 en MIT OpenCourseWare es un taller sin créditos del departamento de Aeronáutica y Astronáutica del MIT, impartido por Andy G. Eskenazi y ofrecido por primera vez en el IAP de enero de 2024. Enseña CAD básico mediante ingeniería inversa: los estudiantes eligen un objeto real (una taza, una lata de refresco, un cohete, álabes de motor a reacción, una construcción de LEGO) y lo modelan en 3D. Hay itinerarios separados, cada uno con materiales en GitHub y grabaciones en YouTube, para SolidWorks, Creo, Fusion, Inventor, Onshape y Siemens NX. Las notas del instructor tratan por qué se inscribieron los alumnos, cómo aprender un programa de CAD y alternativas gratuitas a las herramientas de pago.
+***** Take
+Los seis itinerarios usan software comercial, y esa es la principal carencia que señalan los comentarios. Piden FreeCAD, y un usuario con cientos de horas en FreeCAD, SolveSpace y Onshape dice que el nuevo fluidcad, de código abierto, resolvió casi todo lo que le molestaba de ellos. El método de ingeniería inversa es lo que vale la pena llevarse. Medir un objeto real y reconstruirlo enseña para qué está hecha cada parte, y eso sirve con cualquier herramienta de CAD, incluidos los modelos generados por IA que algunos comentaristas ya imprimen.
+***** Comments
+- Ha habido una explosión reciente de opciones de CAD de código abierto. fluidcad parece ahora una opción notablemente buena. Resuelve prácticamente todo lo que me resultaba doloroso de esas opciones.
+- Probablemente sea un tutorial útil de CAD tradicional básico, pero no veo ninguna mención de foto a 3D ni de CAD asistido por IA. Los flujos de trabajo deben de ser muy distintos ahora.
+- Aunque la IA ya pueda hacer todo esto, sigo pensando que es una habilidad muy interesante, porque casi todos los productos a tu alrededor se diseñan así.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Wie man (fast) alles mit CAD konstruiert
+***** TLDR
+RES.16-002 auf MIT OpenCourseWare ist ein Workshop ohne Leistungspunkte der MIT-Fakultät für Luft- und Raumfahrt, geleitet von Andy G. Eskenazi und erstmals im IAP im Januar 2024 angeboten. Er vermittelt CAD-Grundlagen über Reverse Engineering: Studierende wählen ein reales Objekt (eine Tasse, eine Getränkedose, eine Rakete, Triebwerksschaufeln, ein LEGO-Modell) und modellieren es in 3D. Es gibt getrennte Kurse mit GitHub-Material und YouTube-Aufzeichnungen für SolidWorks, Creo, Fusion, Inventor, Onshape und Siemens NX. Die Notizen des Dozenten behandeln die Gründe der Teilnehmenden, wie man ein CAD-Programm lernt, und kostenlose Alternativen zu kostenpflichtigen Werkzeugen.
+***** Take
+Alle sechs Kurse nutzen kommerzielle Software, und das ist die Hauptlücke, die Kommentatoren nennen. Sie wünschen sich FreeCAD, und ein Nutzer mit Hunderten Stunden in FreeCAD, SolveSpace und Onshape sagt, das neue Open-Source-Werkzeug fluidcad habe fast alles behoben, was ihn daran störte. Mitnehmen sollte man die Reverse-Engineering-Methode. Wer ein reales Objekt vermisst und nachbaut, lernt, wofür ein Teil konstruiert ist, und das gilt für jedes CAD-Werkzeug, auch für die KI-generierten Modelle, die manche Kommentatoren schon drucken.
+***** Comments
+- In letzter Zeit gibt es eine Explosion an Open-Source-CAD-Optionen. fluidcad scheint jetzt eine bemerkenswert gute Wahl zu sein. Es löst so ziemlich alles, was mich an diesen Optionen gestört hat.
+- Wahrscheinlich eine nützliche Einführung in klassisches CAD, aber ich sehe keine Erwähnung von Foto-zu-3D oder KI-gestütztem CAD. Die Arbeitsabläufe müssen heute ganz anders sein.
+- Auch wenn KI das alles schon kann, halte ich es für eine sehr interessante Fähigkeit, weil fast alle Produkte um dich herum so entworfen werden.
+** Launch HN: Onlook (YC W25) – An open-source developer tool for designers :design:devtools:ai:open-source:yc:
+:PROPERTIES:
+:ID:       50562320
+:URL:      https://github.com/onlook-dev/onlook/
+:HN_URL:   https://news.ycombinator.com/item?id=50562320
+:POINTS:   101
+:COMMENTS: 72
+:BY:       D_R_Farrell
+:END:
+
+*** TLDR
+Onlook (YC W25) has been rebuilt as an open-source macOS desktop app (Apache 2.0, built on Electron and React 19). It opens a local Git repo, runs your own dev server, and shows the live app on an infinite canvas with mobile, tablet and desktop frames side by side. It ships no model of its own: you connect a Claude Code or Codex subscription, click elements to give the agent context, and the agent edits files in a separate worktree so your original folder is untouched. Each change can become a pull request you review or throw away. Windows and Linux builds are on a waitlist, and the official download has analytics on by default (STUDIO_TELEMETRY=0 turns them off).
+
+*** Take
+The design choice is sound: work happens in a worktree, so the output is a PR against your real codebase and nobody rebuilds a mockup later. The thread's hard questions are ones the launch post does not answer. What does it do that Claude Code's or Codex's own design workflows do not? How do you combine the navigation from one variant with the layout from another when they live in different worktrees? What is the business model when the code is free and the model is the customer's own subscription? Landing-page copy calling it the 'World's best, top-most agent recommended #1' tool did not help its case with this audience.
+
+*** Comments
+
+**** HetengAaronLi
+:PROPERTIES:
+:COMMENT_ID: 50564434
+:END:
+How do you handle the step after exploring ten versions, when the designer wants 'the navigation from version 3, the layout from version 7, and the interactions from version 9'? Across worktrees it becomes a code integration problem.
+
+**** Joshearle1
+:PROPERTIES:
+:COMMENT_ID: 50564193
+:END:
+I've been doing pretty much all of my design work in Codex lately, from trying out rough ideas to refining the UI in the actual codebase. What does your tool do better than Codex for that workflow?
+
+**** RyanShook
+:PROPERTIES:
+:COMMENT_ID: 50563429
+:END:
+What's the business model?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Launch HN：Onlook（YC W25），面向设计师的开源开发工具
+***** TLDR
+Onlook（YC W25）重建为开源的 macOS 桌面应用（Apache 2.0，基于 Electron 和 React 19）。它打开本地 Git 仓库，运行你自己的开发服务器，并在无限画布上并排显示手机、平板和桌面尺寸的实时应用。它不自带模型：你连接自己的 Claude Code 或 Codex 订阅，点击元素为智能体提供上下文，智能体在单独的 worktree 中修改文件，原始目录不受影响。每次修改都可以变成一个 PR，供你审阅或丢弃。Windows 和 Linux 版本需排队等候，官方下载版默认开启数据分析（设置 STUDIO_TELEMETRY=0 可关闭）。
+***** Take
+这个设计思路是对的：工作在 worktree 中进行，产出是针对真实代码库的 PR，之后没人需要重做设计稿。讨论串里的难题是发布帖没有回答的：它能做什么 Claude Code 或 Codex 自身的设计流程做不到的事？当导航来自一个变体、布局来自另一个变体且它们在不同 worktree 中时，如何合并？代码免费、模型用的是客户自己的订阅，商业模式是什么？着陆页上“全球最佳、智能体推荐第一”的文案在这群读者面前也没加分。
+***** Comments
+- 探索了十个版本之后，设计师想要“第 3 版的导航、第 7 版的布局和第 9 版的交互”，这一步怎么处理？跨 worktree 就变成了代码集成问题。
+- 最近我几乎所有设计工作都在 Codex 里做，从尝试粗略想法到在真实代码库中打磨 UI。在这个工作流里，你们的工具比 Codex 好在哪？
+- 商业模式是什么？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Launch HN：Onlook（YC W25）、デザイナー向けのオープンソース開発ツール
+***** TLDR
+Onlook（YC W25）はオープンソースの macOS デスクトップアプリ（Apache 2.0、Electron と React 19 製）として作り直された。ローカルの Git リポジトリを開き、自分の開発サーバーを起動し、無限キャンバス上でモバイル、タブレット、デスクトップのフレームを並べて実際のアプリを表示する。独自のモデルはない。Claude Code か Codex のサブスクリプションをつなぎ、要素をクリックしてエージェントに文脈を渡すと、エージェントが別の worktree でファイルを編集するので元のフォルダは変わらない。変更は PR にしてレビューも破棄もできる。Windows と Linux 版は順番待ちで、公式ダウンロード版は分析がデフォルトで有効（STUDIO_TELEMETRY=0 で無効化）。
+***** Take
+設計判断は妥当だ。作業は worktree で行われるので、成果物は実際のコードベースへの PR になり、後でモックアップを作り直す必要がない。スレッドの難しい質問は、ローンチ投稿が答えていないものばかりだ。Claude Code や Codex 自体のデザイン作業でできないことの何ができるのか。別々の worktree にあるバリエーションから、ナビゲーションとレイアウトをどう組み合わせるのか。コードは無料でモデルは顧客自身のサブスクリプションなら、ビジネスモデルは何か。ランディングページの「世界最高、エージェント推奨 No.1」という文句も、この読者層には逆効果だった。
+***** Comments
+- 10個のバージョンを試した後、デザイナーが「バージョン3のナビゲーション、バージョン7のレイアウト、バージョン9のインタラクション」を欲しがったらどうする？ worktree をまたぐとコード統合の問題になる。
+- 最近はほぼすべてのデザイン作業を Codex でやっている。ラフなアイデアの試作から、実際のコードベースでの UI の仕上げまで。その作業で、このツールは Codex より何が優れている？
+- ビジネスモデルは？
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Launch HN: Onlook(YC W25), 디자이너를 위한 오픈소스 개발 도구
+***** TLDR
+Onlook(YC W25)이 오픈소스 macOS 데스크톱 앱(Apache 2.0, Electron과 React 19 기반)으로 다시 만들어졌다. 로컬 Git 저장소를 열고, 사용자의 개발 서버를 띄우고, 무한 캔버스에 모바일, 태블릿, 데스크톱 프레임을 나란히 두고 실제 앱을 보여 준다. 자체 모델은 없다. Claude Code나 Codex 구독을 연결하고 요소를 클릭해 에이전트에 맥락을 주면, 에이전트가 별도 worktree에서 파일을 수정하므로 원래 폴더는 그대로다. 각 변경은 검토하거나 버릴 수 있는 PR이 된다. Windows와 Linux 버전은 대기자 명단 단계이며, 공식 배포판은 분석 기능이 기본으로 켜져 있다(STUDIO_TELEMETRY=0으로 끔).
+***** Take
+설계 선택은 타당하다. 작업이 worktree에서 이뤄지므로 결과물은 실제 코드베이스에 대한 PR이고, 나중에 목업을 다시 만들 사람이 없다. 스레드의 어려운 질문들은 출시 글이 답하지 않은 것들이다. Claude Code나 Codex 자체 디자인 작업으로 못 하는 무엇을 하는가? 서로 다른 worktree에 있는 변형들에서 내비게이션과 레이아웃을 어떻게 합치는가? 코드는 무료이고 모델은 고객 본인의 구독이라면 사업 모델은 무엇인가? '세계 최고, 에이전트 추천 1위'라는 랜딩 페이지 문구도 이 독자층에게는 도움이 안 됐다.
+***** Comments
+- 버전 열 개를 탐색한 뒤 디자이너가 '3번의 내비게이션, 7번의 레이아웃, 9번의 인터랙션'을 원하면 그 단계는 어떻게 처리하나? worktree를 넘나들면 코드 통합 문제가 된다.
+- 요즘 거의 모든 디자인 작업을 Codex에서 한다. 대략적인 아이디어 시도부터 실제 코드베이스에서 UI 다듬기까지. 그 작업 흐름에서 이 도구가 Codex보다 나은 점은?
+- 사업 모델이 뭔가?
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Launch HN: Onlook (YC W25), una herramienta de desarrollo de código abierto para diseñadores
+***** TLDR
+Onlook (YC W25) se ha reconstruido como una aplicación de escritorio de código abierto para macOS (Apache 2.0, hecha con Electron y React 19). Abre un repositorio Git local, ejecuta tu propio servidor de desarrollo y muestra la aplicación en vivo sobre un lienzo infinito, con marcos de móvil, tableta y escritorio lado a lado. No trae modelo propio: conectas tu suscripción de Claude Code o Codex, haces clic en elementos para dar contexto al agente y el agente edita archivos en un worktree aparte, sin tocar tu carpeta original. Cada cambio puede convertirse en un pull request que revisas o descartas. Las versiones para Windows y Linux están en lista de espera, y la descarga oficial trae analítica activada por defecto (STUDIO_TELEMETRY=0 la desactiva).
+***** Take
+La decisión de diseño es acertada: el trabajo ocurre en un worktree, así que el resultado es un PR contra tu código real y nadie rehace una maqueta después. Las preguntas difíciles del hilo son las que el anuncio no responde. ¿Qué hace que no hagan los flujos de diseño de Claude Code o Codex? ¿Cómo se combina la navegación de una variante con la maquetación de otra si viven en worktrees distintos? ¿Cuál es el modelo de negocio si el código es gratis y el modelo es la suscripción del propio cliente? El texto de la web que lo llama la herramienta 'n.º 1 recomendada por agentes, la mejor del mundo' no le ayudó ante este público.
+***** Comments
+- ¿Cómo manejan el paso posterior a explorar diez versiones, cuando el diseñador quiere 'la navegación de la versión 3, la maquetación de la 7 y las interacciones de la 9'? Entre worktrees se convierte en un problema de integración de código.
+- Últimamente hago casi todo mi trabajo de diseño en Codex, desde probar ideas sueltas hasta pulir la interfaz en el código real. ¿Qué hace su herramienta mejor que Codex en ese flujo?
+- ¿Cuál es el modelo de negocio?
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Launch HN: Onlook (YC W25), ein Open-Source-Entwicklerwerkzeug für Designer
+***** TLDR
+Onlook (YC W25) wurde als Open-Source-Desktop-App für macOS neu gebaut (Apache 2.0, auf Basis von Electron und React 19). Es öffnet ein lokales Git-Repo, startet deinen eigenen Dev-Server und zeigt die laufende App auf einer unendlichen Leinwand mit Smartphone-, Tablet- und Desktop-Rahmen nebeneinander. Ein eigenes Modell gibt es nicht: Man verbindet ein Claude-Code- oder Codex-Abo, klickt Elemente an, um dem Agenten Kontext zu geben, und der Agent bearbeitet Dateien in einem separaten Worktree, sodass der Originalordner unberührt bleibt. Jede Änderung kann zu einem Pull Request werden, den man prüft oder verwirft. Windows- und Linux-Versionen gibt es nur per Warteliste, und der offizielle Download hat Analytics standardmäßig aktiviert (STUDIO_TELEMETRY=0 schaltet sie ab).
+***** Take
+Die Designentscheidung ist richtig: Gearbeitet wird in einem Worktree, also ist das Ergebnis ein PR gegen die echte Codebasis, und niemand baut später ein Mockup nach. Die schwierigen Fragen im Thread beantwortet der Launch-Post nicht. Was kann es, was die Design-Workflows von Claude Code oder Codex selbst nicht können? Wie kombiniert man die Navigation einer Variante mit dem Layout einer anderen, wenn beide in verschiedenen Worktrees liegen? Was ist das Geschäftsmodell, wenn der Code kostenlos ist und das Modell über das Abo des Kunden läuft? Werbetext auf der Website, der es als 'weltbestes, von Agenten empfohlenes Nr.-1-Werkzeug' bezeichnet, half bei diesem Publikum nicht.
+***** Comments
+- Wie geht ihr mit dem Schritt nach dem Erkunden von zehn Versionen um, wenn der Designer 'die Navigation aus Version 3, das Layout aus Version 7 und die Interaktionen aus Version 9' will? Über Worktrees hinweg wird das zu einem Code-Integrationsproblem.
+- Ich mache in letzter Zeit fast meine gesamte Designarbeit in Codex, vom Ausprobieren grober Ideen bis zum Verfeinern der UI in der echten Codebasis. Was kann euer Werkzeug in diesem Ablauf besser als Codex?
+- Was ist das Geschäftsmodell?
+** RegExr: Temporarily Offline :regex:security:ai:web:
+:PROPERTIES:
+:ID:       50567374
+:URL:      https://regexr.com/
+:HN_URL:   https://news.ycombinator.com/item?id=50567374
+:POINTS:   69
+:COMMENTS: 36
+:BY:       somebudyelse
+:END:
+
+*** TLDR
+RegExr, the regular-expression testing site that many developers have used for over a decade, now shows only an outage notice. It says the codebase is aging and that 'with AI hacking' the team decided the best way to protect user data is to take the site down until they can modernize and secure it. No return date is given. RegExr lets users save and share patterns, and commenters say the backend is PHP. Alternatives named in the thread include regex101, Rubular, debuggex and the self-hosted OpenRegex.
+
+*** Take
+This is a new kind of outage notice: a working site taken down because AI tools make old code cheaper to attack, not because it was breached. The reasoning holds, since a hobby PHP backend that stores user accounts is what automated scanners now find quickly. The cost falls on users who lose a tool, while client-side alternatives keep working. If more small sites decide the same way, the old model of building a web app once and running it for years without maintenance stops being safe, which is the point robjam makes in the thread.
+
+*** Comments
+
+**** robjam
+:PROPERTIES:
+:COMMENT_ID: 50567623
+:END:
+Automated probing of the web is only going to get worse from here on. It is going to make SaaS more expensive as there will need to be actual ongoing maintenance. Maybe we will see renewed interest in publish once desktop apps as they will have limited risk?
+
+**** keithnz
+:PROPERTIES:
+:COMMENT_ID: 50568891
+:END:
+these sites were super useful.... now... with AI, they seem pretty redundant?
+
+**** eviks
+:PROPERTIES:
+:COMMENT_ID: 50569509
+:END:
+Why not add a disclaimer instead that data isn't safe and let the users decide?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+RegExr：暂时下线
+***** TLDR
+RegExr 是许多开发者用了十多年的正则表达式测试网站，现在只显示一则停机公告。公告称代码库已经老化，并且“鉴于 AI 黑客攻击”，团队认为保护用户数据的最佳方式是先关闭网站，直到有机会将其现代化并加固。没有给出恢复日期。RegExr 允许用户保存和分享正则，评论者称其后端是 PHP。讨论中提到的替代品有 regex101、Rubular、debuggex 和可自托管的 OpenRegex。
+***** Take
+这是一种新型的停机公告：一个正常运行的网站被关闭，不是因为遭到入侵，而是因为 AI 工具让攻击旧代码的成本更低。这个理由站得住，存有用户账户的业余 PHP 后端正是自动化扫描器现在能很快找到的目标。代价由失去工具的用户承担，而在客户端运行的替代品仍可使用。如果更多小网站做出同样决定，那种做一次网站、多年不维护照常运行的老模式就不再安全，这正是 robjam 在讨论中提出的观点。
+***** Comments
+- 对网络的自动化探测从现在起只会更糟。SaaS 会变得更贵，因为需要真正持续的维护。也许我们会看到人们重新对一次发布的桌面应用感兴趣，因为它们的风险有限？
+- 这些网站以前超级有用……现在……有了 AI，它们好像挺多余的？
+- 为什么不加个免责声明说数据不安全，让用户自己决定？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+RegExr：一時的にオフライン
+***** TLDR
+多くの開発者が10年以上使ってきた正規表現テストサイト RegExr は、現在停止のお知らせだけを表示している。コードベースが古くなっており、「AI によるハッキング」を受けて、近代化と安全対策ができるまでサイトを停止するのがユーザーデータを守る最善策だと判断したという。再開日は示されていない。RegExr ではパターンの保存と共有ができ、コメント欄によるとバックエンドは PHP。スレッドで挙がった代替は regex101、Rubular、debuggex、セルフホスト型の OpenRegex。
+***** Take
+これは新しい種類の停止告知だ。侵害されたからではなく、AI ツールで古いコードを攻撃するコストが下がったという理由で、動いているサイトが止められた。理屈は通っている。ユーザーアカウントを保存する趣味の PHP バックエンドは、今の自動スキャナーがすぐ見つける対象だ。代償はツールを失うユーザーが払い、クライアント側で動く代替は使い続けられる。小さなサイトが次々と同じ判断をすれば、一度作ったウェブアプリを何年も保守なしで動かすという昔のやり方は安全でなくなる。robjam がスレッドで指摘しているのもその点だ。
+***** Comments
+- ウェブへの自動探索はこれから悪化する一方だ。継続的な保守が本当に必要になるので SaaS は高くなる。リスクが限られる、一度リリースすれば済むデスクトップアプリが再注目されるかもしれない。
+- こういうサイトはすごく便利だった……でも今は……AI があるから、かなり不要じゃない？
+- 代わりに、データは安全ではないという注意書きを付けてユーザーに判断させればいいのでは？
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+RegExr: 일시적으로 오프라인
+***** TLDR
+많은 개발자가 10년 넘게 써 온 정규식 테스트 사이트 RegExr가 지금은 중단 공지만 보여 준다. 공지에 따르면 코드베이스가 낡았고, 'AI 해킹' 때문에 현대화하고 보안을 갖출 때까지 사이트를 내리는 것이 사용자 데이터를 지키는 최선이라고 판단했다. 복구 날짜는 없다. RegExr는 패턴 저장과 공유 기능이 있고, 댓글에 따르면 백엔드는 PHP다. 스레드에서 거론된 대안은 regex101, Rubular, debuggex, 자체 호스팅용 OpenRegex다.
+***** Take
+새로운 종류의 중단 공지다. 침해당해서가 아니라 AI 도구로 오래된 코드를 공격하는 비용이 낮아졌다는 이유로, 잘 돌아가던 사이트가 내려갔다. 논리는 맞다. 사용자 계정을 저장하는 취미용 PHP 백엔드는 요즘 자동 스캐너가 금방 찾아내는 대상이다. 비용은 도구를 잃는 사용자가 치르고, 클라이언트에서 도는 대안은 계속 쓸 수 있다. 더 많은 작은 사이트가 같은 결정을 내리면, 웹 앱을 한 번 만들어 몇 년간 유지보수 없이 돌리는 예전 방식은 더 이상 안전하지 않다. robjam이 스레드에서 지적하는 점도 이것이다.
+***** Comments
+- 웹에 대한 자동 탐색은 앞으로 더 심해질 뿐이다. 실제로 지속적인 유지보수가 필요해지니 SaaS는 더 비싸질 것이다. 위험이 제한적인, 한 번 배포하면 끝나는 데스크톱 앱이 다시 관심을 받을지도?
+- 이런 사이트들 정말 유용했는데.... 이제는... AI가 있으니 꽤 쓸모없어 보이지 않나?
+- 대신 데이터가 안전하지 않다는 고지를 달고 사용자가 판단하게 하면 안 되나?
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+RegExr: fuera de línea temporalmente
+***** TLDR
+RegExr, el sitio para probar expresiones regulares que muchos desarrolladores usan desde hace más de una década, solo muestra ahora un aviso de caída. Dice que el código está envejeciendo y que, 'con el hackeo mediante IA', el equipo decidió que la mejor forma de proteger los datos de los usuarios es retirar el sitio hasta poder modernizarlo y asegurarlo. No da fecha de regreso. RegExr permite guardar y compartir patrones, y los comentaristas dicen que el backend es PHP. Las alternativas citadas en el hilo incluyen regex101, Rubular, debuggex y OpenRegex, que se puede autoalojar.
+***** Take
+Es un tipo nuevo de aviso de caída: un sitio que funcionaba se retira porque las herramientas de IA abaratan atacar código viejo, no porque lo hayan vulnerado. El razonamiento se sostiene, porque un backend PHP de aficionado que guarda cuentas de usuario es justo lo que los escáneres automáticos encuentran rápido ahora. El costo lo pagan los usuarios que pierden una herramienta, mientras las alternativas que funcionan en el navegador siguen disponibles. Si más sitios pequeños deciden lo mismo, el viejo modelo de construir una aplicación web una vez y mantenerla años sin mantenimiento deja de ser seguro, que es lo que señala robjam en el hilo.
+***** Comments
+- El sondeo automatizado de la web solo va a empeorar a partir de ahora. Hará que el SaaS sea más caro, porque hará falta mantenimiento continuo de verdad. ¿Quizás veamos un renovado interés por las aplicaciones de escritorio que se publican una vez, ya que tienen un riesgo limitado?
+- estos sitios eran súper útiles.... ahora... con la IA, ¿parecen bastante redundantes?
+- ¿Por qué no poner un aviso de que los datos no están seguros y dejar que los usuarios decidan?
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+RegExr: vorübergehend offline
+***** TLDR
+RegExr, die Website zum Testen regulärer Ausdrücke, die viele Entwickler seit über zehn Jahren nutzen, zeigt nur noch einen Ausfallhinweis. Darin heißt es, die Codebasis sei veraltet und das Team habe 'angesichts von KI-Hacking' entschieden, die Daten der Nutzer am besten zu schützen, indem es die Seite abschaltet, bis sie modernisiert und abgesichert werden kann. Ein Rückkehrdatum gibt es nicht. RegExr erlaubt das Speichern und Teilen von Mustern, und laut Kommentaren ist das Backend in PHP geschrieben. Im Thread genannte Alternativen sind regex101, Rubular, debuggex und das selbst hostbare OpenRegex.
+***** Take
+Das ist eine neue Art von Ausfallhinweis: Eine funktionierende Seite geht vom Netz, nicht wegen eines Einbruchs, sondern weil KI-Werkzeuge Angriffe auf alten Code billiger machen. Die Begründung trägt, denn ein Hobby-PHP-Backend mit Benutzerkonten ist genau das, was automatische Scanner heute schnell finden. Die Kosten tragen die Nutzer, die ein Werkzeug verlieren, während Alternativen, die im Browser laufen, weiter funktionieren. Wenn mehr kleine Seiten so entscheiden, ist das alte Modell, eine Web-App einmal zu bauen und jahrelang ohne Wartung zu betreiben, nicht mehr sicher. Genau darauf weist robjam im Thread hin.
+***** Comments
+- Das automatisierte Abtasten des Webs wird von hier an nur schlimmer. Es wird SaaS teurer machen, weil echte laufende Wartung nötig wird. Vielleicht sehen wir neues Interesse an einmal veröffentlichten Desktop-Apps, weil deren Risiko begrenzt ist?
+- diese Seiten waren super nützlich.... jetzt... mit KI wirken sie ziemlich überflüssig?
+- Warum nicht stattdessen einen Hinweis anbringen, dass die Daten nicht sicher sind, und die Nutzer entscheiden lassen?
