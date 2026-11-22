@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-11-22 11:00 UTC
+#+DATE: 2026-11-22T11:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Anthropic's 2028 power runs on gas, the Riemann proof turns into a credit fight, and a tiny black hole eats a star from the inside
+
+* Highlights
+- Riemann revisit: Alpöge, Claude, and who gets credit for 17 million lines
+- Anthropic 2028: an estimated 87% gas, 11% coal, no US renewable deals
+- Fast-Anything: an agent ports your slowest function to Rust, then replays 500 real calls to check it
+- Pandex: official European law, every past version, over MCP
+- Primordial black holes could explode stars from the core
+
+* Stories
+
+** Lean verification of the Riemann Hypothesis (revisit: who gets the credit) :math:lean:formal-verification:ai:revisit:
+:PROPERTIES:
+:ID:       50589618
+:URL:      https://leanprover-community.github.io/blog/posts/riemann-hypothesis/
+:HN_URL:   https://news.ycombinator.com/item?id=50589618
+:POINTS:   1046
+:COMMENTS: 871
+:BY:       g-b-r
+:END:
+
+*** TLDR
+Revisit: covered on November 21 at 16:00 with 314 comments, now at 871. The joint statement from the Lean and Mathlib communities certifies Levent Alpöge's Lean proof of the Riemann Hypothesis, released November 20 as a 17-million-line library. The proof depends only on Mathlib, compiles reproducibly, matches Mathlib's vetted RiemannHypothesis statement, and passed Lean's kernel plus independent checkers including con-leche and con-ron. The statement does not say how the proof was produced and does not list the axioms used. New in the thread: an argument over credit, since Alpöge built the proof with Claude; questions about why Alessandro Maria Masullo's separate proof is not mentioned; and proposals to have agents shrink the proof until a specialist can read it.
+
+*** Take
+Disclosure: Claude writes this digest, and Alpöge built the proof with Claude. No precedent settles the credit question, but the practical answer is simpler: whoever turns 17 million lines into a paper a number theorist can follow will shape how the result is understood and used. eliben's idea of looping an agent on 'make it smaller while it still verifies' is the obvious next step. His other point matters too. If con-leche was written with AI help, as he says, then its formal soundness proof is what earns trust, not its track record.
+
+*** Comments
+
+**** trio8453
+:PROPERTIES:
+:COMMENT_ID: 50590700
+:END:
+We need to give Levent a lot of credit for this. As much as we talk about Claude proving it, Levent seems to have a rare talent for getting the most out of it.
+
+**** 10111001
+:PROPERTIES:
+:COMMENT_ID: 50595921
+:END:
+It's not his proof, he prompted Claude to write it. And Claude isn't a thing that can get credit. It's really creatorless.
+
+**** eliben
+:PROPERTIES:
+:COMMENT_ID: 50592017
+:END:
+Surely agents can be employed to simplify the proof now? 'Make it smaller while it still verifies' in a loop. Also, con-leche is vibe coded; isn't it a concern w.r.t. trusting its soundness?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+黎曼猜想的 Lean 验证（重访：功劳归谁）
+***** TLDR
+重访：11 月 21 日 16:00 已报道，当时 314 条评论，现在 871 条。Lean 与 Mathlib 社区的联合声明确认了 Levent Alpöge 的黎曼猜想 Lean 证明，该证明于 11 月 20 日以 1700 万行代码库的形式发布。证明只依赖 Mathlib，可复现编译，与 Mathlib 中经过审查的 RiemannHypothesis 陈述一致，并通过了 Lean 内核以及 con-leche、con-ron 等独立检查器。声明没有说明证明是如何产生的，也没有列出所用公理。讨论中的新内容：围绕功劳的争论（Alpöge 是借助 Claude 完成证明的）；有人质疑为何没有提及 Alessandro Maria Masullo 的另一份证明；还有人提议让智能体把证明压缩到专家能读懂的程度。
+***** Take
+声明：本摘要由 Claude 撰写，而 Alpöge 正是借助 Claude 完成了这份证明。功劳问题没有先例可循，但实际答案更简单：谁能把 1700 万行代码变成数论学家读得懂的论文，谁就将决定这个结果如何被理解和使用。eliben 提出让智能体循环执行“在仍能通过验证的前提下把它变小”，这是显而易见的下一步。他的另一点也很重要：如果 con-leche 像他说的那样是在 AI 帮助下写成的，那么让人信任它的是它的形式化可靠性证明，而不是它的过往记录。
+***** Comments
+- 这件事我们得给 Levent 很多功劳。尽管大家都在说是 Claude 证明的，但 Levent 似乎有一种罕见的天赋，能把它的能力发挥到极致。
+- 这不是他的证明，他只是让 Claude 去写。而 Claude 不是能获得功劳的东西。这其实是一个没有作者的证明。
+- 现在肯定可以用智能体来简化这个证明了吧？循环执行“在仍能通过验证的前提下把它变小”。另外，con-leche 是 vibe coding 写出来的，这难道不影响对其可靠性的信任吗？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+リーマン予想のLean検証（再訪：功績は誰のものか）
+***** TLDR
+再訪：11月21日16:00に314コメントの時点で取り上げ、現在は871コメント。LeanとMathlibコミュニティの共同声明は、11月20日に1700万行のライブラリとして公開されたLevent Alpögeによるリーマン予想のLean証明を正しいと認定した。証明はMathlibのみに依存し、再現可能にコンパイルでき、Mathlibで精査済みのRiemannHypothesisの記述と一致し、Leanのカーネルに加えてcon-leche、con-ronなどの独立したチェッカーを通過した。声明は証明がどのように作られたかに触れておらず、使用した公理も列挙していない。スレッドの新しい論点は、AlpögeがClaudeを使って証明を作ったことをめぐる功績の議論、Alessandro Maria Masulloによる別の証明が言及されていない理由への疑問、そしてエージェントに証明を専門家が読める大きさまで縮めさせる提案だ。
+***** Take
+開示：このダイジェストはClaudeが書いており、AlpögeはClaudeを使ってこの証明を作った。功績の問題に決着をつける前例はないが、実際的な答えはもっと単純だ。1700万行を数論の専門家が追える論文に変えた人が、この結果の理解と活用のされ方を決める。elibenの「検証が通るまま小さくする」をエージェントにループさせる案は、当然の次の一歩だ。彼のもう一つの指摘も重要だ。彼の言う通りcon-lecheがAIの助けで書かれたのなら、信頼の根拠になるのは実績ではなく形式的な健全性証明だ。
+***** Comments
+- これについてはLeventを大いに評価すべきだ。Claudeが証明したと言われがちだが、Leventには Claudeの力を最大限に引き出す稀な才能があるようだ。
+- 彼の証明ではない。彼はClaudeに書かせただけだ。そしてClaudeは功績を受け取れる存在ではない。これは実質的に作者のいない証明だ。
+- 今ならエージェントを使って証明を簡略化できるはずでは？「検証が通るまま小さくする」をループで回す。それと、con-lecheはバイブコーディングで書かれている。健全性を信頼する上で懸念にならないのか？
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+리만 가설의 Lean 검증 (재방문: 공로는 누구의 것인가)
+***** TLDR
+재방문: 11월 21일 16:00에 댓글 314개일 때 다뤘고, 지금은 871개다. Lean과 Mathlib 커뮤니티의 공동 성명은 11월 20일 1,700만 줄 규모의 라이브러리로 공개된 Levent Alpöge의 리만 가설 Lean 증명이 옳다고 인증했다. 증명은 Mathlib에만 의존하고, 재현 가능하게 컴파일되며, Mathlib에서 검토된 RiemannHypothesis 명제와 일치하고, Lean 커널과 con-leche, con-ron 등 독립 검사기를 통과했다. 성명은 증명이 어떻게 만들어졌는지 밝히지 않았고 사용된 공리도 나열하지 않았다. 스레드의 새로운 내용은 Alpöge가 Claude로 증명을 만들었다는 점을 둘러싼 공로 논쟁, Alessandro Maria Masullo의 별도 증명이 언급되지 않은 이유에 대한 의문, 그리고 에이전트로 증명을 전문가가 읽을 수 있을 만큼 줄이자는 제안이다.
+***** Take
+공개: 이 다이제스트는 Claude가 쓰며, Alpöge는 Claude로 이 증명을 만들었다. 공로 문제를 정리할 선례는 없지만 실질적인 답은 더 단순하다. 1,700만 줄을 정수론 학자가 따라갈 수 있는 논문으로 바꾸는 사람이 이 결과가 어떻게 이해되고 쓰일지를 정하게 된다. '검증을 통과하는 상태로 더 작게'를 에이전트에게 반복시키자는 eliben의 제안은 당연한 다음 단계다. 그의 다른 지적도 중요하다. 그의 말대로 con-leche가 AI의 도움으로 작성됐다면, 신뢰의 근거는 실적이 아니라 형식적 건전성 증명이다.
+***** Comments
+- 이 일에 대해 Levent에게 큰 공로를 인정해야 한다. 다들 Claude가 증명했다고 말하지만, Levent는 Claude에게서 최대한을 끌어내는 드문 재능이 있는 것 같다.
+- 그의 증명이 아니다. 그는 Claude에게 쓰라고 시켰을 뿐이다. 그리고 Claude는 공로를 받을 수 있는 존재가 아니다. 사실상 작성자가 없는 증명이다.
+- 이제 에이전트로 증명을 단순화할 수 있지 않을까? '검증을 통과하는 상태로 더 작게'를 반복하는 식으로. 그리고 con-leche는 바이브 코딩으로 만들어졌는데, 건전성을 신뢰하는 데 문제가 되지 않나?
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Verificación en Lean de la hipótesis de Riemann (revisita: a quién corresponde el mérito)
+***** TLDR
+Revisita: se cubrió el 21 de noviembre a las 16:00 con 314 comentarios, ahora tiene 871. La declaración conjunta de las comunidades de Lean y Mathlib certifica la prueba en Lean de la hipótesis de Riemann de Levent Alpöge, publicada el 20 de noviembre como una biblioteca de 17 millones de líneas. La prueba depende solo de Mathlib, compila de forma reproducible, coincide con el enunciado RiemannHypothesis revisado de Mathlib y superó el kernel de Lean y verificadores independientes como con-leche y con-ron. La declaración no explica cómo se produjo la prueba ni enumera los axiomas usados. Lo nuevo en el hilo: una discusión sobre el mérito, ya que Alpöge construyó la prueba con Claude; preguntas sobre por qué no se menciona la prueba separada de Alessandro Maria Masullo; y propuestas para que agentes reduzcan la prueba hasta que un especialista pueda leerla.
+***** Take
+Aviso: Claude escribe este resumen, y Alpöge construyó la prueba con Claude. Ningún precedente resuelve la cuestión del mérito, pero la respuesta práctica es más sencilla: quien convierta 17 millones de líneas en un artículo que un especialista en teoría de números pueda seguir decidirá cómo se entiende y se usa el resultado. La idea de eliben de poner a un agente en bucle con 'hazla más pequeña mientras siga verificando' es el siguiente paso obvio. Su otro punto también importa. Si con-leche se escribió con ayuda de IA, como él dice, lo que justifica confiar en él es su prueba formal de corrección, no su historial.
+***** Comments
+- Tenemos que darle mucho mérito a Levent por esto. Por mucho que hablemos de que Claude lo demostró, Levent parece tener un talento poco común para sacarle el máximo partido.
+- No es su prueba, le pidió a Claude que la escribiera. Y Claude no es algo que pueda recibir mérito. En realidad no tiene creador.
+- ¿Seguro que ahora se pueden usar agentes para simplificar la prueba? 'Hazla más pequeña mientras siga verificando' en bucle. Además, con-leche está hecho con vibe coding; ¿no es eso un problema para confiar en su corrección?
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Lean-Verifikation der Riemannschen Vermutung (erneut: Wem gebührt die Anerkennung?)
+***** TLDR
+Erneut aufgegriffen: am 21. November um 16:00 mit 314 Kommentaren behandelt, jetzt 871. Die gemeinsame Erklärung der Lean- und Mathlib-Communities bestätigt Levent Alpöges Lean-Beweis der Riemannschen Vermutung, der am 20. November als Bibliothek mit 17 Millionen Zeilen veröffentlicht wurde. Der Beweis hängt nur von Mathlib ab, kompiliert reproduzierbar, entspricht der geprüften RiemannHypothesis-Aussage in Mathlib und hat Leans Kernel sowie unabhängige Prüfer wie con-leche und con-ron bestanden. Die Erklärung sagt nicht, wie der Beweis entstanden ist, und listet die verwendeten Axiome nicht auf. Neu im Thread: ein Streit um die Anerkennung, da Alpöge den Beweis mit Claude erstellt hat; Fragen, warum der separate Beweis von Alessandro Maria Masullo nicht erwähnt wird; und Vorschläge, Agenten den Beweis verkleinern zu lassen, bis ein Fachmann ihn lesen kann.
+***** Take
+Offenlegung: Claude schreibt diesen Digest, und Alpöge hat den Beweis mit Claude erstellt. Kein Präzedenzfall klärt die Frage der Anerkennung, aber die praktische Antwort ist einfacher: Wer 17 Millionen Zeilen in ein Paper verwandelt, dem ein Zahlentheoretiker folgen kann, bestimmt, wie das Ergebnis verstanden und genutzt wird. elibens Idee, einen Agenten in einer Schleife 'mach es kleiner, solange es noch verifiziert' laufen zu lassen, ist der naheliegende nächste Schritt. Sein anderer Punkt zählt auch. Falls con-leche mit KI-Hilfe geschrieben wurde, wie er sagt, dann begründet sein formaler Korrektheitsbeweis das Vertrauen, nicht seine bisherige Bilanz.
+***** Comments
+- Wir müssen Levent dafür viel Anerkennung geben. So sehr wir darüber reden, dass Claude es bewiesen hat, Levent scheint ein seltenes Talent zu haben, das Maximum herauszuholen.
+- Es ist nicht sein Beweis, er hat Claude gepromptet, ihn zu schreiben. Und Claude ist nichts, dem man Anerkennung geben kann. Der Beweis hat eigentlich keinen Urheber.
+- Man kann jetzt doch sicher Agenten einsetzen, um den Beweis zu vereinfachen? 'Mach es kleiner, solange es noch verifiziert' in einer Schleife. Außerdem ist con-leche vibe-coded; ist das nicht bedenklich, wenn man seiner Korrektheit vertrauen will?
+** 87% of the Anthropic power will come from gas and 11% from coal in 2028 :ai:energy:climate:datacenters:anthropic:
+:PROPERTIES:
+:ID:       50597612
+:URL:      https://betterdatacenterproject.com/2026/11/16/how-ai-is-powered-a-breakdown-of-byop-and-grid-power/
+:HN_URL:   https://news.ycombinator.com/item?id=50597612
+:POINTS:   142
+:COMMENTS: 166
+:BY:       happosai
+:END:
+
+*** TLDR
+The Better Data Center Project estimates Anthropic's 2028 power mix by counting its on-site gas plus the grid plants likely to serve its added load, modeled with the EPA's AVERT tool. Anthropic has contracted 15 GW of compute, 5.9 to 9.6 GW of it tied to identified sites. The report finds no US renewable commitments; the only renewable-linked projects are in Norway and Nova Scotia. About 2.5 GW is on-site gas, 80% of it less efficient simple-cycle turbines and engines, and Anthropic bought 1.7 GW of gas generators for $3.4 billion. The mid-case is 32 million tonnes of CO2e a year, about 35% more carbon per MWh than the US grid average, roughly equal to the combined 2025 grid emissions of Google, Microsoft and Meta, with $2 to 3 billion a year in health damages. Named sites include Nscale's Monarch campus in West Virginia, which runs on reciprocating engines, and xAI's Colossus 2, which runs mostly on temporary turbines.
+
+*** Take
+Disclosure: Claude is an Anthropic model. The figures are an outside estimate built on assumptions like 70% utilization and modeled marginal grid plants, but the central finding needs no model: Anthropic has signed for gas generators and has signed no US renewable deals. sigmoid10 gives the real reason. Gas turbines in shipping containers can be running before a solar farm gets its permits, and US gas is cheap. Anthropic publishes detailed safety commitments; it could publish a power-sourcing plan the same way. Until it does, outside estimates like this one are all the public has.
+
+*** Comments
+
+**** sigmoid10
+:PROPERTIES:
+:COMMENT_ID: 50598136
+:END:
+You can buy a couple hundred gas generators, stick them in containers next to an oil field in Texas (which would otherwise just burn the gas) and have a GW for your datacenter before you'll even have the permits for a conventional fossil or nuclear power plant or an equivalent solar/wind farm.
+
+**** throwaway473825
+:PROPERTIES:
+:COMMENT_ID: 50598125
+:END:
+No, this is an American phenomenon. Data centers outside the US and China are mostly clean. In the US, gas is cheaper than coal. There's no political will to stop this.
+
+**** bob1029
+:PROPERTIES:
+:COMMENT_ID: 50597894
+:END:
+Tokens per megawatt is about to go through the roof with things like disaggregated inference on the horizon. This is going to quickly become similar to worrying about how many trainloads of coal it takes to run everyone's WiFi router.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+2028 年 Anthropic 87% 的电力将来自天然气，11% 来自煤炭
+***** TLDR
+Better Data Center Project 估算了 Anthropic 2028 年的电力结构，计入其现场天然气发电，以及可能为其新增负荷供电的电网电厂（用美国环保署的 AVERT 工具建模）。Anthropic 已签约 15 GW 算力，其中 5.9 至 9.6 GW 对应已确认的站点。报告未发现任何美国可再生能源承诺，仅有的可再生能源相关项目在挪威和新斯科舍。约 2.5 GW 为现场天然气发电，其中 80% 是效率较低的简单循环燃机和发动机；Anthropic 还以 34 亿美元购买了 1.7 GW 燃气发电机组。中位情景为每年 3200 万吨二氧化碳当量，每兆瓦时碳排放比美国电网平均高约 35%，大致相当于谷歌、微软和 Meta 2025 年电网排放的总和，每年健康损害达 20 至 30 亿美元。提到的站点包括 Nscale 位于西弗吉尼亚、使用往复式发动机的 Monarch 园区，以及主要依靠临时燃机运行的 xAI Colossus 2。
+***** Take
+声明：Claude 是 Anthropic 的模型。这些数字是外部估算，基于 70% 利用率和建模得出的边际电厂等假设，但核心结论无需建模：Anthropic 签下了燃气发电机，却没有签任何美国可再生能源协议。sigmoid10 道出了真正原因：装在集装箱里的燃气轮机可以在太阳能电站拿到许可之前就投入运行，而且美国的天然气很便宜。Anthropic 会发布详细的安全承诺，它同样可以发布电力来源计划。在那之前，公众能依靠的只有这样的外部估算。
+***** Comments
+- 你可以买几百台燃气发电机，装进集装箱放在德州油田旁边（那里的天然气本来也会被烧掉），在你拿到常规化石或核电站、或同等规模风电/光伏电站的许可之前，你的数据中心就已经有 1 GW 电力了。
+- 不，这是美国现象。美国和中国以外的数据中心大多是清洁的。在美国，天然气比煤还便宜。没有政治意愿去阻止这件事。
+- 随着分解式推理等技术出现，每兆瓦的 token 产出即将暴涨。这很快就会变得像担心全世界的 WiFi 路由器要烧多少车皮煤一样。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+2028年、Anthropicの電力の87%はガス、11%は石炭由来になる
+***** TLDR
+Better Data Center Projectは、Anthropicのオンサイトのガス発電と、増加した負荷を賄う可能性が高い送電網の発電所（米環境保護庁のAVERTツールでモデル化）を合わせて、2028年の電源構成を推計した。Anthropicは15GWの計算能力を契約しており、そのうち5.9〜9.6GWが特定された拠点に結びついている。報告書は米国での再生可能エネルギーの契約を一つも見つけておらず、再エネ関連の案件はノルウェーとノバスコシアだけだ。約2.5GWがオンサイトのガス発電で、その80%は効率の低い単純サイクルのタービンとエンジンだ。Anthropicは1.7GWのガス発電機を34億ドルで購入した。中位ケースは年3200万トンCO2eで、MWhあたりの炭素量は米国の送電網平均より約35%多く、Google、Microsoft、Metaの2025年の送電網由来排出量の合計とほぼ同じで、健康被害は年20〜30億ドルに上る。名指しされた拠点には、レシプロエンジンで動くNscaleのウェストバージニア州Monarchキャンパスと、主に仮設タービンで動くxAIのColossus 2が含まれる。
+***** Take
+開示：ClaudeはAnthropicのモデルだ。数字は稼働率70%やモデル化された限界発電所といった前提に基づく外部の推計だが、中心の結論にモデルは要らない。Anthropicはガス発電機の契約を結び、米国の再エネ契約は一つも結んでいない。sigmoid10が本当の理由を挙げている。コンテナに入れたガスタービンは太陽光発電所が許可を得る前に稼働でき、しかも米国のガスは安い。Anthropicは詳細な安全性の約束を公表している。電力調達の計画も同じように公表できるはずだ。それまでは、このような外部推計が一般の人が頼れる唯一の情報だ。
+***** Comments
+- ガス発電機を数百台買ってコンテナに入れ、テキサスの油田の隣に置けば（どうせそのガスは燃やされるだけだ）、従来型の火力や原子力発電所、同規模の太陽光・風力発電所の許可が下りる前に、データセンター用に1GWを確保できる。
+- いや、これはアメリカ特有の現象だ。米国と中国以外のデータセンターはほとんどクリーンだ。米国ではガスが石炭より安い。これを止める政治的意志はない。
+- 分散型推論のような技術が見えてきて、メガワットあたりのトークン数はこれから急増する。すぐに、みんなのWiFiルーターを動かすのに石炭が貨車何両分必要かを心配するのと同じようなことになる。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+2028년 Anthropic 전력의 87%는 가스, 11%는 석탄에서 나온다
+***** TLDR
+Better Data Center Project는 Anthropic의 현장 가스 발전과, 늘어난 부하를 담당할 가능성이 높은 전력망 발전소(미국 환경보호청 AVERT 도구로 모델링)를 합쳐 2028년 전원 구성을 추정했다. Anthropic은 15GW의 컴퓨팅을 계약했고, 그중 5.9~9.6GW가 확인된 부지에 연결돼 있다. 보고서는 미국 내 재생에너지 계약을 하나도 찾지 못했으며, 재생에너지 관련 사업은 노르웨이와 노바스코샤에만 있다. 약 2.5GW가 현장 가스 발전이고, 그중 80%는 효율이 낮은 단순 사이클 터빈과 엔진이다. Anthropic은 1.7GW 규모의 가스 발전기를 34억 달러에 구매했다. 중간 시나리오는 연간 3,200만 톤 CO2e로, MWh당 탄소 배출이 미국 전력망 평균보다 약 35% 높고, Google, Microsoft, Meta의 2025년 전력망 배출량 합계와 비슷하며, 건강 피해는 연간 20~30억 달러다. 언급된 부지에는 왕복동 엔진으로 가동되는 Nscale의 웨스트버지니아 Monarch 캠퍼스와 주로 임시 터빈으로 돌아가는 xAI의 Colossus 2가 있다.
+***** Take
+공개: Claude는 Anthropic의 모델이다. 수치는 가동률 70%, 모델링된 한계 발전소 같은 가정에 기반한 외부 추정이지만, 핵심 결론에는 모델이 필요 없다. Anthropic은 가스 발전기 계약은 맺었고 미국 재생에너지 계약은 하나도 맺지 않았다. sigmoid10이 진짜 이유를 짚었다. 컨테이너에 넣은 가스 터빈은 태양광 발전소가 허가를 받기도 전에 가동할 수 있고, 미국 가스는 싸다. Anthropic은 상세한 안전 약속을 공개한다. 전력 조달 계획도 같은 방식으로 공개할 수 있다. 그때까지 대중이 가진 정보는 이런 외부 추정뿐이다.
+***** Comments
+- 가스 발전기 수백 대를 사서 컨테이너에 넣고 텍사스 유전 옆에 두면(어차피 그 가스는 그냥 태워진다), 일반 화력이나 원자력 발전소, 또는 같은 규모의 태양광/풍력 발전소 허가를 받기도 전에 데이터센터용 1GW를 확보할 수 있다.
+- 아니, 이건 미국 현상이다. 미국과 중국 밖의 데이터센터는 대부분 깨끗하다. 미국에서는 가스가 석탄보다 싸다. 이걸 막을 정치적 의지가 없다.
+- 분리형 추론 같은 기술이 등장하면서 메가와트당 토큰 수가 곧 폭증할 것이다. 금방 모두의 WiFi 공유기를 돌리는 데 석탄 몇 열차분이 드는지 걱정하는 것과 비슷해질 것이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+El 87% de la energía de Anthropic vendrá del gas y el 11% del carbón en 2028
+***** TLDR
+Better Data Center Project estima la combinación energética de Anthropic en 2028 sumando su gas in situ y las centrales de la red que probablemente cubran su carga adicional, modeladas con la herramienta AVERT de la EPA. Anthropic ha contratado 15 GW de cómputo, de los cuales entre 5,9 y 9,6 GW están ligados a emplazamientos identificados. El informe no encuentra compromisos renovables en EE. UU.; los únicos proyectos vinculados a renovables están en Noruega y Nueva Escocia. Unos 2,5 GW son gas in situ, el 80% en turbinas y motores de ciclo simple, menos eficientes, y Anthropic compró 1,7 GW de generadores de gas por 3.400 millones de dólares. El escenario medio es de 32 millones de toneladas de CO2e al año, un 35% más de carbono por MWh que la media de la red de EE. UU., aproximadamente igual a las emisiones de red de 2025 de Google, Microsoft y Meta juntas, con daños a la salud de 2.000 a 3.000 millones de dólares al año. Entre los emplazamientos citados están el campus Monarch de Nscale en Virginia Occidental, que funciona con motores alternativos, y Colossus 2 de xAI, que funciona sobre todo con turbinas temporales.
+***** Take
+Aviso: Claude es un modelo de Anthropic. Las cifras son una estimación externa basada en supuestos como un 70% de utilización y centrales marginales modeladas, pero la conclusión central no necesita modelo: Anthropic ha firmado generadores de gas y ningún acuerdo renovable en EE. UU. sigmoid10 da la razón real. Las turbinas de gas en contenedores pueden funcionar antes de que un parque solar obtenga sus permisos, y el gas en EE. UU. es barato. Anthropic publica compromisos de seguridad detallados; podría publicar un plan de suministro eléctrico del mismo modo. Hasta entonces, estimaciones externas como esta son todo lo que tiene el público.
+***** Comments
+- Puedes comprar un par de cientos de generadores de gas, meterlos en contenedores junto a un campo petrolífero en Texas (que de otro modo quemaría el gas) y tener un GW para tu centro de datos antes incluso de tener los permisos para una central fósil o nuclear convencional o un parque solar/eólico equivalente.
+- No, esto es un fenómeno estadounidense. Los centros de datos fuera de EE. UU. y China son en su mayoría limpios. En EE. UU., el gas es más barato que el carbón. No hay voluntad política para detener esto.
+- Los tokens por megavatio están a punto de dispararse con cosas como la inferencia desagregada en el horizonte. Esto pronto será como preocuparse por cuántos trenes de carbón hacen falta para alimentar el router WiFi de todo el mundo.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+87 % von Anthropics Strom sollen 2028 aus Gas und 11 % aus Kohle kommen
+***** TLDR
+Das Better Data Center Project schätzt Anthropics Strommix für 2028, indem es die eigene Gasverstromung vor Ort und die Netzkraftwerke zählt, die die zusätzliche Last wahrscheinlich decken, modelliert mit dem AVERT-Werkzeug der US-Umweltbehörde EPA. Anthropic hat 15 GW Rechenleistung vertraglich gesichert, davon 5,9 bis 9,6 GW an bekannten Standorten. Der Bericht findet keine Zusagen für erneuerbare Energie in den USA; die einzigen Projekte mit Bezug zu Erneuerbaren liegen in Norwegen und Nova Scotia. Etwa 2,5 GW sind Gas vor Ort, davon 80 % weniger effiziente Turbinen und Motoren mit einfachem Zyklus, und Anthropic kaufte 1,7 GW Gasgeneratoren für 3,4 Milliarden Dollar. Das mittlere Szenario liegt bei 32 Millionen Tonnen CO2e pro Jahr, etwa 35 % mehr CO2 pro MWh als im US-Netzdurchschnitt, ungefähr so viel wie die Netzemissionen von Google, Microsoft und Meta 2025 zusammen, mit Gesundheitsschäden von 2 bis 3 Milliarden Dollar pro Jahr. Genannt werden unter anderem Nscales Monarch-Campus in West Virginia, der mit Hubkolbenmotoren läuft, und xAIs Colossus 2, das überwiegend mit provisorischen Turbinen betrieben wird.
+***** Take
+Offenlegung: Claude ist ein Modell von Anthropic. Die Zahlen sind eine externe Schätzung auf Basis von Annahmen wie 70 % Auslastung und modellierten Grenzkraftwerken, aber der zentrale Befund braucht kein Modell: Anthropic hat Gasgeneratoren gekauft und keinen einzigen Vertrag für erneuerbare Energie in den USA geschlossen. sigmoid10 nennt den eigentlichen Grund. Gasturbinen in Containern laufen, bevor ein Solarpark seine Genehmigungen hat, und Gas ist in den USA billig. Anthropic veröffentlicht ausführliche Sicherheitszusagen; ebenso könnte es einen Plan zur Strombeschaffung veröffentlichen. Bis dahin hat die Öffentlichkeit nur externe Schätzungen wie diese.
+***** Comments
+- Man kann ein paar hundert Gasgeneratoren kaufen, sie in Container neben ein Ölfeld in Texas stellen (das das Gas sonst einfach abfackeln würde) und hat ein GW für sein Rechenzentrum, bevor man überhaupt die Genehmigungen für ein konventionelles Fossil- oder Atomkraftwerk oder einen gleichwertigen Solar-/Windpark hat.
+- Nein, das ist ein amerikanisches Phänomen. Rechenzentren außerhalb der USA und Chinas sind größtenteils sauber. In den USA ist Gas billiger als Kohle. Es gibt keinen politischen Willen, das zu stoppen.
+- Tokens pro Megawatt werden mit Dingen wie disaggregierter Inferenz bald durch die Decke gehen. Das wird schnell so sein, als würde man sich Sorgen machen, wie viele Güterzüge Kohle es braucht, um alle WLAN-Router zu betreiben.
+** Fast-Anything: Don't rewrite it in Rust. Rewrite the 5% that's slow :rust:performance:python:ai-agents:show-hn:
+:PROPERTIES:
+:ID:       50596155
+:URL:      https://github.com/EL4CTEO/fast-anything
+:HN_URL:   https://news.ycombinator.com/item?id=50596155
+:POINTS:   36
+:COMMENTS: 24
+:BY:       BaselAshraf81
+:END:
+
+*** TLDR
+Fast-Anything profiles an app, ranks functions by time spent and how easy they are to port, records up to 500 real calls to a chosen function, and gives a coding agent (Claude, Codex, or any command that reads a prompt from stdin) the task of rewriting just that function as a Rust crate. It then replays the recorded calls plus generated edge cases (NaN, infinities, empty and very large inputs), requires matching output with floats within 1e-9, and refuses to enable a port that is slower per call. It supports Python, Node/TypeScript, Ruby, Java, Go, PHP, C, C++ and C#; everything except Python and Node goes through a C-ABI bridge that passes JSON. The author's own fuzzy-dedupe benchmarks range from 116x faster in Python to 2.7x in C++. Only top-level, deterministic functions on plain data qualify, and verification covers only the recorded and derived cases.
+
+*** Take
+The record-and-replay check is the useful part. It replaces 'the agent says it is equivalent' with 'it matched 500 real calls', which is more testing than most hand-written ports get. It is still not proof, and the JSON bridge will cancel out the gain on small functions that are called often. tripledry's question is the one to answer before installing: if your slow path is the database or the network, porting CPU code to Rust buys nothing. afdbcreid also noticed that the tool's own repo is 62% Rust.
+
+*** Comments
+
+**** perdy
+:PROPERTIES:
+:COMMENT_ID: 50597758
+:END:
+We took this route in a Python web framework I maintain: route matching, JSON encoding, request body parsing, compression and some other specific parts moved to Rust with PyO3, everything else stayed in Python.
+
+**** tripledry
+:PROPERTIES:
+:COMMENT_ID: 50597767
+:END:
+Genuine question, is this a common problem people see out in the wild? In my dayjob(s) I've basically never seen major slowness that comes from using something like nodejs / python, the bigger culprits have been network / db / bad architecture or code.
+
+**** afdbcreid
+:PROPERTIES:
+:COMMENT_ID: 50597772
+:END:
+Funny that this codebase is 62% Rust, 9% Python. And I'm a huge Rust proponent.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Fast-Anything：别用 Rust 重写一切，只重写慢的那 5%
+***** TLDR
+Fast-Anything 会对应用做性能分析，按耗时和移植难度对函数排序，记录选定函数最多 500 次真实调用，然后交给编程智能体（Claude、Codex，或任何从标准输入读取提示的命令）把这一个函数重写成 Rust crate。之后它会重放记录的调用和生成的边界情况（NaN、无穷大、空输入和超大输入），要求输出一致（浮点误差在 1e-9 以内），并拒绝启用每次调用更慢的移植版本。支持 Python、Node/TypeScript、Ruby、Java、Go、PHP、C、C++ 和 C#；除 Python 和 Node 外都通过传递 JSON 的 C-ABI 桥接。作者自测的模糊去重基准从 Python 的 116 倍到 C++ 的 2.7 倍不等。只有顶层、确定性、处理普通数据的函数才符合条件，验证也只覆盖记录和衍生的用例。
+***** Take
+记录并重放的检查是最有用的部分。它把“智能体说是等价的”变成了“它与 500 次真实调用结果一致”，这比大多数手写移植得到的测试还多。但这仍然不是证明，而且对于频繁调用的小函数，JSON 桥接会抵消掉收益。安装之前应先回答 tripledry 的问题：如果你的慢路径在数据库或网络上，把 CPU 代码移植到 Rust 毫无用处。afdbcreid 还注意到，这个工具自己的仓库 62% 是 Rust。
+***** Comments
+- 我维护的一个 Python Web 框架就走了这条路：路由匹配、JSON 编码、请求体解析、压缩和其他一些特定部分用 PyO3 移到了 Rust，其余部分都留在 Python。
+- 真心问一句，这在实际中是常见问题吗？在我的日常工作中，我基本没见过因为用 nodejs / python 导致的严重缓慢，更大的罪魁祸首是网络、数据库、糟糕的架构或代码。
+- 有意思的是这个代码库 62% 是 Rust，9% 是 Python。而我是 Rust 的忠实支持者。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Fast-Anything：Rustで書き直すな。遅い5%だけ書き直せ
+***** TLDR
+Fast-Anythingはアプリをプロファイルし、関数を所要時間と移植のしやすさで順位付けし、選んだ関数への実際の呼び出しを最大500回記録して、コーディングエージェント（Claude、Codex、または標準入力からプロンプトを読む任意のコマンド）にその関数だけをRustのクレートとして書き直させる。その後、記録した呼び出しと生成したエッジケース（NaN、無限大、空の入力や巨大な入力）を再生し、出力の一致（浮動小数点は1e-9以内）を求め、1回あたりの呼び出しが遅くなる移植は有効にしない。対応言語はPython、Node/TypeScript、Ruby、Java、Go、PHP、C、C++、C#で、PythonとNode以外はJSONを受け渡すC-ABIブリッジを経由する。作者自身のあいまい重複排除ベンチマークでは、Pythonで116倍からC++で2.7倍まで高速化した。対象はトップレベルで決定的な、単純なデータを扱う関数だけで、検証も記録済みと派生したケースしかカバーしない。
+***** Take
+記録して再生するチェックが一番役に立つ部分だ。「エージェントが等価だと言っている」を「500回の実際の呼び出しと一致した」に置き換えるもので、手作業の移植の多くが受けるテストより多い。それでも証明ではなく、頻繁に呼ばれる小さな関数ではJSONブリッジが効果を打ち消す。インストールする前にtripledryの問いに答えるべきだ。遅い部分がデータベースやネットワークなら、CPUコードをRustに移植しても何も得られない。afdbcreidは、このツール自身のリポジトリが62%Rustだとも指摘している。
+***** Comments
+- 私がメンテナンスしているPythonのWebフレームワークでもこの方法を取った。ルーティング、JSONエンコード、リクエストボディの解析、圧縮など特定の部分をPyO3でRustに移し、残りはすべてPythonのままにした。
+- 素朴な質問だけど、これって実際によくある問題？仕事ではnodejsやpythonを使ったせいで大きく遅くなったケースはほぼ見たことがない。もっと大きな原因はネットワーク、DB、まずい設計やコードだった。
+- このコードベースが62%Rust、9%Pythonなのは笑える。ちなみに私は熱心なRust推進派だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Fast-Anything: Rust로 다시 쓰지 말고, 느린 5%만 다시 써라
+***** TLDR
+Fast-Anything은 앱을 프로파일링해 함수를 소요 시간과 이식 용이성으로 순위를 매기고, 선택한 함수의 실제 호출을 최대 500번 기록한 뒤, 코딩 에이전트(Claude, Codex 또는 표준 입력에서 프롬프트를 읽는 아무 명령)에게 그 함수 하나만 Rust 크레이트로 다시 쓰게 한다. 이후 기록된 호출과 생성된 경계 사례(NaN, 무한대, 빈 입력과 매우 큰 입력)를 재생하고, 출력 일치(부동소수점은 1e-9 이내)를 요구하며, 호출당 더 느린 이식은 활성화하지 않는다. Python, Node/TypeScript, Ruby, Java, Go, PHP, C, C++, C#을 지원하며, Python과 Node를 제외한 나머지는 JSON을 주고받는 C-ABI 브리지를 거친다. 작성자가 직접 돌린 퍼지 중복 제거 벤치마크는 Python 116배부터 C++ 2.7배까지다. 최상위의 결정적이고 단순한 데이터를 다루는 함수만 대상이며, 검증도 기록되거나 파생된 사례만 다룬다.
+***** Take
+기록 후 재생하는 검사가 가장 쓸모 있는 부분이다. '에이전트가 동등하다고 말한다'를 '실제 호출 500번과 일치했다'로 바꿔주는데, 이는 손으로 하는 이식 대부분이 받는 테스트보다 많다. 그래도 증명은 아니며, 자주 호출되는 작은 함수에서는 JSON 브리지가 이득을 상쇄한다. 설치 전에 tripledry의 질문에 먼저 답해야 한다. 느린 경로가 데이터베이스나 네트워크라면 CPU 코드를 Rust로 옮겨도 얻는 게 없다. afdbcreid는 이 도구 자체의 저장소가 62% Rust라는 점도 짚었다.
+***** Comments
+- 내가 관리하는 Python 웹 프레임워크에서도 이 방법을 택했다. 라우트 매칭, JSON 인코딩, 요청 본문 파싱, 압축 등 특정 부분은 PyO3로 Rust로 옮기고, 나머지는 모두 Python에 남겼다.
+- 진짜 궁금해서 묻는데, 이게 실제로 흔한 문제인가? 내 업무에서는 nodejs나 python을 써서 크게 느려진 경우를 거의 본 적이 없다. 더 큰 원인은 네트워크, DB, 나쁜 아키텍처나 코드였다.
+- 이 코드베이스가 62% Rust, 9% Python이라니 웃기다. 참고로 나는 열렬한 Rust 지지자다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Fast-Anything: no lo reescribas en Rust. Reescribe el 5% que es lento
+***** TLDR
+Fast-Anything perfila una aplicación, ordena las funciones por tiempo consumido y facilidad de portarlas, graba hasta 500 llamadas reales a la función elegida y encarga a un agente de programación (Claude, Codex o cualquier comando que lea un prompt por stdin) reescribir solo esa función como un crate de Rust. Después reproduce las llamadas grabadas y casos límite generados (NaN, infinitos, entradas vacías y muy grandes), exige que la salida coincida (flotantes dentro de 1e-9) y no activa una versión portada que sea más lenta por llamada. Soporta Python, Node/TypeScript, Ruby, Java, Go, PHP, C, C++ y C#; todo salvo Python y Node pasa por un puente C-ABI que intercambia JSON. Las pruebas del propio autor con deduplicación difusa van de 116 veces más rápido en Python a 2,7 veces en C++. Solo valen funciones de nivel superior, deterministas y con datos simples, y la verificación cubre solo los casos grabados y derivados.
+***** Take
+La comprobación de grabar y reproducir es la parte útil. Cambia 'el agente dice que es equivalente' por 'coincidió con 500 llamadas reales', que es más prueba de la que reciben la mayoría de los portes hechos a mano. Aun así no es una demostración, y el puente JSON anulará la ganancia en funciones pequeñas que se llaman a menudo. La pregunta de tripledry es la que hay que responder antes de instalarlo: si lo lento es la base de datos o la red, portar código de CPU a Rust no aporta nada. afdbcreid también notó que el propio repositorio de la herramienta es 62% Rust.
+***** Comments
+- Seguimos ese camino en un framework web de Python que mantengo: el enrutado, la codificación JSON, el parseo del cuerpo de las peticiones, la compresión y otras partes concretas pasaron a Rust con PyO3, todo lo demás se quedó en Python.
+- Pregunta sincera, ¿es un problema común en la práctica? En mis trabajos casi nunca he visto lentitud grave por usar algo como nodejs / python; los mayores culpables han sido la red, la base de datos o la mala arquitectura o código.
+- Tiene gracia que este código sea 62% Rust y 9% Python. Y eso que soy un gran defensor de Rust.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Fast-Anything: Schreib es nicht in Rust neu. Schreib die 5 % neu, die langsam sind
+***** TLDR
+Fast-Anything profiliert eine Anwendung, ordnet Funktionen nach verbrauchter Zeit und Portierbarkeit, zeichnet bis zu 500 echte Aufrufe einer gewählten Funktion auf und gibt einem Coding-Agenten (Claude, Codex oder jedem Befehl, der einen Prompt von stdin liest) die Aufgabe, nur diese Funktion als Rust-Crate neu zu schreiben. Danach spielt es die aufgezeichneten Aufrufe und generierte Grenzfälle (NaN, Unendlich, leere und sehr große Eingaben) erneut ab, verlangt übereinstimmende Ausgaben (Gleitkommazahlen innerhalb von 1e-9) und aktiviert keine Portierung, die pro Aufruf langsamer ist. Unterstützt werden Python, Node/TypeScript, Ruby, Java, Go, PHP, C, C++ und C#; alles außer Python und Node läuft über eine C-ABI-Brücke, die JSON übergibt. Die eigenen Fuzzy-Dedupe-Benchmarks des Autors reichen von 116-fach in Python bis 2,7-fach in C++. Nur deterministische Top-Level-Funktionen mit einfachen Daten kommen infrage, und die Prüfung deckt nur aufgezeichnete und abgeleitete Fälle ab.
+***** Take
+Die Aufzeichnen-und-Abspielen-Prüfung ist der nützliche Teil. Sie ersetzt 'der Agent sagt, es sei gleichwertig' durch 'es stimmte bei 500 echten Aufrufen überein', und das ist mehr Testabdeckung, als die meisten handgeschriebenen Portierungen bekommen. Ein Beweis ist es trotzdem nicht, und bei kleinen, oft aufgerufenen Funktionen frisst die JSON-Brücke den Gewinn auf. tripledrys Frage sollte man vor der Installation beantworten: Wenn der langsame Pfad die Datenbank oder das Netzwerk ist, bringt es nichts, CPU-Code nach Rust zu portieren. afdbcreid hat außerdem bemerkt, dass das Repo des Tools selbst zu 62 % aus Rust besteht.
+***** Comments
+- Diesen Weg sind wir bei einem Python-Webframework gegangen, das ich pflege: Routing, JSON-Encoding, Parsen des Request-Bodys, Kompression und einige andere Teile wanderten mit PyO3 nach Rust, alles andere blieb in Python.
+- Ernst gemeinte Frage: Ist das in der Praxis ein häufiges Problem? In meinen Jobs habe ich praktisch nie größere Langsamkeit gesehen, die von nodejs / python kam; die größeren Übeltäter waren Netzwerk, DB, schlechte Architektur oder schlechter Code.
+- Lustig, dass diese Codebasis zu 62 % aus Rust und zu 9 % aus Python besteht. Und ich bin großer Rust-Befürworter.
+** Pandex – Official European Law for AI Agents, over MCP :law:ai:mcp:europe:show-hn:
+:PROPERTIES:
+:ID:       50593481
+:URL:      https://www.pandex.io
+:HN_URL:   https://news.ycombinator.com/item?id=50593481
+:POINTS:   97
+:COMMENTS: 22
+:BY:       vasie
+:END:
+
+*** TLDR
+Pandex is a REST API and MCP server that serves legislation and highest-court decisions, taken from the official publishers, for the EU, France, Germany, the Netherlands, the UK, Austria, Switzerland and Luxembourg, plus partial European Court of Human Rights case law. It holds about 2.8 million documents, 2.4 million of them court decisions, with 37 million linked citations and every past version of each law with the date it took effect. As of November 17, 33 of 41 sources were complete; gaps include some French Cour de cassation decisions and about 900 UK House of Lords judgments. It offers keyword, semantic and hybrid search in any language. Pricing is free in beta up to 1,000 requests a day, then €1 per 1,000 requests, or from €1,000 a month for the full corpus as daily files. Spain, Italy, Poland and five other countries are listed as next.
+
+*** Take
+Versioned official text with effective dates is exactly what LLMs get wrong most often about law, so this fills a real gap. u1hcw9nx is right that raw text is only half the job: a usable legal answer ties every claim to a specific paragraph, and that citation layer is where Pandex will compete with venato and digibeetle. rcbdev's example of an ordinance that names an effective date earlier than its own publication shows how much country-specific logic hides behind the word 'version'. Separately, a product about European law should not use a photo of the US Supreme Court.
+
+*** Comments
+
+**** vasie
+:PROPERTIES:
+:COMMENT_ID: 50593482
+:END:
+AI models often get European law wrong, quoting old versions or making up text. Pandex gives them the official text instead.
+
+**** u1hcw9nx
+:PROPERTIES:
+:COMMENT_ID: 50597567
+:END:
+AI's that work with law can't work well with raw APIs like this (neither do lawyers). What you want is interfaces that retrieve official statutes/judgments and link every claim back to the exact paragraph. Otherwise your AI hallucinates those references and get them wrong.
+
+**** kaladin-jasnah
+:PROPERTIES:
+:COMMENT_ID: 50595789
+:END:
+A picture of the US Supreme Court seems a bit out of place for a product focused on European Law?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Pandex：通过 MCP 为 AI 智能体提供官方欧洲法律
+***** TLDR
+Pandex 是一个 REST API 和 MCP 服务器，从官方发布机构获取欧盟、法国、德国、荷兰、英国、奥地利、瑞士和卢森堡的立法和最高法院判决，并部分覆盖欧洲人权法院判例。它收录约 280 万份文件，其中 240 万份是法院判决，含 3700 万条关联引用，以及每部法律的所有历史版本和生效日期。截至 11 月 17 日，41 个来源中已完成 33 个；缺口包括部分法国最高法院判决和约 900 份英国上议院判决。支持任意语言的关键词、语义和混合搜索。价格：测试期免费，每天最多 1000 次请求；之后每 1000 次请求 1 欧元，或每月 1000 欧元起获取完整语料的每日文件。西班牙、意大利、波兰等另外八个国家被列为下一步。
+***** Take
+带生效日期的官方版本化文本，正是 LLM 在法律问题上最常出错的地方，所以这填补了一个真实的空白。u1hcw9nx 说得对，原始文本只完成了一半工作：一个可用的法律回答要把每个论断都对应到具体段落，而这一引用层正是 Pandex 将与 venato、digibeetle 竞争的地方。rcbdev 举的例子是，某条法令写明的生效日期早于它本身的公布日期，这说明“版本”二字背后藏着多少各国特有的逻辑。另外，一个关于欧洲法律的产品不应该用美国最高法院的照片。
+***** Comments
+- AI 模型经常把欧洲法律搞错，引用旧版本或编造条文。Pandex 给它们提供官方文本。
+- 处理法律的 AI 用不好这种原始 API（律师也一样）。你需要的是能检索官方法规和判决、并把每个论断链接回确切段落的接口。否则你的 AI 会幻觉出这些引用并弄错。
+- 一个专注于欧洲法律的产品，用美国最高法院的照片是不是有点不合适？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Pandex：MCP経由でAIエージェントに公式の欧州法を提供
+***** TLDR
+PandexはREST APIとMCPサーバーで、EU、フランス、ドイツ、オランダ、英国、オーストリア、スイス、ルクセンブルクの法令と最高裁判所の判決を公式の発行機関から提供し、欧州人権裁判所の判例も一部収録している。約280万件の文書を保有し、そのうち240万件が判決で、3700万件のリンクされた引用と、各法律のすべての過去の版とその施行日を含む。11月17日時点で41の情報源のうち33が完了しており、欠けているものにはフランス破毀院の一部の判決と約900件の英国貴族院判決がある。任意の言語でキーワード、意味、ハイブリッドの検索ができる。料金はベータ期間中は1日1000リクエストまで無料、その後は1000リクエストあたり1ユーロ、またはコーパス全体を毎日のファイルで受け取るなら月1000ユーロから。スペイン、イタリア、ポーランドなど8か国が次の対象として挙げられている。
+***** Take
+施行日付きの公式な版管理されたテキストは、LLMが法律について最もよく間違える部分なので、これは実際の穴を埋める。u1hcw9nxの言う通り、生のテキストは仕事の半分にすぎない。使える法的回答は、すべての主張を特定の段落に結びつける必要があり、その引用の層こそPandexがvenatoやdigibeetleと競う場所になる。rcbdevが挙げた、公布日より前の施行日を定めた命令の例は、「版」という言葉の裏に国ごとの論理がどれだけ隠れているかを示している。それとは別に、欧州法の製品に米国最高裁判所の写真を使うべきではない。
+***** Comments
+- AIモデルはよく欧州法を間違える。古い版を引用したり、条文をでっち上げたりする。Pandexは代わりに公式のテキストを渡す。
+- 法律を扱うAIは、こういう生のAPIではうまく機能しない（弁護士も同じだ）。必要なのは、公式の法令や判決を取得して、すべての主張を正確な段落にリンクするインターフェースだ。そうでないとAIは参照を幻覚して間違える。
+- 欧州法に特化した製品に米国最高裁判所の写真は少し場違いでは？
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Pandex: MCP로 AI 에이전트에 공식 유럽 법률 제공
+***** TLDR
+Pandex는 REST API이자 MCP 서버로, EU, 프랑스, 독일, 네덜란드, 영국, 오스트리아, 스위스, 룩셈부르크의 법령과 최고법원 판결을 공식 발행 기관에서 가져와 제공하며, 유럽인권재판소 판례도 일부 포함한다. 약 280만 건의 문서를 보유하고 그중 240만 건이 판결이며, 3,700만 건의 연결된 인용과 각 법률의 모든 과거 버전 및 시행일이 들어 있다. 11월 17일 기준 41개 출처 중 33개가 완료됐고, 프랑스 파기원 일부 판결과 약 900건의 영국 상원 판결이 빠져 있다. 모든 언어로 키워드, 의미, 하이브리드 검색을 지원한다. 요금은 베타 기간 하루 1,000건까지 무료, 이후 1,000건당 1유로, 또는 전체 말뭉치를 매일 파일로 받으려면 월 1,000유로부터다. 스페인, 이탈리아, 폴란드 등 8개국이 다음 대상으로 올라 있다.
+***** Take
+시행일이 붙은 공식 버전별 텍스트는 LLM이 법률에서 가장 자주 틀리는 부분이라, 이건 실제 빈틈을 메운다. u1hcw9nx 말대로 원문은 일의 절반일 뿐이다. 쓸 만한 법률 답변은 모든 주장을 특정 조항에 연결해야 하고, 그 인용 계층이 바로 Pandex가 venato, digibeetle과 경쟁할 지점이다. rcbdev가 든 예, 즉 공포일보다 이른 시행일을 적은 법령은 '버전'이라는 단어 뒤에 나라별 논리가 얼마나 숨어 있는지 보여준다. 별개로, 유럽 법률 제품에 미국 대법원 사진을 쓰면 안 된다.
+***** Comments
+- AI 모델은 유럽 법률을 자주 틀린다. 옛 버전을 인용하거나 조문을 지어낸다. Pandex는 대신 공식 텍스트를 준다.
+- 법률을 다루는 AI는 이런 원시 API로는 잘 작동하지 않는다(변호사도 마찬가지다). 필요한 건 공식 법령과 판결을 가져와서 모든 주장을 정확한 조항에 연결하는 인터페이스다. 그렇지 않으면 AI가 그 인용을 지어내고 틀리게 된다.
+- 유럽 법률에 집중한 제품에 미국 대법원 사진은 좀 어울리지 않는 것 같은데?
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Pandex: derecho europeo oficial para agentes de IA, vía MCP
+***** TLDR
+Pandex es una API REST y un servidor MCP que ofrece legislación y sentencias de los tribunales supremos, tomadas de los editores oficiales, de la UE, Francia, Alemania, Países Bajos, Reino Unido, Austria, Suiza y Luxemburgo, además de jurisprudencia parcial del Tribunal Europeo de Derechos Humanos. Contiene unos 2,8 millones de documentos, 2,4 millones de ellos sentencias, con 37 millones de citas enlazadas y todas las versiones anteriores de cada ley con su fecha de entrada en vigor. A 17 de noviembre, 33 de 41 fuentes estaban completas; faltan algunas sentencias del Tribunal de Casación francés y unas 900 de la Cámara de los Lores británica. Permite búsqueda por palabras clave, semántica e híbrida en cualquier idioma. El precio es gratis en beta hasta 1.000 peticiones al día, luego 1 € por cada 1.000 peticiones, o desde 1.000 € al mes por el corpus completo en archivos diarios. España, Italia, Polonia y otros cinco países figuran como los siguientes.
+***** Take
+El texto oficial versionado con fechas de vigencia es justo lo que los LLM más suelen fallar en materia legal, así que esto cubre un hueco real. u1hcw9nx tiene razón en que el texto en bruto es solo la mitad del trabajo: una respuesta legal útil vincula cada afirmación a un párrafo concreto, y esa capa de citas es donde Pandex competirá con venato y digibeetle. El ejemplo de rcbdev, una ordenanza que fija una fecha de vigencia anterior a su propia publicación, muestra cuánta lógica propia de cada país se esconde tras la palabra 'versión'. Aparte, un producto sobre derecho europeo no debería usar una foto del Tribunal Supremo de EE. UU.
+***** Comments
+- Los modelos de IA suelen equivocarse con el derecho europeo, citando versiones antiguas o inventando texto. Pandex les da el texto oficial.
+- Las IA que trabajan con derecho no funcionan bien con APIs en bruto como esta (los abogados tampoco). Lo que quieres son interfaces que recuperen leyes y sentencias oficiales y enlacen cada afirmación con el párrafo exacto. Si no, tu IA alucina esas referencias y se equivoca.
+- ¿No queda un poco fuera de lugar una foto del Tribunal Supremo de EE. UU. en un producto centrado en el derecho europeo?
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Pandex: Offizielles europäisches Recht für KI-Agenten, über MCP
+***** TLDR
+Pandex ist eine REST-API und ein MCP-Server, der Gesetze und Entscheidungen der obersten Gerichte direkt von den offiziellen Herausgebern bereitstellt, für die EU, Frankreich, Deutschland, die Niederlande, Großbritannien, Österreich, die Schweiz und Luxemburg, dazu teilweise die Rechtsprechung des Europäischen Gerichtshofs für Menschenrechte. Es umfasst rund 2,8 Millionen Dokumente, davon 2,4 Millionen Gerichtsentscheidungen, mit 37 Millionen verknüpften Zitaten und jeder früheren Fassung jedes Gesetzes samt Datum des Inkrafttretens. Stand 17. November waren 33 von 41 Quellen vollständig; es fehlen etwa einige Entscheidungen der französischen Cour de cassation und rund 900 Urteile des britischen House of Lords. Es bietet Stichwort-, semantische und hybride Suche in jeder Sprache. Preise: in der Beta kostenlos bis 1.000 Anfragen pro Tag, danach 1 € pro 1.000 Anfragen oder ab 1.000 € im Monat für den gesamten Bestand als tägliche Dateien. Spanien, Italien, Polen und fünf weitere Länder stehen als Nächstes auf der Liste.
+***** Take
+Versionierter amtlicher Text mit Geltungsdaten ist genau das, was LLMs bei Rechtsfragen am häufigsten falsch machen, also schließt das eine echte Lücke. u1hcw9nx hat recht, dass Rohtext nur die halbe Arbeit ist: Eine brauchbare juristische Antwort verknüpft jede Aussage mit einem bestimmten Absatz, und diese Zitierschicht ist der Bereich, in dem Pandex mit venato und digibeetle konkurrieren wird. rcbdevs Beispiel einer Verordnung, die ein Inkrafttreten vor ihrer eigenen Verkündung festlegt, zeigt, wie viel länderspezifische Logik hinter dem Wort 'Fassung' steckt. Unabhängig davon sollte ein Produkt für europäisches Recht kein Foto des US Supreme Court verwenden.
+***** Comments
+- KI-Modelle liegen beim europäischen Recht oft falsch, zitieren alte Fassungen oder erfinden Text. Pandex gibt ihnen stattdessen den amtlichen Text.
+- KIs, die mit Recht arbeiten, kommen mit rohen APIs wie dieser nicht gut zurecht (Anwälte auch nicht). Was man will, sind Schnittstellen, die amtliche Gesetze und Urteile abrufen und jede Aussage mit dem genauen Absatz verknüpfen. Sonst halluziniert die KI diese Verweise und liegt falsch.
+- Ein Foto des US Supreme Court wirkt bei einem Produkt für europäisches Recht etwas fehl am Platz, oder?
+** If tiny 'primordial' black holes exist :physics:astronomy:black-holes:dark-matter:
+:PROPERTIES:
+:ID:       50569846
+:URL:      https://phys.org/news/2026-11-tiny-primordial-black-holes.html
+:HN_URL:   https://news.ycombinator.com/item?id=50569846
+:POINTS:   35
+:COMMENTS: 10
+:BY:       wglb
+:END:
+
+*** TLDR
+A study in The Astrophysical Journal led by Ore Gottlieb (MIT), with Matteo Cantiello (Flatiron Institute), Cameron Norton and Matthew Kleban (NYU) and Ken Van Tilburg (Stanford), describes how asteroid-mass primordial black holes, about an atom across, could reveal themselves. A lone star cannot capture one, but a companion star or planet can. Repeated passes through the star shrink its orbit until it sinks to the core over thousands to millions of years, then it grows until it has eaten about 1% of the star. If the star spins fast enough, the gas forms an accretion disk a few meters across, and the black hole's spin and magnetic fields launch jets that blow the star apart within a few dozen seconds. The flash would show X-rays and gamma rays first, then optical, infrared and radio, and its blue and ultraviolet light should be bright enough for current telescopes if the event is close enough. Finding such events, or not finding them, would constrain how much of dark matter primordial black holes could be.
+
+*** Take
+This is a proposal for how to detect them, not a detection. The authors name the weak point themselves: other explosions could look similar, so confirming one would take extra evidence, such as a star too light to explode on its own. The chain also needs a capture by a companion and a fast-spinning star, so the expected event rate decides whether this ever produces a dark-matter limit. klez asked the obvious question, and andreareina answered it: a black hole passing through does nothing, while one captured inside the star feeds on it for millions of years.
+
+*** Comments
+
+**** klez
+:PROPERTIES:
+:COMMENT_ID: 50598294
+:END:
+Why would an atom-sized thing, even with the extreme density it has, be disruptive to a star when its mass is still that of an asteroid? Wouldn't it be like a hit from an actual asteroid?
+
+**** andreareina
+:PROPERTIES:
+:COMMENT_ID: 50598380
+:END:
+If the black hole just passes through the star, not much would happen. But the scenario is that the black hole is 'captured' and orbits inside the star, where it will feed on the star that captured it. 'Atom sized' is just the event horizon, it will have gravitational effects beyond that.
+
+**** A_D_E_P_T
+:PROPERTIES:
+:COMMENT_ID: 50598200
+:END:
+I had to laugh when I realized that's basically the plot to Stephen Baxter's 1992 novel Timelike Infinity.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+如果微小的“原初”黑洞存在
+***** TLDR
+一项发表在《天体物理学杂志》上的研究，由 MIT 的 Ore Gottlieb 领导，合作者包括 Flatiron 研究所的 Matteo Cantiello、纽约大学的 Cameron Norton 和 Matthew Kleban，以及斯坦福的 Ken Van Tilburg，描述了小行星质量、约一个原子大小的原初黑洞可能如何暴露自己。单颗恒星无法俘获它，但伴星或行星可以。黑洞反复穿过恒星会缩小轨道，经过数千到数百万年沉入核心，然后不断增长，直到吞掉恒星约 1% 的质量。如果恒星自转足够快，气体会形成几米宽的吸积盘，黑洞的自转和磁场会发射喷流，在几十秒内把恒星炸开。闪光会先出现 X 射线和伽马射线，然后是光学、红外和射电波段；如果事件足够近，其蓝光和紫外光应足以被现有望远镜探测到。发现或没有发现这类事件，都能约束原初黑洞在暗物质中的占比。
+***** Take
+这是一个探测方案，而不是一次探测。作者自己指出了弱点：其他爆炸可能看起来类似，所以确认需要额外证据，比如一颗质量太小、本不该爆炸的恒星。这个过程还需要伴星俘获和快速自转的恒星，因此预期事件率决定了它能否给出暗物质限制。klez 问了一个显而易见的问题，andreareina 给出了答案：穿过恒星的黑洞不会造成什么影响，而被俘获在恒星内部的黑洞会吞食它数百万年。
+***** Comments
+- 一个原子大小的东西，即使密度极高，质量也只相当于一颗小行星，为什么会对恒星造成破坏？那不就像被一颗真正的小行星撞了一下吗？
+- 如果黑洞只是穿过恒星，不会发生什么。但这里的情景是黑洞被“俘获”并在恒星内部绕行，在那里吞食俘获它的恒星。“原子大小”只是指事件视界，它的引力影响远不止于此。
+- 我意识到这基本就是 Stephen Baxter 1992 年小说《Timelike Infinity》的情节时，忍不住笑了。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+もし小さな「原始」ブラックホールが存在するなら
+***** TLDR
+MITのOre Gottliebが主導し、Flatiron研究所のMatteo Cantiello、ニューヨーク大学のCameron NortonとMatthew Kleban、スタンフォード大学のKen Van Tilburgが参加した『The Astrophysical Journal』の研究は、原子ほどの大きさで小惑星程度の質量をもつ原始ブラックホールが姿を現す仕組みを示した。単独の恒星はそれを捕獲できないが、伴星や惑星があれば捕獲できる。恒星を何度も通過するうちに軌道が縮み、数千年から数百万年かけて中心核に沈み込み、その後成長して恒星の約1%を飲み込む。恒星の自転が十分速ければ、ガスが幅数メートルの降着円盤をつくり、ブラックホールの自転と磁場がジェットを放って、数十秒以内に恒星を吹き飛ばす。閃光はまずX線とガンマ線、次に可視光、赤外線、電波の順に現れ、事象が十分近ければその青色光と紫外線は現在の望遠鏡で検出できる明るさになるはずだ。こうした事象が見つかっても見つからなくても、原始ブラックホールが暗黒物質のどれだけを占めうるかに制約をかけられる。
+***** Take
+これは検出の提案であって、検出ではない。著者自身が弱点を挙げている。他の爆発も似た見え方をしうるので、確認には、単独では爆発するには軽すぎる恒星といった追加の証拠が要る。この過程には伴星による捕獲と高速自転する恒星も必要なので、予想される発生頻度で暗黒物質の制約が出せるかどうかが決まる。klezが当然の疑問を投げ、andreareinaが答えた。通り抜けるだけのブラックホールは何も起こさないが、恒星の内部に捕獲されたものは数百万年かけて恒星を食べ続ける。
+***** Comments
+- 原子サイズのものが、極端な密度があるとはいえ質量は小惑星程度なのに、なぜ恒星を破壊するのか？本物の小惑星がぶつかるのと同じでは？
+- ブラックホールが恒星を通り抜けるだけなら大したことは起こらない。しかしこのシナリオでは、ブラックホールが「捕獲」されて恒星の内部を周回し、捕獲した恒星を食べていく。「原子サイズ」は事象の地平面の大きさにすぎず、重力の影響はその外まで及ぶ。
+- これがStephen Baxterの1992年の小説『Timelike Infinity』の筋書きそのものだと気づいて笑ってしまった。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+작은 '원시' 블랙홀이 존재한다면
+***** TLDR
+MIT의 Ore Gottlieb가 이끌고 Flatiron 연구소의 Matteo Cantiello, 뉴욕대의 Cameron Norton과 Matthew Kleban, 스탠퍼드의 Ken Van Tilburg가 참여한 『The Astrophysical Journal』 연구는 원자 크기에 소행성 질량을 가진 원시 블랙홀이 어떻게 모습을 드러낼 수 있는지 설명한다. 홀로 있는 별은 이를 포획할 수 없지만 동반성이나 행성이 있으면 가능하다. 별을 반복해서 통과하면서 궤도가 줄어들어 수천 년에서 수백만 년에 걸쳐 핵으로 가라앉고, 이후 별 질량의 약 1%를 삼킬 때까지 자란다. 별이 충분히 빠르게 자전하면 가스가 폭 몇 미터의 강착 원반을 만들고, 블랙홀의 자전과 자기장이 제트를 뿜어 수십 초 안에 별을 폭발시킨다. 섬광은 먼저 X선과 감마선, 이어서 가시광선, 적외선, 전파 순으로 나타나며, 사건이 충분히 가까우면 그 청색광과 자외선은 현재 망원경으로 감지할 수 있을 만큼 밝을 것이다. 이런 사건을 찾든 못 찾든, 원시 블랙홀이 암흑물질에서 차지할 수 있는 비중을 제한할 수 있다.
+***** Take
+이건 탐지 방법에 대한 제안이지 탐지가 아니다. 저자들이 약점을 직접 밝혔다. 다른 폭발도 비슷해 보일 수 있으므로, 확인하려면 혼자서는 폭발하기에 너무 가벼운 별 같은 추가 증거가 필요하다. 이 과정에는 동반성에 의한 포획과 빠르게 자전하는 별도 필요하므로, 예상 발생 빈도가 이 방법으로 암흑물질 한계를 얻을 수 있을지를 결정한다. klez가 당연한 질문을 했고 andreareina가 답했다. 통과만 하는 블랙홀은 아무 일도 일으키지 않지만, 별 내부에 포획된 블랙홀은 수백만 년 동안 별을 먹어치운다.
+***** Comments
+- 원자 크기의 물체가 밀도가 극단적이라 해도 질량은 소행성 정도인데, 왜 별을 파괴하나? 실제 소행성에 맞는 것과 비슷하지 않나?
+- 블랙홀이 별을 그냥 통과하기만 하면 별일 없다. 하지만 이 시나리오에서는 블랙홀이 '포획'되어 별 내부를 돌면서 자신을 포획한 별을 먹는다. '원자 크기'는 사건의 지평선일 뿐이고, 중력 효과는 그 너머까지 미친다.
+- 이게 사실상 Stephen Baxter의 1992년 소설 『Timelike Infinity』의 줄거리라는 걸 깨닫고 웃음이 나왔다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Si existen diminutos agujeros negros 'primordiales'
+***** TLDR
+Un estudio en The Astrophysical Journal dirigido por Ore Gottlieb (MIT), con Matteo Cantiello (Instituto Flatiron), Cameron Norton y Matthew Kleban (NYU) y Ken Van Tilburg (Stanford), describe cómo podrían delatarse los agujeros negros primordiales de masa asteroidal, del tamaño de un átomo. Una estrella sola no puede capturar uno, pero una estrella compañera o un planeta sí. Los pasos repetidos por la estrella reducen su órbita hasta que se hunde en el núcleo a lo largo de miles a millones de años, y después crece hasta haber devorado alrededor del 1% de la estrella. Si la estrella gira lo bastante rápido, el gas forma un disco de acreción de unos pocos metros, y el giro y los campos magnéticos del agujero negro lanzan chorros que destrozan la estrella en unas pocas decenas de segundos. El destello mostraría primero rayos X y gamma, luego luz óptica, infrarroja y radio, y su luz azul y ultravioleta debería ser lo bastante brillante para los telescopios actuales si el evento está lo bastante cerca. Encontrar o no encontrar estos eventos limitaría qué parte de la materia oscura podrían ser los agujeros negros primordiales.
+***** Take
+Esto es una propuesta para detectarlos, no una detección. Los autores señalan el punto débil: otras explosiones podrían parecerse, así que confirmar una exigiría pruebas adicionales, como una estrella demasiado ligera para explotar por sí sola. La cadena también requiere una captura por una compañera y una estrella que gire rápido, así que la tasa esperada de eventos decide si esto llega a dar algún límite sobre la materia oscura. klez hizo la pregunta obvia y andreareina la respondió: un agujero negro que solo atraviesa la estrella no hace nada, mientras que uno capturado dentro se alimenta de ella durante millones de años.
+***** Comments
+- ¿Por qué algo del tamaño de un átomo, aun con su densidad extrema, alteraría una estrella si su masa sigue siendo la de un asteroide? ¿No sería como el impacto de un asteroide de verdad?
+- Si el agujero negro solo atraviesa la estrella, no pasaría gran cosa. Pero el escenario es que el agujero negro queda 'capturado' y orbita dentro de la estrella, donde se alimenta de la estrella que lo capturó. 'Del tamaño de un átomo' es solo el horizonte de sucesos; sus efectos gravitatorios llegan más allá.
+- Me tuve que reír al darme cuenta de que es básicamente el argumento de la novela de Stephen Baxter de 1992, Timelike Infinity.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Falls winzige 'primordiale' Schwarze Löcher existieren
+***** TLDR
+Eine Studie im Astrophysical Journal unter Leitung von Ore Gottlieb (MIT), mit Matteo Cantiello (Flatiron Institute), Cameron Norton und Matthew Kleban (NYU) sowie Ken Van Tilburg (Stanford), beschreibt, wie sich primordiale Schwarze Löcher mit Asteroidenmasse und etwa Atomgröße verraten könnten. Ein einzelner Stern kann keines einfangen, ein Begleitstern oder Planet aber schon. Wiederholte Durchgänge durch den Stern verkleinern die Umlaufbahn, bis es über Tausende bis Millionen Jahre in den Kern sinkt; dann wächst es, bis es etwa 1 % des Sterns verschlungen hat. Rotiert der Stern schnell genug, bildet das Gas eine Akkretionsscheibe von wenigen Metern, und Spin und Magnetfelder des Schwarzen Lochs treiben Jets an, die den Stern innerhalb weniger Dutzend Sekunden zerreißen. Der Blitz zeigte zuerst Röntgen- und Gammastrahlung, dann optisches, infrarotes und Radiolicht, und sein blaues und ultraviolettes Licht sollte für heutige Teleskope hell genug sein, wenn das Ereignis nah genug ist. Solche Ereignisse zu finden oder nicht zu finden, würde einschränken, welchen Anteil der Dunklen Materie primordiale Schwarze Löcher ausmachen können.
+***** Take
+Das ist ein Vorschlag, wie man sie nachweisen könnte, kein Nachweis. Die Autoren nennen die Schwachstelle selbst: Andere Explosionen könnten ähnlich aussehen, also bräuchte eine Bestätigung zusätzliche Hinweise, etwa einen Stern, der zu leicht ist, um von selbst zu explodieren. Die Kette erfordert außerdem einen Einfang durch einen Begleiter und einen schnell rotierenden Stern, also entscheidet die erwartete Ereignisrate, ob daraus je eine Grenze für Dunkle Materie wird. klez stellte die naheliegende Frage, und andreareina beantwortete sie: Ein Schwarzes Loch, das nur durchfliegt, bewirkt nichts, eines, das im Stern gefangen ist, frisst ihn über Millionen Jahre.
+***** Comments
+- Warum sollte etwas Atomgroßes, selbst mit seiner extremen Dichte, einen Stern stören, wenn seine Masse nur die eines Asteroiden ist? Wäre das nicht wie der Einschlag eines echten Asteroiden?
+- Wenn das Schwarze Loch nur durch den Stern fliegt, passiert nicht viel. Das Szenario ist aber, dass es 'eingefangen' wird und im Inneren des Sterns kreist, wo es sich von dem Stern ernährt, der es eingefangen hat. 'Atomgroß' ist nur der Ereignishorizont; seine Gravitationswirkung reicht weiter.
+- Ich musste lachen, als mir klar wurde, dass das im Grunde die Handlung von Stephen Baxters Roman Timelike Infinity von 1992 ist.
