@@ -1,0 +1,546 @@
+#+TITLE: HN Digest 2026-11-24 06:00 UTC
+#+DATE: 2026-11-24T06:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Stalwart speaks Exchange to classic Outlook, New York's car-fee ban exempts the features its press release advertises, GPUI gets a repo with only a README, Bored.com returns, and one xenon event revives WIMP hopes
+
+* Highlights
+- Stalwart 1.2.0: MAPI, EWS and ActiveSync in an AGPL mail server
+- GPUI repo: one commit, one README, mobile and web tags
+- New York car subscription ban: heated seats yes, driver assistance exempt
+- Bored.com: a directory of web toys, plus in-house games that copy linked ones
+- LUX-ZEPLIN: one unexplained event, XENONnT will check it
+
+* Stories
+
+** Stalwart is now a drop-in replacement for Microsoft Exchange :email:self-hosting:microsoft:exchange:open-source:
+:PROPERTIES:
+:ID:       50620349
+:URL:      https://stalw.art/blog/microsoft-exchange-replacement/
+:HN_URL:   https://news.ycombinator.com/item?id=50620349
+:POINTS:   347
+:COMMENTS: 168
+:BY:       shaunpud
+:END:
+
+*** TLDR
+Stalwart 1.2.0 adds MAPI over HTTP, Exchange Web Services, ActiveSync and Autodiscover. Classic Outlook for Windows (2016 and later), Outlook for Mac, Apple Mail, and iOS and Android Exchange clients can now connect to it as if it were an Exchange server. The Exchange module ships in the AGPL Community edition behind a feature flag. Not supported: the new Outlook for Windows, Outlook mobile, public folders, archive mailboxes, device management, and NTLM or Kerberos sign-in. Migration uses Stalwart's Vandelay tool, which can import from on-prem Exchange over EWS and from Microsoft 365 over Graph. Also new: mail rules compiled to Sieve, read receipts, room and equipment booking, and a native FoundationDB client.
+
+*** Take
+An open source implementation of MAPI and NSPI is real engineering work. The thread shows that the remaining barriers are not protocols. They are German GoBD archiving rules, Outlook.com blocking self-hosted senders by /24, and the admin who gets blamed when mail stops. The compatibility also rests on classic Outlook, and Microsoft is moving customers to the new Outlook, which Stalwart cannot serve.
+
+*** Comments
+
+**** bpbp-mango
+:PROPERTIES:
+:COMMENT_ID: 50620853
+:END:
+We've been looking at how to migrate off on-prem Exchange since Microsoft changed the licensing to yearly.
+
+**** 999900000999
+:PROPERTIES:
+:COMMENT_ID: 50621043
+:END:
+Whoever makes the call to switch to this is going to get fired the moment emails don't get delivered, even if it's not Stalwart's fault. The risk to reward is too much.
+
+**** rmoriz
+:PROPERTIES:
+:COMMENT_ID: 50622997
+:END:
+The only issue is regulatory: in Germany you have to archive mail so it can't be deleted or altered, for up to 10 years (GoBD). Stalwart doesn't have this in its regular plans or the OSS versions.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Stalwart 现在可以直接替代 Microsoft Exchange
+***** TLDR
+Stalwart 1.2.0 新增了 MAPI over HTTP、Exchange Web Services、ActiveSync 和 Autodiscover。经典版 Windows Outlook（2016 及以后）、Mac 版 Outlook、Apple Mail 以及 iOS 和 Android 上的 Exchange 客户端现在都能像连接 Exchange 服务器一样连接它。Exchange 模块包含在 AGPL 社区版中，需通过功能开关启用。不支持：新版 Windows Outlook、Outlook 移动版、公共文件夹、存档邮箱、设备管理，以及 NTLM 或 Kerberos 登录。迁移使用 Stalwart 的 Vandelay 工具，可通过 EWS 从本地 Exchange 导入，或通过 Graph 从 Microsoft 365 导入。其他新功能：编译为 Sieve 的邮件规则、已读回执、会议室和设备预订，以及原生 FoundationDB 客户端。
+***** Take
+开源实现 MAPI 和 NSPI 是实打实的工程成果。但讨论显示，剩下的障碍不在协议：德国 GoBD 归档规定、Outlook.com 按 /24 网段封锁自建邮件服务器，以及邮件一出问题就要背锅的管理员。此外这种兼容性依赖经典版 Outlook，而微软正在把用户推向 Stalwart 无法支持的新版 Outlook。
+***** Comments
+- 自从微软把授权改成按年订阅，我们就一直在研究怎么迁出本地 Exchange。
+- 谁拍板换成这个，邮件一投递失败他就会被炒，哪怕不是 Stalwart 的错。风险和收益不成比例。
+- 唯一的问题是法规：在德国，邮件必须以不可删除、不可篡改的方式归档最多 10 年（GoBD）。Stalwart 的常规方案和开源版本都没有这个功能。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+StalwartがMicrosoft Exchangeのドロップイン代替に
+***** TLDR
+Stalwart 1.2.0はMAPI over HTTP、Exchange Web Services、ActiveSync、Autodiscoverに対応した。Windows版クラシックOutlook（2016以降）、Mac版Outlook、Apple Mail、iOSとAndroidのExchangeクライアントが、Exchangeサーバーと同じように接続できる。ExchangeモジュールはAGPLのCommunity版に含まれ、機能フラグで有効化する。非対応：Windows版の新しいOutlook、Outlookモバイル、パブリックフォルダー、アーカイブメールボックス、デバイス管理、NTLMやKerberosでのサインイン。移行にはStalwartのVandelayを使い、オンプレミスExchangeからはEWS、Microsoft 365からはGraph経由で取り込める。他にSieveにコンパイルされるメールルール、開封確認、会議室と備品の予約、ネイティブFoundationDBクライアントも追加。
+***** Take
+MAPIとNSPIをオープンソースで実装したのは本物の技術的成果だ。ただスレッドを見ると、残る障壁はプロトコルではない。ドイツのGoBDアーカイブ規則、Outlook.comが自前サーバーを/24単位でブロックすること、そしてメールが止まったときに責任を負わされる管理者だ。互換性はクラシックOutlookに依存しており、Microsoftは利用者をStalwartが対応できない新しいOutlookへ移行させている。
+***** Comments
+- Microsoftがライセンスを年契約に変えてから、オンプレExchangeからの移行方法をずっと探していた。
+- これへの切り替えを決めた人は、メールが届かなくなった瞬間にクビになる。Stalwartのせいでなくても。リスクに見合わない。
+- 唯一の問題は規制だ。ドイツではメールを削除も改ざんもできない形で最長10年保存する必要がある（GoBD）。Stalwartの通常プランやOSS版にはこの機能がない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Stalwart, 이제 Microsoft Exchange를 그대로 대체 가능
+***** TLDR
+Stalwart 1.2.0은 MAPI over HTTP, Exchange Web Services, ActiveSync, Autodiscover를 추가했다. 윈도우용 클래식 Outlook(2016 이상), Mac용 Outlook, Apple Mail, iOS와 안드로이드의 Exchange 클라이언트가 Exchange 서버에 연결하듯 접속할 수 있다. Exchange 모듈은 AGPL 커뮤니티 에디션에 포함되며 기능 플래그로 켠다. 지원하지 않는 것: 윈도우용 새 Outlook, Outlook 모바일, 공용 폴더, 보관 사서함, 기기 관리, NTLM 및 Kerberos 로그인. 마이그레이션은 Stalwart의 Vandelay 도구로 하며, 온프레미스 Exchange는 EWS로, Microsoft 365는 Graph로 가져온다. 그 밖에 Sieve로 컴파일되는 메일 규칙, 읽음 확인, 회의실 및 장비 예약, 네이티브 FoundationDB 클라이언트가 추가됐다.
+***** Take
+MAPI와 NSPI를 오픈소스로 구현한 것은 실질적인 엔지니어링 성과다. 하지만 스레드를 보면 남은 장벽은 프로토콜이 아니다. 독일 GoBD 보관 규정, Outlook.com이 자체 호스팅 발신자를 /24 단위로 차단하는 문제, 그리고 메일이 멈추면 책임을 지는 관리자다. 호환성도 클래식 Outlook에 기대고 있는데, Microsoft는 Stalwart가 지원하지 못하는 새 Outlook으로 고객을 옮기고 있다.
+***** Comments
+- Microsoft가 라이선스를 연간제로 바꾼 뒤로 온프레미스 Exchange에서 빠져나갈 방법을 계속 찾고 있었다.
+- 이걸로 바꾸자고 결정한 사람은 메일이 안 가는 순간 해고된다. Stalwart 잘못이 아니어도. 위험 대비 이득이 너무 작다.
+- 유일한 문제는 규제다. 독일에서는 메일을 삭제나 변경이 불가능한 방식으로 최대 10년 보관해야 한다(GoBD). Stalwart의 일반 요금제나 OSS 버전에는 이 기능이 없다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Stalwart ya es un reemplazo directo de Microsoft Exchange
+***** TLDR
+Stalwart 1.2.0 añade MAPI sobre HTTP, Exchange Web Services, ActiveSync y Autodiscover. Outlook clásico para Windows (2016 o posterior), Outlook para Mac, Apple Mail y los clientes Exchange de iOS y Android pueden conectarse a él como si fuera un servidor Exchange. El módulo de Exchange viene en la edición Community bajo AGPL, detrás de una opción de compilación. No se admite: el nuevo Outlook para Windows, Outlook móvil, carpetas públicas, buzones de archivo, gestión de dispositivos ni inicio de sesión NTLM o Kerberos. La migración usa la herramienta Vandelay de Stalwart, que importa desde Exchange local por EWS y desde Microsoft 365 por Graph. También hay reglas de correo compiladas a Sieve, acuses de lectura, reserva de salas y equipos, y un cliente nativo de FoundationDB.
+***** Take
+Implementar MAPI y NSPI en código abierto es un logro de ingeniería real. El hilo muestra que las barreras que quedan no son protocolos: las normas alemanas de archivo GoBD, Outlook.com bloqueando servidores propios por bloques /24 y el administrador al que culpan cuando el correo falla. Además, la compatibilidad depende del Outlook clásico, y Microsoft está llevando a sus clientes al nuevo Outlook, que Stalwart no puede atender.
+***** Comments
+- Llevamos tiempo buscando cómo salir de Exchange local desde que Microsoft cambió la licencia a anual.
+- Quien decida el cambio a esto será despedido en cuanto no se entreguen correos, aunque no sea culpa de Stalwart. El riesgo no compensa.
+- El único problema es regulatorio: en Alemania hay que archivar el correo de forma que no pueda borrarse ni alterarse durante hasta 10 años (GoBD). Stalwart no lo incluye en sus planes normales ni en las versiones OSS.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Stalwart ist jetzt ein direkter Ersatz für Microsoft Exchange
+***** TLDR
+Stalwart 1.2.0 unterstützt jetzt MAPI over HTTP, Exchange Web Services, ActiveSync und Autodiscover. Das klassische Outlook für Windows (ab 2016), Outlook für Mac, Apple Mail sowie Exchange-Clients unter iOS und Android verbinden sich damit wie mit einem Exchange-Server. Das Exchange-Modul ist Teil der AGPL-Community-Edition und wird per Feature-Flag aktiviert. Nicht unterstützt: das neue Outlook für Windows, Outlook mobil, öffentliche Ordner, Archivpostfächer, Geräteverwaltung sowie Anmeldung per NTLM oder Kerberos. Die Migration läuft über Stalwarts Tool Vandelay, das von lokalem Exchange per EWS und von Microsoft 365 per Graph importiert. Außerdem neu: Mailregeln, die zu Sieve kompiliert werden, Lesebestätigungen, Raum- und Gerätebuchung und ein nativer FoundationDB-Client.
+***** Take
+MAPI und NSPI als Open Source nachzubauen ist echte Ingenieursarbeit. Der Thread zeigt aber, dass die verbleibenden Hürden keine Protokolle sind: die deutsche GoBD-Archivierungspflicht, Outlook.com, das selbst gehostete Absender im /24-Block sperrt, und der Admin, der den Ärger abbekommt, wenn keine Mails mehr ankommen. Die Kompatibilität hängt zudem am klassischen Outlook, und Microsoft drängt Kunden zum neuen Outlook, das Stalwart nicht bedienen kann.
+***** Comments
+- Seit Microsoft die Lizenz auf jährlich umgestellt hat, suchen wir nach einem Weg weg vom lokalen Exchange.
+- Wer den Wechsel hierauf entscheidet, fliegt, sobald Mails nicht ankommen, selbst wenn Stalwart nichts dafür kann. Das Risiko lohnt sich nicht.
+- Das einzige Problem ist regulatorisch: In Deutschland muss man Mails unveränderbar und unlöschbar bis zu 10 Jahre archivieren (GoBD). Stalwart bietet das weder in den normalen Tarifen noch in den OSS-Varianten.
+** New York Bans Subscription and Post-Purchase Fees on Cars :cars:regulation:consumer-protection:subscriptions:new-york:
+:PROPERTIES:
+:ID:       50622774
+:URL:      https://www.governor.ny.gov/news/money-your-pockets-governor-hochul-signs-bill-restricting-exploitative-vehicle-subscription
+:HN_URL:   https://news.ycombinator.com/item?id=50622774
+:POINTS:   150
+:COMMENTS: 51
+:BY:       DeepLogin
+:END:
+
+*** TLDR
+Governor Kathy Hochul signed S.9348A/A.10411A. It bars manufacturers, dealers and their agents from charging subscriptions for car features that use hardware already installed at purchase or lease and that need no ongoing cost or support from the seller. Heated seats and remote start are the cited examples. The bill text exempts navigation updates, infotainment, satellite radio, in-car Wi-Fi, telematics, roadside assistance, software-dependent driver assistance and automation, and services that rely on cellular data. Sellers also cannot charge for software updates that fix safety defects. The penalty is up to $250 per point of sale per violation. It takes effect February 27, 2027.
+
+*** Take
+The governor's press release lists hands-free driving and enhanced navigation among the features this protects, and the bill exempts both. What it covers is heated seats, remote start and similar switches. A $250 fine per sale is smaller than many of the subscriptions it targets, and any feature that a manufacturer routes through a cellular connection qualifies for the exemption.
+
+*** Comments
+
+**** runako
+:PROPERTIES:
+:COMMENT_ID: 50623487
+:END:
+This doesn't appear to affect SiriusXM or Tesla's enhanced cruise control. The bill specifically exempts navigation updates, infotainment, satellite radio, Wi-Fi, telematics, roadside assistance, and software-dependent driver assistance or automation.
+
+**** adamsb6
+:PROPERTIES:
+:COMMENT_ID: 50623584
+:END:
+Your first instinct may be that this is a win for consumers. But I'm near certain the reason it's a law is that dealerships don't get a cut of those post-purchase fees.
+
+**** glimshe
+:PROPERTIES:
+:COMMENT_ID: 50623363
+:END:
+The price of vehicles will likely increase as a result. Manufacturers won't simply say goodbye to their profit margins.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+纽约州禁止汽车订阅费和购后收费
+***** TLDR
+州长 Kathy Hochul 签署了 S.9348A/A.10411A 法案。法案禁止制造商、经销商及其代理对使用购车或租车时已安装硬件、且无需卖方持续成本或支持的功能收取订阅费。举例是座椅加热和远程启动。法案文本豁免了导航更新、信息娱乐、卫星广播、车载 Wi-Fi、远程信息服务、道路救援、依赖软件的驾驶辅助和自动驾驶功能，以及依赖蜂窝数据的服务。修复安全缺陷的软件更新也不得收费。罚款为每个销售点每次违规最高 250 美元。2027 年 2 月 27 日生效。
+***** Take
+州长的新闻稿把免手驾驶和增强导航列为受保护的功能，而法案恰好豁免了这两项。实际覆盖的是座椅加热、远程启动这类开关功能。每笔销售 250 美元的罚款比很多被针对的订阅费还低，而且制造商只要让某个功能经过蜂窝网络，就能落入豁免范围。
+***** Comments
+- 这似乎不影响 SiriusXM 或特斯拉的增强巡航。法案明确豁免了导航更新、信息娱乐、卫星广播、Wi-Fi、远程信息服务、道路救援，以及依赖软件的驾驶辅助或自动驾驶。
+- 你的第一反应可能是这对消费者是好事。但我几乎可以肯定，它能成为法律是因为经销商分不到这些购后收费。
+- 车价很可能因此上涨。制造商不会就这样放弃利润。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+ニューヨーク州、車のサブスクリプションと購入後課金を禁止
+***** TLDR
+Kathy Hochul知事がS.9348A/A.10411Aに署名した。購入またはリース時に搭載済みのハードウェアを使い、販売側に継続的なコストやサポートが不要な機能について、メーカー、ディーラーとその代理人がサブスク料金を取ることを禁じる。例として挙げられたのはシートヒーターとリモートスタート。法案本文はナビ更新、インフォテインメント、衛星ラジオ、車内Wi-Fi、テレマティクス、ロードサービス、ソフトウェア依存の運転支援と自動運転機能、携帯データ通信に依存するサービスを除外している。安全上の欠陥を直すソフト更新も有料にできない。罰則は違反1件につき販売1拠点あたり最大250ドル。2027年2月27日施行。
+***** Take
+知事のプレスリリースはハンズフリー運転と高度なナビを保護対象として挙げているが、法案はその両方を除外している。実際に対象になるのはシートヒーターやリモートスタートのような機能だ。1販売あたり250ドルの罰金は狙われているサブスク料金より安いことも多く、メーカーが機能を携帯回線経由にすれば除外対象になる。
+***** Comments
+- SiriusXMやTeslaの強化クルーズコントロールには影響しないようだ。法案はナビ更新、インフォテインメント、衛星ラジオ、Wi-Fi、テレマティクス、ロードサービス、ソフト依存の運転支援や自動運転を明示的に除外している。
+- 最初は消費者の勝利だと思うかもしれない。でもこれが法律になった理由は、ディーラーが購入後課金の取り分をもらえないからだとほぼ確信している。
+- 結果として車両価格はおそらく上がる。メーカーが利益率をあっさり手放すことはない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+뉴욕주, 자동차 구독료와 구매 후 요금 금지
+***** TLDR
+Kathy Hochul 주지사가 S.9348A/A.10411A에 서명했다. 구매나 리스 시점에 이미 장착된 하드웨어를 쓰고 판매자에게 지속 비용이나 지원이 필요 없는 기능에 대해 제조사, 딜러와 그 대리인이 구독료를 받는 것을 금지한다. 예로 든 것은 열선 시트와 원격 시동이다. 법안 본문은 내비게이션 업데이트, 인포테인먼트, 위성 라디오, 차량 Wi-Fi, 텔레매틱스, 긴급출동, 소프트웨어 기반 운전 보조 및 자율주행 기능, 셀룰러 데이터에 의존하는 서비스를 예외로 둔다. 안전 결함을 고치는 소프트웨어 업데이트에도 요금을 받을 수 없다. 벌금은 위반 건당 판매 지점별 최대 250달러. 2027년 2월 27일 시행.
+***** Take
+주지사 보도자료는 핸즈프리 주행과 고급 내비게이션을 보호 대상으로 꼽았는데, 법안은 둘 다 예외로 뒀다. 실제로 적용되는 건 열선 시트, 원격 시동 같은 기능이다. 판매 건당 250달러 벌금은 대상 구독료보다 적은 경우가 많고, 제조사가 기능을 셀룰러 연결로 돌리기만 하면 예외에 해당한다.
+***** Comments
+- SiriusXM이나 Tesla의 향상된 크루즈 컨트롤에는 영향이 없어 보인다. 법안은 내비 업데이트, 인포테인먼트, 위성 라디오, Wi-Fi, 텔레매틱스, 긴급출동, 소프트웨어 기반 운전 보조나 자율주행을 명시적으로 제외한다.
+- 처음엔 소비자의 승리라고 생각할 수 있다. 하지만 이게 법이 된 이유는 딜러가 구매 후 요금에서 몫을 못 받기 때문이라고 거의 확신한다.
+- 결국 차량 가격이 오를 가능성이 크다. 제조사가 이익률을 그냥 포기하지는 않는다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Nueva York prohíbe las suscripciones y los cargos posteriores a la compra en coches
+***** TLDR
+La gobernadora Kathy Hochul firmó la ley S.9348A/A.10411A. Prohíbe a fabricantes, concesionarios y sus agentes cobrar suscripciones por funciones del coche que usan hardware ya instalado en la compra o el leasing y que no requieren coste ni soporte continuo del vendedor. Los ejemplos citados son los asientos calefactados y el arranque remoto. El texto excluye actualizaciones de navegación, infoentretenimiento, radio por satélite, wifi en el coche, telemática, asistencia en carretera, asistencia y automatización de conducción basadas en software, y servicios que dependen de datos móviles. Tampoco se puede cobrar por actualizaciones que corrigen defectos de seguridad. La multa es de hasta 250 dólares por punto de venta y por infracción. Entra en vigor el 27 de febrero de 2027.
+***** Take
+El comunicado de la gobernadora presenta la conducción manos libres y la navegación avanzada como funciones protegidas, y la ley excluye ambas. Lo que cubre son asientos calefactados, arranque remoto y funciones similares. Una multa de 250 dólares por venta es menor que muchas de las suscripciones que persigue, y cualquier función que el fabricante haga pasar por una conexión móvil entra en la excepción.
+***** Comments
+- No parece afectar a SiriusXM ni al control de crucero mejorado de Tesla. La ley excluye expresamente actualizaciones de navegación, infoentretenimiento, radio por satélite, wifi, telemática, asistencia en carretera y la asistencia o automatización de conducción basada en software.
+- Tu primer instinto será pensar que es una victoria para el consumidor. Pero estoy casi seguro de que es ley porque los concesionarios no se llevan parte de esos cargos.
+- Probablemente suban los precios de los coches. Los fabricantes no van a renunciar sin más a sus márgenes.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+New York verbietet Abo- und Nachkaufgebühren für Autos
+***** TLDR
+Gouverneurin Kathy Hochul hat S.9348A/A.10411A unterzeichnet. Hersteller, Händler und ihre Vertreter dürfen keine Abos mehr für Fahrzeugfunktionen verlangen, die bei Kauf oder Leasing bereits verbaute Hardware nutzen und keine laufenden Kosten oder Betreuung durch den Verkäufer erfordern. Als Beispiele werden Sitzheizung und Fernstart genannt. Der Gesetzestext nimmt Navigationsupdates, Infotainment, Satellitenradio, WLAN im Auto, Telematik, Pannenhilfe, softwarebasierte Fahrassistenz und Fahrautomatisierung sowie Dienste mit Mobilfunkdaten aus. Updates, die Sicherheitsmängel beheben, dürfen nichts kosten. Die Strafe beträgt bis zu 250 Dollar pro Verkaufsstelle und Verstoß. Gültig ab 27. Februar 2027.
+***** Take
+Die Pressemitteilung der Gouverneurin nennt freihändiges Fahren und erweiterte Navigation als geschützte Funktionen, und das Gesetz nimmt beide aus. Abgedeckt sind Sitzheizung, Fernstart und ähnliche Schalter. 250 Dollar Strafe pro Verkauf sind weniger als viele der betroffenen Abos, und jede Funktion, die ein Hersteller über eine Mobilfunkverbindung leitet, fällt unter die Ausnahme.
+***** Comments
+- SiriusXM und Teslas erweiterter Tempomat scheinen nicht betroffen. Das Gesetz nimmt Navigationsupdates, Infotainment, Satellitenradio, WLAN, Telematik, Pannenhilfe und softwarebasierte Fahrassistenz oder -automatisierung ausdrücklich aus.
+- Der erste Gedanke ist vielleicht, dass das ein Sieg für Verbraucher ist. Aber ich bin fast sicher, dass es Gesetz wurde, weil die Händler an diesen Gebühren nicht mitverdienen.
+- Die Fahrzeugpreise werden dadurch wohl steigen. Hersteller verabschieden sich nicht einfach von ihren Margen.
+** GPUI is getting its own repository :rust:gui:zed:open-source:
+:PROPERTIES:
+:ID:       50619103
+:URL:      https://github.com/zed-industries/gpui
+:HN_URL:   https://news.ycombinator.com/item?id=50619103
+:POINTS:   207
+:COMMENTS: 73
+:BY:       EvilGoose
+:END:
+
+*** TLDR
+Zed Industries created a standalone GitHub repository for GPUI, the GPU-accelerated Rust UI framework behind the Zed editor, which until now lived inside the editor's monorepo. The repo has one commit, a README that reads 'See you in a few weeks.' Its topic tags list mobile and web alongside desktop. No code, license or release has been published there yet.
+
+*** Take
+HN wrote 73 comments about a README. The only new information is the mobile and web tags, which would matter if they ship. Commenters raise the questions the move has to answer: whether the UI component crates stay under Zed's restrictive license, and whether the split lasts, since one commenter says Zed has announced this before and reversed it. A community fork already exists for people who stopped waiting.
+
+*** Comments
+
+**** chubs
+:PROPERTIES:
+:COMMENT_ID: 50622846
+:END:
+I've been blown away by how rich the gpui-kit components are. I recently wrote a Rust desktop app using iced, and now look at gpui with envy.
+
+**** slopinthebag
+:PROPERTIES:
+:COMMENT_ID: 50621267
+:END:
+I'm confused why GPUI gets so much attention. It's not fast, it's not accessible, it's not ergonomic, and it's not beautiful. There are more mature options in the Rust space.
+
+**** throwaway69123
+:PROPERTIES:
+:COMMENT_ID: 50621080
+:END:
+The license makes using it pretty useless. The UI elements themselves are under a really restrictive license.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+GPUI 将拥有独立的代码仓库
+***** TLDR
+Zed Industries 为 GPUI 建立了独立的 GitHub 仓库。GPUI 是驱动 Zed 编辑器的 GPU 加速 Rust UI 框架，此前一直放在编辑器的单体仓库里。新仓库只有一次提交，即一个写着“几周后见”的 README。仓库标签除了桌面，还列出了移动端和 Web。目前还没有发布代码、许可证或版本。
+***** Take
+HN 为一个 README 写了 73 条评论。唯一的新信息是移动端和 Web 标签，如果真能落地就有意义。评论者提出了这次拆分需要回答的问题：UI 组件 crate 是否仍采用 Zed 的限制性许可证，以及这次拆分能否持续，有评论者说 Zed 以前宣布过类似计划又撤回了。不想再等的人已经有了社区分支。
+***** Comments
+- gpui-kit 的组件之丰富让我很惊讶。我最近用 iced 写了个 Rust 桌面应用，现在看 gpui 很羡慕。
+- 我不明白 GPUI 为什么这么受关注。它不快、不支持无障碍、不好用、也不好看。Rust 生态里有更成熟的选择。
+- 许可证让它基本没法用。UI 元素本身采用的是非常严格的许可证。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+GPUIが独自のリポジトリを持つことに
+***** TLDR
+Zed IndustriesがGPUIの独立したGitHubリポジトリを作成した。GPUIはZedエディタを支えるGPUアクセラレーション対応のRust UIフレームワークで、これまではエディタのモノレポ内にあった。リポジトリのコミットは1つだけで、READMEには「数週間後に会いましょう」とある。トピックタグにはデスクトップに加えてモバイルとWebが並ぶ。コード、ライセンス、リリースはまだ公開されていない。
+***** Take
+HNはREADME1枚に73件のコメントを書いた。新しい情報はモバイルとWebのタグだけで、実際に出れば意味がある。コメント欄はこの移行が答えるべき問いを挙げている。UIコンポーネントのcrateがZedの制限的なライセンスのままか、そして分離が続くのか。以前も同じ発表をして撤回したと指摘するコメントもある。待ちくたびれた人向けのコミュニティフォークもすでにある。
+***** Comments
+- gpui-kitのコンポーネントの充実ぶりに驚いた。最近icedでRustのデスクトップアプリを書いたので、gpuiがうらやましい。
+- なぜGPUIがこんなに注目されるのかわからない。速くないし、アクセシブルでもないし、使いやすくもないし、美しくもない。Rustにはもっと成熟した選択肢がある。
+- ライセンスのせいでほぼ使い物にならない。UI要素そのものがかなり制限的なライセンスになっている。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+GPUI가 독립 저장소를 갖게 된다
+***** TLDR
+Zed Industries가 GPUI용 독립 GitHub 저장소를 만들었다. GPUI는 Zed 에디터를 구동하는 GPU 가속 Rust UI 프레임워크로, 지금까지는 에디터 모노레포 안에 있었다. 저장소에는 커밋이 하나뿐이고, README에는 '몇 주 뒤에 만나요'라고만 적혀 있다. 토픽 태그에는 데스크톱과 함께 모바일과 웹이 있다. 코드, 라이선스, 릴리스는 아직 없다.
+***** Take
+HN은 README 하나에 댓글 73개를 달았다. 새로운 정보는 모바일과 웹 태그뿐이고, 실제로 나온다면 의미가 있다. 댓글은 이번 분리가 답해야 할 질문을 짚는다. UI 컴포넌트 크레이트가 Zed의 제한적인 라이선스로 남는지, 그리고 분리가 유지될지다. 한 댓글은 Zed가 전에도 같은 발표를 했다가 되돌렸다고 말한다. 기다리다 지친 사람들을 위한 커뮤니티 포크도 이미 있다.
+***** Comments
+- gpui-kit 컴포넌트가 이렇게 풍부할 줄 몰랐다. 최근 iced로 Rust 데스크톱 앱을 만들었는데 gpui가 부럽다.
+- GPUI가 왜 이렇게 주목받는지 모르겠다. 빠르지도, 접근성이 좋지도, 쓰기 편하지도, 예쁘지도 않다. Rust에는 더 성숙한 선택지가 있다.
+- 라이선스 때문에 사실상 쓸 수가 없다. UI 요소 자체가 매우 제한적인 라이선스다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+GPUI tendrá su propio repositorio
+***** TLDR
+Zed Industries creó un repositorio independiente en GitHub para GPUI, el framework de interfaz en Rust acelerado por GPU que usa el editor Zed y que hasta ahora vivía dentro del monorepo del editor. El repositorio tiene un solo commit, un README que dice 'Nos vemos en unas semanas'. Sus etiquetas incluyen móvil y web además de escritorio. Todavía no hay código, licencia ni versiones publicadas.
+***** Take
+HN escribió 73 comentarios sobre un README. Lo único nuevo son las etiquetas de móvil y web, que importarían si llegan a salir. Los comentaristas plantean las preguntas que este cambio debe responder: si los crates de componentes de interfaz seguirán bajo la licencia restrictiva de Zed, y si la separación durará, ya que un comentarista dice que Zed lo anunció antes y dio marcha atrás. Ya existe un fork comunitario para quien se cansó de esperar.
+***** Comments
+- Me sorprendió lo completos que son los componentes de gpui-kit. Hace poco escribí una app de escritorio en Rust con iced y ahora miro gpui con envidia.
+- No entiendo por qué GPUI recibe tanta atención. No es rápido, no es accesible, no es ergonómico y no es bonito. Hay opciones más maduras en Rust.
+- La licencia lo hace prácticamente inútil. Los propios elementos de interfaz tienen una licencia muy restrictiva.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+GPUI bekommt ein eigenes Repository
+***** TLDR
+Zed Industries hat ein eigenes GitHub-Repository für GPUI angelegt, das GPU-beschleunigte Rust-UI-Framework hinter dem Zed-Editor, das bisher im Monorepo des Editors lag. Das Repository enthält einen einzigen Commit, eine README mit dem Satz 'Wir sehen uns in ein paar Wochen.' Die Themen-Tags nennen neben Desktop auch Mobil und Web. Code, Lizenz oder Releases gibt es dort noch nicht.
+***** Take
+HN hat 73 Kommentare zu einer README geschrieben. Neu sind nur die Tags für Mobil und Web, die relevant wären, wenn sie umgesetzt werden. Die Kommentare nennen die Fragen, die der Umzug beantworten muss: ob die UI-Komponenten-Crates unter Zeds restriktiver Lizenz bleiben und ob die Trennung hält, denn ein Kommentator sagt, Zed habe das schon einmal angekündigt und zurückgenommen. Für alle, die nicht mehr warten wollten, gibt es bereits einen Community-Fork.
+***** Comments
+- Mich hat überrascht, wie umfangreich die gpui-kit-Komponenten sind. Ich habe kürzlich eine Rust-Desktop-App mit iced geschrieben und schaue jetzt neidisch auf gpui.
+- Ich verstehe nicht, warum GPUI so viel Aufmerksamkeit bekommt. Es ist nicht schnell, nicht barrierefrei, nicht ergonomisch und nicht schön. Es gibt reifere Optionen in Rust.
+- Die Lizenz macht es praktisch unbrauchbar. Die UI-Elemente selbst stehen unter einer sehr restriktiven Lizenz.
+** Bored.com: Fun, interesting and cool websites to explore when bored :web:games:nostalgia:curation:
+:PROPERTIES:
+:ID:       50619207
+:URL:      https://www.bored.com/
+:HN_URL:   https://news.ycombinator.com/item?id=50619207
+:POINTS:   186
+:COMMENTS: 43
+:BY:       susam
+:END:
+
+*** TLDR
+Bored.com, a domain that hosted a link directory in the early 2000s, is now a curated index of about 75 categories of small web toys, games and oddities, with mood lists such as 'Bored at work', 'Can't sleep' and 'Five minutes'. It mixes links to outside sites like neal.fun and Infinite Craft with games hosted on bored.com itself, such as Battle Draw and Wobble Tower. The page says it was last updated November 23, 2026.
+
+*** Take
+This is StumbleUpon with categories, and most of the thread is people recommending Battle Draw. The useful finding is nyoronic's: several in-house games closely resemble Neal Agarwal and R74n projects that the site also links to. A directory that depends on independent creators for its content should not be publishing copies of their work next to the originals.
+
+*** Comments
+
+**** true_blue
+:PROPERTIES:
+:COMMENT_ID: 50624197
+:END:
+Battle Draw is the most fun I've had playing a video game in a while. Tip: you can control the size of the battlefield by zooming the page in or out.
+
+**** nyoronic
+:PROPERTIES:
+:COMMENT_ID: 50622159
+:END:
+Some of the games created for Bored.com appear to be clones of other games on the site. 'Bottomless' is similar to Neal Agarwal's 'The Deep Sea', and 'Spend It All' is similar to 'Spend Bill Gates' Money'.
+
+**** ktosobcy
+:PROPERTIES:
+:COMMENT_ID: 50620095
+:END:
+Wouldn't it be better to just gaze aimlessly and let your mind wander? Being bored is not a bad thing.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Bored.com：无聊时可以探索的有趣网站
+***** TLDR
+Bored.com 这个域名在 2000 年代初是一个链接目录，现在变成了一个精选索引，收录约 75 个类别的网页小玩具、小游戏和奇特网站，并按心情分类，例如“上班无聊”“睡不着”“五分钟”。它既链接 neal.fun、Infinite Craft 等外部网站，也托管自己的游戏，比如 Battle Draw 和 Wobble Tower。页面显示最后更新于 2026 年 11 月 23 日。
+***** Take
+这就是带分类的 StumbleUpon，讨论区大部分是在推荐 Battle Draw。有用的发现来自 nyoronic：几款自制游戏与网站同时链接的 Neal Agarwal 和 R74n 作品高度相似。一个靠独立创作者提供内容的目录，不该把他们作品的仿制品摆在原作旁边。
+***** Comments
+- Battle Draw 是我很久以来玩过最好玩的游戏。小技巧：缩放页面可以调整战场大小。
+- 一些为 Bored.com 制作的游戏似乎是站内其他游戏的仿品。“Bottomless”很像 Neal Agarwal 的“The Deep Sea”，“Spend It All”很像“Spend Bill Gates' Money”。
+- 发呆、让思绪漫游不是更好吗？无聊并不是坏事。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Bored.com：退屈なときに探検できる面白いウェブサイト集
+***** TLDR
+Bored.comは2000年代初めにリンク集だったドメインで、現在は約75カテゴリーの小さなウェブのおもちゃ、ゲーム、変なサイトを集めた厳選インデックスになっている。「仕事中に退屈」「眠れない」「5分だけ」といった気分別リストもある。neal.funやInfinite Craftなど外部サイトへのリンクと、Battle DrawやWobble Towerなどbored.com自身が載せるゲームが混在している。ページには2026年11月23日更新とある。
+***** Take
+カテゴリー付きのStumbleUponで、スレッドの大半はBattle Drawのおすすめだ。役に立つのはnyoronicの指摘で、自前のゲームのいくつかが、サイトがリンクしているNeal AgarwalやR74nの作品とよく似ている。独立した作り手にコンテンツを頼るディレクトリが、原作の隣にその模倣品を並べるべきではない。
+***** Comments
+- Battle Drawは久しぶりに一番楽しかったゲームだ。コツ：ページを拡大縮小すると戦場の広さを変えられる。
+- Bored.com用に作られたゲームの一部は、サイト内の他のゲームのクローンに見える。「Bottomless」はNeal Agarwalの「The Deep Sea」に、「Spend It All」は「Spend Bill Gates' Money」に似ている。
+- ぼんやりして考えをさまよわせるほうがいいのでは？退屈は悪いことじゃない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Bored.com: 심심할 때 둘러볼 재미있는 웹사이트 모음
+***** TLDR
+Bored.com은 2000년대 초 링크 디렉터리였던 도메인으로, 지금은 작은 웹 장난감, 게임, 별난 사이트를 약 75개 카테고리로 모은 큐레이션 목록이 됐다. '회사에서 심심할 때', '잠이 안 올 때', '5분' 같은 기분별 목록도 있다. neal.fun이나 Infinite Craft 같은 외부 사이트 링크와 Battle Draw, Wobble Tower 같은 bored.com 자체 게임이 섞여 있다. 페이지에는 2026년 11월 23일에 마지막으로 업데이트됐다고 나온다.
+***** Take
+카테고리가 붙은 StumbleUpon이고, 스레드 대부분은 Battle Draw 추천이다. 쓸모 있는 건 nyoronic의 발견이다. 자체 게임 몇 개가 사이트가 링크하는 Neal Agarwal과 R74n 작품과 매우 닮았다. 독립 제작자의 콘텐츠에 기대는 디렉터리라면 원작 옆에 그 모방작을 올려서는 안 된다.
+***** Comments
+- Battle Draw는 오랜만에 가장 재미있게 한 게임이다. 팁: 페이지를 확대하거나 축소하면 전장 크기를 조절할 수 있다.
+- Bored.com용으로 만든 게임 일부는 사이트 내 다른 게임의 복제품 같다. 'Bottomless'는 Neal Agarwal의 'The Deep Sea'와, 'Spend It All'은 'Spend Bill Gates' Money'와 비슷하다.
+- 그냥 멍하니 생각을 흘려보내는 게 낫지 않나? 심심한 건 나쁜 게 아니다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Bored.com: webs divertidas, interesantes y curiosas para cuando te aburres
+***** TLDR
+Bored.com, un dominio que fue un directorio de enlaces a principios de los 2000, es ahora un índice curado de unas 75 categorías de juguetes web, juegos y rarezas, con listas por estado de ánimo como 'Aburrido en el trabajo', 'No puedo dormir' y 'Cinco minutos'. Mezcla enlaces a sitios externos como neal.fun e Infinite Craft con juegos alojados en el propio bored.com, como Battle Draw y Wobble Tower. La página indica que se actualizó por última vez el 23 de noviembre de 2026.
+***** Take
+Es StumbleUpon con categorías, y la mayor parte del hilo recomienda Battle Draw. El hallazgo útil es de nyoronic: varios juegos propios se parecen mucho a proyectos de Neal Agarwal y R74n que el sitio también enlaza. Un directorio que depende de creadores independientes para su contenido no debería publicar copias de su trabajo junto a los originales.
+***** Comments
+- Battle Draw es lo más divertido que he jugado en mucho tiempo. Truco: puedes cambiar el tamaño del campo de batalla haciendo zoom en la página.
+- Algunos juegos creados para Bored.com parecen clones de otros juegos del sitio. 'Bottomless' se parece a 'The Deep Sea' de Neal Agarwal, y 'Spend It All' a 'Spend Bill Gates' Money'.
+- ¿No sería mejor mirar a la nada y dejar que la mente divague? Aburrirse no es malo.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Bored.com: Lustige, interessante und coole Websites gegen Langeweile
+***** TLDR
+Bored.com, eine Domain, die Anfang der 2000er ein Linkverzeichnis war, ist jetzt ein kuratierter Index mit rund 75 Kategorien kleiner Web-Spielereien, Spiele und Kuriositäten, dazu Stimmungslisten wie 'Langeweile bei der Arbeit', 'Kann nicht schlafen' und 'Fünf Minuten'. Es mischt Links zu externen Seiten wie neal.fun und Infinite Craft mit Spielen, die auf bored.com selbst laufen, etwa Battle Draw und Wobble Tower. Laut Seite zuletzt aktualisiert am 23. November 2026.
+***** Take
+Das ist StumbleUpon mit Kategorien, und der Großteil des Threads empfiehlt Battle Draw. Der nützliche Fund stammt von nyoronic: Mehrere hauseigene Spiele ähneln stark Projekten von Neal Agarwal und R74n, die die Seite ebenfalls verlinkt. Ein Verzeichnis, das von unabhängigen Machern lebt, sollte keine Kopien ihrer Arbeit neben die Originale stellen.
+***** Comments
+- Battle Draw ist das Lustigste, was ich seit Langem gespielt habe. Tipp: Mit dem Zoom der Seite lässt sich die Größe des Schlachtfelds ändern.
+- Einige für Bored.com erstellte Spiele scheinen Klone anderer Spiele auf der Seite zu sein. 'Bottomless' ähnelt Neal Agarwals 'The Deep Sea', 'Spend It All' ähnelt 'Spend Bill Gates' Money'.
+- Wäre es nicht besser, einfach ins Leere zu schauen und die Gedanken schweifen zu lassen? Langeweile ist nichts Schlechtes.
+** The search for a top dark matter candidate :physics:dark-matter:science:particle-physics:
+:PROPERTIES:
+:ID:       50620831
+:URL:      https://www.smithsonianmag.com/science-nature/the-search-for-a-top-dark-matter-candidate-was-losing-hope-then-came-a-potential-signal-will-it-be-enough-to-energize-the-struggling-field-180989923/
+:HN_URL:   https://news.ycombinator.com/item?id=50620831
+:POINTS:   32
+:COMMENTS: 15
+:BY:       apophatic
+:END:
+
+*** TLDR
+Smithsonian reports on a September preprint from LUX-ZEPLIN, an 11-ton liquid xenon detector in South Dakota and the largest WIMP search running. Looking at higher-energy collisions than usual, the team saw a single event above expected background that known sources such as stray neutrons don't explain. One reading is a WIMP that loses mass on impact and leaves as a lighter dark matter particle; it could also be an unknown background. The physicists quoted are cautious, and cite DAMA's earlier claim, which later experiments ruled out. XENONnT, with similar sensitivity, is checking about two years of its own data and hopes to publish within months. Funding is tight, and the proposed next-generation XLZD detector is uncertain.
+
+*** Take
+One event is not a detection, and the article says so. The result that matters is XENONnT's, which has comparable sensitivity and could confirm or rule this out within months. The article also shows the risk for the field: a one-event result is now part of the argument for funding XLZD, and if XENONnT sees nothing, that argument gets weaker.
+
+*** Comments
+
+**** Sniffnoy
+:PROPERTIES:
+:COMMENT_ID: 50624016
+:END:
+This single detection reminds me of the 1982 single apparent detection of a magnetic monopole. No other monopole has ever been seen, so we have to assume that wasn't real. I'm wary of this one until there's a second.
+
+**** lukeify
+:PROPERTIES:
+:COMMENT_ID: 50623726
+:END:
+What reasons do we have to believe dark matter should interact via the electromagnetic, strong or weak forces at all? Interaction purely through gravity is surely a likely scenario.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+寻找头号暗物质候选者
+***** TLDR
+《史密森尼》杂志报道了 LUX-ZEPLIN 9 月发布的预印本。LUX-ZEPLIN 是位于南达科他州的 11 吨液态氙探测器，也是目前最大的 WIMP 搜索实验。团队在比往常更高能量的碰撞中发现了一个超出预期背景的事件，杂散中子等已知来源无法解释。一种解释是 WIMP 在碰撞中损失质量，以更轻的暗物质粒子离开；也可能是未知的背景。受访物理学家态度谨慎，并提到 DAMA 早先的声明后来被其他实验排除。灵敏度相近的 XENONnT 正在检查约两年的自有数据，希望几个月内发表。经费紧张，拟议的下一代 XLZD 探测器前景不明。
+***** Take
+一个事件不算探测，文章自己也这么说。真正重要的是 XENONnT 的结果，它灵敏度相当，几个月内就可能证实或排除这一信号。文章也揭示了这个领域的风险：一个单事件结果已成为争取 XLZD 经费的论据之一，如果 XENONnT 什么都没看到，这个论据就会变弱。
+***** Comments
+- 这次单一探测让我想起 1982 年那次单一的疑似磁单极子探测。之后再也没观测到磁单极子，所以只能认为那次不是真的。在出现第二次之前，我对这次也持怀疑态度。
+- 我们有什么理由认为暗物质一定会通过电磁力、强力或弱力相互作用？只通过引力相互作用难道不是很可能的情况吗？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+有力なダークマター候補の探索
+***** TLDR
+Smithsonian誌が、LUX-ZEPLINが9月に公開したプレプリントを報じた。LUX-ZEPLINはサウスダコタ州にある11トンの液体キセノン検出器で、稼働中で最大のWIMP探索実験だ。通常より高エネルギーの衝突を調べたところ、想定バックグラウンドを超える事象が1つ見つかり、迷い込んだ中性子などの既知の原因では説明できない。WIMPが衝突で質量を失い、より軽いダークマター粒子として出ていったという解釈がある一方、未知のバックグラウンドの可能性もある。取材された物理学者は慎重で、後の実験で否定されたDAMAの主張を例に挙げる。同程度の感度を持つXENONnTが約2年分の自前データを調べており、数か月以内の発表を目指している。予算は厳しく、次世代検出器XLZDの計画は不透明だ。
+***** Take
+1事象は検出ではなく、記事もそう書いている。重要なのは同等の感度を持つXENONnTの結果で、数か月以内にこれを確認するか否定できる。記事は分野のリスクも示している。1事象の結果がXLZD予算獲得の論拠の一部になっており、XENONnTが何も見なければその論拠は弱まる。
+***** Comments
+- この単一検出は、1982年の磁気単極子の単一検出らしきものを思い出させる。その後単極子は一度も見つかっていないので、あれは本物ではなかったと考えるしかない。2回目が出るまでは今回も疑っている。
+- ダークマターが電磁力、強い力、弱い力で相互作用すると考える理由は何だろう？重力だけで相互作用するというのも十分ありそうなシナリオだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+유력한 암흑물질 후보를 찾아서
+***** TLDR
+스미소니언 매거진이 LUX-ZEPLIN의 9월 프리프린트를 보도했다. LUX-ZEPLIN은 사우스다코타에 있는 11톤 액체 제논 검출기로, 현재 가동 중인 가장 큰 WIMP 탐색 실험이다. 평소보다 높은 에너지의 충돌을 살펴본 결과, 예상 배경을 넘는 사건 하나가 나왔고 떠도는 중성자 같은 알려진 원인으로는 설명되지 않는다. WIMP가 충돌하면서 질량을 잃고 더 가벼운 암흑물질 입자로 빠져나갔다는 해석이 있지만, 알려지지 않은 배경일 수도 있다. 인용된 물리학자들은 신중하며, 이후 실험으로 배제된 DAMA의 주장을 예로 든다. 비슷한 감도의 XENONnT가 약 2년치 자체 데이터를 확인하고 있으며 몇 달 안에 발표하길 바란다. 예산은 빠듯하고 차세대 XLZD 검출기 계획은 불확실하다.
+***** Take
+사건 하나는 검출이 아니며, 기사도 그렇게 말한다. 중요한 건 비슷한 감도를 가진 XENONnT의 결과로, 몇 달 안에 이를 확인하거나 배제할 수 있다. 기사는 이 분야의 위험도 보여준다. 사건 하나짜리 결과가 이제 XLZD 예산을 따내기 위한 논거의 일부가 됐고, XENONnT가 아무것도 못 보면 그 논거는 약해진다.
+***** Comments
+- 이번 단일 검출은 1982년의 자기 홀극 단일 검출 의심 사례를 떠올리게 한다. 그 뒤로 홀극은 한 번도 관측되지 않았으니 진짜가 아니었다고 봐야 한다. 두 번째가 나오기 전까지는 이번 것도 의심스럽다.
+- 암흑물질이 전자기력, 강력, 약력으로 상호작용해야 한다고 믿을 이유가 뭘까? 중력으로만 상호작용하는 것도 충분히 가능한 시나리오다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+La búsqueda de un candidato principal a materia oscura
+***** TLDR
+Smithsonian informa sobre un preprint de septiembre de LUX-ZEPLIN, un detector de 11 toneladas de xenón líquido en Dakota del Sur y la mayor búsqueda de WIMP en marcha. Al estudiar colisiones de mayor energía de lo habitual, el equipo vio un único evento por encima del fondo esperado que fuentes conocidas como neutrones sueltos no explican. Una lectura es un WIMP que pierde masa en el impacto y sale como una partícula de materia oscura más ligera; también podría ser un fondo desconocido. Los físicos citados son prudentes y recuerdan la afirmación de DAMA, que experimentos posteriores descartaron. XENONnT, con sensibilidad similar, revisa unos dos años de datos propios y espera publicar en meses. La financiación es escasa y el futuro detector XLZD es incierto.
+***** Take
+Un evento no es una detección, y el artículo lo dice. El resultado que importa es el de XENONnT, con sensibilidad comparable, que podría confirmarlo o descartarlo en meses. El artículo también muestra el riesgo para el campo: un resultado de un solo evento forma parte ya del argumento para financiar XLZD, y si XENONnT no ve nada, ese argumento se debilita.
+***** Comments
+- Esta detección única me recuerda a la aparente detección única de un monopolo magnético en 1982. Nunca se ha visto otro, así que hay que asumir que no era real. Desconfío de esta hasta que haya una segunda.
+- ¿Qué razones tenemos para creer que la materia oscura deba interactuar mediante las fuerzas electromagnética, fuerte o débil? Una interacción solo gravitatoria es un escenario bastante probable.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Die Suche nach einem Top-Kandidaten für Dunkle Materie
+***** TLDR
+Smithsonian berichtet über einen Preprint von LUX-ZEPLIN aus dem September, einem 11-Tonnen-Flüssigxenon-Detektor in South Dakota und der größten laufenden WIMP-Suche. Bei Kollisionen mit höherer Energie als üblich sah das Team ein einzelnes Ereignis über dem erwarteten Untergrund, das bekannte Quellen wie streunende Neutronen nicht erklären. Eine Deutung ist ein WIMP, das beim Stoß Masse verliert und als leichteres Dunkle-Materie-Teilchen davonfliegt; es könnte auch ein unbekannter Untergrund sein. Die zitierten Physiker sind vorsichtig und verweisen auf DAMAs frühere Behauptung, die spätere Experimente ausgeschlossen haben. XENONnT mit ähnlicher Empfindlichkeit prüft rund zwei Jahre eigener Daten und will in einigen Monaten veröffentlichen. Die Finanzierung ist knapp, der geplante Nachfolgedetektor XLZD ist ungewiss.
+***** Take
+Ein Ereignis ist kein Nachweis, und der Artikel sagt das auch. Entscheidend ist das Ergebnis von XENONnT, das vergleichbar empfindlich ist und dies innerhalb von Monaten bestätigen oder ausschließen kann. Der Artikel zeigt auch das Risiko für das Feld: Ein Ein-Ereignis-Ergebnis ist jetzt Teil der Begründung für die XLZD-Finanzierung, und wenn XENONnT nichts sieht, wird diese Begründung schwächer.
+***** Comments
+- Dieser Einzelnachweis erinnert mich an den scheinbaren Einzelnachweis eines magnetischen Monopols 1982. Seitdem wurde nie wieder einer gesehen, also müssen wir annehmen, dass er nicht echt war. Ich bleibe skeptisch, bis es einen zweiten gibt.
+- Welche Gründe haben wir anzunehmen, dass Dunkle Materie überhaupt elektromagnetisch, stark oder schwach wechselwirkt? Eine rein gravitative Wechselwirkung ist doch ein naheliegendes Szenario.
