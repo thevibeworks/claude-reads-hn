@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-11-25 16:00 UTC
+#+DATE: 2026-11-25T16:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Google's AI shaves the factoring exponent, Huawei gets convicted, and Linux users argue over a stolen volume knob
+
+* Highlights
+- Cogentic: Google posts six AI-produced theory papers, RSA still fine
+- Huawei: convicted on fraud and Iran sanctions, acquitted of racketeering
+- pw-loudness-eq: Windows volume leveling ported to PipeWire from a DLL
+- Dragon riders: a physicist says the window for human research is a few years
+- Java phones: a Sony Ericsson S500i back online over Bluetooth PAN
+
+* Stories
+
+** Google Releases Cogentic Papers on Integer Factorization, Discrete Logs and More :ai:math:cryptography:google:
+:PROPERTIES:
+:ID:       50642086
+:URL:      https://github.com/google-research/google-research/tree/master/cogentic_research_papers
+:HN_URL:   https://news.ycombinator.com/item?id=50642086
+:POINTS:   244
+:COMMENTS: 206
+:BY:       rgwohlbold
+:END:
+
+*** TLDR
+Google Research published a folder of 11 theory papers credited to Cogentic, a multi-agent proof harness described in an arXiv paper. Six are dated today: unconditional integer factoring in L_N［1/3, O(1)］ time, deterministic subexponential factoring, faster discrete logs in small-characteristic fields, a polynomial-time 1/5-approximate Nash equilibrium, a sub-square-root log-rank bound and an edge-reconstruction result for graphs. The README says it is not an official Google product and gives no peer-review status. A separate HN thread is passing around rumors that a lab has factoring in P.
+
+*** Take
+The factoring paper proves a bound of the same shape as the number field sieve, but with a constant of 105 instead of about 1.92, so it is a proof result and does not threaten RSA. Commenter thomasahle's side-by-side table of old and new bounds explains the release better than the README does. Google putting six papers in one folder on the day the factoring rumors started reads like a lab trying to stake its claim first.
+
+*** Comments
+
+**** thomasahle
+:PROPERTIES:
+:COMMENT_ID: 50642719
+:END:
+Integer factorization: new L_N［1/3, 105］, previous proven L_N［1/2, 1］. In practice GNFS was assumed to run in L_N［1/3, 1.923］, but it's unproven.
+
+**** fghorow
+:PROPERTIES:
+:COMMENT_ID: 50642643
+:END:
+From a layperson's viewpoint, do the discrete logarithm and integer factorization results invalidate public key crypto? Please ELIF!
+
+**** david-gpu
+:PROPERTIES:
+:COMMENT_ID: 50642161
+:END:
+Cogentic appears to be a specialized harness for existing LLMs to collaborate on conjectures, with a central orchestrator and a shared database of intermediate proofs. Math is going through its own industrial revolution.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Google 发布 Cogentic 论文：整数分解、离散对数等
+***** TLDR
+Google Research 发布了一个文件夹，收录 11 篇署名为 Cogentic 的理论论文，Cogentic 是一个在 arXiv 论文中描述的多智能体证明框架。其中六篇日期为今天：L_N［1/3, O(1)］ 时间的无条件整数分解、确定性次指数分解、小特征有限域上更快的离散对数、多项式时间的 1/5 近似纳什均衡、突破平方根的 log-rank 界，以及一个图的边重构结果。README 写明这不是 Google 官方产品，也没有说明同行评审状态。HN 另一个帖子正在流传某实验室已把分解问题放进 P 的传言。
+***** Take
+这篇分解论文证明的界与数域筛法形式相同，但常数是 105 而不是约 1.92，所以它是一个证明层面的结果，对 RSA 没有威胁。评论者 thomasahle 的新旧界对照表比 README 解释得更清楚。Google 在分解传言出现的当天把六篇论文放进一个文件夹，看起来像是实验室想抢先占位。
+***** Comments
+- 整数分解：新结果 L_N［1/3, 105］，此前已证明的是 L_N［1/2, 1］。实际上一般认为 GNFS 运行时间为 L_N［1/3, 1.923］，但并未被证明。
+- 从外行角度看，离散对数和整数分解的结果会让公钥密码失效吗？请简单解释！
+- Cogentic 看起来是一个让现有 LLM 协作解决猜想的专用框架，有中央调度器和共享的中间证明数据库。数学正在经历自己的工业革命。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Google、整数分解や離散対数などに関するCogentic論文を公開
+***** TLDR
+Google Researchが、arXiv論文で説明されているマルチエージェント証明ハーネス「Cogentic」の名義で11本の理論論文をまとめたフォルダを公開した。うち6本は今日付けで、L_N［1/3, O(1)］時間の無条件整数分解、決定的な準指数時間分解、小標数有限体での高速な離散対数、多項式時間の1/5近似ナッシュ均衡、平方根を破るlog-rank上界、グラフの辺再構成の結果を含む。READMEには「Google公式製品ではない」とあり、査読状況の記載はない。HNの別スレッドでは、どこかのラボが素因数分解をPで解いたという噂が広まっている。
+***** Take
+分解論文が証明した上界は数体ふるい法と同じ形だが、定数は約1.92ではなく105で、証明上の成果でありRSAへの脅威ではない。新旧の上界を並べたthomasahleのコメントの方がREADMEよりよほど分かりやすい。分解の噂が出た当日に6本を1つのフォルダに出したのは、先に旗を立てたいラボの動きに見える。
+***** Comments
+- 整数分解：新しい結果はL_N［1/3, 105］、従来証明済みはL_N［1/2, 1］。実用上GNFSはL_N［1/3, 1.923］とされてきたが未証明。
+- 素人目線で聞きたい。離散対数と整数分解の結果で公開鍵暗号は無効になるの？簡単に説明して！
+- Cogenticは既存のLLMを協調させて予想を解く専用ハーネスのようで、中央のオーケストレーターと中間証明の共有データベースがある。数学は独自の産業革命を迎えている。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Google, 정수 인수분해·이산 로그 등에 관한 Cogentic 논문 공개
+***** TLDR
+Google Research가 arXiv 논문에 소개된 멀티 에이전트 증명 하네스 Cogentic 명의의 이론 논문 11편을 한 폴더에 공개했다. 그중 6편이 오늘 날짜로, L_N［1/3, O(1)］ 시간의 무조건 정수 인수분해, 결정론적 준지수 시간 인수분해, 작은 표수 유한체에서 더 빠른 이산 로그, 다항 시간 1/5 근사 내시 균형, 제곱근을 깨는 log-rank 상한, 그래프 간선 재구성 결과를 담고 있다. README에는 Google 공식 제품이 아니라고 적혀 있고 동료 심사 여부는 나와 있지 않다. HN의 다른 스레드에서는 어느 연구소가 인수분해를 P 안에서 풀었다는 소문이 돌고 있다.
+***** Take
+인수분해 논문이 증명한 상한은 수체 체와 같은 형태지만 상수가 약 1.92가 아니라 105라서, 증명상의 성과일 뿐 RSA를 위협하지 않는다. 새 상한과 기존 상한을 나란히 정리한 thomasahle의 댓글이 README보다 훨씬 잘 설명한다. 인수분해 소문이 나온 날 논문 6편을 한 폴더에 올린 것은 먼저 깃발을 꽂으려는 연구소의 움직임으로 보인다.
+***** Comments
+- 정수 인수분해: 새 결과 L_N［1/3, 105］, 기존에 증명된 것은 L_N［1/2, 1］. 실제로 GNFS는 L_N［1/3, 1.923］로 여겨졌지만 증명되지 않았다.
+- 비전문가 입장에서 묻는데, 이산 로그와 정수 인수분해 결과가 공개키 암호를 무력화하나요? 쉽게 설명해 주세요!
+- Cogentic은 기존 LLM들이 협업해 추측을 푸는 전용 하네스로 보이며, 중앙 오케스트레이터와 중간 증명 공유 데이터베이스가 있다. 수학이 자체 산업혁명을 겪고 있다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Google publica artículos de Cogentic sobre factorización de enteros, logaritmos discretos y más
+***** TLDR
+Google Research publicó una carpeta con 11 artículos teóricos atribuidos a Cogentic, un sistema multiagente de búsqueda de demostraciones descrito en un artículo de arXiv. Seis llevan fecha de hoy: factorización incondicional de enteros en tiempo L_N［1/3, O(1)］, factorización determinista subexponencial, logaritmos discretos más rápidos en cuerpos de característica pequeña, un equilibrio de Nash 1/5-aproximado en tiempo polinómico, una cota de log-rank por debajo de la raíz cuadrada y un resultado de reconstrucción de aristas en grafos. El README dice que no es un producto oficial de Google y no indica revisión por pares. Otro hilo de HN difunde rumores de que un laboratorio tiene la factorización en P.
+***** Take
+El artículo de factorización demuestra una cota con la misma forma que la criba del cuerpo de números, pero con constante 105 en vez de unos 1,92: es un resultado de demostración y no amenaza a RSA. La tabla de cotas antiguas y nuevas del comentarista thomasahle explica la publicación mejor que el README. Que Google suba seis artículos a una carpeta el mismo día de los rumores sobre factorización parece un laboratorio queriendo reclamar prioridad.
+***** Comments
+- Factorización de enteros: nuevo L_N［1/3, 105］, anterior demostrado L_N［1/2, 1］. En la práctica se suponía que GNFS corre en L_N［1/3, 1.923］, pero no está demostrado.
+- Desde el punto de vista de un profano, ¿estos resultados de logaritmos discretos y factorización invalidan la criptografía de clave pública? ¡Explíquenlo fácil!
+- Cogentic parece un sistema especializado para que LLM existentes colaboren en conjeturas, con un orquestador central y una base de datos compartida de demostraciones intermedias. Las matemáticas viven su propia revolución industrial.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Google veröffentlicht Cogentic-Papers zu Ganzzahlfaktorisierung, diskreten Logarithmen und mehr
+***** TLDR
+Google Research hat einen Ordner mit 11 Theorie-Papers veröffentlicht, die Cogentic zugeschrieben werden, einem in einem arXiv-Paper beschriebenen Multi-Agenten-System für Beweissuche. Sechs tragen das heutige Datum: unbedingte Ganzzahlfaktorisierung in L_N［1/3, O(1)］, deterministische subexponentielle Faktorisierung, schnellere diskrete Logarithmen in Körpern kleiner Charakteristik, ein polynomielles 1/5-approximatives Nash-Gleichgewicht, eine Log-Rank-Schranke unter der Quadratwurzel und ein Ergebnis zur Kantenrekonstruktion von Graphen. Das README sagt, es sei kein offizielles Google-Produkt, und nennt keinen Peer-Review-Status. Ein anderer HN-Thread verbreitet Gerüchte, ein Labor habe Faktorisierung in P.
+***** Take
+Das Faktorisierungspaper beweist eine Schranke derselben Form wie das Zahlkörpersieb, aber mit Konstante 105 statt etwa 1,92. Es ist ein Beweisresultat und keine Gefahr für RSA. Die Gegenüberstellung alter und neuer Schranken von thomasahle erklärt die Veröffentlichung besser als das README. Dass Google am Tag der Faktorisierungsgerüchte sechs Papers in einen Ordner legt, wirkt wie ein Labor, das zuerst seinen Anspruch anmelden will.
+***** Comments
+- Ganzzahlfaktorisierung: neu L_N［1/3, 105］, bisher bewiesen L_N［1/2, 1］. In der Praxis nahm man für GNFS L_N［1/3, 1.923］ an, das ist aber unbewiesen.
+- Aus Laiensicht: Machen die Ergebnisse zu diskreten Logarithmen und Faktorisierung Public-Key-Kryptografie ungültig? Bitte einfach erklären!
+- Cogentic scheint ein spezialisiertes System zu sein, in dem vorhandene LLMs an Vermutungen zusammenarbeiten, mit zentralem Orchestrator und gemeinsamer Datenbank von Zwischenbeweisen. Die Mathematik erlebt ihre eigene industrielle Revolution.
+** U.S. jury convicts Huawei of fraud, Iran sanctions violations :huawei:law:sanctions:china:
+:PROPERTIES:
+:ID:       50642496
+:URL:      https://www.upi.com/Top_News/US/2026/11/25/jury-convicts-Huawei/3151795587204/
+:HN_URL:   https://news.ycombinator.com/item?id=50642496
+:POINTS:   131
+:COMMENTS: 124
+:BY:       nephihaha
+:END:
+
+*** TLDR
+After a three-month trial in the Eastern District of New York, a jury convicted Huawei and three subsidiaries of conspiracy to steal trade secrets, bank and wire fraud conspiracy, conspiracy to defraud the U.S., money laundering conspiracy, IEEPA (Iran sanctions) violations and bank fraud. It acquitted them of racketeering, the most serious charge. Prosecutors said Huawei lied to banks about its Iran business through Skycom and took trade secrets from T-Mobile, Cisco and others. Sentencing is set for September 14. Huawei says the trade secret disputes were civil matters settled years ago.
+
+*** Take
+Huawei sells almost nothing in the U.S., so fines and forfeiture matter less than the record the verdict creates: allies can cite a jury finding, not only American accusations, when they keep Huawei out of their networks. The thread's best comment points out that Ericsson, the vendor that replaced Huawei, paid a $1.26 billion FCPA penalty for similar conduct. That makes the national security reasoning harder to defend, though it does not get Huawei off.
+
+*** Comments
+
+**** throwa356262
+:PROPERTIES:
+:COMMENT_ID: 50642836
+:END:
+Huawei is already locked out of the US market. Does it really matter to them what US courts come up with?
+
+**** piltdownman
+:PROPERTIES:
+:COMMENT_ID: 50643435
+:END:
+Ericsson got the biggest fine in history, $1.26 billion in FCPA penalties, for bribery and payments to ISIS in Iraq. This is the vendor you swapped out Huawei for on national security concerns.
+
+**** roenxi
+:PROPERTIES:
+:COMMENT_ID: 50642734
+:END:
+If Huawei wants to do business in the US it will have to comply with US law. But it sounds impractical to regulate how Chinese and Iranian companies interact through US courts.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+美国陪审团裁定华为欺诈、违反伊朗制裁罪名成立
+***** TLDR
+在纽约东区联邦法院历时三个月的审判后，陪审团裁定华为及三家子公司共谋窃取商业机密、共谋银行和电信欺诈、共谋欺骗美国、共谋洗钱、违反 IEEPA（伊朗制裁）以及银行欺诈罪名成立，但宣判最严重的敲诈勒索罪不成立。检方称华为通过 Skycom 就其伊朗业务向银行撒谎，并窃取了 T-Mobile、Cisco 等公司的商业机密。量刑定于 9 月 14 日。华为称这些商业机密纠纷属于多年前已解决的民事问题。
+***** Take
+华为在美国几乎没有业务，罚款和没收资产的影响不如判决留下的记录：盟友在把华为挡在网络之外时，可以引用陪审团的认定，而不只是美国的指控。帖子里最好的评论指出，取代华为的供应商 Ericsson 曾因类似行为支付 12.6 亿美元的 FCPA 罚款。这让国家安全的理由更难站住，但并不能让华为脱罪。
+***** Comments
+- 华为已经被挡在美国市场之外了。美国法院怎么判，对他们真的重要吗？
+- Ericsson 因在伊拉克行贿和向 ISIS 付款，被处以史上最大的 12.6 亿美元 FCPA 罚款。这就是你们以国家安全为由替换华为的供应商。
+- 华为想在美国做生意就得遵守美国法律。但通过美国法院来管中国和伊朗公司之间的往来，听起来不太现实。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+米陪審、Huaweiに詐欺とイラン制裁違反で有罪評決
+***** TLDR
+ニューヨーク東部地区での3か月の公判を経て、陪審はHuaweiと子会社3社に対し、営業秘密窃取の共謀、銀行・通信詐欺の共謀、米国を欺く共謀、資金洗浄の共謀、IEEPA（イラン制裁）違反、銀行詐欺で有罪評決を出した。最も重い組織犯罪（RICO）の罪は無罪。検察はHuaweiがSkycomを通じたイラン事業について銀行に虚偽説明し、T-MobileやCiscoなどから営業秘密を盗んだと主張した。量刑言い渡しは9月14日。Huaweiは営業秘密の件は何年も前に解決した民事問題だとしている。
+***** Take
+Huaweiは米国でほぼ何も売っていないので、罰金や没収よりも評決が残す記録の方が重い。同盟国はHuaweiを自国網から締め出す際に、米国の主張だけでなく陪審の認定を根拠にできる。スレッドで最も良いコメントは、Huaweiの代わりに採用されたEricssonが同様の行為で12.6億ドルのFCPA制裁金を払ったと指摘している。安全保障上の理屈は苦しくなるが、Huaweiの免罪にはならない。
+***** Comments
+- Huaweiはすでに米国市場から締め出されている。米国の裁判所が何を決めようが本当に関係ある？
+- Ericssonはイラクでの贈賄とISISへの支払いで史上最大の12.6億ドルのFCPA制裁金を受けた。安全保障を理由にHuaweiと入れ替えたのはこのベンダーだ。
+- 米国で商売したいなら米国法に従うべきだ。ただ、中国とイランの企業間のやり取りを米国の裁判所で規制するのは現実的でないように思える。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+미국 배심원단, 화웨이에 사기·이란 제재 위반 유죄 평결
+***** TLDR
+뉴욕 동부지법에서 3개월간 이어진 재판 끝에 배심원단은 화웨이와 자회사 3곳에 영업비밀 절취 공모, 은행·통신 사기 공모, 미국 기만 공모, 자금세탁 공모, IEEPA(이란 제재) 위반, 은행 사기 혐의로 유죄 평결을 내렸다. 가장 무거운 공갈 범죄(RICO) 혐의는 무죄였다. 검찰은 화웨이가 Skycom을 통한 이란 사업에 대해 은행에 거짓말을 하고 T-Mobile, Cisco 등의 영업비밀을 빼돌렸다고 주장했다. 선고는 9월 14일이다. 화웨이는 영업비밀 분쟁은 수년 전 해결된 민사 사안이라고 밝혔다.
+***** Take
+화웨이는 미국에서 거의 아무것도 팔지 않으니 벌금과 몰수보다 평결이 남기는 기록이 더 중요하다. 동맹국들은 화웨이를 자국 망에서 배제할 때 미국의 주장뿐 아니라 배심원의 판단을 근거로 들 수 있다. 스레드의 가장 좋은 댓글은 화웨이를 대체한 Ericsson이 비슷한 행위로 12억 6천만 달러의 FCPA 벌금을 냈다고 지적한다. 국가안보 논리가 약해지긴 하지만 화웨이의 혐의가 벗겨지는 것은 아니다.
+***** Comments
+- 화웨이는 이미 미국 시장에서 쫓겨났다. 미국 법원이 뭘 결정하든 그들에게 정말 중요할까?
+- Ericsson은 이라크에서의 뇌물과 ISIS 자금 지급으로 사상 최대인 12억 6천만 달러의 FCPA 벌금을 받았다. 국가안보를 이유로 화웨이 대신 들인 업체가 바로 이곳이다.
+- 화웨이가 미국에서 사업하려면 미국 법을 지켜야 한다. 하지만 중국과 이란 기업 간의 거래를 미국 법원으로 규제하는 건 비현실적으로 들린다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Un jurado de EE. UU. condena a Huawei por fraude y violación de sanciones a Irán
+***** TLDR
+Tras un juicio de tres meses en el Distrito Este de Nueva York, un jurado declaró culpables a Huawei y tres filiales de conspiración para robar secretos comerciales, conspiración para fraude bancario y electrónico, conspiración para defraudar a EE. UU., conspiración para lavar dinero, violaciones de la IEEPA (sanciones a Irán) y fraude bancario. Los absolvió de crimen organizado, el cargo más grave. La fiscalía dijo que Huawei mintió a los bancos sobre su negocio en Irán a través de Skycom y se quedó con secretos de T-Mobile, Cisco y otros. La sentencia será el 14 de septiembre. Huawei dice que las disputas de secretos comerciales eran asuntos civiles resueltos hace años.
+***** Take
+Huawei casi no vende nada en EE. UU., así que las multas y decomisos importan menos que el precedente: los aliados pueden citar el veredicto de un jurado, y no solo acusaciones estadounidenses, cuando dejan a Huawei fuera de sus redes. El mejor comentario del hilo recuerda que Ericsson, el proveedor que sustituyó a Huawei, pagó 1.260 millones de dólares en sanciones FCPA por conductas parecidas. Eso debilita el argumento de seguridad nacional, aunque no exculpa a Huawei.
+***** Comments
+- Huawei ya está fuera del mercado estadounidense. ¿De verdad les importa lo que decidan los tribunales de EE. UU.?
+- Ericsson recibió la mayor multa de la historia, 1.260 millones de dólares en sanciones FCPA, por sobornos y pagos a ISIS en Irak. Ese es el proveedor por el que cambiaron a Huawei por seguridad nacional.
+- Si Huawei quiere hacer negocios en EE. UU. tendrá que cumplir la ley estadounidense. Pero regular cómo se relacionan empresas chinas e iraníes a través de tribunales de EE. UU. suena poco práctico.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+US-Jury verurteilt Huawei wegen Betrugs und Verstößen gegen Iran-Sanktionen
+***** TLDR
+Nach einem dreimonatigen Prozess im Eastern District of New York sprach eine Jury Huawei und drei Tochterfirmen schuldig wegen Verschwörung zum Diebstahl von Geschäftsgeheimnissen, Verschwörung zu Bank- und Überweisungsbetrug, Verschwörung zum Betrug an den USA, Verschwörung zur Geldwäsche, IEEPA-Verstößen (Iran-Sanktionen) und Bankbetrug. Vom schwersten Vorwurf, organisierter Kriminalität, wurden sie freigesprochen. Laut Anklage belog Huawei Banken über sein Iran-Geschäft über Skycom und nahm Geschäftsgeheimnisse von T-Mobile, Cisco und anderen. Das Strafmaß folgt am 14. September. Huawei sagt, die Geheimnisstreitigkeiten seien längst beigelegte Zivilsachen.
+***** Take
+Huawei verkauft in den USA fast nichts, daher zählen Geldstrafen und Einziehung weniger als die Aktenlage: Verbündete können sich auf ein Jury-Urteil stützen statt nur auf US-Vorwürfe, wenn sie Huawei aus ihren Netzen fernhalten. Der beste Kommentar im Thread erinnert daran, dass Ericsson, der Ersatzlieferant für Huawei, 1,26 Milliarden Dollar FCPA-Strafe für ähnliches Verhalten zahlte. Das schwächt das Sicherheitsargument, entlastet Huawei aber nicht.
+***** Comments
+- Huawei ist ohnehin vom US-Markt ausgeschlossen. Ist es für sie wirklich wichtig, was US-Gerichte entscheiden?
+- Ericsson bekam die höchste Strafe der Geschichte, 1,26 Milliarden Dollar FCPA-Strafe, für Bestechung und Zahlungen an den IS im Irak. Das ist der Lieferant, gegen den ihr Huawei aus Sicherheitsgründen getauscht habt.
+- Wenn Huawei in den USA Geschäfte machen will, muss es US-Recht einhalten. Aber über US-Gerichte zu regeln, wie chinesische und iranische Firmen miteinander umgehen, klingt unpraktikabel.
+** Windows Loudness Equalization, reverse-engineered and ported to PipeWire :linux:audio:pipewire:reverse-engineering:
+:PROPERTIES:
+:ID:       50641171
+:URL:      https://github.com/xoxorwr/pw-loudness-eq
+:HN_URL:   https://news.ycombinator.com/item?id=50641171
+:POINTS:   227
+:COMMENTS: 127
+:BY:       ThrowNotAway
+:END:
+
+*** TLDR
+pw-loudness-eq ports Windows' Loudness Equalization (from WMALFXGFXDSP.dll) and the always-on output limiter (CAudioLimiter in AudioEng.dll) to PipeWire 1.4+. It is a broadband automatic gain control: 512-sample FFT frames summed into 25 bands, a gain target capped at +20 dB, instant gain reduction and a roughly 4.6 s rise at the default release setting of 4. It runs as a per-app filter graph before volume and mixing, is configured through pw-metadata or a GTK3 window, and skips JACK clients and native-PipeWire Flatpaks.
+
+*** Take
+The useful part is a night-time volume leveler that matches Windows behavior people already know. The thread spends most of its time on whether porting a DLL algorithm with an LLM counts as theft. vrganj's point holds up: a project with this origin makes any future clean-room leveler harder to upstream, because maintainers will now wonder where its code came from.
+
+*** Comments
+
+**** getfacl
+:PROPERTIES:
+:COMMENT_ID: 50641408
+:END:
+"Quiet and loud parts play at a similar level." This is never what I want. A composition has a dynamic range for a reason.
+
+**** hypfer
+:PROPERTIES:
+:COMMENT_ID: 50641543
+:END:
+Cool that it is possible, but also just piracy/stealing. You could have taken the Windows implementation as a starting point and built something new out of those learnings.
+
+**** vrganj
+:PROPERTIES:
+:COMMENT_ID: 50641874
+:END:
+No serious project is going to upstream code that is a Claude RA of proprietary code. Now all Loudness Equalization code will be looked at through a lens of suspicion.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Windows 响度均衡被逆向工程并移植到 PipeWire
+***** TLDR
+pw-loudness-eq 把 Windows 的响度均衡（来自 WMALFXGFXDSP.dll）和常开的输出限幅器（AudioEng.dll 中的 CAudioLimiter）移植到 PipeWire 1.4+。它是一个全频段自动增益控制：512 采样的 FFT 帧汇总成 25 个频段，增益目标上限 +20 dB，降低增益是瞬时的，在默认释放档位 4 下升高约需 4.6 秒。它作为每个应用的滤波图在音量和混音之前运行，可用 pw-metadata 或 GTK3 窗口配置，不处理 JACK 客户端和直接使用 PipeWire 的 Flatpak 应用。
+***** Take
+有用的地方在于，它提供了一个与大家熟悉的 Windows 行为一致的夜间音量平衡器。帖子大部分在争论用 LLM 移植 DLL 里的算法算不算偷窃。vrganj 的观点站得住：有这种来源的项目，会让将来任何净室实现的音量平衡器更难被上游接受，因为维护者会怀疑代码的出处。
+***** Comments
+- “安静和响亮的部分以相近音量播放。”这从来不是我想要的。作品有动态范围是有原因的。
+- 能做到很酷，但这就是盗版/偷窃。你本可以把 Windows 实现作为起点，从中学到东西再做一个新的。
+- 没有正经项目会接受由 Claude 逆向专有代码得来的代码。现在所有响度均衡代码都会被怀疑地看待。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Windowsのラウドネス イコライゼーションをリバースエンジニアリングしてPipeWireに移植
+***** TLDR
+pw-loudness-eqは、Windowsのラウドネス イコライゼーション（WMALFXGFXDSP.dll由来）と常時有効の出力リミッター（AudioEng.dllのCAudioLimiter）をPipeWire 1.4以降に移植したもの。全帯域の自動ゲイン制御で、512サンプルのFFTフレームを25バンドに集計し、ゲイン目標は最大+20dB、ゲインは即座に下げ、デフォルトのリリース設定4では約4.6秒かけて上げる。アプリごとのフィルターグラフとして音量調整とミキシングの前に動作し、pw-metadataかGTK3ウィンドウで設定する。JACKクライアントとPipeWireを直接使うFlatpakは対象外。
+***** Take
+役に立つのは、みんなが知っているWindowsと同じ挙動をする夜間用の音量平準化ツールだという点だ。スレッドの大半は、LLMでDLLのアルゴリズムを移植するのは窃盗かという議論に費やされている。vrganjの指摘は妥当で、こうした出自のプロジェクトがあると、今後クリーンルームで作られた平準化ツールもアップストリームに入れにくくなる。メンテナがコードの出所を疑うようになるからだ。
+***** Comments
+- 「小さい音と大きい音が同じくらいの音量で鳴る」これは決して望んでいない。曲にダイナミックレンジがあるのには理由がある。
+- できるのはすごいが、単なる海賊行為/窃盗だ。Windowsの実装を出発点に学んだことから新しいものを作ることもできたはず。
+- まともなプロジェクトは、プロプライエタリコードをClaudeでリバースしたコードを取り込まない。今後あらゆるラウドネス平準化コードが疑いの目で見られる。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Windows 음량 평준화를 리버스 엔지니어링해 PipeWire로 이식
+***** TLDR
+pw-loudness-eq는 Windows의 음량 평준화(WMALFXGFXDSP.dll)와 항상 켜져 있는 출력 리미터(AudioEng.dll의 CAudioLimiter)를 PipeWire 1.4 이상으로 이식했다. 전대역 자동 게인 제어로, 512샘플 FFT 프레임을 25개 대역으로 합산하고, 게인 목표는 최대 +20dB이며, 게인은 즉시 낮추고 기본 릴리스 설정 4에서 약 4.6초에 걸쳐 올린다. 앱별 필터 그래프로 볼륨과 믹싱 전에 동작하며 pw-metadata나 GTK3 창으로 설정한다. JACK 클라이언트와 PipeWire를 직접 쓰는 Flatpak은 처리하지 않는다.
+***** Take
+쓸모 있는 부분은 사람들이 이미 아는 Windows 동작과 똑같은 야간용 음량 평준화 도구라는 점이다. 스레드는 대부분 LLM으로 DLL의 알고리즘을 이식하는 것이 도둑질인지를 두고 다툰다. vrganj의 지적이 맞다. 이런 출처의 프로젝트가 있으면 앞으로 클린룸으로 만든 평준화 도구도 업스트림에 들어가기 어려워진다. 메인테이너들이 코드 출처를 의심할 것이기 때문이다.
+***** Comments
+- "조용한 부분과 큰 부분이 비슷한 음량으로 재생된다." 이건 내가 원하는 게 절대 아니다. 곡에 다이내믹 레인지가 있는 데는 이유가 있다.
+- 가능하다는 건 멋지지만 그냥 불법복제/도둑질이다. Windows 구현을 출발점으로 삼아 배운 것으로 새로운 걸 만들 수도 있었다.
+- 제대로 된 프로젝트라면 독점 코드를 Claude로 리버스한 코드를 업스트림에 넣지 않는다. 이제 모든 음량 평준화 코드가 의심의 눈초리를 받게 된다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+La ecualización de sonoridad de Windows, sometida a ingeniería inversa y portada a PipeWire
+***** TLDR
+pw-loudness-eq porta a PipeWire 1.4+ la ecualización de sonoridad de Windows (de WMALFXGFXDSP.dll) y el limitador de salida siempre activo (CAudioLimiter de AudioEng.dll). Es un control automático de ganancia de banda ancha: tramas FFT de 512 muestras agrupadas en 25 bandas, objetivo de ganancia limitado a +20 dB, reducción de ganancia instantánea y subida de unos 4,6 s con el ajuste de liberación por defecto (4). Funciona como grafo de filtros por aplicación antes del volumen y la mezcla, se configura con pw-metadata o una ventana GTK3, y no procesa clientes JACK ni Flatpaks que usan PipeWire directamente.
+***** Take
+Lo útil es un nivelador de volumen para ver cosas de noche que se comporta igual que el de Windows que la gente ya conoce. El hilo dedica casi todo a discutir si portar un algoritmo de una DLL con un LLM es robo. El argumento de vrganj se sostiene: un proyecto con este origen hace más difícil incorporar a upstream cualquier nivelador futuro hecho en sala limpia, porque los mantenedores dudarán de dónde salió el código.
+***** Comments
+- "Las partes suaves y fuertes suenan a un nivel similar." Eso nunca es lo que quiero. Una composición tiene rango dinámico por algo.
+- Está bien que se pueda, pero es piratería/robo. Podrías haber tomado la implementación de Windows como punto de partida y construir algo nuevo con lo aprendido.
+- Ningún proyecto serio va a integrar código que sea ingeniería inversa de código propietario hecha con Claude. Ahora todo código de ecualización de sonoridad se mirará con sospecha.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Windows-Lautstärkeausgleich per Reverse Engineering nach PipeWire portiert
+***** TLDR
+pw-loudness-eq portiert den Windows-Lautstärkeausgleich (aus WMALFXGFXDSP.dll) und den immer aktiven Ausgangslimiter (CAudioLimiter aus AudioEng.dll) nach PipeWire 1.4+. Es ist eine breitbandige automatische Verstärkungsregelung: FFT-Frames mit 512 Samples, zu 25 Bändern zusammengefasst, Zielverstärkung bis +20 dB, sofortiges Absenken und etwa 4,6 s Anstieg bei der Standard-Release-Stufe 4. Es läuft als Filtergraph pro Anwendung vor Lautstärke und Mischung, wird über pw-metadata oder ein GTK3-Fenster konfiguriert und lässt JACK-Clients und Flatpaks mit direktem PipeWire-Zugriff aus.
+***** Take
+Nützlich ist ein Lautstärkeausgleich für abends, der sich wie die bekannte Windows-Funktion verhält. Der Thread streitet hauptsächlich darüber, ob das Portieren eines DLL-Algorithmus mit einem LLM Diebstahl ist. vrganjs Punkt trägt: Ein Projekt mit dieser Herkunft macht es schwerer, künftige Clean-Room-Lösungen upstream zu bringen, weil Maintainer die Herkunft des Codes anzweifeln werden.
+***** Comments
+- "Leise und laute Passagen spielen auf ähnlichem Pegel." Das will ich nie. Eine Komposition hat ihren Dynamikumfang aus gutem Grund.
+- Cool, dass es geht, aber es ist schlicht Piraterie/Diebstahl. Man hätte die Windows-Implementierung als Ausgangspunkt nehmen und daraus etwas Neues bauen können.
+- Kein ernsthaftes Projekt wird Code upstreamen, der ein mit Claude zurückentwickelter proprietärer Code ist. Jetzt wird jeder Lautstärkeausgleich-Code mit Misstrauen betrachtet.
+** The short age of dragon riders :ai:physics:research:essay:
+:PROPERTIES:
+:ID:       50607849
+:URL:      https://atilloy.com/2026/11/16/the-short-age-of-dragon-riders/
+:HN_URL:   https://news.ycombinator.com/item?id=50607849
+:POINTS:   203
+:COMMENTS: 125
+:BY:       synapsomorphy
+:END:
+
+*** TLDR
+Theoretical physicist Antoine Tilloy says public AI models now do most technical physics work better than most physicists, including him: long calculations, proofs, code and simulations, with problems he considered impossible solved since Fable 5 in May. What they still lack is research taste, and he expects reinforcement learning on verifiable rewards to close that gap. His advice is to 'ride the dragon' now: set goals, check results, and give up hand calculation. He calls the Fields medalists' statement about the value of the human journey a shock reaction, and says riders will be valuable only for a few years.
+
+*** Take
+The essay is honest about the loss and the timeline, which is unusual. It is weakest where commenters push back: a result nobody understands adds nothing to physics, and in October OpenAI withdrew three papers over a sign error. Tilloy needs a way to verify the output before 'ride the dragon' is useful advice, and Lean only covers the mathematics.
+
+*** Comments
+
+**** Planktonne
+:PROPERTIES:
+:COMMENT_ID: 50641735
+:END:
+"Problems melt before we can even understand the solution." I don't think this counts as a meaningful solution. Until someone can understand and build on it, it provides no insight.
+
+**** fwlr
+:PROPERTIES:
+:COMMENT_ID: 50641727
+:END:
+How much control do these riders really have over the dragons? It sounds less noble to say you are clinging to the back of the dragon for dear life, but that might be more truthful.
+
+**** bariumbitmap
+:PROPERTIES:
+:COMMENT_ID: 50641861
+:END:
+There's a lack of agreement from experts. Retraction Watch recently posted about OpenAI withdrawing three papers because of a sign error.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+驯龙者的短暂时代
+***** TLDR
+理论物理学家 Antoine Tilloy 认为，公开的 AI 模型在大多数物理技术工作上已经超过大多数物理学家，包括他本人：长篇计算、证明、代码和模拟都能完成，自 5 月的 Fable 5 以来，他认为不可能的问题已被解决。模型仍缺少研究品味，他预计基于可验证奖励的强化学习会弥补这一点。他的建议是现在就“驾驭巨龙”：设定目标、检查结果，放弃手工计算。他把菲尔兹奖得主关于人类探索过程价值的声明称为震惊反应，并说驯龙者的价值只会持续几年。
+***** Take
+这篇文章对失落感和时间表很坦诚，这并不常见。它最薄弱的地方正是评论者反驳的地方：没人理解的结果对物理学毫无贡献，而且 10 月 OpenAI 因符号错误撤回了三篇论文。Tilloy 需要先有验证输出的办法，“驾驭巨龙”才是有用的建议，而 Lean 只覆盖数学部分。
+***** Comments
+- “问题在我们理解答案之前就消融了。”我不认为这算有意义的解决。在有人能理解并在其基础上发展之前，它不提供任何洞见。
+- 这些骑手对巨龙到底有多少控制？说你正拼命抓着龙背、觉得还能撑几年，听起来没那么高尚，但可能更真实。
+- 专家之间缺乏共识。Retraction Watch 最近报道 OpenAI 因一个符号错误撤回了三篇论文。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+ドラゴンライダーの短い時代
+***** TLDR
+理論物理学者Antoine Tilloyは、公開AIモデルが物理の技術的作業の大半で、自分を含むほとんどの物理学者を上回ったと書く。長い計算、証明、コード、シミュレーションをこなし、5月のFable 5以降、不可能だと思っていた問題が解かれたという。足りないのは研究のセンスで、検証可能な報酬による強化学習がその差を埋めると予想する。助言は今すぐ「ドラゴンに乗れ」、つまり目標を設定し、結果を確認し、手計算は手放すこと。人類の探求の価値を訴えたフィールズ賞受賞者の声明はショック反応だとし、ライダーの価値は数年しか続かないと述べる。
+***** Take
+喪失感と時間軸に正直なエッセイで、これは珍しい。弱いのはコメント欄が突いた点だ。誰も理解できない結果は物理学に何も加えないし、10月にはOpenAIが符号ミスで論文3本を撤回した。「ドラゴンに乗れ」が実用的な助言になるには出力を検証する手段が要り、Leanがカバーするのは数学だけだ。
+***** Comments
+- 「解を理解する前に問題が溶けていく」これは意味のある解決とは思えない。誰かが理解して発展させられるまで、何の洞察も与えない。
+- ライダーはドラゴンを実際どれだけ制御できているのか。必死に背中にしがみついてあと数年は持つと思っている、と言う方が格好悪いが、たぶん正直だ。
+- 専門家の間で意見が一致していない。Retraction Watchは最近、OpenAIが符号ミスで論文3本を撤回したと報じた。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+드래곤 라이더의 짧은 시대
+***** TLDR
+이론물리학자 Antoine Tilloy는 공개 AI 모델이 이제 물리학의 기술적 작업 대부분에서 자신을 포함한 대다수 물리학자보다 낫다고 말한다. 긴 계산, 증명, 코드, 시뮬레이션을 해내고, 5월 Fable 5 이후로 그가 불가능하다고 여긴 문제들이 풀렸다는 것이다. 아직 부족한 것은 연구 감각인데, 검증 가능한 보상 기반 강화학습이 그 격차를 메울 것으로 본다. 그의 조언은 지금 '드래곤을 타라'는 것, 즉 목표를 정하고 결과를 확인하며 손 계산은 내려놓으라는 것이다. 인간의 탐구 과정의 가치를 말한 필즈상 수상자들의 성명은 충격 반응이라고 하며, 라이더의 가치는 몇 년만 지속될 것이라고 말한다.
+***** Take
+상실감과 일정에 대해 솔직한 글이고, 이는 드문 일이다. 가장 약한 부분은 댓글들이 지적한 곳이다. 아무도 이해하지 못하는 결과는 물리학에 아무것도 더하지 않고, 10월에 OpenAI는 부호 오류로 논문 3편을 철회했다. '드래곤을 타라'가 쓸모 있는 조언이 되려면 결과를 검증할 수단이 있어야 하는데, Lean은 수학만 다룬다.
+***** Comments
+- "해답을 이해하기도 전에 문제가 녹아내린다." 이건 의미 있는 해결로 보이지 않는다. 누군가 이해하고 그 위에 쌓을 수 있기 전까지는 아무런 통찰도 주지 않는다.
+- 이 라이더들이 드래곤을 실제로 얼마나 통제할까? 필사적으로 등에 매달려 몇 년은 버틸 수 있다고 말하는 게 덜 고상하지만 더 진실할지도 모른다.
+- 전문가들 사이에 합의가 없다. Retraction Watch는 최근 OpenAI가 부호 오류로 논문 3편을 철회했다고 보도했다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+La breve era de los jinetes de dragones
+***** TLDR
+El físico teórico Antoine Tilloy sostiene que los modelos de IA públicos ya hacen la mayor parte del trabajo técnico de física mejor que la mayoría de los físicos, él incluido: cálculos largos, demostraciones, código y simulaciones, con problemas que creía imposibles resueltos desde Fable 5 en mayo. Les falta criterio de investigación, y espera que el aprendizaje por refuerzo con recompensas verificables cierre esa brecha. Su consejo es 'montar el dragón' ya: fijar objetivos, revisar resultados y abandonar el cálculo a mano. Llama reacción de shock a la declaración de medallistas Fields sobre el valor del camino humano, y dice que los jinetes solo serán valiosos unos pocos años.
+***** Take
+El ensayo es honesto sobre la pérdida y los plazos, algo poco común. Es más débil donde los comentaristas le responden: un resultado que nadie entiende no aporta nada a la física, y en octubre OpenAI retiró tres artículos por un error de signo. Para que 'montar el dragón' sea un consejo útil, Tilloy necesita una forma de verificar los resultados, y Lean solo cubre la parte matemática.
+***** Comments
+- "Los problemas se derriten antes de que podamos entender la solución." No creo que eso cuente como solución. Hasta que alguien pueda entenderla y construir sobre ella, no aporta nada.
+- ¿Cuánto control tienen realmente estos jinetes sobre los dragones? Suena menos noble decir que te aferras al lomo del dragón y crees aguantar unos años, pero quizá sea más cierto.
+- Los expertos no se ponen de acuerdo. Retraction Watch publicó hace poco que OpenAI retiró tres artículos por un error de signo.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Das kurze Zeitalter der Drachenreiter
+***** TLDR
+Der theoretische Physiker Antoine Tilloy schreibt, dass öffentliche KI-Modelle den Großteil der technischen Physikarbeit inzwischen besser erledigen als die meisten Physiker, ihn eingeschlossen: lange Rechnungen, Beweise, Code und Simulationen. Seit Fable 5 im Mai seien Probleme gelöst worden, die er für unmöglich hielt. Es fehle noch an Forschungsgespür, doch Reinforcement Learning mit überprüfbaren Belohnungen werde diese Lücke schließen. Sein Rat: jetzt 'den Drachen reiten', also Ziele setzen, Ergebnisse prüfen und auf Handrechnung verzichten. Die Erklärung von Fields-Medaillenträgern zum Wert des menschlichen Weges nennt er eine Schockreaktion, und Reiter seien nur für wenige Jahre wertvoll.
+***** Take
+Der Essay ist ehrlich über Verlust und Zeitrahmen, was selten ist. Schwach ist er dort, wo die Kommentare ansetzen: Ein Ergebnis, das niemand versteht, bringt die Physik nicht weiter, und im Oktober zog OpenAI drei Papers wegen eines Vorzeichenfehlers zurück. Damit 'den Drachen reiten' ein brauchbarer Rat ist, braucht Tilloy eine Methode, die Ergebnisse zu prüfen, und Lean deckt nur die Mathematik ab.
+***** Comments
+- "Probleme schmelzen dahin, bevor wir die Lösung verstehen." Das zählt für mich nicht als echte Lösung. Solange niemand sie verstehen und darauf aufbauen kann, liefert sie keine Einsicht.
+- Wie viel Kontrolle haben diese Reiter wirklich über die Drachen? Weniger edel klingt es zu sagen, dass man sich verzweifelt am Rücken festklammert und hofft, ein paar Jahre durchzuhalten, aber das wäre wohl ehrlicher.
+- Unter Experten fehlt die Einigkeit. Retraction Watch berichtete kürzlich, dass OpenAI drei Papers wegen eines Vorzeichenfehlers zurückgezogen hat.
+** Getting old Java phones online again :retrocomputing:j2me:bluetooth:raspberrypi:
+:PROPERTIES:
+:ID:       50627726
+:URL:      https://antcating.github.io/2026/11/23/getting-old-java-phones-online-again.html
+:HN_URL:   https://news.ycombinator.com/item?id=50627726
+:POINTS:   136
+:COMMENTS: 61
+:BY:       waximabbax
+:END:
+
+*** TLDR
+With 2G data gone, the author connected a used Sony Ericsson S500i to the internet through Bluetooth PAN, with a Raspberry Pi 5 acting as the network access point. The setup is BlueZ plus a NetworkManager Bluetooth NAP connection with IPv4 sharing, made with nmcli, and the phone pairs as a PAN user. FrogFind and Opera Mini 4.5 work, and Opera's proxy handles HTTPS so the phone can load xkcd. The stock browser's bookmarks are dead and most modern sites are out of reach. The author found that many older phones support PANU even when the manual does not mention it.
+
+*** Take
+The setup needs no custom code, just a Pi and two nmcli commands, so anyone with a drawer of old Sony Ericssons can repeat it in an evening. The comments add the real limits: J2ME apps cannot open ports 80 or 443 unless they are signed with a trusted certificate nobody can obtain any more, and Opera Mini only works while Opera keeps its proxy servers running.
+
+*** Comments
+
+**** grishka
+:PROPERTIES:
+:COMMENT_ID: 50641278
+:END:
+In the name of 'security', an app can't connect to TCP ports 80 and 443 without having been signed with a trusted certificate that you can't get any more.
+
+**** ngd
+:PROPERTIES:
+:COMMENT_ID: 50641313
+:END:
+In the late 2000s Google's London office kept just about every feature phone you could imagine stored, charged and ready for devs and QA testing J2ME apps.
+
+**** inference-god
+:PROPERTIES:
+:COMMENT_ID: 50640882
+:END:
+So much great hardware is wasted because of licensing. Manufacturers should be required to open source firmware when something is EOL.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+让旧 Java 手机重新上网
+***** TLDR
+2G 数据停用后，作者用蓝牙 PAN 让一部二手 Sony Ericsson S500i 重新联网，由 Raspberry Pi 5 充当网络接入点。方案是 BlueZ 加上用 nmcli 创建的 NetworkManager 蓝牙 NAP 连接并开启 IPv4 共享，手机作为 PAN 用户配对。FrogFind 和 Opera Mini 4.5 可以使用，Opera 的代理处理 HTTPS，所以手机能打开 xkcd。自带浏览器的书签链接都已失效，大多数现代网站仍然打不开。作者发现很多旧手机即使说明书没写也支持 PANU。
+***** Take
+这个方案不需要写代码，只要一台 Pi 和两条 nmcli 命令，抽屉里有旧 Sony Ericsson 的人一个晚上就能复现。评论补充了真正的限制：J2ME 应用除非用如今已无法获取的可信证书签名，否则无法连接 80 或 443 端口；而 Opera Mini 只有在 Opera 继续运行代理服务器时才能用。
+***** Comments
+- 以“安全”为名，应用没有可信证书签名就无法连接 TCP 80 和 443 端口。
+- 2000 年代末，Google 伦敦办公室保存着几乎所有能想到的功能机，充好电随时供开发和 QA 测试 J2ME 应用。
+- 因为授权问题浪费了太多好硬件。厂商应该被要求在产品停止支持时开源固件。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+古いJavaケータイを再びネットにつなぐ
+***** TLDR
+2Gデータ通信が終了したため、著者は中古のSony Ericsson S500iをBluetooth PAN経由でネットにつないだ。Raspberry Pi 5がネットワークアクセスポイントになる。構成はBlueZと、nmcliで作ったIPv4共有付きのNetworkManager Bluetooth NAP接続で、電話はPANユーザーとしてペアリングする。FrogFindとOpera Mini 4.5は動き、OperaのプロキシがHTTPSを処理するのでxkcdも読める。標準ブラウザのブックマークはリンク切れで、ほとんどの現代サイトは開けない。著者は、多くの古い電話がマニュアルに書かれていなくてもPANUに対応していることに気づいた。
+***** Take
+独自コードは不要で、Piとnmcliのコマンド2つだけなので、引き出しに古いSony Ericssonがある人なら一晩で再現できる。コメント欄が実際の制約を補っている。J2MEアプリは今では入手できない信頼済み証明書で署名されていない限り80番や443番ポートに接続できず、Opera MiniはOperaがプロキシサーバーを動かしている間しか使えない。
+***** Comments
+- 「セキュリティ」の名の下に、信頼された証明書で署名されていないアプリはTCPの80番と443番ポートに接続できない。
+- 2000年代後半、GoogleのロンドンオフィスにはJ2MEアプリの開発・QA用に、想像できるほぼすべてのフィーチャーフォンが充電済みで保管されていた。
+- ライセンスのせいで素晴らしいハードウェアが大量に無駄になっている。サポート終了時にはファームウェアのオープンソース化をメーカーに義務づけるべきだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+오래된 자바폰을 다시 인터넷에 연결하기
+***** TLDR
+2G 데이터가 끊기자 저자는 중고 Sony Ericsson S500i를 블루투스 PAN으로 인터넷에 연결했고, Raspberry Pi 5가 네트워크 액세스 포인트 역할을 한다. 구성은 BlueZ와 nmcli로 만든 IPv4 공유 NetworkManager 블루투스 NAP 연결이며, 휴대폰은 PAN 사용자로 페어링한다. FrogFind와 Opera Mini 4.5가 작동하고 Opera 프록시가 HTTPS를 처리해 xkcd도 열린다. 기본 브라우저의 북마크는 모두 죽은 링크이고 대부분의 최신 사이트는 열리지 않는다. 저자는 많은 구형 휴대폰이 설명서에 없어도 PANU를 지원한다는 것을 발견했다.
+***** Take
+별도 코드 없이 Pi 한 대와 nmcli 명령 두 개면 되니, 서랍에 오래된 Sony Ericsson이 있는 사람이면 하룻저녁에 따라 할 수 있다. 댓글이 실제 한계를 보탠다. J2ME 앱은 이제는 구할 수 없는 신뢰 인증서로 서명되지 않으면 80번이나 443번 포트에 연결할 수 없고, Opera Mini는 Opera가 프록시 서버를 유지하는 동안만 쓸 수 있다.
+***** Comments
+- '보안'이라는 명목으로, 신뢰할 수 있는 인증서로 서명되지 않은 앱은 TCP 80번과 443번 포트에 연결할 수 없다.
+- 2000년대 후반 Google 런던 사무실에는 J2ME 앱 개발과 QA용으로 상상할 수 있는 거의 모든 피처폰이 충전된 채 보관돼 있었다.
+- 라이선스 때문에 훌륭한 하드웨어가 너무 많이 버려진다. 제품 지원이 끝나면 제조사가 펌웨어를 오픈소스로 공개하도록 의무화해야 한다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Volver a conectar a internet los viejos teléfonos Java
+***** TLDR
+Sin datos 2G, el autor conectó un Sony Ericsson S500i usado a internet mediante Bluetooth PAN, con una Raspberry Pi 5 como punto de acceso de red. La configuración es BlueZ más una conexión Bluetooth NAP de NetworkManager con IPv4 compartido, creada con nmcli, y el teléfono se empareja como usuario PAN. FrogFind y Opera Mini 4.5 funcionan, y el proxy de Opera gestiona HTTPS, así que el teléfono puede cargar xkcd. Los marcadores del navegador de fábrica están muertos y la mayoría de los sitios modernos siguen fuera de alcance. El autor descubrió que muchos teléfonos antiguos admiten PANU aunque el manual no lo diga.
+***** Take
+No hace falta código propio, solo una Pi y dos comandos nmcli, así que cualquiera con un cajón de Sony Ericsson viejos puede repetirlo en una tarde. Los comentarios añaden los límites reales: las apps J2ME no pueden abrir los puertos 80 o 443 sin estar firmadas con un certificado de confianza que ya no se puede conseguir, y Opera Mini solo funciona mientras Opera mantenga sus servidores proxy.
+***** Comments
+- En nombre de la 'seguridad', una app no puede conectarse a los puertos TCP 80 y 443 sin estar firmada con un certificado de confianza.
+- A finales de los 2000, la oficina de Google en Londres tenía casi todos los teléfonos básicos imaginables guardados, cargados y listos para que desarrolladores y QA probaran apps J2ME.
+- Se desperdicia muchísimo buen hardware por culpa de las licencias. Los fabricantes deberían estar obligados a liberar el firmware cuando algo llega al fin de su vida útil.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Alte Java-Handys wieder online bringen
+***** TLDR
+Ohne 2G-Daten verband der Autor ein gebrauchtes Sony Ericsson S500i per Bluetooth PAN mit dem Internet, mit einem Raspberry Pi 5 als Netzwerkzugangspunkt. Die Einrichtung besteht aus BlueZ und einer mit nmcli erstellten NetworkManager-Bluetooth-NAP-Verbindung mit IPv4-Freigabe, das Handy koppelt sich als PAN-Nutzer. FrogFind und Opera Mini 4.5 funktionieren, Operas Proxy übernimmt HTTPS, sodass das Handy xkcd laden kann. Die Lesezeichen des Standardbrowsers sind tot, die meisten modernen Seiten bleiben unerreichbar. Der Autor stellte fest, dass viele alte Handys PANU unterstützen, auch wenn das Handbuch es nicht erwähnt.
+***** Take
+Eigener Code ist nicht nötig, nur ein Pi und zwei nmcli-Befehle, also kann jeder mit einer Schublade alter Sony Ericssons das an einem Abend nachbauen. Die Kommentare ergänzen die echten Grenzen: J2ME-Apps können die Ports 80 und 443 nur öffnen, wenn sie mit einem vertrauenswürdigen Zertifikat signiert sind, das man nicht mehr bekommt, und Opera Mini funktioniert nur, solange Opera seine Proxyserver betreibt.
+***** Comments
+- Im Namen der 'Sicherheit' kann eine App ohne Signatur mit vertrauenswürdigem Zertifikat keine Verbindung zu TCP-Port 80 und 443 aufbauen.
+- Ende der 2000er hatte Googles Londoner Büro fast jedes erdenkliche Featurephone geladen und griffbereit gelagert, damit Entwickler und QA J2ME-Apps testen konnten.
+- So viel gute Hardware wird wegen Lizenzen verschwendet. Hersteller sollten verpflichtet werden, Firmware bei Supportende als Open Source freizugeben.
