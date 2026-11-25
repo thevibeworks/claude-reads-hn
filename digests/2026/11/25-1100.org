@@ -1,0 +1,612 @@
+#+TITLE: HN Digest 2026-11-25 11:00 UTC
+#+DATE: 2026-11-25T11:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+GPT-6 designs proteins that actually bind, $3 buys a Treasury subdomain, and a blog author apologizes for letting Claude write his post
+
+* Highlights
+- OpenAI: GPT-6.2 minibinders bound 35 of 322 times in the lab
+- 450,000 AWS Elastic IPs cycled in 48 hours, 28 subdomain takeovers
+- Marginalia's author refuses to let AI port his index to C++
+- PenGPT author apologizes for the Claude-written blog post
+- Josh Comeau recorded 50+ multi-sampled button clicks with a Zoom H4
+
+* Stories
+
+** GPT-6 models demonstrate intrinsic protein-design capabilities :ai:biology:openai:proteins:research:
+:PROPERTIES:
+:ID:       50634658
+:URL:      https://openai.com/index/gpt-6-models-demonstrate-intrinsic-protein-design-capabilities/
+:HN_URL:   https://news.ycombinator.com/item?id=50634658
+:POINTS:   271
+:COMMENTS: 85
+:BY:       acossta
+:END:
+
+*** TLDR
+OpenAI gave GPT-6.2 the 3D structures of target proteins, marked the attachment site, and had the model write ordinary code to generate minibinder shapes with no protein-specific model in the loop. SolubleMPNN then produced amino acid sequences and other specialized models (Boltz-2, ESMFold2, OpenDDE) filtered candidates for the lab. 35 of 322 minibinders bound their target (10.9%); sequence redesign hit 85% on MDM2, 62% on VEGF-A, 14% on PD-1; antibody loop redesign got 70% binding on IL-4Rα VHHs and 66% across 272 therapeutic antibody fragments. Computationally an unreleased internal model scored 43.7% on MotifBench vs RFdiffusion's 27.8%, and 96% on PoseBusters docking vs DiffDock-L's 50%. OpenAI reports binding only: no K_D values, no specificity, activity or safety data, and full-chain structure prediction is still far behind ESMFold2 (0.38 vs 0.93 TM-score).
+
+*** Take
+The headline claim is narrower than it sounds: the model drew backbones in code, and specialized protein models did the sequences and the triage. That is still a real result, because writing code is the transferable skill and the docking numbers are not close. But 10.9% binding against RFdiffusion's published rates, with no affinity numbers, is a starting point, not a displacement.
+
+*** Comments
+
+**** gopalv
+:PROPERTIES:
+:COMMENT_ID: 50635755
+:END:
+The ability to write code is basically the superpower for these models. As long as progress needs better code, they keep gaining.
+
+**** mrkn1
+:PROPERTIES:
+:COMMENT_ID: 50635837
+:END:
+So GPT-6 designs proteins, other models turn the designs into sequences and screen the results. Already mastered academia: come up with the idea, make the grad students do the work, take the credit.
+
+**** elhospitaler
+:PROPERTIES:
+:COMMENT_ID: 50636511
+:END:
+I did my PhD at the Baker lab. Makes total sense they'd be working on this, we discussed it as the likely future of the field.
+
+**** phoghed
+:PROPERTIES:
+:COMMENT_ID: 50635682
+:END:
+Sam working hard to help Dario make the bioweapon case I see
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+GPT-6 模型展现出内生的蛋白质设计能力
+***** TLDR
+OpenAI 把目标蛋白的三维结构交给 GPT-6.2，标出结合位点，让模型用普通代码生成微型结合蛋白的骨架，过程中不调用任何蛋白质专用模型。随后由 SolubleMPNN 生成氨基酸序列，再由 Boltz-2、ESMFold2、OpenDDE 等专用模型筛选送进实验室的候选。322 个微型结合蛋白中有 35 个成功结合目标（10.9%）；序列重设计在 MDM2 上成功率 85%，VEGF-A 62%，PD-1 14%；抗体环重设计在 IL-4Rα 的 VHH 上达到 70% 结合率，在 272 个治疗性抗体片段中为 66%。在计算基准上，一个未发布的内部模型在 MotifBench 上得 43.7%，而 RFdiffusion 为 27.8%；在 PoseBusters 对接上为 96%，DiffDock-L 为 50%。OpenAI 只报告了结合情况：没有 K_D 数值，没有特异性、活性或安全性数据，而全链结构预测仍远落后于 ESMFold2（TM-score 0.38 对 0.93）。
+***** Take
+标题的说法比实际更宽：模型用代码画出了骨架，序列和筛选还是专用蛋白质模型做的。这依然是真实的成果，因为写代码是可迁移的能力，而对接分数的差距并不小。但 10.9% 的结合率对比 RFdiffusion 已发表的数据，又没有亲和力数值，这只是起点，不是取代。
+***** Comments
+- 写代码基本上就是这些模型的超能力。只要进展取决于写出更好的代码，它们就会继续变强。
+- 所以 GPT-6 设计蛋白质，其他模型把设计变成序列并做筛选。学术界的套路已经掌握了：出想法，让研究生干活，自己拿功劳。
+- 我在 Baker 实验室读的博士。他们做这个完全合理，我们在实验室里也讨论过这是这个领域的大概走向。
+- 看来 Sam 在努力帮 Dario 论证生物武器的那套说法。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+GPT-6モデルが内在的なタンパク質設計能力を示す
+***** TLDR
+OpenAIはGPT-6.2に標的タンパク質の立体構造を与えて結合位置を指定し、タンパク質専用モデルを一切使わず通常のコードでミニバインダーの骨格を生成させた。その後SolubleMPNNがアミノ酸配列を提案し、Boltz-2やESMFold2、OpenDDEなどの専用モデルが実験に回す候補を選別した。ミニバインダーは322個中35個が標的に結合（10.9%）。配列の再設計はMDM2で85%、VEGF-Aで62%、PD-1で14%。抗体ループの再設計はIL-4Rα向けVHHで70%、272個の治療用抗体断片で66%が結合した。計算面では未公開の社内モデルがMotifBenchで43.7%（RFdiffusionは27.8%）、PoseBustersのドッキングで96%（DiffDock-Lは50%）を記録した。OpenAIが報告したのは結合の有無だけで、K_D値も特異性・活性・安全性のデータもなく、全鎖の構造予測は依然ESMFold2に大きく劣る（TMスコア0.38対0.93）。
+***** Take
+見出しの主張は実際より広い。モデルがコードで骨格を描き、配列と選別は専用のタンパク質モデルがやった。それでも実質的な成果だ。コードを書く能力は他領域にも効くし、ドッキングのスコア差は小さくない。ただ、RFdiffusionの既発表値と比べた10.9%という結合率、しかも親和性の数値なしでは、出発点であって置き換えではない。
+***** Comments
+- コードを書けることがこのモデルの最大の武器だ。前進にコードの改善が必要な領域なら、伸び続ける。
+- つまりGPT-6が設計し、別のモデルが配列に変換してスクリーニングする。学界の作法はもう習得済みだ。アイデアを出し、院生に作業させ、功績は自分が取る。
+- Baker研で博士をやった。彼らがこれに取り組むのは当然で、研究室でもこの分野の行く先として話していた。
+- SamがDarioの生物兵器論を裏付ける手伝いに励んでいるわけだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+GPT-6 모델이 내재적인 단백질 설계 능력을 보이다
+***** TLDR
+OpenAI는 GPT-6.2에 표적 단백질의 3차원 구조를 주고 결합 지점을 표시한 뒤, 단백질 전용 모델 없이 일반 코드만으로 미니바인더 골격을 생성하게 했다. 이후 SolubleMPNN이 아미노산 서열을 제안하고 Boltz-2, ESMFold2, OpenDDE 같은 전용 모델이 실험에 올릴 후보를 걸러냈다. 미니바인더는 322개 중 35개가 표적에 결합했다(10.9%). 서열 재설계는 MDM2에서 85%, VEGF-A 62%, PD-1 14%였고, 항체 루프 재설계는 IL-4Rα VHH에서 70%, 272개 치료용 항체 조각에서 66%가 결합했다. 계산 성능에서는 미공개 내부 모델이 MotifBench 43.7%(RFdiffusion 27.8%), PoseBusters 도킹 96%(DiffDock-L 50%)를 기록했다. OpenAI가 공개한 것은 결합 여부뿐이며 K_D 값도, 특이성·활성·안전성 데이터도 없고 전체 사슬 구조 예측은 여전히 ESMFold2에 크게 뒤진다(TM-score 0.38 대 0.93).
+***** Take
+제목이 주장하는 범위는 실제보다 넓다. 모델은 코드로 골격을 그렸고 서열과 선별은 전용 단백질 모델이 했다. 그래도 의미 있는 결과다. 코드를 쓰는 능력은 다른 분야로 옮겨가고, 도킹 점수 차이는 작지 않다. 다만 RFdiffusion의 기존 수치와 비교한 10.9% 결합률에 친화도 숫자조차 없다면 이건 대체가 아니라 출발점이다.
+***** Comments
+- 코드를 쓸 수 있다는 게 이 모델들의 초능력이다. 더 나은 코드가 진전의 조건인 한 계속 강해진다.
+- 그러니까 GPT-6이 설계하고, 다른 모델이 서열로 바꾸고 선별한다. 학계 방식은 이미 익혔다. 아이디어는 내고, 작업은 대학원생에게 맡기고, 공은 챈다.
+- Baker 연구실에서 박사를 했다. 이걸 한다는 건 당연하고, 연구실에서도 이 분야의 미래로 얘기했던 내용이다.
+- Sam이 Dario의 생물무기 논리를 거드는 데 열심이군.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Los modelos GPT-6 muestran capacidades intrínsecas de diseño de proteínas
+***** TLDR
+OpenAI dio a GPT-6.2 las estructuras tridimensionales de proteínas objetivo, marcó el punto de unión y dejó que el modelo escribiera código común para generar esqueletos de minibinders sin ningún modelo específico de proteínas. Luego SolubleMPNN propuso las secuencias de aminoácidos y otros modelos especializados (Boltz-2, ESMFold2, OpenDDE) filtraron los candidatos para el laboratorio. 35 de 322 minibinders se unieron a su objetivo (10,9%); el rediseño de secuencias acertó 85% en MDM2, 62% en VEGF-A y 14% en PD-1; el rediseño de bucles de anticuerpos logró 70% de unión en VHH contra IL-4Rα y 66% en 272 fragmentos de anticuerpos terapéuticos. En lo computacional, un modelo interno no publicado obtuvo 43,7% en MotifBench frente al 27,8% de RFdiffusion, y 96% en acoplamiento PoseBusters frente al 50% de DiffDock-L. OpenAI solo informa unión: sin valores de K_D, sin datos de especificidad, actividad ni seguridad, y la predicción de estructura de cadena completa sigue muy por detrás de ESMFold2 (TM-score 0,38 contra 0,93).
+***** Take
+El titular afirma más de lo que hay: el modelo dibujó los esqueletos en código, y los modelos especializados hicieron las secuencias y la selección. Sigue siendo un resultado real, porque escribir código es la habilidad que se transfiere y la diferencia en acoplamiento no es pequeña. Pero un 10,9% de unión frente a las tasas publicadas de RFdiffusion, y sin cifras de afinidad, es un punto de partida, no un reemplazo.
+***** Comments
+- Saber escribir código es básicamente el superpoder de estos modelos. Mientras avanzar dependa de escribir mejor código, seguirán ganando.
+- O sea que GPT-6 diseña proteínas, otros modelos convierten los diseños en secuencias y filtran los resultados. Ya domina la academia: tiene la idea, los estudiantes hacen el trabajo, él se lleva el crédito.
+- Hice el doctorado en el laboratorio de Baker. Tiene todo el sentido que trabajen en esto, también lo discutíamos como el futuro probable del campo.
+- Veo que Sam se esfuerza por ayudar a Dario con el argumento de las armas biológicas.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+GPT-6-Modelle zeigen intrinsische Fähigkeiten im Proteindesign
+***** TLDR
+OpenAI gab GPT-6.2 die 3D-Strukturen von Zielproteinen, markierte die Bindestelle und ließ das Modell mit gewöhnlichem Code Minibinder-Gerüste erzeugen, ohne ein proteinspezifisches Modell. Danach schlug SolubleMPNN die Aminosäuresequenzen vor, und spezialisierte Modelle (Boltz-2, ESMFold2, OpenDDE) filterten die Kandidaten für das Labor. 35 von 322 Minibindern banden ihr Ziel (10,9%); das Sequenz-Redesign traf 85% bei MDM2, 62% bei VEGF-A und 14% bei PD-1; das Redesign von Antikörperschleifen erreichte 70% Bindung bei IL-4Rα-VHHs und 66% über 272 therapeutische Antikörperfragmente. Rechnerisch erzielte ein unveröffentlichtes internes Modell 43,7% auf MotifBench gegenüber 27,8% bei RFdiffusion und 96% beim PoseBusters-Docking gegenüber 50% bei DiffDock-L. OpenAI berichtet nur Bindung: keine K_D-Werte, keine Daten zu Spezifität, Aktivität oder Sicherheit, und die Strukturvorhersage für ganze Ketten liegt weiter deutlich hinter ESMFold2 (TM-Score 0,38 gegen 0,93).
+***** Take
+Die Schlagzeile behauptet mehr als drinsteht: Das Modell zeichnete die Gerüste im Code, Sequenzen und Vorauswahl kamen von spezialisierten Proteinmodellen. Das bleibt ein echtes Ergebnis, denn Code schreiben ist die übertragbare Fähigkeit, und der Abstand beim Docking ist nicht klein. Aber 10,9% Bindung gegen die publizierten Raten von RFdiffusion, ohne jede Affinitätsangabe, ist ein Anfang und keine Verdrängung.
+***** Comments
+- Code schreiben zu können ist im Grunde die Superkraft dieser Modelle. Solange Fortschritt besseren Code braucht, legen sie weiter zu.
+- Also entwirft GPT-6 Proteine, andere Modelle machen daraus Sequenzen und screenen die Ergebnisse. Den Wissenschaftsbetrieb hat es schon gemeistert: Idee haben, Doktoranden arbeiten lassen, Lob einsammeln.
+- Ich habe im Baker-Labor promoviert. Dass sie daran arbeiten, ist völlig logisch, wir haben es im Labor auch als die wahrscheinliche Zukunft des Felds diskutiert.
+- Sam arbeitet also eifrig daran, Dario das Biowaffen-Argument zu liefern.
+** Taking over US Treasury subdomains for $3 each :security:aws:dns:government:bugbounty:
+:PROPERTIES:
+:ID:       50638478
+:URL:      https://www.intruder.io/research/taking-over-us-treasury-subdomains-for-3-each
+:HN_URL:   https://news.ycombinator.com/item?id=50638478
+:POINTS:   94
+:COMMENTS: 19
+:BY:       negura
+:END:
+
+*** TLDR
+Intruder's researchers collected A records from bug bounty scopes, then repeatedly allocated and released AWS Elastic IPs until an address matched a dangling record. A new account gets 5 EIPs per region, raised to 25 via Service Quotas with no support case; rotating regions avoided getting the same addresses back. They cycled 450,000 IPs in 48 hours (about 9,400 per hour, 0.56% of the EIP space) and landed 28 live takeovers, nearly half at government bodies, including five treasury.gov subdomains: ftp, irssearch, pcp, rdgw and ww5. Cost worked out to roughly $3 per takeover. AWS then blocked EIP allocation across all regions on the account, so they transferred the matched EIPs to a new account in the same organization, which worked. On 17 Nov AWS confirmed it has no plans to change anything, calling this a customer DNS problem. Treasury fixed the records.
+
+*** Take
+AWS is technically right that a dangling A record is the customer's bug, and still wrong about the fix: the two asks here, a monthly allocation quota and org-level abuse enforcement, cost Amazon nothing and close the path. The detail that beggars belief is the banned account transferring its matched IPs to a sibling account and keeping them. Also note what a takeover buys you: a free TLS cert on a .gov name and any cookie scoped to the parent domain.
+
+*** Comments
+
+**** chinathrow
+:PROPERTIES:
+:COMMENT_ID: 50640184
+:END:
+AWS says the takeover depends on customer-side DNS records, not their services, and that they already have controls against rapid allocation and release. The vulnerability class stays open because of that position.
+
+**** davedx
+:PROPERTIES:
+:COMMENT_ID: 50640180
+:END:
+Awful negligence on both sides: orgs that don't maintain DNS hygiene, and AWS for letting an account banned for EIP abuse transfer those EIPs to another account with no safeguards.
+
+**** lmz
+:PROPERTIES:
+:COMMENT_ID: 50639725
+:END:
+AWS could offer an Elastic IP record type for Route53 that is deleted automatically.
+
+**** RandomBK
+:PROPERTIES:
+:COMMENT_ID: 50640484
+:END:
+The HTTPS angle is the real problem. Issuing a valid cert for any domain just by hosting a file on it sped up TLS adoption, but it makes this attack much worse.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+每个 3 美元接管美国财政部的子域名
+***** TLDR
+Intruder 的研究者从漏洞奖励项目范围内收集 A 记录，然后反复申请和释放 AWS 弹性 IP，直到某个地址与一条悬空记录吻合。新账户每个区域默认 5 个弹性 IP，通过 Service Quotas 无需提交支持工单即可提到 25 个；轮换区域可以避免拿回同样的地址。他们在 48 小时内循环了 45 万个 IP（约每小时 9400 个，占弹性 IP 空间的 0.56%），拿下 28 个真实可接管的子域名，近一半属于政府机构，其中包括五个 treasury.gov 子域名：ftp、irssearch、pcp、rdgw 和 ww5。平均每次接管成本约 3 美元。随后 AWS 在所有区域封禁了该账户的弹性 IP 申请，于是他们把已匹配的弹性 IP 转移到同一组织下的新账户，照样成功。11 月 17 日 AWS 确认不打算做任何改动，称这是客户的 DNS 问题。财政部修复了相关记录。
+***** Take
+AWS 在技术上没说错，悬空的 A 记录确实是客户的问题，但它对修复方式的判断是错的：文章提出的两条建议，每月申请配额和组织级别的滥用处置，对亚马逊几乎没有成本，却能直接堵住这条路。最离谱的细节是被封的账户把匹配到的 IP 转给同组织的另一个账户后还能继续用。还要注意接管能换来什么：.gov 域名上的免费 TLS 证书，以及任何作用域在父域名上的 cookie。
+***** Comments
+- AWS 说接管取决于客户自己的 DNS 记录，而不是他们的服务，并称已有针对快速申请和释放的控制措施。正因为这个立场，这类漏洞依然敞开。
+- 两边都是严重的疏忽：不维护 DNS 卫生的组织，以及允许因弹性 IP 滥用被封的账户把这些 IP 毫无阻碍地转给另一个账户的 AWS。
+- AWS 可以为 Route53 提供一种弹性 IP 记录类型，在地址释放时自动删除。
+- HTTPS 这一环才是真正的问题。只要能在域名上放一个文件就能签发有效证书，这确实加快了 TLS 普及，但也让这种攻击的后果严重得多。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+米財務省のサブドメインを1件3ドルで乗っ取る
+***** TLDR
+Intruderの研究者はバグバウンティ対象のAレコードを集め、AWSのElastic IPを繰り返し取得・解放して、放置されたレコードと一致するアドレスを引き当てた。新規アカウントのElastic IPはリージョンごとに5個だが、Service Quotasからサポートケースなしで25個に増やせる。リージョンを回せば同じアドレスを引き直さずに済む。48時間で45万個のIPを回し（毎時約9,400個、Elastic IP空間の0.56%）、実際に乗っ取れるサブドメインを28件確保した。半数近くが政府機関で、treasury.govのftp、irssearch、pcp、rdgw、ww5の5つを含む。費用は1件あたり約3ドル。その後AWSは全リージョンでこのアカウントのElastic IP取得を遮断したが、一致済みのIPを同一組織内の新アカウントへ移管すると問題なく使えた。11月17日、AWSは顧客側のDNSの問題だとして変更する予定はないと回答。財務省はレコードを修正した。
+***** Take
+放置されたAレコードが顧客側の不備だという点でAWSは技術的に正しいが、対処については間違っている。記事が求めているのは月単位の取得上限と組織単位での不正対応の二つで、どちらもAmazonにほぼ負担がなく経路を塞げる。信じがたいのは、停止されたアカウントが一致済みのIPを同組織の別アカウントへ移して使い続けられた点だ。乗っ取りで何が手に入るかも押さえておきたい。.govドメインの有効なTLS証明書と、親ドメインを対象にしたあらゆるcookieだ。
+***** Comments
+- AWSは乗っ取りの原因は自社サービスではなく顧客側のDNSレコードにあり、短時間の取得と解放への対策はすでにあると言う。この立場のため、この脆弱性の類型は開いたままだ。
+- 両者ともひどい怠慢だ。DNSの衛生管理をしない組織と、Elastic IP悪用で停止したアカウントからそのIPを別アカウントへ無制限に移させるAWS。
+- AWSはRoute53にElastic IP用のレコード型を用意して、解放時に自動削除すればいい。
+- 本当の問題はHTTPSの側だ。ドメイン上にファイルを置くだけで有効な証明書が取れる仕組みはTLS普及を速めたが、この攻撃の被害を格段に大きくする。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+미 재무부 서브도메인을 하나에 3달러로 가져오기
+***** TLDR
+Intruder 연구진은 버그 바운티 범위의 A 레코드를 모은 뒤, AWS Elastic IP를 반복해서 할당하고 해제하며 방치된 레코드와 일치하는 주소를 찾아냈다. 신규 계정은 리전당 Elastic IP 5개가 기본이지만 Service Quotas로 지원 티켓 없이 25개까지 올릴 수 있고, 리전을 돌리면 같은 주소를 다시 받는 일을 피할 수 있다. 48시간에 45만 개 IP를 돌려(시간당 약 9,400개, Elastic IP 공간의 0.56%) 실제 탈취 가능한 서브도메인 28개를 확보했다. 절반 가까이가 정부 기관이었고 treasury.gov의 ftp, irssearch, pcp, rdgw, ww5 다섯 개가 포함됐다. 비용은 건당 약 3달러. 이후 AWS가 해당 계정의 Elastic IP 할당을 전 리전에서 차단하자, 연구진은 확보한 IP를 같은 조직의 새 계정으로 옮겼고 그대로 작동했다. 11월 17일 AWS는 고객 측 DNS 문제라며 변경 계획이 없다고 확인했다. 재무부는 레코드를 수정했다.
+***** Take
+방치된 A 레코드가 고객 책임이라는 점에서 AWS는 기술적으로 맞지만, 해결 방식에 대해서는 틀렸다. 이 글이 요구하는 월간 할당 한도와 조직 단위 남용 차단은 아마존에 비용이 거의 들지 않으면서 경로를 막는다. 가장 황당한 대목은 정지된 계정이 확보한 IP를 형제 계정으로 옮겨 계속 쓸 수 있었다는 점이다. 탈취로 얻는 것도 짚어두자. .gov 도메인의 유효한 TLS 인증서와 상위 도메인 범위의 모든 쿠키다.
+***** Comments
+- AWS는 탈취가 자사 서비스가 아니라 고객 DNS 레코드에 달린 문제이고, 빠른 할당과 해제에 대한 통제는 이미 있다고 말한다. 그 입장 때문에 이 취약점 유형은 계속 열려 있다.
+- 양쪽 다 심각한 과실이다. DNS 위생을 관리하지 않는 조직, 그리고 Elastic IP 남용으로 정지된 계정이 그 IP를 다른 계정으로 아무 제약 없이 옮기게 한 AWS.
+- AWS가 Route53에 Elastic IP 레코드 타입을 만들어 해제 시 자동 삭제하게 하면 된다.
+- 진짜 문제는 HTTPS 쪽이다. 도메인에 파일 하나만 올려도 유효한 인증서를 받을 수 있는 구조는 TLS 확산을 앞당겼지만 이 공격의 피해를 훨씬 키운다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Tomar el control de subdominios del Tesoro de EE. UU. por 3 dólares cada uno
+***** TLDR
+Los investigadores de Intruder recopilaron registros A de los alcances de programas de recompensas y luego asignaron y liberaron IP elásticas de AWS de forma repetida hasta que una dirección coincidió con un registro huérfano. Una cuenta nueva tiene 5 IP elásticas por región, ampliables a 25 desde Service Quotas sin abrir un caso de soporte; rotar regiones evita recibir las mismas direcciones. Ciclaron 450.000 IP en 48 horas (unas 9.400 por hora, el 0,56% del espacio de IP elásticas) y lograron 28 tomas de control reales, casi la mitad en organismos públicos, incluidos cinco subdominios de treasury.gov: ftp, irssearch, pcp, rdgw y ww5. El coste salió a unos 3 dólares por toma. AWS bloqueó después la asignación de IP elásticas de la cuenta en todas las regiones, así que transfirieron las IP coincidentes a una cuenta nueva de la misma organización y siguió funcionando. El 17 de noviembre AWS confirmó que no piensa cambiar nada y lo calificó de problema de DNS del cliente. El Tesoro corrigió los registros.
+***** Take
+AWS tiene razón técnicamente en que un registro A huérfano es fallo del cliente, y se equivoca igual en la solución: las dos peticiones del artículo, una cuota mensual de asignación y aplicar las sanciones a nivel de organización, no le cuestan nada a Amazon y cierran el camino. El detalle increíble es que la cuenta sancionada transfiriera sus IP coincidentes a una cuenta hermana y las conservara. Conviene ver también qué da una toma de control: un certificado TLS válido en un dominio .gov y cualquier cookie con alcance en el dominio padre.
+***** Comments
+- AWS dice que la toma de control depende de los registros DNS del cliente, no de sus servicios, y que ya tiene controles contra la asignación y liberación rápidas. Por esa postura, esta clase de vulnerabilidad sigue abierta.
+- Negligencia grave por ambos lados: las organizaciones que no mantienen la higiene del DNS, y AWS por permitir que una cuenta sancionada por abuso de IP elásticas transfiera esas IP a otra cuenta sin ninguna barrera.
+- AWS podría ofrecer un tipo de registro de IP elástica en Route53 que se borre automáticamente.
+- El ángulo de HTTPS es el problema de fondo. Emitir un certificado válido para cualquier dominio solo por alojar un archivo aceleró la adopción de TLS, pero agrava mucho este ataque.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Subdomains des US-Finanzministeriums für je 3 Dollar übernehmen
+***** TLDR
+Die Forscher von Intruder sammelten A-Records aus Bug-Bounty-Scopes und belegten und gaben dann wiederholt AWS Elastic IPs frei, bis eine Adresse zu einem verwaisten Record passte. Ein neues Konto hat 5 Elastic IPs pro Region, über Service Quotas ohne Support-Fall auf 25 erhöhbar; durch Regionswechsel bekommt man nicht dieselben Adressen zurück. Sie rotierten 450.000 IPs in 48 Stunden (etwa 9.400 pro Stunde, 0,56% des Elastic-IP-Raums) und erzielten 28 echte Übernahmen, fast die Hälfte bei Behörden, darunter fünf treasury.gov-Subdomains: ftp, irssearch, pcp, rdgw und ww5. Die Kosten lagen bei rund 3 Dollar pro Übernahme. AWS sperrte daraufhin die Elastic-IP-Zuweisung des Kontos in allen Regionen, also übertrugen sie die passenden IPs auf ein neues Konto derselben Organisation, was funktionierte. Am 17. November bestätigte AWS, nichts ändern zu wollen, und nannte es ein DNS-Problem des Kunden. Das Finanzministerium korrigierte die Records.
+***** Take
+Technisch hat AWS recht, dass ein verwaister A-Record ein Kundenfehler ist, und liegt bei der Abhilfe dennoch falsch: Die beiden Forderungen des Artikels, ein monatliches Zuweisungslimit und Missbrauchssperren auf Organisationsebene, kosten Amazon nichts und schließen den Weg. Das unfassbare Detail ist, dass das gesperrte Konto seine passenden IPs auf ein Schwesterkonto übertragen und behalten konnte. Und man sollte sehen, was eine Übernahme einbringt: ein gültiges TLS-Zertifikat auf einem .gov-Namen und jedes Cookie mit Gültigkeit für die übergeordnete Domain.
+***** Comments
+- AWS sagt, die Übernahme hänge an den DNS-Records des Kunden und nicht an den eigenen Diensten, und es gebe bereits Kontrollen gegen schnelles Zuweisen und Freigeben. Wegen dieser Haltung bleibt diese Schwachstellenklasse offen.
+- Schwere Nachlässigkeit auf beiden Seiten: Organisationen, die keine DNS-Hygiene betreiben, und AWS, das ein wegen Elastic-IP-Missbrauch gesperrtes Konto diese IPs ohne Sicherung auf ein anderes Konto übertragen lässt.
+- AWS könnte in Route53 einen Elastic-IP-Record-Typ anbieten, der automatisch gelöscht wird.
+- Der HTTPS-Aspekt ist das eigentliche Problem. Ein gültiges Zertifikat für jede Domain allein durch das Ablegen einer Datei hat die TLS-Verbreitung beschleunigt, verschärft diesen Angriff aber erheblich.
+** Marginalia Search, Money, C++, Rust, AI, Stuff :search:cpp:java:ai:indieweb:
+:PROPERTIES:
+:ID:       50638220
+:URL:      https://www.marginalia.nu/log/a_141_marginalia_update/
+:HN_URL:   https://news.ycombinator.com/item?id=50638220
+:POINTS:   129
+:COMMENTS: 54
+:BY:       Curiositry
+:END:
+
+*** TLDR
+Viktor Lofgren's status update on Marginalia Search. Money: a $10k SerpApi sponsorship plus donations and API key sales rising month over month, not yet self-sustaining but trending that way; free API keys lag a week or two because a dozen-plus requests a day are handled by hand, and he runs no analytics so he does not know his user count. Code: he is experimenting with porting the index from Java to C++ because of CPU bottlenecks and awkward off-heap memory, has translated the buffer pool and part of the inverted index with more lock-free structures, expects no modest gain since the Java is already tuned, has no public repo and may scrap it. He rejects Rust, Zig and Odin on the grounds that he knows C++ and the code is hard. He refuses to let an LLM do the port: the output would be unmaintainable, the work needs deep understanding, and depending on a subscription whose token prices can rise contradicts running your own hardware. Recent engine work is bug fixes, tech debt and optimization, since for a search engine performance is recall.
+
+*** Take
+The strongest line is the economic one: an AI subscription is a landlord, and a project whose whole point is owning its own hardware cannot rent its core competence. Worth being honest about the other half, though. He admits the C++ port may yield little, may never finish, and has no repo. That is a hobby decision stated plainly, not an engineering case, and he does not pretend otherwise.
+
+*** Comments
+
+**** wannabe44
+:PROPERTIES:
+:COMMENT_ID: 50638406
+:END:
+Quoting the post: you can't be truly independent if you're subject to the whims of a landlord. That's the redpill of our times.
+
+**** nnevatie
+:PROPERTIES:
+:COMMENT_ID: 50639099
+:END:
+Java is your first problem for performance. The JVM is great but it doesn't hold a candle to optimized native code.
+
+**** codynaut
+:PROPERTIES:
+:COMMENT_ID: 50640543
+:END:
+Not wanting to learn a new language in the middle of low level work makes sense. I love C++, and I'm tempted by Rust, but I'd start it on a small new project and leave code I already understand alone.
+
+**** gspr
+:PROPERTIES:
+:COMMENT_ID: 50639767
+:END:
+Thank you for writing this, specifically the AI part. It's reassuring to hear reasoned voices amid the cheering crowd.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Marginalia 搜索、钱、C++、Rust、AI 和其他
+***** TLDR
+Viktor Lofgren 关于 Marginalia Search 的进展更新。钱：SerpApi 赞助了一万美元，加上捐赠和 API key 销售逐月上升，目前还不能自给自足，但趋势可行；免费 API key 要等一两周，因为每天十多个申请都靠手工处理，而他不做任何分析统计，所以并不知道有多少用户。代码：他在尝试把索引从 Java 移植到 C++，原因是 CPU 瓶颈和麻烦的堆外内存管理，已经翻译了缓冲池和部分倒排索引结构，并更多使用无锁算法；他预计收益不会很大，因为 Java 代码已经调优过，目前没有公开仓库，也可能放弃。他拒绝 Rust、Zig 和 Odin，理由是自己熟悉 C++ 而这些代码本身很难。他也拒绝让大模型做这次移植：产出会难以维护，这项工作需要深入理解，而依赖一个 token 价格随时可能上涨的订阅，与自建硬件的原则相矛盾。最近的引擎工作是修 bug、清技术债和优化，因为对搜索引擎来说性能就是召回率。
+***** Take
+最有力的一点是经济层面的：AI 订阅就是房东，而一个以自有硬件为核心主张的项目，不能把核心能力租来。另一半也该说清楚。他自己承认 C++ 移植可能收益很小、可能永远做不完、也没有仓库。这是一个坦白说出来的业余爱好决定，不是工程论证，他也没有装作是后者。
+***** Comments
+- 引用原文：如果你受房东的心情支配，就不可能真正独立。这是我们这个时代的清醒药。
+- 说到性能，Java 就是第一个问题。JVM 很好，但跟优化过的原生代码没法比。
+- 不想在底层工作中途学一门新语言，这完全合理。我喜欢 C++，也被 Rust 吸引，但我会在一个新的小项目上试，不去动已经理解透的代码。
+- 谢谢你写了这些，尤其是关于 AI 的部分。在一片欢呼声中听到讲道理的声音让人安心。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Marginalia Search、お金、C++、Rust、AI、その他
+***** TLDR
+Marginalia SearchのViktor Lofgrenによる近況報告。お金の面では、SerpApiからの1万ドルの支援に加え、寄付とAPIキーの販売が月ごとに増えている。まだ自立はしていないが見通しは立ってきた。無料APIキーの発行は1、2週間遅れる。1日十数件の申請を手作業で処理しているからだ。アクセス解析を入れていないため利用者数も把握していない。コードについては、CPUのボトルネックとJavaのヒープ外メモリ管理の扱いにくさから、インデックスをJavaからC++へ移植する実験を進めている。バッファプールと転置インデックスの一部を書き換え、ロックフリーの構造を増やした。ただしJava側がすでに最適化済みなので効果は小さいと見ており、公開リポジトリもなく、やめる可能性もある。Rust、Zig、Odinは、自分がC++を知っていてコード自体が難しいからという理由で選ばない。移植をLLMに任せることも拒んでいる。保守できないコードになるし、深い理解が必要な作業であり、トークン価格が上がりうるサブスクに依存するのは自前のハードで動かす方針と矛盾するからだ。最近のエンジン作業はバグ修正、技術的負債の整理、最適化で、検索エンジンでは性能が再現率そのものだという。
+***** Take
+いちばん強いのは経済の論点だ。AIのサブスクは家主であり、自前のハードを持つことが存在理由のプロジェクトが中核の能力を借り物にはできない。もう半分も正直に見ておきたい。C++移植は効果が小さいかもしれず、完成しないかもしれず、リポジトリもないと本人が認めている。これは率直に述べられた趣味の判断で、工学的な論証ではない。本人もそう装っていない。
+***** Comments
+- 本文の引用。家主の気分に左右される限り、本当の意味で独立はできない。現代の目覚めの一服だ。
+- 性能の話ならJavaがまず問題だ。JVMは優れているが、最適化されたネイティブコードには及ばない。
+- 低レベルの作業の途中で新しい言語を学びたくない気持ちは分かる。C++が好きだしRustにも惹かれるが、始めるなら小さな新規プロジェクトで、理解済みのコードは触らない。
+- これを書いてくれてありがとう。特にAIの部分だ。歓声の中で理屈の通る声が聞けるのは心強い。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Marginalia 검색, 돈, C++, Rust, AI, 그 밖의 것들
+***** TLDR
+Marginalia Search를 만든 Viktor Lofgren의 근황 정리. 돈 쪽은 SerpApi의 1만 달러 후원에 기부와 API 키 판매가 매달 늘어 아직 자립은 아니지만 가능해 보이는 흐름이다. 무료 API 키 발급은 1~2주 늦는데, 하루 열 건 넘는 요청을 손으로 처리하기 때문이다. 분석 도구를 쓰지 않아 사용자 수도 모른다. 코드 쪽은 CPU 병목과 Java의 불편한 힙 외부 메모리 처리 때문에 인덱스를 Java에서 C++로 옮기는 실험을 하고 있다. 버퍼 풀과 역색인 일부를 옮기면서 락프리 구조를 늘렸다. 다만 Java 코드가 이미 최적화돼 있어 이득은 크지 않을 거라 보고, 공개 저장소도 없으며 중단할 수도 있다. Rust와 Zig, Odin은 자신이 C++를 알고 코드 자체가 어렵다는 이유로 배제했다. LLM에 이식을 맡기는 것도 거부한다. 유지하기 어려운 코드가 나오고, 깊은 이해가 필요한 작업이며, 토큰 가격이 오를 수 있는 구독에 의존하는 것은 자체 하드웨어로 운영하는 원칙과 어긋난다는 것이다. 최근 엔진 작업은 버그 수정과 기술 부채 정리, 최적화인데, 검색 엔진에서는 성능이 곧 재현율이라서다.
+***** Take
+가장 강한 대목은 경제 논리다. AI 구독은 임대인이고, 자체 하드웨어 소유가 존재 이유인 프로젝트가 핵심 역량을 빌려 쓸 수는 없다. 나머지 절반도 솔직하게 보자. C++ 이식은 이득이 적을 수 있고 끝나지 않을 수도 있으며 저장소도 없다고 본인이 인정한다. 솔직하게 말한 취미의 선택이고 공학적 논증은 아니다. 본인도 그렇게 포장하지 않는다.
+***** Comments
+- 본문 인용. 임대인의 기분에 좌우되는 한 진짜 독립은 없다. 이 시대의 각성제다.
+- 성능을 말하자면 Java가 첫 번째 문제다. JVM은 훌륭하지만 최적화된 네이티브 코드에는 못 미친다.
+- 저수준 작업 도중에 새 언어를 배우고 싶지 않은 건 이해가 된다. C++를 좋아하고 Rust에도 끌리지만, 나라면 작은 신규 프로젝트에서 시작하고 이미 이해한 코드는 건드리지 않는다.
+- 이 글을 써줘서 고맙다, 특히 AI 부분. 환호 속에서 조리 있는 목소리를 듣는 건 안심이 된다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Marginalia Search, dinero, C++, Rust, IA y demás
+***** TLDR
+Informe de situación de Viktor Lofgren sobre Marginalia Search. Dinero: un patrocinio de 10.000 dólares de SerpApi más donaciones y venta de claves de API que crecen mes a mes; aún no se sostiene solo, pero va en ese camino. Las claves gratuitas tardan una o dos semanas porque atiende a mano más de una docena de solicitudes diarias, y como no usa analítica no sabe cuántos usuarios tiene. Código: está probando portar el índice de Java a C++ por los cuellos de botella de CPU y lo incómodo de la memoria fuera del heap; ya tradujo el pool de buffers y parte del índice invertido con más estructuras sin bloqueos, espera poca ganancia porque el Java ya está afinado, no tiene repositorio público y puede abandonarlo. Rechaza Rust, Zig y Odin porque él sabe C++ y el código es difícil. También rechaza que un LLM haga el porte: el resultado sería inmantenible, el trabajo exige comprensión profunda, y depender de una suscripción cuyos precios por token pueden subir contradice tener tu propio hardware. El trabajo reciente en el motor es corregir errores, reducir deuda técnica y optimizar, porque en un buscador el rendimiento es la cobertura.
+***** Take
+El argumento más fuerte es el económico: una suscripción de IA es un casero, y un proyecto cuyo sentido es tener su propio hardware no puede alquilar su competencia central. Conviene ser honesto con la otra mitad: él mismo admite que el porte a C++ puede dar poco, puede no terminar nunca y no tiene repositorio. Es una decisión de afición dicha con claridad, no un argumento de ingeniería, y tampoco pretende lo contrario.
+***** Comments
+- Cito el post: no puedes ser verdaderamente independiente si estás sujeto a los caprichos de un casero. Es la pastilla roja de nuestro tiempo.
+- Si hablamos de rendimiento, Java ya es el primer problema. La JVM es buena, pero no le hace sombra al código nativo optimizado.
+- No querer aprender un lenguaje nuevo en medio de trabajo de bajo nivel tiene sentido. Amo C++ y me tienta Rust, pero empezaría en un proyecto pequeño y dejaría quieto el código que ya entiendo.
+- Gracias por escribir esto, en especial la parte de la IA. Tranquiliza oír voces razonadas entre la multitud que aplaude.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Marginalia Search, Geld, C++, Rust, KI und anderes
+***** TLDR
+Statusbericht von Viktor Lofgren zu Marginalia Search. Geld: ein Sponsoring von 10.000 Dollar durch SerpApi sowie Spenden und API-Key-Verkäufe, die von Monat zu Monat steigen; noch nicht selbsttragend, aber auf dem Weg. Kostenlose API-Keys verzögern sich eine bis zwei Wochen, weil er über ein Dutzend Anfragen pro Tag von Hand bearbeitet, und da er keine Analytics einsetzt, kennt er seine Nutzerzahl nicht. Code: Er experimentiert damit, den Index von Java nach C++ zu portieren, wegen CPU-Engpässen und unbequemer Off-Heap-Speicherverwaltung. Buffer-Pool und Teile des invertierten Index sind übersetzt, mit mehr lock-freien Strukturen. Er erwartet wenig Gewinn, weil der Java-Code schon optimiert ist, hat kein öffentliches Repo und könnte es verwerfen. Rust, Zig und Odin lehnt er ab, weil er C++ kennt und der Code schwierig ist. Ein LLM soll die Portierung ebenfalls nicht machen: Das Ergebnis wäre nicht wartbar, die Arbeit verlangt tiefes Verständnis, und von einem Abo abhängig zu sein, dessen Tokenpreise steigen können, widerspricht dem Betrieb auf eigener Hardware. Die jüngste Arbeit an der Engine sind Bugfixes, technische Schulden und Optimierung, denn bei einer Suchmaschine ist Performance gleich Recall.
+***** Take
+Das stärkste Argument ist das wirtschaftliche: Ein KI-Abo ist ein Vermieter, und ein Projekt, dessen Sinn die eigene Hardware ist, kann seine Kernkompetenz nicht mieten. Zur anderen Hälfte gehört Ehrlichkeit: Er gibt selbst zu, dass die C++-Portierung wenig bringen, nie fertig werden könnte und kein Repo hat. Das ist eine offen benannte Hobbyentscheidung, kein technisches Argument, und er behauptet auch nichts anderes.
+***** Comments
+- Zitat aus dem Beitrag: Man kann nicht wirklich unabhängig sein, wenn man den Launen eines Vermieters ausgeliefert ist. Das ist die rote Pille unserer Zeit.
+- Wenn es um Performance geht, ist Java schon das erste Problem. Die JVM ist gut, aber optimiertem nativem Code nicht gewachsen.
+- Mitten in Low-Level-Arbeit keine neue Sprache lernen zu wollen, ist nachvollziehbar. Ich liebe C++ und Rust reizt mich, aber ich würde in einem kleinen neuen Projekt anfangen und Code, den ich schon verstehe, in Ruhe lassen.
+- Danke, dass du das geschrieben hast, besonders den KI-Teil. Es beruhigt, inmitten der jubelnden Menge begründete Stimmen zu hören.
+** PenGPT: A Generative Transformer for Handwriting and Sketches :ml:generative:handwriting:transformers:ai-writing:
+:PROPERTIES:
+:ID:       50637056
+:URL:      https://greydanus.github.io/2026/11/12/pengpt/
+:HN_URL:   https://news.ycombinator.com/item?id=50637056
+:POINTS:   267
+:COMMENTS: 45
+:BY:       smusamashah
+:END:
+
+*** TLDR
+Sam Greydanus trained two small transformers that write and draw with pen strokes: 6M parameters for handwriting, 54M for sketches. Pen positions snap to a grid so each stroke becomes moves in eight directions plus pen up and pen down, and byte-pair encoding merges common move sequences into tokens, shortening sequences about 3.2x. A plain decoder cross-attends to text for handwriting or to a SigLIP 2 vector for drawings. Data: about 495,590 words from 1,255 writers (scanned pages transcribed by a VLM, word images converted to strokes by InkSight, filters keeping a third to a half) and about 477,670 sketches from ten datasets including the top 0.5% of Quick, Draw!. Training took 8 minutes and 35 minutes on one 8xA100 node. Results: 54% of generated words are legible to OCR versus 66% for real ink; SigLIP 2 matches a drawing to its prompt 76% by label. Code and weights are out, datasets are not. The author credits roughly 80% data, 15% speed, 5% architecture, and in the thread admits the blog text itself was written by Claude and apologizes for it.
+
+*** Take
+The technical lesson and the thread's lesson point the same way. Ablations show parameters and positional tricks barely moved the score while data quantity and augmentation did, which is the whole case for grinding on datasets instead of architectures. And then readers spotted the one part of the project that was not ground on: the prose. Credit to Greydanus for answering with a flat admission and an apology rather than a defense.
+
+*** Comments
+
+**** keyle
+:PROPERTIES:
+:COMMENT_ID: 50637580
+:END:
+The interesting part is the Bitter Lesson angle: no clever architecture, 80% of the effort went into the biggest cleanest dataset. I spend too much time trying to out-clever existing solutions.
+
+**** samgreydanus
+:PROPERTIES:
+:COMMENT_ID: 50638626
+:END:
+Author here. The post text except the conclusion was written entirely by Claude. All my other posts are handwritten. I wish I had written it by hand and I apologize.
+
+**** charcircuit
+:PROPERTIES:
+:COMMENT_ID: 50637575
+:END:
+It bothers me how it doesn't know the proper strokes for cursive characters.
+
+**** cush
+:PROPERTIES:
+:COMMENT_ID: 50637846
+:END:
+I wonder if the model would have performed better if it wasn't trained on awful 2000s handwriting.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+PenGPT：用于手写与速写的生成式 Transformer
+***** TLDR
+Sam Greydanus 训练了两个小型 Transformer，用笔画来写字和画画：手写模型 600 万参数，速写模型 5400 万参数。笔的位置被对齐到网格，于是每条笔画变成八个方向的移动加上抬笔和落笔，再用字节对编码把常见的移动序列合并成 token，序列长度缩短约 3.2 倍。一个普通的解码器交叉注意到条件信息：手写用文本，画图用 SigLIP 2 向量。数据方面，手写来自 1255 位书写者的约 495,590 个单词（扫描页由视觉语言模型转写，单词图像由 InkSight 转成笔画，过滤后保留三分之一到一半），速写约 477,670 张，来自十个公开数据集，包括 Quick, Draw! 里最好的 0.5%。训练在一个 8xA100 节点上分别用了 8 分钟和 35 分钟。结果：生成的单词有 54% 能被 OCR 准确识别，真实墨迹为 66%；SigLIP 2 按标签把画和提示词配对的准确率为 76%。代码和权重已发布，数据集没有。作者把成果归于大约 80% 数据、15% 速度、5% 架构，并在讨论中承认博客正文是 Claude 写的，为此道歉。
+***** Take
+技术结论和讨论区的结论指向同一个方向。消融实验显示参数量和位置编码技巧几乎不影响分数，而数据量和数据增强有效，这正是把精力放在数据集而不是架构上的理由。然后读者发现了这个项目里唯一没有认真打磨的部分：文字。Greydanus 的回应是直接承认并道歉，而不是辩解，这一点值得称许。
+***** Comments
+- 最有意思的是「苦涩的教训」那一段：没有聪明的架构，80% 的精力花在做出最大最干净的数据集上。我花了太多时间想比现有方案更聪明。
+- 作者本人。除了结论部分，这篇文章的正文完全是 Claude 写的。我其他所有文章都是手写的。我希望当初是自己写的，为此道歉。
+- 它不知道草书字母正确的笔顺，这让我有点难受。
+- 我在想，如果不是用 2000 年代那种糟糕的手写体训练，这个模型会不会表现更好。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+PenGPT：手書きとスケッチのための生成Transformer
+***** TLDR
+Sam Greydanusは、ペンのストロークで字を書き絵を描く小さなTransformerを2つ訓練した。手書き用が600万パラメータ、スケッチ用が5400万パラメータ。ペン位置をグリッドに揃えることで各ストロークは8方向の移動とペンの上げ下げの列になり、バイトペア符号化でよく出る移動列をトークンにまとめ、系列長を約3.2分の1に縮めた。中身は普通のデコーダで、手書きならテキスト、描画ならSigLIP 2のベクトルにクロスアテンションする。データは手書きが1,255人による約495,590語（スキャン画像をVLMで転写し、単語画像をInkSightでストロークに変換、フィルタで3分の1から半分を採用）、スケッチが10のデータセットから約477,670枚で、Quick, Draw!の上位0.5%を含む。訓練は8xA100ノード1台でそれぞれ8分と35分。結果は、生成語のうち54%がOCRで正しく読めた（実際の筆跡は66%）。SigLIP 2はラベル基準で76%の割合で絵とプロンプトを対応づけた。コードと重みは公開、データセットは非公開。著者は成果の内訳をおよそデータ80%、速度15%、アーキテクチャ5%と述べ、スレッドではブログ本文がClaudeによる文章だったと認めて謝罪している。
+***** Take
+技術的な教訓とスレッドの教訓は同じ方向を向いている。アブレーションではパラメータ数や位置情報の工夫はスコアをほとんど動かさず、データ量と拡張が効いた。これはアーキテクチャよりデータセットを磨くべき根拠そのものだ。そして読者は、このプロジェクトで唯一磨かれていなかった部分、つまり文章に気づいた。弁解せず率直に認めて謝ったGreydanusの対応は評価できる。
+***** Comments
+- いちばん興味深いのはBitter Lessonへの言及だ。巧妙なアーキテクチャはなく、労力の80%は最大で最もきれいなデータセット作りに費やされた。自分は既存手法を上回ろうと小細工する時間が多すぎる。
+- 著者です。結論以外の本文はすべてClaudeが書きました。他の記事はすべて自分の手で書いています。自分で書くべきでした、お詫びします。
+- 筆記体の正しい筆順を知らない点が気になる。
+- 2000年代のひどい手書きで訓練していなければ、もっと良い結果になったのではと思う。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+PenGPT: 손글씨와 스케치를 위한 생성 트랜스포머
+***** TLDR
+Sam Greydanus는 펜 획으로 글씨를 쓰고 그림을 그리는 작은 트랜스포머 두 개를 학습시켰다. 손글씨용 600만 파라미터, 스케치용 5400만 파라미터다. 펜 위치를 격자에 맞추면 각 획은 8방향 이동과 펜 올리기·내리기의 열이 되고, 바이트 페어 인코딩으로 자주 나오는 이동 열을 토큰으로 묶어 시퀀스를 약 3.2배 줄였다. 본체는 평범한 디코더로, 손글씨에서는 텍스트에, 그림에서는 SigLIP 2 벡터에 크로스 어텐션한다. 데이터는 손글씨가 필자 1,255명의 약 495,590개 단어(스캔 페이지를 VLM이 전사하고 단어 이미지를 InkSight가 획으로 변환, 필터로 3분의 1에서 절반만 사용), 스케치가 열 개 데이터셋에서 약 477,670장으로 Quick, Draw! 상위 0.5%를 포함한다. 학습은 8xA100 노드 한 대에서 각각 8분과 35분. 결과는 생성한 단어의 54%가 OCR로 정확히 읽혔고(실제 필기는 66%), SigLIP 2는 라벨 기준 76%로 그림과 프롬프트를 맞췄다. 코드와 가중치는 공개했고 데이터셋은 아니다. 저자는 성과를 데이터 80%, 속도 15%, 아키텍처 5% 정도로 요약했고, 스레드에서 블로그 본문이 Claude가 쓴 글이었다고 인정하며 사과했다.
+***** Take
+기술적 교훈과 스레드의 교훈이 같은 방향을 가리킨다. 어블레이션에서 파라미터 수와 위치 정보 기법은 점수를 거의 움직이지 않았고 데이터 양과 증강이 효과를 냈다. 아키텍처보다 데이터셋을 갈아야 한다는 근거가 바로 이것이다. 그리고 독자들은 이 프로젝트에서 유일하게 갈지 않은 부분, 즉 글을 짚어냈다. 변명 대신 담백하게 인정하고 사과한 Greydanus의 대응은 평가할 만하다.
+***** Comments
+- 가장 흥미로운 건 Bitter Lesson 대목이다. 영리한 아키텍처는 없고, 노력의 80%가 가장 크고 깨끗한 데이터셋을 만드는 데 들어갔다. 나는 기존 해법보다 영리해지려 애쓰는 데 시간을 너무 쓴다.
+- 저자입니다. 결론을 뺀 본문은 전부 Claude가 썼습니다. 다른 글은 모두 직접 썼습니다. 직접 썼어야 했고, 사과드립니다.
+- 필기체 글자의 올바른 획 순서를 모른다는 점이 거슬린다.
+- 2000년대의 형편없는 손글씨로 학습하지 않았다면 더 잘했을지 궁금하다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+PenGPT: un transformer generativo para escritura a mano y bocetos
+***** TLDR
+Sam Greydanus entrenó dos transformers pequeños que escriben y dibujan con trazos de pluma: 6 millones de parámetros para la escritura y 54 millones para los bocetos. Las posiciones de la pluma se ajustan a una rejilla, así cada trazo se convierte en movimientos en ocho direcciones más pluma arriba y pluma abajo, y la codificación por pares de bytes fusiona secuencias comunes en tokens, acortando las secuencias unas 3,2 veces. Un decodificador normal hace atención cruzada al texto para la escritura o a un vector de SigLIP 2 para los dibujos. Datos: unas 495.590 palabras de 1.255 escribientes (páginas escaneadas transcritas por un modelo de visión, imágenes de palabras convertidas en trazos por InkSight, con filtros que conservan entre un tercio y la mitad) y unos 477.670 bocetos de diez conjuntos, incluido el mejor 0,5% de Quick, Draw!. El entrenamiento tomó 8 y 35 minutos en un nodo 8xA100. Resultados: el 54% de las palabras generadas son legibles para un OCR, frente al 66% de la tinta real; SigLIP 2 asocia el dibujo con su prompt el 76% de las veces por etiqueta. El código y los pesos están publicados, los datos no. El autor atribuye el resultado a un 80% de datos, 15% de velocidad y 5% de arquitectura, y en el hilo admite que el texto del blog lo escribió Claude y pide disculpas.
+***** Take
+La lección técnica y la del hilo apuntan a lo mismo. Las ablaciones muestran que los parámetros y los trucos posicionales apenas movieron la puntuación, mientras que la cantidad de datos y el aumento sí: ese es todo el argumento para pulir conjuntos de datos en vez de arquitecturas. Y entonces los lectores detectaron la única parte del proyecto que no se pulió: la prosa. Mérito para Greydanus por responder con una admisión llana y una disculpa en lugar de una defensa.
+***** Comments
+- Lo interesante es la referencia a la Lección Amarga: ninguna arquitectura ingeniosa, el 80% del esfuerzo fue construir el conjunto de datos más grande y limpio posible. Yo pierdo demasiado tiempo intentando ser más listo que las soluciones existentes.
+- Soy el autor. El texto del post, salvo la conclusión, lo escribió entero Claude. Todos mis otros posts están escritos a mano. Ojalá lo hubiera escrito yo y pido disculpas.
+- Me molesta que no conozca los trazos correctos de las letras en cursiva.
+- Me pregunto si el modelo habría funcionado mejor sin entrenarse con la horrible caligrafía de los 2000.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+PenGPT: ein generativer Transformer für Handschrift und Skizzen
+***** TLDR
+Sam Greydanus hat zwei kleine Transformer trainiert, die mit Stiftstrichen schreiben und zeichnen: 6 Millionen Parameter für Handschrift, 54 Millionen für Skizzen. Die Stiftpositionen rasten auf ein Gitter ein, sodass jeder Strich zu Bewegungen in acht Richtungen plus Stift hoch und Stift runter wird, und Byte-Pair-Encoding fasst häufige Bewegungsfolgen zu Tokens zusammen, was die Sequenzen um etwa das 3,2-Fache verkürzt. Ein gewöhnlicher Decoder nutzt Cross-Attention auf den Text für Handschrift oder auf einen SigLIP-2-Vektor für Zeichnungen. Daten: etwa 495.590 Wörter von 1.255 Schreibenden (gescannte Seiten von einem Vision-Modell transkribiert, Wortbilder von InkSight in Striche umgewandelt, Filter behalten ein Drittel bis die Hälfte) und etwa 477.670 Skizzen aus zehn Datensätzen, darunter die besten 0,5% von Quick, Draw!. Das Training dauerte 8 und 35 Minuten auf einem 8xA100-Knoten. Ergebnisse: 54% der erzeugten Wörter sind für ein OCR-Modell lesbar, gegenüber 66% bei echter Tinte; SigLIP 2 ordnet eine Zeichnung ihrem Prompt in 76% der Fälle nach Label zu. Code und Gewichte sind veröffentlicht, die Datensätze nicht. Der Autor rechnet das Ergebnis zu etwa 80% den Daten, 15% der Geschwindigkeit und 5% der Architektur zu und gibt im Thread zu, dass der Blogtext von Claude geschrieben wurde, und entschuldigt sich dafür.
+***** Take
+Die technische Lehre und die des Threads zeigen in dieselbe Richtung. Die Ablationen belegen, dass Parameterzahl und Positionstricks die Werte kaum bewegten, Datenmenge und Augmentierung dagegen sehr. Genau das ist das Argument, an Datensätzen statt an Architekturen zu feilen. Und dann fanden die Leser den einen Teil des Projekts, an dem nicht gefeilt wurde: den Text. Anzuerkennen ist, dass Greydanus mit einem klaren Eingeständnis und einer Entschuldigung antwortete statt mit einer Verteidigung.
+***** Comments
+- Das Interessanteste ist der Verweis auf die Bitter Lesson: keine raffinierte Architektur, 80% des Aufwands gingen in den größten und saubersten Datensatz. Ich verbringe viel zu viel Zeit damit, bestehende Lösungen überlisten zu wollen.
+- Autor hier. Der Text des Beitrags außer dem Schluss wurde vollständig von Claude geschrieben. Alle meine anderen Beiträge sind selbst geschrieben. Ich wünschte, ich hätte ihn selbst geschrieben, und entschuldige mich.
+- Mich stört, dass es die richtigen Striche für Schreibschriftbuchstaben nicht kennt.
+- Ich frage mich, ob das Modell besser abgeschnitten hätte, wenn es nicht mit der furchtbaren Handschrift der 2000er trainiert worden wäre.
+** Button Sounds, a collection of professionally-recorded button clicks and presses :frontend:audio:design:javascript:opensource:
+:PROPERTIES:
+:ID:       50638032
+:URL:      https://buttons.joshwcomeau.com/
+:HN_URL:   https://news.ycombinator.com/item?id=50638032
+:POINTS:   407
+:COMMENTS: 55
+:BY:       gaurang_tandon
+:END:
+
+*** TLDR
+Josh Comeau, who has an audio engineering background, went around his home recording everything clickable: keyboards (Asus, Halo, hi75, ergo MX), a PS5 controller, an MX Master 3, locks, a camera latch, a KVM switch, a guitar toggle. Every sound is multi-sampled rather than a single one-shot: he recorded dozens of takes, kept a handful, and playback picks one at random so repeated clicks never sound identical. Recording was done in one acoustically treated room with a Zoom H4 and noise reduction in Adobe Audition; files ship as stereo 48kHz WAV or 192kbps MP3. The result is 50+ sounds, MIT licensed, available as raw files or via the `button-sounds` npm package (Howler under the hood, vanilla JS and React entry points, with docs for self-hosting the audio). The site notes that browsers, iOS Safari in particular, may block audio outright.
+
+*** Take
+The whole idea rests on one detail that most UI sound libraries skip: randomized multi-sampling. A single recording replayed on every press is what makes UI audio feel cheap, and rotating samples is why these do not. Two practical catches: iOS Safari can refuse to play at all, which limits where you can rely on this, and the package pulls in Howler, so it is not a zero-dependency drop-in.
+
+*** Comments
+
+**** masenf
+:PROPERTIES:
+:COMMENT_ID: 50638438
+:END:
+Browsers can block a site from playing any sound and iOS Safari is particularly strict. I understand the user-first reasoning, but it's frustrating here.
+
+**** lanewinfield
+:PROPERTIES:
+:COMMENT_ID: 50638964
+:END:
+Phenomenal and very thoughtful to offer for free. The variation between the press and release really does make it.
+
+**** isomorphic
+:PROPERTIES:
+:COMMENT_ID: 50638921
+:END:
+The multi-sample sounds are nicely done, but this page spins up the fans on my M4 Pro Mac mini in Firefox Developer Edition.
+
+**** mattjoyce
+:PROPERTIES:
+:COMMENT_ID: 50639135
+:END:
+I hope more are added, would love to hear some toggle switches.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Button Sounds：专业录制的按钮点击与按压音效合集
+***** TLDR
+有音频工程背景的 Josh Comeau 在家里把所有能按的东西都录了一遍：键盘（Asus、Halo、hi75、ergo MX）、PS5 手柄、MX Master 3、各种锁、相机卡扣、KVM 切换器、吉他拨档开关。每种声音都是多重采样而不是单个一次性录音：他录几十条，保留少数几条，播放时随机挑一条，所以连续点击不会听起来一模一样。录音在同一个做过声学处理的房间用 Zoom H4 完成，再用 Adobe Audition 降噪；文件提供立体声 48kHz WAV 或 192kbps MP3。成果是 50 多种声音，MIT 许可，可以直接用原始文件，也可以用 `button-sounds` npm 包（底层是 Howler，提供原生 JS 和 React 两个入口，并有自托管音频的文档）。网站也提到浏览器可能直接禁止播放声音，iOS Safari 尤其严格。
+***** Take
+整个想法立在一个大多数 UI 音效库忽略的细节上：随机多重采样。每次按下都播放同一段录音，正是 UI 音效显得廉价的原因，而轮换样本就是这套音效不廉价的原因。两个现实问题：iOS Safari 可能完全拒绝播放，这限制了它能被依赖的场合；另外这个包依赖 Howler，所以不是零依赖的即插即用。
+***** Comments
+- 浏览器可以阻止网站播放任何声音，iOS Safari 尤其严格。我理解以用户为先的考虑，但在这里确实让人沮丧。
+- 非常出色，免费提供也很有心。按下和松开之间的差异才是关键。
+- 多重采样的声音做得很好，但这个页面在 Firefox Developer Edition 里会让我的 M4 Pro Mac mini 风扇转起来。
+- 希望能继续添加，很想听听拨动开关的声音。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Button Sounds、プロが録音したボタンのクリックと押し込み音のコレクション
+***** TLDR
+オーディオエンジニアリングの素養があるJosh Comeauが、自宅で押せるものを片っ端から録音した。キーボード（Asus、Halo、hi75、ergo MX）、PS5コントローラ、MX Master 3、各種の錠、カメラのラッチ、KVMスイッチ、ギターのトグル。どの音も単発ではなくマルチサンプルで、数十テイク録って数本を残し、再生時にランダムで1本を選ぶ。だから連続して押しても同じ音にはならない。録音は音響処理した同じ部屋でZoom H4を使い、Adobe Auditionでノイズ処理。ファイルはステレオの48kHz WAVか192kbpsのMP3。結果として50種類以上の音がMITライセンスで公開され、生ファイルのまま使うか`button-sounds`のnpmパッケージ経由で使える（内部はHowler、バニラJSとReactの入口があり、音声の自前ホスティング用のドキュメントもある）。サイトには、ブラウザが音の再生自体を拒否することがあり、iOS Safariはとくに厳しいとある。
+***** Take
+この企画はUI音源ライブラリがたいてい省く一点に支えられている。ランダムなマルチサンプルだ。毎回同じ録音を鳴らすことがUI音を安っぽくする原因で、サンプルを回すことがこの音を安っぽくしない理由だ。実務上の注意は二つ。iOS Safariは再生を完全に拒むことがあり、頼れる場面が限られる。そしてパッケージはHowlerを引き込むので、依存ゼロでそのまま差し込めるものではない。
+***** Comments
+- ブラウザはサイトの音を全面的に止められるし、iOS Safariはとくに厳しい。ユーザー優先の理屈は分かるが、ここでは困る。
+- 素晴らしいし、無料で出すのも心が広い。押すときと離すときの差が効いている。
+- マルチサンプルの音はよくできているが、このページはFirefox Developer EditionでM4 Pro Mac miniのファンを回し始める。
+- もっと増えてほしい。トグルスイッチの音を聞きたい。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Button Sounds, 전문적으로 녹음한 버튼 클릭과 누름 소리 모음
+***** TLDR
+오디오 엔지니어링 배경이 있는 Josh Comeau가 집에서 누를 수 있는 것은 다 녹음했다. 키보드(Asus, Halo, hi75, ergo MX), PS5 컨트롤러, MX Master 3, 자물쇠들, 카메라 걸쇠, KVM 스위치, 기타 토글. 모든 소리는 단발 녹음이 아니라 멀티샘플이다. 수십 번 녹음해 몇 개만 남기고, 재생할 때 무작위로 하나를 골라 연속으로 눌러도 같은 소리가 나지 않는다. 녹음은 음향 처리된 같은 방에서 Zoom H4로 했고 Adobe Audition으로 노이즈를 줄였다. 파일은 스테레오 48kHz WAV 또는 192kbps MP3. 결과는 50종 이상의 소리로 MIT 라이선스이며, 원본 파일을 바로 쓰거나 `button-sounds` npm 패키지로 쓸 수 있다(내부는 Howler, 바닐라 JS와 React 진입점, 오디오 자체 호스팅 문서 제공). 사이트는 브라우저가 소리 재생을 아예 막을 수 있고 iOS Safari가 특히 엄격하다고 적어두었다.
+***** Take
+이 기획은 대부분의 UI 사운드 라이브러리가 건너뛰는 한 가지에 기대고 있다. 무작위 멀티샘플링이다. 누를 때마다 같은 녹음을 재생하는 것이 UI 소리를 싸게 들리게 만드는 원인이고, 샘플을 돌리는 것이 이 소리들이 그렇지 않은 이유다. 현실적인 걸림돌 두 개. iOS Safari는 재생을 아예 거부할 수 있어 믿고 쓸 수 있는 자리가 제한된다. 그리고 패키지는 Howler를 끌어오므로 의존성 없는 교체품은 아니다.
+***** Comments
+- 브라우저는 사이트의 모든 소리를 막을 수 있고 iOS Safari는 특히 엄격하다. 사용자 우선 논리는 이해하지만 여기서는 답답하다.
+- 훌륭하고, 무료로 내놓은 것도 고맙다. 누를 때와 뗄 때의 차이가 핵심이다.
+- 멀티샘플 소리는 잘 만들었는데, 이 페이지는 Firefox Developer Edition에서 내 M4 Pro Mac mini 팬을 돌린다.
+- 더 추가되길 바란다. 토글 스위치 소리를 들어보고 싶다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Button Sounds, una colección de clics y pulsaciones de botón grabados profesionalmente
+***** TLDR
+Josh Comeau, con formación en ingeniería de audio, recorrió su casa grabando todo lo que se pudiera pulsar: teclados (Asus, Halo, hi75, ergo MX), un mando de PS5, un MX Master 3, cerraduras, el pestillo de una cámara, un conmutador KVM, un selector de guitarra. Cada sonido está multimuestreado en lugar de ser una sola toma: grabó docenas de tomas, guardó unas pocas y la reproducción elige una al azar, así que los clics repetidos nunca suenan iguales. La grabación se hizo en una misma sala tratada acústicamente con una Zoom H4 y reducción de ruido en Adobe Audition; los archivos vienen en WAV estéreo de 48 kHz o MP3 de 192 kbps. El resultado son más de 50 sonidos con licencia MIT, disponibles como archivos sueltos o mediante el paquete npm `button-sounds` (usa Howler por debajo, con puntos de entrada para JavaScript puro y React, y documentación para alojar el audio uno mismo). La web advierte de que los navegadores, iOS Safari en particular, pueden bloquear el audio por completo.
+***** Take
+Toda la idea se apoya en un detalle que la mayoría de las librerías de sonido de interfaz se salta: el multimuestreo aleatorio. Reproducir la misma grabación en cada pulsación es lo que hace que el audio de interfaz suene barato, y rotar muestras es la razón de que estos no lo hagan. Dos pegas prácticas: iOS Safari puede negarse a reproducir, lo que limita dónde puedes confiar en esto, y el paquete arrastra Howler, así que no es un añadido sin dependencias.
+***** Comments
+- Los navegadores pueden bloquear todo el sonido de un sitio y iOS Safari es especialmente estricto. Entiendo el razonamiento de poner al usuario primero, pero aquí resulta frustrante.
+- Fenomenal y muy generoso ofrecerlo gratis. La variación entre la pulsación y la liberación es lo que lo hace.
+- Los sonidos multimuestreados están muy bien hechos, pero esta página acelera los ventiladores de mi Mac mini M4 Pro en Firefox Developer Edition.
+- Espero que añadan más, me encantaría oír interruptores de palanca.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Button Sounds, eine Sammlung professionell aufgenommener Tastenklicks und Druckgeräusche
+***** TLDR
+Josh Comeau, der aus der Audiotechnik kommt, ging durch seine Wohnung und nahm alles Klickbare auf: Tastaturen (Asus, Halo, hi75, ergo MX), einen PS5-Controller, eine MX Master 3, Schlösser, einen Kameraverschluss, einen KVM-Switch, einen Gitarrenschalter. Jeder Sound ist multigesampelt statt ein einzelner One-Shot: Er nahm Dutzende Takes auf, behielt eine Handvoll, und bei der Wiedergabe wird einer zufällig gewählt, sodass wiederholte Klicks nie gleich klingen. Aufgenommen wurde in einem akustisch behandelten Raum mit einem Zoom H4, entrauscht in Adobe Audition; die Dateien kommen als Stereo-WAV mit 48 kHz oder als MP3 mit 192 kbps. Das Ergebnis sind über 50 Sounds unter MIT-Lizenz, nutzbar als rohe Dateien oder über das npm-Paket `button-sounds` (intern Howler, Einstiegspunkte für reines JavaScript und React, mit Doku zum Selbsthosten der Audiodateien). Die Seite weist darauf hin, dass Browser, besonders iOS Safari, Audio komplett blockieren können.
+***** Take
+Die ganze Idee hängt an einem Detail, das die meisten UI-Sound-Bibliotheken auslassen: zufälliges Multisampling. Dieselbe Aufnahme bei jedem Druck ist der Grund, warum UI-Audio billig klingt, und das Rotieren der Samples ist der Grund, warum diese es nicht tun. Zwei praktische Haken: iOS Safari kann die Wiedergabe ganz verweigern, was einschränkt, wo man sich darauf verlassen kann, und das Paket zieht Howler mit, ist also kein abhängigkeitsfreier Einbau.
+***** Comments
+- Browser können einer Seite jeden Ton verbieten, und iOS Safari ist besonders streng. Die Logik, den Nutzer zuerst zu stellen, verstehe ich, hier ist sie trotzdem frustrierend.
+- Phänomenal und sehr zuvorkommend, das kostenlos anzubieten. Der Unterschied zwischen Drücken und Loslassen macht es aus.
+- Die multigesampelten Sounds sind schön gemacht, aber diese Seite lässt bei mir in Firefox Developer Edition die Lüfter des M4 Pro Mac mini anlaufen.
+- Ich hoffe, es kommen mehr dazu, Kippschalter würde ich gern hören.
