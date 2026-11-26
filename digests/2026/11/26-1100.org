@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-11-26 11:00 UTC
+#+DATE: 2026-11-26T11:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+OpenAI shrinks GPT-6.2 quotas, Postgres and Qwen run without a normal OS, and the NYT thread can't agree on what counts as an AI edit
+
+* Highlights
+- OpenAI: GPT-6.2 Astra quotas run out 40% sooner after a 'billing error' fix
+- NYT vs Photoshop revisit: the thread can't draw a line between AI edits and ordinary ones
+- Bare Metal Qwen: a 24 KB assembly kernel that boots into an LLM chat
+- Minipg: Postgres 18 in one executable, run through a Plan 9 hypervisor library
+- Marcin Wichary archives 69 UI style guides from Lisa to Material
+
+* Stories
+
+** OpenAI cuts GPT-6.2 usage: Astra hits limits 40% faster, Sol 25% faster :ai:openai:pricing:llm:subscriptions:
+:PROPERTIES:
+:ID:       50651117
+:URL:      https://twitter.com/thsottiaux/status/2125784147889393806
+:HN_URL:   https://news.ycombinator.com/item?id=50651117
+:POINTS:   267
+:COMMENTS: 147
+:BY:       Herrera
+:END:
+
+*** TLDR
+Tibo Sottiaux, who runs Codex and ChatGPT at OpenAI, posted that the GPT-6.2 launch "incorrectly discounted" Astra and Sol usage for most users. After the fix, the same work uses more of a plan's allowance: compared with last week, users hit limits 40% sooner on Astra and 25% sooner on Sol, though OpenAI says usage still goes further than on GPT-6 Astra and GPT-6.1 Sol. Other models are unaffected and past overuse will not be charged. Everyone on Go, Plus, Pro and Business gets one banked reset as an apology. It went out the day before Thanksgiving, after an earlier email that commenters say did not explain what was changing.
+
+*** Take
+The billing-error story may be true. Several commenters say six hours of Astra last week used 3% of their quota. But people planned their work around last week's numbers, and nobody outside OpenAI can check what the correct rate is. When a subscription is measured in a unit the vendor can revalue at any time, customers cannot compare its price with anything else. Most of the thread is people saying which provider they are switching to this month, which says more about the market than the announcement does.
+
+*** Comments
+
+**** _puk
+:PROPERTIES:
+:COMMENT_ID: 50652774
+:END:
+There was a billing error. I was using Astra 6.2 for hours and was still sat at 100%. But this feels like they are using fixing an issue to do a much wider rug pull.
+
+**** at1as
+:PROPERTIES:
+:COMMENT_ID: 50652176
+:END:
+Our limits have been artificially propped up by a "reset" economy that is coming to an end. I don't think token subscription subsidization at the level we've become accustomed to lasts forever.
+
+**** rwarfield
+:PROPERTIES:
+:COMMENT_ID: 50652908
+:END:
+Subsidization implies that the subscriptions are offered at a loss; there's no reason to believe that is the case. Let's not buy the framing that the API price is the "right" price.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+OpenAI 削减 GPT-6.2 用量：Astra 触达上限快 40%，Sol 快 25%
+***** TLDR
+OpenAI 负责 Codex 和 ChatGPT 的 Tibo Sottiaux 发帖称，GPT-6.2 发布时对大多数用户的 Astra 和 Sol 用量“错误地打了折扣”。修复后，同样的工作会消耗更多套餐额度：与上周相比，Astra 触达上限快 40%，Sol 快 25%，不过 OpenAI 称用量仍比 GPT-6 Astra 和 GPT-6.1 Sol 更耐用。其他模型不受影响，此前多用的部分不会补收费用。Go、Plus、Pro 和 Business 用户每人获得一次储备重置作为道歉。公告在感恩节前一天发出，之前还有一封评论者称没讲清楚变化的邮件。
+***** Take
+“计费错误”的说法也许是真的，有几位评论者说上周用六小时 Astra 只消耗了 3% 额度。但用户是按上周的数字安排工作的，而 OpenAI 之外没人能核实“正确”的费率是多少。如果订阅用一种厂商随时可以重新定价的单位来计量，客户就没法拿它和任何东西比价。帖子里大部分内容是大家在说这个月要换哪家，这比公告本身更能说明市场状况。
+***** Comments
+- 确实有计费错误。我用 Astra 6.2 好几个小时，额度还是 100%。但这感觉像是借修复问题之名搞更大范围的割韭菜。
+- 我们的额度一直被即将结束的“重置经济”人为撑着。我不认为我们习惯的这种程度的 token 订阅补贴会永远持续。
+- 补贴意味着订阅是亏本卖的，没有理由相信是这样。别接受 API 价格才是“正确”价格的说法。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+OpenAIがGPT-6.2の利用枠を削減：Astraは40%、Solは25%早く上限に
+***** TLDR
+OpenAIでCodexとChatGPTを担当するTibo Sottiaux氏が、GPT-6.2のローンチ時にほとんどのユーザーでAstraとSolの使用量が「誤って割り引かれていた」と投稿した。修正後は同じ作業でプランの枠をより多く消費する。先週と比べてAstraでは40%、Solでは25%早く上限に達するが、OpenAIによればGPT-6 AstraやGPT-6.1 Solよりはまだ長く使える。他のモデルは影響を受けず、過去の超過分は請求されない。Go、Plus、Pro、Businessの全ユーザーにお詫びとして1回分の保存リセットが付与される。発表は感謝祭の前日で、その前にはコメント欄で説明不足と言われたメールが送られていた。
+***** Take
+請求ミスという説明は本当かもしれない。先週はAstraを6時間使っても枠の3%しか減らなかったというコメントが複数ある。しかしユーザーは先週の数字を前提に作業を計画しており、正しいレートがいくらなのかOpenAIの外の誰にも確かめられない。ベンダーがいつでも価値を変えられる単位で測るサブスクは、他の何とも価格を比較できない。スレッドの大半は今月どのプロバイダーに乗り換えるかという話で、発表そのものより市場の状況をよく表している。
+***** Comments
+- 請求ミスはあった。Astra 6.2を何時間も使っても100%のままだった。でも問題の修正を口実に、もっと大規模なはしご外しをしているように感じる。
+- 私たちの利用枠は、終わりつつある「リセット経済」で人為的に支えられていた。今の水準のトークンサブスク補助が永遠に続くとは思えない。
+- 補助というのはサブスクが赤字で提供されていることを意味するが、そう信じる理由はない。API価格が「正しい」価格だという前提を受け入れるべきではない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+OpenAI, GPT-6.2 사용량 축소: Astra는 40%, Sol은 25% 더 빨리 한도 도달
+***** TLDR
+OpenAI에서 Codex와 ChatGPT를 맡은 Tibo Sottiaux가 GPT-6.2 출시 때 대부분 사용자의 Astra와 Sol 사용량이 "잘못 할인"됐다고 밝혔다. 수정 후에는 같은 작업이 요금제 한도를 더 많이 쓴다. 지난주와 비교해 Astra는 40%, Sol은 25% 더 빨리 한도에 도달하지만, OpenAI는 여전히 GPT-6 Astra와 GPT-6.1 Sol보다는 오래 쓸 수 있다고 한다. 다른 모델은 영향이 없고 이전 초과 사용분은 청구하지 않는다. Go, Plus, Pro, Business 사용자 모두에게 사과로 리셋 1회를 적립해 준다. 발표는 추수감사절 전날 나왔고, 그 전에 보낸 이메일은 무엇이 바뀌는지 설명이 부족했다는 댓글이 있다.
+***** Take
+청구 오류라는 설명은 사실일 수 있다. 지난주 Astra를 6시간 써도 한도의 3%만 줄었다는 댓글이 여럿 있다. 하지만 사용자들은 지난주 수치를 기준으로 작업을 계획했고, OpenAI 밖에서는 누구도 올바른 요율이 무엇인지 확인할 수 없다. 공급자가 언제든 가치를 바꿀 수 있는 단위로 측정하는 구독은 다른 무엇과도 가격을 비교할 수 없다. 스레드 대부분은 이번 달 어느 업체로 옮길지에 대한 이야기이고, 그게 발표 자체보다 시장 상황을 더 잘 보여준다.
+***** Comments
+- 청구 오류는 있었다. Astra 6.2를 몇 시간 써도 100% 그대로였다. 그런데 문제 수정을 핑계로 훨씬 큰 사다리 걷어차기를 하는 느낌이다.
+- 우리 한도는 끝나가는 "리셋 경제"로 인위적으로 떠받쳐져 왔다. 지금 익숙해진 수준의 토큰 구독 보조금이 영원히 갈 거라고 생각하지 않는다.
+- 보조금이라는 말은 구독이 손해 보고 팔린다는 뜻인데, 그렇게 믿을 이유가 없다. API 가격이 "올바른" 가격이라는 프레임을 받아들이지 말자.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+OpenAI recorta el uso de GPT-6.2: Astra llega al límite un 40% antes y Sol un 25% antes
+***** TLDR
+Tibo Sottiaux, responsable de Codex y ChatGPT en OpenAI, publicó que el lanzamiento de GPT-6.2 "descontó por error" el uso de Astra y Sol para la mayoría de usuarios. Tras la corrección, el mismo trabajo consume más cuota del plan: frente a la semana pasada, se llega al límite un 40% antes en Astra y un 25% antes en Sol, aunque OpenAI dice que el uso sigue rindiendo más que con GPT-6 Astra y GPT-6.1 Sol. Los demás modelos no cambian y no se cobrará el exceso pasado. Todos los usuarios de Go, Plus, Pro y Business reciben un reinicio guardado como disculpa. Se anunció la víspera de Acción de Gracias, después de un correo previo que, según los comentarios, no explicaba qué cambiaba.
+***** Take
+Puede que lo del error de facturación sea cierto: varios comentaristas dicen que la semana pasada seis horas de Astra gastaban un 3% de su cuota. Pero la gente planificó su trabajo con las cifras de la semana pasada, y nadie fuera de OpenAI puede comprobar cuál es la tarifa correcta. Una suscripción medida en una unidad que el proveedor puede revaluar cuando quiera no se puede comparar en precio con nada. Casi todo el hilo es gente diciendo a qué proveedor se cambia este mes, y eso dice más del mercado que el anuncio.
+***** Comments
+- Hubo un error de facturación. Estuve horas usando Astra 6.2 y seguía al 100%. Pero parece que usan la corrección para hacer un recorte mucho más amplio.
+- Nuestros límites se han sostenido artificialmente con una economía de "reinicios" que se está acabando. No creo que el subsidio de suscripciones de tokens al nivel al que nos acostumbramos dure para siempre.
+- Hablar de subsidio implica que las suscripciones se venden a pérdida, y no hay motivo para creerlo. No aceptemos la idea de que el precio de la API es el precio "correcto".
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+OpenAI kürzt GPT-6.2-Nutzung: Astra erreicht Limits 40 % schneller, Sol 25 % schneller
+***** TLDR
+Tibo Sottiaux, bei OpenAI für Codex und ChatGPT zuständig, schrieb, der Start von GPT-6.2 habe die Nutzung von Astra und Sol für die meisten Nutzer "fälschlich rabattiert". Nach der Korrektur verbraucht dieselbe Arbeit mehr vom Kontingent: Gegenüber letzter Woche erreicht man das Limit bei Astra 40 % und bei Sol 25 % früher, laut OpenAI reicht die Nutzung aber weiter als bei GPT-6 Astra und GPT-6.1 Sol. Andere Modelle sind nicht betroffen, frühere Mehrnutzung wird nicht nachberechnet. Alle Go-, Plus-, Pro- und Business-Nutzer bekommen als Entschuldigung einen gespeicherten Reset. Die Ankündigung kam am Tag vor Thanksgiving, nach einer früheren E-Mail, die laut Kommentaren nicht erklärte, was sich ändert.
+***** Take
+Die Abrechnungsfehler-Erklärung kann stimmen: Mehrere Kommentatoren sagen, sechs Stunden Astra hätten letzte Woche 3 % ihres Kontingents gekostet. Aber die Leute haben ihre Arbeit nach den Zahlen von letzter Woche geplant, und außerhalb von OpenAI kann niemand prüfen, was der richtige Satz ist. Ein Abo, das in einer Einheit gemessen wird, die der Anbieter jederzeit umbewerten kann, lässt sich preislich mit nichts vergleichen. Der Großteil des Threads besteht aus Leuten, die sagen, zu welchem Anbieter sie diesen Monat wechseln, und das sagt mehr über den Markt als die Ankündigung.
+***** Comments
+- Es gab einen Abrechnungsfehler. Ich habe Astra 6.2 stundenlang genutzt und stand immer noch bei 100 %. Aber es wirkt, als nutzten sie die Fehlerbehebung für eine viel breitere Kürzung.
+- Unsere Limits wurden künstlich durch eine "Reset"-Ökonomie gestützt, die gerade endet. Ich glaube nicht, dass Token-Abo-Subventionen in dem gewohnten Umfang ewig halten.
+- Subvention heißt, die Abos werden mit Verlust verkauft, und dafür gibt es keinen Grund zur Annahme. Übernehmen wir nicht die Sicht, der API-Preis sei der "richtige" Preis.
+** The New York Times warns photographers not to update Photoshop over AI features (revisit) :adobe:photography:journalism:ai:c2pa:revisit:
+:PROPERTIES:
+:ID:       50647673
+:URL:      https://www.theverge.com/ai-artificial-intelligence/1041227/the-new-york-times-warns-photographers-not-to-update-photoshop-over-ai-features
+:HN_URL:   https://news.ycombinator.com/item?id=50647673
+:POINTS:   402
+:COMMENTS: 336
+:BY:       rmason
+:END:
+
+*** TLDR
+Revisit: comments tripled from 107 to 336 since the 01:00 edition. The article is unchanged: the Times told freelancers not to use Photoshop 2027 (28.0.0 and later) on assignment, because its new AI features can write C2PA metadata labeling a photo as AI-generated. The discussion has moved to where the line actually is. Reuters already pushes photographers toward in-camera JPEGs, Pixel phones run machine learning on a photo before it is saved, and healing brush and content-aware fill have been inventing pixels for years. Others note the label can be stripped by editing metadata or taking a screenshot, and that Affinity, the obvious alternative, now belongs to Canva and sells its AI features by subscription.
+
+*** Take
+The new comments show that nobody in the thread can define an "AI edit" precisely enough to enforce a rule about it. Content-aware fill counts as acceptable and generative remove counts as tainted, but both fill in pixels the camera never recorded. If a screenshot removes the label, C2PA mostly catches the people who leave their metadata alone, and those are the honest freelancers. The workable fix is swatcoder's suggestion: an AI-off mode that Adobe sells to newsrooms. That is a product decision for Adobe, not a standards problem.
+
+*** Comments
+
+**** orbital-decay
+:PROPERTIES:
+:COMMENT_ID: 50649224
+:END:
+In case of news media photography, it's not even about AI. Reuters doesn't allow even minor edits, as processing a photo in normal image manipulation software makes it hard to distinguish creative choice vs reality. Photographers are essentially forced to shoot JPEGs for Reuters.
+
+**** egorfine
+:PROPERTIES:
+:COMMENT_ID: 50653036
+:END:
+How is healing brush or content-aware fill different from a generative model? All those instruments are generating new pixels that aren't present anywhere in the image.
+
+**** InsidiousWombat
+:PROPERTIES:
+:COMMENT_ID: 50650038
+:END:
+The AI crowd persistently misunderstands "I don't want AI content" as "AI content is fine as long as you can't tell the difference", while in reality it means I don't want AI content regardless of how good it is.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+《纽约时报》因 AI 功能警告摄影师不要更新 Photoshop（回访）
+***** TLDR
+回访：自 01:00 那期以来，评论从 107 条涨到 336 条，增加了两倍。文章内容没变：《纽约时报》要求自由摄影师在执行任务时不要使用 Photoshop 2027（28.0.0 及之后版本），因为其新 AI 功能可能写入 C2PA 元数据，把照片标为 AI 生成。讨论已经转向界线到底在哪里。路透社本来就要求摄影师基本只交机内 JPEG，Pixel 手机在照片保存前就会做机器学习处理，修复画笔和内容识别填充多年来一直在凭空生成像素。还有人指出，改元数据或截个图就能去掉标签，而最显而易见的替代品 Affinity 已归 Canva 所有，并以订阅方式出售 AI 功能。
+***** Take
+新评论表明，帖子里没人能把“AI 编辑”定义得足够精确，从而据此执行规定。内容识别填充被认为可以接受，生成式移除却被认为有污点，但两者都在填补相机从未记录的像素。如果截图就能去掉标签，C2PA 主要抓到的是不去动元数据的人，也就是那些诚实的自由摄影师。可行的办法是 swatcoder 提的：Adobe 卖给新闻机构一个关闭 AI 的模式。这是 Adobe 的产品决策，不是标准问题。
+***** Comments
+- 就新闻摄影而言，这甚至跟 AI 无关。路透社连轻微修图都不允许，因为用普通修图软件处理照片后，很难区分创作选择和现实。摄影师基本被迫给路透社交 JPEG。
+- 修复画笔或内容识别填充和生成模型有什么区别？这些工具都在生成图像中原本不存在的新像素。
+- AI 圈一直把“我不想要 AI 内容”误解成“只要看不出来，AI 内容就没问题”，而实际意思是：不管做得多好，我都不想要 AI 内容。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+ニューヨーク・タイムズ、AI機能を理由に写真家へPhotoshopを更新しないよう警告（再訪）
+***** TLDR
+再訪：01:00の号以降、コメントは107件から336件へ3倍に増えた。記事の内容は同じで、タイムズはフリーランスの写真家に対し、取材ではPhotoshop 2027（28.0.0以降）を使わないよう求めた。新しいAI機能が写真をAI生成と示すC2PAメタデータを書き込む可能性があるためだ。議論は線引きがどこにあるのかに移っている。ロイターはすでに写真家に撮って出しのJPEGをほぼ求めており、Pixelは保存前に写真を機械学習で処理し、修復ブラシやコンテンツに応じた塗りつぶしは何年も前からピクセルを作り出してきた。メタデータを編集するかスクリーンショットを撮ればラベルは消せるという指摘や、代替の筆頭であるAffinityは今やCanva傘下でAI機能をサブスクで売っているという指摘もある。
+***** Take
+新しいコメントからわかるのは、スレッドの誰も規則を運用できるほど正確に「AI編集」を定義できないということだ。コンテンツに応じた塗りつぶしは許され、生成AIによる削除は汚染扱いされるが、どちらもカメラが記録していないピクセルを埋めている。スクリーンショットでラベルが消えるなら、C2PAが主に捕まえるのはメタデータに手を加えない人、つまり正直なフリーランスだ。現実的な解決策はswatcoderの提案で、Adobeが報道機関向けにAIオフのモードを売ることだ。これは標準の問題ではなく、Adobeの製品判断だ。
+***** Comments
+- 報道写真の場合、そもそもAIの問題ですらない。ロイターは軽微な編集すら認めない。普通の画像編集ソフトで処理すると、創作上の選択と現実の区別が難しくなるからだ。写真家は事実上ロイター向けにJPEGで撮らされている。
+- 修復ブラシやコンテンツに応じた塗りつぶしは生成モデルと何が違うのか？どれも画像のどこにも存在しない新しいピクセルを生成している。
+- AI界隈は「AIコンテンツはいらない」を「見分けがつかなければAIコンテンツでもいい」と誤解し続けているが、実際の意味は、どれだけ出来が良くてもAIコンテンツはいらないということだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+뉴욕타임스, AI 기능 때문에 사진가들에게 포토샵 업데이트 자제 경고 (재방문)
+***** TLDR
+재방문: 01:00 호 이후 댓글이 107개에서 336개로 세 배가 됐다. 기사 내용은 그대로다. 타임스는 프리랜서 사진가들에게 취재 시 Photoshop 2027(28.0.0 이후)을 쓰지 말라고 했다. 새 AI 기능이 사진을 AI 생성물로 표시하는 C2PA 메타데이터를 기록할 수 있기 때문이다. 논의는 실제 경계가 어디냐로 옮겨갔다. 로이터는 이미 사진가에게 사실상 카메라 JPEG만 요구하고, 픽셀 폰은 사진을 저장하기 전에 머신러닝 처리를 하며, 복구 브러시와 내용 인식 채우기는 수년 전부터 픽셀을 만들어 왔다. 메타데이터를 수정하거나 스크린샷을 찍으면 라벨이 사라진다는 지적, 가장 뚜렷한 대안인 Affinity는 이제 Canva 소유이며 AI 기능을 구독으로 판다는 지적도 있다.
+***** Take
+새 댓글들을 보면 스레드의 누구도 규칙을 집행할 만큼 정확하게 "AI 편집"을 정의하지 못한다. 내용 인식 채우기는 괜찮고 생성형 제거는 오염된 것으로 보지만, 둘 다 카메라가 기록하지 않은 픽셀을 채운다. 스크린샷으로 라벨이 지워진다면 C2PA가 주로 잡아내는 건 메타데이터를 건드리지 않는 사람, 즉 정직한 프리랜서다. 현실적인 해법은 swatcoder의 제안대로 Adobe가 언론사에 AI 끄기 모드를 파는 것이다. 이건 표준 문제가 아니라 Adobe의 제품 결정이다.
+***** Comments
+- 보도 사진에서는 AI 문제조차 아니다. 로이터는 사소한 보정도 허용하지 않는다. 일반 편집 소프트웨어로 처리하면 창작적 선택과 현실을 구분하기 어려워지기 때문이다. 사진가들은 사실상 로이터용으로 JPEG 촬영을 강요받는다.
+- 복구 브러시나 내용 인식 채우기가 생성 모델과 뭐가 다른가? 이 도구들은 모두 이미지 어디에도 없는 새 픽셀을 생성한다.
+- AI 쪽 사람들은 "AI 콘텐츠를 원하지 않는다"를 "구별만 안 되면 AI 콘텐츠도 괜찮다"로 계속 오해하는데, 실제 뜻은 아무리 잘 만들어도 AI 콘텐츠는 싫다는 것이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+The New York Times advierte a sus fotógrafos que no actualicen Photoshop por sus funciones de IA (revisita)
+***** TLDR
+Revisita: los comentarios se triplicaron, de 107 a 336, desde la edición de las 01:00. El artículo no ha cambiado: el Times pidió a sus fotógrafos freelance no usar Photoshop 2027 (28.0.0 y posteriores) en sus encargos, porque las nuevas funciones de IA pueden escribir metadatos C2PA que marcan la foto como generada por IA. El debate se ha movido a dónde está realmente el límite. Reuters ya empuja a los fotógrafos a entregar JPEG de cámara, los Pixel procesan la foto con aprendizaje automático antes de guardarla, y el pincel corrector y el relleno según contenido llevan años inventando píxeles. Otros señalan que la etiqueta se quita editando los metadatos o haciendo una captura de pantalla, y que Affinity, la alternativa obvia, ahora es de Canva y vende sus funciones de IA por suscripción.
+***** Take
+Los nuevos comentarios muestran que nadie en el hilo puede definir una "edición con IA" con la precisión necesaria para hacer cumplir una norma. El relleno según contenido se considera aceptable y el borrado generativo se considera contaminado, pero los dos rellenan píxeles que la cámara nunca registró. Si una captura de pantalla elimina la etiqueta, C2PA atrapa sobre todo a quienes no tocan sus metadatos, que son los freelance honestos. La solución viable es la que propone swatcoder: un modo sin IA que Adobe venda a las redacciones. Es una decisión de producto de Adobe, no un problema de estándares.
+***** Comments
+- En fotografía de prensa ni siquiera se trata de IA. Reuters no permite ni ediciones menores, porque procesar una foto en un editor normal hace difícil distinguir entre decisión creativa y realidad. A los fotógrafos prácticamente se les obliga a disparar en JPEG para Reuters.
+- ¿En qué se diferencia el pincel corrector o el relleno según contenido de un modelo generativo? Todas esas herramientas generan píxeles nuevos que no están en ninguna parte de la imagen.
+- El mundillo de la IA sigue entendiendo "no quiero contenido de IA" como "el contenido de IA está bien si no se nota", cuando en realidad significa que no quiero contenido de IA por bueno que sea.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+New York Times warnt Fotografen wegen KI-Funktionen vor Photoshop-Update (Wiederbesuch)
+***** TLDR
+Wiederbesuch: Seit der Ausgabe um 01:00 haben sich die Kommentare von 107 auf 336 verdreifacht. Der Artikel ist unverändert: Die Times hat freie Fotografen angewiesen, Photoshop 2027 (28.0.0 und später) bei Aufträgen nicht zu nutzen, weil neue KI-Funktionen C2PA-Metadaten schreiben können, die ein Foto als KI-generiert kennzeichnen. Die Diskussion dreht sich jetzt darum, wo die Grenze eigentlich liegt. Reuters drängt Fotografen ohnehin zu kamerainternen JPEGs, Pixel-Telefone bearbeiten Fotos per maschinellem Lernen, bevor sie gespeichert werden, und Reparaturpinsel und inhaltsbasiertes Füllen erfinden seit Jahren Pixel. Andere merken an, dass sich das Label durch Bearbeiten der Metadaten oder einen Screenshot entfernen lässt und dass Affinity, die naheliegende Alternative, inzwischen Canva gehört und KI-Funktionen im Abo verkauft.
+***** Take
+Die neuen Kommentare zeigen, dass niemand im Thread eine "KI-Bearbeitung" so genau definieren kann, dass sich eine Regel darauf durchsetzen ließe. Inhaltsbasiertes Füllen gilt als akzeptabel, generatives Entfernen als belastet, dabei füllen beide Pixel, die die Kamera nie aufgenommen hat. Wenn ein Screenshot das Label entfernt, erwischt C2PA vor allem diejenigen, die ihre Metadaten nicht anfassen, also die ehrlichen Freien. Der praktikable Weg ist swatcoders Vorschlag: ein KI-freier Modus, den Adobe an Redaktionen verkauft. Das ist eine Produktentscheidung von Adobe, kein Standardproblem.
+***** Comments
+- Bei Pressefotografie geht es nicht einmal um KI. Reuters erlaubt nicht einmal kleine Bearbeitungen, weil die Verarbeitung in normaler Bildbearbeitung es schwer macht, kreative Entscheidung und Realität zu unterscheiden. Fotografen sind faktisch gezwungen, für Reuters JPEGs zu fotografieren.
+- Was unterscheidet Reparaturpinsel oder inhaltsbasiertes Füllen von einem generativen Modell? All diese Werkzeuge erzeugen neue Pixel, die nirgends im Bild vorhanden sind.
+- Die KI-Szene missversteht "Ich will keine KI-Inhalte" ständig als "KI-Inhalte sind okay, solange man den Unterschied nicht sieht", dabei heißt es: Ich will keine KI-Inhalte, egal wie gut sie sind.
+** Bare Metal Qwen :llm:assembly:osdev:qwen:performance:
+:PROPERTIES:
+:ID:       50648365
+:URL:      https://github.com/alesha-pro/llm.asm/tree/main/02-baremetal-os
+:HN_URL:   https://news.ycombinator.com/item?id=50648365
+:POINTS:   161
+:COMMENTS: 39
+:BY:       miohtama
+:END:
+
+*** TLDR
+Phase 2 of the llm.asm project is a 24 KB bootable x86-64 kernel, written in NASM assembly with no Linux, C or libc, that runs Qwen3-0.6B (Q8_0) straight from RAM. It boots through Multiboot or GRUB in 74 to 94 ms to an asm-llm> chat prompt, wakes all CPU cores through ACPI, needs AVX2, FMA and F16C plus about 2 GiB of RAM, and resets the chat when the 2048-token context fills. On an AMD EPYC 7642 under KVM it decodes 23.7 tokens/s on one thread and about 135 at 16 threads, against 16.6 and 103 for llama.cpp's CPU Q8_0 path, and slightly ahead of the project's own Linux assembly build. Output was checked token-for-token against that build on five prompts.
+
+*** Take
+The numbers mostly measure how general llama.cpp is, not how much Linux costs. The project's own Linux assembly build already beats llama.cpp by 18 to 35%, and removing the OS adds roughly another 10%. As Farmadupe points out, an engine written for one model on one CPU family beating a general-purpose engine is now routine. The real result is that a working LLM chat fits in a 24 KB kernel and boots in under 100 ms. Whether that matters outside sealed appliances is still unclear.
+
+*** Comments
+
+**** Farmadupe
+:PROPERTIES:
+:COMMENT_ID: 50651074
+:END:
+llama.cpp is a general purpose inference engine designed to have acceptable performance on any hardware. You can now prompt an LLM to write an inference engine from scratch for qwen3-0.6b and get a faster one in less than an hour.
+
+**** george_max
+:PROPERTIES:
+:COMMENT_ID: 50650693
+:END:
+For frontier models, the additional layer, Linux or other management tools to host it, is incredibly minimal in terms of resource allocation relative to the resources used by the model. I really don't think there is a benefit or use case.
+
+**** sandworm101
+:PROPERTIES:
+:COMMENT_ID: 50653543
+:END:
+Lack of an underlying OS significantly reduces the potential attack surface. That is a big win for a long-term deployment of a connected system. No silly OS fonts update should ever brick such a device.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+裸机运行 Qwen
+***** TLDR
+llm.asm 项目的第二阶段是一个 24 KB 的可启动 x86-64 内核，用 NASM 汇编编写，不依赖 Linux、C 或 libc，直接从内存运行 Qwen3-0.6B（Q8_0）。它通过 Multiboot 或 GRUB 启动，74 到 94 毫秒就进入 asm-llm> 聊天提示符，通过 ACPI 唤醒所有 CPU 核心，需要 AVX2、FMA、F16C 和大约 2 GiB 内存，2048 token 上下文用满后会重置对话。在 KVM 下的 AMD EPYC 7642 上，单线程解码 23.7 token/秒，16 线程约 135，而 llama.cpp 的 CPU Q8_0 路径分别是 16.6 和 103，也略快于该项目自己的 Linux 汇编版本。输出在五个提示词上与该版本逐 token 核对一致。
+***** Take
+这些数字主要衡量的是 llama.cpp 有多通用，而不是 Linux 有多大开销。项目自己的 Linux 汇编版本已经比 llama.cpp 快 18% 到 35%，去掉操作系统只再多出大约 10%。正如 Farmadupe 所说，为单一模型和单一 CPU 系列编写的引擎跑赢通用引擎，如今已是常事。真正的成果是：一个能用的 LLM 聊天塞进了 24 KB 内核，启动不到 100 毫秒。这在封闭设备之外是否有意义，目前还不清楚。
+***** Comments
+- llama.cpp 是通用推理引擎，设计目标是在任何硬件上都有可接受的性能。现在你可以让 LLM 从零为 qwen3-0.6b 写一个推理引擎，不到一小时就能得到更快的版本。
+- 对于前沿模型，Linux 或其他托管工具这层额外开销，相比模型本身消耗的资源微乎其微。我真不觉得这有什么好处或用途。
+- 没有底层操作系统能大幅减少潜在攻击面，对长期部署的联网系统来说是很大的优势。这种设备永远不会因为一次愚蠢的系统字体更新而变砖。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+ベアメタルQwen
+***** TLDR
+llm.asmプロジェクトのフェーズ2は、Linux、C、libcを使わずNASMアセンブリで書かれた24 KBのブート可能なx86-64カーネルで、Qwen3-0.6B（Q8_0）をRAMから直接動かす。MultibootまたはGRUBから74〜94ミリ秒でasm-llm>のチャットプロンプトまで起動し、ACPIで全CPUコアを起こし、AVX2、FMA、F16Cと約2 GiBのRAMを必要とし、2048トークンのコンテキストが埋まると会話をリセットする。KVM上のAMD EPYC 7642では、1スレッドで23.7トークン/秒、16スレッドで約135を出し、llama.cppのCPU Q8_0経路の16.6と103を上回り、プロジェクト自身のLinuxアセンブリ版よりわずかに速い。出力は5つのプロンプトでLinux版とトークン単位で一致を確認している。
+***** Take
+この数字が主に測っているのはLinuxのコストではなくllama.cppの汎用性だ。プロジェクト自身のLinuxアセンブリ版がすでにllama.cppより18〜35%速く、OSを外して上乗せされるのは約10%にすぎない。Farmadupeが指摘するように、1つのモデルと1つのCPUファミリー向けに書いたエンジンが汎用エンジンに勝つのは今やありふれたことだ。本当の成果は、動くLLMチャットが24 KBのカーネルに収まり、100ミリ秒以内に起動することだ。それが専用機器以外で意味を持つかはまだわからない。
+***** Comments
+- llama.cppはどんなハードウェアでもそこそこの性能が出るよう設計された汎用推論エンジンだ。今ならLLMにqwen3-0.6b用の推論エンジンをゼロから書かせれば、1時間もかからずにもっと速いものが手に入る。
+- フロンティアモデルにとって、Linuxなどのホスティング層は、モデルが使うリソースに比べてごくわずかだ。正直、利点も用途もないと思う。
+- 下にOSがないことで攻撃対象領域は大幅に減る。長期運用するネット接続システムには大きな利点だ。くだらないOSのフォント更新でこういう機器が文鎮化することもない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+베어메탈 Qwen
+***** TLDR
+llm.asm 프로젝트의 2단계는 Linux, C, libc 없이 NASM 어셈블리로 작성한 24 KB짜리 부팅 가능한 x86-64 커널로, Qwen3-0.6B(Q8_0)를 RAM에서 바로 실행한다. Multiboot나 GRUB으로 74~94ms 만에 asm-llm> 채팅 프롬프트까지 부팅하고, ACPI로 모든 CPU 코어를 깨우며, AVX2, FMA, F16C와 약 2 GiB RAM이 필요하고, 2048토큰 컨텍스트가 차면 대화를 초기화한다. KVM 위 AMD EPYC 7642에서 스레드 1개로 초당 23.7토큰, 16개로 약 135토큰을 디코딩해 llama.cpp CPU Q8_0 경로의 16.6, 103을 앞서고, 프로젝트 자체 Linux 어셈블리 빌드보다도 조금 빠르다. 출력은 프롬프트 5개로 그 빌드와 토큰 단위로 일치하는지 확인했다.
+***** Take
+이 수치가 주로 보여주는 건 Linux의 비용이 아니라 llama.cpp가 얼마나 범용적이냐다. 프로젝트 자체 Linux 어셈블리 빌드가 이미 llama.cpp보다 18~35% 빠르고, OS를 걷어내서 얻는 건 약 10% 더다. Farmadupe 말대로 한 모델, 한 CPU 계열용으로 짠 엔진이 범용 엔진을 이기는 건 이제 흔한 일이다. 진짜 성과는 동작하는 LLM 채팅이 24 KB 커널에 들어가고 100ms 안에 부팅된다는 점이다. 그게 전용 장비 밖에서 의미가 있을지는 아직 불분명하다.
+***** Comments
+- llama.cpp는 어떤 하드웨어에서도 적당한 성능을 내도록 설계된 범용 추론 엔진이다. 이제 LLM에게 qwen3-0.6b용 추론 엔진을 처음부터 짜라고 하면 한 시간도 안 돼 더 빠른 걸 얻는다.
+- 프런티어 모델에서는 Linux 같은 호스팅 계층이 모델이 쓰는 자원에 비해 극히 작다. 솔직히 이점이나 쓸모가 있다고 보지 않는다.
+- 기반 OS가 없으면 잠재적 공격 표면이 크게 줄어든다. 장기간 운영하는 네트워크 연결 시스템에는 큰 장점이다. 어설픈 OS 폰트 업데이트로 이런 장치가 벽돌이 될 일도 없다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Qwen sobre metal desnudo
+***** TLDR
+La fase 2 del proyecto llm.asm es un kernel x86-64 arrancable de 24 KB, escrito en ensamblador NASM sin Linux, C ni libc, que ejecuta Qwen3-0.6B (Q8_0) directamente desde la RAM. Arranca vía Multiboot o GRUB en 74 a 94 ms hasta un prompt de chat asm-llm>, despierta todos los núcleos mediante ACPI, necesita AVX2, FMA y F16C y unos 2 GiB de RAM, y reinicia la conversación cuando se llena el contexto de 2048 tokens. En un AMD EPYC 7642 bajo KVM decodifica 23,7 tokens/s con un hilo y unos 135 con 16, frente a 16,6 y 103 de la ruta CPU Q8_0 de llama.cpp, y algo más que la versión en ensamblador para Linux del propio proyecto. La salida se comprobó token a token contra esa versión con cinco prompts.
+***** Take
+Las cifras miden sobre todo lo genérico que es llama.cpp, no cuánto cuesta Linux. La versión en ensamblador para Linux del propio proyecto ya supera a llama.cpp entre un 18 y un 35%, y quitar el sistema operativo añade alrededor de un 10% más. Como señala Farmadupe, que un motor escrito para un solo modelo y una familia de CPU gane a uno de propósito general ya es rutina. El resultado real es que un chat LLM funcional cabe en un kernel de 24 KB y arranca en menos de 100 ms. Si eso sirve fuera de dispositivos cerrados todavía no está claro.
+***** Comments
+- llama.cpp es un motor de inferencia de propósito general diseñado para rendir de forma aceptable en cualquier hardware. Hoy puedes pedirle a un LLM que escriba desde cero un motor para qwen3-0.6b y tener uno más rápido en menos de una hora.
+- Para los modelos punteros, la capa adicional, Linux u otras herramientas para alojarlo, es mínima en recursos comparada con lo que consume el modelo. La verdad es que no le veo beneficio ni caso de uso.
+- No tener sistema operativo debajo reduce mucho la superficie de ataque. Es una gran ventaja para un sistema conectado desplegado a largo plazo. Ninguna actualización tonta de fuentes del sistema debería inutilizar un dispositivo así.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Qwen auf Bare Metal
+***** TLDR
+Phase 2 des Projekts llm.asm ist ein 24 KB großer bootfähiger x86-64-Kernel, in NASM-Assembler ohne Linux, C oder libc geschrieben, der Qwen3-0.6B (Q8_0) direkt aus dem RAM ausführt. Er bootet über Multiboot oder GRUB in 74 bis 94 ms bis zu einem asm-llm>-Chatprompt, weckt alle CPU-Kerne über ACPI, braucht AVX2, FMA und F16C sowie etwa 2 GiB RAM und setzt den Chat zurück, wenn der Kontext von 2048 Tokens voll ist. Auf einem AMD EPYC 7642 unter KVM dekodiert er 23,7 Tokens/s mit einem Thread und etwa 135 mit 16, gegenüber 16,6 und 103 beim CPU-Q8_0-Pfad von llama.cpp, und liegt leicht vor dem eigenen Linux-Assembler-Build des Projekts. Die Ausgabe wurde an fünf Prompts Token für Token mit diesem Build abgeglichen.
+***** Take
+Die Zahlen messen vor allem, wie allgemein llama.cpp ist, nicht, was Linux kostet. Der eigene Linux-Assembler-Build des Projekts schlägt llama.cpp schon um 18 bis 35 %, das Weglassen des Betriebssystems bringt nur etwa weitere 10 %. Wie Farmadupe anmerkt, ist es inzwischen Routine, dass eine Engine für ein Modell und eine CPU-Familie eine Allzweck-Engine schlägt. Das eigentliche Ergebnis: Ein funktionierender LLM-Chat passt in einen 24-KB-Kernel und bootet in unter 100 ms. Ob das außerhalb abgeschlossener Geräte etwas bringt, ist noch offen.
+***** Comments
+- llama.cpp ist eine Allzweck-Inferenz-Engine, die auf jeder Hardware akzeptabel laufen soll. Heute kann man ein LLM bitten, von Grund auf eine Engine für qwen3-0.6b zu schreiben, und hat in weniger als einer Stunde eine schnellere.
+- Bei Frontier-Modellen ist die zusätzliche Schicht, Linux oder andere Hosting-Werkzeuge, im Verhältnis zu den Ressourcen des Modells verschwindend gering. Ich sehe ehrlich gesagt keinen Nutzen oder Anwendungsfall.
+- Ohne darunterliegendes Betriebssystem schrumpft die Angriffsfläche deutlich. Für ein vernetztes System im Langzeitbetrieb ist das ein großer Vorteil. Kein albernes Schriftarten-Update des OS sollte so ein Gerät je lahmlegen.
+** Minipg: PostgreSQL as a Single Executable :postgres:databases:devtools:virtualization:zig:
+:PROPERTIES:
+:ID:       50650892
+:URL:      https://progrium.github.io/minipg/
+:HN_URL:   https://news.ycombinator.com/item?id=50650892
+:POINTS:   142
+:COMMENTS: 22
+:BY:       rguiscard
+:END:
+
+*** TLDR
+Jeff Lindsay (progrium) released minipg, which packages PostgreSQL 18 as one executable. A .pgdb directory holds the data, config, credentials and Postgres version. `minipg app.pgdb` opens psql, a server starts when a command needs one and stops when idle, and `minipg run app.pgdb -- npm start` sets DATABASE_URL for your app. It embeds Docker Hub's postgres:18-alpine image and runs the Alpine binaries through h9, a Zig hypervisor library whose Plan 9 kernel handles the Linux system calls, so there is no Docker and no VM to boot. It runs on Linux (KVM, or a native backend on kernel 5.11+), Apple Silicon through Hypervisor.framework, and Chrome or Edge in the browser. Tools like pg_dump start in about 90 ms. The author says it is early, roughly 2x slower than native on the non-KVM backend, and not yet for data you can't recreate.
+
+*** Take
+The real competitor is "just run the Postgres Docker image", and for local development and CI minipg wins by dropping the Docker daemon, which matters on a 16 GB Mac. The more interesting part is h9, not Postgres: if a Plan 9 kernel can run unmodified Alpine binaries well enough to host a database, the same approach works for any service that has no single-binary build. The 2x slowdown and the author's own warning keep it out of production for now.
+
+*** Comments
+
+**** Ciantic
+:PROPERTIES:
+:COMMENT_ID: 50653690
+:END:
+For unit tests I've found that I don't need PGLite or other tools, only podman and official images. Regular postgres starts in 800 milliseconds, TimeScale DB in 1 second.
+
+**** kennethh
+:PROPERTIES:
+:COMMENT_ID: 50652861
+:END:
+This seems to be ideal for testing purposes. Great to use this in a 16gb mac so I do not have to install docker.
+
+**** txdv
+:PROPERTIES:
+:COMMENT_ID: 50652986
+:END:
+pglite is a webassembly single binary. This is just a single binary running via h9 virtualized plan9.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Minipg：单个可执行文件形式的 PostgreSQL
+***** TLDR
+Jeff Lindsay（progrium）发布了 minipg，把 PostgreSQL 18 打包成一个可执行文件。一个 .pgdb 目录保存数据、配置、凭据和 Postgres 版本。`minipg app.pgdb` 打开 psql，需要时自动启动服务器，空闲时停止；`minipg run app.pgdb -- npm start` 会为应用设置 DATABASE_URL。它内嵌 Docker Hub 的 postgres:18-alpine 镜像，通过 h9 运行 Alpine 的二进制文件。h9 是一个 Zig 虚拟机监控程序库，用 Plan 9 内核处理 Linux 系统调用，所以不需要 Docker，也不用启动虚拟机。支持 Linux（KVM，或内核 5.11+ 上的原生后端）、通过 Hypervisor.framework 支持 Apple Silicon，以及浏览器中的 Chrome 或 Edge。pg_dump 之类的工具约 90 毫秒启动。作者说项目还处于早期，在非 KVM 后端上比原生慢约 2 倍，暂时不要存放无法重建的数据。
+***** Take
+真正的竞争对象是“直接跑 Postgres 的 Docker 镜像”。在本地开发和 CI 场景里，minipg 省掉了 Docker 守护进程，这在 16 GB 内存的 Mac 上很重要。更有意思的是 h9 而不是 Postgres：如果 Plan 9 内核能把未修改的 Alpine 二进制跑到足以承载数据库的程度，同样的方法就适用于任何没有单文件构建的服务。2 倍的性能损失和作者自己的警告，让它暂时进不了生产环境。
+***** Comments
+- 我发现单元测试不需要 PGLite 或其他工具，只要 podman 和官方镜像。普通 postgres 800 毫秒启动，TimeScale DB 1 秒。
+- 这看起来很适合测试用途。在 16GB 的 Mac 上用它很好，不用装 docker。
+- pglite 是 WebAssembly 单文件。这个只是通过 h9 虚拟化的 plan9 运行的单文件。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Minipg：単一実行ファイルのPostgreSQL
+***** TLDR
+Jeff Lindsay（progrium）氏がminipgを公開した。PostgreSQL 18を1つの実行ファイルにまとめたものだ。.pgdbディレクトリにデータ、設定、認証情報、Postgresのバージョンが入る。`minipg app.pgdb`でpsqlが開き、コマンドが必要とすればサーバーが起動してアイドル時に停止する。`minipg run app.pgdb -- npm start`はアプリ用にDATABASE_URLを設定する。Docker Hubのpostgres:18-alpineイメージを埋め込み、Alpineのバイナリをh9で実行する。h9はZig製のハイパーバイザーライブラリで、Plan 9カーネルがLinuxのシステムコールを処理するため、Dockerも起動するVMも不要だ。Linux（KVM、またはカーネル5.11以降のネイティブバックエンド）、Hypervisor.framework経由のApple Silicon、ブラウザのChromeとEdgeで動く。pg_dumpなどのツールは約90ミリ秒で起動する。作者によればまだ初期段階で、非KVMバックエンドではネイティブの約2倍遅く、再作成できないデータにはまだ使うべきではない。
+***** Take
+本当の競合は「PostgresのDockerイメージをそのまま動かす」ことで、ローカル開発とCIではDockerデーモンが要らない分minipgが勝つ。16 GBのMacではこれが効く。面白いのはPostgresではなくh9のほうだ。Plan 9カーネルが無改造のAlpineバイナリをデータベースを動かせるほどうまく実行できるなら、単一バイナリ版のないどんなサービスにも同じ手法が使える。2倍の速度低下と作者自身の警告があるので、当面は本番には入らない。
+***** Comments
+- ユニットテストならPGLiteなどは要らず、podmanと公式イメージだけで足りると気づいた。普通のpostgresは800ミリ秒、TimeScale DBは1秒で起動する。
+- テスト用途には理想的に見える。16GBのMacでdockerを入れずに使えるのはいい。
+- pgliteはWebAssemblyの単一バイナリ。こっちはh9で仮想化したplan9上で動く単一バイナリにすぎない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Minipg: 단일 실행 파일로 된 PostgreSQL
+***** TLDR
+Jeff Lindsay(progrium)가 PostgreSQL 18을 실행 파일 하나로 묶은 minipg를 공개했다. .pgdb 디렉터리에 데이터, 설정, 자격 증명, Postgres 버전이 들어간다. `minipg app.pgdb`는 psql을 열고, 명령에 필요하면 서버를 띄웠다가 유휴 상태가 되면 멈춘다. `minipg run app.pgdb -- npm start`는 앱에 DATABASE_URL을 설정해 준다. Docker Hub의 postgres:18-alpine 이미지를 내장하고 Alpine 바이너리를 h9로 실행한다. h9는 Zig로 만든 하이퍼바이저 라이브러리로, Plan 9 커널이 Linux 시스템 호출을 처리하므로 Docker도 부팅할 VM도 필요 없다. Linux(KVM, 또는 커널 5.11 이상의 네이티브 백엔드), Hypervisor.framework를 통한 Apple Silicon, 브라우저의 Chrome과 Edge에서 돌아간다. pg_dump 같은 도구는 약 90ms 만에 시작한다. 작성자는 아직 초기 단계이고, KVM이 아닌 백엔드에서는 네이티브보다 약 2배 느리며, 다시 만들 수 없는 데이터는 아직 넣지 말라고 한다.
+***** Take
+진짜 경쟁 상대는 "그냥 Postgres Docker 이미지 돌리기"이고, 로컬 개발과 CI에서는 Docker 데몬이 필요 없다는 점에서 minipg가 이긴다. 16 GB Mac에서는 이게 중요하다. 더 흥미로운 건 Postgres가 아니라 h9다. Plan 9 커널이 수정하지 않은 Alpine 바이너리를 데이터베이스를 돌릴 만큼 잘 실행한다면, 단일 바이너리 빌드가 없는 어떤 서비스에도 같은 방식을 쓸 수 있다. 2배 느린 성능과 작성자 본인의 경고 때문에 당분간 프로덕션에는 못 들어간다.
+***** Comments
+- 유닛 테스트에는 PGLite 같은 도구 없이 podman과 공식 이미지만 있으면 된다는 걸 알았다. 일반 postgres는 800ms, TimeScale DB는 1초 만에 뜬다.
+- 테스트 용도로 이상적인 것 같다. 16GB Mac에서 docker 설치 없이 쓰기 좋다.
+- pglite는 WebAssembly 단일 바이너리다. 이건 h9로 가상화한 plan9 위에서 도는 단일 바이너리일 뿐이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Minipg: PostgreSQL como un solo ejecutable
+***** TLDR
+Jeff Lindsay (progrium) publicó minipg, que empaqueta PostgreSQL 18 en un solo ejecutable. Un directorio .pgdb guarda los datos, la configuración, las credenciales y la versión de Postgres. `minipg app.pgdb` abre psql, el servidor arranca cuando un comando lo necesita y se detiene al quedar inactivo, y `minipg run app.pgdb -- npm start` define DATABASE_URL para tu aplicación. Incluye la imagen postgres:18-alpine de Docker Hub y ejecuta los binarios de Alpine mediante h9, una biblioteca de hipervisor en Zig cuyo kernel Plan 9 atiende las llamadas al sistema de Linux, así que no hay Docker ni máquina virtual que arrancar. Funciona en Linux (KVM, o un backend nativo con kernel 5.11+), Apple Silicon mediante Hypervisor.framework, y Chrome o Edge en el navegador. Herramientas como pg_dump arrancan en unos 90 ms. El autor dice que es temprano, unas 2 veces más lento que nativo en el backend sin KVM, y que aún no conviene guardar datos que no se puedan recrear.
+***** Take
+El competidor real es "ejecutar la imagen Docker de Postgres y ya", y para desarrollo local y CI minipg gana al eliminar el daemon de Docker, algo que importa en un Mac de 16 GB. Lo más interesante es h9, no Postgres: si un kernel Plan 9 puede ejecutar binarios de Alpine sin modificar lo bastante bien como para alojar una base de datos, el mismo método sirve para cualquier servicio sin versión de un solo binario. La pérdida de 2x y el propio aviso del autor lo dejan fuera de producción por ahora.
+***** Comments
+- Para tests unitarios he visto que no necesito PGLite ni otras herramientas, solo podman e imágenes oficiales. Postgres normal arranca en 800 milisegundos y TimeScale DB en 1 segundo.
+- Parece ideal para pruebas. Genial para usarlo en un Mac de 16 GB sin tener que instalar docker.
+- pglite es un único binario WebAssembly. Esto es solo un binario que corre sobre plan9 virtualizado con h9.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Minipg: PostgreSQL als einzelne ausführbare Datei
+***** TLDR
+Jeff Lindsay (progrium) hat minipg veröffentlicht, das PostgreSQL 18 in eine einzige ausführbare Datei packt. Ein .pgdb-Verzeichnis enthält Daten, Konfiguration, Zugangsdaten und die Postgres-Version. `minipg app.pgdb` öffnet psql, ein Server startet, wenn ein Befehl ihn braucht, und stoppt im Leerlauf, und `minipg run app.pgdb -- npm start` setzt DATABASE_URL für die eigene App. Es bettet das Docker-Hub-Image postgres:18-alpine ein und führt die Alpine-Binärdateien über h9 aus, eine Hypervisor-Bibliothek in Zig, deren Plan-9-Kernel die Linux-Systemaufrufe bedient. Es gibt also weder Docker noch eine VM zum Booten. Es läuft auf Linux (KVM oder nativem Backend ab Kernel 5.11), auf Apple Silicon über Hypervisor.framework und in Chrome oder Edge im Browser. Werkzeuge wie pg_dump starten in etwa 90 ms. Der Autor sagt, das Projekt sei früh, auf dem Nicht-KVM-Backend etwa doppelt so langsam wie nativ und noch nichts für Daten, die man nicht neu erzeugen kann.
+***** Take
+Der eigentliche Konkurrent ist "einfach das Postgres-Docker-Image starten", und für lokale Entwicklung und CI gewinnt minipg, weil der Docker-Daemon wegfällt. Auf einem Mac mit 16 GB zählt das. Spannender ist h9, nicht Postgres: Wenn ein Plan-9-Kernel unveränderte Alpine-Binärdateien gut genug ausführt, um eine Datenbank zu betreiben, funktioniert derselbe Ansatz für jeden Dienst ohne Single-Binary-Build. Der Faktor 2 beim Tempo und die Warnung des Autors halten es vorerst aus der Produktion fern.
+***** Comments
+- Für Unit-Tests brauche ich weder PGLite noch andere Werkzeuge, nur podman und offizielle Images. Normales Postgres startet in 800 Millisekunden, TimeScale DB in 1 Sekunde.
+- Das scheint ideal für Tests. Toll auf einem 16-GB-Mac, dann muss ich kein Docker installieren.
+- pglite ist eine einzelne WebAssembly-Binärdatei. Das hier ist nur eine einzelne Binärdatei, die über h9-virtualisiertes Plan 9 läuft.
+** Collection of preserved UI style guides :design:ui:history:archive:hci:
+:PROPERTIES:
+:ID:       50649834
+:URL:      https://aresluna.org/ui-style-guides/
+:HN_URL:   https://news.ycombinator.com/item?id=50649834
+:POINTS:   204
+:COMMENTS: 23
+:BY:       sohkamyung
+:END:
+
+*** TLDR
+Marcin Wichary published an archive of 69 interface guidelines from the early 1980s to today: Apple Lisa, the 1986 Windows SDK, Apple's 1987 Human Interface Guidelines, OPEN LOOK, NeXTSTEP, Amiga (1991), PenPoint, Taligent, Newton, BlackBerry, Palm OS, webOS, Windows Phone 7, Material Design v1 and v2, plus live links to the current Apple, Android, GNOME and Windows guides. Each entry has preview images and links to PDFs, Internet Archive copies or Wayback mirrors, some lightly cleaned up for readability, and the whole set downloads as one zip. He credits four other collectors and asks readers to send missing guides.
+
+*** Take
+These documents were written by people who had to justify every control on small, often monochrome screens, and they explain why a control behaves the way it does, not only what it looks like. Most current design systems are component catalogs with less of that reasoning. Readers are already sending in gaps: KDE, IBM Carbon and the Vista and Windows 7 Aero guide. The zip download is the right call, since several of these documents survived only because one collector kept a copy.
+
+*** Comments
+
+**** TehShrike
+:PROPERTIES:
+:COMMENT_ID: 50651071
+:END:
+The early 2000s Windows UX guidelines were a great teacher to me. It's good to read design guidelines from designers who care about functionality and usability even more than aesthetics.
+
+**** krstffr
+:PROPERTIES:
+:COMMENT_ID: 50653169
+:END:
+I did not expect this from the first page of the Amiga style guide from 1991: instead of just using the masculine throughout or alternating chapters, they changed genders at random.
+
+**** stsch
+:PROPERTIES:
+:COMMENT_ID: 50653568
+:END:
+Old interfaces had very little room and often not many colors available. The result was very simple, but easy to understand and use. I think designs should be simple: no gloss, gradients, blurry shadows.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+保存下来的 UI 风格指南合集
+***** TLDR
+Marcin Wichary 发布了一个档案，收录了从 1980 年代初到今天的 69 份界面规范：Apple Lisa、1986 年的 Windows SDK、苹果 1987 年的人机界面指南、OPEN LOOK、NeXTSTEP、Amiga（1991）、PenPoint、Taligent、Newton、BlackBerry、Palm OS、webOS、Windows Phone 7、Material Design v1 和 v2，以及苹果、Android、GNOME 和 Windows 现行指南的链接。每个条目都有预览图和指向 PDF、Internet Archive 副本或 Wayback 镜像的链接，部分为了易读做了轻度整理，全部内容可打包成一个 zip 下载。他感谢了另外四位收藏者，并请读者提供缺失的指南。
+***** Take
+这些文档的作者必须在又小、常常还是单色的屏幕上为每个控件找到理由，所以它们解释的是控件为什么这样运作，而不只是长什么样。如今大多数设计系统是组件目录，这类论证少了很多。读者已经在补充遗漏：KDE、IBM Carbon，以及 Vista 和 Windows 7 的 Aero 指南。提供 zip 下载是对的，因为其中好几份文档能留存下来，只是因为某位收藏者保留了副本。
+***** Comments
+- 2000 年代初的 Windows UX 指南是我的好老师。读那些比起美观更在意功能和可用性的设计师写的规范，很有收获。
+- 我没想到 1991 年 Amiga 风格指南第一页会写这个：他们没有通篇用男性代词，也没有按章节轮换，而是随机切换性别。
+- 老界面空间很小，颜色也往往不多，结果非常简洁，但容易理解和使用。我认为设计就该简洁：不要光泽、渐变和模糊阴影。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+保存されたUIスタイルガイドのコレクション
+***** TLDR
+Marcin Wichary氏が、1980年代初頭から現在までの69のインターフェースガイドラインのアーカイブを公開した。Apple Lisa、1986年のWindows SDK、Appleの1987年版ヒューマンインターフェースガイドライン、OPEN LOOK、NeXTSTEP、Amiga（1991年）、PenPoint、Taligent、Newton、BlackBerry、Palm OS、webOS、Windows Phone 7、Material Designのv1とv2、さらにApple、Android、GNOME、Windowsの現行ガイドへのリンクがある。各項目にはプレビュー画像と、PDF、Internet Archiveのコピー、Waybackミラーへのリンクがあり、一部は読みやすく軽く整えられている。全体を1つのzipでダウンロードできる。他の4人の収集家に謝意を示し、欠けているガイドの提供を呼びかけている。
+***** Take
+これらの文書は、小さく多くはモノクロの画面ですべてのコントロールの存在理由を説明しなければならなかった人たちが書いたもので、見た目だけでなく、なぜそう動くのかを説明している。今のデザインシステムの多くはコンポーネントのカタログで、そうした理由づけが少ない。読者はすでに抜けを指摘している。KDE、IBM Carbon、VistaとWindows 7のAeroガイドだ。zipでの一括ダウンロードは正しい判断で、いくつかの文書は一人の収集家がコピーを持っていたから残っただけだ。
+***** Comments
+- 2000年代初頭のWindows UXガイドラインは私にとって素晴らしい先生だった。見た目以上に機能性と使いやすさを大事にするデザイナーのガイドラインを読むのはいいことだ。
+- 1991年のAmigaスタイルガイドの最初のページにこれがあるとは思わなかった。全編で男性形を使うのでも章ごとに交互にするのでもなく、性別をランダムに変えていた。
+- 昔のインターフェースは場所も色数も限られていた。その結果とてもシンプルだが、わかりやすく使いやすかった。デザインはシンプルであるべきだと思う。光沢もグラデーションもぼかした影もいらない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+보존된 UI 스타일 가이드 모음
+***** TLDR
+Marcin Wichary가 1980년대 초부터 지금까지의 인터페이스 가이드라인 69개를 모은 아카이브를 공개했다. Apple Lisa, 1986년 Windows SDK, 애플의 1987년 휴먼 인터페이스 가이드라인, OPEN LOOK, NeXTSTEP, Amiga(1991), PenPoint, Taligent, Newton, BlackBerry, Palm OS, webOS, Windows Phone 7, Material Design v1과 v2, 그리고 현재 애플, Android, GNOME, Windows 가이드 링크가 있다. 항목마다 미리보기 이미지와 PDF, Internet Archive 사본, Wayback 미러 링크가 있고, 일부는 읽기 쉽게 살짝 다듬었다. 전체를 zip 하나로 내려받을 수 있다. 다른 수집가 네 명에게 공을 돌리고, 빠진 가이드를 보내 달라고 요청한다.
+***** Take
+이 문서들은 작고 대개 흑백인 화면에서 모든 컨트롤의 존재 이유를 설명해야 했던 사람들이 썼고, 생김새뿐 아니라 왜 그렇게 동작하는지를 설명한다. 요즘 디자인 시스템 대부분은 컴포넌트 카탈로그이고 그런 논리가 적다. 독자들은 벌써 빠진 것들을 알려주고 있다. KDE, IBM Carbon, Vista와 Windows 7의 Aero 가이드다. zip 일괄 다운로드는 옳은 선택이다. 이 중 몇몇 문서는 수집가 한 명이 사본을 갖고 있었기 때문에 살아남았다.
+***** Comments
+- 2000년대 초 Windows UX 가이드라인은 내게 훌륭한 선생이었다. 미적인 것보다 기능과 사용성을 더 중시하는 디자이너들의 가이드라인을 읽는 건 좋은 일이다.
+- 1991년 Amiga 스타일 가이드 첫 페이지에 이런 게 있을 줄 몰랐다. 남성형만 쓰거나 장마다 번갈아 쓰는 대신 성별을 무작위로 바꿨다.
+- 옛 인터페이스는 공간도 색도 부족했다. 그 결과 아주 단순했지만 이해하고 쓰기 쉬웠다. 디자인은 단순해야 한다고 생각한다. 광택, 그라데이션, 흐린 그림자는 필요 없다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Colección de guías de estilo de interfaz conservadas
+***** TLDR
+Marcin Wichary publicó un archivo con 69 guías de interfaz desde principios de los 80 hasta hoy: Apple Lisa, el SDK de Windows de 1986, las Human Interface Guidelines de Apple de 1987, OPEN LOOK, NeXTSTEP, Amiga (1991), PenPoint, Taligent, Newton, BlackBerry, Palm OS, webOS, Windows Phone 7, Material Design v1 y v2, y enlaces a las guías actuales de Apple, Android, GNOME y Windows. Cada entrada tiene imágenes de vista previa y enlaces a PDF, copias en Internet Archive o espejos de Wayback, algunos retocados para leerse mejor, y todo se descarga en un solo zip. Agradece a otros cuatro coleccionistas y pide a los lectores que envíen las guías que faltan.
+***** Take
+Estos documentos los escribió gente que tenía que justificar cada control en pantallas pequeñas y a menudo monocromas, y explican por qué un control funciona como funciona, no solo cómo se ve. La mayoría de los sistemas de diseño actuales son catálogos de componentes con mucho menos de ese razonamiento. Los lectores ya están señalando huecos: KDE, IBM Carbon y la guía Aero de Vista y Windows 7. La descarga en zip es acertada, porque varios de estos documentos sobrevivieron solo porque un coleccionista guardó una copia.
+***** Comments
+- Las guías de UX de Windows de principios de los 2000 fueron una gran maestra para mí. Es bueno leer guías de diseñadores a los que les importan la funcionalidad y la usabilidad incluso más que la estética.
+- No esperaba esto en la primera página de la guía de estilo de Amiga de 1991: en lugar de usar el masculino en todo o alternar capítulos, cambiaron el género al azar.
+- Las interfaces antiguas tenían muy poco espacio y a menudo pocos colores. El resultado era muy simple, pero fácil de entender y usar. Creo que el diseño debería ser simple: sin brillos, degradados ni sombras difuminadas.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Sammlung erhaltener UI-Styleguides
+***** TLDR
+Marcin Wichary hat ein Archiv mit 69 Interface-Richtlinien von Anfang der 1980er bis heute veröffentlicht: Apple Lisa, das Windows SDK von 1986, Apples Human Interface Guidelines von 1987, OPEN LOOK, NeXTSTEP, Amiga (1991), PenPoint, Taligent, Newton, BlackBerry, Palm OS, webOS, Windows Phone 7, Material Design v1 und v2 sowie Links zu den aktuellen Richtlinien von Apple, Android, GNOME und Windows. Jeder Eintrag hat Vorschaubilder und Links zu PDFs, Internet-Archive-Kopien oder Wayback-Spiegeln, einige leicht für die Lesbarkeit aufbereitet, und alles lässt sich als ein Zip herunterladen. Er dankt vier weiteren Sammlern und bittet um fehlende Guides.
+***** Take
+Diese Dokumente stammen von Leuten, die jedes Bedienelement auf kleinen, oft monochromen Bildschirmen begründen mussten, und sie erklären, warum ein Element so funktioniert, nicht nur, wie es aussieht. Die meisten heutigen Designsysteme sind Komponentenkataloge mit deutlich weniger solcher Begründungen. Leser melden schon Lücken: KDE, IBM Carbon und den Aero-Guide für Vista und Windows 7. Der Zip-Download ist richtig, denn mehrere dieser Dokumente haben nur überlebt, weil ein Sammler eine Kopie aufbewahrt hat.
+***** Comments
+- Die Windows-UX-Richtlinien der frühen 2000er waren ein großartiger Lehrer für mich. Es tut gut, Richtlinien von Designern zu lesen, denen Funktion und Bedienbarkeit noch wichtiger sind als Ästhetik.
+- Das hatte ich auf der ersten Seite des Amiga-Styleguides von 1991 nicht erwartet: Statt durchgehend das Maskulinum zu verwenden oder kapitelweise zu wechseln, wurde das Geschlecht zufällig gewechselt.
+- Alte Oberflächen hatten sehr wenig Platz und oft nur wenige Farben. Das Ergebnis war sehr schlicht, aber leicht zu verstehen und zu bedienen. Ich finde, Design sollte schlicht sein: kein Glanz, keine Verläufe, keine weichgezeichneten Schatten.
