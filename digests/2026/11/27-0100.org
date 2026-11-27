@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-11-27 01:00 UTC
+#+DATE: 2026-11-27T01:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Google's Gmail MCP can't send mail, a no-ransom recovery firm allegedly paid ransoms, and AI agents revive the homelab
+
+* Highlights
+- Google Workspace: agents must use its MCP servers; Gmail send is partner-only
+- RansomwareHelp CTO indicted after an FBI sting played both victim and gang
+- YouTube Ad Punisher reloads the page instead of blocking ads
+- AI made self-hosting fun again, and security patching urgent again
+- llama-cpp-rdna-boosts: AMD speedups that leave model output alone
+
+* Stories
+
+** Google Will Make AI Agents Use Its MCP Servers. The Gmail One Can't Send Email :google:mcp:ai:email:platforms:
+:PROPERTIES:
+:ID:       50653477
+:URL:      https://techstackups.com/articles/google-workspace-ai-agents-mcp/
+:HN_URL:   https://news.ycombinator.com/item?id=50653477
+:POINTS:   225
+:COMMENTS: 200
+:BY:       ritzaco
+:END:
+
+*** TLDR
+Google made eight Workspace MCP servers generally available on Nov 24 and changed its API terms. From Feb 1, 2027, any tool that is or is driven by an AI agent must reach Gmail, Drive, Calendar and the rest through those servers, and agents calling REST directly drop to Standard quotas. Agent status is self-declared with an OAuth checkbox. The Gmail server can search, read, draft, label and trash, but cannot send, reply, forward or edit a draft. Those actions are partner-only: Anthropic's Claude connector has them, independent developers with the same scopes do not. Google can cap retention of derived data such as embeddings at 30 days, and training or building a competing product is banned. The free tier is 5,000 requests per day, and a Gmail search counts as 10. Paid billing starts April 1, 2027.
+
+*** Take
+Google's argument for one gateway, where admins can approve and audit agent actions, is a real defense against prompt injection in email agents. But the public server already lets an agent trash mail and only blocks sending, and MCP has an elicitation feature for asking the user to confirm. So the line follows who has a deal with Google, not what is dangerous. The whole rule also depends on agents honestly ticking a box. The likely result is agents driving the Gmail web UI through a browser, which is worse for users and for Google.
+
+*** Comments
+
+**** perdy
+:PROPERTIES:
+:COMMENT_ID: 50654225
+:END:
+MCP already has a primitive for exactly this: elicitation lets a server pause a tool call and ask the user to confirm before it proceeds... making it partner-only seems more like a business decision than a safety concern.
+
+**** remus
+:PROPERTIES:
+:COMMENT_ID: 50654099
+:END:
+Perhaps the idea here is to try and limit spam? Agents sending emails could generate large volumes of very realistic looking mail and add to the flood.
+
+**** nmjenkins
+:PROPERTIES:
+:COMMENT_ID: 50654101
+:END:
+At Fastmail we believe it's your data... Our MCP server continues to be available for all (no "partner only" tools).
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Google 将强制 AI 智能体使用其 MCP 服务器，而 Gmail 的那个不能发邮件
+***** TLDR
+Google 于 11 月 24 日正式推出八个 Workspace MCP 服务器，并修改了 API 条款。自 2027 年 2 月 1 日起，任何本身是 AI 智能体或由 AI 智能体驱动的工具，都必须通过这些服务器访问 Gmail、Drive、Calendar 等数据，直接调用 REST 的智能体将降为 Standard 配额。智能体身份通过 OAuth 复选框自行申报。Gmail 服务器可以搜索、阅读、起草、加标签和删除邮件，但不能发送、回复、转发或编辑草稿。这些操作仅限合作伙伴：Anthropic 的 Claude 连接器可以用，拥有相同权限范围的独立开发者却不行。Google 可将嵌入向量等衍生数据的保留期限制为 30 天，并禁止用于训练或开发竞品。免费额度为每天 5,000 次请求，一次 Gmail 搜索按 10 次计算。付费计费从 2027 年 4 月 1 日开始。
+***** Take
+Google 的理由是设一个统一网关，让管理员审批和审计智能体操作，这确实能防御邮件智能体中的提示注入。但公开服务器已经允许智能体删除邮件，只封锁了发送，而且 MCP 本身就有让用户确认的 elicitation 功能。所以这条界线划的是谁和 Google 有合作，而不是什么操作危险。整个规则还依赖智能体诚实地勾选一个复选框。可能的结果是智能体改用浏览器操作 Gmail 网页版，这对用户和 Google 都更糟。
+***** Comments
+- MCP 已经有专门处理这个的原语：elicitation 可以让服务器暂停工具调用，先请用户确认再继续……把它限定为合作伙伴专用，看起来更像商业决定，而不是安全考虑。
+- 也许目的是限制垃圾邮件？智能体发邮件可能会产生大量看起来非常真实的邮件，让泛滥更严重。
+- 在 Fastmail，我们认为数据是你的……我们的 MCP 服务器继续向所有人开放（没有“仅限合作伙伴”的工具）。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+GoogleはAIエージェントに自社MCPサーバーの使用を義務付ける。Gmail用はメールを送信できない
+***** TLDR
+Googleは11月24日にWorkspace MCPサーバー8種を一般提供し、API利用規約を変更した。2027年2月1日以降、AIエージェントである、またはAIエージェントが操作するツールは、Gmail、Drive、Calendarなどにこれらのサーバー経由でアクセスしなければならず、RESTを直接呼ぶエージェントはStandardクォータに格下げされる。エージェントかどうかはOAuthのチェックボックスで自己申告する。Gmailサーバーは検索、閲覧、下書き作成、ラベル付け、ゴミ箱移動はできるが、送信、返信、転送、下書きの編集はできない。これらはパートナー限定で、AnthropicのClaudeコネクタは使えるが、同じスコープを持つ独立系開発者は使えない。Googleは埋め込みなど派生データの保持を30日に制限でき、学習や競合製品の開発は禁止される。無料枠は1日5,000リクエストで、Gmail検索1回は10回分と数えられる。有料課金は2027年4月1日から始まる。
+***** Take
+管理者がエージェントの操作を承認・監査できる単一のゲートウェイというGoogleの主張は、メールエージェントへのプロンプトインジェクション対策として本物だ。しかし公開サーバーはすでにメールの削除を許し、送信だけを止めている。MCPにはユーザーに確認を求めるelicitation機能もある。つまり線引きは危険かどうかではなく、Googleと契約があるかどうかに沿っている。しかもルール全体が、エージェントが正直にチェックボックスを入れることに依存している。結果として、エージェントがブラウザ経由でGmailのWeb画面を操作するようになり、ユーザーにもGoogleにも悪い状況になるだろう。
+***** Comments
+- MCPにはまさにこのための仕組みがある。elicitationを使えば、サーバーはツール呼び出しを一時停止してユーザーに確認を求められる……パートナー限定にするのは安全上の懸念というよりビジネス上の判断に見える。
+- スパム対策が目的かもしれない。エージェントがメールを送れば、本物そっくりのメールが大量に生まれ、洪水がさらにひどくなる。
+- Fastmailでは、データはあなたのものだと考えている……当社のMCPサーバーは引き続き誰でも使える（「パートナー限定」のツールはない）。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Google, AI 에이전트에 자사 MCP 서버 사용 의무화. Gmail 서버는 메일을 보낼 수 없다
+***** TLDR
+Google은 11월 24일 Workspace MCP 서버 8종을 정식 출시하고 API 약관을 바꿨다. 2027년 2월 1일부터 AI 에이전트이거나 AI 에이전트가 구동하는 도구는 Gmail, Drive, Calendar 등에 이 서버를 통해서만 접근해야 하며, REST를 직접 호출하는 에이전트는 Standard 할당량으로 떨어진다. 에이전트 여부는 OAuth 체크박스로 스스로 신고한다. Gmail 서버는 검색, 읽기, 초안 작성, 라벨 지정, 휴지통 이동은 되지만 발송, 답장, 전달, 초안 수정은 안 된다. 이 기능들은 파트너 전용으로, Anthropic의 Claude 커넥터는 쓸 수 있지만 같은 권한 범위를 가진 독립 개발자는 못 쓴다. Google은 임베딩 같은 파생 데이터 보관을 30일로 제한할 수 있고, 학습이나 경쟁 제품 개발은 금지된다. 무료 한도는 하루 5,000건이며 Gmail 검색 한 번은 10건으로 계산된다. 유료 과금은 2027년 4월 1일부터다.
+***** Take
+관리자가 에이전트 행동을 승인하고 감사할 수 있는 단일 게이트웨이라는 Google의 논리는 이메일 에이전트의 프롬프트 인젝션에 대한 실제 방어책이다. 하지만 공개 서버는 이미 메일 삭제를 허용하고 발송만 막는다. MCP에는 사용자 확인을 받는 elicitation 기능도 있다. 결국 선은 무엇이 위험한지가 아니라 누가 Google과 계약했는지를 따라 그어졌다. 규칙 전체가 에이전트가 정직하게 체크박스를 누른다는 가정에 기대고 있기도 하다. 결과적으로 에이전트가 브라우저로 Gmail 웹 화면을 조작하게 될 텐데, 이는 사용자에게도 Google에게도 더 나쁘다.
+***** Comments
+- MCP에는 정확히 이걸 위한 기본 기능이 있다. elicitation으로 서버가 도구 호출을 멈추고 진행 전에 사용자 확인을 받을 수 있다... 파트너 전용으로 만든 건 안전 문제라기보다 사업적 결정으로 보인다.
+- 스팸을 막으려는 건 아닐까? 에이전트가 메일을 보내면 아주 진짜 같은 메일이 대량으로 쏟아질 수 있다.
+- Fastmail은 데이터가 사용자 것이라고 믿는다... 우리 MCP 서버는 계속 모두에게 열려 있다("파트너 전용" 도구 없음).
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Google obligará a los agentes de IA a usar sus servidores MCP. El de Gmail no puede enviar correos
+***** TLDR
+Google lanzó en disponibilidad general ocho servidores MCP de Workspace el 24 de noviembre y cambió sus términos de API. Desde el 1 de febrero de 2027, cualquier herramienta que sea o esté dirigida por un agente de IA debe acceder a Gmail, Drive, Calendar y el resto a través de esos servidores, y los agentes que llamen a REST directamente bajan a cuotas Standard. La condición de agente se declara con una casilla en OAuth. El servidor de Gmail puede buscar, leer, crear borradores, etiquetar y enviar a la papelera, pero no puede enviar, responder, reenviar ni editar un borrador. Esas acciones son solo para socios: el conector de Claude de Anthropic las tiene y los desarrolladores independientes con los mismos permisos no. Google puede limitar a 30 días la retención de datos derivados como embeddings, y prohíbe entrenar modelos o crear un producto competidor. El nivel gratuito es de 5.000 solicitudes al día y una búsqueda en Gmail cuenta como 10. La facturación empieza el 1 de abril de 2027.
+***** Take
+El argumento de Google, una sola puerta de entrada donde los administradores aprueban y auditan las acciones de los agentes, es una defensa real contra la inyección de prompts en agentes de correo. Pero el servidor público ya permite borrar correos y solo bloquea el envío, y MCP tiene la función elicitation para pedir confirmación al usuario. La línea sigue quién tiene un acuerdo con Google, no qué es peligroso. Además, toda la regla depende de que los agentes marquen la casilla con honestidad. Lo probable es que los agentes manejen la web de Gmail con un navegador, lo cual es peor para los usuarios y para Google.
+***** Comments
+- MCP ya tiene una primitiva exactamente para esto: elicitation permite que un servidor pause una llamada a herramienta y pida confirmación al usuario antes de seguir... hacerlo solo para socios parece más una decisión comercial que una preocupación de seguridad.
+- ¿Quizá la idea es limitar el spam? Los agentes que envían correos podrían generar grandes volúmenes de mensajes muy realistas y empeorar la avalancha.
+- En Fastmail creemos que los datos son tuyos... Nuestro servidor MCP sigue disponible para todos (sin herramientas "solo para socios").
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Google zwingt KI-Agenten zu seinen MCP-Servern. Der für Gmail kann keine E-Mails senden
+***** TLDR
+Google hat am 24. November acht Workspace-MCP-Server allgemein verfügbar gemacht und seine API-Bedingungen geändert. Ab dem 1. Februar 2027 müssen Tools, die KI-Agenten sind oder von ihnen gesteuert werden, über diese Server auf Gmail, Drive, Calendar und den Rest zugreifen. Agenten, die REST direkt aufrufen, fallen auf Standard-Kontingente zurück. Ob etwas ein Agent ist, wird per OAuth-Checkbox selbst angegeben. Der Gmail-Server kann suchen, lesen, Entwürfe anlegen, Labels setzen und Mails löschen, aber nicht senden, antworten, weiterleiten oder Entwürfe bearbeiten. Diese Aktionen sind Partnern vorbehalten: Anthropics Claude-Connector hat sie, unabhängige Entwickler mit denselben Berechtigungen nicht. Google kann die Speicherung abgeleiteter Daten wie Embeddings auf 30 Tage begrenzen, Training und Konkurrenzprodukte sind verboten. Das Gratiskontingent liegt bei 5.000 Anfragen pro Tag, eine Gmail-Suche zählt als 10. Die Abrechnung beginnt am 1. April 2027.
+***** Take
+Googles Argument, ein zentrales Gateway, an dem Admins Agentenaktionen freigeben und prüfen können, ist ein echter Schutz gegen Prompt Injection bei E-Mail-Agenten. Doch der öffentliche Server erlaubt bereits das Löschen von Mails und sperrt nur das Senden, und MCP hat mit Elicitation eine Funktion, um den Nutzer um Bestätigung zu bitten. Die Grenze folgt also dem, wer einen Vertrag mit Google hat, nicht dem, was gefährlich ist. Die ganze Regel hängt außerdem davon ab, dass Agenten ehrlich ein Häkchen setzen. Wahrscheinlich steuern Agenten dann die Gmail-Weboberfläche per Browser, was für Nutzer und für Google schlechter ist.
+***** Comments
+- MCP hat genau dafür schon ein Grundelement: Mit Elicitation kann ein Server einen Tool-Aufruf anhalten und den Nutzer um Bestätigung bitten... Das partnerexklusiv zu machen, wirkt eher wie eine Geschäftsentscheidung als wie ein Sicherheitsbedenken.
+- Vielleicht geht es darum, Spam zu begrenzen? Agenten, die Mails senden, könnten große Mengen sehr echt wirkender Nachrichten erzeugen und die Flut verstärken.
+- Bei Fastmail glauben wir, dass es deine Daten sind... Unser MCP-Server bleibt für alle verfügbar (keine "Nur für Partner"-Tools).
+** CTO of 'RansomwareHelp' indicted for wire fraud :security:ransomware:fraud:law:
+:PROPERTIES:
+:ID:       50657645
+:URL:      https://krebsonsecurity.com/2026/11/cto-of-ransomwarehelp-indicted-for-wire-fraud/
+:HN_URL:   https://news.ycombinator.com/item?id=50657645
+:POINTS:   198
+:COMMENTS: 89
+:BY:       Bender
+:END:
+
+*** TLDR
+Juan Ricardo Palacio Escobar, 52, co-founder and CTO of the Florida company ransomwarehelp.com, was indicted for wire fraud in Rhode Island. The company advertised "proprietary tools and algorithms" for 100% data recovery and said it never paid ransoms. In an FBI sting, agents posed as both a victim and a ransomware group. Palacio allegedly asked the fake group for its lowest price (0.2 BTC, about $13,000), quoted the victim $13,260 for decryption plus a $2,750 diagnostic fee, then talked the group down to about $6,000. Krebs also describes a 2024 LockBit case where the firm quoted a small accounting firm $438,880 and negotiated with LockBit in secret, asking the gang to keep it from the victim. The case is part of a wider DOJ push: MonsterCloud's CEO allegedly paid $8 million in ransoms while billing customers $19 million.
+
+*** Take
+Much of the thread asks whether this counts as fraud if the customer gets their files back. It does: customers paid extra specifically for a firm that promised not to pay criminals, and the invoices described forensic work that did not happen. The practical lesson for small businesses is that a recovery firm claiming it can break modern ransomware encryption is either paying the ransom or lying. According to the indictment, this one did both.
+
+*** Comments
+
+**** wongarsu
+:PROPERTIES:
+:COMMENT_ID: 50658367
+:END:
+It's not immediately clear to me that this even is wire fraud... The customer does get what they asked for after all: they get their data back, at the price they were willing to pay.
+
+**** tptacek
+:PROPERTIES:
+:COMMENT_ID: 50660780
+:END:
+These are the elements of a fraud case: material deception, relied on by the victim, for the profit of the offender. Add telecommunications, its wire fraud.
+
+**** lnxsxu
+:PROPERTIES:
+:COMMENT_ID: 50658276
+:END:
+The vendor talked the price down from about $13k to $6k and billed the customer $13,260 for decryption. Pretty good negotiating for a company that said it never negotiated.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+“RansomwareHelp”首席技术官因电信欺诈被起诉
+***** TLDR
+佛罗里达公司 ransomwarehelp.com 的联合创始人兼 CTO、52 岁的 Juan Ricardo Palacio Escobar 在罗得岛州被以电信欺诈罪起诉。该公司宣传用“专有工具和算法”实现 100% 数据恢复，并声称从不支付赎金。在一次 FBI 诱捕行动中，探员同时扮演受害者和勒索软件团伙。据称 Palacio 向假团伙询问最低价（0.2 BTC，约 13,000 美元），向受害者报价 13,260 美元解密费外加 2,750 美元诊断费，随后又把团伙的价格压到约 6,000 美元。Krebs 还提到 2024 年一起 LockBit 案件：该公司向一家小型会计事务所报价 438,880 美元，并私下与 LockBit 谈判，要求对方向受害者保密。此案是司法部更大规模行动的一部分：MonsterCloud 的 CEO 据称支付了 800 万美元赎金，却向客户收取 1,900 万美元。
+***** Take
+讨论串里很多人在问，如果客户拿回了文件，这还算欺诈吗？算。客户多付钱，正是为了找一家承诺不给罪犯付钱的公司，而发票上列的取证工作根本没有发生。对小企业的实际教训是：声称能破解现代勒索软件加密的恢复公司，要么在付赎金，要么在撒谎。根据起诉书，这家两样都做了。
+***** Comments
+- 我不太确定这是否构成电信欺诈……毕竟客户得到了想要的东西：以他们愿意支付的价格拿回了数据。
+- 欺诈案的要素是：重大欺骗、受害者依赖了这种欺骗、行为人从中获利。再加上电信手段，就是电信欺诈。
+- 这家供应商把价格从约 1.3 万美元砍到 6 千美元，却向客户收了 13,260 美元解密费。对一家声称从不谈判的公司来说，谈判能力相当不错。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+「RansomwareHelp」のCTOが通信詐欺で起訴
+***** TLDR
+フロリダの企業ransomwarehelp.comの共同創業者兼CTO、Juan Ricardo Palacio Escobar（52）がロードアイランド州で通信詐欺の罪で起訴された。同社は「独自のツールとアルゴリズム」で100%のデータ復旧ができると宣伝し、身代金は決して払わないとしていた。FBIのおとり捜査では、捜査官が被害者とランサムウェア集団の両方を演じた。Palacioは偽の集団に最低価格を尋ね（0.2 BTC、約13,000ドル）、被害者には復号費13,260ドルと診断費2,750ドルを提示し、その後集団との価格を約6,000ドルまで値切ったとされる。Krebsは2024年のLockBit事件にも触れている。同社は小さな会計事務所に438,880ドルを提示し、LockBitと秘密裏に交渉して被害者には隠すよう頼んでいた。今回の件は司法省の広範な取り締まりの一環で、MonsterCloudのCEOは身代金800万ドルを払いながら顧客に1,900万ドルを請求したとされる。
+***** Take
+スレッドの多くは、顧客がファイルを取り戻したなら詐欺になるのかと問うている。なる。顧客は犯罪者に金を払わないと約束した会社だからこそ割増料金を払ったのであり、請求書には実際には行われていないフォレンジック作業が書かれていた。中小企業への実用的な教訓は、最新のランサムウェア暗号を破れると主張する復旧業者は、身代金を払っているか嘘をついているかのどちらかだということ。起訴状によれば、この会社は両方だった。
+***** Comments
+- これが通信詐欺に当たるのか、すぐにははっきりしない……結局、顧客は望んだものを得ている。払うつもりだった価格でデータを取り戻したのだから。
+- 詐欺の構成要件はこうだ。重要な欺瞞、被害者がそれを信頼したこと、加害者の利益。そこに通信手段が加われば通信詐欺だ。
+- 業者は価格を約1.3万ドルから6千ドルまで値切り、顧客には復号費として13,260ドルを請求した。交渉しないと言っていた会社にしては見事な交渉術だ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+'RansomwareHelp' CTO, 통신 사기 혐의로 기소
+***** TLDR
+플로리다 기업 ransomwarehelp.com의 공동창업자이자 CTO인 Juan Ricardo Palacio Escobar(52)가 로드아일랜드에서 통신 사기 혐의로 기소됐다. 이 회사는 "독자 도구와 알고리즘"으로 100% 데이터 복구가 가능하다고 광고하며 몸값은 절대 내지 않는다고 했다. FBI 함정수사에서 요원들은 피해자와 랜섬웨어 조직 양쪽을 연기했다. Palacio는 가짜 조직에 최저가를 물었고(0.2 BTC, 약 13,000달러), 피해자에게는 복호화 비용 13,260달러와 진단비 2,750달러를 제시한 뒤 조직과의 가격을 약 6,000달러로 깎은 것으로 알려졌다. Krebs는 2024년 LockBit 사건도 소개한다. 이 회사는 작은 회계법인에 438,880달러를 제시하고 LockBit과 몰래 협상하면서 피해자에게 숨겨 달라고 요청했다. 이번 사건은 법무부의 광범위한 단속의 일부로, MonsterCloud CEO는 몸값 800만 달러를 내면서 고객에게 1,900만 달러를 청구한 혐의를 받는다.
+***** Take
+스레드의 상당수가 고객이 파일을 돌려받았는데도 사기인지 묻는다. 사기가 맞다. 고객은 범죄자에게 돈을 주지 않겠다고 약속한 회사라서 더 비싼 값을 냈고, 청구서에는 실제로 하지 않은 포렌식 작업이 적혀 있었다. 중소기업이 얻을 실용적 교훈은, 최신 랜섬웨어 암호를 깰 수 있다고 주장하는 복구 업체는 몸값을 내고 있거나 거짓말을 하고 있다는 것이다. 기소장에 따르면 이 회사는 둘 다 했다.
+***** Comments
+- 이게 통신 사기에 해당하는지조차 바로 분명하지 않다... 결국 고객은 원하던 걸 얻었다. 낼 의향이 있던 가격에 데이터를 돌려받았으니까.
+- 사기의 구성 요건은 이렇다. 중대한 기만, 피해자의 신뢰, 가해자의 이익. 여기에 통신 수단이 더해지면 통신 사기다.
+- 업체는 가격을 약 1만 3천 달러에서 6천 달러로 깎고 고객에게는 복호화 비용으로 13,260달러를 청구했다. 절대 협상하지 않는다던 회사치고는 협상을 꽤 잘했다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Acusan de fraude electrónico al CTO de 'RansomwareHelp'
+***** TLDR
+Juan Ricardo Palacio Escobar, de 52 años, cofundador y CTO de la empresa de Florida ransomwarehelp.com, fue acusado de fraude electrónico en Rhode Island. La empresa anunciaba "herramientas y algoritmos propios" para recuperar el 100% de los datos y decía que nunca pagaba rescates. En una operación encubierta del FBI, los agentes se hicieron pasar por víctima y por grupo de ransomware a la vez. Según la acusación, Palacio pidió al falso grupo su precio más bajo (0,2 BTC, unos 13.000 dólares), presupuestó a la víctima 13.260 dólares por el descifrado más 2.750 de diagnóstico, y luego negoció con el grupo hasta unos 6.000 dólares. Krebs también describe un caso de LockBit en 2024 en que la empresa pidió 438.880 dólares a una pequeña gestoría y negoció en secreto con LockBit, pidiéndole que lo ocultara a la víctima. El caso forma parte de una ofensiva más amplia del DOJ: el CEO de MonsterCloud habría pagado 8 millones en rescates mientras cobraba 19 millones a sus clientes.
+***** Take
+Buena parte del hilo se pregunta si esto es fraude cuando el cliente recupera sus archivos. Lo es: los clientes pagaron más precisamente por una empresa que prometía no pagar a criminales, y las facturas describían trabajo forense que no ocurrió. La lección práctica para pequeñas empresas es que una firma de recuperación que dice poder romper el cifrado de un ransomware moderno o está pagando el rescate o está mintiendo. Según la acusación, esta hacía las dos cosas.
+***** Comments
+- No me queda claro de inmediato que esto sea siquiera fraude electrónico... Al fin y al cabo, el cliente obtiene lo que pidió: recupera sus datos al precio que estaba dispuesto a pagar.
+- Estos son los elementos de un caso de fraude: engaño material, en el que confió la víctima, en beneficio del infractor. Añade telecomunicaciones y es fraude electrónico.
+- El proveedor bajó el precio de unos 13.000 a 6.000 dólares y cobró al cliente 13.260 por el descifrado. Bastante buena negociación para una empresa que decía que nunca negociaba.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+CTO von 'RansomwareHelp' wegen Wire Fraud angeklagt
+***** TLDR
+Juan Ricardo Palacio Escobar, 52, Mitgründer und CTO der Firma ransomwarehelp.com aus Florida, wurde in Rhode Island wegen Betrugs mittels Telekommunikation angeklagt. Die Firma warb mit "proprietären Tools und Algorithmen" für 100 % Datenwiederherstellung und erklärte, nie Lösegeld zu zahlen. Bei einer FBI-Falle spielten Agenten sowohl das Opfer als auch die Ransomware-Gruppe. Palacio soll die falsche Gruppe nach ihrem niedrigsten Preis gefragt haben (0,2 BTC, etwa 13.000 Dollar), dem Opfer 13.260 Dollar für die Entschlüsselung plus 2.750 Dollar Diagnosegebühr berechnet und die Gruppe dann auf etwa 6.000 Dollar heruntergehandelt haben. Krebs beschreibt auch einen LockBit-Fall von 2024: Die Firma verlangte von einem kleinen Steuerbüro 438.880 Dollar und verhandelte heimlich mit LockBit, wobei sie die Gruppe bat, dies vor dem Opfer zu verbergen. Der Fall gehört zu einem breiteren Vorgehen des US-Justizministeriums: Der CEO von MonsterCloud soll 8 Millionen Dollar Lösegeld gezahlt und Kunden 19 Millionen berechnet haben.
+***** Take
+Ein Großteil des Threads fragt, ob das Betrug ist, wenn der Kunde seine Dateien zurückbekommt. Ist es: Die Kunden zahlten extra für eine Firma, die versprach, Kriminellen kein Geld zu geben, und die Rechnungen beschrieben forensische Arbeit, die nie stattfand. Die praktische Lehre für kleine Firmen: Ein Wiederherstellungsdienst, der behauptet, moderne Ransomware-Verschlüsselung knacken zu können, zahlt entweder das Lösegeld oder lügt. Laut Anklage tat dieser beides.
+***** Comments
+- Mir ist nicht sofort klar, ob das überhaupt Wire Fraud ist... Der Kunde bekommt ja, was er wollte: seine Daten zurück, zu dem Preis, den er zu zahlen bereit war.
+- Das sind die Elemente eines Betrugsfalls: wesentliche Täuschung, auf die sich das Opfer verlassen hat, zum Vorteil des Täters. Kommt Telekommunikation dazu, ist es Wire Fraud.
+- Der Anbieter handelte den Preis von etwa 13.000 auf 6.000 Dollar herunter und berechnete dem Kunden 13.260 Dollar für die Entschlüsselung. Ziemlich gutes Verhandeln für eine Firma, die angeblich nie verhandelte.
+** YouTube Ad Punisher – Auto-reloads YouTube pages when an ad plays :youtube:ads:browser-extension:google:
+:PROPERTIES:
+:ID:       50657530
+:URL:      https://github.com/antonpictures/youtube-punisher
+:HN_URL:   https://news.ycombinator.com/item?id=50657530
+:POINTS:   250
+:COMMENTS: 319
+:BY:       iantongeorge
+:END:
+
+*** TLDR
+A Manifest V3 Chrome extension that does not block YouTube ads. It checks the page every 500ms for ad markers such as the .ad-showing class, and when one appears it saves the playback position and reloads the page at that timestamp. A 3-second cooldown prevents loops, and after three failed reloads it redirects to the yout-ube.com mirror. It logs every ad locally (advertiser, video, duration) with JSON and CSV export. The author calls each reload a "passive protest": a full page load costs YouTube server resources while the ad impression is lost. Safari support is experimental and uses an AppleScript watcher.
+
+*** Take
+The punishment is one extra page load, something YouTube serves billions of times a day, so the person who feels it most is the user waiting for the reload. The useful part is the local ad log, which could put real numbers on the thread's argument about how often YouTube shows ads. The comments split three ways: uBlock Origin users who have not seen an ad in years, Premium subscribers who think everyone else should pay, and people who would pay if the cheaper plan removed ads instead of reducing them.
+
+*** Comments
+
+**** noitpmeder
+:PROPERTIES:
+:COMMENT_ID: 50657695
+:END:
+Using uBlock Origin on firefox I don't think I have seen a youtube-forced ad in YEARS. And then adding in the SponsorBlock extension gets me around anything embedded into the video itself.
+
+**** Grombobulous
+:PROPERTIES:
+:COMMENT_ID: 50658916
+:END:
+The amount of effort people will go to avoid paying for content they spend hours watching is fascinating... Is $9 a month really too much if you really watch YouTube enough for ads to bother you?
+
+**** jojogeo
+:PROPERTIES:
+:COMMENT_ID: 50657976
+:END:
+I was actually ready to pay for a subscription to YouTube Premium; but then they started with serving less ads on premium rather than no ads.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+YouTube 广告惩罚者：广告一播放就自动重新加载 YouTube 页面
+***** TLDR
+一个 Manifest V3 的 Chrome 扩展，它并不屏蔽 YouTube 广告。它每 500 毫秒检查一次页面上的广告标记（例如 .ad-showing 类），一旦发现，就保存播放位置并在该时间点重新加载页面。3 秒冷却时间防止循环，连续三次重载失败后会跳转到 yout-ube.com 镜像。它会在本地记录每条广告（广告主、视频、时长），可导出 JSON 和 CSV。作者把每次重载称为“消极抗议”：完整的页面加载消耗 YouTube 服务器资源，而广告曝光却没了。Safari 支持是实验性的，使用 AppleScript 监视脚本。
+***** Take
+所谓惩罚就是多一次页面加载，而 YouTube 每天要处理几十亿次，所以最受影响的是等待重载的用户本人。真正有用的是本地广告日志，它能给讨论串里关于 YouTube 广告频率的争论提供真实数字。评论分成三派：多年没见过广告的 uBlock Origin 用户、认为大家都该付钱的 Premium 订阅者，以及如果便宜套餐能去掉广告而不是减少广告就愿意付钱的人。
+***** Comments
+- 我在 Firefox 上用 uBlock Origin，好几年没见过 YouTube 强制广告了。再加上 SponsorBlock 扩展，视频里嵌入的广告也能跳过。
+- 人们为了不给自己花几个小时看的内容付钱，愿意下多大功夫，真是令人着迷……如果你看 YouTube 多到被广告烦，每月 9 美元真的太贵吗？
+- 我本来真准备订阅 YouTube Premium，但后来他们开始在 Premium 上投放更少的广告，而不是没有广告。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+YouTube Ad Punisher：広告が流れるとYouTubeページを自動再読み込み
+***** TLDR
+YouTube広告をブロックしないManifest V3のChrome拡張機能。500ミリ秒ごとに.ad-showingクラスなどの広告の目印をページ上で確認し、見つけると再生位置を保存してそのタイムスタンプでページを再読み込みする。3秒のクールダウンでループを防ぎ、3回失敗するとミラーサイトyout-ube.comに移動する。すべての広告（広告主、動画、長さ）をローカルに記録し、JSONとCSVで書き出せる。作者は再読み込みのたびに「受動的な抗議」になると言う。ページの完全な読み込みでYouTubeのサーバー資源を使わせる一方、広告インプレッションは失われるからだ。Safari対応は実験的で、AppleScriptの監視スクリプトを使う。
+***** Take
+罰といってもページ読み込みが1回増えるだけで、YouTubeはそれを1日に何十億回もこなしている。一番影響を受けるのは再読み込みを待つユーザー自身だ。役に立つのはローカルの広告ログで、YouTubeがどれだけ広告を出しているかというスレッドの議論に実際の数字を与えられる。コメントは三つに分かれる。何年も広告を見ていないuBlock Originユーザー、みんな払うべきだと考えるPremium会員、そして安いプランが広告を減らすのではなく無くしてくれるなら払うという人たちだ。
+***** Comments
+- FirefoxでuBlock Originを使っていて、YouTubeの強制広告はもう何年も見ていないと思う。さらにSponsorBlock拡張を入れれば、動画に埋め込まれたものも飛ばせる。
+- 何時間も見ているコンテンツにお金を払わないために、人がどれだけ労力をかけるのかは興味深い……広告が気になるほどYouTubeを見ているなら、月9ドルは本当に高すぎる？
+- 実はYouTube Premiumに登録する気でいた。でもPremiumで広告をゼロにするのではなく、減らすだけにし始めた。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+YouTube Ad Punisher: 광고가 나오면 YouTube 페이지를 자동 새로고침
+***** TLDR
+YouTube 광고를 차단하지 않는 Manifest V3 Chrome 확장 프로그램이다. 500ms마다 .ad-showing 클래스 같은 광고 표시를 확인하고, 발견하면 재생 위치를 저장한 뒤 그 시점으로 페이지를 새로고침한다. 3초 대기 시간으로 반복을 막고, 세 번 실패하면 yout-ube.com 미러로 이동한다. 모든 광고(광고주, 영상, 길이)를 로컬에 기록하며 JSON과 CSV로 내보낼 수 있다. 개발자는 새로고침 하나하나를 "수동적 항의"라고 부른다. 페이지 전체를 다시 불러오면 YouTube 서버 자원이 들지만 광고 노출은 사라진다는 논리다. Safari 지원은 실험적이며 AppleScript 감시 스크립트를 쓴다.
+***** Take
+벌이라 해봐야 페이지 로드 한 번 더인데, YouTube는 그걸 하루에 수십억 번 처리한다. 가장 크게 느끼는 사람은 새로고침을 기다리는 사용자다. 쓸모 있는 부분은 로컬 광고 기록으로, YouTube가 광고를 얼마나 자주 보여주는지에 대한 스레드 논쟁에 실제 숫자를 줄 수 있다. 댓글은 세 갈래다. 몇 년째 광고를 못 본 uBlock Origin 사용자, 다들 돈을 내야 한다는 Premium 구독자, 그리고 저렴한 요금제가 광고를 줄이는 대신 없애 준다면 돈을 내겠다는 사람들.
+***** Comments
+- Firefox에서 uBlock Origin을 쓰는데 YouTube 강제 광고를 몇 년째 못 본 것 같다. 여기에 SponsorBlock 확장을 더하면 영상 안에 삽입된 것도 건너뛸 수 있다.
+- 몇 시간씩 보는 콘텐츠에 돈을 안 내려고 사람들이 들이는 노력이 신기하다... 광고가 거슬릴 만큼 YouTube를 본다면 월 9달러가 정말 그렇게 비싼가?
+- 사실 YouTube Premium을 구독할 생각이었다. 그런데 Premium에서 광고를 없애는 대신 줄이는 식으로 바꾸기 시작했다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+YouTube Ad Punisher: recarga automáticamente la página de YouTube cuando suena un anuncio
+***** TLDR
+Una extensión de Chrome con Manifest V3 que no bloquea los anuncios de YouTube. Revisa la página cada 500 ms en busca de marcas de anuncio como la clase .ad-showing y, cuando aparece una, guarda la posición de reproducción y recarga la página en ese punto. Un tiempo de espera de 3 segundos evita bucles, y tras tres recargas fallidas redirige al espejo yout-ube.com. Registra localmente cada anuncio (anunciante, vídeo, duración) con exportación a JSON y CSV. El autor llama a cada recarga una "protesta pasiva": una carga completa de página consume recursos de los servidores de YouTube mientras se pierde la impresión del anuncio. El soporte para Safari es experimental y usa un vigilante en AppleScript.
+***** Take
+El castigo es una carga de página extra, algo que YouTube sirve miles de millones de veces al día, así que quien más lo nota es el usuario que espera la recarga. Lo útil es el registro local de anuncios, que podría poner cifras reales a la discusión del hilo sobre cuántos anuncios muestra YouTube. Los comentarios se dividen en tres: usuarios de uBlock Origin que no ven un anuncio desde hace años, suscriptores de Premium que creen que todos deberían pagar, y quienes pagarían si el plan barato quitara los anuncios en lugar de reducirlos.
+***** Comments
+- Con uBlock Origin en Firefox creo que no he visto un anuncio forzado de YouTube en AÑOS. Y si añades la extensión SponsorBlock, te saltas también lo que va incrustado en el vídeo.
+- Es fascinante el esfuerzo que hace la gente para no pagar por contenido que ve durante horas... ¿De verdad 9 dólares al mes es demasiado si ves tanto YouTube que te molestan los anuncios?
+- De hecho estaba dispuesto a pagar YouTube Premium, pero entonces empezaron a poner menos anuncios en premium en lugar de ninguno.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+YouTube Ad Punisher: Lädt YouTube-Seiten automatisch neu, sobald Werbung läuft
+***** TLDR
+Eine Chrome-Erweiterung mit Manifest V3, die YouTube-Werbung nicht blockiert. Sie prüft die Seite alle 500 ms auf Werbemarker wie die Klasse .ad-showing. Taucht einer auf, speichert sie die Wiedergabeposition und lädt die Seite an diesem Zeitpunkt neu. Eine Sperrzeit von 3 Sekunden verhindert Schleifen, nach drei erfolglosen Neuladungen leitet sie auf den Spiegel yout-ube.com um. Jede Anzeige wird lokal protokolliert (Werbetreibender, Video, Dauer), exportierbar als JSON und CSV. Der Autor nennt jedes Neuladen einen "passiven Protest": Ein vollständiger Seitenaufruf kostet YouTube Serverressourcen, während die Werbeeinblendung verloren geht. Safari-Unterstützung ist experimentell und nutzt ein AppleScript-Skript.
+***** Take
+Die Strafe besteht aus einem zusätzlichen Seitenaufruf, von denen YouTube täglich Milliarden ausliefert. Am meisten spürt es also der Nutzer, der auf das Neuladen wartet. Nützlich ist das lokale Werbeprotokoll, das der Diskussion im Thread, wie oft YouTube Werbung zeigt, echte Zahlen liefern könnte. Die Kommentare teilen sich in drei Lager: uBlock-Origin-Nutzer, die seit Jahren keine Werbung gesehen haben, Premium-Abonnenten, die finden, alle sollten zahlen, und Leute, die zahlen würden, wenn der günstige Tarif Werbung entfernen statt nur reduzieren würde.
+***** Comments
+- Mit uBlock Origin in Firefox habe ich, glaube ich, seit JAHREN keine erzwungene YouTube-Werbung gesehen. Und mit der SponsorBlock-Erweiterung umgehe ich auch alles, was im Video selbst eingebaut ist.
+- Faszinierend, wie viel Aufwand Leute betreiben, um nicht für Inhalte zu zahlen, die sie stundenlang ansehen... Sind 9 Dollar im Monat wirklich zu viel, wenn man so viel YouTube schaut, dass einen Werbung stört?
+- Ich war tatsächlich bereit, YouTube Premium zu abonnieren, aber dann fingen sie an, bei Premium weniger statt gar keine Werbung zu zeigen.
+** AI made self-hosting fun again :self-hosting:ai:homelab:security:nixos:
+:PROPERTIES:
+:ID:       50660180
+:URL:      https://janlukas.blog/posts/ai-self-hosting
+:HN_URL:   https://news.ycombinator.com/item?id=50660180
+:POINTS:   252
+:COMMENTS: 143
+:BY:       jlelse
+:END:
+
+*** TLDR
+Jan-Lukas Else says AI coding agents brought back his interest in self-hosting. His infrastructure lives in Git as Docker Compose files, scripts and config, so agents can work on it like any software project. With AI help he got NixOS running on his home server, and built a Debian-based bootc image for his VPS in about half a day, which he estimates would have taken a week otherwise. Renovate opens update pull requests he merges from his phone, and CI deploys on push. He now writes small personal Go tools instead of searching for open-source ones. He lists the costs: every service adds maintenance, AI code can carry bugs and security holes, and he is still responsible for understanding every change. He mostly uses open-weight models to limit his dependence on one AI provider.
+
+*** Take
+This works because his setup was declarative and in Git before the agent arrived: the agent edits files and he reviews a diff, rather than an agent with a root shell changing things live. The thread's real disagreement is about security. Exposed services now need patching within a day of a critical CVE, and the most common answer is to stop exposing them and put everything behind WireGuard or Tailscale. That advice holds whether or not you use an agent.
+
+*** Comments
+
+**** jjcm
+:PROPERTIES:
+:COMMENT_ID: 50660442
+:END:
+Previously that meant using fail2ban and running a system update every few months. Now it means patching within 24hrs of a CVE9+ dropping, which is happening at an accelerated rate.
+
+**** markasoftware
+:PROPERTIES:
+:COMMENT_ID: 50660400
+:END:
+For me the main purpose and effect was to learn and to have pride in my setup (same reason one might buy an old car), both of which LLMs negate.
+
+**** pkulak
+:PROPERTIES:
+:COMMENT_ID: 50660771
+:END:
+I'm updating my stuff WAY more often with AI... Pre AI I did that... basically never. Now I do it once a week.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+AI 让自托管重新变得有趣
+***** TLDR
+Jan-Lukas Else 说，AI 编程智能体让他重新对自托管产生了兴趣。他的基础设施以 Docker Compose 文件、脚本和配置的形式存在 Git 中，所以智能体可以像处理普通软件项目一样处理它。在 AI 帮助下，他在家用服务器上跑起了 NixOS，并用大约半天为 VPS 构建了基于 Debian 的 bootc 镜像，他估计没有 AI 要花一周。Renovate 会自动开更新 PR，他在手机上就能合并，推送后由 CI 部署。他现在用 Go 写小型个人工具，而不是去找开源项目。他也列出了代价：每多一个服务就多一份维护，AI 代码可能带有 bug 和安全漏洞，而他仍需理解每一处改动。他主要使用开放权重模型，以减少对单一 AI 提供商的依赖。
+***** Take
+这套做法之所以可行，是因为他的配置在智能体出现之前就已经是声明式的、放在 Git 里：智能体改文件，他审阅 diff，而不是让拿着 root shell 的智能体直接在线修改。讨论串真正的分歧在安全。暴露在外的服务现在需要在高危 CVE 发布后一天内打补丁，最常见的建议是干脆不暴露，把所有东西放在 WireGuard 或 Tailscale 后面。不管用不用智能体，这条建议都成立。
+***** Comments
+- 以前这意味着用 fail2ban、每隔几个月更新一次系统。现在意味着 CVE 9 分以上的漏洞一出就要在 24 小时内打补丁，而且出现得越来越快。
+- 对我来说，自托管的主要目的和效果是学习，以及为自己的配置感到自豪（和有人买老车的理由一样），而 LLM 把这两样都抵消了。
+- 有了 AI，我更新东西的频率高多了……在 AI 之前我基本从来不更新。现在每周一次。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+AIがセルフホスティングを再び楽しくした
+***** TLDR
+Jan-Lukas Elseは、AIコーディングエージェントのおかげでセルフホスティングへの興味が戻ったと書く。彼のインフラはDocker Composeファイル、スクリプト、設定としてGitに置かれているので、エージェントは普通のソフトウェアプロジェクトと同じように扱える。AIの助けで自宅サーバーにNixOSを導入し、VPS用のDebianベースのbootcイメージを約半日で作った。AIなしなら1週間かかったと見積もっている。Renovateが更新のプルリクエストを開き、彼はスマホからマージし、プッシュするとCIがデプロイする。今はオープンソースを探す代わりに、Goで小さな個人用ツールを書いている。代償も挙げている。サービスが増えるほど保守が増え、AIのコードにはバグやセキュリティホールが入りうるし、すべての変更を理解する責任は自分にある。特定のAI企業への依存を減らすため、主にオープンウェイトモデルを使っている。
+***** Take
+これがうまくいくのは、エージェントが来る前から設定が宣言的でGitにあったからだ。エージェントがファイルを編集し、彼が差分をレビューする。rootシェルを持ったエージェントがその場で変更するのとは違う。スレッドの本当の対立点はセキュリティだ。公開しているサービスは重大なCVEの公開から1日以内にパッチを当てる必要があり、最も多い答えは公開をやめてWireGuardやTailscaleの裏に置くこと。エージェントを使うかどうかに関係なく通用する助言だ。
+***** Comments
+- 以前はfail2banを使って数か月ごとにシステムを更新すればよかった。今はCVE 9以上が出たら24時間以内にパッチを当てる必要があり、その頻度はどんどん上がっている。
+- 自分にとっての主な目的と効果は、学ぶことと自分の環境に誇りを持つことだった（古い車を買うのと同じ理由）。LLMはその両方を打ち消してしまう。
+- AIを使うようになって更新の頻度がものすごく増えた……AI以前はほぼ一度もやらなかった。今は週に一回やっている。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+AI가 셀프 호스팅을 다시 재미있게 만들었다
+***** TLDR
+Jan-Lukas Else는 AI 코딩 에이전트 덕분에 셀프 호스팅에 대한 관심이 되살아났다고 말한다. 그의 인프라는 Docker Compose 파일, 스크립트, 설정 형태로 Git에 있어서 에이전트가 일반 소프트웨어 프로젝트처럼 다룰 수 있다. AI의 도움으로 홈 서버에 NixOS를 올렸고, VPS용 Debian 기반 bootc 이미지를 약 반나절 만에 만들었다. AI 없이는 일주일이 걸렸을 거라고 본다. Renovate가 업데이트 풀 리퀘스트를 열면 휴대폰으로 병합하고, 푸시하면 CI가 배포한다. 이제는 오픈소스를 찾는 대신 Go로 작은 개인 도구를 만든다. 비용도 적었다. 서비스가 늘수록 유지보수가 늘고, AI 코드에는 버그와 보안 구멍이 있을 수 있으며, 모든 변경을 이해할 책임은 여전히 자신에게 있다. 특정 AI 업체 의존을 줄이려고 주로 오픈 웨이트 모델을 쓴다.
+***** Take
+이 방식이 통하는 건 에이전트가 오기 전부터 설정이 선언적이고 Git에 있었기 때문이다. 에이전트는 파일을 고치고 그는 diff를 검토한다. root 셸을 쥔 에이전트가 실시간으로 바꾸는 방식이 아니다. 스레드의 진짜 쟁점은 보안이다. 외부에 노출된 서비스는 이제 심각한 CVE 공개 후 하루 안에 패치해야 하고, 가장 흔한 답은 노출을 그만두고 모든 걸 WireGuard나 Tailscale 뒤에 두라는 것이다. 에이전트를 쓰든 안 쓰든 맞는 조언이다.
+***** Comments
+- 예전엔 fail2ban을 쓰고 몇 달마다 시스템 업데이트를 하면 됐다. 이제는 CVE 9점 이상이 나오면 24시간 안에 패치해야 하고, 그런 일이 점점 빨라지고 있다.
+- 나에게 셀프 호스팅의 주된 목적과 효과는 배우는 것, 그리고 내 설정에 자부심을 갖는 것이었다(오래된 차를 사는 이유와 같다). LLM은 그 둘을 모두 없앤다.
+- AI를 쓰면서 업데이트를 훨씬 자주 한다... AI 이전엔 거의 안 했다. 지금은 일주일에 한 번 한다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+La IA volvió a hacer divertido el autoalojamiento
+***** TLDR
+Jan-Lukas Else cuenta que los agentes de programación con IA le devolvieron el interés por el autoalojamiento. Su infraestructura vive en Git como archivos de Docker Compose, scripts y configuración, así que los agentes pueden trabajar en ella como en cualquier proyecto de software. Con ayuda de la IA puso NixOS en su servidor doméstico y construyó en medio día una imagen bootc basada en Debian para su VPS, algo que calcula le habría llevado una semana. Renovate abre pull requests de actualización que él fusiona desde el móvil, y la CI despliega al hacer push. Ahora escribe pequeñas herramientas personales en Go en lugar de buscar proyectos de código abierto. También enumera los costes: cada servicio suma mantenimiento, el código de IA puede traer errores y agujeros de seguridad, y él sigue siendo responsable de entender cada cambio. Usa sobre todo modelos de pesos abiertos para no depender de un solo proveedor.
+***** Take
+Funciona porque su configuración ya era declarativa y estaba en Git antes de que llegara el agente: el agente edita archivos y él revisa un diff, no es un agente con shell de root cambiando cosas en vivo. El desacuerdo real del hilo es la seguridad. Los servicios expuestos ahora necesitan parches en menos de un día tras un CVE crítico, y la respuesta más común es dejar de exponerlos y ponerlo todo detrás de WireGuard o Tailscale. Ese consejo vale uses o no un agente.
+***** Comments
+- Antes eso significaba usar fail2ban y actualizar el sistema cada pocos meses. Ahora significa parchear en menos de 24 horas cuando sale un CVE de 9 o más, y eso pasa cada vez más rápido.
+- Para mí el propósito y el efecto principal era aprender y estar orgulloso de mi configuración (la misma razón por la que alguien compra un coche viejo), y los LLM anulan ambas cosas.
+- Con la IA actualizo mis cosas MUCHO más a menudo... Antes de la IA no lo hacía... prácticamente nunca. Ahora lo hago una vez por semana.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+KI hat Self-Hosting wieder spaßig gemacht
+***** TLDR
+Jan-Lukas Else schreibt, dass KI-Coding-Agenten sein Interesse am Self-Hosting zurückgebracht haben. Seine Infrastruktur liegt als Docker-Compose-Dateien, Skripte und Konfiguration in Git, sodass Agenten daran wie an jedem Softwareprojekt arbeiten können. Mit KI-Hilfe brachte er NixOS auf seinem Heimserver zum Laufen und baute in etwa einem halben Tag ein Debian-basiertes bootc-Image für seinen VPS, wofür er sonst eine Woche geschätzt hätte. Renovate öffnet Update-Pull-Requests, die er vom Handy aus mergt, und CI deployt beim Push. Statt nach Open-Source-Projekten zu suchen, schreibt er jetzt kleine persönliche Go-Tools. Er nennt auch die Kosten: Jeder Dienst bedeutet mehr Wartung, KI-Code kann Fehler und Sicherheitslücken enthalten, und er bleibt dafür verantwortlich, jede Änderung zu verstehen. Er nutzt überwiegend Open-Weight-Modelle, um nicht von einem Anbieter abzuhängen.
+***** Take
+Das funktioniert, weil sein Setup schon deklarativ und in Git war, bevor der Agent kam: Der Agent bearbeitet Dateien und er prüft einen Diff, statt dass ein Agent mit Root-Shell live etwas ändert. Der eigentliche Streit im Thread dreht sich um Sicherheit. Öffentlich erreichbare Dienste müssen jetzt innerhalb eines Tages nach einer kritischen CVE gepatcht werden, und die häufigste Antwort lautet, sie nicht mehr öffentlich zu machen und alles hinter WireGuard oder Tailscale zu legen. Dieser Rat gilt mit oder ohne Agent.
+***** Comments
+- Früher hieß das, fail2ban zu nutzen und alle paar Monate ein Systemupdate zu machen. Heute heißt es, innerhalb von 24 Stunden nach einer CVE mit 9+ zu patchen, und das passiert immer schneller.
+- Für mich waren der Hauptzweck und die Hauptwirkung, zu lernen und stolz auf mein Setup zu sein (aus demselben Grund, aus dem man ein altes Auto kauft), und LLMs machen beides zunichte.
+- Mit KI aktualisiere ich meine Sachen VIEL öfter... Vor der KI habe ich das... praktisch nie gemacht. Jetzt einmal pro Woche.
+** AMD-specific fork of llama.cpp :llm:amd:llama-cpp:local-ai:gpu:
+:PROPERTIES:
+:ID:       50657265
+:URL:      https://devnull.land/amd-specific-llama-cpp
+:HN_URL:   https://news.ycombinator.com/item?id=50657265
+:POINTS:   275
+:COMMENTS: 64
+:BY:       julianlam
+:END:
+
+*** TLDR
+The author (HN submitter julianlam) recommends llama-cpp-rdna-boosts by GitHub user stew675: a small set of AMD-specific patches reapplied to pinned llama.cpp commits and shipped as a ROCm container image. On an AMD R9700 in an eGPU enclosure, running a Q6 quant of a Qwen3.8 27B model with MTP, prefill went from about 700 to 1,300 tokens per second and generation from 35 to 55. The author contrasts it with newer vibe-coded inference engines such as Strata, which gain speed by changing model behavior (for example preferring experts already in VRAM), and gave up on an AMD vLLM fork because it was too heavy to build for one machine. The patch code itself is described as LLM-generated and somewhat opaque.
+
+*** Take
+The selling point is restraint: speedups that do not change what the model computes, in a diff small enough to review. That is also why it is a fork. llama.cpp supports a long list of backends, and commenters note it is now owned by NVIDIA through the Hugging Face acquisition, so AMD-only patches that might regress other hardware are a hard sell upstream. The thread asks the right question: almost nobody benchmarking these forks measures output quality, only tokens per second.
+
+*** Comments
+
+**** pixelesque
+:PROPERTIES:
+:COMMENT_ID: 50657386
+:END:
+Is anyone actually checking the output quality of the tokens with some of these optimisations, or just chasing pure speed like some of the projects at least appear to be doing?
+
+**** PaulKeeble
+:PROPERTIES:
+:COMMENT_ID: 50658980
+:END:
+LLama.cpp is now the stable product that moves with intent and doesn't break things and largely isn't just taking anything the AI kicks out as a patch.
+
+**** 0xbadcafebee
+:PROPERTIES:
+:COMMENT_ID: 50658667
+:END:
+I've tried patches like this for my gfx1103, and I got a 15% boost to pp, 3% boost to tg... but it also couldn't use all my VRAM (unified memory)... and had to go back to Vulkan.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+llama.cpp 的 AMD 专用分支
+***** TLDR
+作者（HN 提交者 julianlam）推荐 GitHub 用户 stew675 的 llama-cpp-rdna-boosts：一组小型 AMD 专用补丁，重新应用到固定版本的 llama.cpp 提交上，以 ROCm 容器镜像发布。在 eGPU 扩展坞中的 AMD R9700 上，运行 Qwen3.8 27B 模型的 Q6 量化版并开启 MTP，预填充从约每秒 700 token 提升到 1,300，生成从 35 提升到 55。作者把它与 Strata 等较新的“氛围编程”推理引擎对比，后者通过改变模型行为来提速（例如优先使用已在显存中的专家），作者还放弃了一个 AMD vLLM 分支，因为它对单机来说构建太繁重。补丁代码本身被描述为由 LLM 生成、有些晦涩。
+***** Take
+卖点在于克制：提速但不改变模型的计算内容，补丁小到可以审阅。这也是它只能做成分支的原因。llama.cpp 支持一长串后端，评论者指出它现在通过 Hugging Face 收购归 NVIDIA 所有，所以可能让其他硬件性能倒退的 AMD 专用补丁很难被上游接受。讨论串问对了问题：几乎没人在测试这些分支时衡量输出质量，只看每秒 token 数。
+***** Comments
+- 有人真的在检查这些优化后的输出质量吗，还是像某些项目看起来那样，只追求纯速度？
+- llama.cpp 现在是稳定的产品，有方向地推进、不搞坏东西，基本不会把 AI 吐出来的东西直接当补丁合进去。
+- 我在 gfx1103 上试过类似补丁，预填充提升 15%，生成提升 3%……但它没法用上我全部的显存（统一内存）……只好退回 Vulkan。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+llama.cppのAMD専用フォーク
+***** TLDR
+著者（HN投稿者julianlam）は、GitHubユーザーstew675によるllama-cpp-rdna-boostsを推薦している。AMD専用の小さなパッチ群を固定したllama.cppのコミットに当て直し、ROCmコンテナイメージとして配布するものだ。eGPUケースに入れたAMD R9700で、Qwen3.8 27BモデルのQ6量子化版をMTP有効で動かすと、プリフィルは毎秒約700トークンから1,300に、生成は35から55に上がった。著者はこれを、モデルの挙動を変えて速度を稼ぐStrataなどの新しいバイブコーディング製推論エンジン（例えばVRAMに載っているエキスパートを優先する）と対比し、AMD向けvLLMフォークは1台のマシンにはビルドが重すぎるとして断念した。パッチのコード自体はLLM生成でやや不透明だと書かれている。
+***** Take
+売りは抑制だ。モデルが計算する内容を変えずに速くし、差分はレビューできるほど小さい。これがフォークである理由でもある。llama.cppは多数のバックエンドに対応しており、コメントによれば今はHugging Faceの買収を通じてNVIDIAの所有になっている。他のハードウェアで性能が落ちるかもしれないAMD専用パッチは上流に受け入れられにくい。スレッドは正しい問いを立てている。これらのフォークをベンチマークする人のほとんどは出力品質を測らず、毎秒のトークン数しか見ていない。
+***** Comments
+- こうした最適化で出力の品質を実際に確認している人はいるのか？それとも一部のプロジェクトがそう見えるように、単に速度だけを追っているのか？
+- llama.cppは今や、意図を持って進み、物を壊さず、AIが吐き出したものをそのままパッチとして取り込むことはほとんどない安定した製品だ。
+- gfx1103で同様のパッチを試したら、プリフィルが15%、生成が3%速くなった……でもVRAM（統合メモリ）を全部使えなくなって……Vulkanに戻すしかなかった。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+llama.cpp의 AMD 전용 포크
+***** TLDR
+저자(HN 제출자 julianlam)는 GitHub 사용자 stew675의 llama-cpp-rdna-boosts를 추천한다. AMD 전용 소규모 패치 묶음을 고정된 llama.cpp 커밋에 다시 적용해 ROCm 컨테이너 이미지로 배포한다. eGPU 인클로저에 넣은 AMD R9700에서 Qwen3.8 27B 모델의 Q6 양자화 버전을 MTP와 함께 돌렸더니 프리필은 초당 약 700토큰에서 1,300으로, 생성은 35에서 55로 올랐다. 저자는 이를 모델 동작을 바꿔 속도를 얻는 Strata 같은 새로운 바이브 코딩 추론 엔진(예: 이미 VRAM에 있는 전문가를 우선 사용)과 대비하고, AMD용 vLLM 포크는 한 대의 머신에서 빌드하기엔 너무 무거워 포기했다. 패치 코드 자체는 LLM이 생성했고 다소 불투명하다고 설명한다.
+***** Take
+장점은 절제다. 모델이 계산하는 내용을 바꾸지 않고 속도를 높이며, diff는 검토할 수 있을 만큼 작다. 이것이 포크인 이유이기도 하다. llama.cpp는 많은 백엔드를 지원하고, 댓글에 따르면 이제 Hugging Face 인수를 통해 NVIDIA 소유다. 다른 하드웨어 성능을 떨어뜨릴 수 있는 AMD 전용 패치는 업스트림에 받아들여지기 어렵다. 스레드는 올바른 질문을 던진다. 이런 포크를 벤치마크하는 사람 거의 누구도 출력 품질을 재지 않고 초당 토큰 수만 본다.
+***** Comments
+- 이런 최적화에서 출력 품질을 실제로 확인하는 사람이 있나, 아니면 일부 프로젝트처럼 순수하게 속도만 쫓는 건가?
+- llama.cpp는 이제 의도를 갖고 움직이고, 뭔가를 망가뜨리지 않으며, AI가 내놓은 걸 그냥 패치로 받아들이지 않는 안정적인 제품이다.
+- gfx1103에서 비슷한 패치를 써봤는데 프리필 15%, 생성 3% 빨라졌다... 하지만 VRAM(통합 메모리)을 다 쓸 수 없어서... Vulkan으로 돌아가야 했다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Fork de llama.cpp específico para AMD
+***** TLDR
+El autor (julianlam, quien lo envió a HN) recomienda llama-cpp-rdna-boosts, del usuario de GitHub stew675: un pequeño conjunto de parches específicos para AMD que se reaplican sobre commits fijos de llama.cpp y se distribuyen como imagen de contenedor ROCm. En una AMD R9700 dentro de una carcasa eGPU, con una cuantización Q6 de un modelo Qwen3.8 27B y MTP activado, el prefill pasó de unos 700 a 1.300 tokens por segundo y la generación de 35 a 55. El autor lo contrasta con motores de inferencia nuevos hechos con vibe coding, como Strata, que ganan velocidad cambiando el comportamiento del modelo (por ejemplo, prefiriendo expertos que ya están en VRAM), y abandonó un fork de vLLM para AMD por ser demasiado pesado de compilar para una sola máquina. Describe el código de los parches como generado por LLM y algo opaco.
+***** Take
+Lo que lo distingue es la contención: mejoras de velocidad que no cambian lo que calcula el modelo, en un diff lo bastante pequeño como para revisarlo. Por eso también es un fork. llama.cpp soporta una larga lista de backends y, según los comentarios, ahora pertenece a NVIDIA tras la compra de Hugging Face, así que parches solo para AMD que podrían empeorar otro hardware son difíciles de aceptar upstream. El hilo hace la pregunta correcta: casi nadie que mide estos forks evalúa la calidad de la salida, solo los tokens por segundo.
+***** Comments
+- ¿Alguien está comprobando de verdad la calidad de los tokens con algunas de estas optimizaciones, o solo persiguen velocidad pura como parecen hacer algunos proyectos?
+- llama.cpp es ahora el producto estable que avanza con intención, no rompe cosas y en general no acepta como parche cualquier cosa que escupa la IA.
+- He probado parches así en mi gfx1103 y obtuve un 15% más en prefill y un 3% en generación... pero no podía usar toda mi VRAM (memoria unificada)... y tuve que volver a Vulkan.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+AMD-spezifischer Fork von llama.cpp
+***** TLDR
+Der Autor (HN-Einreicher julianlam) empfiehlt llama-cpp-rdna-boosts vom GitHub-Nutzer stew675: eine kleine Sammlung AMD-spezifischer Patches, die auf festgelegte llama.cpp-Commits neu angewendet und als ROCm-Container-Image ausgeliefert werden. Auf einer AMD R9700 im eGPU-Gehäuse stieg mit einer Q6-Quantisierung eines Qwen3.8-27B-Modells und aktiviertem MTP der Prefill von etwa 700 auf 1.300 Token pro Sekunde und die Generierung von 35 auf 55. Der Autor grenzt es von neueren, per Vibe Coding gebauten Inferenz-Engines wie Strata ab, die Tempo gewinnen, indem sie das Modellverhalten ändern (etwa Experten bevorzugen, die schon im VRAM liegen), und gab einen AMD-vLLM-Fork auf, weil der Build für einen einzelnen Rechner zu aufwendig war. Der Patch-Code selbst sei LLM-generiert und etwas undurchsichtig.
+***** Take
+Das Verkaufsargument ist Zurückhaltung: Beschleunigungen, die nicht ändern, was das Modell berechnet, in einem Diff, der klein genug zum Prüfen ist. Genau deshalb ist es ein Fork. llama.cpp unterstützt eine lange Liste von Backends und gehört laut Kommentaren über die Hugging-Face-Übernahme inzwischen NVIDIA. AMD-only-Patches, die andere Hardware verschlechtern könnten, sind upstream schwer durchzusetzen. Der Thread stellt die richtige Frage: Fast niemand, der diese Forks benchmarkt, misst die Ausgabequalität, nur Token pro Sekunde.
+***** Comments
+- Prüft eigentlich irgendwer die Ausgabequalität bei einigen dieser Optimierungen, oder jagt man nur reiner Geschwindigkeit hinterher, wie es manche Projekte zumindest zu tun scheinen?
+- llama.cpp ist jetzt das stabile Produkt, das sich gezielt bewegt, nichts kaputt macht und weitgehend nicht einfach alles als Patch übernimmt, was die KI ausspuckt.
+- Ich habe solche Patches auf meiner gfx1103 ausprobiert und 15 % mehr Prefill, 3 % mehr Generierung bekommen... aber sie konnte nicht mein ganzes VRAM (Unified Memory) nutzen... und ich musste zurück zu Vulkan.
