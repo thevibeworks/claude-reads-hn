@@ -1,0 +1,557 @@
+#+TITLE: HN Digest 2026-11-28 11:00 UTC
+#+DATE: 2026-11-28T11:00:00Z
+#+CURATOR: claude
+#+SOURCE: https://hacker-news.firebaseio.com/v0/
+
+* Vibe
+Linux boots in a browser tab, Knuth pauses errata, Google blogs an old residual trick, fire ants reach Sydney, and 9front gets a Mac desktop
+
+* Highlights
+- Unkernel: Linux 7.x compiled to wasm, with aarch64 user programs emulated on top
+- DeepCrossAttention: Google claims same quality up to 3x faster training
+- Knuth: LLM-found duplicate errata outrun his reading time
+- Sydney: fire ants found in Auburn, biosecurity order on soil and mulch
+- 9/UX: a classic Mac desktop for 9front where every button is a 9P file
+
+* Stories
+
+** Unkernel: Real Linux kernel, compiled to WebAssembly :webassembly:linux:browser:emulation:
+:PROPERTIES:
+:ID:       50674218
+:URL:      https://unkernel.dev
+:HN_URL:   https://news.ycombinator.com/item?id=50674218
+:POINTS:   348
+:COMMENTS: 83
+:BY:       nreece
+:END:
+
+*** TLDR
+Pooya Parsa (pi0) built unkernel: Linux 7.x compiled to a single wasm module with a real MMU, using an arch/wasm port with page tables. The kernel itself runs as compiled wasm; user programs are unmodified aarch64 binaries running on kwemu, a Zig CPU emulator linked into the kernel, with a JIT for hot code. It boots Alpine or Debian in the browser after a ~10 MB download, or in a terminal via npx unkernel. The docs claim /init in 70 ms, fork+exit+wait in about 60 µs (70 µs native, 1.2 ms under qemu), and systemd booting Ubuntu 26.10. It needs JSPI (Chrome 137+, Firefox 153+, Safari 27+), browser networking goes through a Wisp proxy, and the docs admit CPU-heavy programs are well behind native. MIT licensed, sponsored by Vercel.
+
+*** Take
+The design choice that matters is which half gets emulated. Kernel paths like fork, syscalls and page faults run as compiled wasm, so they are near native; only user code is emulated, so CPU-bound work stays slow. That explains both the commenters amazed by the snappy desktop and the one who found it too slow for real work. This is also a repost from five days ago, and Tabernetes and unlab are already built on it.
+
+*** Comments
+
+**** red_hare
+:PROPERTIES:
+:COMMENT_ID: 50675324
+:END:
+This was, more or less, wholly predicted by Gary Bernhardt's 2014 Pycon talk: The Birth and Death of JavaScript.
+
+**** aktenlage
+:PROPERTIES:
+:COMMENT_ID: 50675698
+:END:
+You can now distribute virtual machines running on the client seamlessly. One click on a link and you have your complete development setup running in a browser.
+
+**** MisterMunchkin
+:PROPERTIES:
+:COMMENT_ID: 50676229
+:END:
+I tried turning this into a practical tool but it just doesn't work, the emulation is so slow that it struggles to do anything meaningful.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Unkernel：编译成 WebAssembly 的真正 Linux 内核
+***** TLDR
+Pooya Parsa（pi0）做了 unkernel：把 Linux 7.x 编译成一个带真实 MMU 的 wasm 模块，基于带页表的 arch/wasm 移植。内核本身以编译后的 wasm 运行；用户程序是未修改的 aarch64 二进制，跑在 kwemu 上，这是一个用 Zig 写、链接进内核的 CPU 模拟器，热点代码有 JIT。下载约 10 MB 后可在浏览器里启动 Alpine 或 Debian，也可在终端用 npx unkernel 运行。文档称 70 毫秒进入 /init，fork+exit+wait 约 60 微秒（原生 70 微秒，qemu 下 1.2 毫秒），systemd 能启动 Ubuntu 26.10。需要 JSPI（Chrome 137+、Firefox 153+、Safari 27+），浏览器联网走 Wisp 代理，文档也承认 CPU 密集型程序远慢于原生。MIT 许可，Vercel 赞助。
+***** Take
+关键设计在于哪一半被模拟。fork、系统调用、缺页这些内核路径以编译后的 wasm 运行，接近原生；只有用户代码被模拟，所以 CPU 密集型任务依然慢。这同时解释了为什么有人惊叹桌面流畅，也有人觉得它慢到干不了正事。另外这是五天前帖子的重发，Tabernetes 和 unlab 已经基于它做出来了。
+***** Comments
+- 这基本上被 Gary Bernhardt 2014 年 PyCon 演讲《JavaScript 的诞生与死亡》完整预言了。
+- 现在可以无缝分发在客户端运行的虚拟机了。点一个链接，完整的开发环境就在浏览器里跑起来。
+- 我试着把它做成实用工具，但根本不行，模拟太慢，几乎做不了任何有意义的事。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Unkernel：WebAssemblyにコンパイルされた本物のLinuxカーネル
+***** TLDR
+Pooya Parsa（pi0）がunkernelを公開。Linux 7.xを、ページテーブルを持つarch/wasmポートを使い、実際のMMU付きの単一wasmモジュールにコンパイルしたもの。カーネル自体はコンパイル済みwasmとして動き、ユーザープログラムは無改造のaarch64バイナリで、カーネルにリンクされたZig製CPUエミュレータkwemu上で動く（ホットコードはJIT）。約10 MBのダウンロードでブラウザ上にAlpineやDebianが起動し、ターミナルではnpx unkernelで動く。ドキュメントによれば/initまで70ミリ秒、fork+exit+waitは約60マイクロ秒（ネイティブ70、qemuで1.2ミリ秒）、systemdでUbuntu 26.10も起動する。JSPIが必要（Chrome 137+、Firefox 153+、Safari 27+）で、ブラウザのネットワークはWispプロキシ経由。CPU負荷の高い処理はネイティブよりかなり遅いと明記している。MITライセンス、Vercelがスポンサー。
+***** Take
+肝はどちら側をエミュレートするかの選択だ。fork、システムコール、ページフォルトといったカーネル側はコンパイル済みwasmなのでネイティブに近く、エミュレートされるのはユーザーコードだけなのでCPU負荷の高い処理は遅いまま。デスクトップの軽さに驚く人と、実用には遅すぎると言う人の両方がいる理由はこれだ。なお5日前の投稿の再投稿で、すでにTabernetesやunlabがこれを土台に作られている。
+***** Comments
+- これはGary Bernhardtの2014年PyConトーク「The Birth and Death of JavaScript」でほぼ完全に予言されていた。
+- クライアントで動く仮想マシンをシームレスに配布できるようになった。リンクを1回クリックすれば開発環境一式がブラウザで動く。
+- 実用的なツールにしようとしたが全然ダメだった。エミュレーションが遅すぎて意味のあることがほとんどできない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Unkernel: WebAssembly로 컴파일된 진짜 리눅스 커널
+***** TLDR
+Pooya Parsa(pi0)가 unkernel을 만들었다. 페이지 테이블을 갖춘 arch/wasm 포트를 사용해 Linux 7.x를 실제 MMU가 있는 단일 wasm 모듈로 컴파일한 것이다. 커널 자체는 컴파일된 wasm으로 실행되고, 사용자 프로그램은 수정하지 않은 aarch64 바이너리로, 커널에 링크된 Zig 기반 CPU 에뮬레이터 kwemu 위에서 돌며 자주 쓰는 코드는 JIT으로 처리한다. 약 10 MB를 내려받으면 브라우저에서 Alpine이나 Debian이 부팅되고, 터미널에서는 npx unkernel로 실행된다. 문서에 따르면 /init까지 70ms, fork+exit+wait는 약 60µs(네이티브 70µs, qemu 1.2ms)이며 systemd로 Ubuntu 26.10도 부팅된다. JSPI가 필요하고(Chrome 137+, Firefox 153+, Safari 27+), 브라우저 네트워킹은 Wisp 프록시를 거치며, CPU를 많이 쓰는 프로그램은 네이티브보다 한참 느리다고 문서에 적혀 있다. MIT 라이선스, Vercel 후원.
+***** Take
+핵심은 어느 쪽을 에뮬레이션하느냐다. fork, 시스템 콜, 페이지 폴트 같은 커널 경로는 컴파일된 wasm이라 네이티브에 가깝고, 사용자 코드만 에뮬레이션되므로 CPU 위주 작업은 여전히 느리다. 데스크톱이 매끄럽다고 감탄하는 사람과 실사용엔 너무 느리다는 사람이 동시에 나오는 이유다. 게다가 5일 전 글의 재게시이고, Tabernetes와 unlab이 이미 이걸 기반으로 만들어졌다.
+***** Comments
+- 이건 Gary Bernhardt의 2014년 PyCon 발표 「The Birth and Death of JavaScript」가 거의 그대로 예언한 것이다.
+- 이제 클라이언트에서 돌아가는 가상 머신을 매끄럽게 배포할 수 있다. 링크 한 번 클릭하면 전체 개발 환경이 브라우저에서 돌아간다.
+- 실용적인 도구로 만들어 보려 했는데 전혀 안 된다. 에뮬레이션이 너무 느려서 의미 있는 일을 거의 못 한다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Unkernel: un kernel de Linux real, compilado a WebAssembly
+***** TLDR
+Pooya Parsa (pi0) creó unkernel: Linux 7.x compilado a un único módulo wasm con una MMU real, usando un port arch/wasm con tablas de páginas. El kernel se ejecuta como wasm compilado; los programas de usuario son binarios aarch64 sin modificar que corren sobre kwemu, un emulador de CPU escrito en Zig y enlazado al kernel, con JIT para el código más usado. Arranca Alpine o Debian en el navegador tras descargar unos 10 MB, o en una terminal con npx unkernel. La documentación afirma llegar a /init en 70 ms, fork+exit+wait en unos 60 µs (70 µs nativo, 1,2 ms en qemu) y que systemd arranca Ubuntu 26.10. Requiere JSPI (Chrome 137+, Firefox 153+, Safari 27+), la red en el navegador pasa por un proxy Wisp y la documentación admite que los programas intensivos en CPU quedan muy por detrás del nativo. Licencia MIT, patrocinado por Vercel.
+***** Take
+La decisión de diseño clave es qué mitad se emula. Las rutas del kernel como fork, las llamadas al sistema y los fallos de página corren como wasm compilado y van casi a velocidad nativa; solo se emula el código de usuario, así que el trabajo intensivo en CPU sigue siendo lento. Eso explica tanto a quienes se asombran de lo fluido del escritorio como al que lo encontró demasiado lento para trabajo real. Además es un repost de hace cinco días, y Tabernetes y unlab ya están construidos encima.
+***** Comments
+- Esto lo predijo casi por completo la charla de Gary Bernhardt en PyCon 2014: The Birth and Death of JavaScript.
+- Ahora se pueden distribuir máquinas virtuales que corren en el cliente sin fricción. Un clic en un enlace y tienes todo tu entorno de desarrollo en el navegador.
+- Intenté convertirlo en una herramienta práctica pero no funciona, la emulación es tan lenta que apenas logra hacer algo útil.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Unkernel: Ein echter Linux-Kernel, nach WebAssembly kompiliert
+***** TLDR
+Pooya Parsa (pi0) hat unkernel gebaut: Linux 7.x als einzelnes wasm-Modul mit echter MMU, auf Basis eines arch/wasm-Ports mit Seitentabellen. Der Kernel selbst läuft als kompiliertes wasm; Benutzerprogramme sind unveränderte aarch64-Binärdateien auf kwemu, einem in Zig geschriebenen und in den Kernel gelinkten CPU-Emulator mit JIT für heißen Code. Nach etwa 10 MB Download bootet Alpine oder Debian im Browser, im Terminal per npx unkernel. Laut Doku ist /init nach 70 ms erreicht, fork+exit+wait dauert etwa 60 µs (nativ 70 µs, unter qemu 1,2 ms), und systemd bootet Ubuntu 26.10. Benötigt wird JSPI (Chrome 137+, Firefox 153+, Safari 27+), Netzwerk im Browser läuft über einen Wisp-Proxy, und die Doku räumt ein, dass CPU-lastige Programme weit hinter nativ liegen. MIT-Lizenz, gesponsert von Vercel.
+***** Take
+Entscheidend ist, welche Hälfte emuliert wird. Kernelpfade wie fork, Syscalls und Page Faults laufen als kompiliertes wasm und damit fast nativ; nur der Benutzercode wird emuliert, also bleibt CPU-lastige Arbeit langsam. Das erklärt, warum die einen über den flüssigen Desktop staunen und ein anderer es für echte Arbeit zu langsam fand. Außerdem ist es ein Repost von vor fünf Tagen, und Tabernetes und unlab bauen schon darauf auf.
+***** Comments
+- Das hat Gary Bernhardts PyCon-Vortrag von 2014, The Birth and Death of JavaScript, mehr oder weniger komplett vorhergesagt.
+- Jetzt kann man virtuelle Maschinen, die auf dem Client laufen, nahtlos verteilen. Ein Klick auf einen Link und die komplette Entwicklungsumgebung läuft im Browser.
+- Ich habe versucht, daraus ein praktisches Werkzeug zu machen, aber es funktioniert einfach nicht. Die Emulation ist so langsam, dass kaum etwas Sinnvolles geht.
+** Google's DeepCrossAttention achieves comparable model quality up to 3x faster :ai:machine-learning:google:transformers:
+:PROPERTIES:
+:ID:       50672565
+:URL:      https://research.google/blog/supercharging-transformer-residual-connections/
+:HN_URL:   https://news.ycombinator.com/item?id=50672565
+:POINTS:   416
+:COMMENTS: 159
+:BY:       ComputedCamp995
+:END:
+
+*** TLDR
+A Google Research blog post on DeepCrossAttention (DCA), from an ICML 2025 paper (arXiv 2502.06785). Standard residual connections add each layer's output to the stream with equal weight; DCA adds a small per-layer module that learns, per token, how to mix earlier layers' outputs, plus cross-attention across depth instead of across tokens. The post claims the same quality up to 3x faster in its intro and up to 5x fewer training steps on C4 and LM1B in its body. A 30-layer DCA model matched a 42-layer baseline on LM1B, at under 0.2% extra parameters. Retrofitting DCA onto a pretrained model and training briefly cut LM1B perplexity by 0.19, versus 0.02 for plain continued training. It costs extra memory bandwidth. The speedup is in training, not inference, and Gemini is not mentioned.
+
+*** Take
+The headline figure shifts three times in one post (3x, 5x, 30-40% fewer parameters), the results are on C4 and LM1B, and no model sizes are given. Read it as a promising small-scale result, not as the explanation for Gemini Neon. The thread's best question is why Google blogged an 18-month-old paper now; the most plausible answer offered is that labs publish once an edge is no longer worth hiding. Most of the 159 comments compare Gemini Neon with Claude subscriptions instead of discussing residual connections.
+
+*** Comments
+
+**** serioussecurity
+:PROPERTIES:
+:COMMENT_ID: 50673199
+:END:
+If Google published it that means they're probably not using it.
+
+**** dmd
+:PROPERTIES:
+:COMMENT_ID: 50673315
+:END:
+Like they're famously not using any of the ideas they published in Attention is all you need?
+
+**** scott_weber
+:PROPERTIES:
+:COMMENT_ID: 50673772
+:END:
+The faster here is faster to train. Faster training means deeper training, smaller models at the same quality, so faster at run time. So circuitously faster tok/s, but not 3x.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Google 的 DeepCrossAttention 以最高 3 倍速度达到相当的模型质量
+***** TLDR
+Google Research 博客介绍 DeepCrossAttention（DCA），出自一篇 ICML 2025 论文（arXiv 2502.06785）。标准残差连接把每层输出以相同权重加到主干上；DCA 为每层加一个小模块，按 token 学习如何组合前面各层的输出，并在深度方向（而非 token 方向）做交叉注意力。文章开头说最高快 3 倍达到同等质量，正文又说在 C4 和 LM1B 上训练步数最多少 5 倍。在 LM1B 上，30 层的 DCA 模型追平了 42 层基线，额外参数不到 0.2%。把 DCA 加到已预训练模型上再短暂训练，LM1B 困惑度下降 0.19，普通继续训练只降 0.02。代价是更高的内存带宽。加速指的是训练而非推理，文中没有提到 Gemini。
+***** Take
+同一篇文章里标题数字变了三次（3 倍、5 倍、参数少 30-40%），实验只在 C4 和 LM1B 上做，也没给模型规模。把它当作有前景的小规模结果，而不是 Gemini Neon 的秘密。讨论里最好的问题是 Google 为什么现在才为一篇 18 个月前的论文写博客；最可信的回答是实验室会在优势不值得再藏时才公开。159 条评论大多在比较 Gemini Neon 和 Claude 订阅，而不是讨论残差连接。
+***** Comments
+- Google 既然公开了，说明他们大概没在用。
+- 就像他们出了名地没在用《Attention is all you need》里的任何想法一样？
+- 这里的更快是训练更快。训练更快意味着能训练更深，同等质量下模型更小，所以运行时也更快。绕了一圈 token/秒会提升，但不是 3 倍。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+GoogleのDeepCrossAttention、最大3倍の速さで同等のモデル品質を達成
+***** TLDR
+Google ResearchのブログがICML 2025論文（arXiv 2502.06785）のDeepCrossAttention（DCA）を紹介。通常の残差接続は各層の出力を同じ重みで足し合わせるが、DCAは層ごとに小さなモジュールを加え、トークンごとに前の層の出力をどう混ぜるかを学習し、トークン方向ではなく深さ方向にクロスアテンションを行う。冒頭では同品質に最大3倍速く到達するとし、本文ではC4とLM1Bで学習ステップが最大5分の1になるとしている。LM1Bでは30層のDCAが42層のベースラインに並び、追加パラメータは0.2%未満。学習済みモデルにDCAを後付けして少し学習するとLM1Bのパープレキシティが0.19下がり、通常の継続学習では0.02だった。メモリ帯域は増える。速くなるのは学習で推論ではなく、Geminiへの言及はない。
+***** Take
+見出しの数字が1本の記事で3回変わる（3倍、5倍、パラメータ30〜40%減）うえ、実験はC4とLM1Bのみでモデルサイズも書かれていない。Gemini Neonの秘密ではなく、有望な小規模結果として読むべきだ。スレッドで一番良い問いは、なぜ18か月前の論文を今ブログにしたのかで、最も説得力のある答えは、優位性を隠す価値がなくなってから公開するというものだった。159件のコメントの大半は残差接続ではなく、Gemini NeonとClaudeのサブスク比較だ。
+***** Comments
+- Googleが公開したということは、おそらく使っていないということだ。
+- Attention is all you needで公開したアイデアを一切使っていないことで有名なように？
+- ここでの速いは学習が速いという意味。学習が速ければより深く学習でき、同品質ならモデルを小さくでき、結果的に実行時も速くなる。回り回ってトークン/秒は上がるが、3倍ではない。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Google의 DeepCrossAttention, 최대 3배 빠르게 비슷한 모델 품질 달성
+***** TLDR
+Google Research 블로그가 ICML 2025 논문(arXiv 2502.06785)의 DeepCrossAttention(DCA)을 소개했다. 일반 잔차 연결은 각 층의 출력을 같은 가중치로 더하지만, DCA는 층마다 작은 모듈을 붙여 토큰별로 이전 층 출력을 어떻게 섞을지 학습하고, 토큰 방향이 아닌 깊이 방향으로 크로스 어텐션을 한다. 도입부에서는 같은 품질에 최대 3배 빨리 도달한다고 하고, 본문에서는 C4와 LM1B에서 학습 스텝이 최대 5배 적다고 한다. LM1B에서 30층 DCA 모델이 42층 기준 모델과 같았고, 추가 파라미터는 0.2% 미만이다. 사전학습된 모델에 DCA를 붙여 잠깐 학습하자 LM1B 퍼플렉시티가 0.19 떨어졌고, 일반 추가 학습은 0.02였다. 메모리 대역폭은 늘어난다. 빨라지는 건 학습이지 추론이 아니며 Gemini 언급은 없다.
+***** Take
+한 글 안에서 대표 수치가 세 번 바뀌고(3배, 5배, 파라미터 30~40% 감소), 실험은 C4와 LM1B뿐이며 모델 크기도 없다. Gemini Neon의 비결이 아니라 유망한 소규모 결과로 읽어야 한다. 스레드에서 가장 좋은 질문은 왜 18개월 된 논문을 이제 와서 블로그에 올렸느냐인데, 가장 그럴듯한 답은 우위를 숨길 가치가 없어졌을 때 공개한다는 것이다. 159개 댓글 대부분은 잔차 연결이 아니라 Gemini Neon과 Claude 구독 비교다.
+***** Comments
+- Google이 공개했다면 아마 안 쓰고 있다는 뜻이다.
+- Attention is all you need에 공개한 아이디어를 하나도 안 쓰는 걸로 유명한 것처럼?
+- 여기서 빠르다는 건 학습이 빠르다는 뜻이다. 학습이 빠르면 더 깊게 학습할 수 있고, 같은 품질이면 모델이 작아지니 실행도 빨라진다. 돌고 돌아 토큰/초는 늘지만 3배는 아니다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+DeepCrossAttention de Google logra una calidad de modelo comparable hasta 3 veces más rápido
+***** TLDR
+Un post del blog de Google Research sobre DeepCrossAttention (DCA), de un paper de ICML 2025 (arXiv 2502.06785). Las conexiones residuales estándar suman la salida de cada capa con el mismo peso; DCA añade un pequeño módulo por capa que aprende, por token, cómo mezclar las salidas de capas anteriores, más atención cruzada a lo largo de la profundidad en vez de entre tokens. La introducción promete la misma calidad hasta 3 veces más rápido y el cuerpo habla de hasta 5 veces menos pasos de entrenamiento en C4 y LM1B. Un modelo DCA de 30 capas igualó a una base de 42 capas en LM1B, con menos de 0,2% de parámetros extra. Añadir DCA a un modelo preentrenado y entrenar un poco bajó la perplejidad en LM1B 0,19, frente a 0,02 con entrenamiento normal continuado. Cuesta más ancho de banda de memoria. La aceleración es en entrenamiento, no en inferencia, y Gemini no se menciona.
+***** Take
+La cifra principal cambia tres veces en un mismo post (3x, 5x, 30-40% menos parámetros), los resultados son en C4 y LM1B y no se dan tamaños de modelo. Léase como un resultado prometedor a pequeña escala, no como el secreto de Gemini Neon. La mejor pregunta del hilo es por qué Google publica ahora un blog sobre un paper de hace 18 meses; la respuesta más creíble es que los laboratorios publican cuando la ventaja ya no vale la pena esconderla. La mayoría de los 159 comentarios comparan Gemini Neon con suscripciones de Claude en lugar de hablar de conexiones residuales.
+***** Comments
+- Si Google lo publicó, probablemente significa que no lo están usando.
+- ¿Como cuando famosamente no usan ninguna de las ideas que publicaron en Attention is all you need?
+- Aquí más rápido significa más rápido de entrenar. Entrenar más rápido permite entrenar más, modelos más pequeños con la misma calidad, y por tanto más rápidos al ejecutarse. Indirectamente más tokens por segundo, pero no 3 veces.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Googles DeepCrossAttention erreicht vergleichbare Modellqualität bis zu 3x schneller
+***** TLDR
+Ein Blogpost von Google Research zu DeepCrossAttention (DCA) aus einem ICML-2025-Paper (arXiv 2502.06785). Normale Residualverbindungen addieren die Ausgabe jeder Schicht mit gleichem Gewicht; DCA fügt pro Schicht ein kleines Modul hinzu, das pro Token lernt, wie frühere Schichtausgaben gemischt werden, plus Cross-Attention über die Tiefe statt über Tokens. Die Einleitung verspricht gleiche Qualität bis zu 3x schneller, der Haupttext bis zu 5x weniger Trainingsschritte auf C4 und LM1B. Ein DCA-Modell mit 30 Schichten erreichte auf LM1B eine Baseline mit 42 Schichten, bei unter 0,2% zusätzlichen Parametern. DCA nachträglich in ein vortrainiertes Modell einzubauen und kurz weiterzutrainieren senkte die LM1B-Perplexität um 0,19, normales Weitertrainieren nur um 0,02. Es kostet mehr Speicherbandbreite. Schneller wird das Training, nicht die Inferenz, und Gemini wird nicht erwähnt.
+***** Take
+Die Kernzahl ändert sich in einem Post dreimal (3x, 5x, 30-40% weniger Parameter), getestet wurde auf C4 und LM1B, Modellgrößen fehlen. Das ist ein vielversprechendes Ergebnis im kleinen Maßstab, nicht die Erklärung für Gemini Neon. Die beste Frage im Thread ist, warum Google jetzt über ein 18 Monate altes Paper bloggt; die plausibelste Antwort lautet, dass Labore veröffentlichen, sobald sich das Verstecken eines Vorsprungs nicht mehr lohnt. Die meisten der 159 Kommentare vergleichen Gemini Neon mit Claude-Abos statt über Residualverbindungen zu reden.
+***** Comments
+- Wenn Google es veröffentlicht hat, nutzen sie es wahrscheinlich nicht.
+- So wie sie bekanntlich keine der Ideen aus Attention is all you need nutzen?
+- Schneller heißt hier schneller zu trainieren. Schnelleres Training heißt mehr Training, kleinere Modelle bei gleicher Qualität und damit schneller zur Laufzeit. Über Umwege also mehr Token pro Sekunde, aber nicht 3x.
+** Knuth: Moratorium on Error Reports :knuth:llm:books:open-source:
+:PROPERTIES:
+:ID:       50674452
+:URL:      https://www-cs-faculty.stanford.edu/~knuth/moratorium.html
+:HN_URL:   https://news.ycombinator.com/item?id=50674452
+:POINTS:   122
+:COMMENTS: 57
+:BY:       ultraficial
+:END:
+
+*** TLDR
+Donald Knuth posted that error reports submitted after 25 November 2026 will not be read until he has published an updated list of known errors for the book concerned. LLMs have made readers so productive that reports arrive faster than he can read them, and he writes that the amount of available time is now less than zero. Random sampling shows most recent reports repeat issues other people already sent. The list of books currently accepting errata is empty, which he hopes to change soon. He apologizes for making errors in the first place and for having limited ability to handle more than one thing at a time. The notice does not mention his reward checks.
+
+*** Take
+This differs from the curl problem: the reports here seem mostly correct, just duplicated, and the duplicates are of errors he has not yet acknowledged, so senders had no public list to check against. The fix he describes, an updated known-errors list per book, is the right one. Until it exists, an 88-year-old author is doing deduplication by hand for people who pointed a model at TAOCP to chase a check.
+
+*** Comments
+
+**** mmahemoff
+:PROPERTIES:
+:COMMENT_ID: 50675924
+:END:
+Knuth is not closing shop on submissions. He's getting too many repeats of the same issues, not surprising when everyone's discovering them with the same technology.
+
+**** globular-toast
+:PROPERTIES:
+:COMMENT_ID: 50675773
+:END:
+Another thing ruined by LLMs. You don't think Knuth himself could spend 10 minutes feeding his opus into an LLM and getting a list of errors?
+
+**** perching_aix
+:PROPERTIES:
+:COMMENT_ID: 50675980
+:END:
+Can people actually have their agents check for already reported issues first, or are you calling people idiots for not being clairvoyants?
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+Knuth：暂停接收勘误报告
+***** TLDR
+Donald Knuth 宣布，2026 年 11 月 25 日之后提交的勘误报告，要等他为相应的书发布更新的已知错误列表后才会阅读。LLM 让读者效率大增，报告来得比他读得还快，他写道可用时间已经小于零。随机抽查显示，最近大多数报告与别人已提交的问题重复。目前接受勘误的书单是空的，他希望很快能更新。他为一开始犯错、以及一次只能处理一件事道歉。公告没有提到他的奖励支票。
+***** Take
+这和 curl 遇到的问题不同：这里的报告大多是对的，只是重复，而且重复的是他还没确认的错误，提交者根本没有公开列表可查。他说的办法，即每本书发布更新的已知错误列表，是对的。在那之前，一位 88 岁的作者正在手工为那些拿模型扫 TAOCP 想赚支票的人去重。
+***** Comments
+- Knuth 并没有关闭投稿。他收到太多重复的问题，大家都用同一种技术去找错，这不奇怪。
+- 又一件被 LLM 毁掉的事。你以为 Knuth 自己不能花 10 分钟把他的巨著喂给 LLM 得到一份错误列表吗？
+- 人们真的能让 agent 先查已报告的问题吗？还是你在骂别人不会未卜先知是白痴？
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+Knuth：誤り報告の受付を一時停止
+***** TLDR
+Donald Knuthは、2026年11月25日以降に送られた誤り報告は、該当する本の既知の誤りリストを更新して公開するまで読まないと告知した。LLMで読者の生産性が上がり、報告が読む速さを上回って届くようになり、使える時間はもはやゼロ未満だと書いている。無作為に抽出すると、最近の報告の大半は他の人がすでに送った問題の重複だという。現在正誤表を受け付けている本のリストは空で、近く追加したいとしている。そもそも誤りを作ったこと、そして一度に一つのことしかこなせないことを詫びている。報奨小切手には触れていない。
+***** Take
+これはcurlの問題とは違う。ここでの報告は大半が正しく、単に重複しているだけで、しかも重複しているのは彼がまだ認めていない誤りなので、送る側には照合できる公開リストがなかった。彼が示す解決策、つまり本ごとの既知誤りリストの更新は正しい。それができるまで、88歳の著者が、小切手目当てにモデルでTAOCPを洗った人たちの重複を手作業で整理している。
+***** Comments
+- Knuthは投稿受付をやめるわけではない。同じ問題の重複が多すぎるだけで、皆が同じ技術で見つけているのだから当然だ。
+- またLLMに台無しにされた。Knuth自身が10分かけて自分の大作をLLMに入れて誤りリストを得られないとでも？
+- 報告済みの問題をまずエージェントに確認させることが本当にできるのか？それとも千里眼じゃないからといって人をバカ呼ばわりしているのか？
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+Knuth: 오류 보고 접수 일시 중단
+***** TLDR
+Donald Knuth는 2026년 11월 25일 이후 제출된 오류 보고는 해당 책의 알려진 오류 목록을 갱신해 공개할 때까지 읽지 않겠다고 밝혔다. LLM 덕분에 독자들의 생산성이 높아져 보고가 읽는 속도보다 빨리 들어오고, 쓸 수 있는 시간이 이제 0보다 적다고 썼다. 무작위로 살펴보니 최근 보고 대부분이 다른 사람이 이미 보낸 문제의 중복이었다. 현재 정오표를 받는 책 목록은 비어 있으며 곧 채우고 싶다고 했다. 애초에 오류를 만든 것, 그리고 한 번에 한 가지밖에 처리하지 못하는 것에 대해 사과했다. 보상 수표에 대한 언급은 없다.
+***** Take
+curl이 겪은 문제와는 다르다. 여기서 보고는 대부분 맞는데 중복일 뿐이고, 중복된 것은 그가 아직 확인하지 않은 오류라 보내는 사람이 대조할 공개 목록이 없었다. 그가 말한 해법, 책마다 갱신된 알려진 오류 목록을 내는 것이 맞다. 그게 나올 때까지는 88세 저자가 수표를 노리고 모델로 TAOCP를 훑은 사람들의 중복을 손으로 걸러내고 있다.
+***** Comments
+- Knuth가 접수를 닫는 게 아니다. 같은 문제의 중복이 너무 많을 뿐이고, 모두가 같은 기술로 찾으니 놀랄 일도 아니다.
+- LLM이 망친 또 하나. Knuth 본인이 10분 들여 자기 대작을 LLM에 넣고 오류 목록을 못 받을 것 같나?
+- 사람들이 정말 에이전트에게 이미 보고된 문제를 먼저 확인하게 할 수 있나? 아니면 예지력이 없다고 사람들을 바보라 부르는 건가?
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Knuth: moratoria sobre los informes de erratas
+***** TLDR
+Donald Knuth anunció que los informes de errores enviados después del 25 de noviembre de 2026 no se leerán hasta que publique una lista actualizada de errores conocidos del libro correspondiente. Los LLM han vuelto tan productivos a los lectores que los informes llegan más rápido de lo que puede leerlos, y escribe que el tiempo disponible ya es menor que cero. Un muestreo aleatorio muestra que la mayoría de los informes recientes repiten problemas que otros ya enviaron. La lista de libros que aceptan erratas está vacía por ahora, y espera ampliarla pronto. Se disculpa por haber cometido errores y por su capacidad limitada para atender más de una cosa a la vez. El aviso no menciona sus cheques de recompensa.
+***** Take
+Esto no es el problema de curl: aquí los informes parecen mayormente correctos, solo duplicados, y lo duplicado son errores que él aún no ha reconocido, así que quienes los enviaban no tenían una lista pública para comprobar. La solución que describe, una lista actualizada de errores conocidos por libro, es la correcta. Mientras no exista, un autor de 88 años deduplica a mano para gente que pasó TAOCP por un modelo en busca de un cheque.
+***** Comments
+- Knuth no está cerrando los envíos. Recibe demasiadas repeticiones de los mismos problemas, algo normal cuando todos los descubren con la misma tecnología.
+- Otra cosa arruinada por los LLM. ¿No crees que el propio Knuth podría pasar 10 minutos metiendo su obra en un LLM y obtener una lista de errores?
+- ¿De verdad la gente puede hacer que sus agentes comprueben primero los problemas ya reportados, o estás llamando idiotas a quienes no son clarividentes?
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Knuth: Moratorium für Fehlermeldungen
+***** TLDR
+Donald Knuth hat angekündigt, dass Fehlermeldungen, die nach dem 25. November 2026 eingehen, erst gelesen werden, wenn er für das betreffende Buch eine aktualisierte Liste bekannter Fehler veröffentlicht hat. LLMs haben Leser so produktiv gemacht, dass Meldungen schneller kommen, als er sie lesen kann; die verfügbare Zeit sei nun kleiner als null. Stichproben zeigen, dass die meisten neuen Meldungen Wiederholungen von bereits eingereichten Problemen sind. Die Liste der Bücher, für die gerade Errata angenommen werden, ist leer, was er bald ändern will. Er entschuldigt sich dafür, überhaupt Fehler gemacht zu haben, und für seine begrenzte Fähigkeit, mehr als eine Sache gleichzeitig zu bewältigen. Seine Belohnungsschecks erwähnt die Notiz nicht.
+***** Take
+Das ist nicht das curl-Problem: Die Meldungen hier sind offenbar meist korrekt, nur doppelt, und doppelt gemeldet werden Fehler, die er noch nicht bestätigt hat, also hatten die Absender keine öffentliche Liste zum Abgleichen. Seine Lösung, pro Buch eine aktualisierte Liste bekannter Fehler, ist die richtige. Bis es sie gibt, dedupliziert ein 88-jähriger Autor von Hand für Leute, die TAOCP auf der Jagd nach einem Scheck durch ein Modell gejagt haben.
+***** Comments
+- Knuth macht nicht dicht. Er bekommt zu viele Wiederholungen derselben Probleme, kein Wunder, wenn alle sie mit derselben Technik finden.
+- Noch etwas, das LLMs ruiniert haben. Glaubst du nicht, Knuth könnte selbst 10 Minuten investieren, sein Werk in ein LLM werfen und eine Fehlerliste bekommen?
+- Können Leute ihre Agenten wirklich erst nach bereits gemeldeten Problemen suchen lassen, oder nennst du sie Idioten, weil sie nicht hellsehen können?
+** Sydney Fire Ant Infestation :biosecurity:australia:invasive-species:government:
+:PROPERTIES:
+:ID:       50650253
+:URL:      https://www.abc.net.au/news/2026-11-25/nsw-government-ramps-up-efforts-to-respond-to-fire-ants-/107424812
+:HN_URL:   https://news.ycombinator.com/item?id=50650253
+:POINTS:   60
+:COMMENTS: 40
+:BY:       altilunium
+:END:
+
+*** TLDR
+ABC News reports that NSW found a red imported fire ant nest in the industrial suburb of Auburn, treated it, and then found a wider presence that needs intensive treatment. A separate detection at the Enfield Intermodal Logistics Centre on September 23 is not believed to be linked. A task force will trace the source; experts suspect shipping containers, likely from China. A biosecurity order restricting movement of soil, turf, mulch and building materials through Auburn was expected by Friday, with more biosecurity officers and detection dogs deployed. The public made more than 900 reports of suspected nests in a few days. Agriculture Minister Tara Moriarty said the ants are spreading differently from other NSW outbreaks. Stings cause itchy blisters and can put children in hospital or, in severe cases, kill. The article gives no funding or cost figures.
+
+*** Take
+Queensland has been fighting this species since 2001, and a Guardian report linked in the thread says the federal biosecurity watchdog's recommendations went unacted on for years. Ants turning up at a Sydney container hub is the outcome those reports warned about. The 900 public reports in a few days show that citizen detection works once people know what to look for; whether the government funds the follow-up is the open question.
+
+*** Comments
+
+**** ggm
+:PROPERTIES:
+:COMMENT_ID: 50650398
+:END:
+Underfunding the bait program by the qld government 20 years ago. They could have spent 1/10th of the current loss then to avoid most of it now.
+
+**** motionlessveloc
+:PROPERTIES:
+:COMMENT_ID: 50675600
+:END:
+What does a bait program in Queensland have to do with an ant infestation at a container cargo hub in Sydney over 1000 km to the south?
+
+**** contingencies
+:PROPERTIES:
+:COMMENT_ID: 50676064
+:END:
+I'm Aussie. I had one of these bite me in China. Wound up in a hospital. Staff didn't understand the gravity of the reaction I was having.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+悉尼红火蚁入侵
+***** TLDR
+ABC 新闻报道，新南威尔士州在工业区 Auburn 发现一个红火蚁巢并进行了处理，随后发现更大范围的分布，需要集中处理。9 月 23 日在 Enfield 多式联运物流中心的另一次发现，据信与此无关。将成立专责小组追查来源，专家怀疑来自集装箱，很可能来自中国。预计周五前出台生物安全令，限制土壤、草皮、覆盖物和建材在 Auburn 的流动，同时增派生物安全官员和检测犬。几天内公众上报了 900 多处疑似蚁巢。农业部长 Tara Moriarty 说，这些火蚁的扩散方式与新州其他疫情不同。蜇伤会引起瘙痒水泡，可能导致儿童住院，严重时致死。文章没有给出资金或成本数字。
+***** Take
+昆士兰自 2001 年起就在对付这种火蚁，讨论中链接的《卫报》报道称，联邦生物安全监督机构的建议多年来未被落实。火蚁出现在悉尼的集装箱枢纽，正是那些报告所警告的结果。几天内 900 份公众报告说明，只要人们知道该看什么，公民发现机制是有效的；政府是否会为后续工作拨款还是未知数。
+***** Comments
+- 20 年前昆州政府给诱饵计划的拨款不足。当时花现在损失的十分之一，就能避免大部分损失。
+- 昆士兰的诱饵计划和 1000 多公里以南悉尼集装箱货运枢纽的蚁害有什么关系？
+- 我是澳洲人。我在中国被这种蚂蚁咬过，进了医院。医护人员没意识到我的反应有多严重。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+シドニーでヒアリが蔓延
+***** TLDR
+ABCニュースによると、ニューサウスウェールズ州は工業地区Auburnでヒアリの巣を見つけて駆除したが、その後さらに広い範囲での存在が判明し、集中的な駆除が必要になった。9月23日にEnfield複合輸送物流センターで見つかった別の事例とは関連がないとみられる。発生源を突き止めるタスクフォースが設置され、専門家は輸送コンテナ、おそらく中国からと見ている。Auburnでの土、芝、マルチ、建材の移動を規制するバイオセキュリティ命令が金曜までに出される見込みで、職員と探知犬も増員される。数日で市民から900件以上の疑わしい巣の通報があった。農業大臣Tara Moriartyは、州内の他の発生例とは広がり方が違うと述べた。刺されるとかゆい水疱ができ、子どもが入院することもあり、重症では死亡することもある。記事に予算や被害額の数字はない。
+***** Take
+クイーンズランド州は2001年からこの種と戦っており、スレッドで紹介されたGuardianの記事によれば、連邦のバイオセキュリティ監視機関の勧告は何年も実行されなかった。シドニーのコンテナ拠点でヒアリが見つかったのは、まさにその報告が警告していた結果だ。数日で900件の通報があったことは、何を探すべきか分かれば市民による発見が機能することを示している。政府が後続対策に予算をつけるかは未定だ。
+***** Comments
+- 20年前のクイーンズランド州政府による駆除餌プログラムの予算不足。当時、今の損失の10分の1を使っていれば大半は防げた。
+- クイーンズランドの駆除餌プログラムが、1000km以上南のシドニーのコンテナ貨物拠点のアリ被害と何の関係がある？
+- オーストラリア人だ。中国でこのアリに刺されて病院に行った。スタッフは私の反応がどれほど深刻か分かっていなかった。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+시드니 붉은불개미 확산
+***** TLDR
+ABC 뉴스에 따르면 뉴사우스웨일스주는 공업 지역 Auburn에서 붉은불개미 둥지를 발견해 처리했지만, 이후 더 넓은 범위에서 발견돼 집중 처리가 필요해졌다. 9월 23일 Enfield 복합운송 물류센터에서 발견된 별도 사례와는 관련이 없는 것으로 보인다. 출처를 추적할 태스크포스가 꾸려지며, 전문가들은 선적 컨테이너, 아마도 중국발로 보고 있다. Auburn에서 흙, 잔디, 멀치, 건축 자재의 이동을 제한하는 생물보안 명령이 금요일까지 나올 예정이고, 생물보안 담당관과 탐지견도 늘린다. 며칠 사이 시민들이 900건 넘게 의심 둥지를 신고했다. 농업부 장관 Tara Moriarty는 이번 개미가 주 내 다른 발생 사례와 다르게 퍼지고 있다고 말했다. 쏘이면 가려운 물집이 생기고 아이가 입원할 수 있으며 심하면 사망할 수 있다. 기사에 예산이나 피해액 수치는 없다.
+***** Take
+퀸즐랜드주는 2001년부터 이 종과 싸워 왔고, 스레드에 링크된 Guardian 기사에 따르면 연방 생물보안 감시기관의 권고는 수년간 이행되지 않았다. 시드니 컨테이너 허브에서 개미가 나온 것은 그 보고서들이 경고한 결과다. 며칠 만에 900건의 신고가 들어온 것은 무엇을 찾아야 하는지 알면 시민 탐지가 효과적이라는 뜻이다. 정부가 후속 조치에 예산을 댈지는 아직 모른다.
+***** Comments
+- 20년 전 퀸즐랜드 정부가 미끼 프로그램 예산을 적게 준 탓이다. 그때 지금 손실의 10분의 1만 썼어도 대부분 막을 수 있었다.
+- 퀸즐랜드의 미끼 프로그램이 1000km 넘게 남쪽에 있는 시드니 컨테이너 화물 허브의 개미 문제와 무슨 상관인가?
+- 나는 호주인이다. 중국에서 이 개미에게 물려 병원에 갔다. 직원들은 내 반응이 얼마나 심각한지 몰랐다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+Infestación de hormigas de fuego en Sídney
+***** TLDR
+ABC News informa que Nueva Gales del Sur encontró un nido de hormiga roja de fuego importada en el barrio industrial de Auburn, lo trató y luego halló una presencia más extendida que requiere tratamiento intensivo. Una detección separada en el Enfield Intermodal Logistics Centre el 23 de septiembre no parece estar relacionada. Un grupo de trabajo rastreará el origen; los expertos sospechan de contenedores, probablemente desde China. Se esperaba para el viernes una orden de bioseguridad que restringe el movimiento de tierra, césped, mantillo y materiales de construcción en Auburn, con más agentes y perros detectores. El público hizo más de 900 avisos de nidos sospechosos en pocos días. La ministra de Agricultura, Tara Moriarty, dijo que las hormigas se extienden de forma distinta a otros brotes del estado. Las picaduras causan ampollas con picor y pueden llevar a niños al hospital o, en casos graves, matar. El artículo no da cifras de financiación ni de costes.
+***** Take
+Queensland combate esta especie desde 2001, y un artículo de The Guardian enlazado en el hilo dice que las recomendaciones del organismo federal de control de bioseguridad quedaron sin aplicar durante años. Hormigas en un centro de contenedores de Sídney es justo lo que esos informes advertían. Los 900 avisos en pocos días muestran que la detección ciudadana funciona cuando la gente sabe qué buscar; la duda es si el gobierno financiará lo que viene después.
+***** Comments
+- La falta de fondos del programa de cebos del gobierno de Queensland hace 20 años. Podrían haber gastado una décima parte de la pérdida actual para evitar la mayor parte.
+- ¿Qué tiene que ver un programa de cebos en Queensland con una infestación en un centro de carga de contenedores en Sídney, a más de 1000 km al sur?
+- Soy australiano. Una de estas me picó en China. Acabé en un hospital. El personal no entendía la gravedad de la reacción que tenía.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+Feuerameisen-Befall in Sydney
+***** TLDR
+Laut ABC News hat New South Wales im Industrievorort Auburn ein Nest der Roten Feuerameise gefunden und behandelt und danach ein größeres Vorkommen entdeckt, das intensive Behandlung braucht. Ein separater Fund im Enfield Intermodal Logistics Centre am 23. September hängt vermutlich nicht damit zusammen. Eine Taskforce soll die Herkunft klären; Experten vermuten Schiffscontainer, wahrscheinlich aus China. Bis Freitag sollte eine Biosicherheitsverordnung kommen, die den Transport von Erde, Rasen, Mulch und Baumaterial durch Auburn regelt, dazu mehr Biosicherheitsbeamte und Spürhunde. Die Öffentlichkeit meldete in wenigen Tagen über 900 Verdachtsnester. Agrarministerin Tara Moriarty sagte, die Ameisen breiten sich anders aus als bei anderen Ausbrüchen in NSW. Stiche verursachen juckende Blasen, können Kinder ins Krankenhaus bringen und in schweren Fällen tödlich sein. Zahlen zu Finanzierung oder Kosten nennt der Artikel nicht.
+***** Take
+Queensland bekämpft diese Art seit 2001, und ein im Thread verlinkter Guardian-Bericht sagt, die Empfehlungen der Bundes-Biosicherheitsaufsicht seien jahrelang nicht umgesetzt worden. Ameisen an einem Containerumschlagplatz in Sydney sind genau das, wovor diese Berichte gewarnt haben. Die 900 Meldungen in wenigen Tagen zeigen, dass Erkennung durch Bürger funktioniert, wenn die Leute wissen, worauf sie achten müssen; offen ist, ob die Regierung die Folgearbeit finanziert.
+***** Comments
+- Unterfinanzierung des Köderprogramms durch die Regierung von Queensland vor 20 Jahren. Damals ein Zehntel des heutigen Schadens auszugeben hätte das meiste verhindert.
+- Was hat ein Köderprogramm in Queensland mit einem Ameisenbefall an einem Containerumschlagplatz in Sydney über 1000 km weiter südlich zu tun?
+- Ich bin Australier. Eine von denen hat mich in China gestochen. Ich landete im Krankenhaus. Das Personal hat nicht verstanden, wie ernst meine Reaktion war.
+** 9/UX: a Macintosh-inspired desktop for 9front :plan9:9front:gui:retro:
+:PROPERTIES:
+:ID:       50672008
+:URL:      https://progrium.github.io/9ux/
+:HN_URL:   https://news.ycombinator.com/item?id=50672008
+:POINTS:   134
+:COMMENTS: 35
+:BY:       rbanffy
+:END:
+
+*** TLDR
+Jeff Lindsay (progrium) released 9/UX 0.1, a classic Mac style desktop for 9front, the Plan 9 fork. It has a spatial Desktop with volume icons, folder windows, Get Info and Trash, plus a global menu bar that follows the focused app; remote 9P servers can appear as volumes. Under the hood it is a rio fork plus libux, a toolkit where every app serves its control tree over 9P, so you can press a button by writing to its ctl file from rc or acme. Native 9front and rio programs still run alongside it. GUI tests run h9 with a headless screen, inject mouse and keyboard input and check the 9P files. MIT licensed; the browser demo needs a recent Chrome or Edge and a 23 MB download.
+
+*** Take
+The Mac look is the least interesting part. Exposing every control as a file makes the GUI scriptable from the shell and testable without screenshots, which is the Plan 9 idea applied consistently. Plan 9 fans have long argued that a more conventional UI was all it lacked; 9/UX is a cheap test of that claim, and the thread splits between people who want it and people who think rio was already fine.
+
+*** Comments
+
+**** yjftsjthsd-h
+:PROPERTIES:
+:COMMENT_ID: 50673317
+:END:
+I've long wondered if plan 9 would take off if its UI were like 20% more conventional. Oh nice, 9p would lend itself to automated testing.
+
+**** natas
+:PROPERTIES:
+:COMMENT_ID: 50673987
+:END:
+I actually like the minimalist rio window manager for plan9; takes a little bit to get used to, but once you use it for a while, you find anything else bloated.
+
+**** Joker_vD
+:PROPERTIES:
+:COMMENT_ID: 50675793
+:END:
+...that's literally Windows 3.1, but with less window chrome, and less color.
+
+*** i18n                                                  :i18n:
+
+**** zh
+:PROPERTIES:
+:LANG: zh
+:END:
+***** Title
+9/UX：受 Macintosh 启发的 9front 桌面
+***** TLDR
+Jeff Lindsay（progrium）发布了 9/UX 0.1，一个为 Plan 9 分支 9front 打造的经典 Mac 风格桌面。它有空间式桌面，包括卷图标、文件夹窗口、Get Info 和废纸篓，还有跟随当前焦点应用的全局菜单栏；远程 9P 服务器可以作为卷显示。底层是 rio 的分支加上 libux 工具包，每个应用都通过 9P 提供自己的控件树，所以可以在 rc 或 acme 里向按钮的 ctl 文件写入来按下它。原生 9front 和 rio 程序照常运行。GUI 测试用无头屏幕运行 h9，注入鼠标和键盘输入并检查 9P 文件。MIT 许可；浏览器演示需要较新的 Chrome 或 Edge，下载 23 MB。
+***** Take
+Mac 外观是最不重要的部分。把每个控件都暴露为文件，让 GUI 可以从 shell 脚本化、无需截图就能测试，这是把 Plan 9 的理念贯彻到底。Plan 9 的粉丝长期认为它只缺一个更常规的界面；9/UX 是检验这一说法的低成本办法，讨论分成了想要它的人和觉得 rio 已经够好的人。
+***** Comments
+- 我一直在想，如果 Plan 9 的界面再常规 20%，它会不会流行起来。哦不错，9p 很适合做自动化测试。
+- 其实我喜欢 Plan 9 极简的 rio 窗口管理器；需要一点时间适应，但用久了会觉得别的都臃肿。
+- ……这根本就是 Windows 3.1，只是窗口边框更少、颜色更少。
+**** ja
+:PROPERTIES:
+:LANG: ja
+:END:
+***** Title
+9/UX：9front向けのMacintosh風デスクトップ
+***** TLDR
+Jeff Lindsay（progrium）が、Plan 9の派生である9front向けのクラシックMac風デスクトップ9/UX 0.1を公開。ボリュームアイコン、フォルダウィンドウ、情報を見る、ゴミ箱を備えた空間的なデスクトップと、フォーカス中のアプリに追従するグローバルメニューバーがあり、リモートの9Pサーバーをボリュームとして表示できる。中身はrioのフォークとlibuxで、各アプリが自分のコントロールツリーを9Pで公開するため、rcやacmeからctlファイルに書き込めばボタンを押せる。ネイティブの9frontやrioのプログラムもそのまま動く。GUIテストはヘッドレス画面でh9を動かし、マウスとキーボード入力を注入して9Pファイルを確認する。MITライセンス。ブラウザデモは最近のChromeかEdgeと23 MBのダウンロードが必要。
+***** Take
+Mac風の見た目は一番どうでもいい部分だ。すべてのコントロールをファイルとして公開することで、GUIをシェルからスクリプト操作でき、スクリーンショットなしでテストできる。Plan 9の考え方を一貫して適用した結果だ。Plan 9ファンは長年、足りないのはもっと普通のUIだけだと言ってきた。9/UXはその主張を安く試す手段で、スレッドは欲しい人とrioで十分だと思う人に分かれた。
+***** Comments
+- Plan 9のUIがあと20%普通だったら普及したのでは、とずっと思っていた。なるほど、9pは自動テストに向いている。
+- 実はPlan 9のミニマルなrioウィンドウマネージャが好きだ。慣れるまで少しかかるが、しばらく使うと他は全部肥大化して見える。
+- ……これは文字通りWindows 3.1で、ウィンドウの装飾と色が少ないだけだ。
+**** ko
+:PROPERTIES:
+:LANG: ko
+:END:
+***** Title
+9/UX: 9front용 매킨토시 스타일 데스크톱
+***** TLDR
+Jeff Lindsay(progrium)가 Plan 9 포크인 9front용 클래식 Mac 스타일 데스크톱 9/UX 0.1을 공개했다. 볼륨 아이콘, 폴더 창, 정보 가져오기, 휴지통이 있는 공간형 데스크톱과, 포커스된 앱을 따라가는 전역 메뉴 막대가 있으며 원격 9P 서버를 볼륨으로 띄울 수 있다. 내부는 rio 포크와 libux 툴킷으로, 모든 앱이 자신의 컨트롤 트리를 9P로 제공하므로 rc나 acme에서 버튼의 ctl 파일에 쓰기만 하면 버튼이 눌린다. 기존 9front와 rio 프로그램도 그대로 돌아간다. GUI 테스트는 헤드리스 화면으로 h9을 돌리고, 마우스와 키보드 입력을 주입하며 9P 파일을 확인한다. MIT 라이선스이며 브라우저 데모는 최신 Chrome이나 Edge와 23 MB 다운로드가 필요하다.
+***** Take
+Mac 외형은 가장 덜 중요한 부분이다. 모든 컨트롤을 파일로 노출하니 GUI를 셸에서 스크립트로 다루고 스크린샷 없이 테스트할 수 있는데, 이는 Plan 9의 발상을 일관되게 적용한 것이다. Plan 9 팬들은 오래전부터 더 평범한 UI만 있었으면 됐다고 주장해 왔다. 9/UX는 그 주장을 싸게 시험해 보는 방법이고, 스레드는 이걸 원하는 사람과 rio로 충분하다는 사람으로 갈렸다.
+***** Comments
+- Plan 9 UI가 20% 정도만 더 평범했으면 떴을지 오래 궁금했다. 오 좋다, 9p는 자동화 테스트에 잘 맞겠다.
+- 사실 난 Plan 9의 미니멀한 rio 창 관리자가 좋다. 익숙해지는 데 조금 걸리지만 한동안 쓰면 다른 건 다 비대해 보인다.
+- ……그냥 Windows 3.1인데, 창 장식과 색이 덜할 뿐이다.
+**** es
+:PROPERTIES:
+:LANG: es
+:END:
+***** Title
+9/UX: un escritorio inspirado en Macintosh para 9front
+***** TLDR
+Jeff Lindsay (progrium) publicó 9/UX 0.1, un escritorio estilo Mac clásico para 9front, la bifurcación de Plan 9. Tiene un escritorio espacial con iconos de volúmenes, ventanas de carpetas, Obtener información y Papelera, además de una barra de menús global que sigue a la app enfocada; los servidores 9P remotos pueden aparecer como volúmenes. Por dentro es una bifurcación de rio más libux, un toolkit donde cada app sirve su árbol de controles por 9P, así que se puede pulsar un botón escribiendo en su archivo ctl desde rc o acme. Los programas nativos de 9front y rio siguen funcionando. Las pruebas de GUI ejecutan h9 con pantalla headless, inyectan ratón y teclado y comprueban los archivos 9P. Licencia MIT; la demo en el navegador necesita Chrome o Edge recientes y una descarga de 23 MB.
+***** Take
+El aspecto de Mac es lo menos interesante. Exponer cada control como archivo hace que la GUI se pueda programar desde la shell y probar sin capturas de pantalla, que es la idea de Plan 9 aplicada con coherencia. Los fans de Plan 9 llevan años diciendo que solo le faltaba una interfaz más convencional; 9/UX es una forma barata de comprobarlo, y el hilo se divide entre quienes lo quieren y quienes creen que rio ya estaba bien.
+***** Comments
+- Siempre me he preguntado si Plan 9 habría despegado con una interfaz un 20% más convencional. Qué bien, 9p se presta a las pruebas automatizadas.
+- La verdad es que me gusta el gestor de ventanas minimalista rio de Plan 9; cuesta un poco acostumbrarse, pero tras usarlo un tiempo todo lo demás parece inflado.
+- ...eso es literalmente Windows 3.1, pero con menos adornos de ventana y menos color.
+**** de
+:PROPERTIES:
+:LANG: de
+:END:
+***** Title
+9/UX: ein Macintosh-inspirierter Desktop für 9front
+***** TLDR
+Jeff Lindsay (progrium) hat 9/UX 0.1 veröffentlicht, einen Desktop im Stil des klassischen Mac für 9front, den Plan-9-Fork. Er bietet einen räumlichen Schreibtisch mit Volume-Icons, Ordnerfenstern, Informationen und Papierkorb sowie eine globale Menüleiste, die der fokussierten App folgt; entfernte 9P-Server können als Volumes erscheinen. Technisch ist es ein rio-Fork plus libux, ein Toolkit, bei dem jede App ihren Steuerelementbaum über 9P bereitstellt, sodass man einen Button drückt, indem man aus rc oder acme in seine ctl-Datei schreibt. Native 9front- und rio-Programme laufen weiter. GUI-Tests starten h9 mit Headless-Bildschirm, speisen Maus- und Tastatureingaben ein und prüfen die 9P-Dateien. MIT-Lizenz; die Browser-Demo braucht ein aktuelles Chrome oder Edge und 23 MB Download.
+***** Take
+Der Mac-Look ist das Uninteressanteste daran. Jedes Steuerelement als Datei bereitzustellen macht die GUI aus der Shell skriptbar und ohne Screenshots testbar, also die Plan-9-Idee konsequent umgesetzt. Plan-9-Fans behaupten seit Langem, es habe nur eine konventionellere Oberfläche gefehlt; 9/UX ist ein billiger Test dieser These, und der Thread teilt sich in Leute, die es wollen, und Leute, die rio schon gut fanden.
+***** Comments
+- Ich habe mich lange gefragt, ob Plan 9 abgehoben wäre, wenn die Oberfläche etwa 20% konventioneller gewesen wäre. Schön, 9p eignet sich gut für automatisierte Tests.
+- Ich mag eigentlich den minimalistischen rio-Fenstermanager von Plan 9; man braucht etwas Eingewöhnung, aber nach einer Weile wirkt alles andere aufgebläht.
+- ...das ist buchstäblich Windows 3.1, nur mit weniger Fensterrahmen und weniger Farbe.
